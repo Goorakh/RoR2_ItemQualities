@@ -3,13 +3,13 @@
 # Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
 #
 .utmp/
-/[Ll]ibrary/
-/[Tt]emp/
-/[Oo]bj/
-/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
 *.log
 
 # MemoryCaptures can get excessive in size.
@@ -73,3 +73,19 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+#Ensures RoR2 assemblies are not redistributed accidentally
+ItemQualities/[Pp]ackages/[Rr]isk of Rain 2/*.dll
+ItemQualities/[Pp]ackages/[Rr]isk of Rain 2/[Pp]lugins/*.dll
+
+#Client side only thunderkit related files.
+ItemQualities/Assets/ThunderKitSettings/EditorInspectorSettings.asset
+ItemQualities/Assets/ThunderKitSettings/RoR2.asset
+ItemQualities/Assets/ThunderKitSettings/Logs/*
+ItemQualities/Assets/ThunderKitSettings/ThunderKit Extensions.asset
+ItemQualities/ThunderKit/
+
+#Ensures mod dependencies such as R2API and others are not explicitly added to the github repository to avoid unecesary redistribution
+ItemQualities/Packages/*
+!ItemQualities/Packages/packages-lock.json
+!ItemQualities/Packages/manifest.json
