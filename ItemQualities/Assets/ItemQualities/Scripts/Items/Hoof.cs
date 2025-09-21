@@ -25,10 +25,10 @@ namespace ItemQualities.Items
                 hoofLegendaryCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Hoof.LegendaryItemIndex);
             }
 
-            args.moveSpeedMultAdd += hoofUncommonCount * (0.14f * 2);
-            args.moveSpeedMultAdd += hoofRareCount * (0.14f * 3);
-            args.moveSpeedMultAdd += hoofEpicCount * (0.14f * 4);
-            args.moveSpeedMultAdd += hoofLegendaryCount * (0.14f * 5);
+            args.moveSpeedMultAdd += (hoofUncommonCount * (0.14f * 1))
+                                   + (hoofRareCount * (0.14f * 2))
+                                   + (hoofEpicCount * (0.14f * 3))
+                                   + (hoofLegendaryCount * (0.14f * 4));
         }
     }
 }
