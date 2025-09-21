@@ -249,6 +249,8 @@ namespace ItemQualities
             internal static IReadOnlyCollection<ItemQualityGroup> AllGroups = Array.Empty<ItemQualityGroup>();
 
             public static ItemQualityGroup Hoof;
+
+            public static ItemQualityGroup CritGlasses;
         }
 
         public static class EquipmentQualityGroups

@@ -12,5 +12,17 @@
 		
 		"ITEM_HOOF_LEGENDARY_PICKUP": "Increase movement speed.",
 		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style>.",
+		
+		"ITEM_CRITGLASSES_UNCOMMON_PICKUP": "Gain 10% chance for hits to 'Critically Strike', dealing double damage.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		"ITEM_CRITGLASSES_UNCOMMON_DESC": "Your attacks have a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		
+		"ITEM_CRITGLASSES_RARE_PICKUP": "Gain 10% chance for hits to 'Critically Strike', dealing double damage.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		"ITEM_CRITGLASSES_RARE_DESC": "Your attacks have a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		
+		"ITEM_CRITGLASSES_EPIC_PICKUP": "Gain 10% chance for hits to 'Critically Strike', dealing double damage.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		"ITEM_CRITGLASSES_EPIC_DESC": "Your attacks have a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		
+		"ITEM_CRITGLASSES_LEGENDARY_PICKUP": "Gain 10% chance for hits to 'Critically Strike', dealing double damage.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		"ITEM_CRITGLASSES_LEGENDARY_DESC": "Your attacks have a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
 	}
 }
