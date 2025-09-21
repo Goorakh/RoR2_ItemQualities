@@ -39,6 +39,9 @@ MonoBehaviour:
   Version: 1.0.0
   Dependencies:
   - {fileID: 11400000, guid: 184f0fdf3edcd6bad171410f4e0fd947, type: 2}
+  - {fileID: 11400000, guid: 19f404b4f1d413a691a8b0edda7faba9, type: 2}
+  - {fileID: 11400000, guid: 014c4e162aebc6b9c7c87be504a1bd10, type: 2}
+  - {fileID: 11400000, guid: 48f050b3512173aba0a952f846a557fa, type: 2}
 --- !u!114 &-8021981330241814630
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -71,7 +74,7 @@ MonoBehaviour:
   assetBundles:
   - assetBundleName: ItemQualitiesAssets
     assets:
-    - {fileID: 4295603504645316723, guid: e09c0f4469532b04fb5ba2d1550848fb, type: 3}
+    - {fileID: 102900000, guid: bbb48dd112bfe92479673f7fa9da2456, type: 3}
 --- !u!114 &-3521809848701759815
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,0 +1,16 @@
+﻿{
+	strings:
+	{
+		"ITEM_HOOF_UNCOMMON_PICKUP": "Increase movement speed.",
+		"ITEM_HOOF_UNCOMMON_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>28%</style> <style=cStack>(+28% per stack)</style>.",
+		
+		"ITEM_HOOF_RARE_PICKUP": "Increase movement speed.",
+		"ITEM_HOOF_RARE_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>42%</style> <style=cStack>(+42% per stack)</style>.",
+		
+		"ITEM_HOOF_EPIC_PICKUP": "Increase movement speed.",
+		"ITEM_HOOF_EPIC_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>56%</style> <style=cStack>(+56% per stack)</style>.",
+		
+		"ITEM_HOOF_LEGENDARY_PICKUP": "Increase movement speed.",
+		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style>.",
+	}
+}

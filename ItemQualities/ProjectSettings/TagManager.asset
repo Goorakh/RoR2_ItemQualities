@@ -3,7 +3,18 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Colored
+  - BulletCollide
+  - InitialBurst
+  - Chest
+  - CamAttachPoint
+  - VoiceChatCard
+  - NexAssetsRankingParamText
+  - NexAssetsRankingHeaderText
+  - CreditsGroup
+  - NexAssetsRanking2HeaderText
+  - NexAssetsRanking2ParamText
   layers:
   - Default
   - TransparentFX
@@ -13,31 +24,30 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - FakeActor
+  - NoCollision
+  - Pickups
+  - World
+  - EntityPrecise
+  - Debris
+  - Projectile
+  - CollideWithCharacterHullOnly
+  - ManualRender
+  - Ragdoll
+  - NoDraw
+  - PrefabBrush
+  - PostProcess
+  - UI, WorldSpace
+  - PlayerBody
+  - EnemyBody
+  - TriggerZone
+  - SplitscreenPlayerMain
+  - SplitscreenPlayer2
+  - SplitscreenPlayer3
+  - SplitscreenPlayer4
+  - ProjectileWorldOnly
+  - EnemyBarrier
+  - PlayerFakeActor
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0

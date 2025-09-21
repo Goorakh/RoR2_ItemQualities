@@ -17,3 +17,17 @@ MonoBehaviour:
     _hexRepresentation: 619d656bf7e23fb4e97791b64acb9360
   - k_templateName: CharacterBodyWizard
     _hexRepresentation: c8e741fcc27d0054388a0e4f31bffa18
+  - k_templateName: ItemDefInspector
+    _hexRepresentation: 52dd9769ba8ce564ebfbe00836864b50
+  - k_templateName: ContextMenuWrapperElement
+    _hexRepresentation: 77311b170172e5f459337eef42862d00
+  - k_templateName: EditorSettingsElement
+    _hexRepresentation: 265068b42b0081049b3077b0c70c968f
+  - k_templateName: R2EKSettings
+    _hexRepresentation: 44d42a3e58832be42bb60f31f05e064a
+  - k_templateName: ExtendedHelpBox
+    _hexRepresentation: f201f9522b7898947bae7ddbde4b0c1d
+  - k_templateName: ComponentInspectorEnableToggle
+    _hexRepresentation: d8821e738f95f48498530303e90d440d
+  - k_templateName: EntityStateMachineInspector
+    _hexRepresentation: 80f85cf135da6ea41834b0e48a22acfa

@@ -1,6 +1,11 @@
 using BepInEx;
+using HG.Reflection;
+using R2API.Utils;
 using System.Diagnostics;
 using System.IO;
+
+[assembly: NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
+[assembly: SearchableAttribute.OptIn]
 
 namespace ItemQualities
 {

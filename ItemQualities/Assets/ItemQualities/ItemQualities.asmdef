@@ -28,9 +28,8 @@
         "MonoMod.Utils.dll",
         "Mono.Cecil.Pdb.dll",
         "R2API.Core.dll",
-        "R2API.Director.dll",
-        "R2API.Addressables.dll",
-        "R2API.Networking.dll",
+        "R2API.RecalculateStats.dll",
+        "R2API.Language.dll",
         "MMHOOK_RoR2.dll",
         "0Harmony.dll",
         "Newtonsoft.Json.dll",
@@ -38,7 +37,8 @@
         "AK.Wwise.Unity.API.WwiseTypes.dll",
         "AK.Wwise.Unity.API.dll",
         "Ak.Wwise.Api.WAAPI.dll",
-        "AK.Wwise.Unity.Timeline.dll"
+        "AK.Wwise.Unity.Timeline.dll",
+        "ShaderSwapper.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
