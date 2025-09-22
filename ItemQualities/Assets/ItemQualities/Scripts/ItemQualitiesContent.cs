@@ -269,6 +269,8 @@ namespace ItemQualities
             public static ItemQualityGroup Crowbar;
 
             public static ItemQualityGroup PersonalShield;
+
+            public static ItemQualityGroup BarrierOnKill;
         }
 
         public static class EquipmentQualityGroups

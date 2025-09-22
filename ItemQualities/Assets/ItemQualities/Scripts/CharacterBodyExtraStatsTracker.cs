@@ -18,14 +18,47 @@ namespace ItemQualities
 
         CharacterBody _body;
 
+        bool _statsDirty;
+
         float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
-        public float SlugOutOfDangerDelay => _slugOutOfDangerDelay;
+        public float SlugOutOfDangerDelay
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _slugOutOfDangerDelay;
+            }
+        }
 
         float _shieldOutOfDangerDelay = CharacterBody.outOfDangerDelay;
-        public float ShieldOutOfDangerDelay => _shieldOutOfDangerDelay;
+        public float ShieldOutOfDangerDelay
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _shieldOutOfDangerDelay;
+            }
+        }
 
         float _crowbarMinHealthFraction = 0.9f;
-        public float CrowbarMinHealthFraction => _crowbarMinHealthFraction;
+        public float CrowbarMinHealthFraction
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _crowbarMinHealthFraction;
+            }
+        }
+
+        float _barrierDecayRateMultiplier = 1f;
+        public float BarrierDecayRateMultiplier
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _barrierDecayRateMultiplier;
+            }
+        }
 
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
@@ -55,6 +88,8 @@ namespace ItemQualities
         {
             if (NetworkServer.active)
             {
+                recalculateStatsIfNeeded();
+
                 _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
                 _shieldOutOfDanger = _body && _body.outOfDangerStopwatch >= _shieldOutOfDangerDelay;
             }
@@ -62,7 +97,16 @@ namespace ItemQualities
 
         void onBodyInventoryChanged()
         {
-            recalculateStats();
+            _statsDirty = true;
+        }
+
+        void recalculateStatsIfNeeded()
+        {
+            if (_statsDirty)
+            {
+                _statsDirty = false;
+                recalculateStats();
+            }
         }
 
         void recalculateStats()
@@ -70,11 +114,13 @@ namespace ItemQualities
             ItemQualityCounts slug = default;
             ItemQualityCounts crowbar = default;
             ItemQualityCounts personalShield = default;
+            ItemQualityCounts barrierOnKill = default;
             if (_body && _body.inventory)
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
                 crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCounts(_body.inventory);
                 personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCounts(_body.inventory);
+                barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCounts(_body.inventory);
             }
 
             float slugOutOfDangerDelayReduction = 1f;
@@ -100,6 +146,14 @@ namespace ItemQualities
             shieldOutOfDangerDelayReduction += 4.00f * personalShield.LegendaryCount;
 
             _shieldOutOfDangerDelay = CharacterBody.outOfDangerDelay / shieldOutOfDangerDelayReduction;
+
+            float barrierDecayRateReduction = 1f;
+            barrierDecayRateReduction += 0.10f * barrierOnKill.UncommonCount;
+            barrierDecayRateReduction += 0.25f * barrierOnKill.RareCount;
+            barrierDecayRateReduction += 1.00f * barrierOnKill.EpicCount;
+            barrierDecayRateReduction += 4.00f * barrierOnKill.LegendaryCount;
+
+            _barrierDecayRateMultiplier = 1f / barrierDecayRateReduction;
         }
 
         void hookSetSlugOutOfDanger(bool slugOutOfDanger)

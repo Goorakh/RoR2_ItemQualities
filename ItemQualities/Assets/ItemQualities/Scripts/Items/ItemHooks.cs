@@ -15,12 +15,25 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedItemCountsPatch;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
             IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
 
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
 
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
+
+            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+        }
+
+        static void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
+        {
+            orig(self);
+
+            if (self && self.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
+            {
+                self.barrierDecayRate *= extraStatsTracker.BarrierDecayRateMultiplier;
+            }
         }
 
         static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)

@@ -73,16 +73,28 @@
 		"ITEM_CROWBAR_LEGENDARY_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 90% health.",
 		"ITEM_CROWBAR_LEGENDARY_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 
-		"ITEM_PERSONALSHIELD_UNCOMMON_PICKUP": "{0}",
+		"ITEM_PERSONALSHIELD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce recharce delay.",
 		"ITEM_PERSONALSHIELD_UNCOMMON_DESC": "{0}\nReduces recharge delay by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
 
-		"ITEM_PERSONALSHIELD_RARE_PICKUP": "{0}",
+		"ITEM_PERSONALSHIELD_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce recharce delay.",
 		"ITEM_PERSONALSHIELD_RARE_DESC": "{0}\nReduces recharge delay by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
 
-		"ITEM_PERSONALSHIELD_EPIC_PICKUP": "{0}",
+		"ITEM_PERSONALSHIELD_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce recharce delay.",
 		"ITEM_PERSONALSHIELD_EPIC_DESC": "{0}\nReduces recharge delay by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
 
-		"ITEM_PERSONALSHIELD_LEGENDARY_PICKUP": "{0}",
+		"ITEM_PERSONALSHIELD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce recharce delay.",
 		"ITEM_PERSONALSHIELD_LEGENDARY_DESC": "{0}\nReduces recharge delay by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
+
+		"ITEM_BARRIERONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
+		"ITEM_BARRIERONKILL_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
+
+		"ITEM_BARRIERONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
+		"ITEM_BARRIERONKILL_RARE_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
+
+		"ITEM_BARRIERONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
+		"ITEM_BARRIERONKILL_EPIC_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
+
+		"ITEM_BARRIERONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
+		"ITEM_BARRIERONKILL_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 	}
 }
