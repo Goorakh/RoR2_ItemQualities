@@ -195,43 +195,43 @@ namespace ItemQualities
             */
 
             ItemTier itemTier = ItemTier.Tier1;
-            if (currentDirectory.Contains("Tier1/"))
+            if (currentDirectory.Contains("Tier1"))
             {
                 itemTier = ItemTier.Tier1;
             }
-            else if (currentDirectory.Contains("Tier2/"))
+            else if (currentDirectory.Contains("Tier2"))
             {
                 itemTier = ItemTier.Tier2;
             }
-            else if (currentDirectory.Contains("Tier3/"))
+            else if (currentDirectory.Contains("Tier3"))
             {
                 itemTier = ItemTier.Tier3;
             }
-            else if (currentDirectory.Contains("Boss/"))
+            else if (currentDirectory.Contains("Boss"))
             {
                 itemTier = ItemTier.Boss;
             }
-            else if (currentDirectory.Contains("VoidBoss/"))
+            else if (currentDirectory.Contains("VoidBoss"))
             {
                 itemTier = ItemTier.VoidBoss;
             }
-            else if (currentDirectory.Contains("VoidTier1/"))
+            else if (currentDirectory.Contains("VoidTier1"))
             {
                 itemTier = ItemTier.VoidTier1;
             }
-            else if (currentDirectory.Contains("VoidTier2/"))
+            else if (currentDirectory.Contains("VoidTier2"))
             {
                 itemTier = ItemTier.VoidTier2;
             }
-            else if (currentDirectory.Contains("VoidTier3/"))
+            else if (currentDirectory.Contains("VoidTier3"))
             {
                 itemTier = ItemTier.VoidTier3;
             }
-            else if (currentDirectory.Contains("Lunar/"))
+            else if (currentDirectory.Contains("Lunar"))
             {
                 itemTier = ItemTier.Lunar;
             }
-            else if (currentDirectory.Contains("NoTier/"))
+            else if (currentDirectory.Contains("NoTier"))
             {
                 itemTier = ItemTier.NoTier;
             }
