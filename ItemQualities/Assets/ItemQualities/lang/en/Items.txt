@@ -96,5 +96,17 @@
 
 		"ITEM_BARRIERONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
 		"ITEM_BARRIERONKILL_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
+
+		"ITEM_EXTRASHRINEITEM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
+        "ITEM_EXTRASHRINEITEM_UNCOMMON_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
+
+		"ITEM_EXTRASHRINEITEM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s).",
+        "ITEM_EXTRASHRINEITEM_RARE_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s).",
+
+		"ITEM_EXTRASHRINEITEM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s).",
+        "ITEM_EXTRASHRINEITEM_EPIC_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s).",
+
+		"ITEM_EXTRASHRINEITEM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
+        "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
 	}
 }

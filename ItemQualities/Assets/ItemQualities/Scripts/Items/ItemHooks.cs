@@ -21,6 +21,8 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
 
+            IL.RoR2.ShrineChanceBehavior.AddShrineStack += CombineGroupedItemCountsPatch;
+
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
 
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;

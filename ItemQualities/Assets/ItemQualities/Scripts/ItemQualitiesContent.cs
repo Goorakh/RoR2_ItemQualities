@@ -271,6 +271,8 @@ namespace ItemQualities
             public static ItemQualityGroup PersonalShield;
 
             public static ItemQualityGroup BarrierOnKill;
+
+            public static ItemQualityGroup ExtraShrineItem;
         }
 
         public static class EquipmentQualityGroups
