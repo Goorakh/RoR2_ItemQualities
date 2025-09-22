@@ -27,10 +27,10 @@ namespace ItemQualities.Items
 
             if (sender.isSprinting)
             {
-                args.moveSpeedMultAdd += (((0.1f * 1) * uncommonCount)
-                                        + ((0.1f * 2) * rareCount)
-                                        + ((0.1f * 3) * epicCount)
-                                        + ((0.1f * 4) * legendaryCount)) / sender.sprintingSpeedMultiplier;
+                args.moveSpeedMultAdd += (((0.40f - 0.25f) * uncommonCount)
+                                        + ((0.70f - 0.25f) * rareCount)
+                                        + ((1.00f - 0.25f) * epicCount)
+                                        + ((1.50f - 0.25f) * legendaryCount)) / sender.sprintingSpeedMultiplier;
             }
         }
     }

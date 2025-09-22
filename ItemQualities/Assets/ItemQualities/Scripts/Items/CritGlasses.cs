@@ -25,10 +25,10 @@ namespace ItemQualities.Items
                 critGlassesLegendaryCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.CritGlasses.LegendaryItemIndex);
             }
 
-            args.critDamageMultAdd += (critGlassesUncommonCount * (0.1f * 1))
-                                    + (critGlassesRareCount * (0.1f * 2))
-                                    + (critGlassesEpicCount * (0.1f * 3))
-                                    + (critGlassesLegendaryCount * (0.1f * 4));
+            args.critDamageMultAdd += (0.2f * critGlassesUncommonCount)
+                                    + (0.4f * critGlassesRareCount)
+                                    + (1.0f * critGlassesEpicCount)
+                                    + (1.5f * critGlassesLegendaryCount);
         }
     }
 }

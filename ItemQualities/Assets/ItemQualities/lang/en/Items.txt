@@ -2,39 +2,51 @@
 	strings:
 	{
 		"ITEM_HOOF_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
-		"ITEM_HOOF_UNCOMMON_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>28%</style> <style=cStack>(+28% per stack)</style>.",
+		"ITEM_HOOF_UNCOMMON_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style>.",
 		
 		"ITEM_HOOF_RARE_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
-		"ITEM_HOOF_RARE_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>42%</style> <style=cStack>(+42% per stack)</style>.",
+		"ITEM_HOOF_RARE_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>56%</style> <style=cStack>(+56% per stack)</style>.",
 		
 		"ITEM_HOOF_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
-		"ITEM_HOOF_EPIC_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>56%</style> <style=cStack>(+56% per stack)</style>.",
+		"ITEM_HOOF_EPIC_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>98%</style> <style=cStack>(+98% per stack)</style>.",
 		
 		"ITEM_HOOF_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
-		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style>.",
+		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>140%</style> <style=cStack>(+140% per stack)</style>.",
 		
 		"ITEM_CRITGLASSES_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
-		"ITEM_CRITGLASSES_UNCOMMON_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style>.",
+		"ITEM_CRITGLASSES_UNCOMMON_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",
 		
 		"ITEM_CRITGLASSES_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
-		"ITEM_CRITGLASSES_RARE_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",
+		"ITEM_CRITGLASSES_RARE_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>.",
 		
 		"ITEM_CRITGLASSES_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
-		"ITEM_CRITGLASSES_EPIC_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style>.",
+		"ITEM_CRITGLASSES_EPIC_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>.",
 		
 		"ITEM_CRITGLASSES_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
-		"ITEM_CRITGLASSES_LEGENDARY_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>.",
+		"ITEM_CRITGLASSES_LEGENDARY_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style>.",
 		
-		"ITEM_SPRINTBONUS_UNCOMMON_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +35%.",
-		"ITEM_SPRINTBONUS_UNCOMMON_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style>.",
+		"ITEM_SPRINTBONUS_UNCOMMON_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +40%.",
+		"ITEM_SPRINTBONUS_UNCOMMON_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style>.",
 		
-		"ITEM_SPRINTBONUS_RARE_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +45%.",
-		"ITEM_SPRINTBONUS_RARE_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>45%</style> <style=cStack>(+45% per stack)</style>.",
+		"ITEM_SPRINTBONUS_RARE_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +70%.",
+		"ITEM_SPRINTBONUS_RARE_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style>.",
 		
-		"ITEM_SPRINTBONUS_EPIC_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +55%.",
-		"ITEM_SPRINTBONUS_EPIC_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>55%</style> <style=cStack>(+55% per stack)</style>.",
+		"ITEM_SPRINTBONUS_EPIC_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +100%.",
+		"ITEM_SPRINTBONUS_EPIC_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style>.",
 		
-		"ITEM_SPRINTBONUS_LEGENDARY_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +65%.",
-		"ITEM_SPRINTBONUS_LEGENDARY_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>65%</style> <style=cStack>(+65% per stack)</style>.",
+		"ITEM_SPRINTBONUS_LEGENDARY_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +150%.",
+		"ITEM_SPRINTBONUS_LEGENDARY_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>150%</style> <style=cStack>(+150% per stack)</style>.",
+
+		"ITEM_SYRINGE_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+		"ITEM_SYRINGE_UNCOMMON_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>30% <style=cStack>(+30% per stack)</style></style>.",
+
+		"ITEM_SYRINGE_RARE_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+		"ITEM_SYRINGE_RARE_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>60% <style=cStack>(+60% per stack)</style></style>.",
+
+		"ITEM_SYRINGE_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+		"ITEM_SYRINGE_EPIC_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>105% <style=cStack>(+105% per stack)</style></style>.",
+
+		"ITEM_SYRINGE_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+		"ITEM_SYRINGE_LEGENDARY_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style></style>.",
 	}
 }

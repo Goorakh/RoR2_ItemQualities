@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igSyringe
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: c465c2d1d405b0643bc205247fee3975
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 35bf1e7bbe245894ca5fe63da8a85701, type: 2}
+  _rareItem: {fileID: 11400000, guid: d035dc7af53806748aec48d461deb607, type: 2}
+  _epicItem: {fileID: 11400000, guid: de622576a37e78d4ab0be46dffdd25d9, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 2632fabe46255ab4c83f2c82428d39e6, type: 2}
