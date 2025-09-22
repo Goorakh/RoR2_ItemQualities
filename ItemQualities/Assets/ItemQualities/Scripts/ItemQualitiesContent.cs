@@ -13,8 +13,10 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
+
 using Path = System.IO.Path;
 
 namespace ItemQualities
@@ -24,6 +26,8 @@ namespace ItemQualities
         readonly ContentPack _contentPack = new ContentPack();
 
         public string identifier => ItemQualitiesPlugin.PluginGUID;
+
+        internal static NamedAssetCollection<TMP_SpriteAsset> TMP_SpriteAssets = new NamedAssetCollection<TMP_SpriteAsset>(ContentPack.getScriptableObjectName);
 
         internal ItemQualitiesContent()
         {
@@ -147,6 +151,8 @@ namespace ItemQualities
             EquipmentQualityGroups.AllGroups = new ReadOnlyCollection<EquipmentQualityGroup>(equipmentQualityGroups.ToArray());
 
             populateTypeFields(typeof(Prefabs), prefabs);
+
+            TMP_SpriteAssets.Add(finalAssets.OfType<TMP_SpriteAsset>().ToArray());
         }
 
         static IEnumerator runContentLoadCallbacks(IEnumerable<UnityEngine.Object> assets, IProgress<float> progressReceiver)

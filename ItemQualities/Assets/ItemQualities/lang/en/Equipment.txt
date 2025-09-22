@@ -1,20 +1,20 @@
 ﻿{
 	strings:
 	{
-		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "Looks kinda cool, but that's about it.\n<> +100% enthusiasm!",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "Looks kinda cool, but that's about it.\n<> +100% enthusiasm!",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>",
 		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_CHAT": "Ahoy!!",
 		
-		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "Looks kinda cool, but that's about it.\n<> +200% enthusiasm!",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "Looks kinda cool, but that's about it.\n<> +200% enthusiasm!",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>",
 		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_CHAT": "Ahoy!!!",
 
-		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP": "Looks kinda cool, but that's about it.\n<> +300% enthusiasm!",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_DESC": "Looks kinda cool, but that's about it.\n<> +300% enthusiasm!",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>300%</style>",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>300%</style>",
 		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_CHAT": "Ahoy!!!!",
 		
-		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_PICKUP": "Looks kinda cool, but that's about it.\n<> +500% enthusiasm!",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_DESC": "Looks kinda cool, but that's about it.\n<> +500% enthusiasm!",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>500%</style>",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>500%</style>",
 		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_CHAT": "AHOY!!!!!",
 	}
 }

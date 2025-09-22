@@ -1,28 +1,28 @@
 ﻿{
 	strings:
 	{
-		"ITEM_HOOF_UNCOMMON_PICKUP": "Increase movement speed.",
-		"ITEM_HOOF_UNCOMMON_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>28%</style> <style=cStack>(+28% per stack)</style>.",
+		"ITEM_HOOF_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
+		"ITEM_HOOF_UNCOMMON_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>28%</style> <style=cStack>(+28% per stack)</style>.",
 		
-		"ITEM_HOOF_RARE_PICKUP": "Increase movement speed.",
-		"ITEM_HOOF_RARE_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>42%</style> <style=cStack>(+42% per stack)</style>.",
+		"ITEM_HOOF_RARE_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
+		"ITEM_HOOF_RARE_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>42%</style> <style=cStack>(+42% per stack)</style>.",
 		
-		"ITEM_HOOF_EPIC_PICKUP": "Increase movement speed.",
-		"ITEM_HOOF_EPIC_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>56%</style> <style=cStack>(+56% per stack)</style>.",
+		"ITEM_HOOF_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
+		"ITEM_HOOF_EPIC_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>56%</style> <style=cStack>(+56% per stack)</style>.",
 		
-		"ITEM_HOOF_LEGENDARY_PICKUP": "Increase movement speed.",
-		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style>.",
+		"ITEM_HOOF_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
+		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style>.",
 		
-		"ITEM_CRITGLASSES_UNCOMMON_PICKUP": "Gain 10% chance for hits to 'Critically Strike', dealing double damage.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
-		"ITEM_CRITGLASSES_UNCOMMON_DESC": "Your attacks have a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		"ITEM_CRITGLASSES_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
+		"ITEM_CRITGLASSES_UNCOMMON_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style>.",
 		
-		"ITEM_CRITGLASSES_RARE_PICKUP": "Gain 10% chance for hits to 'Critically Strike', dealing double damage.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
-		"ITEM_CRITGLASSES_RARE_DESC": "Your attacks have a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		"ITEM_CRITGLASSES_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
+		"ITEM_CRITGLASSES_RARE_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",
 		
-		"ITEM_CRITGLASSES_EPIC_PICKUP": "Gain 10% chance for hits to 'Critically Strike', dealing double damage.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
-		"ITEM_CRITGLASSES_EPIC_DESC": "Your attacks have a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		"ITEM_CRITGLASSES_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
+		"ITEM_CRITGLASSES_EPIC_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style>.",
 		
-		"ITEM_CRITGLASSES_LEGENDARY_PICKUP": "Gain 10% chance for hits to 'Critically Strike', dealing double damage.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
-		"ITEM_CRITGLASSES_LEGENDARY_DESC": "Your attacks have a <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to '<style=cIsDamage>Critically Strike</style>', dealing <style=cIsDamage>double damage</style>.\n<> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> critical strike damage.",
+		"ITEM_CRITGLASSES_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
+		"ITEM_CRITGLASSES_LEGENDARY_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>.",
 	}
 }

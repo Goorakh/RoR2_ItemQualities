@@ -172,6 +172,38 @@ namespace ItemQualities
                             LanguageAPI.Add(item.nameToken, generatedQualityName, language.name);
                         }
                     }
+
+                    if (!string.IsNullOrEmpty(item.pickupToken) && !Language.IsTokenInvalid(item.pickupToken))
+                    {
+                        foreach (Language language in Language.GetAllLanguages())
+                        {
+                            string pickupString = language.GetLocalizedStringByToken(item.pickupToken);
+
+                            if (pickupString.Contains("{0}"))
+                            {
+                                item.pickupToken += "_GEN";
+
+                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseItem.pickupToken));
+                                LanguageAPI.Add(item.pickupToken, pickupString, language.name);
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(item.descriptionToken) && !Language.IsTokenInvalid(item.descriptionToken))
+                    {
+                        foreach (Language language in Language.GetAllLanguages())
+                        {
+                            string pickupString = language.GetLocalizedStringByToken(item.descriptionToken);
+
+                            if (pickupString.Contains("{0}"))
+                            {
+                                item.descriptionToken += "_GEN";
+
+                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseItem.descriptionToken));
+                                LanguageAPI.Add(item.descriptionToken, pickupString, language.name);
+                            }
+                        }
+                    }
                 }
 
                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
@@ -201,6 +233,38 @@ namespace ItemQualities
                         {
                             string generatedQualityName = language.GetLocalizedFormattedStringByToken($"QUALITY_{qualityTier.ToString().ToUpper()}_MODIFIER", language.GetLocalizedStringByToken(baseEquipment.nameToken));
                             LanguageAPI.Add(equipment.nameToken, generatedQualityName, language.name);
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(equipment.pickupToken) && !Language.IsTokenInvalid(equipment.pickupToken))
+                    {
+                        foreach (Language language in Language.GetAllLanguages())
+                        {
+                            string pickupString = language.GetLocalizedStringByToken(equipment.pickupToken);
+
+                            if (pickupString.Contains("{0}"))
+                            {
+                                equipment.pickupToken += "_GEN";
+
+                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseEquipment.pickupToken));
+                                LanguageAPI.Add(equipment.pickupToken, pickupString, language.name);
+                            }
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(equipment.descriptionToken) && !Language.IsTokenInvalid(equipment.descriptionToken))
+                    {
+                        foreach (Language language in Language.GetAllLanguages())
+                        {
+                            string pickupString = language.GetLocalizedStringByToken(equipment.descriptionToken);
+
+                            if (pickupString.Contains("{0}"))
+                            {
+                                equipment.descriptionToken += "_GEN";
+
+                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseEquipment.descriptionToken));
+                                LanguageAPI.Add(equipment.descriptionToken, pickupString, language.name);
+                            }
                         }
                     }
                 }
