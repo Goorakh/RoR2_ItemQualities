@@ -44,15 +44,15 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 0
     m_Scale: 0.85
-    m_Name: texTMPSpriteSheet
-    m_HashCode: -1120409786
+    m_Name: Quality
+    m_HashCode: 1677620205
   m_SpriteGlyphTable:
   - m_Index: 0
     m_Metrics:
       m_Width: 42
       m_Height: 58
-      m_HorizontalBearingX: 0
-      m_HorizontalBearingY: 60
+      m_HorizontalBearingX: 5
+      m_HorizontalBearingY: 56
       m_HorizontalAdvance: 52
     m_GlyphRect:
       m_X: 0
