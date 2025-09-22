@@ -257,6 +257,8 @@ namespace ItemQualities
             public static ItemQualityGroup Hoof;
 
             public static ItemQualityGroup CritGlasses;
+
+            public static ItemQualityGroup SprintBonus;
         }
 
         public static class EquipmentQualityGroups

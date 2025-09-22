@@ -24,5 +24,17 @@
 		
 		"ITEM_CRITGLASSES_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
 		"ITEM_CRITGLASSES_LEGENDARY_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>.",
+		
+		"ITEM_SPRINTBONUS_UNCOMMON_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +35%.",
+		"ITEM_SPRINTBONUS_UNCOMMON_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style>.",
+		
+		"ITEM_SPRINTBONUS_RARE_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +45%.",
+		"ITEM_SPRINTBONUS_RARE_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>45%</style> <style=cStack>(+45% per stack)</style>.",
+		
+		"ITEM_SPRINTBONUS_EPIC_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +55%.",
+		"ITEM_SPRINTBONUS_EPIC_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>55%</style> <style=cStack>(+55% per stack)</style>.",
+		
+		"ITEM_SPRINTBONUS_LEGENDARY_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +65%.",
+		"ITEM_SPRINTBONUS_LEGENDARY_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>65%</style> <style=cStack>(+65% per stack)</style>.",
 	}
 }
