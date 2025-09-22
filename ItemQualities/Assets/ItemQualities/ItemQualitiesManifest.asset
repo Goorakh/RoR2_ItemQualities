@@ -74,7 +74,14 @@ MonoBehaviour:
   assetBundles:
   - assetBundleName: ItemQualitiesAssets
     assets:
-    - {fileID: 102900000, guid: bbb48dd112bfe92479673f7fa9da2456, type: 3}
+    - {fileID: 11400000, guid: 685bd7e781ccece488d3388df11728ef, type: 2}
+    - {fileID: 11400000, guid: 7c64cc2ea79c6d0448e8aa9a2fa4c48e, type: 2}
+    - {fileID: 11400000, guid: d0ce77697929afd46ba84357d5ffa28e, type: 2}
+    - {fileID: 11400000, guid: b92516718a84ef74fa9cae106cf0602a, type: 2}
+    - {fileID: 6542475857846913223, guid: 5de7a8b04d886d8458e65e6de8e69ed7, type: 3}
+    - {fileID: 11400000, guid: fa85a626db40e8549a7c542f219be512, type: 2}
+    - {fileID: 102900000, guid: d7cec75ff91e9bc448afe1ca8d03e47d, type: 3}
+    - {fileID: 102900000, guid: e53f74002333bdc4eba8fdd58e8bbdc9, type: 3}
 --- !u!114 &-3521809848701759815
 MonoBehaviour:
   m_ObjectHideFlags: 0
