@@ -48,5 +48,17 @@
 
 		"ITEM_SYRINGE_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
 		"ITEM_SYRINGE_LEGENDARY_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style></style>.",
+		
+		"ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}",
+		"ITEM_HEALWHILESAFE_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
+		
+		"ITEM_HEALWHILESAFE_RARE_PICKUP": "{0}",
+		"ITEM_HEALWHILESAFE_RARE_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
+		
+		"ITEM_HEALWHILESAFE_EPIC_PICKUP": "{0}",
+		"ITEM_HEALWHILESAFE_EPIC_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
+		
+		"ITEM_HEALWHILESAFE_LEGENDARY_PICKUP": "{0}",
+		"ITEM_HEALWHILESAFE_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 	}
 }

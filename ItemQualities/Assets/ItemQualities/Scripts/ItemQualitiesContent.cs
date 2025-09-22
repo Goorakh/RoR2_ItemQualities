@@ -261,6 +261,8 @@ namespace ItemQualities
             public static ItemQualityGroup SprintBonus;
 
             public static ItemQualityGroup Syringe;
+
+            public static ItemQualityGroup HealWhileSafe;
         }
 
         public static class EquipmentQualityGroups

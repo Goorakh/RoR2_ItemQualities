@@ -106,5 +106,21 @@ namespace ItemQualities.Items
                 Log.Debug($"Found {patchCount} patch location(s) for {il.Method.FullName}");
             }
         }
+
+        public static bool TryFindNextItemCountVariable(ILCursor c, Type itemDeclaringType, string itemName, out VariableDefinition itemCountVariable)
+        {
+            int itemCountVariableIndex = -1;
+            if (c.TryFindNext(out ILCursor[] foundCursors,
+                              x => x.MatchLdsfld(itemDeclaringType, itemName),
+                              x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
+                              x => x.MatchStloc(out itemCountVariableIndex) && c.Context.Method.Body.Variables[itemCountVariableIndex].VariableType.Is(typeof(int))))
+            {
+                itemCountVariable = c.Context.Method.Body.Variables[itemCountVariableIndex];
+                return true;
+            }
+
+            itemCountVariable = null;
+            return false;
+        }
     }
 }
