@@ -153,6 +153,8 @@ namespace ItemQualities
             populateTypeFields(typeof(Prefabs), prefabs);
 
             TMP_SpriteAssets.Add(finalAssets.OfType<TMP_SpriteAsset>().ToArray());
+
+            Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms (at {assetBundleLocation})");
         }
 
         static IEnumerator runContentLoadCallbacks(IEnumerable<UnityEngine.Object> assets, IProgress<float> progressReceiver)
@@ -263,6 +265,10 @@ namespace ItemQualities
             public static ItemQualityGroup Syringe;
 
             public static ItemQualityGroup HealWhileSafe;
+
+            public static ItemQualityGroup Crowbar;
+
+            public static ItemQualityGroup PersonalShield;
         }
 
         public static class EquipmentQualityGroups

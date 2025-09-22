@@ -15,6 +15,8 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedItemCountsPatch;
+            IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
+
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
 

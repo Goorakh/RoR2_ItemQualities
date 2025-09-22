@@ -35,7 +35,7 @@ namespace ItemQualities.Items
                 static bool getOutOfDangerForSlug(bool outOfDanger, CharacterBody body)
                 {
                     if (body && body.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
-                        return extraStatsTracker.SlugActive;
+                        return extraStatsTracker.SlugOutOfDanger;
 
                     return outOfDanger;
                 }
@@ -67,7 +67,7 @@ namespace ItemQualities.Items
                     snailAnimator.characterModel.body &&
                     snailAnimator.characterModel.body.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
                 {
-                    return extraStatsTracker.SlugActive;
+                    return extraStatsTracker.SlugOutOfDanger;
                 }
 
                 return outOfDanger;

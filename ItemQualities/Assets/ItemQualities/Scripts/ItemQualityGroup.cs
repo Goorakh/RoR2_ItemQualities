@@ -73,6 +73,20 @@ namespace ItemQualities
             }
         }
 
+        public ItemQualityCounts GetItemCounts(Inventory inventory)
+        {
+            if (!inventory)
+                return default;
+
+            int baseItemCount = inventory.GetItemCount(BaseItemIndex);
+            int uncommonItemCount = inventory.GetItemCount(UncommonItemIndex);
+            int rareItemCount = inventory.GetItemCount(RareItemIndex);
+            int epicItemCount = inventory.GetItemCount(EpicItemIndex);
+            int legendaryItemCount = inventory.GetItemCount(LegendaryItemIndex);
+
+            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+        }
+
         IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
         {
             AsyncOperationHandle<ItemDef> baseItemLoad = AddressableUtil.LoadTempAssetAsync(BaseItemReference);

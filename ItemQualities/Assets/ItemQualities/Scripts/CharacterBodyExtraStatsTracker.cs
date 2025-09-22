@@ -19,10 +19,21 @@ namespace ItemQualities
         CharacterBody _body;
 
         float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
+        public float SlugOutOfDangerDelay => _slugOutOfDangerDelay;
 
-        [SyncVar(hook = nameof(hookSetSlugActive))]
-        bool _slugActive;
-        public bool SlugActive => _slugActive;
+        float _shieldOutOfDangerDelay = CharacterBody.outOfDangerDelay;
+        public float ShieldOutOfDangerDelay => _shieldOutOfDangerDelay;
+
+        float _crowbarMinHealthFraction = 0.9f;
+        public float CrowbarMinHealthFraction => _crowbarMinHealthFraction;
+
+        [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
+        bool _slugOutOfDanger;
+        public bool SlugOutOfDanger => _slugOutOfDanger;
+
+        [SyncVar(hook = nameof(hookSetShieldOutOfDanger))]
+        bool _shieldOutOfDanger;
+        public bool ShieldOutOfDanger => _shieldOutOfDanger;
 
         void Awake()
         {
@@ -44,7 +55,8 @@ namespace ItemQualities
         {
             if (NetworkServer.active)
             {
-                _slugActive = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
+                _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
+                _shieldOutOfDanger = _body && _body.outOfDangerStopwatch >= _shieldOutOfDangerDelay;
             }
         }
 
@@ -55,31 +67,66 @@ namespace ItemQualities
 
         void recalculateStats()
         {
-            int slugUncommonCount = 0;
-            int slugRareCount = 0;
-            int slugEpicCount = 0;
-            int slugLegendaryCount = 0;
+            ItemQualityCounts slug = default;
+            ItemQualityCounts crowbar = default;
+            ItemQualityCounts personalShield = default;
             if (_body && _body.inventory)
             {
-                slugUncommonCount = _body.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.UncommonItemIndex);
-                slugRareCount = _body.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.RareItemIndex);
-                slugEpicCount = _body.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.EpicItemIndex);
-                slugLegendaryCount = _body.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.LegendaryItemIndex);
+                slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
+                crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCounts(_body.inventory);
+                personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCounts(_body.inventory);
             }
 
-            float slugOutOfDangerDelayDecrease = 1f;
-            slugOutOfDangerDelayDecrease += 0.10f * slugUncommonCount;
-            slugOutOfDangerDelayDecrease += 0.25f * slugRareCount;
-            slugOutOfDangerDelayDecrease += 1.00f * slugEpicCount;
-            slugOutOfDangerDelayDecrease += 4.00f * slugLegendaryCount;
+            float slugOutOfDangerDelayReduction = 1f;
+            slugOutOfDangerDelayReduction += 0.10f * slug.UncommonCount;
+            slugOutOfDangerDelayReduction += 0.25f * slug.RareCount;
+            slugOutOfDangerDelayReduction += 1.00f * slug.EpicCount;
+            slugOutOfDangerDelayReduction += 4.00f * slug.LegendaryCount;
 
-            _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay / slugOutOfDangerDelayDecrease;
+            _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay / slugOutOfDangerDelayReduction;
+
+            float crowbarMinHealthFractionReduction = 1f;
+            crowbarMinHealthFractionReduction += 0.10f * crowbar.UncommonCount;
+            crowbarMinHealthFractionReduction += 0.25f * crowbar.RareCount;
+            crowbarMinHealthFractionReduction += 1.00f * crowbar.EpicCount;
+            crowbarMinHealthFractionReduction += 4.00f * crowbar.LegendaryCount;
+
+            _crowbarMinHealthFraction = 0.9f / crowbarMinHealthFractionReduction;
+
+            float shieldOutOfDangerDelayReduction = 1f;
+            shieldOutOfDangerDelayReduction += 0.10f * personalShield.UncommonCount;
+            shieldOutOfDangerDelayReduction += 0.25f * personalShield.RareCount;
+            shieldOutOfDangerDelayReduction += 1.00f * personalShield.EpicCount;
+            shieldOutOfDangerDelayReduction += 4.00f * personalShield.LegendaryCount;
+
+            _shieldOutOfDangerDelay = CharacterBody.outOfDangerDelay / shieldOutOfDangerDelayReduction;
         }
 
-        void hookSetSlugActive(bool slugActive)
+        void hookSetSlugOutOfDanger(bool slugOutOfDanger)
         {
-            _slugActive = slugActive;
-            _body.MarkAllStatsDirty();
+            bool changed = _slugOutOfDanger != slugOutOfDanger;
+            _slugOutOfDanger = slugOutOfDanger;
+
+            if (changed)
+            {
+                _body.MarkAllStatsDirty();
+            }
+        }
+
+        void hookSetShieldOutOfDanger(bool shieldOutOfDanger)
+        {
+            bool changed = _shieldOutOfDanger != shieldOutOfDanger;
+            _shieldOutOfDanger = shieldOutOfDanger;
+
+            if (changed)
+            {
+                _body.MarkAllStatsDirty();
+
+                if (_shieldOutOfDanger && _body.healthComponent.shield < _body.healthComponent.fullShield)
+                {
+                    Util.PlaySound("Play_item_proc_personal_shield_recharge", gameObject);
+                }
+            }
         }
     }
 }

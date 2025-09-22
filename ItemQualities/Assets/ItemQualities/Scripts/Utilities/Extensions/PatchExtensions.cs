@@ -41,6 +41,17 @@ namespace ItemQualities.Utilities.Extensions
         /// Emits instructions to skip the method call directly ahead of the cursor and moves after it.
         /// </summary>
         /// <param name="c">The cursor to emit instructions with</param>
+        /// <param name="emitSkippedReturnValue">If the skipped method is not <see langword="void"/> this delegate will be invoked to emit the missing return value.
+        /// <para/>
+        public static void EmitSkipMethodCall(this ILCursor c, Action<ILCursor> emitSkippedReturnValue)
+        {
+            EmitSkipMethodCall(c, OpCodes.Br, emitSkippedReturnValue);
+        }
+
+        /// <summary>
+        /// Emits instructions to skip the method call directly ahead of the cursor and moves after it.
+        /// </summary>
+        /// <param name="c">The cursor to emit instructions with</param>
         /// <param name="branchOpCode">The branch <see cref="OpCode"/> to emit, can be a conditional or unconditional branch</param>
         /// <param name="emitSkippedReturnValue">If the skipped method is not <see langword="void"/> this delegate will be invoked to emit the missing return value.
         /// <para/>
@@ -74,7 +85,15 @@ namespace ItemQualities.Utilities.Extensions
 
             ILLabel skipCallLabel = c.DefineLabel();
 
-            c.Emit(branchOpCode, skipCallLabel);
+            if (branchOpCode.FlowControl == FlowControl.Branch)
+            {
+                c.Emit(OpCodes.Ldc_I4_0);
+                c.Emit(OpCodes.Brfalse, skipCallLabel);
+            }
+            else
+            {
+                c.Emit(branchOpCode, skipCallLabel);
+            }
 
             c.Index++;
 
