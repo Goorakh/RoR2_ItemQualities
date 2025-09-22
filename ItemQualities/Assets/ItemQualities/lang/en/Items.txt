@@ -108,5 +108,17 @@
 
 		"ITEM_EXTRASHRINEITEM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
         "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
+
+		"ITEM_DAGGER_UNCOMMON_PICKUP": "{0}",
+		"ITEM_DAGGER_UNCOMMON_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> dagger(s).",
+
+		"ITEM_DAGGER_RARE_PICKUP": "{0}",
+		"ITEM_DAGGER_RARE_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>2</style> <style=cStack>(+2 per stack)</style> daggers.",
+
+		"ITEM_DAGGER_EPIC_PICKUP": "{0}",
+		"ITEM_DAGGER_EPIC_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>5</style> <style=cStack>(+5 per stack)</style> daggers.",
+
+		"ITEM_DAGGER_LEGENDARY_PICKUP": "{0}",
+		"ITEM_DAGGER_LEGENDARY_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>7</style> <style=cStack>(+7 per stack)</style> daggers.",
 	}
 }
