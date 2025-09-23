@@ -279,6 +279,8 @@ namespace ItemQualities
             public static ItemQualityGroup FragileDamageBonus;
 
             public static ItemQualityGroup FragileDamageBonusConsumed;
+
+            public static ItemQualityGroup SecondarySkillMagazine;
         }
 
         public static class EquipmentQualityGroups

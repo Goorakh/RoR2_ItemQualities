@@ -88,11 +88,13 @@ namespace ItemQualities
         {
             recalculateStats();
             _body.onInventoryChanged += onBodyInventoryChanged;
+            _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
         }
 
         void OnDisable()
         {
             _body.onInventoryChanged -= onBodyInventoryChanged;
+            _body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
         }
 
         void Update()
@@ -175,6 +177,24 @@ namespace ItemQualities
             watchBreakThresholdReduction += 3.00f * fragileDamageBonus.LegendaryCount;
 
             _watchBreakThreshold = HealthComponent.lowHealthFraction / watchBreakThresholdReduction;
+        }
+
+        void onSkillActivatedAuthority(GenericSkill skill)
+        {
+            if (_body.skillLocator && _body.skillLocator.secondary == skill)
+            {
+                ItemQualityCounts secondarySkillMagazine = ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCounts(_body.inventory);
+
+                float freeRestockChance = (5f * secondarySkillMagazine.UncommonCount) +
+                                          (15f * secondarySkillMagazine.RareCount) +
+                                          (35f * secondarySkillMagazine.EpicCount) +
+                                          (60f * secondarySkillMagazine.LegendaryCount);
+
+                if (Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master))
+                {
+                    skill.AddOneStock();
+                }
+            }
         }
 
         void hookSetSlugOutOfDanger(bool slugOutOfDanger)
