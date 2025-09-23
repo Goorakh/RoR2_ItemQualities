@@ -65,8 +65,23 @@ namespace ItemQualities
             }
         }
 
+        void OnValidate()
+        {
+            if (BaseEquipmentReference == null || !BaseEquipmentReference.RuntimeKeyIsValid())
+            {
+                Debug.LogError($"Invalid equipment address in group '{name}'");
+            }
+        }
+
         IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
         {
+            if (BaseEquipmentReference == null || !BaseEquipmentReference.RuntimeKeyIsValid())
+            {
+                Log.Error($"Invalid equipment address in group '{name}'");
+                progressReceiver.Report(1f);
+                yield break;
+            }
+
             AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AddressableUtil.LoadTempAssetAsync(BaseEquipmentReference);
             yield return baseEquipmentLoad.AsProgressCoroutine(progressReceiver);
 

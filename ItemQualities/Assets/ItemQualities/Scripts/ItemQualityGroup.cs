@@ -87,8 +87,23 @@ namespace ItemQualities
             return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
 
+        void OnValidate()
+        {
+            if (BaseItemReference == null || !BaseItemReference.RuntimeKeyIsValid())
+            {
+                Debug.LogError($"Invalid item address in group '{name}'");
+            }
+        }
+
         IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
         {
+            if (BaseItemReference == null || !BaseItemReference.RuntimeKeyIsValid())
+            {
+                Log.Error($"Invalid item address in group '{name}'");
+                progressReceiver.Report(1f);
+                yield break;
+            }
+
             AsyncOperationHandle<ItemDef> baseItemLoad = AddressableUtil.LoadTempAssetAsync(BaseItemReference);
             yield return baseItemLoad.AsProgressCoroutine(progressReceiver);
 
