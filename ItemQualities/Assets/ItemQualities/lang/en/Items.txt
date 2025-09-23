@@ -156,5 +156,17 @@
 
 		"ITEM_SECONDARYSKILLMAGAZINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge Secondary skill.",
 		"ITEM_SECONDARYSKILLMAGAZINE_LEGENDARY_DESC": "{0}\nActivating your <style=cIsUtility>Secondary skill</style> has a <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance to immediately recharge it.",
+
+		"ITEM_FIREWORK_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a large firework.",
+		"ITEM_FIREWORK_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance per firework to launch a <style=cIsDamage>large firework</style>, dealing <style=cIsDamage>500%</style> base damage and exploding in a larger area.",
+
+		"ITEM_FIREWORK_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a large firework.",
+		"ITEM_FIREWORK_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> chance per firework to launch a <style=cIsDamage>large firework</style>, dealing <style=cIsDamage>500%</style> base damage and exploding in a larger area.",
+
+		"ITEM_FIREWORK_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a large firework.",
+		"ITEM_FIREWORK_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style> chance per firework to launch a <style=cIsDamage>large firework</style>, dealing <style=cIsDamage>500%</style> base damage and exploding in a larger area.",
+
+		"ITEM_FIREWORK_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a large firework.",
+		"ITEM_FIREWORK_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance per firework to launch a <style=cIsDamage>large firework</style>, dealing <style=cIsDamage>500%</style> base damage and exploding in a larger area.",
 	}
 }

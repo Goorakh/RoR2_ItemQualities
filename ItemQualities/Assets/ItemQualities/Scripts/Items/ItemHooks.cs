@@ -18,6 +18,7 @@ namespace ItemQualities.Items
         {
             IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
+            IL.RoR2.GlobalEventManager.OnInteractionBegin += CombineGroupedItemCountsPatch;
             IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
