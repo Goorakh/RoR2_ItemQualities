@@ -17,7 +17,7 @@ MonoBehaviour:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
-  cooldown: 1
+  cooldown: 0.45
   nameToken: 
   pickupToken: EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP
   descriptionToken: EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_DESC
