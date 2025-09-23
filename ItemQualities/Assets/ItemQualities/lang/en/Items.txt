@@ -2,16 +2,16 @@
 	strings:
 	{
 		"ITEM_HOOF_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
-		"ITEM_HOOF_UNCOMMON_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style>.",
+		"ITEM_HOOF_UNCOMMON_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>28%</style> <style=cStack>(+28% per stack)</style>.",
 		
 		"ITEM_HOOF_RARE_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
-		"ITEM_HOOF_RARE_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>56%</style> <style=cStack>(+56% per stack)</style>.",
+		"ITEM_HOOF_RARE_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>49%</style> <style=cStack>(+49% per stack)</style>.",
 		
 		"ITEM_HOOF_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
-		"ITEM_HOOF_EPIC_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>98%</style> <style=cStack>(+98% per stack)</style>.",
+		"ITEM_HOOF_EPIC_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style>.",
 		
 		"ITEM_HOOF_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
-		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>140%</style> <style=cStack>(+140% per stack)</style>.",
+		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>98%</style> <style=cStack>(+98% per stack)</style>.",
 		
 		"ITEM_CRITGLASSES_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
 		"ITEM_CRITGLASSES_UNCOMMON_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",
@@ -50,10 +50,10 @@
 		"ITEM_SYRINGE_LEGENDARY_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style></style>.",
 		
 		"ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}",
-		"ITEM_HEALWHILESAFE_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
+		"ITEM_HEALWHILESAFE_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style>",
 		
 		"ITEM_HEALWHILESAFE_RARE_PICKUP": "{0}",
-		"ITEM_HEALWHILESAFE_RARE_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
+		"ITEM_HEALWHILESAFE_RARE_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style>",
 		
 		"ITEM_HEALWHILESAFE_EPIC_PICKUP": "{0}",
 		"ITEM_HEALWHILESAFE_EPIC_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
@@ -62,16 +62,16 @@
 		"ITEM_HEALWHILESAFE_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 
 		"ITEM_CROWBAR_UNCOMMON_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 90% health.",
-		"ITEM_CROWBAR_UNCOMMON_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
+		"ITEM_CROWBAR_UNCOMMON_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>)",
 
 		"ITEM_CROWBAR_RARE_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 90% health.",
-		"ITEM_CROWBAR_RARE_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
+		"ITEM_CROWBAR_RARE_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>)",
 
 		"ITEM_CROWBAR_EPIC_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 90% health.",
-		"ITEM_CROWBAR_EPIC_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
+		"ITEM_CROWBAR_EPIC_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+25% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>)",
 
 		"ITEM_CROWBAR_LEGENDARY_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 90% health.",
-		"ITEM_CROWBAR_LEGENDARY_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
+		"ITEM_CROWBAR_LEGENDARY_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>90% health</style>.\nReduces <style=cIsDamage>required enemy health threshold</style> by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>)",
 
 		"ITEM_PERSONALSHIELD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce recharce delay.",
 		"ITEM_PERSONALSHIELD_UNCOMMON_DESC": "{0}\nReduces recharge delay by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",

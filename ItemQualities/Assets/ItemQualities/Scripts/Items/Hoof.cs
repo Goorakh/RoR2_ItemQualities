@@ -13,22 +13,16 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            int hoofUncommonCount = 0;
-            int hoofRareCount = 0;
-            int hoofEpicCount = 0;
-            int hoofLegendaryCount = 0;
+            ItemQualityCounts hoof = default;
             if (sender.inventory)
             {
-                hoofUncommonCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Hoof.UncommonItemIndex);
-                hoofRareCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Hoof.RareItemIndex);
-                hoofEpicCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Hoof.EpicItemIndex);
-                hoofLegendaryCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Hoof.LegendaryItemIndex);
+                hoof = ItemQualitiesContent.ItemQualityGroups.Hoof.GetItemCounts(sender.inventory);
             }
 
-            args.moveSpeedMultAdd += ((0.35f - 0.14f) * hoofUncommonCount)
-                                   + ((0.56f - 0.14f) * hoofRareCount)
-                                   + ((0.98f - 0.14f) * hoofEpicCount)
-                                   + ((1.40f - 0.14f) * hoofLegendaryCount);
+            args.moveSpeedMultAdd += ((0.28f - 0.14f) * hoof.UncommonCount)
+                                   + ((0.49f - 0.14f) * hoof.RareCount)
+                                   + ((0.70f - 0.14f) * hoof.EpicCount)
+                                   + ((0.98f - 0.14f) * hoof.LegendaryCount);
         }
     }
 }

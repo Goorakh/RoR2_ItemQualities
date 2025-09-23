@@ -40,7 +40,8 @@ namespace ItemQualities
             }
         }
 
-        float _crowbarMinHealthFraction = 0.9f;
+        const float BaseCrowbarMinHealthFraction = 0.9f;
+        float _crowbarMinHealthFraction = BaseCrowbarMinHealthFraction;
         public float CrowbarMinHealthFraction
         {
             get
@@ -124,20 +125,20 @@ namespace ItemQualities
             }
 
             float slugOutOfDangerDelayReduction = 1f;
-            slugOutOfDangerDelayReduction += 0.10f * slug.UncommonCount;
-            slugOutOfDangerDelayReduction += 0.25f * slug.RareCount;
+            slugOutOfDangerDelayReduction += 0.18f * slug.UncommonCount;
+            slugOutOfDangerDelayReduction += 0.33f * slug.RareCount;
             slugOutOfDangerDelayReduction += 1.00f * slug.EpicCount;
             slugOutOfDangerDelayReduction += 3.00f * slug.LegendaryCount;
 
             _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay / slugOutOfDangerDelayReduction;
 
-            float crowbarMinHealthFractionReduction = 1f;
-            crowbarMinHealthFractionReduction += 0.10f * crowbar.UncommonCount;
-            crowbarMinHealthFractionReduction += 0.25f * crowbar.RareCount;
-            crowbarMinHealthFractionReduction += 1.00f * crowbar.EpicCount;
-            crowbarMinHealthFractionReduction += 3.00f * crowbar.LegendaryCount;
+            float crowbarMinHealthFractionReduction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
+                (0.25f * crowbar.UncommonCount) +
+                (0.43f * crowbar.RareCount) +
+                (1.00f * crowbar.EpicCount) +
+                (3.00f * crowbar.LegendaryCount));
 
-            _crowbarMinHealthFraction = 0.9f / crowbarMinHealthFractionReduction;
+            _crowbarMinHealthFraction = Mathf.Lerp(BaseCrowbarMinHealthFraction, BaseCrowbarMinHealthFraction * 0.5f, crowbarMinHealthFractionReduction);
 
             float shieldOutOfDangerDelayReduction = 1f;
             shieldOutOfDangerDelayReduction += 0.10f * personalShield.UncommonCount;
