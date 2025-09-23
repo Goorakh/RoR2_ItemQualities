@@ -2,10 +2,12 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using RoR2;
 using System;
 using System.Collections;
+using System.Reflection;
 
 namespace ItemQualities.Items
 {
@@ -17,6 +19,16 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
             IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
+
+            ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
+            if (itemCountsCtor != null)
+            {
+                new ILHook(itemCountsCtor, CombineGroupedItemCountsPatch);
+            }
+            else
+            {
+                Log.Error("Failed to find Inventory.ItemCounts..ctor");
+            }
 
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;

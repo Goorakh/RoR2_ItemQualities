@@ -275,6 +275,10 @@ namespace ItemQualities
             public static ItemQualityGroup ExtraShrineItem;
 
             public static ItemQualityGroup Dagger;
+
+            public static ItemQualityGroup FragileDamageBonus;
+
+            public static ItemQualityGroup FragileDamageBonusConsumed;
         }
 
         public static class EquipmentQualityGroups

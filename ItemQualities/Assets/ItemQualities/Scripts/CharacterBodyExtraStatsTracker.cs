@@ -61,6 +61,16 @@ namespace ItemQualities
             }
         }
 
+        float _watchBreakThreshold = HealthComponent.lowHealthFraction;
+        public float WatchBreakThreshold
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _watchBreakThreshold;
+            }
+        }
+
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
         public bool SlugOutOfDanger => _slugOutOfDanger;
@@ -116,12 +126,14 @@ namespace ItemQualities
             ItemQualityCounts crowbar = default;
             ItemQualityCounts personalShield = default;
             ItemQualityCounts barrierOnKill = default;
+            ItemQualityCounts fragileDamageBonus = default;
             if (_body && _body.inventory)
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
                 crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCounts(_body.inventory);
                 personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCounts(_body.inventory);
                 barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCounts(_body.inventory);
+                fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory);
             }
 
             float slugOutOfDangerDelayReduction = 1f;
@@ -155,6 +167,14 @@ namespace ItemQualities
             barrierDecayRateReduction += 3.00f * barrierOnKill.LegendaryCount;
 
             _barrierDecayRateMultiplier = 1f / barrierDecayRateReduction;
+
+            float watchBreakThresholdReduction = 1f;
+            watchBreakThresholdReduction += 0.10f * fragileDamageBonus.UncommonCount;
+            watchBreakThresholdReduction += 0.25f * fragileDamageBonus.RareCount;
+            watchBreakThresholdReduction += 1.00f * fragileDamageBonus.EpicCount;
+            watchBreakThresholdReduction += 3.00f * fragileDamageBonus.LegendaryCount;
+
+            _watchBreakThreshold = HealthComponent.lowHealthFraction / watchBreakThresholdReduction;
         }
 
         void hookSetSlugOutOfDanger(bool slugOutOfDanger)

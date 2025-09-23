@@ -190,6 +190,37 @@ namespace ItemQualities.Utilities.Extensions
             return true;
         }
 
+        public static bool TryFindForeachVariable(this ILCursor cursor, out VariableDefinition foreachVariable)
+        {
+            static bool isEnumeratorGetCurrent(MethodReference method)
+            {
+                if (method == null)
+                    return false;
+
+                if (!string.Equals(method.Name, "get_" + nameof(IEnumerator.Current)))
+                    return false;
+
+                // TODO: More robust check?
+
+                return true;
+            }
+
+            ILCursor c = cursor.Clone();
+
+            int foreachVariableIndex = -1;
+            if (!c.TryGotoPrev(MoveType.Before,
+                               x => x.MatchCallOrCallvirt(out MethodReference methodReference) && isEnumeratorGetCurrent(methodReference),
+                               x => x.MatchStloc(out foreachVariableIndex)))
+            {
+                Log.Warning("Failed to find matching get_Current call");
+                foreachVariable = null;
+                return false;
+            }
+
+            foreachVariable = cursor.Context.Method.Body.Variables[foreachVariableIndex];
+            return true;
+        }
+
         /// <summary>
         /// Converts the <paramref name="instruction"/> into a string representation, handling some edge cases that the standard <see cref="Instruction.ToString"/> does not.
         /// </summary>

@@ -120,5 +120,29 @@
 
 		"ITEM_DAGGER_LEGENDARY_PICKUP": "{0}",
 		"ITEM_DAGGER_LEGENDARY_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>7</style> <style=cStack>(+7 per stack)</style> daggers.",
+
+		"ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}",
+		"ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "Increase damage by <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. Taking damage to below <sprite name=\"Quality\"> <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.\nReduces breaking health threshold for all watches by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
+
+		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_PICKUP": "...well, it's still right <sprite name=\"Quality\"> three times a day.",
+		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_DESC": "{0}",
+
+		"ITEM_FRAGILEDAMAGEBONUS_RARE_PICKUP": "{0}",
+		"ITEM_FRAGILEDAMAGEBONUS_RARE_DESC": "Increase damage by <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. Taking damage to below <sprite name=\"Quality\"> <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.\nReduces breaking health threshold for all watches by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
+
+		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_RARE_PICKUP": "...well, it's still right <sprite name=\"Quality\"> four times a day.",
+		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_RARE_DESC": "{0}",
+
+		"ITEM_FRAGILEDAMAGEBONUS_EPIC_PICKUP": "{0}",
+		"ITEM_FRAGILEDAMAGEBONUS_EPIC_DESC": "Increase damage by <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. Taking damage to below <sprite name=\"Quality\"> <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.\nReduces breaking health threshold for all watches by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
+
+		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_EPIC_PICKUP": "...well, it's still right <sprite name=\"Quality\"> five times a day.",
+		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_EPIC_DESC": "{0}",
+
+		"ITEM_FRAGILEDAMAGEBONUS_LEGENDARY_PICKUP": "{0}",
+		"ITEM_FRAGILEDAMAGEBONUS_LEGENDARY_DESC": "Increase damage by <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. Taking damage to below <sprite name=\"Quality\"> <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.\nReduces breaking health threshold for all watches by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
+
+		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_LEGENDARY_PICKUP": "...well, it's still right- <sprite name=\"Quality\"> oh, it still works.",
+		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_LEGENDARY_DESC": "{0}",
 	}
 }
