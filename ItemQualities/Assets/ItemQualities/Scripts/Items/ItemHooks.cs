@@ -20,6 +20,7 @@ namespace ItemQualities.Items
             IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnInteractionBegin += CombineGroupedItemCountsPatch;
             IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)

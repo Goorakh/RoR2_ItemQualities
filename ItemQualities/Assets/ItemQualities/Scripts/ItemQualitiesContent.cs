@@ -332,6 +332,8 @@ namespace ItemQualities
             public static ItemQualityGroup SecondarySkillMagazine;
 
             public static ItemQualityGroup Firework;
+
+            public static ItemQualityGroup Medkit;
         }
 
         public static class EquipmentQualityGroups

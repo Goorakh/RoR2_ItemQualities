@@ -168,5 +168,17 @@
 
 		"ITEM_FIREWORK_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a large firework.",
 		"ITEM_FIREWORK_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance per firework to launch a <style=cIsDamage>large firework</style>, dealing <style=cIsDamage>500%</style> base damage and exploding in a larger area.",
+
+		"ITEM_MEDKIT_UNCOMMON_PICKUP": "{0}",
+		"ITEM_MEDKIT_UNCOMMON_DESC": "<sprite name=\"Quality\"> 2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\n<sprite name=\"Quality\"> <style=cIsHealing>10%</style> <style=cStack>(+10% per stack)</style> chance to double healing, decreases <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsHealing>15%</style> <style=cStack>(+15% per stack)</style>",
+		
+		"ITEM_MEDKIT_RARE_PICKUP": "{0}",
+		"ITEM_MEDKIT_RARE_DESC": "<sprite name=\"Quality\"> 2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\n<sprite name=\"Quality\"> <style=cIsHealing>20%</style> <style=cStack>(+20% per stack)</style> chance to double healing, decreases <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsHealing>25%</style> <style=cStack>(+25% per stack)</style>",
+		
+		"ITEM_MEDKIT_EPIC_PICKUP": "{0}",
+		"ITEM_MEDKIT_EPIC_DESC": "<sprite name=\"Quality\"> 2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\n<sprite name=\"Quality\"> <style=cIsHealing>50%</style> <style=cStack>(+50% per stack)</style> chance to double healing, decreases <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsHealing>40%</style> <style=cStack>(+40% per stack)</style>",
+		
+		"ITEM_MEDKIT_LEGENDARY_PICKUP": "{0}",
+		"ITEM_MEDKIT_LEGENDARY_DESC": "<sprite name=\"Quality\"> 2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\n<sprite name=\"Quality\"> <style=cIsHealing>75%</style> <style=cStack>(+75% per stack)</style> chance to double healing, decreases <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsHealing>60%</style> <style=cStack>(+60% per stack)</style>",
 	}
 }
