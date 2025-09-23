@@ -127,7 +127,7 @@ namespace ItemQualities
             slugOutOfDangerDelayReduction += 0.10f * slug.UncommonCount;
             slugOutOfDangerDelayReduction += 0.25f * slug.RareCount;
             slugOutOfDangerDelayReduction += 1.00f * slug.EpicCount;
-            slugOutOfDangerDelayReduction += 4.00f * slug.LegendaryCount;
+            slugOutOfDangerDelayReduction += 3.00f * slug.LegendaryCount;
 
             _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay / slugOutOfDangerDelayReduction;
 
@@ -135,7 +135,7 @@ namespace ItemQualities
             crowbarMinHealthFractionReduction += 0.10f * crowbar.UncommonCount;
             crowbarMinHealthFractionReduction += 0.25f * crowbar.RareCount;
             crowbarMinHealthFractionReduction += 1.00f * crowbar.EpicCount;
-            crowbarMinHealthFractionReduction += 4.00f * crowbar.LegendaryCount;
+            crowbarMinHealthFractionReduction += 3.00f * crowbar.LegendaryCount;
 
             _crowbarMinHealthFraction = 0.9f / crowbarMinHealthFractionReduction;
 
@@ -143,7 +143,7 @@ namespace ItemQualities
             shieldOutOfDangerDelayReduction += 0.10f * personalShield.UncommonCount;
             shieldOutOfDangerDelayReduction += 0.25f * personalShield.RareCount;
             shieldOutOfDangerDelayReduction += 1.00f * personalShield.EpicCount;
-            shieldOutOfDangerDelayReduction += 4.00f * personalShield.LegendaryCount;
+            shieldOutOfDangerDelayReduction += 3.00f * personalShield.LegendaryCount;
 
             _shieldOutOfDangerDelay = CharacterBody.outOfDangerDelay / shieldOutOfDangerDelayReduction;
 
@@ -151,7 +151,7 @@ namespace ItemQualities
             barrierDecayRateReduction += 0.10f * barrierOnKill.UncommonCount;
             barrierDecayRateReduction += 0.25f * barrierOnKill.RareCount;
             barrierDecayRateReduction += 1.00f * barrierOnKill.EpicCount;
-            barrierDecayRateReduction += 4.00f * barrierOnKill.LegendaryCount;
+            barrierDecayRateReduction += 3.00f * barrierOnKill.LegendaryCount;
 
             _barrierDecayRateMultiplier = 1f / barrierDecayRateReduction;
         }
