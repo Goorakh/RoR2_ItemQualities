@@ -49,16 +49,16 @@
 		"ITEM_SYRINGE_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
 		"ITEM_SYRINGE_LEGENDARY_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style></style>.",
 		
-		"ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}",
+		"ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
 		"ITEM_HEALWHILESAFE_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style>",
 		
-		"ITEM_HEALWHILESAFE_RARE_PICKUP": "{0}",
+		"ITEM_HEALWHILESAFE_RARE_PICKUP": "{0\n<sprite name=\"Quality\"> Reduces healing delay.}",
 		"ITEM_HEALWHILESAFE_RARE_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style>",
 		
-		"ITEM_HEALWHILESAFE_EPIC_PICKUP": "{0}",
+		"ITEM_HEALWHILESAFE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
 		"ITEM_HEALWHILESAFE_EPIC_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
 		
-		"ITEM_HEALWHILESAFE_LEGENDARY_PICKUP": "{0}",
+		"ITEM_HEALWHILESAFE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
 		"ITEM_HEALWHILESAFE_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 
 		"ITEM_CROWBAR_UNCOMMON_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 90% health.",
@@ -101,45 +101,45 @@
         "ITEM_EXTRASHRINEITEM_UNCOMMON_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
 
 		"ITEM_EXTRASHRINEITEM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s).",
-        "ITEM_EXTRASHRINEITEM_RARE_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s).",
+        "ITEM_EXTRASHRINEITEM_RARE_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional times.",
 
 		"ITEM_EXTRASHRINEITEM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s).",
-        "ITEM_EXTRASHRINEITEM_EPIC_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s).",
+        "ITEM_EXTRASHRINEITEM_EPIC_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional times.",
 
 		"ITEM_EXTRASHRINEITEM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
-        "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
+        "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional times.",
 
-		"ITEM_DAGGER_UNCOMMON_PICKUP": "{0}",
+		"ITEM_DAGGER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
 		"ITEM_DAGGER_UNCOMMON_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> dagger(s).",
 
-		"ITEM_DAGGER_RARE_PICKUP": "{0}",
+		"ITEM_DAGGER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
 		"ITEM_DAGGER_RARE_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>2</style> <style=cStack>(+2 per stack)</style> daggers.",
 
-		"ITEM_DAGGER_EPIC_PICKUP": "{0}",
+		"ITEM_DAGGER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
 		"ITEM_DAGGER_EPIC_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>5</style> <style=cStack>(+5 per stack)</style> daggers.",
 
-		"ITEM_DAGGER_LEGENDARY_PICKUP": "{0}",
+		"ITEM_DAGGER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
 		"ITEM_DAGGER_LEGENDARY_DESC": "{0}\nFires an additional <sprite name=\"Quality\"> <style=cIsDamage>7</style> <style=cStack>(+7 per stack)</style> daggers.",
 
-		"ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}",
+		"ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces breaking threshold.",
 		"ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "Increase damage by <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. Taking damage to below <sprite name=\"Quality\"> <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.\nReduces breaking health threshold for all watches by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
 
 		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_PICKUP": "...well, it's still right <sprite name=\"Quality\"> three times a day.",
 		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_DESC": "{0}",
 
-		"ITEM_FRAGILEDAMAGEBONUS_RARE_PICKUP": "{0}",
+		"ITEM_FRAGILEDAMAGEBONUS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces breaking threshold.",
 		"ITEM_FRAGILEDAMAGEBONUS_RARE_DESC": "Increase damage by <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. Taking damage to below <sprite name=\"Quality\"> <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.\nReduces breaking health threshold for all watches by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
 
 		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_RARE_PICKUP": "...well, it's still right <sprite name=\"Quality\"> four times a day.",
 		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_RARE_DESC": "{0}",
 
-		"ITEM_FRAGILEDAMAGEBONUS_EPIC_PICKUP": "{0}",
+		"ITEM_FRAGILEDAMAGEBONUS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces breaking threshold.",
 		"ITEM_FRAGILEDAMAGEBONUS_EPIC_DESC": "Increase damage by <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. Taking damage to below <sprite name=\"Quality\"> <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.\nReduces breaking health threshold for all watches by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
 
 		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_EPIC_PICKUP": "...well, it's still right <sprite name=\"Quality\"> five times a day.",
 		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_EPIC_DESC": "{0}",
 
-		"ITEM_FRAGILEDAMAGEBONUS_LEGENDARY_PICKUP": "{0}",
+		"ITEM_FRAGILEDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces breaking threshold.",
 		"ITEM_FRAGILEDAMAGEBONUS_LEGENDARY_DESC": "Increase damage by <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. Taking damage to below <sprite name=\"Quality\"> <style=cIsHealth>25% health</style> <style=cIsUtility>breaks</style> this item.\nReduces breaking health threshold for all watches by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 
 		"ITEM_FRAGILEDAMAGEBONUSCONSUMED_LEGENDARY_PICKUP": "...well, it's still right- <sprite name=\"Quality\"> oh, it still works.",
@@ -169,16 +169,16 @@
 		"ITEM_FIREWORK_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a large firework.",
 		"ITEM_FIREWORK_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance per firework to launch a <style=cIsDamage>large firework</style>, dealing <style=cIsDamage>500%</style> base damage and exploding in a larger area.",
 
-		"ITEM_MEDKIT_UNCOMMON_PICKUP": "{0}",
+		"ITEM_MEDKIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double healing, decrease healing delay.",
 		"ITEM_MEDKIT_UNCOMMON_DESC": "<sprite name=\"Quality\"> 2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\n<sprite name=\"Quality\"> <style=cIsHealing>10%</style> <style=cStack>(+10% per stack)</style> chance to double healing, decreases <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsHealing>15%</style> <style=cStack>(+15% per stack)</style>",
 		
-		"ITEM_MEDKIT_RARE_PICKUP": "{0}",
+		"ITEM_MEDKIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double healing, decrease healing delay.",
 		"ITEM_MEDKIT_RARE_DESC": "<sprite name=\"Quality\"> 2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\n<sprite name=\"Quality\"> <style=cIsHealing>20%</style> <style=cStack>(+20% per stack)</style> chance to double healing, decreases <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsHealing>25%</style> <style=cStack>(+25% per stack)</style>",
 		
-		"ITEM_MEDKIT_EPIC_PICKUP": "{0}",
+		"ITEM_MEDKIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double healing, decrease healing delay.",
 		"ITEM_MEDKIT_EPIC_DESC": "<sprite name=\"Quality\"> 2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\n<sprite name=\"Quality\"> <style=cIsHealing>50%</style> <style=cStack>(+50% per stack)</style> chance to double healing, decreases <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsHealing>40%</style> <style=cStack>(+40% per stack)</style>",
 		
-		"ITEM_MEDKIT_LEGENDARY_PICKUP": "{0}",
+		"ITEM_MEDKIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double healing, decrease healing delay.",
 		"ITEM_MEDKIT_LEGENDARY_DESC": "<sprite name=\"Quality\"> 2 seconds after getting hurt, <style=cIsHealing>heal</style> for <style=cIsHealing>20</style> plus an additional <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\n<sprite name=\"Quality\"> <style=cIsHealing>75%</style> <style=cStack>(+75% per stack)</style> chance to double healing, decreases <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsHealing>60%</style> <style=cStack>(+60% per stack)</style>",
 	}
 }
