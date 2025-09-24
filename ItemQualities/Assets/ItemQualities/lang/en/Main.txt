@@ -1,9 +1,9 @@
 {
 	strings:
 	{
-		"QUALITY_UNCOMMON_MODIFIER": "{0} (Uncommon)",
-		"QUALITY_RARE_MODIFIER": "{0} (Rare)",
-		"QUALITY_EPIC_MODIFIER": "{0} (Epic)",
-		"QUALITY_LEGENDARY_MODIFIER": "{0} (Legendary)",
+		"QUALITY_UNCOMMON_MODIFIER": "{0} <sprite name=\"QualityUncommon\">",
+		"QUALITY_RARE_MODIFIER": "{0} <sprite name=\"QualityRare\">",
+		"QUALITY_EPIC_MODIFIER": "{0} <sprite name=\"QualityEpic\">",
+		"QUALITY_LEGENDARY_MODIFIER": "{0} <sprite name=\"QualityLegendary\">",
 	}
 }

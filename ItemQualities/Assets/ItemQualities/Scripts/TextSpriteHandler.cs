@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using TMPro;
-using UnityEngine;
 
 namespace ItemQualities
 {
@@ -9,23 +8,14 @@ namespace ItemQualities
         [SystemInitializer]
         static void Init()
         {
-            TMP_SpriteAsset itemQualitiesInlineSprites = ItemQualitiesContent.TMP_SpriteAssets.Find("tmpsprInlineSpritesCustom");
-
-            if (itemQualitiesInlineSprites)
+            foreach (TMP_SpriteAsset spriteAsset in ItemQualitiesContent.TMP_SpriteAssets)
             {
-                addFallbackSpriteAsset(itemQualitiesInlineSprites);
-            }
-            else
-            {
-                Log.Error("Failed to load inline sprites asset");
+                registerSpriteAsset(spriteAsset);
             }
         }
 
-        static void addFallbackSpriteAsset(TMP_SpriteAsset spriteAsset)
+        static void registerSpriteAsset(TMP_SpriteAsset spriteAsset)
         {
-            spriteAsset.material = Material.Instantiate(TMP_Settings.defaultSpriteAsset.material);
-            spriteAsset.material.mainTexture = spriteAsset.spriteSheet;
-
             TMP_Settings.defaultSpriteAsset.fallbackSpriteAssets.Add(spriteAsset);
         }
     }
