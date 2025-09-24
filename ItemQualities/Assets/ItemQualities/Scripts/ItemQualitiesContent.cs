@@ -336,6 +336,8 @@ namespace ItemQualities
             public static ItemQualityGroup Medkit;
 
             public static ItemQualityGroup Mushroom;
+
+            public static ItemQualityGroup EquipmentMagazine;
         }
 
         public static class EquipmentQualityGroups

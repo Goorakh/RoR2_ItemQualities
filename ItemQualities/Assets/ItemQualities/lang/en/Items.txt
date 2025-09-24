@@ -192,5 +192,17 @@
 
 		"ITEM_MUSHROOM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing speed and reduces required stand-still duration.",
 		"ITEM_MUSHROOM_LEGENDARY_DESC": "{0}\nReduces required stand-still duration by <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> and increases <style=cIsHealing>healing speed</style> by <sprite name=\"Quality\"> <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style>",
+
+		"ITEM_EQUIPMENTMAGAZINE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge held equipment.",
+		"ITEM_EQUIPMENTMAGAZINE_UNCOMMON_DESC": "{0}\nActivating an <style=cIsUtility>equipment</style> has a <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to immediately recharge it.",
+
+		"ITEM_EQUIPMENTMAGAZINE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge held equipment.",
+		"ITEM_EQUIPMENTMAGAZINE_RARE_DESC": "{0}\nActivating an <style=cIsUtility>equipment</style> has a <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> chance to immediately recharge it.",
+
+		"ITEM_EQUIPMENTMAGAZINE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge held equipment.",
+		"ITEM_EQUIPMENTMAGAZINE_EPIC_DESC": "{0}\nActivating an <style=cIsUtility>equipment</style> has a <sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style> chance to immediately recharge it.",
+
+		"ITEM_EQUIPMENTMAGAZINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge held equipment.",
+		"ITEM_EQUIPMENTMAGAZINE_LEGENDARY_DESC": "{0}\nActivating an <style=cIsUtility>equipment</style> has a <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance to immediately recharge it.",
 	}
 }

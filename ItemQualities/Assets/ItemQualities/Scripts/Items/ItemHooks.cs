@@ -22,6 +22,9 @@ namespace ItemQualities.Items
             IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CombineGroupedItemCountsPatch;
             IL.RoR2.Items.BaseItemBodyBehavior.UpdateBodyItemBehaviorStacks += CombineGroupedItemCountsPatch;
+            IL.RoR2.Inventory.CalculateEquipmentCooldownScale += CombineGroupedItemCountsPatch;
+            IL.RoR2.Inventory.GetEquipmentSlotMaxCharges += CombineGroupedItemCountsPatch;
+            IL.RoR2.Inventory.UpdateEquipment += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)

@@ -102,12 +102,16 @@ namespace ItemQualities
             recalculateStats();
             _body.onInventoryChanged += onBodyInventoryChanged;
             _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
+
+            EquipmentSlot.onServerEquipmentActivated += onServerEquipmentActivated;
         }
 
         void OnDisable()
         {
             _body.onInventoryChanged -= onBodyInventoryChanged;
             _body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
+
+            EquipmentSlot.onServerEquipmentActivated -= onServerEquipmentActivated;
         }
 
         void Update()
@@ -218,6 +222,24 @@ namespace ItemQualities
                 {
                     skill.AddOneStock();
                 }
+            }
+        }
+
+        void onServerEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
+        {
+            if (!_body || !_body.inventory || _body.equipmentSlot != equipmentSlot || equipmentIndex == EquipmentIndex.None)
+                return;
+
+            ItemQualityCounts equipmentMagazine = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCounts(_body.inventory);
+
+            float freeRestockChance = (10f * equipmentMagazine.UncommonCount) +
+                                      (20f * equipmentMagazine.RareCount) +
+                                      (35f * equipmentMagazine.EpicCount) +
+                                      (60f * equipmentMagazine.LegendaryCount);
+
+            if (Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master))
+            {
+                _body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, 1);
             }
         }
 
