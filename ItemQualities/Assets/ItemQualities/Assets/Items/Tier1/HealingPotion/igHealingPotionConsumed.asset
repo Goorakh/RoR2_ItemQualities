@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igHealingPotionConsumed
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 6b5e638fc27d3bc49be9d2d3dc79d257
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: ed67930a85d23424b9a808da80996f87, type: 2}
+  _rareItem: {fileID: 11400000, guid: c9284dd2298075d4a828751c620a5a94, type: 2}
+  _epicItem: {fileID: 11400000, guid: 289c6df434b9ad44aadd73546b317a19, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 1b5746291db705249b91cc4cbcdfe301, type: 2}

@@ -338,6 +338,10 @@ namespace ItemQualities
             public static ItemQualityGroup Mushroom;
 
             public static ItemQualityGroup EquipmentMagazine;
+
+            public static ItemQualityGroup HealingPotion;
+
+            public static ItemQualityGroup HealingPotionConsumed;
         }
 
         public static class EquipmentQualityGroups

@@ -204,5 +204,17 @@
 
 		"ITEM_EQUIPMENTMAGAZINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge held equipment.",
 		"ITEM_EQUIPMENTMAGAZINE_LEGENDARY_DESC": "{0}\nActivating an <style=cIsUtility>equipment</style> has a <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance to immediately recharge it.",
+
+		"ITEM_HEALINGPOTION_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed on use.",
+		"ITEM_HEALINGPOTION_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style> on use.",
+
+		"ITEM_HEALINGPOTION_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed on use.",
+		"ITEM_HEALINGPOTION_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style> on use.",
+
+		"ITEM_HEALINGPOTION_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed on use.",
+		"ITEM_HEALINGPOTION_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style> on use.",
+
+		"ITEM_HEALINGPOTION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed on use.",
+		"ITEM_HEALINGPOTION_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style> on use.",
 	}
 }
