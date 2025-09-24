@@ -21,6 +21,7 @@ namespace ItemQualities.Items
             IL.RoR2.GlobalEventManager.OnInteractionBegin += CombineGroupedItemCountsPatch;
             IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CombineGroupedItemCountsPatch;
+            IL.RoR2.Items.BaseItemBodyBehavior.UpdateBodyItemBehaviorStacks += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)
@@ -89,19 +90,12 @@ namespace ItemQualities.Items
 
                 static int tryGetCombinedItemCountShared(int baseItemCount, Inventory inventory, ItemIndex itemIndex)
                 {
-                    if (!inventory)
-                        return baseItemCount;
-
-                    ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
-                    if (itemGroup)
+                    if (inventory)
                     {
-                        for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                        ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
+                        if (itemGroup)
                         {
-                            ItemIndex itemIndexInGroup = itemGroup.GetItemIndex(qualityTier);
-                            if (itemIndexInGroup != ItemIndex.None && itemIndex != itemIndexInGroup)
-                            {
-                                baseItemCount += inventory.GetItemCount(itemIndexInGroup);
-                            }
+                            baseItemCount = itemGroup.GetItemCounts(inventory).TotalCount;
                         }
                     }
 

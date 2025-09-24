@@ -71,6 +71,17 @@ namespace ItemQualities
             }
         }
 
+        const float BaseMushroomNotMovingStopwatchThreshold = 1f;
+        float _mushroomNotMovingStopwatchThreshold = BaseMushroomNotMovingStopwatchThreshold;
+        public float MushroomNotMovingStopwatchThreshold
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _mushroomNotMovingStopwatchThreshold;
+            }
+        }
+
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
         public bool SlugOutOfDanger => _slugOutOfDanger;
@@ -78,6 +89,8 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetShieldOutOfDanger))]
         bool _shieldOutOfDanger;
         public bool ShieldOutOfDanger => _shieldOutOfDanger;
+
+        public bool MushroomActiveServer { get; private set; }
 
         void Awake()
         {
@@ -105,6 +118,7 @@ namespace ItemQualities
 
                 _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
                 _shieldOutOfDanger = _body && _body.outOfDangerStopwatch >= _shieldOutOfDangerDelay;
+                MushroomActiveServer = _body && _body.notMovingStopwatch >= _mushroomNotMovingStopwatchThreshold;
             }
         }
 
@@ -129,6 +143,7 @@ namespace ItemQualities
             ItemQualityCounts personalShield = default;
             ItemQualityCounts barrierOnKill = default;
             ItemQualityCounts fragileDamageBonus = default;
+            ItemQualityCounts mushroom = default;
             if (_body && _body.inventory)
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
@@ -136,6 +151,7 @@ namespace ItemQualities
                 personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCounts(_body.inventory);
                 barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCounts(_body.inventory);
                 fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory);
+                mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory);
             }
 
             float slugOutOfDangerDelayReduction = 1f;
@@ -177,6 +193,14 @@ namespace ItemQualities
             watchBreakThresholdReduction += 3.00f * fragileDamageBonus.LegendaryCount;
 
             _watchBreakThreshold = HealthComponent.lowHealthFraction / watchBreakThresholdReduction;
+
+            float mushroomNotMovingStopwatchThresholdReduction = 1f;
+            mushroomNotMovingStopwatchThresholdReduction += 0.18f * mushroom.UncommonCount;
+            mushroomNotMovingStopwatchThresholdReduction += 0.33f * mushroom.RareCount;
+            mushroomNotMovingStopwatchThresholdReduction += 0.66f * mushroom.EpicCount;
+            mushroomNotMovingStopwatchThresholdReduction += 1.50f * mushroom.LegendaryCount;
+
+            _mushroomNotMovingStopwatchThreshold = BaseMushroomNotMovingStopwatchThreshold / mushroomNotMovingStopwatchThresholdReduction;
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)
