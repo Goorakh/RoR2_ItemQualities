@@ -52,7 +52,7 @@
 		"ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
 		"ITEM_HEALWHILESAFE_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style>",
 		
-		"ITEM_HEALWHILESAFE_RARE_PICKUP": "{0\n<sprite name=\"Quality\"> Reduces healing delay.}",
+		"ITEM_HEALWHILESAFE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
 		"ITEM_HEALWHILESAFE_RARE_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style>",
 		
 		"ITEM_HEALWHILESAFE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
