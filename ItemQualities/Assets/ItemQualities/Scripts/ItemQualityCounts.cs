@@ -40,6 +40,11 @@ namespace ItemQualities
             return HashCode.Combine(BaseItemCount, UncommonCount, RareCount, EpicCount, LegendaryCount);
         }
 
+        public override readonly string ToString()
+        {
+            return $"Normal={BaseItemCount}, Uncommon={UncommonCount}, Rare={RareCount}, Epic={EpicCount}, Legendary={LegendaryCount}";
+        }
+
         public static bool operator ==(ItemQualityCounts left, ItemQualityCounts right)
         {
             return left.Equals(right);

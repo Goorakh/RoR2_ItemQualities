@@ -16,17 +16,25 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
+            IL.RoR2.CharacterBody.AddMultiKill += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.GetMaxIncreasedDamageMultiKillBuffsForCharacter += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.OnClientBuffsChanged += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.OnKilledOtherServer += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.TriggerEnemyDebuffs += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.UpdateMultiKill += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
+            IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnInteractionBegin += CombineGroupedItemCountsPatch;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += CombineGroupedItemCountsPatch;
             IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CombineGroupedItemCountsPatch;
-            IL.RoR2.Items.BaseItemBodyBehavior.UpdateBodyItemBehaviorStacks += CombineGroupedItemCountsPatch;
             IL.RoR2.Inventory.CalculateEquipmentCooldownScale += CombineGroupedItemCountsPatch;
             IL.RoR2.Inventory.GetEquipmentSlotMaxCharges += CombineGroupedItemCountsPatch;
             IL.RoR2.Inventory.UpdateEquipment += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.OnKilledOtherServer += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.TriggerEnemyDebuffs += CombineGroupedItemCountsPatch;
+            IL.RoR2.Items.BaseItemBodyBehavior.UpdateBodyItemBehaviorStacks += CombineGroupedItemCountsPatch;
+            IL.RoR2.ShrineChanceBehavior.AddShrineStack += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)
@@ -37,11 +45,6 @@ namespace ItemQualities.Items
             {
                 Log.Error("Failed to find Inventory.ItemCounts..ctor");
             }
-
-            IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
-            IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
-
-            IL.RoR2.ShrineChanceBehavior.AddShrineStack += CombineGroupedItemCountsPatch;
 
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
 
