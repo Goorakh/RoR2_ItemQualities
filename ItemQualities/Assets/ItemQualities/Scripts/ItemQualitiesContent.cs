@@ -342,6 +342,8 @@ namespace ItemQualities
             public static ItemQualityGroup HealingPotion;
 
             public static ItemQualityGroup HealingPotionConsumed;
+
+            public static ItemQualityGroup TriggerEnemyDebuffs;
         }
 
         public static class EquipmentQualityGroups

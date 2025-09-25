@@ -25,6 +25,8 @@ namespace ItemQualities.Items
             IL.RoR2.Inventory.CalculateEquipmentCooldownScale += CombineGroupedItemCountsPatch;
             IL.RoR2.Inventory.GetEquipmentSlotMaxCharges += CombineGroupedItemCountsPatch;
             IL.RoR2.Inventory.UpdateEquipment += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.OnKilledOtherServer += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.TriggerEnemyDebuffs += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)

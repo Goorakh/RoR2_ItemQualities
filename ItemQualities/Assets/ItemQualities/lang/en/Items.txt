@@ -216,5 +216,17 @@
 
 		"ITEM_HEALINGPOTION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed on use.",
 		"ITEM_HEALINGPOTION_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style> on use.",
+
+		"ITEM_TRIGGERENEMYDEBUFFS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase transferred debuff duration.",
+        "ITEM_TRIGGERENEMYDEBUFFS_UNCOMMON_DESC": "Gain <style=cIsDamage>10%</style> chance to <style=cIsDamage>bleed</style> an enemy. On killing an enemy, <style=cIsDamage>transfer <sprite name=\"Quality\"> 33%</style> of every debuff stack to <style=cIsDamage>1 enemy</style> <style=cStack>(+1 per stack)</style> within <style=cIsUtility>20m</style> <style=cStack>(+5m per stack)</style>.\n<sprite name=\"Quality\"> Increases <style=cIsUtility>durations</style> of <style=cIsDamage>transferred debuffs</style> by <style=cIsUtility>durations</style> by <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
+
+		"ITEM_TRIGGERENEMYDEBUFFS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase transferred debuff duration.",
+        "ITEM_TRIGGERENEMYDEBUFFS_RARE_DESC": "Gain <style=cIsDamage>10%</style> chance to <style=cIsDamage>bleed</style> an enemy. On killing an enemy, <style=cIsDamage>transfer <sprite name=\"Quality\"> 33%</style> of every debuff stack to <style=cIsDamage>1 enemy</style> <style=cStack>(+1 per stack)</style> within <style=cIsUtility>20m</style> <style=cStack>(+5m per stack)</style>.\n<sprite name=\"Quality\"> Increases <style=cIsUtility>durations</style> of <style=cIsDamage>transferred debuffs</style> by <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
+
+		"ITEM_TRIGGERENEMYDEBUFFS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase transferred debuff duration.",
+        "ITEM_TRIGGERENEMYDEBUFFS_EPIC_DESC": "Gain <style=cIsDamage>10%</style> chance to <style=cIsDamage>bleed</style> an enemy. On killing an enemy, <style=cIsDamage>transfer <sprite name=\"Quality\"> 33%</style> of every debuff stack to <style=cIsDamage>1 enemy</style> <style=cStack>(+1 per stack)</style> within <style=cIsUtility>20m</style> <style=cStack>(+5m per stack)</style>.\n<sprite name=\"Quality\"> Increases <style=cIsUtility>durations</style> of <style=cIsDamage>transferred debuffs</style> by <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
+
+		"ITEM_TRIGGERENEMYDEBUFFS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase transferred debuff duration.",
+        "ITEM_TRIGGERENEMYDEBUFFS_LEGENDARY_DESC": "Gain <style=cIsDamage>10%</style> chance to <style=cIsDamage>bleed</style> an enemy. On killing an enemy, <style=cIsDamage>transfer <sprite name=\"Quality\"> 33%</style> of every debuff stack to <style=cIsDamage>1 enemy</style> <style=cStack>(+1 per stack)</style> within <style=cIsUtility>20m</style> <style=cStack>(+5m per stack)</style>.\n<sprite name=\"Quality\"> Increases <style=cIsUtility>durations</style> of <style=cIsDamage>transferred debuffs</style> by <style=cIsUtility>150%</style> <style=cStack>(+150% per stack)</style>",
 	}
 }

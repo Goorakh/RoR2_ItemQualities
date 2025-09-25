@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igTriggerEnemyDebuffs
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: c89f8883dc904534fb8c852a349c7fe6
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: e902e0315db0559459f02b6e5da96ffe, type: 2}
+  _rareItem: {fileID: 11400000, guid: d00737999dc4cdc45a096992c7527b90, type: 2}
+  _epicItem: {fileID: 11400000, guid: 0de24e6979771494da0de21b3a827ac4, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: ab623f0107c84384c82e4c2e4ba23bed, type: 2}
