@@ -240,5 +240,17 @@
 
 		"ITEM_INCREASEDAMAGEONMULTIKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max allowed idle duration, reduce number of buff stacks lost when timer runs out.",
         "ITEM_INCREASEDAMAGEONMULTIKILL_LEGENDARY_DESC": "Killing an enemy increases your damage by <style=cIsDamage>3.5%</style> <style=cStack>(+1% per stack)</style>, up to <style=cIsUtility>10</style> <style=cStack>(+5 per stack)</style>, for <sprite name=\"Quality\"> <style=cIsUtility>7s</style>. Dealing damage refreshes the timer.\nIncreases max allowed idle duration by <sprite name=\"Quality\"> <style=cIsUtility>7s</style> <style=cStack>(+7s per stack)</style>. Only lose <sprite name=\"Quality\"> <style=cIsUtility>1</style> buff stack when the timer runs out.",
+
+		"ITEM_NEARBYDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage dealt if there is exactly one enemy nearby.",
+		"ITEM_NEARBYDAMAGEBONUS_UNCOMMON_DESC": "Increase damage to enemies within <style=cIsDamage>13m</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.\nEach <style=cIsUtility>Focus Crystal</style> gains an additional <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> damage if there is exactly one enemy within <style=cIsDamage>13m</style>.",
+
+		"ITEM_NEARBYDAMAGEBONUS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage dealt if there is exactly one enemy nearby.",
+		"ITEM_NEARBYDAMAGEBONUS_RARE_DESC": "Increase damage to enemies within <style=cIsDamage>13m</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.\nEach <style=cIsUtility>Focus Crystal</style> gains an additional <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> damage if there is exactly one enemy within <style=cIsDamage>13m</style>.",
+
+		"ITEM_NEARBYDAMAGEBONUS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage dealt if there is exactly one enemy nearby.",
+		"ITEM_NEARBYDAMAGEBONUS_EPIC_DESC": "Increase damage to enemies within <style=cIsDamage>13m</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.\nEach <style=cIsUtility>Focus Crystal</style> gains an additional <style=cIsDamage>35%</style> <style=cStack>(+35% per stack)</style> damage if there is exactly one enemy within <style=cIsDamage>13m</style>.",
+
+		"ITEM_NEARBYDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage dealt if there is exactly one enemy nearby.",
+		"ITEM_NEARBYDAMAGEBONUS_LEGENDARY_DESC": "Increase damage to enemies within <style=cIsDamage>13m</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.\nEach <style=cIsUtility>Focus Crystal</style> gains an additional <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> damage if there is exactly one enemy within <style=cIsDamage>13m</style>.",
 	}
 }

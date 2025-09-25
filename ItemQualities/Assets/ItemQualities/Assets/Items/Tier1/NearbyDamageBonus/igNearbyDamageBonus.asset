@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igNearbyDamageBonus
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: d286cf211b845c44091be9d9b16f0920
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 65a00be929a64714e81876823d83a9d2, type: 2}
+  _rareItem: {fileID: 11400000, guid: 49242771385ebef4784775720280c445, type: 2}
+  _epicItem: {fileID: 11400000, guid: cc533e1f3ebabda48a6f1148e190d2cb, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 7fe3e1c3cf63b7d41a02c9bd90777240, type: 2}

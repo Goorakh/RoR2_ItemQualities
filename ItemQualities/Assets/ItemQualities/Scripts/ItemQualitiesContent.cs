@@ -346,6 +346,8 @@ namespace ItemQualities
             public static ItemQualityGroup TriggerEnemyDebuffs;
 
             public static ItemQualityGroup IncreaseDamageOnMultiKill;
+
+            public static ItemQualityGroup NearbyDamageBonus;
         }
 
         public static class EquipmentQualityGroups
