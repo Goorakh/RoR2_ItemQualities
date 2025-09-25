@@ -11,6 +11,8 @@ namespace ItemQualities
 {
     [BepInDependency(RoR2BepInExPack.RoR2BepInExPack.PluginGUID)]
     [BepInDependency(R2API.R2API.PluginGUID)]
+    [BepInDependency(R2API.RecalculateStatsAPI.PluginGUID)]
+    [BepInDependency(R2API.LanguageAPI.PluginGUID)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class ItemQualitiesPlugin : BaseUnityPlugin
     {
