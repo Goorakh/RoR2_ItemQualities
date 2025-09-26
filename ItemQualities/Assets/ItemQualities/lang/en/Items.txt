@@ -252,5 +252,17 @@
 
 		"ITEM_NEARBYDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage dealt if there is exactly one enemy nearby.",
 		"ITEM_NEARBYDAMAGEBONUS_LEGENDARY_DESC": "Increase damage to enemies within <style=cIsDamage>13m</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.\nEach <style=cIsUtility>Focus Crystal</style> gains an additional <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> damage if there is exactly one enemy within <style=cIsDamage>13m</style>.",
+
+		"ITEM_ATTACKSPEEDANDMOVESPEED_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Additionally increase attack speed or move speed, whichever is smaller.",
+		"ITEM_ATTACKSPEEDANDMOVESPEED_UNCOMMON_DESC": "{0}\nIncreases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> <style=cIsHealth>or</style> <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>, whichever stat is <style=cIsUtility>smallest</style>.",
+
+		"ITEM_ATTACKSPEEDANDMOVESPEED_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Additionally increase attack speed or move speed, whichever is smaller.",
+		"ITEM_ATTACKSPEEDANDMOVESPEED_RARE_DESC": "{0}\nIncreases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> <style=cIsHealth>or</style> <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>, whichever stat is <style=cIsUtility>smallest</style>.",
+
+		"ITEM_ATTACKSPEEDANDMOVESPEED_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Additionally increase attack speed or move speed, whichever is smaller.",
+		"ITEM_ATTACKSPEEDANDMOVESPEED_EPIC_DESC": "{0}\nIncreases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> <style=cIsHealth>or</style> <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style>, whichever stat is <style=cIsUtility>smallest</style>.",
+
+		"ITEM_ATTACKSPEEDANDMOVESPEED_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Additionally increase attack speed or move speed, whichever is smaller.",
+		"ITEM_ATTACKSPEEDANDMOVESPEED_LEGENDARY_DESC": "{0}\nIncreases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>60%</style> <style=cStack>(+60% per stack)</style> <style=cIsHealth>or</style> <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style>, whichever stat is <style=cIsUtility>smallest</style>.",
 	}
 }
