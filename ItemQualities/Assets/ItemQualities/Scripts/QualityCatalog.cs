@@ -163,12 +163,24 @@ namespace ItemQualities
                     ItemDef item = ItemCatalog.GetItemDef(itemIndex);
                     if (!item)
                         return;
-                    
+
+                    string qualityTierName = qualityTier.ToString().ToUpper();
+
+                    string qualityModifierToken;
+                    if (item.isConsumed)
+                    {
+                        qualityModifierToken = $"QUALITY_{qualityTierName}_CONSUMED_MODIFIER";
+                    }
+                    else
+                    {
+                        qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
+                    }
+
                     if (!string.IsNullOrEmpty(item.nameToken) && Language.IsTokenInvalid(item.nameToken))
                     {
                         foreach (Language language in Language.GetAllLanguages())
                         {
-                            string generatedQualityName = language.GetLocalizedFormattedStringByToken($"QUALITY_{qualityTier.ToString().ToUpper()}_MODIFIER", language.GetLocalizedStringByToken(baseItem.nameToken));
+                            string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseItem.nameToken));
                             LanguageAPI.Add(item.nameToken, generatedQualityName, language.name);
                         }
                     }
@@ -227,11 +239,14 @@ namespace ItemQualities
                     if (!equipment)
                         return;
 
+                    string qualityTierName = qualityTier.ToString().ToUpper();
+                    string qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
+
                     if (!string.IsNullOrEmpty(equipment.nameToken) && Language.IsTokenInvalid(equipment.nameToken))
                     {
                         foreach (Language language in Language.GetAllLanguages())
                         {
-                            string generatedQualityName = language.GetLocalizedFormattedStringByToken($"QUALITY_{qualityTier.ToString().ToUpper()}_MODIFIER", language.GetLocalizedStringByToken(baseEquipment.nameToken));
+                            string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseEquipment.nameToken));
                             LanguageAPI.Add(equipment.nameToken, generatedQualityName, language.name);
                         }
                     }

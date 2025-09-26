@@ -5,5 +5,10 @@
 		"QUALITY_RARE_MODIFIER": "{0} <sprite name=\"QualityRare\">",
 		"QUALITY_EPIC_MODIFIER": "{0} <sprite name=\"QualityEpic\">",
 		"QUALITY_LEGENDARY_MODIFIER": "{0} <sprite name=\"QualityLegendary\">",
+		
+		"QUALITY_UNCOMMON_CONSUMED_MODIFIER": "{0} <sprite name=\"QualityUncommonConsumed\">",
+		"QUALITY_RARE_CONSUMED_MODIFIER": "{0} <sprite name=\"QualityRareConsumed\">",
+		"QUALITY_EPIC_CONSUMED_MODIFIER": "{0} <sprite name=\"QualityEpicConsumed\">",
+		"QUALITY_LEGENDARY_CONSUMED_MODIFIER": "{0} <sprite name=\"QualityLegendaryConsumed\">",
 	}
 }
