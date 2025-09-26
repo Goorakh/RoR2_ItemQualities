@@ -18,6 +18,8 @@ namespace ItemQualities
 
         CharacterBody _body;
 
+        uint _lastMoneyValue;
+
         bool _statsDirty;
 
         float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
@@ -99,7 +101,7 @@ namespace ItemQualities
 
         void OnEnable()
         {
-            recalculateStats();
+            recalculateExtraStats();
             _body.onInventoryChanged += onBodyInventoryChanged;
             _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
 
@@ -118,6 +120,15 @@ namespace ItemQualities
         {
             if (NetworkServer.active)
             {
+                CharacterMaster master = _body ? _body.master : null;
+
+                uint currentMoneyValue = master ? master.money : 0;
+                if (currentMoneyValue != _lastMoneyValue)
+                {
+                    _body.MarkAllStatsDirty();
+                    _lastMoneyValue = currentMoneyValue;
+                }
+
                 recalculateStatsIfNeeded();
 
                 _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
@@ -136,11 +147,11 @@ namespace ItemQualities
             if (_statsDirty)
             {
                 _statsDirty = false;
-                recalculateStats();
+                recalculateExtraStats();
             }
         }
 
-        void recalculateStats()
+        void recalculateExtraStats()
         {
             ItemQualityCounts slug = default;
             ItemQualityCounts crowbar = default;

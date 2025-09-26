@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igGoldOnHurt
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 8705ac0eaf466da498ad94f34ba66716
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: a197ee1c1fdfd3048bc519c165bc16c1, type: 2}
+  _rareItem: {fileID: 11400000, guid: 2dd62a570ae1fe54db8eca8fb34ca85c, type: 2}
+  _epicItem: {fileID: 11400000, guid: e9fa9b913458f8041abb0ecd66f75b5a, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 0e466c011d434da429651a3fc9a7610e, type: 2}

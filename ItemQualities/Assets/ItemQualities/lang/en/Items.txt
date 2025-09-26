@@ -276,5 +276,17 @@
 
 		"ITEM_TOOTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing and pickup range, chance to double healing.",
 		"ITEM_TOOTH_LEGENDARY_DESC": "Killing an enemy spawns a <style=cIsHealing>healing orb</style> that heals for <sprite name=\"Quality\"> <style=cIsHealing>8</style> plus an additional <style=cIsHealing>2% <style=cStack>(+2% per stack)</style></style> of <style=cIsHealing>maximum health</style>.\nIncreases <style=cIsHealing>healing</style> and <style=cIsUtility>pickup range</style> by <sprite name=\"Quality\"> <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style>. Adds <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to increase healing by <style=cIsHealing>100%</style>.",
+
+		"ITEM_GOLDONHURT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants a small armor boost while gold amount is low.",
+		"ITEM_GOLDONHURT_UNCOMMON_DESC": "{0}\nIncrease <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>10</style> <style=cStack>(+10 per stack)</style> while you have less than <style=cIsUtility>$25</style> <style=cStack>(amount scales over time)</style>.",
+
+		"ITEM_GOLDONHURT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants a small armor boost while gold amount is low.",
+		"ITEM_GOLDONHURT_RARE_DESC": "{0}\nIncrease <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>25</style> <style=cStack>(+25 per stack)</style> while you have less than <style=cIsUtility>$25</style> <style=cStack>(amount scales over time)</style>.",
+
+		"ITEM_GOLDONHURT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants a small armor boost while gold amount is low.",
+		"ITEM_GOLDONHURT_EPIC_DESC": "{0}\nIncrease <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style> while you have less than <style=cIsUtility>$25</style> <style=cStack>(amount scales over time)</style>.",
+
+		"ITEM_GOLDONHURT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants a small armor boost while gold amount is low.",
+		"ITEM_GOLDONHURT_LEGENDARY_DESC": "{0}\nIncrease <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style> while you have less than <style=cIsUtility>$25</style> <style=cStack>(amount scales over time)</style>.",
 	}
 }

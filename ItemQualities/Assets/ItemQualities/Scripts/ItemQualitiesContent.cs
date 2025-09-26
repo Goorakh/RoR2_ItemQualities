@@ -352,6 +352,8 @@ namespace ItemQualities
             public static ItemQualityGroup AttackSpeedAndMoveSpeed;
 
             public static ItemQualityGroup Tooth;
+
+            public static ItemQualityGroup GoldOnHurt;
         }
 
         public static class EquipmentQualityGroups
