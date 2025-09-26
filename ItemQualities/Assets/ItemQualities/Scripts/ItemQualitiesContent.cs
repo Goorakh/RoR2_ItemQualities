@@ -354,6 +354,8 @@ namespace ItemQualities
             public static ItemQualityGroup Tooth;
 
             public static ItemQualityGroup GoldOnHurt;
+
+            public static ItemQualityGroup TreasureCache;
         }
 
         public static class EquipmentQualityGroups

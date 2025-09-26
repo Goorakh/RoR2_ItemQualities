@@ -288,5 +288,17 @@
 
 		"ITEM_GOLDONHURT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants a small armor boost while gold amount is low.",
 		"ITEM_GOLDONHURT_LEGENDARY_DESC": "{0}\nIncrease <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style> while you have less than <style=cIsUtility>$25</style> <style=cStack>(amount scales over time)</style>.",
+
+		"ITEM_TREASURECACHE_UNCOMMON_PICKUP": "Gain access to a Rusty Lockbox that contains an <sprite name=\"QualityUncommon\"> uncommon quality item.",
+		"ITEM_TREASURECACHE_UNCOMMON_DESC": "A <style=cIsUtility>hidden cache</style> containing an <sprite name=\"QualityUncommon\"> uncommon quality item (<style=cIsHealing>80%</style>/<style=cIsHealth>20%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.",
+
+		"ITEM_TREASURECACHE_RARE_PICKUP": "Gain access to a Rusty Lockbox that contains a <sprite name=\"QualityRare\"> rare quality item.",
+		"ITEM_TREASURECACHE_RARE_DESC": "A <style=cIsUtility>hidden cache</style> containing a <sprite name=\"QualityRare\"> rare quality (<style=cIsHealing>80%</style>/<style=cIsHealth>20%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.",
+
+		"ITEM_TREASURECACHE_EPIC_PICKUP": "Gain access to a Rusty Lockbox that contains an <sprite name=\"QualityEpic\"> epic quality item.",
+		"ITEM_TREASURECACHE_EPIC_DESC": "A <style=cIsUtility>hidden cache</style> containing an <sprite name=\"QualityEpic\"> epic quality item (<style=cIsHealing>80%</style>/<style=cIsHealth>20%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.",
+
+		"ITEM_TREASURECACHE_LEGENDARY_PICKUP": "Gain access to a Rusty Lockbox that contains a <sprite name=\"QualityLegendary\"> legendary quality item.",
+		"ITEM_TREASURECACHE_LEGENDARY_DESC": "A <style=cIsUtility>hidden cache</style> containing a <sprite name=\"QualityLegendary\"> legendary quality item (<style=cIsHealing>80%</style>/<style=cIsHealth>20%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.",
 	}
 }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igTreasureCache
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: afd6938eb60552c46a0f6fec67b9da7b
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: a603776180ff6f346ac8fa7c9964460b, type: 2}
+  _rareItem: {fileID: 11400000, guid: b67cffaba40e27047b3256e3320548cc, type: 2}
+  _epicItem: {fileID: 11400000, guid: 4a1b1d88a669821449576a5823a71265, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: e03edeef67c56b947a42a7e4fd1bc8e0, type: 2}
