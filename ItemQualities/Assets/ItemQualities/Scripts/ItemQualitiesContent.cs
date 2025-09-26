@@ -350,6 +350,8 @@ namespace ItemQualities
             public static ItemQualityGroup NearbyDamageBonus;
 
             public static ItemQualityGroup AttackSpeedAndMoveSpeed;
+
+            public static ItemQualityGroup Tooth;
         }
 
         public static class EquipmentQualityGroups
