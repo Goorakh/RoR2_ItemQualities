@@ -358,6 +358,8 @@ namespace ItemQualities
             public static ItemQualityGroup TreasureCache;
 
             public static ItemQualityGroup FlatHealth;
+
+            public static ItemQualityGroup StickyBomb;
         }
 
         public static class EquipmentQualityGroups
