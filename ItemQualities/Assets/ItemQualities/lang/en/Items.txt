@@ -300,5 +300,17 @@
 
 		"ITEM_TREASURECACHE_LEGENDARY_PICKUP": "Gain access to a Rusty Lockbox that contains a <sprite name=\"QualityLegendary\"> legendary quality item.",
 		"ITEM_TREASURECACHE_LEGENDARY_DESC": "A <style=cIsUtility>hidden cache</style> containing a <sprite name=\"QualityLegendary\"> legendary quality item (<style=cIsHealing>80%</style>/<style=cIsHealth>20%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.",
+
+		"ITEM_FLATHEALTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Charging a Teleporter permanently increases your maximum health by 25.",
+		"ITEM_FLATHEALTH_UNCOMMON_DESC": "{0}\nFully charging a <style=cIsUtility>Teleporter</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>25</style> <style=cStack>(+25 per stack)</style>.",
+
+		"ITEM_FLATHEALTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Charging a Teleporter permanently increases your maximum health by 50.",
+		"ITEM_FLATHEALTH_RARE_DESC": "{0}\nFully charging a <style=cIsUtility>Teleporter</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style>.",
+
+		"ITEM_FLATHEALTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Charging a Teleporter permanently increases your maximum health by 100.",
+		"ITEM_FLATHEALTH_EPIC_DESC": "{0}\nFully charging a <style=cIsUtility>Teleporter</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style>.",
+
+		"ITEM_FLATHEALTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Charging a Teleporter permanently increases your maximum health by 250.",
+		"ITEM_FLATHEALTH_LEGENDARY_DESC": "{0}\nFully charging a <style=cIsUtility>Teleporter</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>250</style> <style=cStack>(+250 per stack)</style>.",
 	}
 }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igFlatHealth
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 8834db4eda23c6c42bb4e2abcd94c966
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 15fd96b5795fd6e40945e32a27554f45, type: 2}
+  _rareItem: {fileID: 11400000, guid: 28e88b612e95c304ba253b134f63ad86, type: 2}
+  _epicItem: {fileID: 11400000, guid: e9861da9cc3189447b6a811a2b148302, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: a7992a42d2229384da994cece6a7d6cf, type: 2}

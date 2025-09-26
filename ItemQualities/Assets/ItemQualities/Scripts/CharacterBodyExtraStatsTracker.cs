@@ -116,21 +116,21 @@ namespace ItemQualities
             EquipmentSlot.onServerEquipmentActivated -= onServerEquipmentActivated;
         }
 
-        void Update()
+        void FixedUpdate()
         {
+            CharacterMaster master = _body ? _body.master : null;
+
+            uint currentMoneyValue = master ? master.money : 0;
+            if (currentMoneyValue != _lastMoneyValue)
+            {
+                _body.MarkAllStatsDirty();
+                _lastMoneyValue = currentMoneyValue;
+            }
+
+            recalculateStatsIfNeeded();
+
             if (NetworkServer.active)
             {
-                CharacterMaster master = _body ? _body.master : null;
-
-                uint currentMoneyValue = master ? master.money : 0;
-                if (currentMoneyValue != _lastMoneyValue)
-                {
-                    _body.MarkAllStatsDirty();
-                    _lastMoneyValue = currentMoneyValue;
-                }
-
-                recalculateStatsIfNeeded();
-
                 _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
                 _shieldOutOfDanger = _body && _body.outOfDangerStopwatch >= _shieldOutOfDangerDelay;
                 MushroomActiveServer = _body && _body.notMovingStopwatch >= _mushroomNotMovingStopwatchThreshold;
@@ -138,6 +138,11 @@ namespace ItemQualities
         }
 
         void onBodyInventoryChanged()
+        {
+            MarkAllStatsDirty();
+        }
+
+        public void MarkAllStatsDirty()
         {
             _statsDirty = true;
         }
