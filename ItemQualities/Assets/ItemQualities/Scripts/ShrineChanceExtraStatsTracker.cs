@@ -47,9 +47,13 @@ namespace ItemQualities
         {
             ItemQualityCounts totalChanceDollCounts = default;
 
-            foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
+            foreach (PlayerCharacterMasterController playerMaster in PlayerCharacterMasterController.instances)
             {
-                if (master && master.inventory && master.hasBody)
+                if (!playerMaster.isConnected)
+                    continue;
+
+                CharacterMaster master = playerMaster ? playerMaster.master : null;
+                if (master && master.inventory)
                 {
                     totalChanceDollCounts += ItemQualitiesContent.ItemQualityGroups.ExtraShrineItem.GetItemCounts(master.inventory);
                 }
