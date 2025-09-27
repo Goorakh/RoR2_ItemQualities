@@ -371,6 +371,8 @@ namespace ItemQualities
             public static ItemQualityGroup StickyBomb;
 
             public static ItemQualityGroup StunChanceOnHit;
+
+            public static ItemQualityGroup BleedOnHit;
         }
 
         public static class EquipmentQualityGroups
