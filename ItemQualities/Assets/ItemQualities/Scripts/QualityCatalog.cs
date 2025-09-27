@@ -349,12 +349,17 @@ namespace ItemQualities
         public static ItemIndex GetItemIndexOfQuality(ItemIndex itemIndex, QualityTier qualityTier)
         {
             ItemQualityGroup itemQualityGroup = GetItemQualityGroup(FindItemQualityGroupIndex(itemIndex));
-            if (!itemQualityGroup)
-                return itemIndex;
-
-            ItemIndex qualityItemIndex = itemQualityGroup.GetItemIndex(qualityTier);
+            ItemIndex qualityItemIndex = itemQualityGroup ? itemQualityGroup.GetItemIndex(qualityTier) : ItemIndex.None;
             if (qualityItemIndex == ItemIndex.None)
+            {
+                if (qualityTier != QualityTier.None)
+                {
+                    ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+                    Log.Warning($"Item {(itemDef ? itemDef.name : "None")} is missing quality variant {qualityTier}");
+                }
+
                 return itemIndex;
+            }
 
             return qualityItemIndex;
         }
@@ -362,12 +367,17 @@ namespace ItemQualities
         public static EquipmentIndex GetEquipmentIndexOfQuality(EquipmentIndex equipmentIndex, QualityTier qualityTier)
         {
             EquipmentQualityGroup equipmentQualityGroup = GetEquipmentQualityGroup(FindEquipmentQualityGroupIndex(equipmentIndex));
-            if (!equipmentQualityGroup)
-                return equipmentIndex;
-
-            EquipmentIndex qualityEquipmentIndex = equipmentQualityGroup.GetEquipmentIndex(qualityTier);
+            EquipmentIndex qualityEquipmentIndex = equipmentQualityGroup ? equipmentQualityGroup.GetEquipmentIndex(qualityTier) : EquipmentIndex.None;
             if (qualityEquipmentIndex == EquipmentIndex.None)
+            {
+                if (qualityTier != QualityTier.None)
+                {
+                    EquipmentDef equipmentDef = EquipmentCatalog.GetEquipmentDef(equipmentIndex);
+                    Log.Warning($"Equipment {(equipmentDef ? equipmentDef.name : "None")} is missing quality variant {qualityTier}");
+                }
+
                 return equipmentIndex;
+            }
 
             return qualityEquipmentIndex;
         }

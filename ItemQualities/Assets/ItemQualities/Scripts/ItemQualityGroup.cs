@@ -123,6 +123,11 @@ namespace ItemQualities
                     return;
                 }
 
+#pragma warning disable CS0618 // Type or member is obsolete
+                item.deprecatedTier = baseItem.deprecatedTier;
+#pragma warning restore CS0618 // Type or member is obsolete
+                item._itemTierDef = baseItem._itemTierDef;
+
                 if (string.IsNullOrEmpty(item.nameToken))
                     item.nameToken = $"ITEM_{baseItem.name.ToUpper()}_{qualityTier.ToString().ToUpper()}_NAME";
 

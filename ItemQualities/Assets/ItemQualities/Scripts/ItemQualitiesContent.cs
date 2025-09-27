@@ -373,6 +373,8 @@ namespace ItemQualities
             public static ItemQualityGroup StunChanceOnHit;
 
             public static ItemQualityGroup BleedOnHit;
+
+            public static ItemQualityGroup Clover;
         }
 
         public static class EquipmentQualityGroups

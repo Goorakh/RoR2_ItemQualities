@@ -16,11 +16,11 @@ namespace ItemQualities
 
         public ItemQualityCounts(int baseItemCount, int uncommonCount, int rareCount, int epicCount, int legendaryCount)
         {
-            BaseItemCount = baseItemCount;
-            UncommonCount = uncommonCount;
-            RareCount = rareCount;
-            EpicCount = epicCount;
-            LegendaryCount = legendaryCount;
+            BaseItemCount = Math.Max(0, baseItemCount);
+            UncommonCount = Math.Max(0, uncommonCount);
+            RareCount = Math.Max(0, rareCount);
+            EpicCount = Math.Max(0, epicCount);
+            LegendaryCount = Math.Max(0, legendaryCount);
         }
 
         public override readonly bool Equals(object obj)

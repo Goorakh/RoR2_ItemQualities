@@ -65,17 +65,7 @@ namespace ItemQualities
 
                 if (shouldUpgradeQualityTier)
                 {
-                    PickupIndex qualityPickupIndex = QualityCatalog.GetPickupIndexOfQuality(dropPickupIndex, outputQualityTier);
-
-                    if (qualityPickupIndex != PickupIndex.none && qualityPickupIndex != dropPickupIndex)
-                    {
-                        Log.Debug($"Upgraded tier of {dropPickupIndex}: {qualityPickupIndex}");
-                        dropPickupIndex = qualityPickupIndex;
-                    }
-                    else
-                    {
-                        Log.Warning($"Pickup {dropPickupIndex} is missing quality variant {outputQualityTier}");
-                    }
+                    dropPickupIndex = QualityCatalog.GetPickupIndexOfQuality(dropPickupIndex, outputQualityTier);
                 }
             }
 
