@@ -10,5 +10,7 @@ namespace ItemQualities
         public Color color;
 
         public Sprite icon;
+
+        public Sprite consumedIcon;
     }
 }

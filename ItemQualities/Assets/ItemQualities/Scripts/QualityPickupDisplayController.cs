@@ -53,6 +53,7 @@ namespace ItemQualities
         void refreshQualityIcon()
         {
             PickupIndex currentPickupIndex = _pickupDisplay ? _pickupDisplay.pickupIndex : PickupIndex.none;
+            PickupDef currentPickup = PickupCatalog.GetPickupDef(currentPickupIndex);
 
             QualityTier qualityTier = QualityCatalog.GetQualityTier(currentPickupIndex);
             QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(qualityTier);
@@ -61,6 +62,23 @@ namespace ItemQualities
             if (qualityTierDef)
             {
                 qualityIcon = qualityTierDef.icon;
+
+                bool isConsumed = false;
+                if (currentPickup != null)
+                {
+                    ItemDef itemDef = ItemCatalog.GetItemDef(currentPickup.itemIndex);
+                    if (itemDef && itemDef.isConsumed)
+                    {
+                        isConsumed = true;
+                    }
+
+                    // Intentionally ignoring equipments, since unlike items, they're still usable when consumed
+                }
+
+                if (isConsumed && qualityTierDef.consumedIcon)
+                {
+                    qualityIcon = qualityTierDef.consumedIcon;
+                }
             }
 
             QualityIcon.sprite = qualityIcon;
