@@ -123,6 +123,8 @@ namespace ItemQualities
 
             List<EquipmentDef> equipmentDefsList = new List<EquipmentDef>();
 
+            List<BuffDef> buffDefsList = new List<BuffDef>();
+
             List<TMP_SpriteAsset> spriteAssetsList = new List<TMP_SpriteAsset>();
 
             foreach (UnityEngine.Object obj in finalAssets)
@@ -161,6 +163,9 @@ namespace ItemQualities
                     case EquipmentDef equipmentDef:
                         equipmentDefsList.Add(equipmentDef);
                         break;
+                    case BuffDef buffDef:
+                        buffDefsList.Add(buffDef);
+                        break;
                     case TMP_SpriteAsset spriteAsset:
                         spriteAssetsList.Add(spriteAsset);
                         break;
@@ -182,6 +187,8 @@ namespace ItemQualities
             _contentPack.itemDefs.Add(itemDefsList.ToArray());
             _contentPack.itemTierDefs.Add(itemTierDefsList.ToArray());
 
+            _contentPack.buffDefs.Add(buffDefsList.ToArray());
+
             _contentPack.equipmentDefs.Add(equipmentDefsList.ToArray());
 
             _contentPack.projectilePrefabs.Add(projectilePrefabsList.ToArray());
@@ -196,6 +203,8 @@ namespace ItemQualities
 
             populateTypeFields(typeof(EquipmentQualityGroups), equipmentQualityGroups, fieldName => "eg" + fieldName);
             EquipmentQualityGroups.AllGroups = new ReadOnlyCollection<EquipmentQualityGroup>(equipmentQualityGroups.ToArray());
+
+            populateTypeFields(typeof(Buffs), _contentPack.buffDefs, fieldName => "bd" + fieldName);
 
             populateTypeFields(typeof(Prefabs), prefabs);
 
@@ -360,6 +369,8 @@ namespace ItemQualities
             public static ItemQualityGroup FlatHealth;
 
             public static ItemQualityGroup StickyBomb;
+
+            public static ItemQualityGroup StunChanceOnHit;
         }
 
         public static class EquipmentQualityGroups
@@ -367,6 +378,11 @@ namespace ItemQualities
             internal static IReadOnlyCollection<EquipmentQualityGroup> AllGroups = Array.Empty<EquipmentQualityGroup>();
 
             public static EquipmentQualityGroup BossHunterConsumed;
+        }
+
+        public static class Buffs
+        {
+            public static BuffDef BossStun;
         }
 
         public static class Prefabs

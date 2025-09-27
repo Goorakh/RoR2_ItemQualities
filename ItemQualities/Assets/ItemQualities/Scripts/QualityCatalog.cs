@@ -14,7 +14,7 @@ namespace ItemQualities
 {
     public static class QualityCatalog
     {
-        static QualityTierDef[] _qualityTierDefs = new QualityTierDef[(int)QualityTier.Count];
+        static readonly QualityTierDef[] _qualityTierDefs = new QualityTierDef[(int)QualityTier.Count];
 
         static ItemQualityGroup[] _allItemQualityGroups = Array.Empty<ItemQualityGroup>();
         static QualityTier[] _itemIndexToQuality = Array.Empty<QualityTier>();

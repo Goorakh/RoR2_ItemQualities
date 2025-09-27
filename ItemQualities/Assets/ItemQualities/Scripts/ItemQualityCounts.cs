@@ -12,6 +12,8 @@ namespace ItemQualities
 
         public readonly int TotalCount => BaseItemCount + UncommonCount + RareCount + EpicCount + LegendaryCount;
 
+        public readonly int TotalQualityCount => UncommonCount + RareCount + EpicCount + LegendaryCount;
+
         public ItemQualityCounts(int baseItemCount, int uncommonCount, int rareCount, int epicCount, int legendaryCount)
         {
             BaseItemCount = baseItemCount;

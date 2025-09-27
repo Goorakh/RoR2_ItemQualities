@@ -35,6 +35,7 @@ namespace ItemQualities.Items
             IL.RoR2.Inventory.UpdateEquipment += CombineGroupedItemCountsPatch;
             IL.RoR2.Items.BaseItemBodyBehavior.UpdateBodyItemBehaviorStacks += CombineGroupedItemCountsPatch;
             IL.RoR2.SceneDirector.PopulateScene += CombineGroupedItemCountsPatch;
+            IL.RoR2.SetStateOnHurt.OnTakeDamageServer += CombineGroupedItemCountsPatch;
             IL.RoR2.ShrineChanceBehavior.AddShrineStack += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });

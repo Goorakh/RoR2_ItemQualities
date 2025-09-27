@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igStunChanceOnHit
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: db8a291d0d86d3e4387f64a283f5dc1b
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 02772583f15a23b4c9079c225b9592b0, type: 2}
+  _rareItem: {fileID: 11400000, guid: 01ec80f234b7a6f4ca19a06349bd712c, type: 2}
+  _epicItem: {fileID: 11400000, guid: ac29d2d67f095bd49b949b3c81a8a58e, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: ca4039b48a12f39459af9654f802fc18, type: 2}
