@@ -388,6 +388,8 @@ namespace ItemQualities
             public static ItemQualityGroup WarCryOnMultiKill;
 
             public static ItemQualityGroup KnockBackHitEnemies;
+
+            public static ItemQualityGroup BonusGoldPackOnKill;
         }
 
         public static class EquipmentQualityGroups
