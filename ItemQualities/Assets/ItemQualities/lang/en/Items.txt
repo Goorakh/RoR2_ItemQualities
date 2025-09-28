@@ -386,15 +386,27 @@
 		"ITEM_BEAR_LEGENDARY_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>50%</style> <style=cStack>(+50% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
 
 		"ITEM_MISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
-		"ITEM_MISSILE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> TOTAL damage.",
+		"ITEM_MISSILE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <sprite name=\"Quality\"> <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> TOTAL damage.",
 
 		"ITEM_MISSILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
-		"ITEM_MISSILE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage.",
+		"ITEM_MISSILE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <sprite name=\"Quality\"> <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage.",
 
 		"ITEM_MISSILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
-		"ITEM_MISSILE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <style=cIsDamage>600%</style> <style=cStack>(+600% per stack)</style> TOTAL damage.",
+		"ITEM_MISSILE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <sprite name=\"Quality\"> <style=cIsDamage>600%</style> <style=cStack>(+600% per stack)</style> TOTAL damage.",
 
 		"ITEM_MISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
-		"ITEM_MISSILE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <style=cIsDamage>800%</style> <style=cStack>(+800% per stack)</style> TOTAL damage.",
+		"ITEM_MISSILE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <sprite name=\"Quality\"> <style=cIsDamage>800%</style> <style=cStack>(+800% per stack)</style> TOTAL damage.",
+
+		"ITEM_WARCRYONMULTIKILL_UNCOMMON_PICKUP": "Enter a frenzy after killing 4 enemies in <sprite name=\"Quality\"> quick succession.",
+		"ITEM_WARCRYONMULTIKILL_UNCOMMON_DESC": "<style=cIsDamage>Killing 4 enemies</style> within <sprite name=\"Quality\"> <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>6s</style> <style=cStack>(+4s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.\nIncreases time window by <sprite name=\"Quality\"> <style=cIsUtility>30%</style> <style=cStack>(+30% per stack)</style>.",
+
+		"ITEM_WARCRYONMULTIKILL_RARE_PICKUP": "Enter a frenzy after killing 4 enemies in <sprite name=\"Quality\"> quick succession.",
+		"ITEM_WARCRYONMULTIKILL_RARE_DESC": "<style=cIsDamage>Killing 4 enemies</style> within <sprite name=\"Quality\"> <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>6s</style> <style=cStack>(+4s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.\nIncreases time window by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style>.",
+
+		"ITEM_WARCRYONMULTIKILL_EPIC_PICKUP": "Enter a frenzy after killing 4 enemies in <sprite name=\"Quality\"> quick succession.",
+		"ITEM_WARCRYONMULTIKILL_EPIC_DESC": "<style=cIsDamage>Killing 4 enemies</style> within <sprite name=\"Quality\"> <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>6s</style> <style=cStack>(+4s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.\nIncreases time window by <sprite name=\"Quality\"> <style=cIsUtility>150%</style> <style=cStack>(+150% per stack)</style>.",
+
+		"ITEM_WARCRYONMULTIKILL_LEGENDARY_PICKUP": "Enter a frenzy after killing 4 enemies in <sprite name=\"Quality\"> quick succession.",
+		"ITEM_WARCRYONMULTIKILL_LEGENDARY_DESC": "<style=cIsDamage>Killing 4 enemies</style> within <sprite name=\"Quality\"> <style=cIsDamage>1</style> second sends you into a <style=cIsDamage>frenzy</style> for <style=cIsDamage>6s</style> <style=cStack>(+4s per stack)</style>. Increases <style=cIsUtility>movement speed</style> by <style=cIsUtility>50%</style> and <style=cIsDamage>attack speed</style> by <style=cIsDamage>100%</style>.\nIncreases time window by <sprite name=\"Quality\"> <style=cIsUtility>250%</style> <style=cStack>(+250% per stack)</style>.",
 	}
 }

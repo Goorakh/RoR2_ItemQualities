@@ -84,6 +84,18 @@ namespace ItemQualities
             }
         }
 
+        public int WarCryOnMultiKill_MultiKillCount { get; private set; }
+        float _warCryOnMultiKill_MultiKillTimer = 0;
+        float _warCryOnMultiKill_MultiKillDuration = CharacterBody.multiKillMaxInterval;
+        public float WarCryOnMultiKill_MultiKillDuration
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _warCryOnMultiKill_MultiKillDuration;
+            }
+        }
+
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
         public bool SlugOutOfDanger => _slugOutOfDanger;
@@ -137,6 +149,29 @@ namespace ItemQualities
             }
         }
 
+        void Update()
+        {
+            if (NetworkServer.active)
+            {
+                if (WarCryOnMultiKill_MultiKillCount > 0)
+                {
+                    _warCryOnMultiKill_MultiKillTimer += Time.deltaTime;
+                    if (_warCryOnMultiKill_MultiKillTimer >= _warCryOnMultiKill_MultiKillDuration)
+                    {
+                        _warCryOnMultiKill_MultiKillTimer = 0f;
+                        WarCryOnMultiKill_MultiKillCount = 0;
+                    }
+                }
+            }
+        }
+
+        [Server]
+        public void AddMultiKill(int kills)
+        {
+            _warCryOnMultiKill_MultiKillTimer = 0f;
+            WarCryOnMultiKill_MultiKillCount += kills;
+        }
+
         void onBodyInventoryChanged()
         {
             MarkAllStatsDirty();
@@ -164,6 +199,7 @@ namespace ItemQualities
             ItemQualityCounts barrierOnKill = default;
             ItemQualityCounts fragileDamageBonus = default;
             ItemQualityCounts mushroom = default;
+            ItemQualityCounts warCryOnMultiKill = default;
             if (_body && _body.inventory)
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
@@ -172,6 +208,7 @@ namespace ItemQualities
                 barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCounts(_body.inventory);
                 fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory);
                 mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory);
+                warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCounts(_body.inventory);
             }
 
             float slugOutOfDangerDelayReduction = 1f;
@@ -221,6 +258,14 @@ namespace ItemQualities
             mushroomNotMovingStopwatchThresholdReduction += 1.50f * mushroom.LegendaryCount;
 
             _mushroomNotMovingStopwatchThreshold = BaseMushroomNotMovingStopwatchThreshold / mushroomNotMovingStopwatchThresholdReduction;
+
+            float warCryOnMultiKill_MultiKillDurationMult = 1f;
+            warCryOnMultiKill_MultiKillDurationMult += 0.3f * warCryOnMultiKill.UncommonCount;
+            warCryOnMultiKill_MultiKillDurationMult += 0.7f * warCryOnMultiKill.RareCount;
+            warCryOnMultiKill_MultiKillDurationMult += 1.5f * warCryOnMultiKill.EpicCount;
+            warCryOnMultiKill_MultiKillDurationMult += 2.5f * warCryOnMultiKill.LegendaryCount;
+
+            _warCryOnMultiKill_MultiKillDuration = CharacterBody.multiKillMaxInterval * warCryOnMultiKill_MultiKillDurationMult;
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)

@@ -8,6 +8,7 @@ using RoR2;
 using System;
 using System.Collections;
 using System.Reflection;
+using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -53,6 +54,18 @@ namespace ItemQualities.Items
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
 
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+
+            On.RoR2.CharacterBody.AddMultiKill += CharacterBody_AddMultiKill;
+        }
+
+        static void CharacterBody_AddMultiKill(On.RoR2.CharacterBody.orig_AddMultiKill orig, CharacterBody self, int kills)
+        {
+            if (NetworkServer.active && self && self.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStatsTracker))
+            {
+                bodyExtraStatsTracker.AddMultiKill(kills);
+            }
+
+            orig(self, kills);
         }
 
         static void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)

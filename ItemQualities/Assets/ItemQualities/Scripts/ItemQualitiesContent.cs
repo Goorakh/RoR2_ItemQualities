@@ -384,6 +384,8 @@ namespace ItemQualities
             public static ItemQualityGroup Bear;
 
             public static ItemQualityGroup Missile;
+
+            public static ItemQualityGroup WarCryOnMultiKill;
         }
 
         public static class EquipmentQualityGroups
