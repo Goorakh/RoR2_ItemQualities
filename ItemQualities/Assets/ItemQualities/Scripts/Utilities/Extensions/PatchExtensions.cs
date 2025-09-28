@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
+using Mono.Collections.Generic;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using System;
@@ -438,6 +439,27 @@ namespace ItemQualities.Utilities.Extensions
             {
                 cursor.Emit(OpCodes.Ldloc, variables[i]);
             }
+        }
+
+        public static bool MatchLdloc(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (variableType is null)
+                throw new ArgumentNullException(nameof(variableType));
+
+            if (ilContext is null)
+                throw new ArgumentNullException(nameof(ilContext));
+
+            if (ilContext.Method == null || !ilContext.Method.HasBody)
+            {
+                localIndex = -1;
+                return false;
+            }
+
+            Collection<VariableDefinition> methodVariables = ilContext.Method.Body.Variables;
+            return instruction.MatchLdloc(out localIndex) && localIndex < methodVariables.Count && methodVariables[localIndex].VariableType.Is(variableType);
         }
     }
 }

@@ -31,6 +31,7 @@
         "R2API.RecalculateStats.dll",
         "R2API.Language.dll",
         "R2API.Colors.dll",
+        "R2API.Prefab.dll",
         "MMHOOK_RoR2.dll",
         "0Harmony.dll",
         "Newtonsoft.Json.dll",

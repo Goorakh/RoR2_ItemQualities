@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RoR2.ContentManagement;
+using System;
 using System.Collections.Generic;
 
 namespace ItemQualities.Utilities.Extensions
@@ -14,6 +15,11 @@ namespace ItemQualities.Utilities.Extensions
             {
                 list.Capacity = capacity;
             }
+        }
+
+        public static void Add<T>(this NamedAssetCollection<T> namedAssetCollection, T value)
+        {
+            namedAssetCollection.Add(new T[] { value });
         }
     }
 }

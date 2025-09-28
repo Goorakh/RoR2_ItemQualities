@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igWardOnLevel
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 19a3323fd7b541e4c9e1a13e29e0260e
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 94dd0b7c65fea224e8c4f771f1f49de8, type: 2}
+  _rareItem: {fileID: 11400000, guid: a28a10ada126b1e4496f58176db714db, type: 2}
+  _epicItem: {fileID: 11400000, guid: e875fc74565119942b9b55da6f5a131f, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 7ced17595073d2a498d6b2442ffcf77a, type: 2}

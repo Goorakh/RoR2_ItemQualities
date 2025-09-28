@@ -34,9 +34,11 @@ namespace ItemQualities.Items
             IL.RoR2.Inventory.GetEquipmentSlotMaxCharges += CombineGroupedItemCountsPatch;
             IL.RoR2.Inventory.UpdateEquipment += CombineGroupedItemCountsPatch;
             IL.RoR2.Items.BaseItemBodyBehavior.UpdateBodyItemBehaviorStacks += CombineGroupedItemCountsPatch;
+            IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += CombineGroupedItemCountsPatch;
             IL.RoR2.SceneDirector.PopulateScene += CombineGroupedItemCountsPatch;
             IL.RoR2.SetStateOnHurt.OnTakeDamageServer += CombineGroupedItemCountsPatch;
             IL.RoR2.ShrineChanceBehavior.AddShrineStack += CombineGroupedItemCountsPatch;
+            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)

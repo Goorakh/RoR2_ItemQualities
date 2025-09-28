@@ -24,7 +24,7 @@ namespace ItemQualities
 {
     public class ItemQualitiesContent : IContentPackProvider
     {
-        readonly ContentPack _contentPack = new ContentPack();
+        readonly ExtendedContentPack _contentPack = new ExtendedContentPack();
 
         public string identifier => ItemQualitiesPlugin.PluginGUID;
 
@@ -58,6 +58,7 @@ namespace ItemQualities
             IProgress<float> loadAssetBundleProgress = partitionedProgress.AddPartition(1f);
             IProgress<float> loadAssetsProgress = partitionedProgress.AddPartition(1f);
             IProgress<float> generateAssetsProgress = partitionedProgress.AddPartition(1f);
+            IProgress<float> contentInitializersProgress = partitionedProgress.AddPartition(1f);
             IProgress<float> finalizeContentProgress = partitionedProgress.AddPartition(1f);
 
             AssetBundleCreateRequest assetBundleLoad = AssetBundle.LoadFromFileAsync(assetBundleLocation);
@@ -97,6 +98,8 @@ namespace ItemQualities
             }
 
             yield return generateAssetsCoroutine;
+
+            yield return ContentInitializerAttribute.RunContentInitializers(_contentPack, contentInitializersProgress);
 
             List<UnityEngine.Object> finalAssets = new List<UnityEngine.Object>(assetBundleAssets.Length + generatedAssets.Count);
             finalAssets.AddRange(assetBundleAssets);
@@ -375,6 +378,8 @@ namespace ItemQualities
             public static ItemQualityGroup BleedOnHit;
 
             public static ItemQualityGroup Clover;
+
+            public static ItemQualityGroup WardOnLevel;
         }
 
         public static class EquipmentQualityGroups
