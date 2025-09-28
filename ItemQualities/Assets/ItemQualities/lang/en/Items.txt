@@ -384,5 +384,17 @@
 
 		"ITEM_BEAR_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
 		"ITEM_BEAR_LEGENDARY_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>50%</style> <style=cStack>(+50% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
+
+		"ITEM_MISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
+		"ITEM_MISSILE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> TOTAL damage.",
+
+		"ITEM_MISSILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
+		"ITEM_MISSILE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage.",
+
+		"ITEM_MISSILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
+		"ITEM_MISSILE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <style=cIsDamage>600%</style> <style=cStack>(+600% per stack)</style> TOTAL damage.",
+
+		"ITEM_MISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
+		"ITEM_MISSILE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <style=cIsDamage>800%</style> <style=cStack>(+800% per stack)</style> TOTAL damage.",
 	}
 }

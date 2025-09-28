@@ -382,6 +382,8 @@ namespace ItemQualities
             public static ItemQualityGroup WardOnLevel;
 
             public static ItemQualityGroup Bear;
+
+            public static ItemQualityGroup Missile;
         }
 
         public static class EquipmentQualityGroups

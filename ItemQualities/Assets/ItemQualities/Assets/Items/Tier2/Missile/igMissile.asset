@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igMissile
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 216b5d592d305924485b22ed4b7f2c7a
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 223a4b3b79800f541b886ea24600e9e9, type: 2}
+  _rareItem: {fileID: 11400000, guid: 565c44cf4606c11488aa41013b14a884, type: 2}
+  _epicItem: {fileID: 11400000, guid: a282c5bdad0661b48a28d2439dabfb0f, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 56feb903168db8c4f88e373fa0be47fa, type: 2}
