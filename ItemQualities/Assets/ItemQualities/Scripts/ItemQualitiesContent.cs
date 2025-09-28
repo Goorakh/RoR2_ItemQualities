@@ -380,6 +380,8 @@ namespace ItemQualities
             public static ItemQualityGroup Clover;
 
             public static ItemQualityGroup WardOnLevel;
+
+            public static ItemQualityGroup Bear;
         }
 
         public static class EquipmentQualityGroups

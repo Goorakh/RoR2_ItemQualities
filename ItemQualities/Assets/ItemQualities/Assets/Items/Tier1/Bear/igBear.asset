@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igBear
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 099d4a6bd75b8134ab0b0c385486ab41
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: d213d718952774548988d1b5569488dd, type: 2}
+  _rareItem: {fileID: 11400000, guid: af29e26980948524a87d39888265ab90, type: 2}
+  _epicItem: {fileID: 11400000, guid: 5a74afd695ddc2e4db313c0b5b1a2966, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 3e30c2e3acd9e644b88645374fbc6474, type: 2}

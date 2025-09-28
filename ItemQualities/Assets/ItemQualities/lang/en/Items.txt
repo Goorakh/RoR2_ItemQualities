@@ -372,5 +372,17 @@
 
 		"ITEM_WARDONLEVEL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary banner.",
 		"ITEM_WARDONLEVEL_LEGENDARY_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> banner for <sprite name=\"Quality\"> <style=cIsUtility>30</style> <style=cStack>(+30 per stack)</style> seconds.",
+
+		"ITEM_BEAR_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
+		"ITEM_BEAR_UNCOMMON_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>20%</style> <style=cStack>(+20% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
+
+		"ITEM_BEAR_RARE_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
+		"ITEM_BEAR_RARE_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
+
+		"ITEM_BEAR_EPIC_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
+		"ITEM_BEAR_EPIC_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>40%</style> <style=cStack>(+40% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
+
+		"ITEM_BEAR_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
+		"ITEM_BEAR_LEGENDARY_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>50%</style> <style=cStack>(+50% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
 	}
 }
