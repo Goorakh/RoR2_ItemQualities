@@ -20,6 +20,7 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.AddMultiKill += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.GetMaxIncreasedDamageMultiKillBuffsForCharacter += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.OnClientBuffsChanged += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.OnInventoryChanged += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.OnKilledOtherServer += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CombineGroupedItemCountsPatch;
