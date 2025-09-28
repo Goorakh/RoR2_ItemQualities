@@ -117,9 +117,12 @@ namespace ItemQualities.Items
                         (0.40f * medkit.EpicCount) +
                         (0.60f * medkit.LegendaryCount));
 
-                    Log.Debug($"Reduced heal delay: {healDelay} -> {healDelay * (1f - healDelayReduction)}");
+                    if (healDelayReduction > 0f)
+                    {
+                        Log.Debug($"Reduced heal delay: {healDelay} -> {healDelay * (1f - healDelayReduction)}");
 
-                    healDelay *= (1f - healDelayReduction);
+                        healDelay *= 1f - healDelayReduction;
+                    }
                 }
 
                 return healDelay;
