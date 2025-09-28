@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.Utils;
 using RoR2;
 using RoR2.UI;
 using System;
@@ -127,8 +128,7 @@ namespace ItemQualities
         {
             ILCursor c = new ILCursor(il);
 
-            MethodReference handleBarMethod = null;
-            VariableDefinition localsVar;
+            MethodReference handleBarMethodRef = null;
 
             static bool nameStartsWith(MethodReference methodReference, string value)
             {
@@ -139,9 +139,16 @@ namespace ItemQualities
                 return methodReference.Name.StartsWith(value);
             }
 
-            if (!c.TryGotoNext(x => x.MatchCallOrCallvirt(out handleBarMethod) && nameStartsWith(handleBarMethod, "<ApplyBars>g__HandleBar|")))
+            if (!c.TryGotoNext(x => x.MatchCallOrCallvirt(out handleBarMethodRef) && nameStartsWith(handleBarMethodRef, "<ApplyBars>g__HandleBar|")))
             {
                 Log.Error("Failed to find HandleBar method");
+                return;
+            }
+
+            MethodBase handleBarMethod = handleBarMethodRef.ResolveReflection();
+            if (handleBarMethod == null)
+            {
+                Log.Error($"Failed to resolve HandleBar method: {handleBarMethodRef.FullName}");
                 return;
             }
 
@@ -152,7 +159,7 @@ namespace ItemQualities
                 return;
             }
 
-            localsVar = il.Method.Body.Variables[localsVarIndex];
+            VariableDefinition localsVar = il.Method.Body.Variables[localsVarIndex];
 
             c.Index = 0;
 
