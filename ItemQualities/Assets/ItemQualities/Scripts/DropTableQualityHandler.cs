@@ -4,7 +4,6 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
-using RoR2.Artifacts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -174,10 +173,27 @@ namespace ItemQualities
         {
             try
             {
-                if (self.name.Contains("Duplicator", StringComparison.OrdinalIgnoreCase))
+                bool isItemCost = false;
+                if (self.TryGetComponent(out PurchaseInteraction purchaseInteraction))
                 {
-                    _allowQualityGeneration = false;
+                    switch (purchaseInteraction.costType)
+                    {
+                        case CostTypeIndex.WhiteItem:
+                        case CostTypeIndex.GreenItem:
+                        case CostTypeIndex.RedItem:
+                        case CostTypeIndex.Equipment:
+                        case CostTypeIndex.VolatileBattery:
+                        case CostTypeIndex.LunarItemOrEquipment:
+                        case CostTypeIndex.BossItem:
+                        case CostTypeIndex.ArtifactShellKillerItem:
+                        case CostTypeIndex.TreasureCacheItem:
+                        case CostTypeIndex.TreasureCacheVoidItem:
+                            isItemCost = true;
+                            break;
+                    }
                 }
+
+                _allowQualityGeneration = !isItemCost;
 
                 orig(self, newHidden);
             }
