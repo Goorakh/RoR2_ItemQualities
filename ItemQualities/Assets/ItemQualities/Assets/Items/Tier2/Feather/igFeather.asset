@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igFeather
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 2ecf99e3b915beb4ca6817048d1eb5b5
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: aadfe7c9cbfb7e346bf4912c80434e76, type: 2}
+  _rareItem: {fileID: 11400000, guid: ae73be2f29ee4fa4db261cab47b88229, type: 2}
+  _epicItem: {fileID: 11400000, guid: 0105a89c1b3e6224fab333df74ba597d, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 867d8ce036289ed458b8b18ab365d9bc, type: 2}

@@ -410,6 +410,8 @@ namespace ItemQualities
             public static ItemQualityGroup ExecuteLowHealthElite;
 
             public static ItemQualityGroup MoveSpeedOnKill;
+
+            public static ItemQualityGroup Feather;
         }
 
         public static class EquipmentQualityGroups
