@@ -120,6 +120,7 @@ namespace ItemQualities
 
             List<ItemQualityGroup> itemQualityGroupsList = new List<ItemQualityGroup>();
             List<EquipmentQualityGroup> equipmentQualityGroupsList = new List<EquipmentQualityGroup>();
+            List<BuffQualityGroup> buffQualityGroupsList = new List<BuffQualityGroup>();
 
             List<ItemDef> itemDefsList = new List<ItemDef>();
             List<ItemTierDef> itemTierDefsList = new List<ItemTierDef>();
@@ -157,6 +158,9 @@ namespace ItemQualities
                     case EquipmentQualityGroup equipmentQualityGroup:
                         equipmentQualityGroupsList.Add(equipmentQualityGroup);
                         break;
+                    case BuffQualityGroup buffQualityGroup:
+                        buffQualityGroupsList.Add(buffQualityGroup);
+                        break;
                     case ItemDef itemDef:
                         itemDefsList.Add(itemDef);
                         break;
@@ -187,6 +191,9 @@ namespace ItemQualities
             NamedAssetCollection<EquipmentQualityGroup> equipmentQualityGroups = new NamedAssetCollection<EquipmentQualityGroup>(ContentPack.getScriptableObjectName);
             equipmentQualityGroups.Add(equipmentQualityGroupsList.ToArray());
 
+            NamedAssetCollection<BuffQualityGroup> buffQualityGroups = new NamedAssetCollection<BuffQualityGroup>(ContentPack.getScriptableObjectName);
+            buffQualityGroups.Add(buffQualityGroupsList.ToArray());
+
             _contentPack.itemDefs.Add(itemDefsList.ToArray());
             _contentPack.itemTierDefs.Add(itemTierDefsList.ToArray());
 
@@ -206,6 +213,9 @@ namespace ItemQualities
 
             populateTypeFields(typeof(EquipmentQualityGroups), equipmentQualityGroups, fieldName => "eg" + fieldName);
             EquipmentQualityGroups.AllGroups = new ReadOnlyCollection<EquipmentQualityGroup>(equipmentQualityGroups.ToArray());
+
+            populateTypeFields(typeof(BuffQualityGroups), buffQualityGroups, fieldName => "bg" + fieldName);
+            BuffQualityGroups.AllGroups = new ReadOnlyCollection<BuffQualityGroup>(buffQualityGroups.ToArray());
 
             populateTypeFields(typeof(Buffs), _contentPack.buffDefs, fieldName => "bd" + fieldName);
 
@@ -403,17 +413,16 @@ namespace ItemQualities
             public static EquipmentQualityGroup BossHunterConsumed;
         }
 
+        public static class BuffQualityGroups
+        {
+            internal static IReadOnlyCollection<BuffQualityGroup> AllGroups = Array.Empty<BuffQualityGroup>();
+
+            public static BuffQualityGroup DeathMark;
+        }
+
         public static class Buffs
         {
             public static BuffDef BossStun;
-
-            public static BuffDef DeathMarkUncommon;
-
-            public static BuffDef DeathMarkRare;
-
-            public static BuffDef DeathMarkEpic;
-
-            public static BuffDef DeathMarkLegendary;
         }
 
         public static class Prefabs

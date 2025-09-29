@@ -153,15 +153,9 @@ namespace ItemQualities
                 _shieldOutOfDanger = _body && _body.outOfDangerStopwatch >= _shieldOutOfDangerDelay;
                 MushroomActiveServer = _body && _body.notMovingStopwatch >= _mushroomNotMovingStopwatchThreshold;
 
-                if (!HasHadAnyQualityDeathMarkDebuffServer)
+                if (!HasHadAnyQualityDeathMarkDebuffServer && DeathMark.HasAnyQualityDeathMarkDebuff(_body))
                 {
-                    if (_body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkUncommon) ||
-                        _body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkRare) ||
-                        _body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkEpic) ||
-                        _body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkLegendary))
-                    {
-                        HasHadAnyQualityDeathMarkDebuffServer = true;
-                    }
+                    HasHadAnyQualityDeathMarkDebuffServer = true;
                 }
             }
         }

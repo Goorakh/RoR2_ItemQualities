@@ -1,5 +1,4 @@
-﻿using HG;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -10,38 +9,17 @@ namespace ItemQualities.Items
 {
     static class DeathMark
     {
-        static readonly BuffIndex[] _qualityDeathMarkDebuffIndices = new BuffIndex[(int)QualityTier.Count];
-
         [SystemInitializer]
         static void Init()
         {
-            _qualityDeathMarkDebuffIndices[(int)QualityTier.Uncommon] = ItemQualitiesContent.Buffs.DeathMarkUncommon.buffIndex;
-            _qualityDeathMarkDebuffIndices[(int)QualityTier.Rare] = ItemQualitiesContent.Buffs.DeathMarkRare.buffIndex;
-            _qualityDeathMarkDebuffIndices[(int)QualityTier.Epic] = ItemQualitiesContent.Buffs.DeathMarkEpic.buffIndex;
-            _qualityDeathMarkDebuffIndices[(int)QualityTier.Legendary] = ItemQualitiesContent.Buffs.DeathMarkLegendary.buffIndex;
-
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
 
             IL.RoR2.GlobalEventManager.ProcDeathMark += GlobalEventManager_ProcDeathMark;
-
-            IL.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CharacterBody_UpdateAllTemporaryVisualEffects;
         }
 
         public static bool HasAnyQualityDeathMarkDebuff(CharacterBody body)
         {
-            if (body)
-            {
-                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-                {
-                    BuffIndex qualityDeathMarkDebuffIndex = ArrayUtils.GetSafe(_qualityDeathMarkDebuffIndices, (int)qualityTier, BuffIndex.None);
-                    if (qualityDeathMarkDebuffIndex > BuffIndex.None && body.HasBuff(qualityDeathMarkDebuffIndex))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return ItemQualitiesContent.BuffQualityGroups.DeathMark.GetBuffCounts(body).TotalQualityCount > 0;
         }
 
         static void HealthComponent_TakeDamageProcess(ILContext il)
@@ -86,27 +64,29 @@ namespace ItemQualities.Items
 
                 float deathMarkDamageMultiplier = 1f;
 
-                if (body.HasBuff(RoR2Content.Buffs.DeathMark))
+                BuffQualityCounts deathMarkBuff = ItemQualitiesContent.BuffQualityGroups.DeathMark.GetBuffCounts(body);
+
+                if (deathMarkBuff.BaseCount > 0)
                 {
                     deathMarkDamageMultiplier += baseDeathMarkDamageMultiplier - 1f;
                 }
 
-                if (body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkUncommon))
+                if (deathMarkBuff.UncommonCount > 0)
                 {
                     deathMarkDamageMultiplier += 0.2f;
                 }
 
-                if (body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkRare))
+                if (deathMarkBuff.RareCount > 0)
                 {
                     deathMarkDamageMultiplier += 0.5f;
                 }
 
-                if (body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkEpic))
+                if (deathMarkBuff.EpicCount > 0)
                 {
                     deathMarkDamageMultiplier += 1.0f;
                 }
 
-                if (body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkLegendary))
+                if (deathMarkBuff.LegendaryCount > 0)
                 {
                     deathMarkDamageMultiplier += 1.5f;
                 }
@@ -220,7 +200,7 @@ namespace ItemQualities.Items
 
                     if (highestDeathMarkQuality > QualityTier.None)
                     {
-                        BuffIndex qualityDeathMarkDebuffIndex = ArrayUtils.GetSafe(_qualityDeathMarkDebuffIndices, (int)highestDeathMarkQuality, BuffIndex.None);
+                        BuffIndex qualityDeathMarkDebuffIndex = ItemQualitiesContent.BuffQualityGroups.DeathMark.GetBuffIndex(highestDeathMarkQuality);
 
                         if (qualityDeathMarkDebuffIndex > BuffIndex.None)
                         {
@@ -233,28 +213,6 @@ namespace ItemQualities.Items
                         }
                     }
                 }
-            }
-        }
-
-        static void CharacterBody_UpdateAllTemporaryVisualEffects(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.DeathMark)),
-                               x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.HasBuff))))
-            {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
-            c.Goto(foundCursors[1].Next, MoveType.After);
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<bool, CharacterBody, bool>>(hasDeathMarkDebuff);
-            static bool hasDeathMarkDebuff(bool hasDebuff, CharacterBody body)
-            {
-                return hasDebuff || HasAnyQualityDeathMarkDebuff(body);
             }
         }
     }

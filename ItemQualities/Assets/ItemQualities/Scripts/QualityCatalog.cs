@@ -24,21 +24,33 @@ namespace ItemQualities
         static QualityTier[] _equipmentIndexToQuality = Array.Empty<QualityTier>();
         static EquipmentQualityGroupIndex[] _equipmentIndexToQualityGroupIndex = Array.Empty<EquipmentQualityGroupIndex>();
 
+        static BuffQualityGroup[] _allBuffQualityGroups = Array.Empty<BuffQualityGroup>();
+        static QualityTier[] _buffIndexToQuality = Array.Empty<QualityTier>();
+        static BuffQualityGroupIndex[] _buffIndexToQualityGroupIndex = Array.Empty<BuffQualityGroupIndex>();
+
         public static int ItemQualityGroupCount => _allItemQualityGroups.Length;
 
         public static int EquipmentQualityGroupCount => _allEquipmentQualityGroups.Length;
 
+        public static int BuffQualityGroupCount => _allBuffQualityGroups.Length;
+
         public static ResourceAvailability Availability = new ResourceAvailability();
 
-        [SystemInitializer(typeof(ItemCatalog), typeof(EquipmentCatalog))]
+        [SystemInitializer(typeof(ItemCatalog), typeof(EquipmentCatalog), typeof(BuffCatalog))]
         static IEnumerator Init()
         {
-            yield return SetQualityGroups(ItemQualitiesContent.QualityTiers.AllQualityTiers, ItemQualitiesContent.ItemQualityGroups.AllGroups, ItemQualitiesContent.EquipmentQualityGroups.AllGroups);
+            yield return SetQualityGroups(ItemQualitiesContent.QualityTiers.AllQualityTiers,
+                                          ItemQualitiesContent.ItemQualityGroups.AllGroups,
+                                          ItemQualitiesContent.EquipmentQualityGroups.AllGroups,
+                                          ItemQualitiesContent.BuffQualityGroups.AllGroups);
 
             Availability.MakeAvailable();
         }
 
-        static IEnumerator SetQualityGroups(IReadOnlyCollection<QualityTierDef> qualityTierDefs, IReadOnlyCollection<ItemQualityGroup> itemQualityGroups, IReadOnlyCollection<EquipmentQualityGroup> equipmentQualityGroups)
+        static IEnumerator SetQualityGroups(IReadOnlyCollection<QualityTierDef> qualityTierDefs,
+                                            IReadOnlyCollection<ItemQualityGroup> itemQualityGroups,
+                                            IReadOnlyCollection<EquipmentQualityGroup> equipmentQualityGroups,
+                                            IReadOnlyCollection<BuffQualityGroup> buffQualityGroups)
         {
             foreach (QualityTierDef qualityTierDef in qualityTierDefs)
             {
@@ -72,6 +84,20 @@ namespace ItemQualities
 
             Array.Resize(ref _equipmentIndexToQualityGroupIndex, EquipmentCatalog.equipmentCount);
             Array.Fill(_equipmentIndexToQualityGroupIndex, EquipmentQualityGroupIndex.Invalid);
+
+            foreach (BuffQualityGroup buffQualityGroup in _allBuffQualityGroups)
+            {
+                buffQualityGroup.GroupIndex = BuffQualityGroupIndex.Invalid;
+            }
+
+            _allBuffQualityGroups = buffQualityGroups.ToArray();
+            Array.Sort(_allBuffQualityGroups, (a, b) => string.Compare(a.name, b.name));
+
+            Array.Resize(ref _buffIndexToQuality, BuffCatalog.buffCount);
+            Array.Fill(_buffIndexToQuality, QualityTier.None);
+
+            Array.Resize(ref _buffIndexToQualityGroupIndex, BuffCatalog.buffCount);
+            Array.Fill(_buffIndexToQualityGroupIndex, BuffQualityGroupIndex.Invalid);
 
             ParallelCoroutine baseAssetsParallelLoadCoroutine = new ParallelCoroutine();
 
@@ -144,6 +170,42 @@ namespace ItemQualities
                     });
 
                     baseAssetsParallelLoadCoroutine.Add(baseEquipmentLoad);
+                }
+            }
+
+            for (int i = 0; i < _allBuffQualityGroups.Length; i++)
+            {
+                BuffQualityGroupIndex buffQualityGroupIndex = (BuffQualityGroupIndex)i;
+                BuffQualityGroup buffQualityGroup = _allBuffQualityGroups[i];
+                buffQualityGroup.GroupIndex = buffQualityGroupIndex;
+
+                void recordBuffInGroup(BuffIndex buffIndex, QualityTier qualityTier)
+                {
+                    if (buffIndex == BuffIndex.None)
+                        return;
+
+                    _buffIndexToQuality[(int)buffIndex] = qualityTier;
+                    _buffIndexToQualityGroupIndex[(int)buffIndex] = buffQualityGroupIndex;
+                }
+
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                {
+                    recordBuffInGroup(buffQualityGroup.GetBuffIndex(qualityTier), qualityTier);
+                }
+
+                if (buffQualityGroup.BaseBuffReference != null && buffQualityGroup.BaseBuffReference.RuntimeKeyIsValid())
+                {
+                    AsyncOperationHandle<BuffDef> baseBuffLoad = AddressableUtil.LoadTempAssetAsync(buffQualityGroup.BaseBuffReference);
+                    baseBuffLoad.OnSuccess(baseBuff =>
+                    {
+                        if (baseBuff.buffIndex != BuffIndex.None)
+                        {
+                            buffQualityGroup.BaseBuffIndex = baseBuff.buffIndex;
+                            _buffIndexToQualityGroupIndex[(int)baseBuff.buffIndex] = buffQualityGroupIndex;
+                        }
+                    });
+
+                    baseAssetsParallelLoadCoroutine.Add(baseBuffLoad);
                 }
             }
 
@@ -306,6 +368,11 @@ namespace ItemQualities
             return ArrayUtils.GetSafe(_allEquipmentQualityGroups, (int)equipmentQualityGroupIndex);
         }
 
+        public static BuffQualityGroup GetBuffQualityGroup(BuffQualityGroupIndex buffQualityGroupIndex)
+        {
+            return ArrayUtils.GetSafe(_allBuffQualityGroups, (int)buffQualityGroupIndex);
+        }
+
         public static ItemQualityGroupIndex FindItemQualityGroupIndex(ItemIndex itemIndex)
         {
             return ArrayUtils.GetSafe(_itemIndexToQualityGroupIndex, (int)itemIndex, ItemQualityGroupIndex.Invalid);
@@ -316,6 +383,11 @@ namespace ItemQualities
             return ArrayUtils.GetSafe(_equipmentIndexToQualityGroupIndex, (int)equipmentIndex, EquipmentQualityGroupIndex.Invalid);
         }
 
+        public static BuffQualityGroupIndex FindBuffQualityGroupIndex(BuffIndex buffIndex)
+        {
+            return ArrayUtils.GetSafe(_buffIndexToQualityGroupIndex, (int)buffIndex, BuffQualityGroupIndex.Invalid);
+        }
+
         public static QualityTier GetQualityTier(ItemIndex itemIndex)
         {
             return ArrayUtils.GetSafe(_itemIndexToQuality, (int)itemIndex, QualityTier.None);
@@ -324,6 +396,11 @@ namespace ItemQualities
         public static QualityTier GetQualityTier(EquipmentIndex equipmentIndex)
         {
             return ArrayUtils.GetSafe(_equipmentIndexToQuality, (int)equipmentIndex, QualityTier.None);
+        }
+
+        public static QualityTier GetQualityTier(BuffIndex buffIndex)
+        {
+            return ArrayUtils.GetSafe(_buffIndexToQuality, (int)buffIndex, QualityTier.None);
         }
 
         public static QualityTier GetQualityTier(PickupIndex pickupIndex)
@@ -380,6 +457,24 @@ namespace ItemQualities
             }
 
             return qualityEquipmentIndex;
+        }
+
+        public static BuffIndex GetBuffIndexOfQuality(BuffIndex buffIndex, QualityTier qualityTier)
+        {
+            BuffQualityGroup buffQualityGroup = GetBuffQualityGroup(FindBuffQualityGroupIndex(buffIndex));
+            BuffIndex qualityBuffIndex = buffQualityGroup ? buffQualityGroup.GetBuffIndex(qualityTier) : BuffIndex.None;
+            if (qualityBuffIndex == BuffIndex.None)
+            {
+                if (qualityTier != QualityTier.None)
+                {
+                    BuffDef buffDef = BuffCatalog.GetBuffDef(buffIndex);
+                    Log.Warning($"Buff {(buffDef ? buffDef.name : "None")} is missing quality variant {qualityTier}");
+                }
+
+                return buffIndex;
+            }
+
+            return qualityBuffIndex;
         }
 
         public static PickupIndex GetPickupIndexOfQuality(PickupIndex pickupIndex, QualityTier qualityTier)
