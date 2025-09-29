@@ -461,5 +461,26 @@ namespace ItemQualities.Utilities.Extensions
             Collection<VariableDefinition> methodVariables = ilContext.Method.Body.Variables;
             return instruction.MatchLdloc(out localIndex) && localIndex < methodVariables.Count && methodVariables[localIndex].VariableType.Is(variableType);
         }
+
+        public static bool MatchStloc(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (variableType is null)
+                throw new ArgumentNullException(nameof(variableType));
+
+            if (ilContext is null)
+                throw new ArgumentNullException(nameof(ilContext));
+
+            if (ilContext.Method == null || !ilContext.Method.HasBody)
+            {
+                localIndex = -1;
+                return false;
+            }
+
+            Collection<VariableDefinition> methodVariables = ilContext.Method.Body.Variables;
+            return instruction.MatchStloc(out localIndex) && localIndex < methodVariables.Count && methodVariables[localIndex].VariableType.Is(variableType);
+        }
     }
 }

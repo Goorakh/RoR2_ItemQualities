@@ -392,6 +392,8 @@ namespace ItemQualities
             public static ItemQualityGroup BonusGoldPackOnKill;
 
             public static ItemQualityGroup DeathMark;
+
+            public static ItemQualityGroup Bandolier;
         }
 
         public static class EquipmentQualityGroups

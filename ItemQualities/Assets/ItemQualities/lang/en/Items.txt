@@ -444,5 +444,17 @@
 
 		"ITEM_DEATHMARK_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies with 7 or more debuffs can be marked once, taking additional bonus damage.",
 		"ITEM_DEATHMARK_LEGENDARY_DESC": "{0}\nEnemies with <style=cIsDamage>7</style> or more debuffs are <style=cIsDamage>marked for death</style> <style=cIsUtility>once</style>, increasing damage taken by <sprite name=\"Quality\"> <style=cIsDamage>150%</style> for <sprite name=\"Quality\"> <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.",
+		
+		"ITEM_BANDOLIER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for ammo pack to add a temporary charge to a random skill.",
+		"ITEM_BANDOLIER_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance for an ammo pack to add a <style=cIsUtility>temporary extra charge</style> to a random skill. Chance for an additional skill charge every <style=cIsUtility>100%</style> chance reached.",
+		
+		"ITEM_BANDOLIER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for ammo pack to add a temporary charge to a random skill.",
+		"ITEM_BANDOLIER_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style> chance for an ammo pack to add a <style=cIsUtility>temporary extra charge</style> to a random skill. Chance for an additional skill charge every <style=cIsUtility>100%</style> chance reached.",
+		
+		"ITEM_BANDOLIER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for ammo pack to add a temporary charge to a random skill.",
+		"ITEM_BANDOLIER_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance for an ammo pack to add a <style=cIsUtility>temporary extra charge</style> to a random skill. Chance for an additional skill charge every <style=cIsUtility>100%</style> chance reached.",
+		
+		"ITEM_BANDOLIER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for ammo pack to add a temporary charge to a random skill.",
+		"ITEM_BANDOLIER_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> chance for an ammo pack to add a <style=cIsUtility>temporary extra charge</style> to a random skill. Chance for an additional skill charge every <style=cIsUtility>100%</style> chance reached.",
 	}
 }
