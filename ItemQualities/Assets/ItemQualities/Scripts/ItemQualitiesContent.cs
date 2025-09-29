@@ -408,6 +408,8 @@ namespace ItemQualities
             public static ItemQualityGroup SlowOnHit;
 
             public static ItemQualityGroup ExecuteLowHealthElite;
+
+            public static ItemQualityGroup MoveSpeedOnKill;
         }
 
         public static class EquipmentQualityGroups
@@ -424,6 +426,8 @@ namespace ItemQualities
             public static BuffQualityGroup DeathMark;
 
             public static BuffQualityGroup Slow60;
+
+            public static BuffQualityGroup KillMoveSpeed;
         }
 
         public static class Buffs

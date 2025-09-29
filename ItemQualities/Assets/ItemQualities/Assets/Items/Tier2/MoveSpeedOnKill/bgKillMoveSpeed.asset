@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgKillMoveSpeed
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: 76047f53120d6e340a0dd08d1788e673
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonBuff: {fileID: 11400000, guid: 67147fc76d9913644b5b4b572fea4d77, type: 2}
+  _rareBuff: {fileID: 11400000, guid: bc3526c303f9c1e4ea15f0487ccc9ed0, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 10adacd1848a5914eaf34fdc418a6da2, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: 0b647b5fd7f714c4fab91dbcb63bdf06, type: 2}

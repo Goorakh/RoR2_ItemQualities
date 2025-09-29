@@ -480,5 +480,17 @@
 
 		"ITEM_EXECUTELOWHEALTHELITE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Instantly kill low health Boss monsters.",
 		"ITEM_EXECUTELOWHEALTHELITE_LEGENDARY_DESC": "{0}\nInstantly kill Boss monsters below <sprite name=\"Quality\"> <style=cIsHealth>40% <style=cStack>(+40% per stack)</style> health</style>.",
+
+		"ITEM_MOVESPEEDONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
+		"ITEM_MOVESPEEDONKILL_UNCOMMON_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>2%</style> <style=cStack>(+2% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> times. Resets on stage exit or death.",
+
+		"ITEM_MOVESPEEDONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
+		"ITEM_MOVESPEEDONKILL_RARE_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>3%</style> <style=cStack>(+3% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>15</style> <style=cStack>(+15 per stack)</style> times. Resets on stage exit or death.",
+
+		"ITEM_MOVESPEEDONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
+		"ITEM_MOVESPEEDONKILL_EPIC_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>4%</style> <style=cStack>(+4% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>20</style> <style=cStack>(+20 per stack)</style> times. Resets on stage exit or death.",
+
+		"ITEM_MOVESPEEDONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
+		"ITEM_MOVESPEEDONKILL_LEGENDARY_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>25</style> <style=cStack>(+25 per stack)</style> times. Resets on stage exit or death.",
 	}
 }
