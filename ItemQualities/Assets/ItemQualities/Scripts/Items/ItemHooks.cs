@@ -30,6 +30,7 @@ namespace ItemQualities.Items
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnInteractionBegin += CombineGroupedItemCountsPatch;
+            IL.RoR2.GlobalEventManager.ProcDeathMark += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += CombineGroupedItemCountsPatch;
             IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
             IL.RoR2.Inventory.CalculateEquipmentCooldownScale += CombineGroupedItemCountsPatch;

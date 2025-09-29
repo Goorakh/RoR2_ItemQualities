@@ -432,5 +432,17 @@
 		
 		"ITEM_BONUSGOLDPACKONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase gold per treasure.",
 		"ITEM_BONUSGOLDPACKONKILL_LEGENDARY_DESC": "<style=cIsUtility>4%</style> <style=cStack>(+4% per stack)</style> chance on kill to drop a treasure worth <sprite name=\"Quality\"> <style=cIsUtility>25 gold</style>. <style=cIsUtility>Scales over time.</style>\nIncreases treasure value by <sprite name=\"Quality\"> <style=cIsUtility>150 gold</style> <style=cStack>(+150 per stack, scales over time)</style>. <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to drop a <style=cIsUtility>large treasure</style> for <style=cIsUtility>50%</style> more gold.",
+
+		"ITEM_DEATHMARK_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies with 7 or more debuffs can be marked once, taking additional bonus damage.",
+		"ITEM_DEATHMARK_UNCOMMON_DESC": "{0}\nEnemies with <style=cIsDamage>7</style> or more debuffs are <style=cIsDamage>marked for death</style> <style=cIsUtility>once</style>, increasing damage taken by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> for <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> seconds.",
+
+		"ITEM_DEATHMARK_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies with 7 or more debuffs can be marked once, taking additional bonus damage.",
+		"ITEM_DEATHMARK_RARE_DESC": "{0}\nEnemies with <style=cIsDamage>7</style> or more debuffs are <style=cIsDamage>marked for death</style> <style=cIsUtility>once</style>, increasing damage taken by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> for <sprite name=\"Quality\"> <style=cIsUtility>4</style> <style=cStack>(+4 per stack)</style> seconds.",
+
+		"ITEM_DEATHMARK_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies with 7 or more debuffs can be marked once, taking additional bonus damage.",
+		"ITEM_DEATHMARK_EPIC_DESC": "{0}\nEnemies with <style=cIsDamage>7</style> or more debuffs are <style=cIsDamage>marked for death</style> <style=cIsUtility>once</style>, increasing damage taken by <sprite name=\"Quality\"> <style=cIsDamage>100%</style> for <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> seconds.",
+
+		"ITEM_DEATHMARK_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies with 7 or more debuffs can be marked once, taking additional bonus damage.",
+		"ITEM_DEATHMARK_LEGENDARY_DESC": "{0}\nEnemies with <style=cIsDamage>7</style> or more debuffs are <style=cIsDamage>marked for death</style> <style=cIsUtility>once</style>, increasing damage taken by <sprite name=\"Quality\"> <style=cIsDamage>150%</style> for <sprite name=\"Quality\"> <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> seconds.",
 	}
 }

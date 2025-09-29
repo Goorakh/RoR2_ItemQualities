@@ -1,5 +1,7 @@
 ﻿using HG;
+using ItemQualities.Items;
 using RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -21,6 +23,8 @@ namespace ItemQualities
         uint _lastMoneyValue;
 
         bool _statsDirty;
+
+        TemporaryVisualEffect _qualityDeathMarkEffectInstance;
 
         float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
         public float SlugOutOfDangerDelay
@@ -106,6 +110,8 @@ namespace ItemQualities
 
         public bool MushroomActiveServer { get; private set; }
 
+        public bool HasHadAnyQualityDeathMarkDebuffServer { get; private set; }
+
         void Awake()
         {
             _body = GetComponent<CharacterBody>();
@@ -146,6 +152,17 @@ namespace ItemQualities
                 _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
                 _shieldOutOfDanger = _body && _body.outOfDangerStopwatch >= _shieldOutOfDangerDelay;
                 MushroomActiveServer = _body && _body.notMovingStopwatch >= _mushroomNotMovingStopwatchThreshold;
+
+                if (!HasHadAnyQualityDeathMarkDebuffServer)
+                {
+                    if (_body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkUncommon) ||
+                        _body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkRare) ||
+                        _body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkEpic) ||
+                        _body.HasBuff(ItemQualitiesContent.Buffs.DeathMarkLegendary))
+                    {
+                        HasHadAnyQualityDeathMarkDebuffServer = true;
+                    }
+                }
             }
         }
 
@@ -302,6 +319,11 @@ namespace ItemQualities
             {
                 _body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, 1);
             }
+        }
+
+        public void UpdateAllTemporaryVisualEffects()
+        {
+            _body.UpdateSingleTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
         }
 
         void hookSetSlugOutOfDanger(bool slugOutOfDanger)

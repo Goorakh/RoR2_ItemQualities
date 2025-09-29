@@ -390,6 +390,8 @@ namespace ItemQualities
             public static ItemQualityGroup KnockBackHitEnemies;
 
             public static ItemQualityGroup BonusGoldPackOnKill;
+
+            public static ItemQualityGroup DeathMark;
         }
 
         public static class EquipmentQualityGroups
@@ -402,11 +404,21 @@ namespace ItemQualities
         public static class Buffs
         {
             public static BuffDef BossStun;
+
+            public static BuffDef DeathMarkUncommon;
+
+            public static BuffDef DeathMarkRare;
+
+            public static BuffDef DeathMarkEpic;
+
+            public static BuffDef DeathMarkLegendary;
         }
 
         public static class Prefabs
         {
             public static GameObject QualityPickupDisplay;
+
+            public static GameObject DeathMarkQualityEffect;
         }
 
         public static class ProjectilePrefabs

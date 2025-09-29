@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igDeathMark
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 7f85c87896f8efc42a61f63e10e396b5
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: a3be3940c5aaaa246980eb85153a610f, type: 2}
+  _rareItem: {fileID: 11400000, guid: c26f904266cbc4b47bd6cf2bf48da972, type: 2}
+  _epicItem: {fileID: 11400000, guid: edbdf68aa7f490741897a236665e0ea7, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 4344457a74d44c64e91b720347459cc6, type: 2}
