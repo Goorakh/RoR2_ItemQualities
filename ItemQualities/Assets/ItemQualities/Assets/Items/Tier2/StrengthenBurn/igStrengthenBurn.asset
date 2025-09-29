@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igStrengthenBurn
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: b7677bcd0bfe5cd41b956b002d039248
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 2901772d08837af42a1901b4a9bab02c, type: 2}
+  _rareItem: {fileID: 11400000, guid: 67f71fce05d02f74f84e666381ad7ed6, type: 2}
+  _epicItem: {fileID: 11400000, guid: cfec72050c12dbd4cbf0c2567d7b90de, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: abb89eb4b68bc4b48a3d75d59ea95553, type: 2}

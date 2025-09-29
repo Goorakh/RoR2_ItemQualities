@@ -412,6 +412,8 @@ namespace ItemQualities
             public static ItemQualityGroup MoveSpeedOnKill;
 
             public static ItemQualityGroup Feather;
+
+            public static ItemQualityGroup StrengthenBurn;
         }
 
         public static class EquipmentQualityGroups

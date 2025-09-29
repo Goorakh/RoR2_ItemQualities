@@ -504,5 +504,17 @@
 
 		"ITEM_FEATHER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase jump height and reduce fall damage.",
 		"ITEM_FEATHER_LEGENDARY_DESC": "{0}\nIncreases <style=cIsUtility>jump height</style> by <sprite name=\"Quality\"> <style=cIsUtility>45%</style> <style=cStack>(+45% per stack)</style> and reduce <style=cIsUtility>fall damage</style> by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style>",
+
+		"ITEM_STRENGTHENBURN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' ignite enemies.",
+		"ITEM_STRENGTHENBURN_UNCOMMON_DESC": "{0}\n'<style=cIsDamage>Critical Strikes</style>' <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> base damage.",
+
+		"ITEM_STRENGTHENBURN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' ignite enemies.",
+		"ITEM_STRENGTHENBURN_RARE_DESC": "{0}\n'<style=cIsDamage>Critical Strikes</style>' <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> base damage.",
+
+		"ITEM_STRENGTHENBURN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' ignite enemies.",
+		"ITEM_STRENGTHENBURN_EPIC_DESC": "{0}\n'<style=cIsDamage>Critical Strikes</style>' <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>80%</style> <style=cStack>(+80% per stack)</style> base damage.",
+
+		"ITEM_STRENGTHENBURN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' ignite enemies.",
+		"ITEM_STRENGTHENBURN_LEGENDARY_DESC": "{0}\n'<style=cIsDamage>Critical Strikes</style>' <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style> base damage.",
 	}
 }
