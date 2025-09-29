@@ -3,7 +3,7 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    class SprintBonus
+    static class SprintBonus
     {
         [SystemInitializer]
         static void Init()
