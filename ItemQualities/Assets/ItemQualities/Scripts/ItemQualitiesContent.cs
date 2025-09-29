@@ -404,6 +404,8 @@ namespace ItemQualities
             public static ItemQualityGroup DeathMark;
 
             public static ItemQualityGroup Bandolier;
+
+            public static ItemQualityGroup SlowOnHit;
         }
 
         public static class EquipmentQualityGroups
@@ -418,6 +420,8 @@ namespace ItemQualities
             internal static IReadOnlyCollection<BuffQualityGroup> AllGroups = Array.Empty<BuffQualityGroup>();
 
             public static BuffQualityGroup DeathMark;
+
+            public static BuffQualityGroup Slow60;
         }
 
         public static class Buffs

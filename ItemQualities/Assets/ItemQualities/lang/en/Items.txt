@@ -456,5 +456,17 @@
 		
 		"ITEM_BANDOLIER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for ammo pack to add a temporary charge to a random skill.",
 		"ITEM_BANDOLIER_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> chance for an ammo pack to add a <style=cIsUtility>temporary extra charge</style> to a random skill. Chance for an additional skill charge every <style=cIsUtility>100%</style> chance reached.",
+
+		"ITEM_SLOWONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to inflict a stronger slow.",
+		"ITEM_SLOWONHIT_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance on hit to slow enemies for <sprite name=\"Quality\"> <style=cIsUtility>-70% movement speed</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.",
+
+		"ITEM_SLOWONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to inflict a stronger slow.",
+		"ITEM_SLOWONHIT_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> chance on hit to slow enemies for <sprite name=\"Quality\"> <style=cIsUtility>-75% movement speed</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.",
+
+		"ITEM_SLOWONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to inflict a stronger slow.",
+		"ITEM_SLOWONHIT_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style> chance on hit to slow enemies for <sprite name=\"Quality\"> <style=cIsUtility>-80% movement speed</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.",
+
+		"ITEM_SLOWONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to inflict a stronger slow.",
+		"ITEM_SLOWONHIT_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance on hit to slow enemies for <sprite name=\"Quality\"> <style=cIsUtility>-85% movement speed</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.",
 	}
 }

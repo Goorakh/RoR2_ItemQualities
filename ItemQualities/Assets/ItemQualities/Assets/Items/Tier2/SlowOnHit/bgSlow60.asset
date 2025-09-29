@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgSlow60
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: 6a0d533aa91d36340bcea5a2f90b1a78
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonBuff: {fileID: 11400000, guid: bcb980a8e52a6ec419e67c1f02a0dd7f, type: 2}
+  _rareBuff: {fileID: 11400000, guid: 0f113a2956a529b43ad6c5797f7af76c, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 0ce31708824059048a23ac50d23edc15, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: bc8cf81739ea22c4b9258c3a72929baf, type: 2}

@@ -87,6 +87,29 @@ namespace ItemQualities
             return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
 
+        public QualityTier GetHighestQualityInInventory(Inventory inventory)
+        {
+            return GetHighestQualityInInventory(inventory, out _);
+        }
+
+        public QualityTier GetHighestQualityInInventory(Inventory inventory, out int itemCount)
+        {
+            if (inventory)
+            {
+                for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
+                {
+                    itemCount = inventory.GetItemCount(GetItemIndex(qualityTier));
+                    if (itemCount > 0)
+                    {
+                        return qualityTier;
+                    }
+                }
+            }
+
+            itemCount = 0;
+            return QualityTier.None;
+        }
+
         void OnValidate()
         {
             if (BaseItemReference == null || !BaseItemReference.RuntimeKeyIsValid())
