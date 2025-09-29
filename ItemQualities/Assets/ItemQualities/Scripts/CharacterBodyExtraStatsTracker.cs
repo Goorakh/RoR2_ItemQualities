@@ -100,12 +100,23 @@ namespace ItemQualities
             }
         }
 
+        float _executeBossHealthFraction;
+        public float ExecuteBossHealthFraction
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _executeBossHealthFraction;
+            }
+        }
+
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
         public bool SlugOutOfDanger => _slugOutOfDanger;
 
         [SyncVar(hook = nameof(hookSetShieldOutOfDanger))]
         bool _shieldOutOfDanger;
+
         public bool ShieldOutOfDanger => _shieldOutOfDanger;
 
         public bool MushroomActiveServer { get; private set; }
@@ -211,6 +222,7 @@ namespace ItemQualities
             ItemQualityCounts fragileDamageBonus = default;
             ItemQualityCounts mushroom = default;
             ItemQualityCounts warCryOnMultiKill = default;
+            ItemQualityCounts executeLowHealthElite = default;
             if (_body && _body.inventory)
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
@@ -220,6 +232,7 @@ namespace ItemQualities
                 fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory);
                 mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory);
                 warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCounts(_body.inventory);
+                executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCounts(_body.inventory);
             }
 
             float slugOutOfDangerDelayReduction = 1f;
@@ -277,6 +290,12 @@ namespace ItemQualities
             warCryOnMultiKill_MultiKillDurationMult += 2.5f * warCryOnMultiKill.LegendaryCount;
 
             _warCryOnMultiKill_MultiKillDuration = CharacterBody.multiKillMaxInterval * warCryOnMultiKill_MultiKillDurationMult;
+
+            _executeBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
+                (0.10f * executeLowHealthElite.UncommonCount) +
+                (0.15f * executeLowHealthElite.RareCount) +
+                (0.25f * executeLowHealthElite.EpicCount) +
+                (0.40f * executeLowHealthElite.LegendaryCount));
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)

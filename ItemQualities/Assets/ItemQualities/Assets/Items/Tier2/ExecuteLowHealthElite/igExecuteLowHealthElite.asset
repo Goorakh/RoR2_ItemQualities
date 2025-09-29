@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igExecuteLowHealthElite
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: f0185035937152046b93247614319b8a
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 3e584945fc0893141ba9ed645e5a2d62, type: 2}
+  _rareItem: {fileID: 11400000, guid: 36ef795ae7ac0ab4b87c426e5251b95b, type: 2}
+  _epicItem: {fileID: 11400000, guid: a5d79e37c84b9d34382c4e24624211ff, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 7b072aefba9436e479f07df3fd3fa365, type: 2}

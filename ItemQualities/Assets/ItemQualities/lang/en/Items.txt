@@ -468,5 +468,17 @@
 
 		"ITEM_SLOWONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to inflict a stronger slow.",
 		"ITEM_SLOWONHIT_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance on hit to slow enemies for <sprite name=\"Quality\"> <style=cIsUtility>-85% movement speed</style> for <style=cIsUtility>2s</style> <style=cStack>(+2s per stack)</style>.",
+
+		"ITEM_EXECUTELOWHEALTHELITE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Instantly kill low health Boss monsters.",
+		"ITEM_EXECUTELOWHEALTHELITE_UNCOMMON_DESC": "{0}\nInstantly kill Boss monsters below <sprite name=\"Quality\"> <style=cIsHealth>10% <style=cStack>(+10% per stack)</style> health</style>.",
+
+		"ITEM_EXECUTELOWHEALTHELITE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Instantly kill low health Boss monsters.",
+		"ITEM_EXECUTELOWHEALTHELITE_RARE_DESC": "{0}\nInstantly kill Boss monsters below <sprite name=\"Quality\"> <style=cIsHealth>15% <style=cStack>(+15% per stack)</style> health</style>.",
+
+		"ITEM_EXECUTELOWHEALTHELITE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Instantly kill low health Boss monsters.",
+		"ITEM_EXECUTELOWHEALTHELITE_EPIC_DESC": "{0}\nInstantly kill Boss monsters below <sprite name=\"Quality\"> <style=cIsHealth>25% <style=cStack>(+25% per stack)</style> health</style>.",
+
+		"ITEM_EXECUTELOWHEALTHELITE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Instantly kill low health Boss monsters.",
+		"ITEM_EXECUTELOWHEALTHELITE_LEGENDARY_DESC": "{0}\nInstantly kill Boss monsters below <sprite name=\"Quality\"> <style=cIsHealth>40% <style=cStack>(+40% per stack)</style> health</style>.",
 	}
 }

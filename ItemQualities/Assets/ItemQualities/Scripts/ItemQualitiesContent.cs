@@ -406,6 +406,8 @@ namespace ItemQualities
             public static ItemQualityGroup Bandolier;
 
             public static ItemQualityGroup SlowOnHit;
+
+            public static ItemQualityGroup ExecuteLowHealthElite;
         }
 
         public static class EquipmentQualityGroups

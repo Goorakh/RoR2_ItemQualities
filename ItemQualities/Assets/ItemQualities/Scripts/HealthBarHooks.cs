@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 
 namespace ItemQualities
 {
@@ -57,6 +58,8 @@ namespace ItemQualities
         static void Init()
         {
             IL.RoR2.UI.HealthBar.CheckInventory += HealthBar_CheckInventory;
+
+            IL.RoR2.UI.HealthBar.UpdateBarInfos += HealthBar_UpdateBarInfos;
 
             IL.RoR2.UI.HealthBar.ApplyBars += HealthBar_ApplyBars;
         }
@@ -121,6 +124,39 @@ namespace ItemQualities
             static int getItemCount(int itemCount, ItemIndex itemIndex, HashSet<ItemIndex> ignoreLowHealthItemIndices)
             {
                 return ignoreLowHealthItemIndices.Contains(itemIndex) ? 0 : itemCount;
+            }
+        }
+
+        static void HealthBar_UpdateBarInfos(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (c.TryGotoNext(MoveType.After,
+                              x => x.MatchLdfld<HealthComponent.HealthBarValues>(nameof(HealthComponent.HealthBarValues.cullFraction))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, HealthBar, float>>(getCullFraction);
+
+                static float getCullFraction(float cullFraction, HealthBar healthBar)
+                {
+                    if (healthBar &&
+                        healthBar.source &&
+                        healthBar.source.body &&
+                        healthBar.viewerBody &&
+                        healthBar.viewerBody.TryGetComponent(out CharacterBodyExtraStatsTracker viewerBodyExtraStats))
+                    {
+                        if (healthBar.source.body.isBoss || healthBar.source.body.isChampion)
+                        {
+                            cullFraction = Mathf.Max(cullFraction, viewerBodyExtraStats.ExecuteBossHealthFraction);
+                        }
+                    }
+
+                    return cullFraction;
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find cullFraction patch location");
             }
         }
 
