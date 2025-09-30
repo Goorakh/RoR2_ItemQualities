@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igInfusion
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 3d4d9c061a4d2b240bc519497506b247
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: c8587eba83369ec439052aa4a5975a59, type: 2}
+  _rareItem: {fileID: 11400000, guid: 6a628d146c357f7498db7c5157b9d0cc, type: 2}
+  _epicItem: {fileID: 11400000, guid: 2c206e0e9c0477846a5899e5d477ce14, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: c0bed981daa324d448d265344acb5456, type: 2}

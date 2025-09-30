@@ -414,6 +414,8 @@ namespace ItemQualities
             public static ItemQualityGroup Feather;
 
             public static ItemQualityGroup StrengthenBurn;
+
+            public static ItemQualityGroup Infusion;
         }
 
         public static class EquipmentQualityGroups
