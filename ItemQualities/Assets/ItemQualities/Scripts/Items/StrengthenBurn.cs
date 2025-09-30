@@ -23,32 +23,35 @@ namespace ItemQualities.Items
                 {
                     ItemQualityCounts strengthenBurn = ItemQualitiesContent.ItemQualityGroups.StrengthenBurn.GetItemCounts(damageReport.attackerMaster.inventory);
 
-                    float burnDamageCoefficient = (0.2f * strengthenBurn.UncommonCount) +
-                                                  (0.5f * strengthenBurn.RareCount) +
-                                                  (0.8f * strengthenBurn.EpicCount) +
-                                                  (1.0f * strengthenBurn.LegendaryCount);
-
-                    int maxBurnStacks = (5 * strengthenBurn.UncommonCount) +
-                                        (10 * strengthenBurn.RareCount) +
-                                        (15 * strengthenBurn.EpicCount) +
-                                        (20 * strengthenBurn.LegendaryCount);
-
-                    InflictDotInfo burnDotInfo = new InflictDotInfo
+                    if (strengthenBurn.TotalQualityCount > 0)
                     {
-                        attackerObject = damageReport.attacker,
-                        victimObject = damageReport.victim.gameObject,
-                        dotIndex = DotController.DotIndex.Burn,
-                        totalDamage = burnDamageCoefficient * damageReport.attackerBody.damage,
-                        damageMultiplier = 1f,
-                        maxStacksFromAttacker = (uint)maxBurnStacks
-                    };
+                        float burnDamageCoefficient = (0.2f * strengthenBurn.UncommonCount) +
+                                                      (0.5f * strengthenBurn.RareCount) +
+                                                      (0.8f * strengthenBurn.EpicCount) +
+                                                      (1.0f * strengthenBurn.LegendaryCount);
 
-                    if (damageReport.attackerMaster && damageReport.attackerMaster.inventory)
-                    {
-                        StrengthenBurnUtils.CheckDotForUpgrade(damageReport.attackerMaster.inventory, ref burnDotInfo);
+                        int maxBurnStacks = (5 * strengthenBurn.UncommonCount) +
+                                            (10 * strengthenBurn.RareCount) +
+                                            (15 * strengthenBurn.EpicCount) +
+                                            (20 * strengthenBurn.LegendaryCount);
+
+                        InflictDotInfo burnDotInfo = new InflictDotInfo
+                        {
+                            attackerObject = damageReport.attacker,
+                            victimObject = damageReport.victim.gameObject,
+                            dotIndex = DotController.DotIndex.Burn,
+                            totalDamage = burnDamageCoefficient * damageReport.attackerBody.damage,
+                            damageMultiplier = 1f,
+                            maxStacksFromAttacker = (uint)maxBurnStacks
+                        };
+
+                        if (damageReport.attackerMaster && damageReport.attackerMaster.inventory)
+                        {
+                            StrengthenBurnUtils.CheckDotForUpgrade(damageReport.attackerMaster.inventory, ref burnDotInfo);
+                        }
+
+                        DotController.InflictDot(ref burnDotInfo);
                     }
-
-                    DotController.InflictDot(ref burnDotInfo);
                 }
             }
         }
