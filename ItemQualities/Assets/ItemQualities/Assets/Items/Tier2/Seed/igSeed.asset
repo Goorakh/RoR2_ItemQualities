@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igSeed
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 18b17c96c46e9e645bda1f755ae13878
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 478a6d7a741d56a45bae60583e0b69a3, type: 2}
+  _rareItem: {fileID: 11400000, guid: 13b11a94cbbde244c8e3680baa7255a5, type: 2}
+  _epicItem: {fileID: 11400000, guid: 4fe2f8cd0b5171241b7191fa21bfc3a0, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: ff4cc54a529dfe941afeb9acbb2b3af1, type: 2}

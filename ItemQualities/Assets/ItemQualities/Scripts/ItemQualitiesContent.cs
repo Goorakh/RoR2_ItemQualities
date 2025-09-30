@@ -418,6 +418,8 @@ namespace ItemQualities
             public static ItemQualityGroup Infusion;
 
             public static ItemQualityGroup FireRing;
+
+            public static ItemQualityGroup Seed;
         }
 
         public static class EquipmentQualityGroups

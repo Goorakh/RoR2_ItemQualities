@@ -540,5 +540,17 @@
 
 		"ITEM_FIRERING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
 		"ITEM_FIRERING_LEGENDARY_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style>.",
+
+		"ITEM_SEED_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Dealing damage heals you.",
+		"ITEM_SEED_UNCOMMON_DESC": "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <sprite name=\"Quality\"> <style=cIsHealing>1%</style> <style=cStack>(+1% per stack)</style> of damage dealt.",
+
+		"ITEM_SEED_RARE_PICKUP": "<sprite name=\"Quality\"> Dealing damage heals you.",
+		"ITEM_SEED_RARE_DESC": "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <sprite name=\"Quality\"> <style=cIsHealing>3%</style> <style=cStack>(+3% per stack)</style> of damage dealt.",
+
+		"ITEM_SEED_EPIC_PICKUP": "<sprite name=\"Quality\"> Dealing damage heals you.",
+		"ITEM_SEED_EPIC_DESC": "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <sprite name=\"Quality\"> <style=cIsHealing>6%</style> <style=cStack>(+6% per stack)</style> of damage dealt.",
+
+		"ITEM_SEED_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Dealing damage heals you.",
+		"ITEM_SEED_LEGENDARY_DESC": "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <sprite name=\"Quality\"> <style=cIsHealing>10%</style> <style=cStack>(+10% per stack)</style> of damage dealt.",
 	}
 }
