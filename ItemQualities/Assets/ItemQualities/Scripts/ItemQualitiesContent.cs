@@ -416,6 +416,8 @@ namespace ItemQualities
             public static ItemQualityGroup StrengthenBurn;
 
             public static ItemQualityGroup Infusion;
+
+            public static ItemQualityGroup FireRing;
         }
 
         public static class EquipmentQualityGroups

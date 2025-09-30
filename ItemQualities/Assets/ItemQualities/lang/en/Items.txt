@@ -528,5 +528,17 @@
 
 		"ITEM_INFUSION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
 		"ITEM_INFUSION_LEGENDARY_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style>.",
+
+		"ITEM_FIRERING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
+		"ITEM_FIRERING_UNCOMMON_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>.",
+
+		"ITEM_FIRERING_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
+		"ITEM_FIRERING_RARE_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style>.",
+
+		"ITEM_FIRERING_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
+		"ITEM_FIRERING_EPIC_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style>.",
+
+		"ITEM_FIRERING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
+		"ITEM_FIRERING_LEGENDARY_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style>.",
 	}
 }

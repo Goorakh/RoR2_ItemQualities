@@ -54,6 +54,7 @@ namespace ItemQualities
             IL.RoR2.BossGroup.DropRewards += BossGroup_DropRewards;
             IL.RoR2.Inventory.GiveRandomEquipment += Inventory_GiveRandomEquipment;
             IL.RoR2.Inventory.GiveRandomEquipment_Xoroshiro128Plus += Inventory_GiveRandomEquipment;
+            IL.RoR2.MasterDropDroplet.DropItems += MasterDropDroplet_DropItems;
         }
 
         static bool pickupCheckNotAIBlacklist(PickupIndex pickupIndex)
@@ -593,6 +594,29 @@ namespace ItemQualities
                 EquipmentIndex qualityEquipmentIndex = qualityPickupDef != null ? qualityPickupDef.equipmentIndex : EquipmentIndex.None;
 
                 return qualityEquipmentIndex != EquipmentIndex.None ? qualityEquipmentIndex : originalEquipmentIndex;
+            }
+        }
+
+        static void MasterDropDroplet_DropItems(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdfld<MasterDropDroplet>(nameof(MasterDropDroplet.pickupsToDrop)),
+                               x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.FindPickupIndex))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After);
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<PickupIndex, MasterDropDroplet, PickupIndex>>(pickQuality);
+
+            static PickupIndex pickQuality(PickupIndex originalPickupIndex, MasterDropDroplet masterDropDroplet)
+            {
+                return tryUpgradeQuality(originalPickupIndex, masterDropDroplet.rng ?? RoR2Application.rng, masterDropDroplet.GetComponent<CharacterMaster>());
             }
         }
     }
