@@ -129,6 +129,8 @@ namespace ItemQualities
 
             List<BuffDef> buffDefsList = new List<BuffDef>();
 
+            List<EntityStateConfiguration> entityStateConfigurationsList = new List<EntityStateConfiguration>();
+
             List<TMP_SpriteAsset> spriteAssetsList = new List<TMP_SpriteAsset>();
 
             foreach (UnityEngine.Object obj in finalAssets)
@@ -173,6 +175,9 @@ namespace ItemQualities
                     case BuffDef buffDef:
                         buffDefsList.Add(buffDef);
                         break;
+                    case EntityStateConfiguration entityStateConfiguration:
+                        entityStateConfigurationsList.Add(entityStateConfiguration);
+                        break;
                     case TMP_SpriteAsset spriteAsset:
                         spriteAssetsList.Add(spriteAsset);
                         break;
@@ -205,6 +210,9 @@ namespace ItemQualities
 
             _contentPack.networkedObjectPrefabs.Add(networkedPrefabsList.ToArray());
 
+            _contentPack.entityStateConfigurations.Add(entityStateConfigurationsList.ToArray());
+            _contentPack.entityStateTypes.Add(entityStateConfigurationsList.Select(esc => (Type)esc.targetType).Where(t => t != null).ToArray());
+
             populateTypeFields(typeof(QualityTiers), qualityTierDefs, fieldName => "qd" + fieldName);
             QualityTiers.AllQualityTiers = new ReadOnlyCollection<QualityTierDef>(qualityTierDefs.ToArray());
 
@@ -220,6 +228,8 @@ namespace ItemQualities
             populateTypeFields(typeof(Buffs), _contentPack.buffDefs, fieldName => "bd" + fieldName);
 
             populateTypeFields(typeof(Prefabs), prefabs);
+
+            populateTypeFields(typeof(NetworkedPrefabs), _contentPack.networkedObjectPrefabs);
 
             populateTypeFields(typeof(ProjectilePrefabs), _contentPack.projectilePrefabs);
 
@@ -420,6 +430,8 @@ namespace ItemQualities
             public static ItemQualityGroup FireRing;
 
             public static ItemQualityGroup Seed;
+
+            public static ItemQualityGroup TPHealingNova;
         }
 
         public static class EquipmentQualityGroups
@@ -450,6 +462,11 @@ namespace ItemQualities
             public static GameObject QualityPickupDisplay;
 
             public static GameObject DeathMarkQualityEffect;
+        }
+
+        public static class NetworkedPrefabs
+        {
+            public static GameObject BossArenaHealNovaSpawner;
         }
 
         public static class ProjectilePrefabs

@@ -110,6 +110,31 @@ namespace ItemQualities
             return QualityTier.None;
         }
 
+        public ItemQualityCounts GetTeamItemCounts(TeamIndex teamIndex, bool requireAlive, bool requireConnected = true)
+        {
+            ItemQualityCounts itemCounts = default;
+
+            foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
+            {
+                if (!master)
+                    continue;
+
+                if (master.teamIndex != teamIndex)
+                    continue;
+
+                CharacterBody body = master.GetBody();
+                if (requireAlive && (!body || !body.healthComponent || !body.healthComponent.alive))
+                    continue;
+
+                if (requireConnected && (!master.playerCharacterMasterController || !master.playerCharacterMasterController.isConnected))
+                    continue;
+
+                itemCounts += GetItemCounts(master.inventory);
+            }
+
+            return itemCounts;
+        }
+
         void OnValidate()
         {
             if (BaseItemReference == null || !BaseItemReference.RuntimeKeyIsValid())

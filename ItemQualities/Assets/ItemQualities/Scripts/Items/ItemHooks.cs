@@ -42,6 +42,8 @@ namespace ItemQualities.Items
             IL.RoR2.SetStateOnHurt.OnTakeDamageServer += CombineGroupedItemCountsPatch;
             IL.RoR2.ShrineChanceBehavior.AddShrineStack += CombineGroupedItemCountsPatch;
             IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += CombineGroupedItemCountsPatch;
+            IL.RoR2.Util.GetItemCountForTeam += CombineGroupedItemCountsPatch;
+            IL.RoR2.Util.GetItemCountGlobal += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)
