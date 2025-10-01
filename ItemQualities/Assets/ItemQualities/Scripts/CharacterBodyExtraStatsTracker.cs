@@ -26,6 +26,8 @@ namespace ItemQualities
 
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
 
+        public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
+
         float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
         public float SlugOutOfDangerDelay
         {

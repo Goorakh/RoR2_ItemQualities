@@ -434,6 +434,8 @@ namespace ItemQualities
             public static ItemQualityGroup TPHealingNova;
 
             public static ItemQualityGroup IncreasePrimaryDamage;
+
+            public static ItemQualityGroup ExtraStatsOnLevelUp;
         }
 
         public static class EquipmentQualityGroups
