@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgIncreasePrimaryDamageBuff
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: 9fc16419bc6ee3542bcd64fe635c27dc
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonBuff: {fileID: 11400000, guid: 61ba5e28adcea454db73f5a0d4e0d23d, type: 2}
+  _rareBuff: {fileID: 11400000, guid: 3ab284876e8d9af44b12fb0ce9847dca, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 8ac647dd0f07d594587a00f58067be0a, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: 9043e2bf6daba6c46a3089022842bd74, type: 2}

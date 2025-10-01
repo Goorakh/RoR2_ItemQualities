@@ -564,5 +564,17 @@
 
 		"ITEM_TPHEALINGNOVA_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Release a healing nova in boss arenas.",
 		"ITEM_TPHEALINGNOVA_LEGENDARY_DESC": "{0}\nRelease a <style=cIsHealing>healing nova</style> in <style=cIsUtility>special boss arenas</style>, <style=cIsHealing>healing</style> all nearby allies for <style=cIsHealing>50%</style> of their maximum health. Occurs <sprite name=\"Quality\"> <style=cIsHealing>5</style> <style=cStack>(+5 per stack)</style> times.",
+
+		"ITEM_INCREASEPRIMARYDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Strikes enemies with a single more powerful lightning strike at 5 charges.",
+        "ITEM_INCREASEPRIMARYDAMAGE_UNCOMMON_DESC": "{0}\nAt <style=cIsUtility>5 or more charges</style>, using your <style=cIsUtility>Primary skill</style> consumes <style=cIsUtility>5 charges</style> and fires a <style=cIsDamage>more powerful lightning strike</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>325%</style> <style=cStack>(+75% per stack)</style> TOTAL damage.",
+
+		"ITEM_INCREASEPRIMARYDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Strikes enemies with a single more powerful lightning strike at 5 charges.",
+        "ITEM_INCREASEPRIMARYDAMAGE_RARE_DESC": "{0}\nAt <style=cIsUtility>5 or more charges</style>, using your <style=cIsUtility>Primary skill</style> consumes <style=cIsUtility>5 charges</style> and fires a <style=cIsDamage>more powerful lightning strike</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>350%</style> <style=cStack>(+100% per stack)</style> TOTAL damage.",
+
+		"ITEM_INCREASEPRIMARYDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Strikes enemies with a single more powerful lightning strike at 5 charges.",
+        "ITEM_INCREASEPRIMARYDAMAGE_EPIC_DESC": "{0}\nAt <style=cIsUtility>5 or more charges</style>, using your <style=cIsUtility>Primary skill</style> consumes <style=cIsUtility>5 charges</style> and fires a <style=cIsDamage>more powerful lightning strike</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>400%</style> <style=cStack>(+150% per stack)</style> TOTAL damage.",
+
+		"ITEM_INCREASEPRIMARYDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Strikes enemies with a single more powerful lightning strike at 5 charges.",
+        "ITEM_INCREASEPRIMARYDAMAGE_LEGENDARY_DESC": "{0}\nAt <style=cIsUtility>5 or more charges</style>, using your <style=cIsUtility>Primary skill</style> consumes <style=cIsUtility>5 charges</style> and fires a <style=cIsDamage>more powerful lightning strike</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>450%</style> <style=cStack>(+200% per stack)</style> TOTAL damage.",
 	}
 }
