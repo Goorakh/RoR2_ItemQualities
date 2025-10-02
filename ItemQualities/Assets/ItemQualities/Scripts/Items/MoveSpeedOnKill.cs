@@ -11,8 +11,6 @@ namespace ItemQualities.Items
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
-            Inventory.onInventoryChangedGlobal += onInventoryChangedGlobal;
-
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
@@ -30,37 +28,6 @@ namespace ItemQualities.Items
                                      (0.05f * moveSpeedOnKill.LegendaryCount);
 
             args.moveSpeedMultAdd += moveSpeedPerBuff * killMoveSpeedBuff.TotalQualityCount;
-        }
-
-        static void onInventoryChangedGlobal(Inventory inventory)
-        {
-            if (!inventory.TryGetComponent(out CharacterMaster master))
-                return;
-
-            CharacterBody body = master.GetBody();
-            if (!body)
-                return;
-
-            QualityTier highestMoveSpeedOnKillQuality = ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetHighestQualityInInventory(inventory);
-            BuffIndex killMoveSpeedTargetBuffIndex = highestMoveSpeedOnKillQuality > QualityTier.None ? ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.GetBuffIndex(highestMoveSpeedOnKillQuality) : BuffIndex.None;
-
-            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-            {
-                if (qualityTier != highestMoveSpeedOnKillQuality)
-                {
-                    BuffIndex killMoveSpeedBuffIndex = ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.GetBuffIndex(qualityTier);
-
-                    for (int i = body.GetBuffCount(killMoveSpeedBuffIndex); i > 0; i--)
-                    {
-                        body.RemoveBuff(killMoveSpeedBuffIndex);
-
-                        if (killMoveSpeedTargetBuffIndex != BuffIndex.None)
-                        {
-                            body.AddBuff(killMoveSpeedTargetBuffIndex);
-                        }
-                    }
-                }
-            }
         }
 
         static void onCharacterDeathGlobal(DamageReport damageReport)

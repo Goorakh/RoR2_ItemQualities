@@ -1,7 +1,6 @@
 ﻿using HG;
 using ItemQualities.Items;
 using RoR2;
-using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -199,6 +198,26 @@ namespace ItemQualities
         void onBodyInventoryChanged()
         {
             MarkAllStatsDirty();
+
+            void setItemBehavior<T>(bool enabled) where T : Behaviour
+            {
+                T itemBehavior = GetComponent<T>();
+                bool alreadyEnabled = itemBehavior && itemBehavior.enabled;
+
+                if (alreadyEnabled != enabled)
+                {
+                    if (itemBehavior)
+                    {
+                        itemBehavior.enabled = enabled;
+                    }
+                    else if (enabled)
+                    {
+                        gameObject.AddComponent<T>();
+                    }
+                }
+            }
+
+            setItemBehavior<MoveSpeedOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
         }
 
         public void MarkAllStatsDirty()

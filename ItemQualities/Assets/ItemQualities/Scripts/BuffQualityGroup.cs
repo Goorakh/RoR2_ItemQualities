@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities
@@ -74,6 +75,37 @@ namespace ItemQualities
             int legendaryCount = body.GetBuffCount(LegendaryBuffIndex);
 
             return new BuffQualityCounts(baseCount, uncommonCount, rareCount, epicCount, legendaryCount);
+        }
+
+        public void EnsureBuffQualities(CharacterBody body, QualityTier buffQualityTier, bool includeBaseBuff = false)
+        {
+            if (!NetworkServer.active)
+            {
+                Log.Warning("Called on client");
+                return;
+            }
+
+            BuffIndex desiredBuffIndex = GetBuffIndex(buffQualityTier);
+            if (!includeBaseBuff && buffQualityTier == QualityTier.None)
+                desiredBuffIndex = BuffIndex.None;
+
+            for (QualityTier qualityTier = includeBaseBuff ? QualityTier.None : 0; qualityTier < QualityTier.Count; qualityTier++)
+            {
+                if (qualityTier != buffQualityTier)
+                {
+                    BuffIndex qualityBuffIndex = GetBuffIndex(qualityTier);
+
+                    for (int i = body.GetBuffCount(qualityBuffIndex); i > 0; i--)
+                    {
+                        body.RemoveBuff(qualityBuffIndex);
+
+                        if (desiredBuffIndex != BuffIndex.None)
+                        {
+                            body.AddBuff(desiredBuffIndex);
+                        }
+                    }
+                }
+            }
         }
 
         void OnValidate()
