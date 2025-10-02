@@ -1,14 +1,86 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using HG.Coroutines;
+using ItemQualities.ContentManagement;
+using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
+using RoR2.Projectile;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
     static class Firework
     {
+        static GameObject _fireworkBigProjectilePrefab;
+
+        [ContentInitializer]
+        static IEnumerator LoadContent(ContentIntializerArgs args)
+        {
+            AsyncOperationHandle<GameObject> fireworkProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Firework.FireworkProjectile_prefab);
+            AsyncOperationHandle<GameObject> fireworkGhostLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Firework.FireworkGhost_prefab);
+            AsyncOperationHandle<GameObject> explodeEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Common_VFX.OmniExplosionVFXQuick_prefab);
+
+            ParallelProgressCoroutine prefabsLoadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
+            prefabsLoadCoroutine.Add(fireworkProjectileLoad);
+            prefabsLoadCoroutine.Add(fireworkGhostLoad);
+            prefabsLoadCoroutine.Add(explodeEffectLoad);
+
+            yield return prefabsLoadCoroutine;
+
+            if (fireworkProjectileLoad.Status != AsyncOperationStatus.Succeeded || !fireworkProjectileLoad.Result)
+            {
+                Log.Error($"Failed to load firework projectile prefab: {fireworkProjectileLoad.OperationException}");
+                yield break;
+            }
+
+            if (fireworkGhostLoad.Status != AsyncOperationStatus.Succeeded || !fireworkGhostLoad.Result)
+            {
+                Log.Error($"Failed to load firework projectile ghost prefab: {fireworkGhostLoad.OperationException}");
+                yield break;
+            }
+
+            GameObject fireworkBigGhost = fireworkGhostLoad.Result.InstantiateClone("FireworkBigGhost", false);
+            Transform fireworkBigGhostModelRoot = fireworkBigGhost.transform.Find("mdlFireworkProjectile");
+            if (fireworkBigGhostModelRoot)
+            {
+                fireworkBigGhostModelRoot.localScale *= 2f;
+            }
+            else
+            {
+                Log.Warning("Failed to find firework model root");
+            }
+
+            GameObject fireworkBigPrefab = fireworkProjectileLoad.Result.InstantiateClone("FireworkBigProjectile");
+
+            ProjectileController missileBigProjectileController = fireworkBigPrefab.GetComponent<ProjectileController>();
+            missileBigProjectileController.ghostPrefab = fireworkBigGhost;
+
+            MissileController fireworkBigMissileController = fireworkBigPrefab.GetComponent<MissileController>();
+            fireworkBigMissileController.giveupTimer = 20f;
+            fireworkBigMissileController.deathTimer = 30f;
+            fireworkBigMissileController.maxSeekDistance = 150f;
+
+            QuaternionPID fireworkBigQuaternionPID = fireworkBigPrefab.GetComponent<QuaternionPID>();
+            fireworkBigQuaternionPID.PID = new Vector3(10f, 0.3f, 0f);
+
+            ProjectileImpactExplosion fireworkBigImpactExplosion = fireworkBigPrefab.GetComponent<ProjectileImpactExplosion>();
+            fireworkBigImpactExplosion.blastRadius = 7.5f;
+
+            if (explodeEffectLoad.Status == AsyncOperationStatus.Succeeded && explodeEffectLoad.Result)
+            {
+                fireworkBigImpactExplosion.impactEffect = explodeEffectLoad.Result;
+            }
+
+            _fireworkBigProjectilePrefab = fireworkBigPrefab;
+            args.ContentPack.projectilePrefabs.Add(fireworkBigPrefab);
+        }
+
         [SystemInitializer]
         static void Init()
         {
@@ -55,9 +127,9 @@ namespace ItemQualities.Items
 
                 static GameObject getProjectilePrefab(GameObject projectilePrefab, bool shouldFireLargeFirework)
                 {
-                    if (shouldFireLargeFirework && ItemQualitiesContent.ProjectilePrefabs.FireworkProjectileBig)
+                    if (shouldFireLargeFirework && _fireworkBigProjectilePrefab)
                     {
-                        projectilePrefab = ItemQualitiesContent.ProjectilePrefabs.FireworkProjectileBig;
+                        projectilePrefab = _fireworkBigProjectilePrefab;
                     }
 
                     return projectilePrefab;

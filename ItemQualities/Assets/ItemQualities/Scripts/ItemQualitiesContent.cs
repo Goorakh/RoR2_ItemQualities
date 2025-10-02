@@ -475,7 +475,6 @@ namespace ItemQualities
 
         public static class ProjectilePrefabs
         {
-            public static GameObject FireworkProjectileBig;
         }
     }
 }
