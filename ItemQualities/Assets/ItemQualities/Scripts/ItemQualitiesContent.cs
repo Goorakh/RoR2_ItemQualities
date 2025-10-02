@@ -438,6 +438,8 @@ namespace ItemQualities
             public static ItemQualityGroup ExtraStatsOnLevelUp;
 
             public static ItemQualityGroup AttackSpeedOnCrit;
+
+            public static ItemQualityGroup Thorns;
         }
 
         public static class EquipmentQualityGroups
