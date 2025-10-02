@@ -18,6 +18,7 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.CharacterBody.AddMultiKill += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.GetMaxIncreasedDamageMultiKillBuffsForCharacter += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.OnClientBuffsChanged += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.OnInventoryChanged += CombineGroupedItemCountsPatch;
@@ -30,6 +31,7 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
+            IL.RoR2.GlobalEventManager.OnCrit += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnInteractionBegin += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.ProcDeathMark += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += CombineGroupedItemCountsPatch;

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igAttackSpeedOnCrit
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 8f7d52132f0d4154f96802e17c3a120f
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 1e9e4af9df6772a4c9e03e7435763fdc, type: 2}
+  _rareItem: {fileID: 11400000, guid: b6ce20f6b627e5a41aec9601da36280e, type: 2}
+  _epicItem: {fileID: 11400000, guid: ad9925f31ade3dd47b2715b397980c3e, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 43d18390225116141bbb485a5f2a87ae, type: 2}

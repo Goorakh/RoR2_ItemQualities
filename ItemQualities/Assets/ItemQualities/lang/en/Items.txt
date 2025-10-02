@@ -591,5 +591,17 @@
 
 		"EXTRASTATSONLEVELUP_INCREASE_LEVEL": "+{0} PLAYER LEVEL",
         "EXTRASTATSONLEVELUP_REDUCE_AMBIENT_LEVEL": "-{0} MONSTER LEVEL",
+
+		"ITEM_ATTACKSPEEDONCRIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy with a 'Critical Strike' increases attack speed for the rest of the stage.",
+		"ITEM_ATTACKSPEEDONCRIT_UNCOMMON_DESC": "{0}\nKilling an enemy with a <style=cIsDamage>critical strike</style> increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> up to <sprite name=\"Quality\"> <style=cIsDamage>6</style> <style=cStack>(+6 per stack)</style> times. Resets on stage exit or death.",
+
+		"ITEM_ATTACKSPEEDONCRIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy with a 'Critical Strike' increases attack speed for the rest of the stage.",
+		"ITEM_ATTACKSPEEDONCRIT_RARE_DESC": "{0}\nKilling an enemy with a <style=cIsDamage>critical strike</style> increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> up to <sprite name=\"Quality\"> <style=cIsDamage>9</style> <style=cStack>(+9 per stack)</style> times. Resets on stage exit or death.",
+
+		"ITEM_ATTACKSPEEDONCRIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy with a 'Critical Strike' increases attack speed for the rest of the stage.",
+		"ITEM_ATTACKSPEEDONCRIT_EPIC_DESC": "{0}\nKilling an enemy with a <style=cIsDamage>critical strike</style> increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> up to <sprite name=\"Quality\"> <style=cIsDamage>12</style> <style=cStack>(+12 per stack)</style> times. Resets on stage exit or death.",
+
+		"ITEM_ATTACKSPEEDONCRIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy with a 'Critical Strike' increases attack speed for the rest of the stage.",
+		"ITEM_ATTACKSPEEDONCRIT_LEGENDARY_DESC": "{0}\nKilling an enemy with a <style=cIsDamage>critical strike</style> increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>25%</style> <style=cStack>(+25% per stack)</style> up to <sprite name=\"Quality\"> <style=cIsDamage>15</style> <style=cStack>(+15 per stack)</style> times. Resets on stage exit or death.",
 	}
 }

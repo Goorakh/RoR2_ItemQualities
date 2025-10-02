@@ -436,6 +436,8 @@ namespace ItemQualities
             public static ItemQualityGroup IncreasePrimaryDamage;
 
             public static ItemQualityGroup ExtraStatsOnLevelUp;
+
+            public static ItemQualityGroup AttackSpeedOnCrit;
         }
 
         public static class EquipmentQualityGroups
@@ -454,6 +456,8 @@ namespace ItemQualities
             public static BuffQualityGroup Slow60;
 
             public static BuffQualityGroup KillMoveSpeed;
+
+            public static BuffQualityGroup AttackSpeedOnCrit;
         }
 
         public static class Buffs
