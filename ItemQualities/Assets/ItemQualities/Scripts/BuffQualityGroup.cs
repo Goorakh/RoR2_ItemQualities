@@ -89,6 +89,8 @@ namespace ItemQualities
             if (!includeBaseBuff && buffQualityTier == QualityTier.None)
                 desiredBuffIndex = BuffIndex.None;
 
+            BuffDef desiredBuffDef = BuffCatalog.GetBuffDef(desiredBuffIndex);
+
             for (QualityTier qualityTier = includeBaseBuff ? QualityTier.None : 0; qualityTier < QualityTier.Count; qualityTier++)
             {
                 if (qualityTier != buffQualityTier)
@@ -99,7 +101,7 @@ namespace ItemQualities
                     {
                         body.RemoveBuff(qualityBuffIndex);
 
-                        if (desiredBuffIndex != BuffIndex.None)
+                        if (desiredBuffIndex != BuffIndex.None && desiredBuffDef && (desiredBuffDef.canStack || !body.HasBuff(desiredBuffIndex)))
                         {
                             body.AddBuff(desiredBuffIndex);
                         }

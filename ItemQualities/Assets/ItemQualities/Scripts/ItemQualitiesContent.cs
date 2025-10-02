@@ -440,6 +440,8 @@ namespace ItemQualities
             public static ItemQualityGroup AttackSpeedOnCrit;
 
             public static ItemQualityGroup Thorns;
+
+            public static ItemQualityGroup SprintOutOfCombat;
         }
 
         public static class EquipmentQualityGroups
@@ -460,6 +462,8 @@ namespace ItemQualities
             public static BuffQualityGroup KillMoveSpeed;
 
             public static BuffQualityGroup AttackSpeedOnCrit;
+
+            public static BuffQualityGroup WhipBoost;
         }
 
         public static class Buffs

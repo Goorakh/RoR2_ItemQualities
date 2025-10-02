@@ -615,5 +615,17 @@
 
 		"ITEM_THORNS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase razor damage based on damage taken.",
 		"ITEM_THORNS_LEGENDARY_DESC": "Getting hit causes you to explode in a burst of razors, dealing <style=cIsDamage>160% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> of damage taken. Hits up to <style=cIsDamage>5</style> <style=cStack>(+2 per stack)</style> targets in a <style=cIsDamage>25m</style> <style=cStack>(+10m per stack)</style> radius",
+
+		"ITEM_SPRINTOUTOFCOMBAT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
+		"ITEM_SPRINTOUTOFCOMBAT_UNCOMMON_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
+
+		"ITEM_SPRINTOUTOFCOMBAT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
+		"ITEM_SPRINTOUTOFCOMBAT_RARE_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
+
+		"ITEM_SPRINTOUTOFCOMBAT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
+		"ITEM_SPRINTOUTOFCOMBAT_EPIC_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
+
+		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
+		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
 	}
 }

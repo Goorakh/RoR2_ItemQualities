@@ -219,6 +219,7 @@ namespace ItemQualities
 
             setItemBehavior<MoveSpeedOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
             setItemBehavior<AttackSpeedOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+            setItemBehavior<SprintOutOfCombatQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCounts(_body.inventory).TotalQualityCount > 0);
         }
 
         public void MarkAllStatsDirty()
