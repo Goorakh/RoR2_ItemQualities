@@ -627,5 +627,17 @@
 
 		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
 		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
+
+		"ITEM_REGENERATINGSCRAPCONSUMED_UNCOMMON_PICKUP": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityUncommon\">.",
+		"ITEM_REGENERATINGSCRAPCONSUMED_UNCOMMON_DESC": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityUncommon\">.",
+
+		"ITEM_REGENERATINGSCRAPCONSUMED_RARE_PICKUP": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityRare\">.",
+		"ITEM_REGENERATINGSCRAPCONSUMED_RARE_DESC": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityRare\">.",
+
+		"ITEM_REGENERATINGSCRAPCONSUMED_EPIC_PICKUP": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityEpic\">.",
+		"ITEM_REGENERATINGSCRAPCONSUMED_EPIC_DESC": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityEpic\">.",
+
+		"ITEM_REGENERATINGSCRAPCONSUMED_LEGENDARY_PICKUP": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityLegendary\">.",
+		"ITEM_REGENERATINGSCRAPCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityLegendary\">.",
 	}
 }

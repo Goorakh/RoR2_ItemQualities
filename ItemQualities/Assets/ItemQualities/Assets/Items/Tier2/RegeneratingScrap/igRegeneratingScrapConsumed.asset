@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igRegeneratingScrapConsumed
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 4b9a9efb79a3d9f48b652d46aafdc1bf
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: bfb40fba2b2f2d142af6b5e8af728d33, type: 2}
+  _rareItem: {fileID: 11400000, guid: d9c29465b744e9243aa37d23857c4e6a, type: 2}
+  _epicItem: {fileID: 11400000, guid: f83319e7006405147a0db474923f749f, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 2d5908bda66d43f4db9c4f971a19e8ec, type: 2}

@@ -442,6 +442,10 @@ namespace ItemQualities
             public static ItemQualityGroup Thorns;
 
             public static ItemQualityGroup SprintOutOfCombat;
+
+            public static ItemQualityGroup RegeneratingScrap;
+
+            public static ItemQualityGroup RegeneratingScrapConsumed;
         }
 
         public static class EquipmentQualityGroups
