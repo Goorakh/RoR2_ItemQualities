@@ -25,7 +25,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
   pickupIconSprite: {fileID: 21300000, guid: 2acc0714fde44b54c823eee8fdb1070b, type: 3}
-  isConsumed: 0
+  isConsumed: 1
   hidden: 0
   canRemove: 1
   tags: 09000000
