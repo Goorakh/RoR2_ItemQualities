@@ -26,6 +26,7 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.TriggerEnemyDebuffs += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.UpdateMultiKill += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterMaster.OnBodyStart += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;

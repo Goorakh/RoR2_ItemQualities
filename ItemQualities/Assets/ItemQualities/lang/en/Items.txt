@@ -639,5 +639,17 @@
 
 		"ITEM_REGENERATINGSCRAPCONSUMED_LEGENDARY_PICKUP": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityLegendary\">.",
 		"ITEM_REGENERATINGSCRAPCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityLegendary\">.",
+
+		"ITEM_SPRINTARMOR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Further reduce incoming damage while sprinting in a straight line.",
+		"ITEM_SPRINTARMOR_UNCOMMON_DESC": "{0}\nAfter <style=cIsUtility>sprinting</style> in a straight line for <style=cIsUtility>1</style> second, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>30</style> <style=cStack>(+30 per stack)</style>.",
+
+		"ITEM_SPRINTARMOR_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Further reduce incoming damage while sprinting in a straight line.",
+		"ITEM_SPRINTARMOR_RARE_DESC": "{0}\nAfter <style=cIsUtility>sprinting</style> in a straight line for <style=cIsUtility>1</style> second, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style>.",
+
+		"ITEM_SPRINTARMOR_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Further reduce incoming damage while sprinting in a straight line.",
+		"ITEM_SPRINTARMOR_EPIC_DESC": "{0}\nAfter <style=cIsUtility>sprinting</style> in a straight line for <style=cIsUtility>1</style> second, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>75</style> <style=cStack>(+75 per stack)</style>.",
+
+		"ITEM_SPRINTARMOR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Further reduce incoming damage while sprinting in a straight line.",
+		"ITEM_SPRINTARMOR_LEGENDARY_DESC": "{0}\nAfter <style=cIsUtility>sprinting</style> in a straight line for <style=cIsUtility>1</style> second, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style>.",
 	}
 }

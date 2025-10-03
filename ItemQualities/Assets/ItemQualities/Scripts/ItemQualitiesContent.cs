@@ -446,6 +446,8 @@ namespace ItemQualities
             public static ItemQualityGroup RegeneratingScrap;
 
             public static ItemQualityGroup RegeneratingScrapConsumed;
+
+            public static ItemQualityGroup SprintArmor;
         }
 
         public static class EquipmentQualityGroups
@@ -473,6 +475,8 @@ namespace ItemQualities
         public static class Buffs
         {
             public static BuffDef BossStun;
+
+            public static BuffDef SprintArmorStrong;
         }
 
         public static class Prefabs

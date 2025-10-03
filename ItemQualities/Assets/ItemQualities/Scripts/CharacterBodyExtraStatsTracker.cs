@@ -24,6 +24,7 @@ namespace ItemQualities
         bool _statsDirty;
 
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
+        TemporaryVisualEffect _sprintArmorStrongEffectInstance;
 
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
 
@@ -217,9 +218,13 @@ namespace ItemQualities
                 }
             }
 
-            setItemBehavior<MoveSpeedOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-            setItemBehavior<AttackSpeedOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-            setItemBehavior<SprintOutOfCombatQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+            if (NetworkServer.active)
+            {
+                setItemBehavior<MoveSpeedOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<AttackSpeedOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<SprintOutOfCombatQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<SprintArmorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+            }
         }
 
         public void MarkAllStatsDirty()
@@ -360,6 +365,7 @@ namespace ItemQualities
         public void UpdateAllTemporaryVisualEffects()
         {
             _body.UpdateSingleTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
+            _body.UpdateSingleTemporaryVisualEffect(ref _sprintArmorStrongEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.radius * 1.5f, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong));
         }
 
         void hookSetSlugOutOfDanger(bool slugOutOfDanger)
