@@ -448,6 +448,8 @@ namespace ItemQualities
             public static ItemQualityGroup RegeneratingScrapConsumed;
 
             public static ItemQualityGroup SprintArmor;
+
+            public static ItemQualityGroup IceRing;
         }
 
         public static class EquipmentQualityGroups

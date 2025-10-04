@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Items;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -142,12 +143,20 @@ namespace ItemQualities
                     if (healthBar &&
                         healthBar.source &&
                         healthBar.source.body &&
-                        healthBar.viewerBody &&
-                        healthBar.viewerBody.TryGetComponent(out CharacterBodyExtraStatsTracker viewerBodyExtraStats))
+                        (healthBar.source.body.bodyFlags & CharacterBody.BodyFlags.ImmuneToExecutes) == 0 &&
+                        healthBar.viewerBody)
                     {
                         if (healthBar.source.body.isBoss || healthBar.source.body.isChampion)
                         {
-                            cullFraction = Mathf.Max(cullFraction, viewerBodyExtraStats.ExecuteBossHealthFraction);
+                            if (healthBar.viewerBody.TryGetComponent(out CharacterBodyExtraStatsTracker viewerBodyExtraStats))
+                            {
+                                cullFraction = Mathf.Max(cullFraction, viewerBodyExtraStats.ExecuteBossHealthFraction / healthBar.source.body.cursePenalty);
+                            }
+                        }
+
+                        if (healthBar.source.isInFrozenState)
+                        {
+                            cullFraction = Mathf.Max(cullFraction, IceRing.GetFreezeExecuteThreshold(healthBar.viewerBody) / healthBar.source.body.cursePenalty);
                         }
                     }
 

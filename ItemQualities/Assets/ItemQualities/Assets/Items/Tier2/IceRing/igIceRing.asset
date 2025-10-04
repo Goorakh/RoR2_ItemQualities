@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igIceRing
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 6d3b91533da0afe46835989b320e75fd
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: eae8818e3b8cf4946ae20e3ed8c7c0cc, type: 2}
+  _rareItem: {fileID: 11400000, guid: e8ad31a7a3ed9474f8655f7de632d214, type: 2}
+  _epicItem: {fileID: 11400000, guid: 9c1f8ec3f34faea45981aaca97a9e8cb, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 175d3890f6e9c9f47984a425370725d0, type: 2}
