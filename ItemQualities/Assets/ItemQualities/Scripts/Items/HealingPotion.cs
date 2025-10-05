@@ -58,14 +58,14 @@ namespace ItemQualities.Items
 
                 bool qualityElixirBroken = false;
 
-                if (elixir.BaseItemCount == 0 && elixir.TotalCount > 0)
+                if (elixir.BaseItemCount == 0 && elixir.TotalQualityCount > 0)
                 {
                     for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                     {
                         ItemIndex elixirItemIndex = ItemQualitiesContent.ItemQualityGroups.HealingPotion.GetItemIndex(qualityTier);
-                        ItemIndex consumedElixirItemIndex = DLC1Content.Items.HealingPotionConsumed.itemIndex;
+                        ItemIndex consumedElixirItemIndex = ItemQualitiesContent.ItemQualityGroups.HealingPotionConsumed.GetItemIndex(qualityTier);
 
-                        int elixirCount = inventory.GetItemCount(elixirItemIndex);
+                        int elixirCount = elixir[qualityTier];
                         if (elixirCount > 0)
                         {
                             inventory.RemoveItem(elixirItemIndex, 1);
@@ -90,38 +90,10 @@ namespace ItemQualities.Items
                               x => x.MatchCallOrCallvirt<CharacterMasterNotificationQueue>(nameof(CharacterMasterNotificationQueue.SendTransformNotification))))
             {
                 c.MarkLabel(afterBaseElixirLogicLabel);
-
-                /*
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Action<HealthComponent>>(handleQualityElixirs);
-
-                static void handleQualityElixirs(HealthComponent healthComponent)
-                {
-                    CharacterBody body = healthComponent ? healthComponent.body : null;
-                    Inventory inventory = body ? body.inventory : null;
-                    if (!inventory)
-                        return;
-
-                    for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-                    {
-                        ItemIndex watchItemIndex = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemIndex(qualityTier);
-                        ItemIndex watchBrokenItemIndex = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonusConsumed.GetItemIndex(qualityTier);
-
-                        int watchCount = inventory.GetItemCount(watchItemIndex);
-                        if (watchCount > 0)
-                        {
-                            inventory.RemoveItem(watchItemIndex, watchCount);
-                            inventory.GiveItem(watchBrokenItemIndex, watchCount);
-
-                            CharacterMasterNotificationQueue.SendTransformNotification(body.master, watchItemIndex, watchBrokenItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-                        }
-                    }
-                }
-                */
             }
             else
             {
-                Log.Error($"Failed to find quality watch break patch location");
+                Log.Error($"Failed to find quality elixir break patch location");
             }
         }
     }

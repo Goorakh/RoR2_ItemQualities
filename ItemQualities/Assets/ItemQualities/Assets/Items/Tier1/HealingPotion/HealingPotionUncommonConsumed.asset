@@ -15,8 +15,8 @@ MonoBehaviour:
   deprecatedTier: 5
   _itemTierDef: {fileID: 0}
   nameToken: 
-  pickupToken: ITEM_HEALINGPOTIONCONSUMED_UNCOMMON_PICKUP
-  descriptionToken: ITEM_HEALINGPOTIONCONSUMED_UNCOMMON_DESC
+  pickupToken: 
+  descriptionToken: 
   loreToken: 
   unlockableDef: {fileID: 0}
   pickupModelPrefab: {fileID: 0}
