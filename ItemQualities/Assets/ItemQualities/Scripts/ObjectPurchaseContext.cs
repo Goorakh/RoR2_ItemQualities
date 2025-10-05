@@ -1,7 +1,5 @@
 ﻿using HG;
 using RoR2;
-using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItemQualities
@@ -18,24 +16,15 @@ namespace ItemQualities
         {
             CostTypeDef.PayCostResults payCostResults = orig(self, cost, activator, purchasedObject, rng, avoidedItemIndex);
 
-            List<PickupIndex> pickupIndicesSpentOnPurchase = new List<PickupIndex>(payCostResults.itemsTaken.Count + payCostResults.equipmentTaken.Count);
-
-            foreach (ItemIndex itemIndex in payCostResults.itemsTaken)
-            {
-                pickupIndicesSpentOnPurchase.Add(PickupCatalog.FindPickupIndex(itemIndex));
-            }
-
-            foreach (EquipmentIndex equipmentIndex in payCostResults.equipmentTaken)
-            {
-                pickupIndicesSpentOnPurchase.Add(PickupCatalog.FindPickupIndex(equipmentIndex));
-            }
-
             ObjectPurchaseContext purchaseContext = purchasedObject.EnsureComponent<ObjectPurchaseContext>();
-            purchaseContext.PickupIndicesSpentOnLastPurchase = pickupIndicesSpentOnPurchase.ToArray();
+            purchaseContext.FirstInteractionResults ??= payCostResults;
+            purchaseContext.Results = payCostResults;
 
             return payCostResults;
         }
 
-        public PickupIndex[] PickupIndicesSpentOnLastPurchase = Array.Empty<PickupIndex>();
+        public CostTypeDef.PayCostResults FirstInteractionResults { get; private set; }
+
+        public CostTypeDef.PayCostResults Results { get; private set; }
     }
 }

@@ -42,6 +42,7 @@ namespace ItemQualities.Items
             IL.RoR2.Inventory.UpdateEquipment += CombineGroupedItemCountsPatch;
             IL.RoR2.Items.BaseItemBodyBehavior.UpdateBodyItemBehaviorStacks += CombineGroupedItemCountsPatch;
             IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += CombineGroupedItemCountsPatch;
+            IL.RoR2.PurchaseInteraction.OnInteractionBegin += CombineGroupedItemCountsPatch;
             IL.RoR2.SceneDirector.PopulateScene += CombineGroupedItemCountsPatch;
             IL.RoR2.SetStateOnHurt.OnTakeDamageServer += CombineGroupedItemCountsPatch;
             IL.RoR2.ShrineChanceBehavior.AddShrineStack += CombineGroupedItemCountsPatch;

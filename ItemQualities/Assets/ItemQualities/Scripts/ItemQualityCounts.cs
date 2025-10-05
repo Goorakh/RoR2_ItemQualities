@@ -14,6 +14,51 @@ namespace ItemQualities
 
         public readonly int TotalQualityCount => UncommonCount + RareCount + EpicCount + LegendaryCount;
 
+        public int this[QualityTier qualityTier]
+        {
+            readonly get
+            {
+                switch (qualityTier)
+                {
+                    case QualityTier.None:
+                        return BaseItemCount;
+                    case QualityTier.Uncommon:
+                        return UncommonCount;
+                    case QualityTier.Rare:
+                        return RareCount;
+                    case QualityTier.Epic:
+                        return EpicCount;
+                    case QualityTier.Legendary:
+                        return LegendaryCount;
+                    default:
+                        throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
+                }
+            }
+            set
+            {
+                switch (qualityTier)
+                {
+                    case QualityTier.None:
+                        BaseItemCount = value;
+                        break;
+                    case QualityTier.Uncommon:
+                        UncommonCount = value;
+                        break;
+                    case QualityTier.Rare:
+                        RareCount = value;
+                        break;
+                    case QualityTier.Epic:
+                        EpicCount = value;
+                        break;
+                    case QualityTier.Legendary:
+                        LegendaryCount = value;
+                        break;
+                    default:
+                        throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
+                }
+            }
+        }
+
         public ItemQualityCounts(int baseItemCount, int uncommonCount, int rareCount, int epicCount, int legendaryCount)
         {
             BaseItemCount = Math.Max(0, baseItemCount);

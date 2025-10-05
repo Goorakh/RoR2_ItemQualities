@@ -663,5 +663,29 @@
 
 		"ITEM_ICERING_LEGENDARY_PICKUP": "High damage hits also blasts enemies with runic ice and <sprite name=\"Quality\"> freezes them. Recharges over time.",
 		"ITEM_ICERING_LEGENDARY_DESC": "Hits that deal <style=cIsDamage>more than 400% damage</style> also blasts enemies with a <style=cIsDamage>runic ice blast</style>, <style=cIsUtility>slowing</style> them by <style=cIsUtility>80%</style> for <style=cIsUtility>3s</style> <style=cStack>(+3s per stack)</style>, dealing <style=cIsDamage>250%</style> <style=cStack>(+250% per stack)</style> TOTAL damage, and <sprite name=\"Quality\"> <style=cIsUtility>freezing</style> for <style=cIsUtility>2s</style>. Increases freeze execute threshold by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style>. Recharges every <style=cIsUtility>10</style> seconds.",
+
+		"ITEM_LOWERPRICEDCHESTS_UNCOMMON_PICKUP": "First chest bought yields more than one <sprite name=\"Quality\"> reward. Usable once per stage.",
+        "ITEM_LOWERPRICEDCHESTS_UNCOMMON_DESC": "Gain an extra <sprite name=\"QualityUncommon\"> uncommon quality item on the first chest opened per stage. <style=cStack>Each additional Sale Star increases the chance of getting more items by 5%</style>.",
+
+		"ITEM_LOWERPRICEDCHESTSCONSUMED_UNCOMMON_PICKUP": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityUncommon\">.",
+        "ITEM_LOWERPRICEDCHESTSCONSUMED_UNCOMMON_DESC": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityUncommon\">.",
+
+		"ITEM_LOWERPRICEDCHESTS_RARE_PICKUP": "First chest bought yields more than one <sprite name=\"Quality\"> reward. Usable once per stage.",
+        "ITEM_LOWERPRICEDCHESTS_RARE_DESC": "Gain an extra <sprite name=\"QualityRare\"> rare quality item on the first chest opened per stage. <style=cStack>Each additional Sale Star increases the chance of getting more items by 5%</style>.",
+
+		"ITEM_LOWERPRICEDCHESTSCONSUMED_RARE_PICKUP": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityRare\">.",
+        "ITEM_LOWERPRICEDCHESTSCONSUMED_RARE_DESC": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityRare\">.",
+
+		"ITEM_LOWERPRICEDCHESTS_EPIC_PICKUP": "First chest bought yields more than one <sprite name=\"Quality\"> reward. Usable once per stage.",
+        "ITEM_LOWERPRICEDCHESTS_EPIC_DESC": "Gain an extra <sprite name=\"QualityEpic\"> epic quality item on the first chest opened per stage. <style=cStack>Each additional Sale Star increases the chance of getting more items by 5%</style>.",
+
+		"ITEM_LOWERPRICEDCHESTSCONSUMED_EPIC_PICKUP": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityEpic\">.",
+        "ITEM_LOWERPRICEDCHESTSCONSUMED_EPIC_DESC": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityEpic\">.",
+
+		"ITEM_LOWERPRICEDCHESTS_LEGENDARY_PICKUP": "First chest bought yields more than one <sprite name=\"Quality\"> reward. Usable once per stage.",
+        "ITEM_LOWERPRICEDCHESTS_LEGENDARY_DESC": "Gain an extra <sprite name=\"QualityLegendary\"> legendary quality item on the first chest opened per stage. <style=cStack>Each additional Sale Star increases the chance of getting more items by 5%</style>.",
+
+		"ITEM_LOWERPRICEDCHESTSCONSUMED_LEGENDARY_PICKUP": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityLegendary\">.",
+        "ITEM_LOWERPRICEDCHESTSCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityLegendary\">.",
 	}
 }

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igLowerPricedChests
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: b52be42ca8bcc75478258bf27cfa6355
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 35020d462ed483b4c841793dd484f383, type: 2}
+  _rareItem: {fileID: 11400000, guid: 01f40cd7db1bc06448888a5eab913b63, type: 2}
+  _epicItem: {fileID: 11400000, guid: f031c52a0b07d7a4fa2f0ec74864503c, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 7d59d9b4c1873c64f8da1d2c9f540f31, type: 2}

@@ -450,6 +450,10 @@ namespace ItemQualities
             public static ItemQualityGroup SprintArmor;
 
             public static ItemQualityGroup IceRing;
+
+            public static ItemQualityGroup LowerPricedChests;
+
+            public static ItemQualityGroup LowerPricedChestsConsumed;
         }
 
         public static class EquipmentQualityGroups
