@@ -473,6 +473,8 @@ namespace ItemQualities
             public static ItemQualityGroup LowerPricedChestsConsumed;
 
             public static ItemQualityGroup HealOnCrit;
+
+            public static ItemQualityGroup FreeChest;
         }
 
         public static class EquipmentQualityGroups
