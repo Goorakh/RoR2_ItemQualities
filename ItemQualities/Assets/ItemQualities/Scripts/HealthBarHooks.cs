@@ -88,7 +88,10 @@ namespace ItemQualities
                 {
                     for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
                     {
-                        ignoreLowHealthItemIndices.Add(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemIndex(qualityTier));
+                        if (watch[qualityTier] > 0)
+                        {
+                            ignoreLowHealthItemIndices.Add(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemIndex(qualityTier));
+                        }
                     }
                 }
 
