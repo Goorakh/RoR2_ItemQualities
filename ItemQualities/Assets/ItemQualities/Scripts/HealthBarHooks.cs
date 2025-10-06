@@ -83,18 +83,12 @@ namespace ItemQualities
 
                 HashSet<ItemIndex> ignoreLowHealthItemIndices = new HashSet<ItemIndex>();
 
-                if (inventory)
+                ItemQualityCounts watch = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(inventory);
+                if (watch.TotalQualityCount > 0)
                 {
-                    if (body.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
+                    for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
                     {
-                        ItemQualityCounts watch = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(inventory);
-                        if (watch.TotalCount > 0 && extraStatsTracker.WatchBreakThreshold != HealthComponent.lowHealthFraction)
-                        {
-                            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
-                            {
-                                ignoreLowHealthItemIndices.Add(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemIndex(qualityTier));
-                            }
-                        }
+                        ignoreLowHealthItemIndices.Add(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemIndex(qualityTier));
                     }
                 }
 
@@ -312,9 +306,9 @@ namespace ItemQualities
             watchLowHealthOverBarInfo.enabled = false;
 
             float watchBreakThreshold = extraStatsTracker.WatchBreakThreshold;
-            int totalWatchCount = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(inventory).TotalCount;
+            int qualityWatchCount = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(inventory).TotalQualityCount;
 
-            if (watchBreakThreshold != HealthComponent.lowHealthFraction && totalWatchCount > 0)
+            if (qualityWatchCount > 0)
             {
                 bool isBelowWatchThreshold = healthComponent.IsHealthBelowThreshold(watchBreakThreshold);
                 watchLowHealthUnderBarInfo.enabled = isBelowWatchThreshold;
