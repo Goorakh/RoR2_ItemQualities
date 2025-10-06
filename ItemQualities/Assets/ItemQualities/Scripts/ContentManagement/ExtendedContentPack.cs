@@ -4,6 +4,10 @@ using RoR2.EntitlementManagement;
 using RoR2.ExpansionManagement;
 using RoR2.Skills;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using TMPro;
 using UnityEngine;
 
 namespace ItemQualities.ContentManagement
@@ -12,9 +16,22 @@ namespace ItemQualities.ContentManagement
     {
         readonly ContentPack _innerContentPack;
 
+        readonly NamedAssetCollection[] _extendedAssetCollections = Array.Empty<NamedAssetCollection>();
+
         public ExtendedContentPack(ContentPack contentPack)
         {
             _innerContentPack = contentPack;
+
+            _extendedAssetCollections = new NamedAssetCollection[]
+            {
+                prefabs,
+                spawnCards,
+                qualityTierDefs,
+                itemQualityGroups,
+                equipmentQualityGroups,
+                buffQualityGroups,
+                spriteAssets
+            };
         }
 
         public ExtendedContentPack() : this(new ContentPack())
@@ -92,6 +109,34 @@ namespace ItemQualities.ContentManagement
         public NamedAssetCollection<GameObject> prefabs { get; } = new NamedAssetCollection<GameObject>(ContentPack.getGameObjectName);
 
         public NamedAssetCollection<SpawnCard> spawnCards { get; } = new NamedAssetCollection<SpawnCard>(ContentPack.getScriptableObjectName);
+
+        public NamedAssetCollection<QualityTierDef> qualityTierDefs { get; } = new NamedAssetCollection<QualityTierDef>(ContentPack.getScriptableObjectName);
+
+        public NamedAssetCollection<ItemQualityGroup> itemQualityGroups { get; } = new NamedAssetCollection<ItemQualityGroup>(ContentPack.getScriptableObjectName);
+
+        public NamedAssetCollection<EquipmentQualityGroup> equipmentQualityGroups { get; } = new NamedAssetCollection<EquipmentQualityGroup>(ContentPack.getScriptableObjectName);
+
+        public NamedAssetCollection<BuffQualityGroup> buffQualityGroups { get; } = new NamedAssetCollection<BuffQualityGroup>(ContentPack.getScriptableObjectName);
+
+        public NamedAssetCollection<TMP_SpriteAsset> spriteAssets { get; } = new NamedAssetCollection<TMP_SpriteAsset>(ContentPack.getScriptableObjectName);
+
+        public IEnumerable<UnityEngine.Object> allAssets
+        {
+            get
+            {
+                List<UnityEngine.Object> allAssets = new List<UnityEngine.Object>();
+                foreach (NamedAssetCollection assetCollection in _innerContentPack.assetCollections.OfType<NamedAssetCollection>()
+                                                                                                   .Concat(_extendedAssetCollections))
+                {
+                    if (assetCollection is IEnumerable enumerable)
+                    {
+                        allAssets.AddRange(enumerable.OfType<UnityEngine.Object>());
+                    }
+                }
+
+                return allAssets;
+            }
+        }
 
         public static implicit operator ContentPack(ExtendedContentPack contentPack)
         {

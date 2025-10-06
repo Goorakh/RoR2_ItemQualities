@@ -46,6 +46,56 @@ namespace ItemQualities
 
         public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
         {
+            using PartitionedProgress partitionedProgress = new PartitionedProgress(args.progressReceiver);
+            IProgress<float> loadContentProgress = partitionedProgress.AddPartition(1f);
+            IProgress<float> finalizeContentProgress = partitionedProgress.AddPartition(1f);
+
+            ParallelProgressCoroutine loadContentCoroutine = new ParallelProgressCoroutine(loadContentProgress);
+
+            ReadableProgress<float> loadAssetBundleProgress = new ReadableProgress<float>();
+            loadContentCoroutine.Add(loadAssetBundleContentAsync(loadAssetBundleProgress), loadAssetBundleProgress);
+
+            ReadableProgress<float> contentInitializersProgress = new ReadableProgress<float>();
+            loadContentCoroutine.Add(ContentInitializerAttribute.RunContentInitializers(_contentPack, contentInitializersProgress), contentInitializersProgress);
+
+            yield return loadContentCoroutine;
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
+            ParallelProgressCoroutine finalizeContentCoroutine = new ParallelProgressCoroutine(finalizeContentProgress);
+
+            ReadableProgress<float> contentLoadCallbacksProgress = new ReadableProgress<float>();
+            finalizeContentCoroutine.Add(runContentLoadCallbacks(contentLoadCallbacksProgress), contentLoadCallbacksProgress);
+
+            yield return finalizeContentCoroutine;
+
+            populateTypeFields(typeof(QualityTiers), _contentPack.qualityTierDefs, fieldName => "qd" + fieldName);
+            QualityTiers.AllQualityTiers = new ReadOnlyCollection<QualityTierDef>(_contentPack.qualityTierDefs.ToArray());
+
+            populateTypeFields(typeof(ItemQualityGroups), _contentPack.itemQualityGroups, fieldName => "ig" + fieldName);
+            ItemQualityGroups.AllGroups = new ReadOnlyCollection<ItemQualityGroup>(_contentPack.itemQualityGroups.ToArray());
+
+            populateTypeFields(typeof(EquipmentQualityGroups), _contentPack.equipmentQualityGroups, fieldName => "eg" + fieldName);
+            EquipmentQualityGroups.AllGroups = new ReadOnlyCollection<EquipmentQualityGroup>(_contentPack.equipmentQualityGroups.ToArray());
+
+            populateTypeFields(typeof(BuffQualityGroups), _contentPack.buffQualityGroups, fieldName => "bg" + fieldName);
+            BuffQualityGroups.AllGroups = new ReadOnlyCollection<BuffQualityGroup>(_contentPack.buffQualityGroups.ToArray());
+
+            populateTypeFields(typeof(Buffs), _contentPack.buffDefs, fieldName => "bd" + fieldName);
+
+            populateTypeFields(typeof(Prefabs), _contentPack.prefabs);
+
+            populateTypeFields(typeof(NetworkedPrefabs), _contentPack.networkedObjectPrefabs);
+
+            populateTypeFields(typeof(ProjectilePrefabs), _contentPack.projectilePrefabs);
+
+            TMP_SpriteAssets = _contentPack.spriteAssets;
+
+            Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
+        }
+
+        IEnumerator loadAssetBundleContentAsync(IProgress<float> progressReceiver)
+        {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             string assetBundleLocation = Path.Combine(Path.GetDirectoryName(ItemQualitiesPlugin.Instance.Info.Location), "itemqualitiesassets");
@@ -54,12 +104,10 @@ namespace ItemQualities
                 throw new FileNotFoundException("Could not find ItemQualities assetbundle file");
             }
 
-            using PartitionedProgress partitionedProgress = new PartitionedProgress(args.progressReceiver);
-            IProgress<float> loadAssetBundleProgress = partitionedProgress.AddPartition(1f);
-            IProgress<float> loadAssetsProgress = partitionedProgress.AddPartition(1f);
-            IProgress<float> generateAssetsProgress = partitionedProgress.AddPartition(1f);
-            IProgress<float> contentInitializersProgress = partitionedProgress.AddPartition(1f);
-            IProgress<float> finalizeContentProgress = partitionedProgress.AddPartition(1f);
+            using PartitionedProgress totalProgress = new PartitionedProgress(progressReceiver);
+            IProgress<float> loadAssetBundleProgress = totalProgress.AddPartition(0.5f);
+            IProgress<float> loadAssetsProgress = totalProgress.AddPartition();
+            IProgress<float> generateAssetsProgress = totalProgress.AddPartition();
 
             AssetBundleCreateRequest assetBundleLoad = AssetBundle.LoadFromFileAsync(assetBundleLocation);
             yield return assetBundleLoad.AsProgressCoroutine(loadAssetBundleProgress);
@@ -84,7 +132,7 @@ namespace ItemQualities
                 if (asset is IAsyncAssetGenerator asyncAssetGenerator)
                 {
                     ReadableProgress<float> generateProgress = new ReadableProgress<float>();
-                    generateAssetsCoroutine.Add(asyncAssetGenerator.GenerateAssetsAsync(generatedAssets, generateProgress), generateProgress);
+                    generateAssetsCoroutine.Add(asyncAssetGenerator.GenerateAssetsAsync(_contentPack, generateProgress), generateProgress);
                 }
 
                 if (asset is GameObject gameObject)
@@ -92,25 +140,12 @@ namespace ItemQualities
                     foreach (IAsyncAssetGenerator asyncAssetGeneratorComponent in gameObject.GetComponentsInChildren<IAsyncAssetGenerator>(true))
                     {
                         ReadableProgress<float> generateProgress = new ReadableProgress<float>();
-                        generateAssetsCoroutine.Add(asyncAssetGeneratorComponent.GenerateAssetsAsync(generatedAssets, generateProgress), generateProgress);
+                        generateAssetsCoroutine.Add(asyncAssetGeneratorComponent.GenerateAssetsAsync(_contentPack, generateProgress), generateProgress);
                     }
                 }
             }
 
             yield return generateAssetsCoroutine;
-
-            yield return ContentInitializerAttribute.RunContentInitializers(_contentPack, contentInitializersProgress);
-
-            List<UnityEngine.Object> finalAssets = new List<UnityEngine.Object>(assetBundleAssets.Length + generatedAssets.Count);
-            finalAssets.AddRange(assetBundleAssets);
-            finalAssets.AddRange(generatedAssets);
-
-            ParallelProgressCoroutine finalizeContentCoroutine = new ParallelProgressCoroutine(finalizeContentProgress);
-
-            ReadableProgress<float> contentLoadCallbacksProgress = new ReadableProgress<float>();
-            finalizeContentCoroutine.Add(runContentLoadCallbacks(finalAssets, contentLoadCallbacksProgress), contentLoadCallbacksProgress);
-
-            yield return finalizeContentCoroutine;
 
             List<GameObject> projectilePrefabsList = new List<GameObject>();
             List<GameObject> networkedPrefabsList = new List<GameObject>();
@@ -133,7 +168,7 @@ namespace ItemQualities
 
             List<TMP_SpriteAsset> spriteAssetsList = new List<TMP_SpriteAsset>();
 
-            foreach (UnityEngine.Object obj in finalAssets)
+            foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
                 {
@@ -184,20 +219,13 @@ namespace ItemQualities
                 }
             }
 
-            NamedAssetCollection<GameObject> prefabs = new NamedAssetCollection<GameObject>(ContentPack.getGameObjectName);
-            prefabs.Add(prefabsList.ToArray());
+            _contentPack.prefabs.Add(prefabsList.ToArray());
 
-            NamedAssetCollection<QualityTierDef> qualityTierDefs = new NamedAssetCollection<QualityTierDef>(ContentPack.getScriptableObjectName);
-            qualityTierDefs.Add(qualityTierDefsList.ToArray());
+            _contentPack.qualityTierDefs.Add(qualityTierDefsList.ToArray());
 
-            NamedAssetCollection<ItemQualityGroup> itemQualityGroups = new NamedAssetCollection<ItemQualityGroup>(ContentPack.getScriptableObjectName);
-            itemQualityGroups.Add(itemQualityGroupsList.ToArray());
-
-            NamedAssetCollection<EquipmentQualityGroup> equipmentQualityGroups = new NamedAssetCollection<EquipmentQualityGroup>(ContentPack.getScriptableObjectName);
-            equipmentQualityGroups.Add(equipmentQualityGroupsList.ToArray());
-
-            NamedAssetCollection<BuffQualityGroup> buffQualityGroups = new NamedAssetCollection<BuffQualityGroup>(ContentPack.getScriptableObjectName);
-            buffQualityGroups.Add(buffQualityGroupsList.ToArray());
+            _contentPack.itemQualityGroups.Add(itemQualityGroupsList.ToArray());
+            _contentPack.equipmentQualityGroups.Add(equipmentQualityGroupsList.ToArray());
+            _contentPack.buffQualityGroups.Add(buffQualityGroupsList.ToArray());
 
             _contentPack.itemDefs.Add(itemDefsList.ToArray());
             _contentPack.itemTierDefs.Add(itemTierDefsList.ToArray());
@@ -213,36 +241,16 @@ namespace ItemQualities
             _contentPack.entityStateConfigurations.Add(entityStateConfigurationsList.ToArray());
             _contentPack.entityStateTypes.Add(entityStateConfigurationsList.Select(esc => (Type)esc.targetType).Where(t => t != null).ToArray());
 
-            populateTypeFields(typeof(QualityTiers), qualityTierDefs, fieldName => "qd" + fieldName);
-            QualityTiers.AllQualityTiers = new ReadOnlyCollection<QualityTierDef>(qualityTierDefs.ToArray());
+            _contentPack.spriteAssets.Add(spriteAssetsList.ToArray());
 
-            populateTypeFields(typeof(ItemQualityGroups), itemQualityGroups, fieldName => "ig" + fieldName);
-            ItemQualityGroups.AllGroups = new ReadOnlyCollection<ItemQualityGroup>(itemQualityGroups.ToArray());
-
-            populateTypeFields(typeof(EquipmentQualityGroups), equipmentQualityGroups, fieldName => "eg" + fieldName);
-            EquipmentQualityGroups.AllGroups = new ReadOnlyCollection<EquipmentQualityGroup>(equipmentQualityGroups.ToArray());
-
-            populateTypeFields(typeof(BuffQualityGroups), buffQualityGroups, fieldName => "bg" + fieldName);
-            BuffQualityGroups.AllGroups = new ReadOnlyCollection<BuffQualityGroup>(buffQualityGroups.ToArray());
-
-            populateTypeFields(typeof(Buffs), _contentPack.buffDefs, fieldName => "bd" + fieldName);
-
-            populateTypeFields(typeof(Prefabs), prefabs);
-
-            populateTypeFields(typeof(NetworkedPrefabs), _contentPack.networkedObjectPrefabs);
-
-            populateTypeFields(typeof(ProjectilePrefabs), _contentPack.projectilePrefabs);
-
-            TMP_SpriteAssets.Add(spriteAssetsList.ToArray());
-
-            Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms (at {assetBundleLocation})");
+            Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        static IEnumerator runContentLoadCallbacks(IEnumerable<UnityEngine.Object> assets, IProgress<float> progressReceiver)
+        IEnumerator runContentLoadCallbacks(IProgress<float> progressReceiver)
         {
             ParallelProgressCoroutine callbackParallelCoroutine = new ParallelProgressCoroutine(progressReceiver);
 
-            foreach (UnityEngine.Object asset in assets)
+            foreach (UnityEngine.Object asset in _contentPack.allAssets)
             {
                 if (asset is GameObject gameObject)
                 {
