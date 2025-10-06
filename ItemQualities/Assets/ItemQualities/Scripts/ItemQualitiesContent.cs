@@ -475,6 +475,8 @@ namespace ItemQualities
             public static ItemQualityGroup HealOnCrit;
 
             public static ItemQualityGroup FreeChest;
+
+            public static ItemQualityGroup PrimarySkillShuriken;
         }
 
         public static class EquipmentQualityGroups
