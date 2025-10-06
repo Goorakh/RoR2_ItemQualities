@@ -89,6 +89,8 @@ namespace ItemQualities
 
             populateTypeFields(typeof(ProjectilePrefabs), _contentPack.projectilePrefabs);
 
+            populateTypeFields(typeof(Materials), _contentPack.materials, fieldName => "mat" + fieldName);
+
             TMP_SpriteAssets = _contentPack.spriteAssets;
 
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
@@ -168,6 +170,8 @@ namespace ItemQualities
 
             List<TMP_SpriteAsset> spriteAssetsList = new List<TMP_SpriteAsset>();
 
+            List<Material> materialsList = new List<Material>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -216,6 +220,9 @@ namespace ItemQualities
                     case TMP_SpriteAsset spriteAsset:
                         spriteAssetsList.Add(spriteAsset);
                         break;
+                    case Material material:
+                        materialsList.Add(material);
+                        break;
                 }
             }
 
@@ -242,6 +249,8 @@ namespace ItemQualities
             _contentPack.entityStateTypes.Add(entityStateConfigurationsList.Select(esc => (Type)esc.targetType).Where(t => t != null).ToArray());
 
             _contentPack.spriteAssets.Add(spriteAssetsList.ToArray());
+
+            _contentPack.materials.Add(materialsList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -462,6 +471,8 @@ namespace ItemQualities
             public static ItemQualityGroup LowerPricedChests;
 
             public static ItemQualityGroup LowerPricedChestsConsumed;
+
+            public static ItemQualityGroup HealOnCrit;
         }
 
         public static class EquipmentQualityGroups
@@ -491,6 +502,8 @@ namespace ItemQualities
             public static BuffDef BossStun;
 
             public static BuffDef SprintArmorStrong;
+
+            public static BuffDef HealCritBoost;
         }
 
         public static class Prefabs
@@ -507,6 +520,11 @@ namespace ItemQualities
 
         public static class ProjectilePrefabs
         {
+        }
+
+        public static class Materials
+        {
+            public static Material HealCritBoost;
         }
     }
 }

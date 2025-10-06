@@ -26,6 +26,8 @@ namespace ItemQualities
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
         TemporaryVisualEffect _sprintArmorStrongEffectInstance;
 
+        TemporaryOverlayInstance _healCritBoostOverlay;
+
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
 
         float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
@@ -171,6 +173,8 @@ namespace ItemQualities
                     HasHadAnyQualityDeathMarkDebuffServer = true;
                 }
             }
+
+            updateOverlays();
         }
 
         void Update()
@@ -224,7 +228,52 @@ namespace ItemQualities
                 setItemBehavior<AttackSpeedOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<SprintOutOfCombatQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<SprintArmorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<HealOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCounts(_body.inventory).TotalQualityCount > 0);
             }
+        }
+
+        void updateOverlays()
+        {
+            CharacterModel characterModel = null;
+            if (_body && _body.modelLocator && _body.modelLocator.modelTransform)
+            {
+                characterModel = _body.modelLocator.modelTransform.GetComponent<CharacterModel>();
+            }
+
+            void setOverlay(ref TemporaryOverlayInstance overlayInstance, Material material, bool active)
+            {
+                if (!material)
+                    return;
+
+                if (!characterModel)
+                {
+                    active = false;
+                }
+
+                bool overlayActive = overlayInstance != null && overlayInstance.assignedCharacterModel == characterModel;
+                if (overlayActive == active)
+                    return;
+
+                if (overlayInstance != null)
+                {
+                    overlayInstance.RemoveFromCharacterModel();
+                    overlayInstance = null;
+                }
+
+                if (active)
+                {
+                    overlayInstance = new TemporaryOverlayInstance(gameObject)
+                    {
+                        duration = float.PositiveInfinity,
+                        destroyComponentOnEnd = true,
+                        originalMaterial = material
+                    };
+
+                    overlayInstance.AddToCharacterModel(characterModel);
+                }
+            }
+
+            setOverlay(ref _healCritBoostOverlay, ItemQualitiesContent.Materials.HealCritBoost, _body.HasBuff(ItemQualitiesContent.Buffs.HealCritBoost));
         }
 
         public void MarkAllStatsDirty()

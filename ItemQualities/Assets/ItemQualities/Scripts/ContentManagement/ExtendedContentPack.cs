@@ -120,6 +120,8 @@ namespace ItemQualities.ContentManagement
 
         public NamedAssetCollection<TMP_SpriteAsset> spriteAssets { get; } = new NamedAssetCollection<TMP_SpriteAsset>(ContentPack.getScriptableObjectName);
 
+        public NamedAssetCollection<Material> materials { get; } = new NamedAssetCollection<Material>(getMaterialName);
+
         public IEnumerable<UnityEngine.Object> allAssets
         {
             get
@@ -137,6 +139,8 @@ namespace ItemQualities.ContentManagement
                 return allAssets;
             }
         }
+
+        public static Func<Material, string> getMaterialName = material => material.name;
 
         public static implicit operator ContentPack(ExtendedContentPack contentPack)
         {
