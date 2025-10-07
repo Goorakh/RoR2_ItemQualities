@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igSquid
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 1145d192fe452d94790e759018b80598
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 0b529102b6b9f4447bc6a055e36ecbd4, type: 2}
+  _rareItem: {fileID: 11400000, guid: fac780a575ac9094ca16d55397631a17, type: 2}
+  _epicItem: {fileID: 11400000, guid: efc04c336bace524abdbfcda14b819aa, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 1441a4c3ce158094a96f6f78755f95a1, type: 2}

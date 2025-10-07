@@ -723,5 +723,17 @@
 
 		"ITEM_PRIMARYSKILLSHURIKEN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces recharge duration and increases shuriken size.",
 		"ITEM_PRIMARYSKILLSHURIKEN_LEGENDARY_DESC": "Activating your <style=cIsUtility>Primary skill</style> also throws a <style=cIsDamage>shuriken</style> that deals <style=cIsDamage>400%</style> <style=cStack>(+100% per stack)</style> base damage. You can hold up to <style=cIsUtility>3</style> <style=cStack>(+1 per stack)</style> <style=cIsDamage>shurikens</style> which all reload over <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(-50% per stack)</style> seconds. Increase shuriken size by <sprite name=\"Quality\"> <style=cIsUtility>80%</style> <style=cStack>(+80% per stack)</style>.",
+
+		"ITEM_SQUID_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases squid damage and health.",
+		"ITEM_SQUID_UNCOMMON_DESC": "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> for <sprite name=\"Quality\"> <style=cIsDamage>110% <style=cStack>(+10% per stack)</style> damage</style> and <sprite name=\"Quality\"> <style=cIsHealing>120% <style=cStack>(+20% per stack)</style> maximum health</style> that attacks nearby enemies at <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> attack speed</style>. Lasts <sprite name=\"Quality\"> <style=cIsUtility>36</style> <style=cStack>(+6 per stack)</style> seconds.",
+
+		"ITEM_SQUID_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases squid damage and health.",
+		"ITEM_SQUID_RARE_DESC": "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> for <sprite name=\"Quality\"> <style=cIsDamage>130% <style=cStack>(+30% per stack)</style> damage</style> and <sprite name=\"Quality\"> <style=cIsHealing>140% <style=cStack>(+40% per stack)</style> maximum health</style> that attacks nearby enemies at <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> attack speed</style>. Lasts <sprite name=\"Quality\"> <style=cIsUtility>42</style> <style=cStack>(+12 per stack)</style> seconds.",
+
+		"ITEM_SQUID_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases squid damage and health.",
+		"ITEM_SQUID_EPIC_DESC": "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> for <sprite name=\"Quality\"> <style=cIsDamage>160% <style=cStack>(+60% per stack)</style> damage</style> and <sprite name=\"Quality\"> <style=cIsHealing>180% <style=cStack>(+80% per stack)</style> maximum health</style> that attacks nearby enemies at <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> attack speed</style>. Lasts <sprite name=\"Quality\"> <style=cIsUtility>54</style> <style=cStack>(+24 per stack)</style> seconds.",
+
+		"ITEM_SQUID_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases squid damage and health.",
+		"ITEM_SQUID_LEGENDARY_DESC": "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> for <sprite name=\"Quality\"> <style=cIsDamage>200% <style=cStack>(+100% per stack)</style> damage</style> and <sprite name=\"Quality\"> <style=cIsHealing>250% <style=cStack>(+150% per stack)</style> maximum health</style> that attacks nearby enemies at <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> attack speed</style>. Lasts <sprite name=\"Quality\"> <style=cIsUtility>75</style> <style=cStack>(+45 per stack)</style> seconds.",
 	}
 }

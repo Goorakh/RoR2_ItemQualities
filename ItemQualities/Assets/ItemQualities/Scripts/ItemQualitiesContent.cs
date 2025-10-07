@@ -477,6 +477,8 @@ namespace ItemQualities
             public static ItemQualityGroup FreeChest;
 
             public static ItemQualityGroup PrimarySkillShuriken;
+
+            public static ItemQualityGroup Squid;
         }
 
         public static class EquipmentQualityGroups
