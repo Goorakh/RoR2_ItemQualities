@@ -735,5 +735,17 @@
 
 		"ITEM_SQUID_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases squid damage and health.",
 		"ITEM_SQUID_LEGENDARY_DESC": "Activating an interactable summons a <style=cIsDamage>Squid Turret</style> for <sprite name=\"Quality\"> <style=cIsDamage>200% <style=cStack>(+100% per stack)</style> damage</style> and <sprite name=\"Quality\"> <style=cIsHealing>250% <style=cStack>(+150% per stack)</style> maximum health</style> that attacks nearby enemies at <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> attack speed</style>. Lasts <sprite name=\"Quality\"> <style=cIsUtility>75</style> <style=cStack>(+45 per stack)</style> seconds.",
+
+		"ITEM_PHASING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to activate on taking damage. Increases activation threshold.",
+		"ITEM_PHASING_UNCOMMON_DESC": "Falling below <sprite name=\"Quality\"> <style=cIsHealth>30% <style=cStack>(+10% per stack)</style> health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.\n<sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance to activate on taking damage.",
+
+		"ITEM_PHASING_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to activate on taking damage. Increases activation threshold.",
+		"ITEM_PHASING_RARE_DESC": "Falling below <sprite name=\"Quality\"> <style=cIsHealth>40% <style=cStack>(+25% per stack)</style> health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.\n<sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style> chance to activate on taking damage.",
+
+		"ITEM_PHASING_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to activate on taking damage. Increases activation threshold.",
+		"ITEM_PHASING_EPIC_DESC": "Falling below <sprite name=\"Quality\"> <style=cIsHealth>60% <style=cStack>(+50% per stack)</style> health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.\n<sprite name=\"Quality\"> <style=cIsUtility>30%</style> <style=cStack>(+30% per stack)</style> chance to activate on taking damage.",
+
+		"ITEM_PHASING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to activate on taking damage. Increases activation threshold.",
+		"ITEM_PHASING_LEGENDARY_DESC": "Falling below <sprite name=\"Quality\"> <style=cIsHealth>80% <style=cStack>(+75% per stack)</style> health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance to activate on taking damage.",
 	}
 }

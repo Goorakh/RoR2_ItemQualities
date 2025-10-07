@@ -114,6 +114,16 @@ namespace ItemQualities
             }
         }
 
+        float _stealthKitActivationThreshold = HealthComponent.lowHealthFraction;
+        public float StealthKitActivationThreshold
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _stealthKitActivationThreshold;
+            }
+        }
+
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
         public bool SlugOutOfDanger => _slugOutOfDanger;
@@ -300,6 +310,7 @@ namespace ItemQualities
             ItemQualityCounts mushroom = default;
             ItemQualityCounts warCryOnMultiKill = default;
             ItemQualityCounts executeLowHealthElite = default;
+            ItemQualityCounts phasing = default;
             if (_body && _body.inventory)
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
@@ -310,6 +321,7 @@ namespace ItemQualities
                 mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory);
                 warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCounts(_body.inventory);
                 executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCounts(_body.inventory);
+                phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCounts(_body.inventory);
             }
 
             float slugOutOfDangerDelayReduction = 1f;
@@ -373,6 +385,14 @@ namespace ItemQualities
                 (0.15f * executeLowHealthElite.RareCount) +
                 (0.25f * executeLowHealthElite.EpicCount) +
                 (0.40f * executeLowHealthElite.LegendaryCount));
+
+            float stealthKitActivationThresholdIncrease = 1f;
+            stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.10f, phasing.UncommonCount);
+            stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.25f, phasing.RareCount);
+            stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.50f, phasing.EpicCount);
+            stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
+
+            _stealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)

@@ -21,12 +21,14 @@ namespace ItemQualities
         {
             public static readonly FieldInfo[] LowHealthUnderBarInfoFields = new FieldInfo[]
             {
-                typeof(AdditionalBarInfos).GetField(nameof(WatchLowHealthUnderBarInfo))
+                typeof(AdditionalBarInfos).GetField(nameof(WatchLowHealthUnderBarInfo)),
+                typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthUnderBarInfo)),
             };
 
             public static readonly FieldInfo[] LowHealthOverBarInfoFields = new FieldInfo[]
             {
-                typeof(AdditionalBarInfos).GetField(nameof(WatchLowHealthOverBarInfo))
+                typeof(AdditionalBarInfos).GetField(nameof(WatchLowHealthOverBarInfo)),
+                typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthOverBarInfo)),
             };
 
             public static readonly FieldInfo[] EndBarInfoFields = typeof(AdditionalBarInfos).GetFields(BindingFlags.Public | BindingFlags.Instance)
@@ -38,9 +40,12 @@ namespace ItemQualities
             public readonly HealthBar.BarInfo WatchLowHealthUnderBarInfo;
             public readonly HealthBar.BarInfo WatchLowHealthOverBarInfo;
 
+            public readonly HealthBar.BarInfo StealthKitLowHealthUnderBarInfo;
+            public readonly HealthBar.BarInfo StealthKitLowHealthOverBarInfo;
+
             public readonly int EnabledBarCount;
 
-            public AdditionalBarInfos(HealthBar.BarInfo watchLowHealthUnderBarInfo, HealthBar.BarInfo watchLowHealthOverBarInfo)
+            public AdditionalBarInfos(HealthBar.BarInfo watchLowHealthUnderBarInfo, HealthBar.BarInfo watchLowHealthOverBarInfo, HealthBar.BarInfo stealthKitLowHealthUnderBarInfo, HealthBar.BarInfo stealthKitLowHealthOverBarInfo)
             {
                 int enabledBarCount = 0;
                 WatchLowHealthUnderBarInfo = watchLowHealthUnderBarInfo;
@@ -49,6 +54,14 @@ namespace ItemQualities
 
                 WatchLowHealthOverBarInfo = watchLowHealthOverBarInfo;
                 if (WatchLowHealthOverBarInfo.enabled)
+                    enabledBarCount++;
+
+                StealthKitLowHealthUnderBarInfo = stealthKitLowHealthUnderBarInfo;
+                if (StealthKitLowHealthUnderBarInfo.enabled)
+                    enabledBarCount++;
+
+                StealthKitLowHealthOverBarInfo = stealthKitLowHealthOverBarInfo;
+                if (StealthKitLowHealthOverBarInfo.enabled)
                     enabledBarCount++;
 
                 EnabledBarCount = enabledBarCount;
@@ -83,17 +96,23 @@ namespace ItemQualities
 
                 HashSet<ItemIndex> ignoreLowHealthItemIndices = new HashSet<ItemIndex>();
 
-                ItemQualityCounts watch = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(inventory);
-                if (watch.TotalQualityCount > 0)
+                void handleCustomQualityLowHealthThreshold(ItemQualityGroup itemGroup)
                 {
-                    for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                    ItemQualityCounts itemCounts = itemGroup.GetItemCounts(inventory);
+                    if (itemCounts.TotalQualityCount > 0)
                     {
-                        if (watch[qualityTier] > 0)
+                        for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
                         {
-                            ignoreLowHealthItemIndices.Add(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemIndex(qualityTier));
+                            if (itemCounts[qualityTier] > 0)
+                            {
+                                ignoreLowHealthItemIndices.Add(itemGroup.GetItemIndex(qualityTier));
+                            }
                         }
                     }
                 }
+
+                handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus);
+                handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.Phasing);
 
                 return ignoreLowHealthItemIndices;
             }
@@ -308,22 +327,37 @@ namespace ItemQualities
             watchLowHealthUnderBarInfo.enabled = false;
             watchLowHealthOverBarInfo.enabled = false;
 
-            float watchBreakThreshold = extraStatsTracker.WatchBreakThreshold;
-            int qualityWatchCount = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(inventory).TotalQualityCount;
-
-            if (qualityWatchCount > 0)
+            void setupHealthThresholdBarInfos(ref HealthBar.BarInfo underBarInfo, ref HealthBar.BarInfo overBarInfo, float healthThreshold)
             {
-                bool isBelowWatchThreshold = healthComponent.IsHealthBelowThreshold(watchBreakThreshold);
-                watchLowHealthUnderBarInfo.enabled = isBelowWatchThreshold;
-                watchLowHealthUnderBarInfo.normalizedXMin = 0f;
-                watchLowHealthUnderBarInfo.normalizedXMax = watchBreakThreshold * (1f - healthBarValues.curseFraction);
+                bool isBelowThreshold = healthComponent.IsHealthBelowThreshold(healthThreshold);
 
-                watchLowHealthOverBarInfo.enabled = !isBelowWatchThreshold;
-                watchLowHealthOverBarInfo.normalizedXMin = watchBreakThreshold * (1f - healthBarValues.curseFraction);
-                watchLowHealthOverBarInfo.normalizedXMax = watchLowHealthOverBarInfo.normalizedXMin + 0.005f;
+                underBarInfo.enabled = isBelowThreshold;
+                underBarInfo.normalizedXMin = 0f;
+                underBarInfo.normalizedXMax = healthThreshold * (1f - healthBarValues.curseFraction);
+
+                overBarInfo.enabled = !isBelowThreshold;
+                overBarInfo.normalizedXMin = healthThreshold * (1f - healthBarValues.curseFraction);
+                overBarInfo.normalizedXMax = overBarInfo.normalizedXMin + 0.005f;
             }
 
-            return new AdditionalBarInfos(watchLowHealthUnderBarInfo, watchLowHealthOverBarInfo);
+            int qualityWatchCount = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(inventory).TotalQualityCount;
+            if (qualityWatchCount > 0)
+            {
+                setupHealthThresholdBarInfos(ref watchLowHealthUnderBarInfo, ref watchLowHealthOverBarInfo, extraStatsTracker.WatchBreakThreshold);
+            }
+
+            HealthBar.BarInfo stealthKitLowHealthUnderBarInfo = lowHealthUnderBarInfoTemplate;
+            HealthBar.BarInfo stealthKitLowHealthOverBarInfo = lowHealthOverBarInfoTemplate;
+            stealthKitLowHealthUnderBarInfo.enabled = false;
+            stealthKitLowHealthOverBarInfo.enabled = false;
+
+            ItemQualityCounts phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCounts(inventory);
+            if (phasing.TotalQualityCount > 0)
+            {
+                setupHealthThresholdBarInfos(ref stealthKitLowHealthUnderBarInfo, ref stealthKitLowHealthOverBarInfo, extraStatsTracker.StealthKitActivationThreshold);
+            }
+
+            return new AdditionalBarInfos(watchLowHealthUnderBarInfo, watchLowHealthOverBarInfo, stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo);
         }
     }
 }

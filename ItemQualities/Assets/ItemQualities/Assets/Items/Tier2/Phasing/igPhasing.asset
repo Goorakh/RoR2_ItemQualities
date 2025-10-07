@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igPhasing
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: e93e276051f234a46a9f5469c67f3363
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 0794cd5c69a37ca4e9bd34f5f9aa9522, type: 2}
+  _rareItem: {fileID: 11400000, guid: de3958e57ddd2a34b8d14f60f8fe3536, type: 2}
+  _epicItem: {fileID: 11400000, guid: be4c26a30274cbf499c05b1ad5979ba3, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 6a5b32e0ef9c32d46a349db38f8fec43, type: 2}
