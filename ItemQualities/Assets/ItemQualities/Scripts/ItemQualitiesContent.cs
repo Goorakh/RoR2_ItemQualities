@@ -481,6 +481,8 @@ namespace ItemQualities
             public static ItemQualityGroup Squid;
 
             public static ItemQualityGroup Phasing;
+
+            public static ItemQualityGroup ChainLightning;
         }
 
         public static class EquipmentQualityGroups
@@ -524,6 +526,8 @@ namespace ItemQualities
         public static class NetworkedPrefabs
         {
             public static GameObject BossArenaHealNovaSpawner;
+
+            public static GameObject ChainLightningArcAttachment;
         }
 
         public static class ProjectilePrefabs

@@ -747,5 +747,17 @@
 
 		"ITEM_PHASING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to activate on taking damage. Increases activation threshold.",
 		"ITEM_PHASING_LEGENDARY_DESC": "Falling below <sprite name=\"Quality\"> <style=cIsHealth>80% <style=cStack>(+75% per stack)</style> health</style> causes you to gain <style=cIsUtility>40% movement speed</style> and <style=cIsUtility>invisibility</style> for <style=cIsUtility>5s</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance to activate on taking damage.",
+
+		"ITEM_CHAINLIGHTNING_UNCOMMON_PICKUP": "...and his music was <sprite name=\"Quality\"> electric.",
+		"ITEM_CHAINLIGHTNING_UNCOMMON_DESC": "{0}\nFiring lightning from an enemy <style=cIsUtility>charges</style> it, releasing an additional <sprite name=\"Quality\"> <style=cIsDamage>3 <style=cStack>(+3 per stack)</style> arcs</style> for <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
+
+		"ITEM_CHAINLIGHTNING_RARE_PICKUP": "...and his music was <sprite name=\"Quality\"> electric.",
+		"ITEM_CHAINLIGHTNING_RARE_DESC": "{0}\nFiring lightning from an enemy <style=cIsUtility>charges</style> it, releasing an additional <sprite name=\"Quality\"> <style=cIsDamage>5 <style=cStack>(+5 per stack)</style> arcs</style> for <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
+
+		"ITEM_CHAINLIGHTNING_EPIC_PICKUP": "...and his music was <sprite name=\"Quality\"> electric.",
+		"ITEM_CHAINLIGHTNING_EPIC_DESC": "{0}\nFiring lightning from an enemy <style=cIsUtility>charges</style> it, releasing an additional <sprite name=\"Quality\"> <style=cIsDamage>8 <style=cStack>(+8 per stack)</style> arcs</style> for <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
+
+		"ITEM_CHAINLIGHTNING_LEGENDARY_PICKUP": "...and his music was <sprite name=\"Quality\"> electric.",
+		"ITEM_CHAINLIGHTNING_LEGENDARY_DESC": "{0}\nFiring lightning from an enemy <style=cIsUtility>charges</style> it, releasing an additional <sprite name=\"Quality\"> <style=cIsDamage>12 <style=cStack>(+12 per stack)</style> arcs</style> for <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
 	}
 }
