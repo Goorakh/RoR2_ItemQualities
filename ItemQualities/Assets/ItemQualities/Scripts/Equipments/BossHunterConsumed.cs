@@ -1,4 +1,6 @@
-﻿using RoR2;
+﻿using MonoMod.Cil;
+using RoR2;
+using System;
 
 namespace ItemQualities.Equipments
 {
@@ -7,21 +9,30 @@ namespace ItemQualities.Equipments
         [SystemInitializer]
         static void Init()
         {
-            EquipmentHooks.RegisterEquipmentGroupAction(ItemQualitiesContent.EquipmentQualityGroups.BossHunterConsumed, performAction);
+            IL.RoR2.EquipmentSlot.FireBossHunterConsumed += EquipmentSlot_FireBossHunterConsumed;
         }
 
-        static bool performAction(EquipmentSlot equipmentSlot, QualityTier qualityTier)
+        static void EquipmentSlot_FireBossHunterConsumed(ILContext il)
         {
-            if (!equipmentSlot.characterBody)
-                return false;
+            ILCursor c = new ILCursor(il);
 
-            Chat.SendBroadcastChat(new Chat.BodyChatMessage
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchStfld<Chat.BodyChatMessage>(nameof(Chat.BodyChatMessage.token))))
             {
-                bodyObject = equipmentSlot.characterBody.gameObject,
-                token = $"EQUIPMENT_BOSSHUNTERCONSUMED_{qualityTier.ToString().ToUpper()}_CHAT"
-            });
+                Log.Error("Failed to find patch location");
+                return;
+            }
 
-            return true;
+            c.EmitDelegate<Func<string, string>>(getChatMessageToken);
+            static string getChatMessageToken(string token)
+            {
+                if (EquipmentHooks.CurrentEquipmentQualityTier != QualityTier.None)
+                {
+                    token = $"EQUIPMENT_BOSSHUNTERCONSUMED_{EquipmentHooks.CurrentEquipmentQualityTier.ToString().ToUpper()}_CHAT";
+                }
+
+                return token;
+            }
         }
     }
 }
