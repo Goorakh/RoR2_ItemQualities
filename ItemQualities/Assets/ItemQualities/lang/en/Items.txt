@@ -759,5 +759,29 @@
 
 		"ITEM_CHAINLIGHTNING_LEGENDARY_PICKUP": "...and his music was <sprite name=\"Quality\"> electric.",
 		"ITEM_CHAINLIGHTNING_LEGENDARY_DESC": "{0}\nFiring lightning from an enemy <style=cIsUtility>charges</style> it, releasing an additional <sprite name=\"Quality\"> <style=cIsDamage>12 <style=cStack>(+12 per stack)</style> arcs</style> for <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
+
+		"ITEM_TELEPORTONLOWHEALTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase aura radius, bleed duration, and time extension.",
+        "ITEM_TELEPORTONLOWHEALTH_UNCOMMON_DESC": "Falling below <style=cIsHealth>25% health</style> gives you a <style=cIsHealing>temporary barrier</style> and a dimensional aura that <style=cIsDamage>bleeds</style> and <style=cIsUtility>teleports</style> away enemies for <style=cIsUtility>8s</style>. <style=cIsDamage>Enemies killed</style> by the aura <style=cIsUtility>extend</style> the duration by <sprite name=\"Quality\"> <style=cIsUtility>1.5s</style>. At the start of each stage, it regenerates.\nIncreases aura <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> and <style=cIsDamage>bleed duration</style> by <sprite name=\"Quality\"> <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> second.",
+
+		"ITEM_TELEPORTONLOWHEALTHCONSUMED_UNCOMMON_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityUncommon\">.",
+        "ITEM_TELEPORTONLOWHEALTHCONSUMED_UNCOMMON_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityUncommon\">.",
+
+		"ITEM_TELEPORTONLOWHEALTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase aura radius, bleed duration, and time extension.",
+        "ITEM_TELEPORTONLOWHEALTH_RARE_DESC": "Falling below <style=cIsHealth>25% health</style> gives you a <style=cIsHealing>temporary barrier</style> and a dimensional aura that <style=cIsDamage>bleeds</style> and <style=cIsUtility>teleports</style> away enemies for <style=cIsUtility>8s</style>. <style=cIsDamage>Enemies killed</style> by the aura <style=cIsUtility>extend</style> the duration by <sprite name=\"Quality\"> <style=cIsUtility>2.5s</style>. At the start of each stage, it regenerates.\nIncreases aura <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> and <style=cIsDamage>bleed duration</style> by <sprite name=\"Quality\"> <style=cIsDamage>2</style> <style=cStack>(+2 per stack)</style> seconds.",
+
+		"ITEM_TELEPORTONLOWHEALTHCONSUMED_RARE_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityRare\">.",
+        "ITEM_TELEPORTONLOWHEALTHCONSUMED_RARE_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityRare\">.",
+
+		"ITEM_TELEPORTONLOWHEALTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase aura radius, bleed duration, and time extension.",
+        "ITEM_TELEPORTONLOWHEALTH_EPIC_DESC": "Falling below <style=cIsHealth>25% health</style> gives you a <style=cIsHealing>temporary barrier</style> and a dimensional aura that <style=cIsDamage>bleeds</style> and <style=cIsUtility>teleports</style> away enemies for <style=cIsUtility>8s</style>. <style=cIsDamage>Enemies killed</style> by the aura <style=cIsUtility>extend</style> the duration by <sprite name=\"Quality\"> <style=cIsUtility>4s</style>. At the start of each stage, it regenerates.\nIncreases aura <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style> and <style=cIsDamage>bleed duration</style> by <sprite name=\"Quality\"> <style=cIsDamage>3.5</style> <style=cStack>(+3.5 per stack)</style> seconds.",
+
+		"ITEM_TELEPORTONLOWHEALTHCONSUMED_EPIC_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityEpic\">.",
+        "ITEM_TELEPORTONLOWHEALTHCONSUMED_EPIC_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityEpic\">.",
+
+		"ITEM_TELEPORTONLOWHEALTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase aura radius, bleed duration, and time extension.",
+        "ITEM_TELEPORTONLOWHEALTH_LEGENDARY_DESC": "Falling below <style=cIsHealth>25% health</style> gives you a <style=cIsHealing>temporary barrier</style> and a dimensional aura that <style=cIsDamage>bleeds</style> and <style=cIsUtility>teleports</style> away enemies for <style=cIsUtility>8s</style>. <style=cIsDamage>Enemies killed</style> by the aura <style=cIsUtility>extend</style> the duration by <sprite name=\"Quality\"> <style=cIsUtility>6s</style>. At the start of each stage, it regenerates.\nIncreases aura <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> and <style=cIsDamage>bleed duration</style> by <sprite name=\"Quality\"> <style=cIsDamage>5</style> <style=cStack>(+5 per stack)</style> seconds.",
+
+		"ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
+        "ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
 	}
 }

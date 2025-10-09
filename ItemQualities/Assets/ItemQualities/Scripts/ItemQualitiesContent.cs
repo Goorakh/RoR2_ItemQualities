@@ -483,6 +483,10 @@ namespace ItemQualities
             public static ItemQualityGroup Phasing;
 
             public static ItemQualityGroup ChainLightning;
+
+            public static ItemQualityGroup TeleportOnLowHealth;
+
+            public static ItemQualityGroup TeleportOnLowHealthConsumed;
         }
 
         public static class EquipmentQualityGroups
