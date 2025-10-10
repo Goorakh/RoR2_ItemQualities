@@ -807,5 +807,17 @@
 
 		"ITEM_JUMPBOOST_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase speed when chaining jumps. Increase air control.",
 		"ITEM_JUMPBOOST_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Chained</style> jumps increase speed by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> per jump, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>500%</style> <style=cStack>(+500% per stack)</style>. Increases <style=cIsUtility>air control</style> when quail jumping by <sprite name=\"Quality\"> <style=cIsUtility>50%</style>",
+
+		"ITEM_BARRIERONOVERHEAL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase armor while you have barrier.",
+		"ITEM_BARRIERONOVERHEAL_UNCOMMON_DESC": "{0}\nWhile you have <style=cIsHealing>barrier</style>, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>20</style> <style=cStack>(+20 per stack)</style>.",
+
+		"ITEM_BARRIERONOVERHEAL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase armor while you have barrier.",
+		"ITEM_BARRIERONOVERHEAL_RARE_DESC": "{0}\nWhile you have <style=cIsHealing>barrier</style>, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style>.",
+
+		"ITEM_BARRIERONOVERHEAL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase armor while you have barrier.",
+		"ITEM_BARRIERONOVERHEAL_EPIC_DESC": "{0}\nWhile you have <style=cIsHealing>barrier</style>, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>80</style> <style=cStack>(+80 per stack)</style>.",
+
+		"ITEM_BARRIERONOVERHEAL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase armor while you have barrier.",
+		"ITEM_BARRIERONOVERHEAL_LEGENDARY_DESC": "{0}\nWhile you have <style=cIsHealing>barrier</style>, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style>.",
 	}
 }
