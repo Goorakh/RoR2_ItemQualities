@@ -59,6 +59,22 @@ namespace ItemQualities
             }
         }
 
+        public readonly QualityTier HighestQuality
+        {
+            get
+            {
+                for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
+                {
+                    if (this[qualityTier] > 0)
+                    {
+                        return qualityTier;
+                    }
+                }
+
+                return QualityTier.None;
+            }
+        }
+
         public ItemQualityCounts(int baseItemCount, int uncommonCount, int rareCount, int epicCount, int legendaryCount)
         {
             BaseItemCount = Math.Max(0, baseItemCount);

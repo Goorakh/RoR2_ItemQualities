@@ -124,14 +124,47 @@ namespace ItemQualities
             }
         }
 
+        float _airControlBonus = 1f;
+        public float AirControlBonus
+        {
+            get
+            {
+                recalculateStatsIfNeeded();
+                return _airControlBonus;
+            }
+        }
+
+        public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(gameObject);
+
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
         public bool SlugOutOfDanger => _slugOutOfDanger;
 
         [SyncVar(hook = nameof(hookSetShieldOutOfDanger))]
         bool _shieldOutOfDanger;
-
         public bool ShieldOutOfDanger => _shieldOutOfDanger;
+
+        [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
+        bool _isPerformingQuailJump;
+        public bool IsPerformingQuailJump
+        {
+            get => _isPerformingQuailJump;
+            private set
+            {
+                _isPerformingQuailJump = value;
+
+                if (HasEffectiveAuthority && !NetworkServer.active)
+                {
+                    CmdSetPerformingQuailJump(_isPerformingQuailJump);
+                }
+            }
+        }
+
+        public Run.FixedTimeStamp LastQuailLandTimeAuthority { get; private set; } = Run.FixedTimeStamp.positiveInfinity;
+
+        public Vector3 LastQuailJumpVelocityAuthority { get; private set; } = Vector3.zero;
+
+        public int QuailJumpComboAuthority { get; private set; }
 
         public bool MushroomActiveServer { get; private set; }
 
@@ -148,6 +181,11 @@ namespace ItemQualities
             _body.onInventoryChanged += onBodyInventoryChanged;
             _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
 
+            if (_body.characterMotor)
+            {
+                _body.characterMotor.onHitGroundAuthority += onHitGroundAuthority;
+            }
+
             EquipmentSlot.onServerEquipmentActivated += onServerEquipmentActivated;
         }
 
@@ -155,6 +193,11 @@ namespace ItemQualities
         {
             _body.onInventoryChanged -= onBodyInventoryChanged;
             _body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
+
+            if (_body.characterMotor)
+            {
+                _body.characterMotor.onHitGroundAuthority -= onHitGroundAuthority;
+            }
 
             EquipmentSlot.onServerEquipmentActivated -= onServerEquipmentActivated;
         }
@@ -181,6 +224,15 @@ namespace ItemQualities
                 if (!HasHadAnyQualityDeathMarkDebuffServer && DeathMark.HasAnyQualityDeathMarkDebuff(_body))
                 {
                     HasHadAnyQualityDeathMarkDebuffServer = true;
+                }
+            }
+
+            if (HasEffectiveAuthority)
+            {
+                if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.1f)
+                {
+                    QuailJumpComboAuthority = 0;
+                    Log.Debug($"{Util.GetBestBodyName(gameObject)} lost quail combo");
                 }
             }
 
@@ -312,6 +364,7 @@ namespace ItemQualities
             ItemQualityCounts warCryOnMultiKill = default;
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
+            ItemQualityCounts jumpBoost = default;
             if (_body && _body.inventory)
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
@@ -323,6 +376,7 @@ namespace ItemQualities
                 warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCounts(_body.inventory);
                 executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCounts(_body.inventory);
                 phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCounts(_body.inventory);
+                jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCounts(_body.inventory);
             }
 
             float slugOutOfDangerDelayReduction = 1f;
@@ -394,6 +448,29 @@ namespace ItemQualities
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
 
             _stealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
+
+            float airControlBonus = 0f;
+
+            if (IsPerformingQuailJump)
+            {
+                switch (jumpBoost.HighestQuality)
+                {
+                    case QualityTier.Uncommon:
+                        airControlBonus += 0.10f;
+                        break;
+                    case QualityTier.Rare:
+                        airControlBonus += 0.20f;
+                        break;
+                    case QualityTier.Epic:
+                        airControlBonus += 0.30f;
+                        break;
+                    case QualityTier.Legendary:
+                        airControlBonus += 0.50f;
+                        break;
+                }
+            }
+
+            _airControlBonus = airControlBonus;
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)
@@ -432,10 +509,72 @@ namespace ItemQualities
             }
         }
 
+        void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)
+        {
+            if (IsPerformingQuailJump)
+            {
+                LastQuailLandTimeAuthority = Run.FixedTimeStamp.now;
+                IsPerformingQuailJump = false;
+            }
+        }
+
         public void UpdateAllTemporaryVisualEffects()
         {
             _body.UpdateSingleTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
             _body.UpdateSingleTemporaryVisualEffect(ref _sprintArmorStrongEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.radius * 1.5f, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong));
+        }
+
+        public void OnQuailJumpAuthority()
+        {
+            if (!HasEffectiveAuthority)
+            {
+                Log.Warning("Caller must have authority");
+                return;
+            }
+
+            Vector3 jumpVelocity = _body.characterMotor ? _body.characterMotor.velocity : Vector3.zero;
+
+            if (QuailJumpComboAuthority > 0)
+            {
+                Vector3 horizontalJumpVelocity = jumpVelocity;
+                horizontalJumpVelocity.y = 0f;
+
+                Vector3 lastJumpHorizontalVelocity = LastQuailJumpVelocityAuthority;
+                lastJumpHorizontalVelocity.y = 0f;
+
+                bool resetJumpCombo = false;
+                if (horizontalJumpVelocity.sqrMagnitude > 0)
+                {
+                    if (lastJumpHorizontalVelocity.sqrMagnitude > 0)
+                    {
+                        float jumpAngleDiff = Vector3.Angle(horizontalJumpVelocity.normalized, lastJumpHorizontalVelocity.normalized);
+                        if (jumpAngleDiff >= 60f)
+                        {
+                            resetJumpCombo = true;
+                        }
+                    }
+                }
+                else if (lastJumpHorizontalVelocity.sqrMagnitude > 0)
+                {
+                    resetJumpCombo = true;
+                }
+
+                if (resetJumpCombo)
+                {
+                    Log.Debug($"{Util.GetBestBodyName(gameObject)} lost quail combo due to jump angle difference");
+                    QuailJumpComboAuthority = 0;
+                }
+            }
+
+            IsPerformingQuailJump = true;
+            LastQuailJumpVelocityAuthority = jumpVelocity;
+            QuailJumpComboAuthority++;
+        }
+
+        [Command]
+        void CmdSetPerformingQuailJump(bool performing)
+        {
+            IsPerformingQuailJump = performing;
         }
 
         void hookSetSlugOutOfDanger(bool slugOutOfDanger)
@@ -462,6 +601,17 @@ namespace ItemQualities
                 {
                     Util.PlaySound("Play_item_proc_personal_shield_recharge", gameObject);
                 }
+            }
+        }
+
+        void hookSetIsPerformingQuailJump(bool performingQuailJump)
+        {
+            bool changed = _isPerformingQuailJump != performingQuailJump;
+            _isPerformingQuailJump = performingQuailJump;
+
+            if (changed)
+            {
+                MarkAllStatsDirty();
             }
         }
     }

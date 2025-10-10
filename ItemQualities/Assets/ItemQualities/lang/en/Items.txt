@@ -795,5 +795,17 @@
 
 		"ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
 		"ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+170% <style=cStack>(+100% per stack <sprite name=\"QualityLegendary\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+
+		"ITEM_JUMPBOOST_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase speed when chaining jumps. Increase air control.",
+		"ITEM_JUMPBOOST_UNCOMMON_DESC": "{0}\n<style=cIsUtility>Chained</style> jumps increase speed by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> per jump, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style>. Increases <style=cIsUtility>air control</style> when quail jumping by <sprite name=\"Quality\"> <style=cIsUtility>10%</style>",
+
+		"ITEM_JUMPBOOST_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase speed when chaining jumps. Increase air control.",
+		"ITEM_JUMPBOOST_RARE_DESC": "{0}\n<style=cIsUtility>Chained</style> jumps increase speed by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style> per jump, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>200%</style> <style=cStack>(+200% per stack)</style>. Increases <style=cIsUtility>air control</style> when quail jumping by <sprite name=\"Quality\"> <style=cIsUtility>20%</style>",
+
+		"ITEM_JUMPBOOST_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase speed when chaining jumps. Increase air control.",
+		"ITEM_JUMPBOOST_EPIC_DESC": "{0}\n<style=cIsUtility>Chained</style> jumps increase speed by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style> per jump, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>350%</style> <style=cStack>(+350% per stack)</style>. Increases <style=cIsUtility>air control</style> when quail jumping by <sprite name=\"Quality\"> <style=cIsUtility>30%</style>",
+
+		"ITEM_JUMPBOOST_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase speed when chaining jumps. Increase air control.",
+		"ITEM_JUMPBOOST_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Chained</style> jumps increase speed by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> per jump, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>500%</style> <style=cStack>(+500% per stack)</style>. Increases <style=cIsUtility>air control</style> when quail jumping by <sprite name=\"Quality\"> <style=cIsUtility>50%</style>",
 	}
 }
