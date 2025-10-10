@@ -236,47 +236,6 @@ namespace ItemQualities
 
             Texture2D iconTexture = baseItemDef.pickupIconSprite.texture;
 
-            ItemTier itemTier = ItemTier.Tier1;
-            if (currentDirectory.Contains("Tier1"))
-            {
-                itemTier = ItemTier.Tier1;
-            }
-            else if (currentDirectory.Contains("Tier2"))
-            {
-                itemTier = ItemTier.Tier2;
-            }
-            else if (currentDirectory.Contains("Tier3"))
-            {
-                itemTier = ItemTier.Tier3;
-            }
-            else if (currentDirectory.Contains("Boss"))
-            {
-                itemTier = ItemTier.Boss;
-            }
-            else if (currentDirectory.Contains("VoidBoss"))
-            {
-                itemTier = ItemTier.VoidBoss;
-            }
-            else if (currentDirectory.Contains("VoidTier1"))
-            {
-                itemTier = ItemTier.VoidTier1;
-            }
-            else if (currentDirectory.Contains("VoidTier2"))
-            {
-                itemTier = ItemTier.VoidTier2;
-            }
-            else if (currentDirectory.Contains("VoidTier3"))
-            {
-                itemTier = ItemTier.VoidTier3;
-            }
-            else if (currentDirectory.Contains("Lunar"))
-            {
-                itemTier = ItemTier.Lunar;
-            }
-            else if (currentDirectory.Contains("NoTier"))
-            {
-                itemTier = ItemTier.NoTier;
-            }
 
             Sprite[] qualitySprites = AssetDatabase.LoadAllAssetsAtPath("Assets/ItemQualities/Assets/texQualityIcons.png")
                 .OfType<Sprite>()
@@ -301,7 +260,7 @@ namespace ItemQualities
                 itemDef.tags = new ItemTag[] { ItemTag.WorldUnique };
 
 #pragma warning disable CS0618 // Type or member is obsolete
-                itemDef.deprecatedTier = itemTier;
+                itemDef.deprecatedTier = baseItemDef.tier;
 #pragma warning restore CS0618 // Type or member is obsolete
 
                 AssetDatabase.CreateAsset(itemDef, Path.Combine(currentDirectory, itemDef.name + ".asset"));
