@@ -348,7 +348,9 @@ namespace ItemQualities
                         Color c = qualityIconSprite.texture.GetPixelBilinear(Mathf.Lerp(uvLeft, uvRight, (float)x / width), Mathf.Lerp(uvBottom, uvTop, (float)y / height));
                         if (c.a > 0)
                         {
-                            itemTexture.SetPixel(x, y + height, c);
+                            Color baseColor = itemTexture.GetPixel(x, y + height);
+                            Color pixelColor = baseColor.a > 0 ? Color.Lerp(baseColor, c, c.a) : c;
+                            itemTexture.SetPixel(x, y + height, pixelColor);
                         }
                     }
                 }
