@@ -230,9 +230,10 @@ namespace ItemQualities
 
             string currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
 
-            ItemDef baseItemDef = BaseItemReference.OperationHandle.IsValid()
-                ? (ItemDef)BaseItemReference.OperationHandle.Result
-                : BaseItemReference.LoadAssetAsync<ItemDef>().WaitForCompletion();
+            AsyncOperationHandle<ItemDef> baseItemLoadHandle = BaseItemReference.LoadAssetAsync<ItemDef>();
+            using ScopedAsyncOperationHandle<ItemDef> baseItemLoadScope = new ScopedAsyncOperationHandle<ItemDef>(baseItemLoadHandle);
+
+            ItemDef baseItemDef = baseItemLoadHandle.WaitForCompletion();
 
             Texture2D iconTexture = baseItemDef.pickupIconSprite.texture;
 
