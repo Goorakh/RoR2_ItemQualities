@@ -30,6 +30,7 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.UpdateMultiKill += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterMaster.OnBodyStart += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += CombineGroupedItemCountsPatch;
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCrit += CombineGroupedItemCountsPatch;

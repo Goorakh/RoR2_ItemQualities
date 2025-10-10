@@ -783,5 +783,17 @@
 
 		"ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
+
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+80% <style=cStack>(+10% per stack <sprite name=\"QualityUncommon\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+100% <style=cStack>(+30% per stack <sprite name=\"QualityRare\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+130% <style=cStack>(+60% per stack <sprite name=\"QualityEpic\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+170% <style=cStack>(+100% per stack <sprite name=\"QualityLegendary\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 	}
 }

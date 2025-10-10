@@ -96,7 +96,7 @@ namespace ItemQualities
         {
             if (inventory)
             {
-                for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
+                for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= QualityTier.None; qualityTier--)
                 {
                     itemCount = inventory.GetItemCount(GetItemIndex(qualityTier));
                     if (itemCount > 0)

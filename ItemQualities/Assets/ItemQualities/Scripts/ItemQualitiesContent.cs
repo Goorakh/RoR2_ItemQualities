@@ -487,6 +487,8 @@ namespace ItemQualities
             public static ItemQualityGroup TeleportOnLowHealth;
 
             public static ItemQualityGroup TeleportOnLowHealthConsumed;
+
+            public static ItemQualityGroup EnergizedOnEquipmentUse;
         }
 
         public static class EquipmentQualityGroups
@@ -509,6 +511,8 @@ namespace ItemQualities
             public static BuffQualityGroup AttackSpeedOnCrit;
 
             public static BuffQualityGroup WhipBoost;
+
+            public static BuffQualityGroup Energized;
         }
 
         public static class Buffs
