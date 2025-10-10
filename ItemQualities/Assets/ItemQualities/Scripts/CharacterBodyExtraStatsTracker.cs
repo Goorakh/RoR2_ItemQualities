@@ -292,6 +292,7 @@ namespace ItemQualities
                 setItemBehavior<SprintArmorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<HealOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<EnergizedOnEquipmentUseItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<BarrierOnOverHealQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal.GetItemCounts(_body.inventory).TotalQualityCount > 0);
             }
         }
 

@@ -491,6 +491,8 @@ namespace ItemQualities
             public static ItemQualityGroup EnergizedOnEquipmentUse;
 
             public static ItemQualityGroup JumpBoost;
+
+            public static ItemQualityGroup BarrierOnOverHeal;
         }
 
         public static class EquipmentQualityGroups
