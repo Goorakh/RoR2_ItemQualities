@@ -124,8 +124,8 @@ namespace ItemQualities.Items
 
                 float bigMissileChance = (10f * missile.UncommonCount) +
                                          (15f * missile.RareCount) +
-                                         (30f * missile.EpicCount) +
-                                         (50f * missile.LegendaryCount);
+                                         (25f * missile.EpicCount) +
+                                         (40f * missile.LegendaryCount);
 
                 return Util.CheckRoll(bigMissileChance, attackerMaster);
             }
