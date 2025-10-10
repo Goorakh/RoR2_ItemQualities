@@ -5,6 +5,7 @@ using RoR2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
@@ -235,15 +236,16 @@ namespace ItemQualities
 
             ItemDef baseItemDef = baseItemLoadHandle.WaitForCompletion();
 
-            Texture2D iconTexture = baseItemDef.pickupIconSprite.texture;
+            Texture2D baseIconTexture = baseItemDef.pickupIconSprite.texture;
 
+            QualityTierDef[] qualityTierDefs = new QualityTierDef[(int)QualityTier.Count];
 
-            Sprite[] qualitySprites = AssetDatabase.LoadAllAssetsAtPath("Assets/ItemQualities/Assets/texQualityIcons.png")
-                .OfType<Sprite>()
-                .OrderBy(x => x.name)
-                .Skip(1)
-                .Take(4)
-                .ToArray();
+            string[] qualityTierDefAssetGUIDs = AssetDatabase.FindAssets($"t:{nameof(QualityTierDef)}", new string[] { "Assets/ItemQualities/Assets" });
+            foreach (string assetGuid in qualityTierDefAssetGUIDs)
+            {
+                QualityTierDef qualityTierDef = AssetDatabase.LoadAssetAtPath<QualityTierDef>(AssetDatabase.GUIDToAssetPath(assetGuid));
+                qualityTierDefs[(int)qualityTierDef.qualityTier] = qualityTierDef;
+            }
 
             ItemDef createItem(QualityTier qualityTier)
             {
@@ -251,14 +253,27 @@ namespace ItemQualities
                 itemDef.name = baseItemName + qualityTier;
                 itemDef.descriptionToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
                 itemDef.pickupToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
-                itemDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine(currentDirectory, "tex" + itemDef.name + ".png"));
+                itemDef.tags = new ItemTag[] { ItemTag.WorldUnique };
+
+                string qualityIconTextureAssetPath = Path.Combine(currentDirectory, "tex" + itemDef.name + ".png");
+                itemDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
                 if (!itemDef.pickupIconSprite)
                 {
-                    itemDef.pickupIconSprite = CreateItemSprite(iconTexture, qualitySprites[(int)qualityTier]);
-                    //todo: make it save as a png file
-                    AssetDatabase.CreateAsset(itemDef.pickupIconSprite, Path.Combine(currentDirectory, "tex" + itemDef.name + ".asset"));
+                    Texture2D qualityIconTexture = CreateQualityItemIconTexture(baseIconTexture, qualityTierDefs[(int)qualityTier], baseItemDef.isConsumed);
+
+                    File.WriteAllBytes(qualityIconTextureAssetPath, qualityIconTexture.EncodeToPNG());
+
+                    AssetDatabase.ImportAsset(qualityIconTextureAssetPath);
+
+                    TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(qualityIconTextureAssetPath);
+                    textureImporter.textureType = TextureImporterType.Sprite;
+                    textureImporter.spritePixelsPerUnit = 25;
+                    textureImporter.alphaIsTransparency = true;
+
+                    AssetDatabase.ImportAsset(qualityIconTextureAssetPath, ImportAssetOptions.ForceUpdate);
+
+                    itemDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
                 }
-                itemDef.tags = new ItemTag[] { ItemTag.WorldUnique };
 
 #pragma warning disable CS0618 // Type or member is obsolete
                 itemDef.deprecatedTier = baseItemDef.tier;
@@ -290,7 +305,7 @@ namespace ItemQualities
             }
         }
 
-        private static Sprite CreateItemSprite(Texture2D baseItemTex, Sprite qualityIconSprite)
+        private static Texture2D CreateQualityItemIconTexture(Texture2D baseItemTex, QualityTierDef qualityTierDef, bool useConsumedIcon)
         {
             //https://forum.unity.com/threads/easy-way-to-make-texture-isreadable-true-by-script.1141915/
             RenderTexture renderTex = RenderTexture.GetTemporary(
@@ -298,47 +313,50 @@ namespace ItemQualities
                 baseItemTex.height,
                 0,
                 RenderTextureFormat.ARGB32,
-                RenderTextureReadWrite.Linear);
+                baseItemTex.isDataSRGB ? RenderTextureReadWrite.sRGB : RenderTextureReadWrite.Linear);
 
             Graphics.Blit(baseItemTex, renderTex);
 
             RenderTexture previous = RenderTexture.active;
             RenderTexture.active = renderTex;
 
-            Texture2D itemTexture = new Texture2D(renderTex.width, renderTex.height);
+            Texture2D itemTexture = new Texture2D(renderTex.width, renderTex.height, TextureFormat.ARGB32, true);
             itemTexture.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
 
             RenderTexture.active = previous;
             RenderTexture.ReleaseTemporary(renderTex);
 
-            int width = itemTexture.width / 2;
-            int height = itemTexture.height / 2;
-            float uvLeft = qualityIconSprite.rect.x / (qualityIconSprite.texture.width);
-            float uvRight = (qualityIconSprite.rect.x + qualityIconSprite.rect.width) / (qualityIconSprite.texture.width);
-            float uvBottom = qualityIconSprite.rect.y / (qualityIconSprite.texture.height);
-            float uvTop = (qualityIconSprite.rect.y + qualityIconSprite.rect.height) / (qualityIconSprite.texture.height);
-
-            for (int x = 0; x < width; x++)
+            Sprite qualityIconSprite = qualityTierDef.icon;
+            if (useConsumedIcon && qualityTierDef.consumedIcon)
             {
-                for (int y = 0; y < height; y++)
-                {
-                    Color c = qualityIconSprite.texture.GetPixelBilinear(Mathf.Lerp(uvLeft, uvRight, (float)x / width), Mathf.Lerp(uvBottom, uvTop, (float)y / height));
-                    if (c.a > 0)
-                    {
-                        itemTexture.SetPixel(x, y + height, c);
-                    }
-                }
+                qualityIconSprite = qualityTierDef.consumedIcon;
             }
 
-            itemTexture.Apply();
-            
-            Sprite sprite = Sprite.Create(
-                itemTexture,
-                new Rect(0, 0, itemTexture.width, itemTexture.height),
-                new Vector2(0.5f, 0.5f)
-            );
+            if (qualityIconSprite)
+            {
+                int width = itemTexture.width / 2;
+                int height = itemTexture.height / 2;
+                float uvLeft = qualityIconSprite.rect.x / (qualityIconSprite.texture.width);
+                float uvRight = (qualityIconSprite.rect.x + qualityIconSprite.rect.width) / (qualityIconSprite.texture.width);
+                float uvBottom = qualityIconSprite.rect.y / (qualityIconSprite.texture.height);
+                float uvTop = (qualityIconSprite.rect.y + qualityIconSprite.rect.height) / (qualityIconSprite.texture.height);
 
-            return sprite;
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        Color c = qualityIconSprite.texture.GetPixelBilinear(Mathf.Lerp(uvLeft, uvRight, (float)x / width), Mathf.Lerp(uvBottom, uvTop, (float)y / height));
+                        if (c.a > 0)
+                        {
+                            itemTexture.SetPixel(x, y + height, c);
+                        }
+                    }
+                }
+
+                itemTexture.Apply();
+            }
+            
+            return itemTexture;
         }
 #endif
     }
