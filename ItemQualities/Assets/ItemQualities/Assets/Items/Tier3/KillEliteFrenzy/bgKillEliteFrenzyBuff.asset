@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgKillEliteFrenzyBuff
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: f57bd546034caa7428a4243ce606073e
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonBuff: {fileID: 11400000, guid: 81842149638bc674a9a761f12526dcba, type: 2}
+  _rareBuff: {fileID: 11400000, guid: 11a5f4a277c90f74f85ca214be55a428, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 6798587ba897e0548b26813320793200, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: b1518fee1ec573640b692d7e04253c1d, type: 2}

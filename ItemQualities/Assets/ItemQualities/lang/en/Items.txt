@@ -867,5 +867,17 @@
 
 		"ITEM_IMMUNETODEBUFF_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
 		"ITEM_IMMUNETODEBUFF_LEGENDARY_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>75m</style> <style=cStack>(+50m per stack)</style>",
+
+		"ITEM_KILLELITEFRENZY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
+		"ITEM_KILLELITEFRENZY_UNCOMMON_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style>.",
+
+		"ITEM_KILLELITEFRENZY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
+		"ITEM_KILLELITEFRENZY_RARE_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",
+
+		"ITEM_KILLELITEFRENZY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
+		"ITEM_KILLELITEFRENZY_EPIC_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>.",
+
+		"ITEM_KILLELITEFRENZY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
+		"ITEM_KILLELITEFRENZY_LEGENDARY_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>60%</style> <style=cStack>(+60% per stack)</style>.",
 	}
 }
