@@ -2,7 +2,7 @@
 using RoR2.Orbs;
 using UnityEngine;
 
-namespace ItemQualities.Items
+namespace ItemQualities.Orbs
 {
     public class ImmuneToDebuffOrb : Orb
     {

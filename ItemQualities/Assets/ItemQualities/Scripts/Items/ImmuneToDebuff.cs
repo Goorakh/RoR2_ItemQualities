@@ -1,4 +1,5 @@
 ﻿using HG;
+using ItemQualities.Orbs;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
