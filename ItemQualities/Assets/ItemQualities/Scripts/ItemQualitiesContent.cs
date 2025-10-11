@@ -497,6 +497,8 @@ namespace ItemQualities
             public static ItemQualityGroup AlienHead;
 
             public static ItemQualityGroup Behemoth;
+
+            public static ItemQualityGroup RandomEquipmentTrigger;
         }
 
         public static class EquipmentQualityGroups
