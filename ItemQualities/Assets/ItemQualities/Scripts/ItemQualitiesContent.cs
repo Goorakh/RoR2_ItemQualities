@@ -495,6 +495,8 @@ namespace ItemQualities
             public static ItemQualityGroup BarrierOnOverHeal;
 
             public static ItemQualityGroup AlienHead;
+
+            public static ItemQualityGroup Behemoth;
         }
 
         public static class EquipmentQualityGroups

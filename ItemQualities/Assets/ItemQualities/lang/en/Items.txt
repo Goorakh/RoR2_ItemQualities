@@ -831,5 +831,17 @@
 
 		"ITEM_ALIENHEAD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce skill cooldowns on kill.",
 		"ITEM_ALIENHEAD_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Kills</style> reduce <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second.",
+
+		"ITEM_BEHEMOTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
+		"ITEM_BEHEMOTH_UNCOMMON_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>0.1</style> <style=cStack>(+0.1 per stack)</style> proc coefficient, going past <style=cIsDamage>1.0</style> instead explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> TOTAL damage.",
+
+		"ITEM_BEHEMOTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
+		"ITEM_BEHEMOTH_RARE_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>0.3</style> <style=cStack>(+0.3 per stack)</style> proc coefficient, going past <style=cIsDamage>1.0</style> instead explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> TOTAL damage.",
+
+		"ITEM_BEHEMOTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
+		"ITEM_BEHEMOTH_EPIC_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>0.7</style> <style=cStack>(+0.7 per stack)</style> proc coefficient, going past <style=cIsDamage>1.0</style> instead explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>35%</style> <style=cStack>(+35% per stack)</style> TOTAL damage.",
+
+		"ITEM_BEHEMOTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
+		"ITEM_BEHEMOTH_LEGENDARY_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>1.0</style> proc coefficient. Explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>0%</style> <style=cStack>(+50% per stack)</style> TOTAL damage.",
 	}
 }

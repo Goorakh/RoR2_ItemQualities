@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igBehemoth
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 02bf2f4fd76fe3e4d8651ee87fa60821
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: a55dea31e9ca86e4daa24e0d497fe595, type: 2}
+  _rareItem: {fileID: 11400000, guid: 48b278388b9ae5446b926637cbffc5f2, type: 2}
+  _epicItem: {fileID: 11400000, guid: b940522acf50aa4489bfad0536994b5d, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: f5bc32928fffc3847bc503d333f9e3cc, type: 2}
