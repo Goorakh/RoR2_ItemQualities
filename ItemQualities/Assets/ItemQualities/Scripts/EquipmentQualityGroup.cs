@@ -4,6 +4,7 @@ using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
 using System.Collections;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -158,55 +159,49 @@ namespace ItemQualities
         [ContextMenu("Generate EquipmentDefs")]
         void GenerateEquipments()
         {
-            string baseItemName = name;
-            if (baseItemName.StartsWith("eg"))
-                baseItemName = baseItemName.Substring(2);
+            string baseEquipmentName = name;
+            if (baseEquipmentName.StartsWith("eg"))
+                baseEquipmentName = baseEquipmentName.Substring(2);
 
             string currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
 
-            /*
-            Texture2D iconTexture = BaseItemReference.LoadAssetAsync().WaitForCompletion().pickupIconSprite.texture;
-            bool isTemporaryTexture = false;
-            if (!iconTexture.isReadable)
-            {
-                RenderTexture tmp = RenderTexture.GetTemporary(iconTexture.width, iconTexture.height, 0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+            AsyncOperationHandle<EquipmentDef> baseEquipmentLoadHandle = BaseEquipmentReference.LoadAssetAsync<EquipmentDef>();
+            using ScopedAsyncOperationHandle<EquipmentDef> baseEquipmentLoadScope = new ScopedAsyncOperationHandle<EquipmentDef>(baseEquipmentLoadHandle);
 
-                Graphics.Blit(iconTexture, tmp);
+            EquipmentDef baseEquipmentDef = baseEquipmentLoadHandle.WaitForCompletion();
 
-                RenderTexture prevActive = RenderTexture.active;
-                RenderTexture.active = tmp;
-
-                iconTexture = new Texture2D(iconTexture.width, iconTexture.height);
-                iconTexture.ReadPixels(new Rect(0, 0, tmp.width, tmp.height), 0, 0);
-                iconTexture.Apply(false);
-
-                RenderTexture.active = prevActive;
-
-                RenderTexture.ReleaseTemporary(tmp);
-
-                isTemporaryTexture = true;
-            }
-
-            File.WriteAllBytes(Path.Combine(currentDirectory, "test.png"), iconTexture.EncodeToPNG());
-            AssetDatabase.ImportAsset(Path.Combine(currentDirectory, "test.png"));
-
-            if (isTemporaryTexture)
-            {
-                Destroy(iconTexture);
-            }
-            */
+            Texture2D baseIconTexture = baseEquipmentDef.pickupIconSprite.texture;
 
             EquipmentDef createEquipment(QualityTier qualityTier)
             {
                 EquipmentDef equipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
-                equipmentDef.name = baseItemName + qualityTier;
-                equipmentDef.descriptionToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
-                equipmentDef.pickupToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
-                equipmentDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(Path.Combine(currentDirectory, "tex" + equipmentDef.name + ".png"));
+                equipmentDef.name = baseEquipmentName + qualityTier;
+                equipmentDef.descriptionToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
+                equipmentDef.pickupToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
                 equipmentDef.cooldown = 1f;
                 equipmentDef.colorIndex = ColorCatalog.ColorIndex.None;
                 equipmentDef.canDrop = false;
                 equipmentDef.dropOnDeathChance = 0f;
+
+                string qualityIconTextureAssetPath = Path.Combine(currentDirectory, "tex" + equipmentDef.name + ".png");
+                equipmentDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
+                if (!equipmentDef.pickupIconSprite)
+                {
+                    Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier);
+
+                    File.WriteAllBytes(qualityIconTextureAssetPath, qualityIconTexture.EncodeToPNG());
+
+                    AssetDatabase.ImportAsset(qualityIconTextureAssetPath);
+
+                    TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(qualityIconTextureAssetPath);
+                    textureImporter.textureType = TextureImporterType.Sprite;
+                    textureImporter.spritePixelsPerUnit = 25;
+                    textureImporter.alphaIsTransparency = true;
+
+                    AssetDatabase.ImportAsset(qualityIconTextureAssetPath, ImportAssetOptions.ForceUpdate);
+
+                    equipmentDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
+                }
 
                 AssetDatabase.CreateAsset(equipmentDef, Path.Combine(currentDirectory, equipmentDef.name + ".asset"));
 
