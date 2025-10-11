@@ -499,6 +499,8 @@ namespace ItemQualities
             public static ItemQualityGroup Behemoth;
 
             public static ItemQualityGroup RandomEquipmentTrigger;
+
+            public static ItemQualityGroup ImmuneToDebuff;
         }
 
         public static class EquipmentQualityGroups
