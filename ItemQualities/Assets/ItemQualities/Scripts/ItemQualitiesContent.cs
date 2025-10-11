@@ -501,6 +501,8 @@ namespace ItemQualities
             public static ItemQualityGroup RandomEquipmentTrigger;
 
             public static ItemQualityGroup ImmuneToDebuff;
+
+            public static ItemQualityGroup KillEliteFrenzy;
         }
 
         public static class EquipmentQualityGroups
@@ -525,6 +527,8 @@ namespace ItemQualities
             public static BuffQualityGroup WhipBoost;
 
             public static BuffQualityGroup Energized;
+
+            public static BuffQualityGroup KillEliteFrenzyBuff;
         }
 
         public static class Buffs
