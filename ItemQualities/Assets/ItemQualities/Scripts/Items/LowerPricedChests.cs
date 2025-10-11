@@ -186,7 +186,7 @@ namespace ItemQualities.Items
                         int nextDropIndex = 0;
                         for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier > QualityTier.None; qualityTier--)
                         {
-                            int dropsOfQuality = Mathf.CeilToInt(usedSaleStars[qualityTier] / (float)usedSaleStars.TotalCount);
+                            int dropsOfQuality = Mathf.CeilToInt((usedSaleStars[qualityTier] / (float)usedSaleStars.TotalCount) * dropCount);
                             int dropsOfQualityToAdd = Mathf.Min(dropsOfQuality, dropQualityTiers.Length - nextDropIndex);
                             if (dropsOfQualityToAdd > 0)
                             {
