@@ -843,5 +843,17 @@
 
 		"ITEM_BEHEMOTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
 		"ITEM_BEHEMOTH_LEGENDARY_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>1.0</style> proc coefficient. Explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>0%</style> <style=cStack>(+50% per stack)</style> TOTAL damage.",
+
+		"ITEM_RANDOMEQUIPMENTTRIGGER_UNCOMMON_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityUncommon\"> effect.",
+		"ITEM_RANDOMEQUIPMENTTRIGGER_UNCOMMON_DESC": "Trigger a random uncommon <sprite name=\"QualityUncommon\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_RANDOMEQUIPMENTTRIGGER_RARE_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityRare\"> effect.",
+		"ITEM_RANDOMEQUIPMENTTRIGGER_RARE_DESC": "Trigger a random rare <sprite name=\"QualityRare\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_RANDOMEQUIPMENTTRIGGER_EPIC_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityEpic\"> effect.",
+		"ITEM_RANDOMEQUIPMENTTRIGGER_EPIC_DESC": "Trigger a random epic <sprite name=\"QualityEpic\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_RANDOMEQUIPMENTTRIGGER_LEGENDARY_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityLegendary\"> effect.",
+		"ITEM_RANDOMEQUIPMENTTRIGGER_LEGENDARY_DESC": "Trigger a random legendary <sprite name=\"QualityLegendary\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
 	}
 }
