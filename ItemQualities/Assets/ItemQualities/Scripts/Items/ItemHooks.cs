@@ -29,6 +29,7 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.UpdateMultiKill += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterMaster.OnBodyStart += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterMaster.OnInventoryChanged += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
             IL.RoR2.EquipmentSlot.OnEquipmentExecuted += CombineGroupedItemCountsPatch;
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
