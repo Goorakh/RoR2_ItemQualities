@@ -855,5 +855,17 @@
 
 		"ITEM_RANDOMEQUIPMENTTRIGGER_LEGENDARY_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityLegendary\"> effect.",
 		"ITEM_RANDOMEQUIPMENTTRIGGER_LEGENDARY_DESC": "Trigger a random legendary <sprite name=\"QualityLegendary\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_IMMUNETODEBUFF_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
+		"ITEM_IMMUNETODEBUFF_UNCOMMON_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>30m</style> <style=cStack>(+5m per stack)</style>",
+
+		"ITEM_IMMUNETODEBUFF_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
+		"ITEM_IMMUNETODEBUFF_RARE_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>35m</style> <style=cStack>(+10m per stack)</style>",
+
+		"ITEM_IMMUNETODEBUFF_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
+		"ITEM_IMMUNETODEBUFF_EPIC_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>55m</style> <style=cStack>(+30m per stack)</style>",
+
+		"ITEM_IMMUNETODEBUFF_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
+		"ITEM_IMMUNETODEBUFF_LEGENDARY_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>75m</style> <style=cStack>(+50m per stack)</style>",
 	}
 }
