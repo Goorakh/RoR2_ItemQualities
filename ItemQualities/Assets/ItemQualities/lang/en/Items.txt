@@ -819,5 +819,17 @@
 
 		"ITEM_BARRIERONOVERHEAL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase armor while you have barrier.",
 		"ITEM_BARRIERONOVERHEAL_LEGENDARY_DESC": "{0}\nWhile you have <style=cIsHealing>barrier</style>, increase <style=cIsHealing>armor</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style>.",
+
+		"ITEM_ALIENHEAD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce skill cooldowns on kill.",
+		"ITEM_ALIENHEAD_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style> chance on <style=cIsDamage>kill</style> to reduce <style=cIsUtility>skill cooldowns</style> by <style=cIsUtility>1</style> second. Guarantee cooldown reduction for every <style=cIsUtility>100%</style> chance reached.",
+
+		"ITEM_ALIENHEAD_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce skill cooldowns on kill.",
+		"ITEM_ALIENHEAD_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style> chance on <style=cIsDamage>kill</style> to reduce <style=cIsUtility>skill cooldowns</style> by <style=cIsUtility>1</style> second. Guarantee cooldown reduction for every <style=cIsUtility>100%</style> chance reached.",
+
+		"ITEM_ALIENHEAD_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce skill cooldowns on kill.",
+		"ITEM_ALIENHEAD_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style> chance on <style=cIsDamage>kill</style> to reduce <style=cIsUtility>skill cooldowns</style> by <style=cIsUtility>1</style> second. Guarantee cooldown reduction for every <style=cIsUtility>100%</style> chance reached.",
+
+		"ITEM_ALIENHEAD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce skill cooldowns on kill.",
+		"ITEM_ALIENHEAD_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Kills</style> reduce <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second.",
 	}
 }
