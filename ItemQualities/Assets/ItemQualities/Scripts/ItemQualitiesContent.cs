@@ -493,6 +493,8 @@ namespace ItemQualities
             public static ItemQualityGroup JumpBoost;
 
             public static ItemQualityGroup BarrierOnOverHeal;
+
+            public static ItemQualityGroup AlienHead;
         }
 
         public static class EquipmentQualityGroups
