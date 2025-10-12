@@ -531,6 +531,8 @@ namespace ItemQualities
             public static ItemQualityGroup ExtraLifeConsumed;
 
             public static ItemQualityGroup ArmorPlate;
+
+            public static ItemQualityGroup StunAndPierce;
         }
 
         public static class EquipmentQualityGroups
