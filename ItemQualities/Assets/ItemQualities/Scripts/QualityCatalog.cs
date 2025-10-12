@@ -8,6 +8,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
+using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities
@@ -355,6 +357,22 @@ namespace ItemQualities
 
         public static QualityTierDef GetQualityTierDef(QualityTier qualityTier)
         {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+            {
+                QualityTierDef[] qualityTierDefs = new QualityTierDef[(int)QualityTier.Count];
+
+                string[] qualityTierDefAssetGUIDs = AssetDatabase.FindAssets($"t:{nameof(QualityTierDef)}", new string[] { "Assets/ItemQualities/Assets" });
+                foreach (string assetGuid in qualityTierDefAssetGUIDs)
+                {
+                    QualityTierDef qualityTierDef = AssetDatabase.LoadAssetAtPath<QualityTierDef>(AssetDatabase.GUIDToAssetPath(assetGuid));
+                    qualityTierDefs[(int)qualityTierDef.qualityTier] = qualityTierDef;
+                }
+
+                return ArrayUtils.GetSafe(qualityTierDefs, (int)qualityTier);
+            }
+#endif
+
             return ArrayUtils.GetSafe(_qualityTierDefs, (int)qualityTier);
         }
 
@@ -513,5 +531,89 @@ namespace ItemQualities
 
             return GetPickupIndexOfQuality(scrapPickupIndex, GetQualityTier(scrappingPickupIndex));
         }
+
+#if UNITY_EDITOR
+        public static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTier qualityTier, bool useConsumedIcon = false)
+        {
+            return CreateQualityIconTexture(baseIconTexture, qualityTier, Color.white, useConsumedIcon);
+        }
+
+        public static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTier qualityTier, Color baseIconTint, bool useConsumedIcon = false)
+        {
+            Texture2D iconTexture;
+            if (baseIconTexture.isReadable)
+            {
+                iconTexture = Texture2D.Instantiate(baseIconTexture);
+            }
+            else
+            {
+                //https://forum.unity.com/threads/easy-way-to-make-texture-isreadable-true-by-script.1141915/
+                RenderTexture renderTex = RenderTexture.GetTemporary(
+                    baseIconTexture.width,
+                    baseIconTexture.height,
+                    0,
+                    RenderTextureFormat.ARGB32,
+                    baseIconTexture.isDataSRGB ? RenderTextureReadWrite.sRGB : RenderTextureReadWrite.Linear);
+
+                Graphics.Blit(baseIconTexture, renderTex);
+
+                RenderTexture previous = RenderTexture.active;
+                RenderTexture.active = renderTex;
+
+                iconTexture = new Texture2D(renderTex.width, renderTex.height, TextureFormat.ARGB32, true);
+                iconTexture.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
+
+                RenderTexture.active = previous;
+                RenderTexture.ReleaseTemporary(renderTex);
+            }
+
+            QualityTierDef qualityTierDef = GetQualityTierDef(qualityTier);
+
+            Sprite qualityIconSprite = qualityTierDef.icon;
+            if (useConsumedIcon && qualityTierDef.consumedIcon)
+            {
+                qualityIconSprite = qualityTierDef.consumedIcon;
+            }
+
+            if (qualityIconSprite)
+            {
+                const float QualityIconRelativeSize = 0.5f;
+
+                int width = iconTexture.width;
+                int height = iconTexture.height;
+                int qualityIconWidth = (int)(width * QualityIconRelativeSize);
+                int qualityIconHeight = (int)(height * QualityIconRelativeSize);
+                float qualityUVLeft = qualityIconSprite.rect.x / (qualityIconSprite.texture.width);
+                float qualityUVRight = (qualityIconSprite.rect.x + qualityIconSprite.rect.width) / (qualityIconSprite.texture.width);
+                float qualityUVBottom = qualityIconSprite.rect.y / (qualityIconSprite.texture.height);
+                float qualityUVTop = (qualityIconSprite.rect.y + qualityIconSprite.rect.height) / (qualityIconSprite.texture.height);
+
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
+                    {
+                        Color pixelColor = iconTexture.GetPixel(x, y) * baseIconTint;
+
+                        if (x < qualityIconWidth && y > height - qualityIconHeight)
+                        {
+                            float u = Mathf.Lerp(qualityUVLeft, qualityUVRight, (float)x / qualityIconWidth);
+                            float v = Mathf.Lerp(qualityUVBottom, qualityUVTop, (float)(y - (height - qualityIconHeight)) / qualityIconHeight);
+                            Color qualityIconColor = qualityIconSprite.texture.GetPixelBilinear(u, v);
+                            if (qualityIconColor.a > 0)
+                            {
+                                pixelColor = pixelColor.a > 0 ? Color.Lerp(pixelColor, qualityIconColor, qualityIconColor.a) : qualityIconColor;
+                            }
+                        }
+
+                        iconTexture.SetPixel(x, y, pixelColor);
+                    }
+                }
+
+                iconTexture.Apply();
+            }
+            
+            return iconTexture;
+        }
+#endif
     }
 }

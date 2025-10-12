@@ -4,10 +4,14 @@ using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
 using System.Collections;
+using System.IO;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
+
+using Path = System.IO.Path;
 
 namespace ItemQualities
 {
@@ -158,5 +162,84 @@ namespace ItemQualities
             populateBuffAsset(_epicBuff, QualityTier.Epic);
             populateBuffAsset(_legendaryBuff, QualityTier.Legendary);
         }
+
+#if UNITY_EDITOR
+        [ContextMenu("Generate BuffDefs")]
+        void GenerateEquipments()
+        {
+            string baseBuffName = name;
+            if (baseBuffName.StartsWith("bg"))
+                baseBuffName = baseBuffName.Substring(2);
+
+            string currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
+
+            AsyncOperationHandle<BuffDef> baseBuffLoadHandle = BaseBuffReference.LoadAssetAsync<BuffDef>();
+            using ScopedAsyncOperationHandle<BuffDef> baseBuffLoadScope = new ScopedAsyncOperationHandle<BuffDef>(baseBuffLoadHandle);
+
+            BuffDef baseBuffDef = baseBuffLoadHandle.WaitForCompletion();
+
+            Texture2D baseIconTexture = baseBuffDef.iconSprite.texture;
+
+            BuffDef createBuffDef(QualityTier qualityTier)
+            {
+                string buffName = baseBuffName + qualityTier;
+
+                BuffDef buffDef = ScriptableObject.CreateInstance<BuffDef>();
+                buffDef.name = $"bd{buffName}";
+                buffDef.buffColor = Color.white;
+                buffDef.canStack = baseBuffDef.canStack;
+                buffDef.isDebuff = baseBuffDef.isDebuff;
+                buffDef.isDOT = baseBuffDef.isDOT;
+                buffDef.ignoreGrowthNectar = baseBuffDef.ignoreGrowthNectar;
+                buffDef.isCooldown = baseBuffDef.isCooldown;
+                buffDef.isHidden = baseBuffDef.isHidden;
+                buffDef.flags = baseBuffDef.flags;
+
+                string qualityIconTextureAssetPath = Path.Combine(currentDirectory, $"tex{buffName}.png");
+                buffDef.iconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
+                if (!buffDef.iconSprite)
+                {
+                    Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier, baseBuffDef.buffColor);
+
+                    File.WriteAllBytes(qualityIconTextureAssetPath, qualityIconTexture.EncodeToPNG());
+
+                    AssetDatabase.ImportAsset(qualityIconTextureAssetPath);
+
+                    TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(qualityIconTextureAssetPath);
+                    textureImporter.textureType = TextureImporterType.Sprite;
+                    textureImporter.spritePixelsPerUnit = 12.5f;
+                    textureImporter.alphaIsTransparency = true;
+
+                    AssetDatabase.ImportAsset(qualityIconTextureAssetPath, ImportAssetOptions.ForceUpdate);
+
+                    buffDef.iconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
+                }
+
+                AssetDatabase.CreateAsset(buffDef, Path.Combine(currentDirectory, buffDef.name + ".asset"));
+
+                return buffDef;
+            }
+
+            if (!_uncommonBuff)
+            {
+                _uncommonBuff = createBuffDef(QualityTier.Uncommon);
+            }
+
+            if (!_rareBuff)
+            {
+                _rareBuff = createBuffDef(QualityTier.Rare);
+            }
+
+            if (!_epicBuff)
+            {
+                _epicBuff = createBuffDef(QualityTier.Epic);
+            }
+
+            if (!_legendaryBuff)
+            {
+                _legendaryBuff = createBuffDef(QualityTier.Legendary);
+            }
+        }
+#endif
     }
 }

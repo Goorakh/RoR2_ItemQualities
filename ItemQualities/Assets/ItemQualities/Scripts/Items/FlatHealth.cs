@@ -1,5 +1,8 @@
-﻿using R2API;
+﻿using ItemQualities.Orbs;
+using R2API;
 using RoR2;
+using RoR2.Orbs;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
@@ -26,7 +29,9 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = teamComponent ? teamComponent.body : null;
                 Inventory inventory = body ? body.inventory : null;
-                CharacterMaster master = body ? body.master : null;
+
+                if (!body || !inventory)
+                    continue;
 
                 ItemQualityCounts flatHealth = default;
                 if (inventory)
@@ -34,16 +39,23 @@ namespace ItemQualities.Items
                     flatHealth = ItemQualitiesContent.ItemQualityGroups.FlatHealth.GetItemCounts(inventory);
                 }
 
-                if (flatHealth.TotalCount > flatHealth.BaseItemCount)
+                if (flatHealth.TotalQualityCount > 0)
                 {
                     float steakBonus = (25f * flatHealth.UncommonCount) +
                                        (50f * flatHealth.RareCount) +
                                        (100f * flatHealth.EpicCount) +
                                        (250f * flatHealth.LegendaryCount);
 
-                    if (master && master.TryGetComponent(out CharacterMasterExtraStatsTracker masterExtraStatsTracker))
+                    if (steakBonus > 0f)
                     {
-                        masterExtraStatsTracker.SteakBonus += steakBonus;
+                        SteakOrb orb = new SteakOrb
+                        {
+                            origin = teleporterInteraction.transform.position + new Vector3(0f, 2f, 0f),
+                            target = body.mainHurtBox,
+                            SteakBonus = steakBonus
+                        };
+
+                        OrbManager.instance.AddOrb(orb);
                     }
                 }
             }

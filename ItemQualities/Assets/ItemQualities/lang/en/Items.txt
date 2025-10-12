@@ -844,5 +844,64 @@
 		"ITEM_FALLBOOTS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase Damage and lower max hieght.",
 		"ITEM_FALLBOOTS_LEGENDARY_DESC": "{0}\nIncrease damage b <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> ",
 
+		"ITEM_BEHEMOTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
+		"ITEM_BEHEMOTH_UNCOMMON_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>0.1</style> <style=cStack>(+0.1 per stack)</style> proc coefficient, going past <style=cIsDamage>1.0</style> instead explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> TOTAL damage.",
+
+		"ITEM_BEHEMOTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
+		"ITEM_BEHEMOTH_RARE_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>0.3</style> <style=cStack>(+0.3 per stack)</style> proc coefficient, going past <style=cIsDamage>1.0</style> instead explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style> TOTAL damage.",
+
+		"ITEM_BEHEMOTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
+		"ITEM_BEHEMOTH_EPIC_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>0.7</style> <style=cStack>(+0.7 per stack)</style> proc coefficient, going past <style=cIsDamage>1.0</style> instead explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>35%</style> <style=cStack>(+35% per stack)</style> TOTAL damage.",
+
+		"ITEM_BEHEMOTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Explosions deal increased damage and can activate item effects.",
+		"ITEM_BEHEMOTH_LEGENDARY_DESC": "{0}\nExplosions gain a <sprite name=\"Quality\"> <style=cIsDamage>1.0</style> proc coefficient. Explodes for an additional <sprite name=\"Quality\"> <style=cIsDamage>0%</style> <style=cStack>(+50% per stack)</style> TOTAL damage.",
+
+		"ITEM_RANDOMEQUIPMENTTRIGGER_UNCOMMON_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityUncommon\"> effect.",
+		"ITEM_RANDOMEQUIPMENTTRIGGER_UNCOMMON_DESC": "Trigger a random uncommon <sprite name=\"QualityUncommon\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_RANDOMEQUIPMENTTRIGGER_RARE_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityRare\"> effect.",
+		"ITEM_RANDOMEQUIPMENTTRIGGER_RARE_DESC": "Trigger a random rare <sprite name=\"QualityRare\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_RANDOMEQUIPMENTTRIGGER_EPIC_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityEpic\"> effect.",
+		"ITEM_RANDOMEQUIPMENTTRIGGER_EPIC_DESC": "Trigger a random epic <sprite name=\"QualityEpic\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_RANDOMEQUIPMENTTRIGGER_LEGENDARY_PICKUP": "Activating your Equipment triggers an additional, random Equipment <sprite name=\"QualityLegendary\"> effect.",
+		"ITEM_RANDOMEQUIPMENTTRIGGER_LEGENDARY_DESC": "Trigger a random legendary <sprite name=\"QualityLegendary\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_IMMUNETODEBUFF_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
+		"ITEM_IMMUNETODEBUFF_UNCOMMON_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>30m</style> <style=cStack>(+5m per stack)</style>",
+
+		"ITEM_IMMUNETODEBUFF_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
+		"ITEM_IMMUNETODEBUFF_RARE_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>35m</style> <style=cStack>(+10m per stack)</style>",
+
+		"ITEM_IMMUNETODEBUFF_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
+		"ITEM_IMMUNETODEBUFF_EPIC_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>55m</style> <style=cStack>(+30m per stack)</style>",
+
+		"ITEM_IMMUNETODEBUFF_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to nearby enemies.",
+		"ITEM_IMMUNETODEBUFF_LEGENDARY_DESC": "{0}\nSpreads the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>75m</style> <style=cStack>(+50m per stack)</style>",
+
+		"ITEM_KILLELITEFRENZY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
+		"ITEM_KILLELITEFRENZY_UNCOMMON_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style>.",
+
+		"ITEM_KILLELITEFRENZY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
+		"ITEM_KILLELITEFRENZY_RARE_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",
+
+		"ITEM_KILLELITEFRENZY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
+		"ITEM_KILLELITEFRENZY_EPIC_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>.",
+
+		"ITEM_KILLELITEFRENZY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
+		"ITEM_KILLELITEFRENZY_LEGENDARY_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>60%</style> <style=cStack>(+60% per stack)</style>.",
+
+		"ITEM_EXTRALIFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
+		"ITEM_EXTRALIFE_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>2</style> times on death.",
+
+		"ITEM_EXTRALIFE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
+		"ITEM_EXTRALIFE_RARE_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>4</style> times on death.",
+
+		"ITEM_EXTRALIFE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
+		"ITEM_EXTRALIFE_EPIC_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>6</style> times on death.",
+
+		"ITEM_EXTRALIFE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
+		"ITEM_EXTRALIFE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>10</style> times on death.",
 	}
 }

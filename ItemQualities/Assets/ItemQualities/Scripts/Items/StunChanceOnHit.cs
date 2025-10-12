@@ -63,9 +63,23 @@ namespace ItemQualities.Items
                                     (4 * stunChanceOnHit.EpicCount) +
                                     (5 * stunChanceOnHit.LegendaryCount);
 
+                const float StunDuration = 1.5f;
+
+                foreach (CharacterBody.TimedBuff timedBuff in victimBody.timedBuffs)
+                {
+                    if (timedBuff.buffIndex == ItemQualitiesContent.Buffs.BossStun.buffIndex)
+                    {
+                        if (timedBuff.timer < StunDuration)
+                        {
+                            timedBuff.timer = StunDuration;
+                            timedBuff.totalDuration = StunDuration;
+                        }
+                    }
+                }
+
                 for (int i = 0; i < bossStunCount; i++)
                 {
-                    victimBody.AddTimedBuff(ItemQualitiesContent.Buffs.BossStun, 1.5f);
+                    victimBody.AddTimedBuff(ItemQualitiesContent.Buffs.BossStun, StunDuration);
                 }
 
                 EffectManager.SpawnEffect(_stunGrenadeImpactIndex, new EffectData
