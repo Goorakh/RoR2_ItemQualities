@@ -915,5 +915,17 @@
 
 		"ITEM_ARMORPLATE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase armor after being hit 15 times.",
 		"ITEM_ARMORPLATE_LEGENDARY_DESC": "{0}\nEvery <style=cIsDamage>15</style> hits taken, <style=cIsHealing>increase armor</style> by <style=cIsHealing>75</style> for <sprite name=\"Quality\"> <style=cIsUtility>20</style> <style=cStack>(+20 per stack)</style> seconds.",
+
+		"ITEM_STUNANDPIERCE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to bounce between enemies.",
+        "ITEM_STUNANDPIERCE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>30%</style> <style=cStack>(+30% per stack)</style> chance to bounce to a new enemy before returning. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> bounce.",
+
+		"ITEM_STUNANDPIERCE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to bounce between enemies.",
+        "ITEM_STUNANDPIERCE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to bounce to a new enemy before returning. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> bounce.",
+
+		"ITEM_STUNANDPIERCE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to bounce between enemies.",
+        "ITEM_STUNANDPIERCE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>80%</style> <style=cStack>(+80% per stack)</style> chance to bounce to a new enemy before returning. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> bounce.",
+
+		"ITEM_STUNANDPIERCE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to bounce between enemies.",
+        "ITEM_STUNANDPIERCE_LEGENDARY_DESC": "{0}\nBoomerang bounces towards enemies <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> time(s) before returning.",
 	}
 }
