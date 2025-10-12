@@ -50,6 +50,9 @@ namespace ItemQualities.Items
             IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += CombineGroupedItemCountsPatch;
             IL.RoR2.Util.GetItemCountForTeam += CombineGroupedItemCountsPatch;
             IL.RoR2.Util.GetItemCountGlobal += CombineGroupedItemCountsPatch;
+            IL.RoR2.GlobalEventManager.OnCharacterHitGroundServer += CombineGroupedItemCountsPatch;
+            IL.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += CombineGroupedItemCountsPatch;
+            IL.EntityStates.Headstompers.HeadstompersCooldown.OnEnter += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)

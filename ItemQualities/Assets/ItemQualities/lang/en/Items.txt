@@ -831,5 +831,18 @@
 
 		"ITEM_ALIENHEAD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce skill cooldowns on kill.",
 		"ITEM_ALIENHEAD_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Kills</style> reduce <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second.",
+
+		"ITEM_FALLBOOTS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase Damage and lower max hieght.",
+		"ITEM_FALLBOOTS_UNCOMMON_DESC": "{0}\nIncrease damage b <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> ",
+
+		"ITEM_FALLBOOTS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase Damage and lower max hieght.",
+		"ITEM_FALLBOOTS_RARE_DESC": "{0}\nIncrease damage b <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> ",
+
+		"ITEM_FALLBOOTS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase Damage and lower max hieght.",
+		"ITEM_FALLBOOTS_EPIC_DESC": "{0}\nIncrease damage b <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> ",
+
+		"ITEM_FALLBOOTS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase Damage and lower max hieght.",
+		"ITEM_FALLBOOTS_LEGENDARY_DESC": "{0}\nIncrease damage b <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> ",
+
 	}
 }
