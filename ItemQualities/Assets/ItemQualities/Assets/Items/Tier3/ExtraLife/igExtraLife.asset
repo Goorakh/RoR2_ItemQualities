@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igExtraLife
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: b1a0e900b1c4e994ca3c5c8e4f22c427
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 60e21ae1a5e91ad45a1d74c18104f295, type: 2}
+  _rareItem: {fileID: 11400000, guid: aa0d5b321124e2046867526e9649540c, type: 2}
+  _epicItem: {fileID: 11400000, guid: 0ad88591e4ffa404f9ca46a3df9230b6, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 8bf2751cf5d129b439d5542d4c6ffa0e, type: 2}

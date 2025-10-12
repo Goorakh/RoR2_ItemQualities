@@ -6,6 +6,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "brynzananas-revive_api": {
+      "version": "file:Revive_API",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.passivepicasso.thunderkit": {
       "version": "https://github.com/PassivePicasso/ThunderKit.git#9.1.4",
       "depth": 0,
