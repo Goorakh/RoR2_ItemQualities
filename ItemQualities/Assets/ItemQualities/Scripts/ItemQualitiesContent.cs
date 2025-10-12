@@ -529,6 +529,8 @@ namespace ItemQualities
             public static ItemQualityGroup ExtraLife;
 
             public static ItemQualityGroup ExtraLifeConsumed;
+
+            public static ItemQualityGroup ArmorPlate;
         }
 
         public static class EquipmentQualityGroups
@@ -555,6 +557,10 @@ namespace ItemQualities
             public static BuffQualityGroup Energized;
 
             public static BuffQualityGroup KillEliteFrenzyBuff;
+
+            public static BuffQualityGroup ArmorPlateBuildup;
+
+            public static BuffQualityGroup ArmorPlateBuff;
         }
 
         public static class Buffs

@@ -294,6 +294,7 @@ namespace ItemQualities
                 setItemBehavior<EnergizedOnEquipmentUseItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<BarrierOnOverHealQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<KillEliteFrenzyQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<ArmorPlateQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCounts(_body.inventory).TotalQualityCount > 0);
             }
         }
 
