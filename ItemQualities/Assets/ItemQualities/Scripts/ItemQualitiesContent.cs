@@ -149,9 +149,13 @@ namespace ItemQualities
 
             yield return generateAssetsCoroutine;
 
-            List<GameObject> projectilePrefabsList = new List<GameObject>();
             List<GameObject> networkedPrefabsList = new List<GameObject>();
             List<GameObject> prefabsList = new List<GameObject>();
+
+            List<GameObject> projectilePrefabsList = new List<GameObject>();
+
+            List<GameObject> bodyPrefabsList = new List<GameObject>();
+            List<GameObject> masterPrefabsList = new List<GameObject>();
 
             List<QualityTierDef> qualityTierDefsList = new List<QualityTierDef>();
 
@@ -177,17 +181,30 @@ namespace ItemQualities
                 switch (obj)
                 {
                     case GameObject prefab:
-                        List<GameObject> prefabList = prefabsList;
+
                         if (prefab.GetComponent<ProjectileController>())
                         {
-                            prefabList = projectilePrefabsList;
-                        }
-                        else if (prefab.GetComponent<NetworkBehaviour>())
-                        {
-                            prefabList = networkedPrefabsList;
+                            projectilePrefabsList.Add(prefab);
                         }
 
-                        prefabList.Add(prefab);
+                        if (prefab.GetComponent<CharacterBody>())
+                        {
+                            bodyPrefabsList.Add(prefab);
+                        }
+
+                        if (prefab.GetComponent<CharacterMaster>())
+                        {
+                            masterPrefabsList.Add(prefab);
+                        }
+
+                        if (prefab.GetComponent<NetworkBehaviour>())
+                        {
+                            networkedPrefabsList.Add(prefab);
+                        }
+                        else
+                        {
+                            prefabsList.Add(prefab);
+                        }
 
                         break;
                     case QualityTierDef qualityTierDef:
@@ -242,6 +259,9 @@ namespace ItemQualities
             _contentPack.equipmentDefs.Add(equipmentDefsList.ToArray());
 
             _contentPack.projectilePrefabs.Add(projectilePrefabsList.ToArray());
+
+            _contentPack.masterPrefabs.Add(masterPrefabsList.ToArray());
+            _contentPack.bodyPrefabs.Add(bodyPrefabsList.ToArray());
 
             _contentPack.networkedObjectPrefabs.Add(networkedPrefabsList.ToArray());
 
@@ -503,6 +523,10 @@ namespace ItemQualities
             public static ItemQualityGroup ImmuneToDebuff;
 
             public static ItemQualityGroup KillEliteFrenzy;
+
+            public static ItemQualityGroup ExtraLife;
+
+            public static ItemQualityGroup ExtraLifeConsumed;
         }
 
         public static class EquipmentQualityGroups
@@ -552,6 +576,8 @@ namespace ItemQualities
             public static GameObject BossArenaHealNovaSpawner;
 
             public static GameObject ChainLightningArcAttachment;
+
+            public static GameObject ExtraLifeReviveAttachment;
         }
 
         public static class ProjectilePrefabs

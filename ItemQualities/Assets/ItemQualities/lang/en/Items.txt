@@ -879,5 +879,17 @@
 
 		"ITEM_KILLELITEFRENZY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
 		"ITEM_KILLELITEFRENZY_LEGENDARY_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>60%</style> <style=cStack>(+60% per stack)</style>.",
+
+		"ITEM_EXTRALIFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
+		"ITEM_EXTRALIFE_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>2</style> times on death.",
+
+		"ITEM_EXTRALIFE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
+		"ITEM_EXTRALIFE_RARE_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>4</style> times on death.",
+
+		"ITEM_EXTRALIFE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
+		"ITEM_EXTRALIFE_EPIC_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>6</style> times on death.",
+
+		"ITEM_EXTRALIFE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
+		"ITEM_EXTRALIFE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>10</style> times on death.",
 	}
 }

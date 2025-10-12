@@ -40,7 +40,8 @@
         "AK.Wwise.Unity.API.dll",
         "Ak.Wwise.Api.WAAPI.dll",
         "AK.Wwise.Unity.Timeline.dll",
-        "ShaderSwapper.dll"
+        "ShaderSwapper.dll",
+        "ReviveAPI.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
