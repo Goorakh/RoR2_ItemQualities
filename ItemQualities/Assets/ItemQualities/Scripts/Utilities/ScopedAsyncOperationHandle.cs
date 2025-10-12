@@ -15,7 +15,10 @@ namespace ItemQualities.Utilities
 
         public void Dispose()
         {
-            Addressables.Release(_handle);
+            if (_handle.IsValid())
+            {
+                Addressables.Release(_handle);
+            }
         }
     }
 
@@ -30,7 +33,10 @@ namespace ItemQualities.Utilities
 
         public void Dispose()
         {
-            Addressables.Release(_handle);
+            if (_handle.IsValid())
+            {
+                Addressables.Release(_handle);
+            }
         }
     }
 }
