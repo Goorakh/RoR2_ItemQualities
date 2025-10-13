@@ -536,6 +536,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup Icicle;
 
+            public static ItemQualityGroup OutOfCombatArmor;
+            
             public static ItemQualityGroup BoostAllStats;
         }
 
