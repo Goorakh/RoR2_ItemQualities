@@ -14,6 +14,67 @@ namespace ItemQualities
 
         public readonly int TotalQualityCount => UncommonCount + RareCount + EpicCount + LegendaryCount;
 
+        public int this[QualityTier qualityTier]
+        {
+            readonly get
+            {
+                switch (qualityTier)
+                {
+                    case QualityTier.None:
+                        return BaseCount;
+                    case QualityTier.Uncommon:
+                        return UncommonCount;
+                    case QualityTier.Rare:
+                        return RareCount;
+                    case QualityTier.Epic:
+                        return EpicCount;
+                    case QualityTier.Legendary:
+                        return LegendaryCount;
+                    default:
+                        throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
+                }
+            }
+            set
+            {
+                switch (qualityTier)
+                {
+                    case QualityTier.None:
+                        BaseCount = value;
+                        break;
+                    case QualityTier.Uncommon:
+                        UncommonCount = value;
+                        break;
+                    case QualityTier.Rare:
+                        RareCount = value;
+                        break;
+                    case QualityTier.Epic:
+                        EpicCount = value;
+                        break;
+                    case QualityTier.Legendary:
+                        LegendaryCount = value;
+                        break;
+                    default:
+                        throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
+                }
+            }
+        }
+
+        public readonly QualityTier HighestQuality
+        {
+            get
+            {
+                for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
+                {
+                    if (this[qualityTier] > 0)
+                    {
+                        return qualityTier;
+                    }
+                }
+
+                return QualityTier.None;
+            }
+        }
+
         public BuffQualityCounts(int baseCount, int uncommonCount, int rareCount, int epicCount, int legendaryCount)
         {
             BaseCount = Math.Max(0, baseCount);
