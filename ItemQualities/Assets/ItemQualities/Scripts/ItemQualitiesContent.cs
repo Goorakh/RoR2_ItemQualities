@@ -539,6 +539,8 @@ namespace ItemQualities
             public static ItemQualityGroup OutOfCombatArmor;
             
             public static ItemQualityGroup BoostAllStats;
+
+            public static ItemQualityGroup GhostOnKill;
         }
 
         public static class EquipmentQualityGroups
