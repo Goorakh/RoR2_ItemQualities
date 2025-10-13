@@ -535,6 +535,8 @@ namespace ItemQualities
             public static ItemQualityGroup StunAndPierce;
 
             public static ItemQualityGroup Icicle;
+
+            public static ItemQualityGroup BoostAllStats;
         }
 
         public static class EquipmentQualityGroups
@@ -565,6 +567,8 @@ namespace ItemQualities
             public static BuffQualityGroup ArmorPlateBuildup;
 
             public static BuffQualityGroup ArmorPlateBuff;
+
+            public static BuffQualityGroup BoostAllStatsBuff;
         }
 
         public static class Buffs
