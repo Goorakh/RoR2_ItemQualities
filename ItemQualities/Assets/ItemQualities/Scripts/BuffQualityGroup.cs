@@ -81,6 +81,28 @@ namespace ItemQualities
             return new BuffQualityCounts(baseCount, uncommonCount, rareCount, epicCount, legendaryCount);
         }
 
+        public bool HasBuff(CharacterBody body)
+        {
+            return HasBuff(body, out _);
+        }
+
+        public bool HasBuff(CharacterBody body, out QualityTier buffQualityTier)
+        {
+            BuffQualityCounts buffCounts = GetBuffCounts(body);
+            buffQualityTier = buffCounts.HighestQuality;
+            return buffCounts.TotalCount > 0;
+        }
+
+        public bool HasQualityBuff(CharacterBody body)
+        {
+            return HasQualityBuff(body, out _);
+        }
+
+        public bool HasQualityBuff(CharacterBody body, out QualityTier buffQualityTier)
+        {
+            return HasBuff(body, out buffQualityTier) && buffQualityTier > QualityTier.None;
+        }
+
         public void EnsureBuffQualities(CharacterBody body, QualityTier buffQualityTier, bool includeBaseBuff = false)
         {
             if (!NetworkServer.active)

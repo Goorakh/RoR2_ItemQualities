@@ -939,5 +939,17 @@
 
 		"ITEM_ICICLE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to freeze enemies in the ice storm. Increase storm radius.",
 		"ITEM_ICICLE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance for enemies hit by the <style=cIsDamage>ice storm</style> to receive <style=cIsUtility>frost</style>, enemies are <style=cIsUtility>frozen</style> upon reaching <style=cIsUtility>6</style> stacks of <style=cIsUtility>frost</style>. Increases ice storm radius by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style>",
+
+		"ITEM_BOOSTALLSTATS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce cooldowns while you have 8 or more buffs.",
+        "ITEM_BOOSTALLSTATS_UNCOMMON_DESC": "{0}\nWhile you have 8 or more buffs, reduce skill cooldowns by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>.",
+
+		"ITEM_BOOSTALLSTATS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce cooldowns while you have 8 or more buffs.",
+        "ITEM_BOOSTALLSTATS_RARE_DESC": "{0}\nWhile you have 8 or more buffs, reduce skill cooldowns by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>.",
+
+		"ITEM_BOOSTALLSTATS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce cooldowns while you have 8 or more buffs.",
+        "ITEM_BOOSTALLSTATS_EPIC_DESC": "{0}\nWhile you have 8 or more buffs, reduce skill cooldowns by <sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style>.",
+
+		"ITEM_BOOSTALLSTATS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce cooldowns while you have 8 or more buffs.",
+        "ITEM_BOOSTALLSTATS_LEGENDARY_DESC": "{0}\nWhile you have 8 or more buffs, reduce skill cooldowns by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>.",
 	}
 }
