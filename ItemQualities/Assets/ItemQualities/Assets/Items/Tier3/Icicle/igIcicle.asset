@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igIcicle
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 121256d1eabae4d4abca5d22383308fe
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 408f2f1cb7b8c1b43beae6d0244321f0, type: 2}
+  _rareItem: {fileID: 11400000, guid: b0f5708f9eab20b449fdd02a630e0a9c, type: 2}
+  _epicItem: {fileID: 11400000, guid: 48b435f7776e5ed4799775544dce2b2d, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 0cd5dcd49b939224e82e66673561e0e1, type: 2}
