@@ -533,6 +533,8 @@ namespace ItemQualities
             public static ItemQualityGroup ArmorPlate;
 
             public static ItemQualityGroup StunAndPierce;
+
+            public static ItemQualityGroup Icicle;
         }
 
         public static class EquipmentQualityGroups
