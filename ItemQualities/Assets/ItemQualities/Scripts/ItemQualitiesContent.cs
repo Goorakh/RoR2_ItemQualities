@@ -541,6 +541,8 @@ namespace ItemQualities
             public static ItemQualityGroup BoostAllStats;
 
             public static ItemQualityGroup GhostOnKill;
+
+            public static ItemQualityGroup UtilitySkillMagazine;
         }
 
         public static class EquipmentQualityGroups

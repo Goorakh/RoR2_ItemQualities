@@ -975,5 +975,17 @@
 
 		"ITEM_GHOSTONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Raise ghost spawn chance.",
 		"ITEM_GHOSTONKILL_LEGENDARY_DESC": "Killing enemies has a <sprite name=\"Quality\"> <style=cIsDamage>47%</style> <style=cStack>(+40% per stack)</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.\nEvery interval of <style=cIsUtility>100%</style> spawn chance reached <style=cIsUtility>guarantees</style> an additional <style=cIsDamage>ghost</style> spawn per kill.",
+
+		"ITEM_UTILITYSKILLMAGAZINE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
+		"ITEM_UTILITYSKILLMAGAZINE_UNCOMMON_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
+
+		"ITEM_UTILITYSKILLMAGAZINE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
+		"ITEM_UTILITYSKILLMAGAZINE_RARE_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
+
+		"ITEM_UTILITYSKILLMAGAZINE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
+		"ITEM_UTILITYSKILLMAGAZINE_EPIC_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>30%</style> <style=cStack>(+30% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
+
+		"ITEM_UTILITYSKILLMAGAZINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
+		"ITEM_UTILITYSKILLMAGAZINE_LEGENDARY_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
 	}
 }
