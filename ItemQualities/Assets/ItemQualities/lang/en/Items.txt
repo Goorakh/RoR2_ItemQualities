@@ -1011,5 +1011,17 @@
 
 		"ITEM_PLANT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
 		"ITEM_PLANT_LEGENDARY_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style>",
+
+		"ITEM_CRITDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
+		"ITEM_CRITDAMAGE_UNCOMMON_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_CRITDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
+		"ITEM_CRITDAMAGE_RARE_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_CRITDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
+		"ITEM_CRITDAMAGE_EPIC_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>25%</style> <style=cStack>(+25% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_CRITDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
+		"ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
 	}
 }

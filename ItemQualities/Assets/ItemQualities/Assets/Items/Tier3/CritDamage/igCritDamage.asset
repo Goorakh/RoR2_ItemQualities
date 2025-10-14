@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igCritDamage
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: cd580c7c53641b54e9a708ec6a4dcdf9
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 4eee6bedd6e7bd74888a4226ecfa687c, type: 2}
+  _rareItem: {fileID: 11400000, guid: b3c4a24c833f77949a0d8d3e998fa53d, type: 2}
+  _epicItem: {fileID: 11400000, guid: b0f6ea65b2d1ad04582bbd9e4bbf3bd9, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 3c1c5cb91a5977d4ca2ae2d02cf151a1, type: 2}
