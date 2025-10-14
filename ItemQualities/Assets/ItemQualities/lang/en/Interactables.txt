@@ -1,0 +1,8 @@
+﻿{
+	strings:
+	{
+		"QUALITYEQUIPMENTBARREL_NAME": "Equipment Barrel - Quality",
+		"QUALITYEQUIPMENTBARREL_CONTEXT": "Open Equipment Barrel - Quality",
+		"QUALITYEQUIPMENTBARREL_DESCRIPTION": "Costs gold to open and will always contain a quality <sprite name=\"Quality\"> equipment item.",
+	}
+}
