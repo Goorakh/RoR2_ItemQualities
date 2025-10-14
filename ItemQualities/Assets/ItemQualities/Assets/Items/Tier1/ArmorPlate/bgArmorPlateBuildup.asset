@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgArmorPlateBuildup
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonBuff: {fileID: 11400000, guid: 6d21a0b6dbcf0384ea2e344fb07f2921, type: 2}
+  _rareBuff: {fileID: 11400000, guid: 4f73bbd208bc20b41bd7748f00393d82, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 9ccc6f2e622fe0948b9c179698009596, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: 93367b93c0fe0c544bbab32106953015, type: 2}

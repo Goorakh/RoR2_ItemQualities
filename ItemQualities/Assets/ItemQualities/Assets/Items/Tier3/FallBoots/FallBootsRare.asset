@@ -16,7 +16,7 @@ MonoBehaviour:
   _itemTierDef: {fileID: 0}
   nameToken: 
   pickupToken: ITEM_FALLBOOTS_RARE_PICKUP
-  descriptionToken: ITEM_FALLBOOTS_RARE_Desc
+  descriptionToken: ITEM_FALLBOOTS_RARE_DESC
   loreToken: 
   unlockableDef: {fileID: 0}
   pickupModelPrefab: {fileID: 0}

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igStunAndPierce
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: c285f6f566cfe644e9d3e9b26080ef2d
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: e765a216018f76043b6483de2b4c9ab4, type: 2}
+  _rareItem: {fileID: 11400000, guid: c32d2d4808f52514cb6ae8d477fcc235, type: 2}
+  _epicItem: {fileID: 11400000, guid: 818666b4802fc4c468c78007ac5eee34, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: d299dac29729495458f990921d10d4c1, type: 2}

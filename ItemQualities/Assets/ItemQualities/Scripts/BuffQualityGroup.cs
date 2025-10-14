@@ -72,13 +72,35 @@ namespace ItemQualities
             if (!body)
                 return default;
 
-            int baseCount = body.GetBuffCount(BaseBuffIndex);
-            int uncommonCount = body.GetBuffCount(UncommonBuffIndex);
-            int rareCount = body.GetBuffCount(RareBuffIndex);
-            int epicCount = body.GetBuffCount(EpicBuffIndex);
-            int legendaryCount = body.GetBuffCount(LegendaryBuffIndex);
+            int baseCount = BaseBuffIndex != BuffIndex.None ? body.GetBuffCount(BaseBuffIndex) : 0;
+            int uncommonCount = UncommonBuffIndex != BuffIndex.None ? body.GetBuffCount(UncommonBuffIndex) : 0;
+            int rareCount = RareBuffIndex != BuffIndex.None ? body.GetBuffCount(RareBuffIndex) : 0;
+            int epicCount = EpicBuffIndex != BuffIndex.None ? body.GetBuffCount(EpicBuffIndex) : 0;
+            int legendaryCount = LegendaryBuffIndex != BuffIndex.None ? body.GetBuffCount(LegendaryBuffIndex) : 0;
 
             return new BuffQualityCounts(baseCount, uncommonCount, rareCount, epicCount, legendaryCount);
+        }
+
+        public bool HasBuff(CharacterBody body)
+        {
+            return HasBuff(body, out _);
+        }
+
+        public bool HasBuff(CharacterBody body, out QualityTier buffQualityTier)
+        {
+            BuffQualityCounts buffCounts = GetBuffCounts(body);
+            buffQualityTier = buffCounts.HighestQuality;
+            return buffCounts.TotalCount > 0;
+        }
+
+        public bool HasQualityBuff(CharacterBody body)
+        {
+            return HasQualityBuff(body, out _);
+        }
+
+        public bool HasQualityBuff(CharacterBody body, out QualityTier buffQualityTier)
+        {
+            return HasBuff(body, out buffQualityTier) && buffQualityTier > QualityTier.None;
         }
 
         public void EnsureBuffQualities(CharacterBody body, QualityTier buffQualityTier, bool includeBaseBuff = false)
@@ -100,25 +122,19 @@ namespace ItemQualities
                 if (qualityTier != buffQualityTier)
                 {
                     BuffIndex qualityBuffIndex = GetBuffIndex(qualityTier);
-
-                    for (int i = body.GetBuffCount(qualityBuffIndex); i > 0; i--)
+                    if (qualityBuffIndex != BuffIndex.None)
                     {
-                        body.RemoveBuff(qualityBuffIndex);
-
-                        if (desiredBuffIndex != BuffIndex.None && desiredBuffDef && (desiredBuffDef.canStack || !body.HasBuff(desiredBuffIndex)))
+                        for (int i = body.GetBuffCount(qualityBuffIndex); i > 0; i--)
                         {
-                            body.AddBuff(desiredBuffIndex);
+                            body.RemoveBuff(qualityBuffIndex);
+
+                            if (desiredBuffIndex != BuffIndex.None && desiredBuffDef && (desiredBuffDef.canStack || !body.HasBuff(desiredBuffIndex)))
+                            {
+                                body.AddBuff(desiredBuffIndex);
+                            }
                         }
                     }
                 }
-            }
-        }
-
-        void OnValidate()
-        {
-            if (BaseBuffReference == null || !BaseBuffReference.RuntimeKeyIsValid())
-            {
-                Debug.LogError($"Invalid buff address in group '{name}'");
             }
         }
 
@@ -126,7 +142,6 @@ namespace ItemQualities
         {
             if (BaseBuffReference == null || !BaseBuffReference.RuntimeKeyIsValid())
             {
-                Log.Error($"Invalid buff address in group '{name}'");
                 progressReceiver.Report(1f);
                 yield break;
             }
@@ -165,7 +180,7 @@ namespace ItemQualities
 
 #if UNITY_EDITOR
         [ContextMenu("Generate BuffDefs")]
-        void GenerateEquipments()
+        void GenerateBuffs()
         {
             string baseBuffName = name;
             if (baseBuffName.StartsWith("bg"))
@@ -173,12 +188,18 @@ namespace ItemQualities
 
             string currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
 
-            AsyncOperationHandle<BuffDef> baseBuffLoadHandle = BaseBuffReference.LoadAssetAsync<BuffDef>();
+            AsyncOperationHandle<BuffDef> baseBuffLoadHandle = default;
+            BuffDef baseBuffDef = null;
+            if (BaseBuffReference != null && BaseBuffReference.RuntimeKeyIsValid())
+            {
+                baseBuffLoadHandle = BaseBuffReference.LoadAssetAsync<BuffDef>();
+
+                baseBuffDef = baseBuffLoadHandle.WaitForCompletion();
+            }
+
             using ScopedAsyncOperationHandle<BuffDef> baseBuffLoadScope = new ScopedAsyncOperationHandle<BuffDef>(baseBuffLoadHandle);
 
-            BuffDef baseBuffDef = baseBuffLoadHandle.WaitForCompletion();
-
-            Texture2D baseIconTexture = baseBuffDef.iconSprite.texture;
+            Texture2D baseIconTexture = baseBuffDef && baseBuffDef.iconSprite ? baseBuffDef.iconSprite.texture : null;
 
             BuffDef createBuffDef(QualityTier qualityTier)
             {
@@ -187,19 +208,23 @@ namespace ItemQualities
                 BuffDef buffDef = ScriptableObject.CreateInstance<BuffDef>();
                 buffDef.name = $"bd{buffName}";
                 buffDef.buffColor = Color.white;
-                buffDef.canStack = baseBuffDef.canStack;
-                buffDef.isDebuff = baseBuffDef.isDebuff;
-                buffDef.isDOT = baseBuffDef.isDOT;
-                buffDef.ignoreGrowthNectar = baseBuffDef.ignoreGrowthNectar;
-                buffDef.isCooldown = baseBuffDef.isCooldown;
-                buffDef.isHidden = baseBuffDef.isHidden;
-                buffDef.flags = baseBuffDef.flags;
+
+                if (baseBuffDef)
+                {
+                    buffDef.canStack = baseBuffDef.canStack;
+                    buffDef.isDebuff = baseBuffDef.isDebuff;
+                    buffDef.isDOT = baseBuffDef.isDOT;
+                    buffDef.ignoreGrowthNectar = baseBuffDef.ignoreGrowthNectar;
+                    buffDef.isCooldown = baseBuffDef.isCooldown;
+                    buffDef.isHidden = baseBuffDef.isHidden;
+                    buffDef.flags = baseBuffDef.flags;
+                }
 
                 string qualityIconTextureAssetPath = Path.Combine(currentDirectory, $"tex{buffName}.png");
                 buffDef.iconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
-                if (!buffDef.iconSprite)
+                if (!buffDef.iconSprite && baseIconTexture)
                 {
-                    Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier, baseBuffDef.buffColor);
+                    Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier, baseBuffDef ? baseBuffDef.buffColor : Color.white);
 
                     File.WriteAllBytes(qualityIconTextureAssetPath, qualityIconTexture.EncodeToPNG());
 
