@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igPlant
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 6521a1b57edcb7f4cb94fa2c12d3362d
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 86649bc94adc964478c0dc3a352cd8e8, type: 2}
+  _rareItem: {fileID: 11400000, guid: d4676c046c60f6d42ac277caecc7591a, type: 2}
+  _epicItem: {fileID: 11400000, guid: 214935f8e61869549889ce098c871fa9, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 67baf7ab06373b4469b5873d39dee03b, type: 2}
