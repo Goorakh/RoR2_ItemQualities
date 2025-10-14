@@ -999,5 +999,17 @@
 
 		"ITEM_MOREMISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
 		"ITEM_MOREMISSILE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+
+		"ITEM_PLANT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
+		"ITEM_PLANT_UNCOMMON_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>15%</style> <style=cStack>(+15% per stack)</style>",
+
+		"ITEM_PLANT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
+		"ITEM_PLANT_RARE_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style>",
+
+		"ITEM_PLANT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
+		"ITEM_PLANT_EPIC_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>60%</style> <style=cStack>(+60% per stack)</style>",
+
+		"ITEM_PLANT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
+		"ITEM_PLANT_LEGENDARY_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style>",
 	}
 }
