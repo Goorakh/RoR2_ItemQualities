@@ -987,5 +987,17 @@
 
 		"ITEM_UTILITYSKILLMAGAZINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
 		"ITEM_UTILITYSKILLMAGAZINE_LEGENDARY_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
+
+		"ITEM_MOREMISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+		"ITEM_MOREMISSILE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+
+		"ITEM_MOREMISSILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+		"ITEM_MOREMISSILE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+
+		"ITEM_MOREMISSILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+		"ITEM_MOREMISSILE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+
+		"ITEM_MOREMISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+		"ITEM_MOREMISSILE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
 	}
 }

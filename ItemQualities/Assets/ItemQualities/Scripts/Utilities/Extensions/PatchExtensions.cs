@@ -441,11 +441,8 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
-        public static bool MatchLdloc(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
+        static bool matchLocalIndex(int localIndex, Type variableType, ILContext ilContext)
         {
-            if (instruction is null)
-                throw new ArgumentNullException(nameof(instruction));
-
             if (variableType is null)
                 throw new ArgumentNullException(nameof(variableType));
 
@@ -453,13 +450,26 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(ilContext));
 
             if (ilContext.Method == null || !ilContext.Method.HasBody)
-            {
-                localIndex = -1;
                 return false;
-            }
 
             Collection<VariableDefinition> methodVariables = ilContext.Method.Body.Variables;
-            return instruction.MatchLdloc(out localIndex) && localIndex < methodVariables.Count && methodVariables[localIndex].VariableType.Is(variableType);
+            return localIndex < methodVariables.Count && methodVariables[localIndex].VariableType.Is(variableType);
+        }
+
+        public static bool MatchLdloc(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            return instruction.MatchLdloc(out localIndex) && matchLocalIndex(localIndex, variableType, ilContext);
+        }
+
+        public static bool MatchLdloca(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            return instruction.MatchLdloca(out localIndex) && matchLocalIndex(localIndex, variableType, ilContext);
         }
 
         public static bool MatchStloc(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
@@ -467,20 +477,7 @@ namespace ItemQualities.Utilities.Extensions
             if (instruction is null)
                 throw new ArgumentNullException(nameof(instruction));
 
-            if (variableType is null)
-                throw new ArgumentNullException(nameof(variableType));
-
-            if (ilContext is null)
-                throw new ArgumentNullException(nameof(ilContext));
-
-            if (ilContext.Method == null || !ilContext.Method.HasBody)
-            {
-                localIndex = -1;
-                return false;
-            }
-
-            Collection<VariableDefinition> methodVariables = ilContext.Method.Body.Variables;
-            return instruction.MatchStloc(out localIndex) && localIndex < methodVariables.Count && methodVariables[localIndex].VariableType.Is(variableType);
+            return instruction.MatchStloc(out localIndex) && matchLocalIndex(localIndex, variableType, ilContext);
         }
     }
 }

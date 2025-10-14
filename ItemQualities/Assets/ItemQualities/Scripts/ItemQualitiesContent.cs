@@ -543,6 +543,8 @@ namespace ItemQualities
             public static ItemQualityGroup GhostOnKill;
 
             public static ItemQualityGroup UtilitySkillMagazine;
+
+            public static ItemQualityGroup MoreMissile;
         }
 
         public static class EquipmentQualityGroups
