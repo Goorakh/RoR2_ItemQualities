@@ -557,6 +557,8 @@ namespace ItemQualities
             public static ItemQualityGroup LaserTurbine;
 
             public static ItemQualityGroup MeteorAttackOnHighDamage;
+
+            public static ItemQualityGroup BossDamageBonus;
         }
 
         public static class EquipmentQualityGroups
@@ -598,6 +600,8 @@ namespace ItemQualities
             public static BuffDef SprintArmorStrong;
 
             public static BuffDef HealCritBoost;
+
+            public static BuffDef MiniBossMarker;
         }
 
         public static class Prefabs
@@ -614,6 +618,8 @@ namespace ItemQualities
             public static GameObject ChainLightningArcAttachment;
 
             public static GameObject ExtraLifeReviveAttachment;
+
+            public static GameObject MiniBossBodyAttachment;
         }
 
         public static class ProjectilePrefabs
