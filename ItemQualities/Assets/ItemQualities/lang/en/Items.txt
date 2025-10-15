@@ -1023,5 +1023,17 @@
 
 		"ITEM_CRITDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
 		"ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_NOVAONHEAL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
+		"ITEM_NOVAONHEAL_UNCOMMON_DESC": "{0}\nSkulls deal <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> more damage and gain a <sprite name=\"Quality\"> <style=cIsUtility>0.4 proc coefficient</style>.",
+
+		"ITEM_NOVAONHEAL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
+		"ITEM_NOVAONHEAL_RARE_DESC": "{0}\nSkulls deal <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> more damage and gain a <sprite name=\"Quality\"> <style=cIsUtility>0.6 proc coefficient</style>.",
+
+		"ITEM_NOVAONHEAL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
+		"ITEM_NOVAONHEAL_EPIC_DESC": "{0}\nSkulls deal <sprite name=\"Quality\"> <style=cIsDamage>80%</style> <style=cStack>(+80% per stack)</style> more damage and gain a <sprite name=\"Quality\"> <style=cIsUtility>0.8 proc coefficient</style>.",
+
+		"ITEM_NOVAONHEAL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
+		"ITEM_NOVAONHEAL_LEGENDARY_DESC": "{0}\nSkulls deal <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style> more damage and gain a <sprite name=\"Quality\"> <style=cIsUtility>1.0 proc coefficient</style>.",
 	}
 }
