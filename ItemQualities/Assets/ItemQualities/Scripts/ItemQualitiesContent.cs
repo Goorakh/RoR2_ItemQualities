@@ -551,6 +551,8 @@ namespace ItemQualities
             public static ItemQualityGroup CritDamage;
 
             public static ItemQualityGroup IncreaseHealing;
+            
+            public static ItemQualityGroup NovaOnHeal;
         }
 
         public static class EquipmentQualityGroups
