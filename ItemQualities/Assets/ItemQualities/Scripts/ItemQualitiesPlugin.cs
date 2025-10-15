@@ -1,4 +1,5 @@
 using BepInEx;
+using BepInEx.Bootstrap;
 using HG.Reflection;
 using R2API.Utils;
 using System.Diagnostics;
@@ -17,6 +18,7 @@ namespace ItemQualities
     [BepInDependency(R2API.PrefabAPI.PluginGUID)]
     [BepInDependency(R2API.DamageAPI.PluginGUID)]
     [BepInDependency(ReviveAPI.ReviveAPI.ModGuid)]
+    [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public class ItemQualitiesPlugin : BaseUnityPlugin
     {
@@ -35,6 +37,13 @@ namespace ItemQualities
             SingletonHelper.Assign(ref _instance, this);
 
             Log.Init(Logger);
+
+            Configs.Init(Config);
+
+            if (Chainloader.PluginInfos.ContainsKey(RiskOfOptions.PluginInfo.PLUGIN_GUID))
+            {
+                Configs.InitRiskOfOptions();
+            }
 
             ItemQualitiesContent contentProvider = new ItemQualitiesContent();
             contentProvider.Register();

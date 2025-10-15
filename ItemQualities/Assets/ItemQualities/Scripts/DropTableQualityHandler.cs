@@ -143,7 +143,10 @@ namespace ItemQualities
                               (5 * clover.EpicCount) +
                               (10 * clover.LegendaryCount);
 
-            Log.Debug($"Rolling quality for pickup {pickupIndex}, luck={qualityLuck}, master={master}, teamAffiliation={teamAffiliation}");
+            if (Configs.Debug.LogItemQualities)
+            {
+                Log.Debug($"Rolling quality for pickup {pickupIndex}, luck={qualityLuck}, master={master}, teamAffiliation={teamAffiliation}");
+            }
 
             PickupIndex qualityPickupIndex = pickupIndex;
             QualityTier currentPickupQualityTier = QualityCatalog.GetQualityTier(qualityPickupIndex);
@@ -162,7 +165,7 @@ namespace ItemQualities
                 }
             }
 
-            if (qualityPickupIndex != pickupIndex)
+            if (Configs.Debug.LogItemQualities && qualityPickupIndex != pickupIndex)
             {
                 Log.Debug($"Upgraded tier of {pickupIndex}: {qualityPickupIndex}");
             }
