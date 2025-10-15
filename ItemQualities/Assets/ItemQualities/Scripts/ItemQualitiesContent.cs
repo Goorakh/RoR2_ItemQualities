@@ -555,6 +555,8 @@ namespace ItemQualities
             public static ItemQualityGroup NovaOnHeal;
 
             public static ItemQualityGroup LaserTurbine;
+
+            public static ItemQualityGroup MeteorAttackOnHighDamage;
         }
 
         public static class EquipmentQualityGroups
