@@ -549,6 +549,8 @@ namespace ItemQualities
             public static ItemQualityGroup Plant;
 
             public static ItemQualityGroup CritDamage;
+
+            public static ItemQualityGroup NovaOnHeal;
         }
 
         public static class EquipmentQualityGroups
