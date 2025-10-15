@@ -1071,5 +1071,17 @@
 
 		"ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
         "ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>",
+
+		"ITEM_BOSSDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
+		"ITEM_BOSSDAMAGEBONUS_UNCOMMON_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>5%</style> damage <style=cStack>(+5% per stack)</style> to minibosses.",
+
+		"ITEM_BOSSDAMAGEBONUS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
+		"ITEM_BOSSDAMAGEBONUS_RARE_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>10%</style> damage <style=cStack>(+10% per stack)</style> to minibosses.",
+
+		"ITEM_BOSSDAMAGEBONUS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
+		"ITEM_BOSSDAMAGEBONUS_EPIC_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>15%</style> damage <style=cStack>(+15% per stack)</style> to minibosses.",
+
+		"ITEM_BOSSDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
+		"ITEM_BOSSDAMAGEBONUS_LEGENDARY_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>20%</style> damage <style=cStack>(+20% per stack)</style> to minibosses.",
 	}
 }
