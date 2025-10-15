@@ -1023,5 +1023,17 @@
 
 		"ITEM_CRITDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
 		"ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_INCREASEHEALING_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+		"ITEM_INCREASEHEALING_UNCOMMON_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+150%</style> <style=cStack>(+150% per stack)</style> more.",
+
+		"ITEM_INCREASEHEALING_RARE_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+		"ITEM_INCREASEHEALING_RARE_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+200%</style> <style=cStack>(+200% per stack)</style> more.",
+
+		"ITEM_INCREASEHEALING_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+		"ITEM_INCREASEHEALING_EPIC_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+300%</style> <style=cStack>(+300% per stack)</style> more.",
+
+		"ITEM_INCREASEHEALING_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+		"ITEM_INCREASEHEALING_LEGENDARY_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+400%</style> <style=cStack>(+400% per stack)</style> more.",
 	}
 }

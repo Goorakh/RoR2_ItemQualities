@@ -549,6 +549,8 @@ namespace ItemQualities
             public static ItemQualityGroup Plant;
 
             public static ItemQualityGroup CritDamage;
+
+            public static ItemQualityGroup IncreaseHealing;
         }
 
         public static class EquipmentQualityGroups
