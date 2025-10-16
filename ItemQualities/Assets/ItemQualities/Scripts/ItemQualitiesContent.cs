@@ -28,6 +28,8 @@ namespace ItemQualities
 
         public string identifier => ItemQualitiesPlugin.PluginGUID;
 
+        QualityContagiousItemHelper _qualityContagiousItemHelper;
+
         internal static NamedAssetCollection<TMP_SpriteAsset> TMP_SpriteAssets = new NamedAssetCollection<TMP_SpriteAsset>(ContentPack.getScriptableObjectName);
 
         internal ItemQualitiesContent()
@@ -324,6 +326,11 @@ namespace ItemQualities
         public IEnumerator GenerateContentPackAsync(GetContentPackAsyncArgs args)
         {
             ContentPack.Copy(_contentPack, args.output);
+
+            _qualityContagiousItemHelper ??= new QualityContagiousItemHelper();
+
+            yield return _qualityContagiousItemHelper.Step(_contentPack, args, args.progressReceiver);
+
             args.ReportProgress(1f);
             yield break;
         }
@@ -331,6 +338,10 @@ namespace ItemQualities
         public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
         {
             ContentManager.collectContentPackProviders -= collectContentPackProviders;
+
+            _qualityContagiousItemHelper?.Dispose();
+            _qualityContagiousItemHelper = null;
+
             args.ReportProgress(1f);
             yield break;
         }
@@ -550,6 +561,24 @@ namespace ItemQualities
             public static ItemQualityGroup BoostAllStats;
 
             public static ItemQualityGroup GhostOnKill;
+
+            public static ItemQualityGroup UtilitySkillMagazine;
+
+            public static ItemQualityGroup MoreMissile;
+
+            public static ItemQualityGroup Plant;
+
+            public static ItemQualityGroup CritDamage;
+
+            public static ItemQualityGroup IncreaseHealing;
+            
+            public static ItemQualityGroup NovaOnHeal;
+
+            public static ItemQualityGroup LaserTurbine;
+
+            public static ItemQualityGroup MeteorAttackOnHighDamage;
+
+            public static ItemQualityGroup BossDamageBonus;
         }
 
         public static class EquipmentQualityGroups
@@ -591,6 +620,8 @@ namespace ItemQualities
             public static BuffDef SprintArmorStrong;
 
             public static BuffDef HealCritBoost;
+
+            public static BuffDef MiniBossMarker;
         }
 
         public static class Prefabs
@@ -607,6 +638,8 @@ namespace ItemQualities
             public static GameObject ChainLightningArcAttachment;
 
             public static GameObject ExtraLifeReviveAttachment;
+
+            public static GameObject MiniBossBodyAttachment;
         }
 
         public static class ProjectilePrefabs

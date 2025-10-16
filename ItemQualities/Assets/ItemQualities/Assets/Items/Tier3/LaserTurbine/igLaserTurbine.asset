@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igLaserTurbine
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 822291e9cbf18ce40af90e72bc36f7de
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: f599b963ea8cc5c488cee641c25dd6ff, type: 2}
+  _rareItem: {fileID: 11400000, guid: c14f8eb591d96054fb6b2065714e8107, type: 2}
+  _epicItem: {fileID: 11400000, guid: f2b71b8dae0e473488e0a0000406f2ed, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 2c2d886e96e08f343b7afc17863154c4, type: 2}

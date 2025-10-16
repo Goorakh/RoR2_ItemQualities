@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igMeteorAttackOnHighDamage
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 2b5c498736986ff40957a8d15b538be4
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: e0029061dbf34d3448a072d73140b6f4, type: 2}
+  _rareItem: {fileID: 11400000, guid: 031ddc56b3b1a76409ecc2c7fecd24f5, type: 2}
+  _epicItem: {fileID: 11400000, guid: c0168d75fe2f45d49b2261881b805fe7, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 633ed10aa12d4a94b9dd6203adae868f, type: 2}

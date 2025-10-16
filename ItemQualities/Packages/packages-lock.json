@@ -439,6 +439,12 @@
       "dependencies": {},
       "hash": "b8704d045fd4c32e83778bf3e1792d6e0cf76e00"
     },
+    "rune580-risk_of_options": {
+      "version": "file:Risk_Of_Options",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "score-miscfixes": {
       "version": "file:MiscFixes",
       "depth": 0,

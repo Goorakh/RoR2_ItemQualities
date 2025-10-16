@@ -975,5 +975,113 @@
 
 		"ITEM_GHOSTONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Raise ghost spawn chance.",
 		"ITEM_GHOSTONKILL_LEGENDARY_DESC": "Killing enemies has a <sprite name=\"Quality\"> <style=cIsDamage>47%</style> <style=cStack>(+40% per stack)</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.\nEvery interval of <style=cIsUtility>100%</style> spawn chance reached <style=cIsUtility>guarantees</style> an additional <style=cIsDamage>ghost</style> spawn per kill.",
+
+		"ITEM_UTILITYSKILLMAGAZINE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
+		"ITEM_UTILITYSKILLMAGAZINE_UNCOMMON_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
+
+		"ITEM_UTILITYSKILLMAGAZINE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
+		"ITEM_UTILITYSKILLMAGAZINE_RARE_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
+
+		"ITEM_UTILITYSKILLMAGAZINE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
+		"ITEM_UTILITYSKILLMAGAZINE_EPIC_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>30%</style> <style=cStack>(+30% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
+
+		"ITEM_UTILITYSKILLMAGAZINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
+		"ITEM_UTILITYSKILLMAGAZINE_LEGENDARY_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
+
+		"ITEM_MOREMISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+		"ITEM_MOREMISSILE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+
+		"ITEM_MOREMISSILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+		"ITEM_MOREMISSILE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+
+		"ITEM_MOREMISSILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+		"ITEM_MOREMISSILE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+
+		"ITEM_MOREMISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+		"ITEM_MOREMISSILE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+
+		"ITEM_PLANT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
+		"ITEM_PLANT_UNCOMMON_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>15%</style> <style=cStack>(+15% per stack)</style>",
+
+		"ITEM_PLANT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
+		"ITEM_PLANT_RARE_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style>",
+
+		"ITEM_PLANT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
+		"ITEM_PLANT_EPIC_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>60%</style> <style=cStack>(+60% per stack)</style>",
+
+		"ITEM_PLANT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
+		"ITEM_PLANT_LEGENDARY_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style>",
+
+		"ITEM_CRITDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
+		"ITEM_CRITDAMAGE_UNCOMMON_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_CRITDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
+		"ITEM_CRITDAMAGE_RARE_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_CRITDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
+		"ITEM_CRITDAMAGE_EPIC_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>25%</style> <style=cStack>(+25% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_CRITDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' can trigger multiple times.",
+		"ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\nIf <style=cIsDamage>Critical Strike Chance</style> is above <style=cIsDamage>100%</style>, gain up to <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to <style=cIsDamage>'Critically Strike'</style> an additional time.",
+
+		"ITEM_INCREASEHEALING_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+		"ITEM_INCREASEHEALING_UNCOMMON_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+150%</style> <style=cStack>(+150% per stack)</style> more.",
+
+		"ITEM_INCREASEHEALING_RARE_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+		"ITEM_INCREASEHEALING_RARE_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+200%</style> <style=cStack>(+200% per stack)</style> more.",
+
+		"ITEM_INCREASEHEALING_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+		"ITEM_INCREASEHEALING_EPIC_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+300%</style> <style=cStack>(+300% per stack)</style> more.",
+
+		"ITEM_INCREASEHEALING_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+		"ITEM_INCREASEHEALING_LEGENDARY_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+400%</style> <style=cStack>(+400% per stack)</style> more.",
+    
+		"ITEM_NOVAONHEAL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
+		"ITEM_NOVAONHEAL_UNCOMMON_DESC": "{0}\nSkulls deal <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> more damage and gain a <sprite name=\"Quality\"> <style=cIsUtility>0.4 proc coefficient</style>.",
+
+		"ITEM_NOVAONHEAL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
+		"ITEM_NOVAONHEAL_RARE_DESC": "{0}\nSkulls deal <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> more damage and gain a <sprite name=\"Quality\"> <style=cIsUtility>0.6 proc coefficient</style>.",
+
+		"ITEM_NOVAONHEAL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
+		"ITEM_NOVAONHEAL_EPIC_DESC": "{0}\nSkulls deal <sprite name=\"Quality\"> <style=cIsDamage>80%</style> <style=cStack>(+80% per stack)</style> more damage and gain a <sprite name=\"Quality\"> <style=cIsUtility>0.8 proc coefficient</style>.",
+
+		"ITEM_NOVAONHEAL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
+		"ITEM_NOVAONHEAL_LEGENDARY_DESC": "{0}\nSkulls deal <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style> more damage and gain a <sprite name=\"Quality\"> <style=cIsUtility>1.0 proc coefficient</style>.",
+
+		"ITEM_LASERTURBINE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase explosion radius and time window.",
+		"ITEM_LASERTURBINE_UNCOMMON_DESC": "Killing <style=cIsDamage>4</style> enemies in <sprite name=\"Quality\"> <style=cIsUtility>8 <style=cStack>(+1 per stack)</style> seconds</style> charges the Resonance Disc. The disc launches itself toward a target for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>, piercing all enemies it doesn't kill, and then explodes in a <sprite name=\"Quality\"> <style=cIsDamage>18m</style> <style=cStack>(+4m per stack)</style> radius for <style=cIsDamage>1000%</style> base damage <style=cStack>(+1000% per stack)</style>. Returns to the user, striking all enemies along the way for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>.",
+
+		"ITEM_LASERTURBINE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase explosion radius and time window.",
+		"ITEM_LASERTURBINE_RARE_DESC": "Killing <style=cIsDamage>4</style> enemies in <sprite name=\"Quality\"> <style=cIsUtility>10 <style=cStack>(+3 per stack)</style> seconds</style> charges the Resonance Disc. The disc launches itself toward a target for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>, piercing all enemies it doesn't kill, and then explodes in a <sprite name=\"Quality\"> <style=cIsDamage>21m</style> <style=cStack>(+7m per stack)</style> radius for <style=cIsDamage>1000%</style> base damage <style=cStack>(+1000% per stack)</style>. Returns to the user, striking all enemies along the way for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>.",
+
+		"ITEM_LASERTURBINE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase explosion radius and time window.",
+		"ITEM_LASERTURBINE_EPIC_DESC": "Killing <style=cIsDamage>4</style> enemies in <sprite name=\"Quality\"> <style=cIsUtility>12 <style=cStack>(+5 per stack)</style> seconds</style> charges the Resonance Disc. The disc launches itself toward a target for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>, piercing all enemies it doesn't kill, and then explodes in a <sprite name=\"Quality\"> <style=cIsDamage>24m</style> <style=cStack>(+10m per stack)</style> radius for <style=cIsDamage>1000%</style> base damage <style=cStack>(+1000% per stack)</style>. Returns to the user, striking all enemies along the way for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>.",
+
+		"ITEM_LASERTURBINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase explosion radius and time window.",
+		"ITEM_LASERTURBINE_LEGENDARY_DESC": "Killing <style=cIsDamage>4</style> enemies in <sprite name=\"Quality\"> <style=cIsUtility>14 <style=cStack>(+7 per stack)</style> seconds</style> charges the Resonance Disc. The disc launches itself toward a target for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>, piercing all enemies it doesn't kill, and then explodes in a <sprite name=\"Quality\"> <style=cIsDamage>28m</style> <style=cStack>(+14m per stack)</style> radius for <style=cIsDamage>1000%</style> base damage <style=cStack>(+1000% per stack)</style>. Returns to the user, striking all enemies along the way for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>.",
+
+		"ITEM_METEORATTACKONHIGHDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
+        "ITEM_METEORATTACKONHIGHDAMAGE_UNCOMMON_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style>",
+
+		"ITEM_METEORATTACKONHIGHDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
+        "ITEM_METEORATTACKONHIGHDAMAGE_RARE_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style>",
+
+		"ITEM_METEORATTACKONHIGHDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
+        "ITEM_METEORATTACKONHIGHDAMAGE_EPIC_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style>",
+
+		"ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
+        "ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>",
+
+		"ITEM_BOSSDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
+		"ITEM_BOSSDAMAGEBONUS_UNCOMMON_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>5%</style> damage <style=cStack>(+5% per stack)</style> to minibosses.",
+
+		"ITEM_BOSSDAMAGEBONUS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
+		"ITEM_BOSSDAMAGEBONUS_RARE_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>10%</style> damage <style=cStack>(+10% per stack)</style> to minibosses.",
+
+		"ITEM_BOSSDAMAGEBONUS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
+		"ITEM_BOSSDAMAGEBONUS_EPIC_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>15%</style> damage <style=cStack>(+15% per stack)</style> to minibosses.",
+
+		"ITEM_BOSSDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
+		"ITEM_BOSSDAMAGEBONUS_LEGENDARY_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>20%</style> damage <style=cStack>(+20% per stack)</style> to minibosses.",
 	}
 }

@@ -447,7 +447,7 @@ namespace ItemQualities
             ItemIndex qualityItemIndex = itemQualityGroup ? itemQualityGroup.GetItemIndex(qualityTier) : ItemIndex.None;
             if (qualityItemIndex == ItemIndex.None)
             {
-                if (qualityTier != QualityTier.None)
+                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None)
                 {
                     ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
                     Log.Warning($"Item {(itemDef ? itemDef.name : "None")} is missing quality variant {qualityTier}");
@@ -465,7 +465,7 @@ namespace ItemQualities
             EquipmentIndex qualityEquipmentIndex = equipmentQualityGroup ? equipmentQualityGroup.GetEquipmentIndex(qualityTier) : EquipmentIndex.None;
             if (qualityEquipmentIndex == EquipmentIndex.None)
             {
-                if (qualityTier != QualityTier.None)
+                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None)
                 {
                     EquipmentDef equipmentDef = EquipmentCatalog.GetEquipmentDef(equipmentIndex);
                     Log.Warning($"Equipment {(equipmentDef ? equipmentDef.name : "None")} is missing quality variant {qualityTier}");
@@ -483,7 +483,7 @@ namespace ItemQualities
             BuffIndex qualityBuffIndex = buffQualityGroup ? buffQualityGroup.GetBuffIndex(qualityTier) : BuffIndex.None;
             if (qualityBuffIndex == BuffIndex.None)
             {
-                if (qualityTier != QualityTier.None)
+                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None)
                 {
                     BuffDef buffDef = BuffCatalog.GetBuffDef(buffIndex);
                     Log.Warning($"Buff {(buffDef ? buffDef.name : "None")} is missing quality variant {qualityTier}");

@@ -28,6 +28,8 @@ namespace ItemQualities
 
         TemporaryOverlayInstance _healCritBoostOverlay;
 
+        float _timeSinceLastUtilitySkillRechargeAuthority = float.PositiveInfinity;
+
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
 
         float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
@@ -187,6 +189,7 @@ namespace ItemQualities
             }
 
             EquipmentSlot.onServerEquipmentActivated += onServerEquipmentActivated;
+            GenericSkillHooks.OnSkillRechargeAuthority += onSkillRechargeAuthority;
         }
 
         void OnDisable()
@@ -200,6 +203,7 @@ namespace ItemQualities
             }
 
             EquipmentSlot.onServerEquipmentActivated -= onServerEquipmentActivated;
+            GenericSkillHooks.OnSkillRechargeAuthority -= onSkillRechargeAuthority;
         }
 
         void FixedUpdate()
@@ -229,6 +233,8 @@ namespace ItemQualities
 
             if (HasEffectiveAuthority)
             {
+                _timeSinceLastUtilitySkillRechargeAuthority += Time.fixedDeltaTime;
+
                 if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.1f)
                 {
                     QuailJumpComboAuthority = 0;
@@ -479,7 +485,10 @@ namespace ItemQualities
 
         void onSkillActivatedAuthority(GenericSkill skill)
         {
-            if (_body.skillLocator && _body.skillLocator.secondary == skill)
+            if (!_body.skillLocator || !skill)
+                return;
+
+            if (_body.skillLocator.secondary == skill)
             {
                 ItemQualityCounts secondarySkillMagazine = ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCounts(_body.inventory);
 
@@ -492,6 +501,43 @@ namespace ItemQualities
                 {
                     skill.AddOneStock();
                 }
+            }
+
+            if (_body.skillLocator.utility == skill)
+            {
+                ItemQualityCounts utilitySkillMagazine = ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCounts(_body.inventory);
+
+                if (utilitySkillMagazine.TotalQualityCount > 0)
+                {
+                    float cooldownRefundWindow = 0.1f;
+
+                    float cooldownReductionWindow = cooldownRefundWindow + 0.2f;
+
+                    float remainingCooldownReduction = Mathf.Pow(1f - 0.1f, utilitySkillMagazine.UncommonCount) *
+                                                       Mathf.Pow(1f - 0.2f, utilitySkillMagazine.RareCount) *
+                                                       Mathf.Pow(1f - 0.3f, utilitySkillMagazine.EpicCount) *
+                                                       Mathf.Pow(1f - 0.5f, utilitySkillMagazine.LegendaryCount);
+
+                    if (_timeSinceLastUtilitySkillRechargeAuthority <= cooldownRefundWindow)
+                    {
+                        skill.AddOneStock();
+                    }
+                    else if (_timeSinceLastUtilitySkillRechargeAuthority <= cooldownReductionWindow)
+                    {
+                        skill.rechargeStopwatch += skill.cooldownRemaining * remainingCooldownReduction;
+                    }
+                }
+            }
+        }
+
+        void onSkillRechargeAuthority(GenericSkill skill)
+        {
+            if (!_body.skillLocator || !skill)
+                return;
+
+            if (_body.skillLocator.utility == skill)
+            {
+                _timeSinceLastUtilitySkillRechargeAuthority = 0f;
             }
         }
 
