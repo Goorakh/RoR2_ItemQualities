@@ -8,6 +8,9 @@ namespace ItemQualities
         [SystemInitializer]
         static void Init()
         {
+            const float QualityCategoryWeight = 2f;
+            const string QualityCategoryName = "Quality Stuff";
+
             DirectorAPI.Helpers.AddNewInteractable(new DirectorAPI.DirectorCardHolder
             {
                 Card = new DirectorCard
@@ -15,8 +18,20 @@ namespace ItemQualities
                     spawnCard = ItemQualitiesContent.SpawnCards.QualityEquipmentBarrel,
                     selectionWeight = 1
                 },
-                InteractableCategorySelectionWeight = 0.5f,
-                CustomInteractableCategory = "Quality Stuff",
+                InteractableCategorySelectionWeight = QualityCategoryWeight,
+                CustomInteractableCategory = QualityCategoryName,
+                InteractableCategory = DirectorAPI.InteractableCategory.Custom,
+            });
+
+            DirectorAPI.Helpers.AddNewInteractable(new DirectorAPI.DirectorCardHolder
+            {
+                Card = new DirectorCard
+                {
+                    spawnCard = ItemQualitiesContent.SpawnCards.QualityChest2,
+                    selectionWeight = 2
+                },
+                InteractableCategorySelectionWeight = QualityCategoryWeight,
+                CustomInteractableCategory = QualityCategoryName,
                 InteractableCategory = DirectorAPI.InteractableCategory.Custom,
             });
         }

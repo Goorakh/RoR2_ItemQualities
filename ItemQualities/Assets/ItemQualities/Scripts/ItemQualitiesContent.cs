@@ -622,6 +622,9 @@ namespace ItemQualities
         {
             [TargetAssetName("iscQualityEquipmentBarrel")]
             public static InteractableSpawnCard QualityEquipmentBarrel;
+
+            [TargetAssetName("iscQualityChest2")]
+            public static InteractableSpawnCard QualityChest2;
         }
     }
 }
