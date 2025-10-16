@@ -93,6 +93,8 @@ namespace ItemQualities
 
             populateTypeFields(typeof(Materials), _contentPack.materials, fieldName => "mat" + fieldName);
 
+            populateTypeFields(typeof(SpawnCards), _contentPack.spawnCards);
+
             TMP_SpriteAssets = _contentPack.spriteAssets;
 
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
@@ -178,6 +180,8 @@ namespace ItemQualities
 
             List<Material> materialsList = new List<Material>();
 
+            List<SpawnCard> spawnCardsList = new List<SpawnCard>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -242,6 +246,9 @@ namespace ItemQualities
                     case Material material:
                         materialsList.Add(material);
                         break;
+                    case SpawnCard spawnCard:
+                        spawnCardsList.Add(spawnCard);
+                        break;
                 }
             }
 
@@ -273,6 +280,8 @@ namespace ItemQualities
             _contentPack.spriteAssets.Add(spriteAssetsList.ToArray());
 
             _contentPack.materials.Add(materialsList.ToArray());
+
+            _contentPack.spawnCards.Add(spawnCardsList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -640,6 +649,18 @@ namespace ItemQualities
         public static class Materials
         {
             public static Material HealCritBoost;
+        }
+
+        public static class SpawnCards
+        {
+            [TargetAssetName("iscQualityEquipmentBarrel")]
+            public static InteractableSpawnCard QualityEquipmentBarrel;
+
+            [TargetAssetName("iscQualityChest2")]
+            public static InteractableSpawnCard QualityChest2;
+
+            [TargetAssetName("iscQualityChest1")]
+            public static InteractableSpawnCard QualityChest1;
         }
     }
 }

@@ -319,7 +319,10 @@ namespace ItemQualities
         {
             PickupIndex dropPickupIndex = orig(self, rng);
 
-            dropPickupIndex = tryUpgradeQuality(dropPickupIndex, rng, null, getDropTableFilterFunc(self));
+            if (self is not QualityPickupDropTable)
+            {
+                dropPickupIndex = tryUpgradeQuality(dropPickupIndex, rng, null, getDropTableFilterFunc(self));
+            }
 
             return dropPickupIndex;
         }
@@ -328,11 +331,14 @@ namespace ItemQualities
         {
             PickupIndex[] dropPickupIncides = orig(self, maxDrops, rng);
 
-            Func<PickupIndex, bool> isPickupAllowedFunc = getDropTableFilterFunc(self);
-
-            for (int i = 0; i < dropPickupIncides.Length; i++)
+            if (self is not QualityPickupDropTable)
             {
-                dropPickupIncides[i] = tryUpgradeQuality(dropPickupIncides[i], rng, null, isPickupAllowedFunc);
+                Func<PickupIndex, bool> isPickupAllowedFunc = getDropTableFilterFunc(self);
+
+                for (int i = 0; i < dropPickupIncides.Length; i++)
+                {
+                    dropPickupIncides[i] = tryUpgradeQuality(dropPickupIncides[i], rng, null, isPickupAllowedFunc);
+                }
             }
 
             return dropPickupIncides;
