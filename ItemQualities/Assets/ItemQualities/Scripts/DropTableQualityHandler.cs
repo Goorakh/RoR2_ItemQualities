@@ -153,7 +153,7 @@ namespace ItemQualities
 
             for (int i = 0; i < 1 + qualityLuck; i++)
             {
-                if (rng.nextNormalizedFloat > 0.05f)
+                if (rng.nextNormalizedFloat > 0.04f)
                     continue;
 
                 QualityTier qualityTier = rollQuality(rng);

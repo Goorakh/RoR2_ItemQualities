@@ -1,6 +1,7 @@
-﻿using R2API;
+﻿using HG;
 using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
+using UnityEngine;
 
 namespace ItemQualities
 {
@@ -9,44 +10,101 @@ namespace ItemQualities
         [SystemInitializer]
         static void Init()
         {
-            const float QualityCategoryWeight = 2f;
-            const string QualityCategoryName = "Quality Stuff";
+            SceneDirector.onGenerateInteractableCardSelection += SceneDirector_onGenerateInteractableCardSelection;
+        }
 
-            DirectorAPI.Helpers.AddNewInteractable(new DirectorAPI.DirectorCardHolder
-            {
-                Card = new DirectorCard
-                {
-                    spawnCard = ItemQualitiesContent.SpawnCards.QualityEquipmentBarrel,
-                    selectionWeight = 2
-                },
-                InteractableCategorySelectionWeight = QualityCategoryWeight,
-                CustomInteractableCategory = QualityCategoryName,
-                InteractableCategory = DirectorAPI.InteractableCategory.Custom,
-            }, containsEquipmentBarrels);
+        static void SceneDirector_onGenerateInteractableCardSelection(SceneDirector sceneDirector, DirectorCardCategorySelection dccs)
+        {
+            bool addedQualityEquipmentBarrel = false;
+            bool addedQualityChest1 = false;
+            bool addedQualityChest2 = false;
 
-            DirectorAPI.Helpers.AddNewInteractable(new DirectorAPI.DirectorCardHolder
+            for (int i = 0; i < dccs.categories.Length; i++)
             {
-                Card = new DirectorCard
-                {
-                    spawnCard = ItemQualitiesContent.SpawnCards.QualityChest2,
-                    selectionWeight = 1
-                },
-                InteractableCategorySelectionWeight = QualityCategoryWeight,
-                CustomInteractableCategory = QualityCategoryName,
-                InteractableCategory = DirectorAPI.InteractableCategory.Custom,
-            }, containsAnyCategoryChest);
+                ref DirectorCardCategorySelection.Category category = ref dccs.categories[i];
 
-            DirectorAPI.Helpers.AddNewInteractable(new DirectorAPI.DirectorCardHolder
-            {
-                Card = new DirectorCard
+                bool containsEquipmentBarrel = false;
+                int equipmentBarrelWeight = 0;
+
+                bool containsCategoryChest1 = false;
+                int categoryChest1Weight = 0;
+
+                bool containsCategoryChest2 = false;
+                int categoryChest2Weight = 0;
+
+                foreach (DirectorCard card in category.cards)
                 {
-                    spawnCard = ItemQualitiesContent.SpawnCards.QualityChest1,
-                    selectionWeight = 2
-                },
-                InteractableCategorySelectionWeight = QualityCategoryWeight,
-                CustomInteractableCategory = QualityCategoryName,
-                InteractableCategory = DirectorAPI.InteractableCategory.Custom,
-            }, containsAnyCategoryChest);
+                    if (!containsEquipmentBarrel &&
+                        matchDirectorCard(card, "iscEquipmentBarrel", RoR2_Base_EquipmentBarrel.iscEquipmentBarrel_asset))
+                    {
+                        equipmentBarrelWeight = card.selectionWeight;
+                        containsEquipmentBarrel = true;
+                    }
+
+                    if (!containsCategoryChest1 &&
+                        (matchDirectorCard(card, "iscCategoryChestDamage", RoR2_Base_CategoryChest.iscCategoryChestDamage_asset) ||
+                         matchDirectorCard(card, "iscCategoryChestUtility", RoR2_Base_CategoryChest.iscCategoryChestUtility_asset) ||
+                         matchDirectorCard(card, "iscCategoryChestHealing", RoR2_Base_CategoryChest.iscCategoryChestHealing_asset)))
+                    {
+                        categoryChest1Weight = card.selectionWeight;
+                        containsCategoryChest1 = true;
+                    }
+
+                    if (!containsCategoryChest2 &&
+                        (matchDirectorCard(card, "iscCategoryChest2Damage", RoR2_DLC1_CategoryChest2.iscCategoryChest2Damage_asset) ||
+                         matchDirectorCard(card, "iscCategoryChest2Utility", RoR2_DLC1_CategoryChest2.iscCategoryChest2Utility_asset) ||
+                         matchDirectorCard(card, "iscCategoryChest2Healing", RoR2_DLC1_CategoryChest2.iscCategoryChest2Healing_asset)))
+                    {
+                        categoryChest2Weight = card.selectionWeight;
+                        containsCategoryChest2 = true;
+                    }
+                }
+
+                if (containsEquipmentBarrel && !addedQualityEquipmentBarrel)
+                {
+                    DirectorCard qualityEquipmentBarrelCard = new DirectorCard
+                    {
+                        spawnCard = ItemQualitiesContent.SpawnCards.QualityEquipmentBarrel,
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(equipmentBarrelWeight * 0.8f))
+                    };
+
+                    ArrayUtils.ArrayAppend(ref category.cards, qualityEquipmentBarrelCard);
+
+                    Log.Debug($"Appended quality equipment barrel to {dccs.name} ({category.name}) with weight {qualityEquipmentBarrelCard.selectionWeight}");
+
+                    addedQualityEquipmentBarrel = true;
+                }
+
+                if (containsCategoryChest1 && !addedQualityChest1)
+                {
+                    DirectorCard qualityChest1Card = new DirectorCard
+                    {
+                        spawnCard = ItemQualitiesContent.SpawnCards.QualityChest1,
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest1Weight * 1.5f))
+                    };
+
+                    ArrayUtils.ArrayAppend(ref category.cards, qualityChest1Card);
+
+                    Log.Debug($"Appended quality small chest to {dccs.name} ({category.name}) with weight {qualityChest1Card.selectionWeight}");
+
+                    addedQualityChest1 = true;
+                }
+
+                if (containsCategoryChest2 && !addedQualityChest2)
+                {
+                    DirectorCard qualityChest2Card = new DirectorCard
+                    {
+                        spawnCard = ItemQualitiesContent.SpawnCards.QualityChest2,
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest2Weight * 1.5f))
+                    };
+
+                    ArrayUtils.ArrayAppend(ref category.cards, qualityChest2Card);
+
+                    Log.Debug($"Appended quality large chest to {dccs.name} ({category.name}) with weight {qualityChest2Card.selectionWeight}");
+
+                    addedQualityChest2 = true;
+                }
+            }
         }
 
         static bool matchDirectorCard(DirectorCard directorCard, string spawnCardName, string spawnCardGuid)
@@ -66,10 +124,13 @@ namespace ItemQualities
                 {
                     if (matchDirectorCard(card, "iscEquipmentBarrel", RoR2_Base_EquipmentBarrel.iscEquipmentBarrel_asset))
                     {
+                        Log.Debug($"Found equip barrel in {dccs}");
                         return true;
                     }
                 }
             }
+
+            Log.Debug($"Did not find equip barrel in {dccs}");
 
             return false;
         }
@@ -87,10 +148,13 @@ namespace ItemQualities
                         matchDirectorCard(card, "iscCategoryChestHealing", RoR2_Base_CategoryChest.iscCategoryChestHealing_asset) ||
                         matchDirectorCard(card, "iscCategoryChest2Healing", RoR2_DLC1_CategoryChest2.iscCategoryChest2Healing_asset))
                     {
+                        Log.Debug($"Found category chest ({card.spawnCard}) in {dccs}");
                         return true;
                     }
                 }
             }
+
+            Log.Debug($"Did not find category chest in {dccs}");
 
             return false;
         }
