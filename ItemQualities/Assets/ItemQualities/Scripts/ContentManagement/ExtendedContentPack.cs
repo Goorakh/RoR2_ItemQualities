@@ -30,7 +30,8 @@ namespace ItemQualities.ContentManagement
                 itemQualityGroups,
                 equipmentQualityGroups,
                 buffQualityGroups,
-                spriteAssets
+                spriteAssets,
+                materials,
             };
         }
 
