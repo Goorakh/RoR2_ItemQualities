@@ -1083,5 +1083,17 @@
 
 		"ITEM_BOSSDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
 		"ITEM_BOSSDAMAGEBONUS_LEGENDARY_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>20%</style> damage <style=cStack>(+20% per stack)</style> to minibosses.",
+
+		"ITEM_SPEEDBOOSTPICKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
+        "ITEM_SPEEDBOOSTPICKUP_UNCOMMON_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second(s) per buff stack after ending.",
+
+		"ITEM_SPEEDBOOSTPICKUP_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
+        "ITEM_SPEEDBOOSTPICKUP_RARE_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds per buff stack after ending.",
+
+		"ITEM_SPEEDBOOSTPICKUP_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
+        "ITEM_SPEEDBOOSTPICKUP_EPIC_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> seconds per buff stack after ending.",
+
+		"ITEM_SPEEDBOOSTPICKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
+        "ITEM_SPEEDBOOSTPICKUP_LEGENDARY_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds per buff stack after ending.",
 	}
 }
