@@ -55,6 +55,25 @@ namespace ItemQualities
 
         public ItemIndex LegendaryItemIndex => _legendaryItem ? _legendaryItem.itemIndex : ItemIndex.None;
 
+        public ItemDef GetItemDef(QualityTier qualityTier)
+        {
+            switch (qualityTier)
+            {
+                case QualityTier.None:
+                    return ItemCatalog.GetItemDef(BaseItemIndex);
+                case QualityTier.Uncommon:
+                    return _uncommonItem;
+                case QualityTier.Rare:
+                    return _rareItem;
+                case QualityTier.Epic:
+                    return _epicItem;
+                case QualityTier.Legendary:
+                    return _legendaryItem;
+                default:
+                    throw new NotImplementedException($"Quality tier '{qualityTier}' is not implemented");
+            }
+        }
+
         public ItemIndex GetItemIndex(QualityTier qualityTier)
         {
             switch (qualityTier)

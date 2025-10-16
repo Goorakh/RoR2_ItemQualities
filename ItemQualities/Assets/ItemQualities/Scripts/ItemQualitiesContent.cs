@@ -28,6 +28,8 @@ namespace ItemQualities
 
         public string identifier => ItemQualitiesPlugin.PluginGUID;
 
+        QualityContagiousItemHelper _qualityContagiousItemHelper;
+
         internal static NamedAssetCollection<TMP_SpriteAsset> TMP_SpriteAssets = new NamedAssetCollection<TMP_SpriteAsset>(ContentPack.getScriptableObjectName);
 
         internal ItemQualitiesContent()
@@ -315,6 +317,11 @@ namespace ItemQualities
         public IEnumerator GenerateContentPackAsync(GetContentPackAsyncArgs args)
         {
             ContentPack.Copy(_contentPack, args.output);
+
+            _qualityContagiousItemHelper ??= new QualityContagiousItemHelper();
+
+            yield return _qualityContagiousItemHelper.Step(_contentPack, args, args.progressReceiver);
+
             args.ReportProgress(1f);
             yield break;
         }
@@ -322,6 +329,10 @@ namespace ItemQualities
         public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
         {
             ContentManager.collectContentPackProviders -= collectContentPackProviders;
+
+            _qualityContagiousItemHelper?.Dispose();
+            _qualityContagiousItemHelper = null;
+
             args.ReportProgress(1f);
             yield break;
         }
