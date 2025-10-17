@@ -587,6 +587,8 @@ namespace ItemQualities
             public static ItemQualityGroup BounceNearby;
 
             public static ItemQualityGroup ItemDropChanceOnKill;
+
+            public static ItemQualityGroup Talisman;
         }
 
         public static class EquipmentQualityGroups

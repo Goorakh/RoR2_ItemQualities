@@ -1131,5 +1131,17 @@
 
 		"ITEM_ITEMDROPCHANCEONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase chance for higher rarity items.",
         "ITEM_ITEMDROPCHANCEONKILL_LEGENDARY_DESC": "{0}\nIncreases dropped item rarity odds by <sprite name=\"Quality\"> (<style=cIsHealing>40%</style>/<style=cIsHealth>6%</style>) <style=cStack>(+<style=cIsHealing>40%</style>/<style=cIsHealth>6%</style> per stack)</style>",
+
+		"ITEM_TALISMAN_UNCOMMON_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
+		"ITEM_TALISMAN_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> Elite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> of total equipment cooldown.",
+
+		"ITEM_TALISMAN_RARE_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
+		"ITEM_TALISMAN_RARE_DESC": "{0}\n<sprite name=\"Quality\"> Elite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> of total equipment cooldown.",
+
+		"ITEM_TALISMAN_EPIC_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
+		"ITEM_TALISMAN_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> Elite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> of total equipment cooldown.",
+
+		"ITEM_TALISMAN_LEGENDARY_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
+		"ITEM_TALISMAN_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> Elite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>33%</style> <style=cStack>(+33% per stack)</style> of total equipment cooldown.",
 	}
 }
