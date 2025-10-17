@@ -86,13 +86,11 @@ namespace ItemQualities
                     {
                         totalAppearenceCount += appearenceInfo.InteractableCount;
 
-                        ArrayUtils.EnsureCapacity(ref interactableCountAppearences, appearenceInfo.InteractableCount + 1);
-                        interactableCountAppearences[appearenceInfo.InteractableCount]++;
+                        ArrayUtils.EnsureCapacity(ref interactableCountAppearences, appearenceInfo.InteractableCount);
+                        interactableCountAppearences[appearenceInfo.InteractableCount - 1]++;
 
                         appearencesBySceneIndex[(int)appearenceInfo.SceneIndex] += appearenceInfo.InteractableCount;
                     }
-
-                    interactableCountAppearences[0] = _stageSearchCount - totalAppearenceCount;
 
                     StringBuilder sb = new StringBuilder();
 
@@ -111,7 +109,7 @@ namespace ItemQualities
                         {
                             int appearences = interactableCountAppearences[interactableCount];
 
-                            sb.Append(' ', 4).AppendLine($"{interactableCount} appeared {appearences} time(s)");
+                            sb.Append(' ', 4).AppendLine($"{interactableCount + 1} appeared {appearences} time(s)");
                         }
                     }
 
