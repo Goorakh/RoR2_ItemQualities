@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igBounceNearby
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 5bcd04753888e6649826210e13d48835
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: c5217eaee71757a4f98dbc8e1825ae5e, type: 2}
+  _rareItem: {fileID: 11400000, guid: c030bd7e0ce0edb48b004a251a469189, type: 2}
+  _epicItem: {fileID: 11400000, guid: 27ed5de920aebb841a606d9afd43fa5f, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 4deac749155702140bff9375fab6f478, type: 2}

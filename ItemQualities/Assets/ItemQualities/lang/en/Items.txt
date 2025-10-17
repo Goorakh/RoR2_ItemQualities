@@ -1095,5 +1095,17 @@
 
 		"ITEM_SPEEDBOOSTPICKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
         "ITEM_SPEEDBOOSTPICKUP_LEGENDARY_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds per buff stack after ending.",
+
+		"ITEM_BOUNCENEARBY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Hooked enemies stay grouped for longer.",
+		"ITEM_BOUNCENEARBY_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Hooked</style> enemies are <style=cIsUtility>kept in place</style> for <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second(s)",
+
+		"ITEM_BOUNCENEARBY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Hooked enemies stay grouped for longer.",
+		"ITEM_BOUNCENEARBY_RARE_DESC": "{0}\n<style=cIsDamage>Hooked</style> enemies are <style=cIsUtility>kept in place</style> for <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> seconds",
+
+		"ITEM_BOUNCENEARBY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Hooked enemies stay grouped for longer.",
+		"ITEM_BOUNCENEARBY_EPIC_DESC": "{0}\n<style=cIsDamage>Hooked</style> enemies are <style=cIsUtility>kept in place</style> for <sprite name=\"Quality\"> <style=cIsUtility>4</style> <style=cStack>(+4 per stack)</style> seconds",
+
+		"ITEM_BOUNCENEARBY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Hooked enemies stay grouped for longer.",
+		"ITEM_BOUNCENEARBY_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Hooked</style> enemies are <style=cIsUtility>kept in place</style> for <sprite name=\"Quality\"> <style=cIsUtility>6</style> <style=cStack>(+6 per stack)</style> seconds",
 	}
 }
