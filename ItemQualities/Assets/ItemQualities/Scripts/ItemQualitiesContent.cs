@@ -583,6 +583,8 @@ namespace ItemQualities
             public static ItemQualityGroup SpeedBoostPickup;
 
             public static ItemQualityGroup BounceNearby;
+
+            public static ItemQualityGroup ItemDropChanceOnKill;
         }
 
         public static class EquipmentQualityGroups

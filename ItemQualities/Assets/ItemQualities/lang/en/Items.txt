@@ -1107,5 +1107,17 @@
 
 		"ITEM_BOUNCENEARBY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Hooked enemies stay grouped for longer.",
 		"ITEM_BOUNCENEARBY_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Hooked</style> enemies are <style=cIsUtility>kept in place</style> for <sprite name=\"Quality\"> <style=cIsUtility>6</style> <style=cStack>(+6 per stack)</style> seconds",
+
+		"ITEM_ITEMDROPCHANCEONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase chance for higher rarity items.",
+        "ITEM_ITEMDROPCHANCEONKILL_UNCOMMON_DESC": "{0}\nIncreases dropped item rarity odds by <sprite name=\"Quality\"> (<style=cIsHealing>10%</style>/<style=cIsHealth>2%</style>) <style=cStack>(+<style=cIsHealing>10%</style>/<style=cIsHealth>2%</style> per stack)</style>",
+
+		"ITEM_ITEMDROPCHANCEONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase chance for higher rarity items.",
+        "ITEM_ITEMDROPCHANCEONKILL_RARE_DESC": "{0}\nIncreases dropped item rarity odds by <sprite name=\"Quality\"> (<style=cIsHealing>18%</style>/<style=cIsHealth>3%</style>) <style=cStack>(+<style=cIsHealing>18%</style>/<style=cIsHealth>3%</style> per stack)</style>",
+
+		"ITEM_ITEMDROPCHANCEONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase chance for higher rarity items.",
+        "ITEM_ITEMDROPCHANCEONKILL_EPIC_DESC": "{0}\nIncreases dropped item rarity odds by <sprite name=\"Quality\"> (<style=cIsHealing>30%</style>/<style=cIsHealth>4%</style>) <style=cStack>(+<style=cIsHealing>30%</style>/<style=cIsHealth>4%</style> per stack)</style>",
+
+		"ITEM_ITEMDROPCHANCEONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase chance for higher rarity items.",
+        "ITEM_ITEMDROPCHANCEONKILL_LEGENDARY_DESC": "{0}\nIncreases dropped item rarity odds by <sprite name=\"Quality\"> (<style=cIsHealing>40%</style>/<style=cIsHealth>6%</style>) <style=cStack>(+<style=cIsHealing>40%</style>/<style=cIsHealth>6%</style> per stack)</style>",
 	}
 }
