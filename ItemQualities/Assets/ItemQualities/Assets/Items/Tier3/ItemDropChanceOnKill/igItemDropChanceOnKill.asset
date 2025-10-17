@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igItemDropChanceOnKill
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 4838bba8e7fc5d6439e4ca0ab60a18bc
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 9255d8d580743de43b26fa5e34f1aa75, type: 2}
+  _rareItem: {fileID: 11400000, guid: d122a53e0a9a6294a8570cb565c76187, type: 2}
+  _epicItem: {fileID: 11400000, guid: ab0becc9ae107bc4d94c18a7ed98724b, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 70d813d41ecc9044796818803d619b88, type: 2}
