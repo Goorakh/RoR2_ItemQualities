@@ -136,48 +136,5 @@ namespace ItemQualities
             return (directorCard.spawnCard && directorCard.spawnCard.name == spawnCardName) ||
                    (directorCard.spawnCardReference != null && directorCard.spawnCardReference.AssetGUID == spawnCardGuid);
         }
-
-        static bool containsEquipmentBarrels(DirectorCardCategorySelection dccs)
-        {
-            foreach (DirectorCardCategorySelection.Category category in dccs.categories)
-            {
-                foreach (DirectorCard card in category.cards)
-                {
-                    if (matchDirectorCard(card, "iscEquipmentBarrel", RoR2_Base_EquipmentBarrel.iscEquipmentBarrel_asset))
-                    {
-                        Log.Debug($"Found equip barrel in {dccs}");
-                        return true;
-                    }
-                }
-            }
-
-            Log.Debug($"Did not find equip barrel in {dccs}");
-
-            return false;
-        }
-
-        static bool containsAnyCategoryChest(DirectorCardCategorySelection dccs)
-        {
-            foreach (DirectorCardCategorySelection.Category category in dccs.categories)
-            {
-                foreach (DirectorCard card in category.cards)
-                {
-                    if (matchDirectorCard(card, "iscCategoryChestDamage", RoR2_Base_CategoryChest.iscCategoryChestDamage_asset) ||
-                        matchDirectorCard(card, "iscCategoryChest2Damage", RoR2_DLC1_CategoryChest2.iscCategoryChest2Damage_asset) ||
-                        matchDirectorCard(card, "iscCategoryChestUtility", RoR2_Base_CategoryChest.iscCategoryChestUtility_asset) ||
-                        matchDirectorCard(card, "iscCategoryChest2Utility", RoR2_DLC1_CategoryChest2.iscCategoryChest2Utility_asset) ||
-                        matchDirectorCard(card, "iscCategoryChestHealing", RoR2_Base_CategoryChest.iscCategoryChestHealing_asset) ||
-                        matchDirectorCard(card, "iscCategoryChest2Healing", RoR2_DLC1_CategoryChest2.iscCategoryChest2Healing_asset))
-                    {
-                        Log.Debug($"Found category chest ({card.spawnCard}) in {dccs}");
-                        return true;
-                    }
-                }
-            }
-
-            Log.Debug($"Did not find category chest in {dccs}");
-
-            return false;
-        }
     }
 }
