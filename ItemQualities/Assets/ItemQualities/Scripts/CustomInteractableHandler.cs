@@ -65,7 +65,7 @@ namespace ItemQualities
                     DirectorCard qualityEquipmentBarrelCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityEquipmentBarrel,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(equipmentBarrelWeight * 0.8f))
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(equipmentBarrelWeight * 0.35f))
                     };
 
                     ArrayUtils.ArrayAppend(ref category.cards, qualityEquipmentBarrelCard);
@@ -80,7 +80,7 @@ namespace ItemQualities
                     DirectorCard qualityChest1Card = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityChest1,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest1Weight * 1.5f))
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest1Weight * 2f))
                     };
 
                     ArrayUtils.ArrayAppend(ref category.cards, qualityChest1Card);
