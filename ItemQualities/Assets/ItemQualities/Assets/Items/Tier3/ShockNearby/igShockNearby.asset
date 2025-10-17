@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igShockNearby
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: fec9933928f69604a82baa26db792fdf
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 07c6f87c3db2cc14bb780b08c8e03c83, type: 2}
+  _rareItem: {fileID: 11400000, guid: cbfa9679d7398664c935ce28a96e7ba7, type: 2}
+  _epicItem: {fileID: 11400000, guid: 22a9c7b7af482b5469a51d28f4ce9966, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 8cb2a4e8a6a76b44db3f8c7c3cb140bf, type: 2}

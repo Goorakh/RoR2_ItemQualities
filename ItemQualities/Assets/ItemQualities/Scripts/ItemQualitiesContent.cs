@@ -579,6 +579,8 @@ namespace ItemQualities
             public static ItemQualityGroup MeteorAttackOnHighDamage;
 
             public static ItemQualityGroup BossDamageBonus;
+
+            public static ItemQualityGroup ShockNearby;
         }
 
         public static class EquipmentQualityGroups
