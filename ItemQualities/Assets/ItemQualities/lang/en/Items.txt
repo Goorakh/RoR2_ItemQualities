@@ -1083,5 +1083,17 @@
 
 		"ITEM_BOSSDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, a regular enemy is selected as the miniboss. Deal extra damage to minibosses.",
 		"ITEM_BOSSDAMAGEBONUS_LEGENDARY_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, a regular enemy is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>20%</style> damage <style=cStack>(+20% per stack)</style> to minibosses.",
+
+		"ITEM_PERMANENTDEBUFFONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> apply more stacks with higher damage",
+		"ITEM_PERMANENTDEBUFFONHIT_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> for every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by <style=cIsDamage>2</style> <style=cStack>(+2 per stack)</style> permanently.",
+
+		"ITEM_PERMANENTDEBUFFONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> apply more stacks with higher damage",
+		"ITEM_PERMANENTDEBUFFONHIT_RARE_DESC": "{0}\n<sprite name=\"Quality\"> for every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by <style=cIsDamage>4</style> <style=cStack>(+4 per stack)</style> permanently.",
+
+		"ITEM_PERMANENTDEBUFFONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> apply more stacks with higher damage",
+		"ITEM_PERMANENTDEBUFFONHIT_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> for every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by <style=cIsDamage>6</style> <style=cStack>(+6 per stack)</style> permanently.",
+
+		"ITEM_PERMANENTDEBUFFONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> apply more stacks with higher damage",
+		"ITEM_PERMANENTDEBUFFONHIT_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> for every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by <style=cIsDamage>10</style> <style=cStack>(+10 per stack)</style> permanently.",
 	}
 }
