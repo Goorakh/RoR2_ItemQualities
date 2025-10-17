@@ -314,15 +314,12 @@ namespace ItemQualities
 
             return pickupPassesFilter;
         }
-
+        
         static PickupIndex PickupDropTable_GenerateDrop(On.RoR2.PickupDropTable.orig_GenerateDrop orig, PickupDropTable self, Xoroshiro128Plus rng)
         {
             PickupIndex dropPickupIndex = orig(self, rng);
 
-            if (self is not QualityPickupDropTable)
-            {
-                dropPickupIndex = tryUpgradeQuality(dropPickupIndex, rng, null, getDropTableFilterFunc(self));
-            }
+            dropPickupIndex = tryUpgradeQuality(dropPickupIndex, rng, null, getDropTableFilterFunc(self));
 
             return dropPickupIndex;
         }
@@ -331,14 +328,11 @@ namespace ItemQualities
         {
             PickupIndex[] dropPickupIncides = orig(self, maxDrops, rng);
 
-            if (self is not QualityPickupDropTable)
-            {
-                Func<PickupIndex, bool> isPickupAllowedFunc = getDropTableFilterFunc(self);
+            Func<PickupIndex, bool> isPickupAllowedFunc = getDropTableFilterFunc(self);
 
-                for (int i = 0; i < dropPickupIncides.Length; i++)
-                {
-                    dropPickupIncides[i] = tryUpgradeQuality(dropPickupIncides[i], rng, null, isPickupAllowedFunc);
-                }
+            for (int i = 0; i < dropPickupIncides.Length; i++)
+            {
+                dropPickupIncides[i] = tryUpgradeQuality(dropPickupIncides[i], rng, null, isPickupAllowedFunc);
             }
 
             return dropPickupIncides;
