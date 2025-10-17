@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igTalisman
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: e7a108efe9d0a244886f84af1e4802db
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 338e4d19b5abb2b42a2c1f89b1b5fd55, type: 2}
+  _rareItem: {fileID: 11400000, guid: 6bb10e677cdcd3144b497766bed7f932, type: 2}
+  _epicItem: {fileID: 11400000, guid: 891dd701794ba7244869d2b29d53d00e, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 8051d6b08e030744095bc25ead081778, type: 2}
