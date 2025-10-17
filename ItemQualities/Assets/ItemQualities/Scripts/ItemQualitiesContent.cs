@@ -580,6 +580,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup BossDamageBonus;
 
+            public static ItemQualityGroup PermanentDebuffOnHit;
+            
             public static ItemQualityGroup SpeedBoostPickup;
 
             public static ItemQualityGroup BounceNearby;

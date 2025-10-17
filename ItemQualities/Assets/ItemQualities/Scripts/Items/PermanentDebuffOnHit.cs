@@ -1,0 +1,37 @@
+using RoR2;
+using UnityEngine.Networking;
+
+namespace ItemQualities.Items
+{
+    static class PermanentDebuffOnHit
+    {
+        [SystemInitializer]
+        static void Init()
+        {
+            On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+        }
+
+        static void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            orig(self, damageInfo);
+            if (!NetworkServer.active) return;
+            if (!damageInfo.attacker) return;
+			CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+            if (!attackerBody) return;
+            if (damageInfo.damage <= 0 || damageInfo.procCoefficient <= 0) return;
+            CharacterMaster characterMaster = attackerBody.master;
+            if (!characterMaster || !characterMaster.inventory) return;
+
+            ItemQualityCounts PermanentDebuffOnHit = ItemQualitiesContent.ItemQualityGroups.PermanentDebuffOnHit.GetItemCounts(characterMaster.inventory);
+            int total = PermanentDebuffOnHit.UncommonCount +
+                        PermanentDebuffOnHit.RareCount * 2 +
+                        PermanentDebuffOnHit.EpicCount * 3 +
+                        PermanentDebuffOnHit.LegendaryCount * 5;
+
+			total *= (int)(damageInfo.damage / attackerBody.damage / 4);
+            for(int i = 0; i < total; i++) {
+                self.body.AddBuff(DLC1Content.Buffs.PermanentDebuff);
+			}
+        }
+    }
+}
