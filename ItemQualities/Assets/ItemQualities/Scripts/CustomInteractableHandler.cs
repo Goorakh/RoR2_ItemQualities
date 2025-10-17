@@ -1,4 +1,6 @@
 ﻿using HG;
+using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
@@ -11,6 +13,25 @@ namespace ItemQualities
         static void Init()
         {
             SceneDirector.onGenerateInteractableCardSelection += SceneDirector_onGenerateInteractableCardSelection;
+
+            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Chest1StealthedVariant.Chest1StealthedVariant_prefab).OnSuccess(cloakedChest =>
+            {
+                if (cloakedChest.TryGetComponent(out ChestBehavior cloakedChestBehavior))
+                {
+                    PickupDropTable qualityDropTable = null;
+                    if (ItemQualitiesContent.SpawnCards.QualityChest1 &&
+                        ItemQualitiesContent.SpawnCards.QualityChest1.prefab &&
+                        ItemQualitiesContent.SpawnCards.QualityChest1.prefab.TryGetComponent(out ChestBehavior qualityChestBehavior))
+                    {
+                        qualityDropTable = qualityChestBehavior.dropTable;
+                    }
+
+                    if (qualityDropTable)
+                    {
+                        cloakedChestBehavior.dropTable = qualityDropTable;
+                    }
+                }
+            });
         }
 
         static void SceneDirector_onGenerateInteractableCardSelection(SceneDirector sceneDirector, DirectorCardCategorySelection dccs)
