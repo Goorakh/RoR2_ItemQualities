@@ -274,7 +274,7 @@ MonoBehaviour:
   contextToken: QUALITYCHEST1_CONTEXT
   costType: 1
   available: 1
-  cost: 30
+  cost: 50
   solitudeCost: 0
   automaticallyScaleCostWithDifficulty: 0
   requiredUnlockable: 

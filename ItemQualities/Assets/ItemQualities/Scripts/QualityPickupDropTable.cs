@@ -40,15 +40,15 @@ namespace ItemQualities
 
         [Header("Quality")]
 
-        public float BaseQualityWeight = 1f;
+        public float BaseQualityWeight = 0f;
 
-        public float UncommonQualityWeight = 0f;
+        public float UncommonQualityWeight = 0.7f;
 
-        public float RareQualityWeight = 0f;
+        public float RareQualityWeight = 0.2f;
 
-        public float EpicQualityWeight = 0f;
+        public float EpicQualityWeight = 0.08f;
 
-        public float LegendaryQualityWeight = 0f;
+        public float LegendaryQualityWeight = 0.02f;
 
         readonly WeightedSelection<PickupIndex> _selector = new WeightedSelection<PickupIndex>(8);
 
