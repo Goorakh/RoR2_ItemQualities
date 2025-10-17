@@ -15,10 +15,12 @@ namespace ItemQualities.Items
         {
             orig(self, damageInfo);
             if (!NetworkServer.active) return;
-            CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
-            if (damageInfo.damage <= 0 || !attackerBody) return;
+            if (!damageInfo.attacker) return;
+			CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+            if (!attackerBody) return;
+            if (damageInfo.damage <= 0 || damageInfo.procCoefficient <= 0) return;
             CharacterMaster characterMaster = attackerBody.master;
-            if (!characterMaster || !characterMaster.inventory || damageInfo.procCoefficient <= 0f) return;
+            if (!characterMaster || !characterMaster.inventory) return;
 
             ItemQualityCounts PermanentDebuffOnHit = ItemQualitiesContent.ItemQualityGroups.PermanentDebuffOnHit.GetItemCounts(characterMaster.inventory);
             int total = PermanentDebuffOnHit.UncommonCount +
@@ -26,8 +28,10 @@ namespace ItemQualities.Items
                         PermanentDebuffOnHit.EpicCount * 3 +
                         PermanentDebuffOnHit.LegendaryCount * 5;
 
-            total *= (int)(damageInfo.damage / attackerBody.damage / 4);
-            self.body.SetBuffCount(DLC1Content.Buffs.PermanentDebuff.buffIndex, self.body.buffs[(int)DLC1Content.Buffs.PermanentDebuff.buffIndex] + total);
+			total *= (int)(damageInfo.damage / attackerBody.damage / 4);
+            for(int i = 0; i < total; i++) {
+                self.body.AddBuff(DLC1Content.Buffs.PermanentDebuff);
+			}
         }
     }
 }
