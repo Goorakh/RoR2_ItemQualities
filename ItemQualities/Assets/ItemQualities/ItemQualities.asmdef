@@ -34,7 +34,6 @@
         "R2API.Prefab.dll",
         "R2API.DamageType.dll",
         "MMHOOK_RoR2.dll",
-        "0Harmony.dll",
         "Newtonsoft.Json.dll",
         "AK.Wwise.Unity.MonoBehaviour.dll",
         "AK.Wwise.Unity.API.WwiseTypes.dll",
