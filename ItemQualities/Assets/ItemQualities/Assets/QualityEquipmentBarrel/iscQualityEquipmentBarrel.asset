@@ -18,7 +18,7 @@ MonoBehaviour:
   nodeGraphType: 0
   requiredFlags: 0
   forbiddenFlags: 8
-  directorCreditCost: 1
+  directorCreditCost: 3
   occupyPosition: 1
   eliteRules: 0
   orientToFloor: 1
