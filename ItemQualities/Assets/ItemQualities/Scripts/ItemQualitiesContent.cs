@@ -589,7 +589,9 @@ namespace ItemQualities
             public static ItemQualityGroup ItemDropChanceOnKill;
 
             public static ItemQualityGroup Talisman;
-        }
+
+            public static ItemQualityGroup DroneWeapons;
+		}
 
         public static class EquipmentQualityGroups
         {
