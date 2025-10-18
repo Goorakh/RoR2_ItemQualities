@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igBarrageOnBoss
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 179130c7c49cf764e81e3222fa307e92
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: a9cd9f8e5438f824db06f579e8f8f194, type: 2}
+  _rareItem: {fileID: 11400000, guid: 0551c02ba55e99f409ce3e4b43f7c637, type: 2}
+  _epicItem: {fileID: 11400000, guid: b8294f896dda8ee4b80a686a7f11acc2, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 527f6cd2858f98940bd6ac63e69f19ef, type: 2}

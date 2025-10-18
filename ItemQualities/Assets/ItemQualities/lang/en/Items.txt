@@ -97,16 +97,16 @@
 		"ITEM_BARRIERONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
 		"ITEM_BARRIERONKILL_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 
-		"ITEM_EXTRASHRINEITEM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
+		"ITEM_EXTRASHRINEITEM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
         "ITEM_EXTRASHRINEITEM_UNCOMMON_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
 
-		"ITEM_EXTRASHRINEITEM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s).",
+		"ITEM_EXTRASHRINEITEM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
         "ITEM_EXTRASHRINEITEM_RARE_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional times.",
 
-		"ITEM_EXTRASHRINEITEM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s).",
+		"ITEM_EXTRASHRINEITEM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
         "ITEM_EXTRASHRINEITEM_EPIC_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional times.",
 
-		"ITEM_EXTRASHRINEITEM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
+		"ITEM_EXTRASHRINEITEM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
         "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional times.",
 
 		"ITEM_DAGGER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
@@ -1155,5 +1155,29 @@
 
 		"ITEM_DRONEWEAPONS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase capacity for Col. Dronemans",
 		"ITEM_DRONEWEAPONS_LEGENDARY_DESC" : "Gain <sprite name=\"Quality\"> <style=cIsDamage>5 <style=cStack>(+5 per stack) <style=cIsDamage>Col. Dronemans</style>, that <sprite name=\"Quality\"> <style=cIsUtility>respawn</style> after <style=cIsUtility>1 second</style>. \nDrones gain <style=cIsDamage>+50%</style> <style=cStack>(+50% per stack)</style> attack speed and cooldown reduction. \nDrones gain <style=cIsDamage>10%</style> chance to fire a <style=cIsDamage>missile</style> on hit, dealing <style=cIsDamage>300%</style> TOTAL damage. \nDrones gain an <style=cIsDamage>automatic chain gun</style> that deals <style=cIsDamage>6x100%</style>damage, bouncing to <style=cIsDamage>2</style> enemies.",
+
+		"ITEM_BARRAGEONBOSS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
+        "ITEM_BARRAGEONBOSS_UNCOMMON_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
+
+		"ITEM_BARRAGEONBOSS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
+        "ITEM_BARRAGEONBOSS_RARE_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s).",
+
+		"ITEM_BARRAGEONBOSS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
+        "ITEM_BARRAGEONBOSS_EPIC_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s).",
+
+		"ITEM_BARRAGEONBOSS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
+        "ITEM_BARRAGEONBOSS_LEGENDARY_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
+
+		"ITEM_CLOVERVOID_UNCOMMON_PICKUP": "Upgrades your items at the start of each stage, <sprite name=\"Quality\"> chance to upgrade quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
+		"ITEM_CLOVERVOID_UNCOMMON_DESC": "<style=cIsUtility>Upgrades 3</style> <style=cStack>(+3 per stack)</style> random items to items of the next <style=cIsUtility>higher rarity</style> at the <style=cIsUtility>start of each stage</style>, <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to also upgrade the <style=cIsUtility>quality</style> of items, up to uncommon <sprite name=\"QualityUncommon\"> quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
+
+		"ITEM_CLOVERVOID_RARE_PICKUP": "Upgrades your items at the start of each stage, <sprite name=\"Quality\"> chance to upgrade quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
+		"ITEM_CLOVERVOID_RARE_DESC": "<style=cIsUtility>Upgrades 3</style> <style=cStack>(+3 per stack)</style> random items to items of the next <style=cIsUtility>higher rarity</style> at the <style=cIsUtility>start of each stage</style>, <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style> chance to also upgrade the <style=cIsUtility>quality</style> of items, up to rare <sprite name=\"QualityRare\"> quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
+
+		"ITEM_CLOVERVOID_EPIC_PICKUP": "Upgrades your items at the start of each stage, <sprite name=\"Quality\"> chance to upgrade quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
+		"ITEM_CLOVERVOID_EPIC_DESC": "<style=cIsUtility>Upgrades 3</style> <style=cStack>(+3 per stack)</style> random items to items of the next <style=cIsUtility>higher rarity</style> at the <style=cIsUtility>start of each stage</style>, <sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style> chance to also upgrade the <style=cIsUtility>quality</style> of items, up to epic <sprite name=\"QualityEpic\"> quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
+
+		"ITEM_CLOVERVOID_LEGENDARY_PICKUP": "Upgrades your items at the start of each stage, <sprite name=\"Quality\"> chance to upgrade quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
+		"ITEM_CLOVERVOID_LEGENDARY_DESC": "<style=cIsUtility>Upgrades 3</style> <style=cStack>(+3 per stack)</style> random items to items of the next <style=cIsUtility>higher rarity</style> at the <style=cIsUtility>start of each stage</style>, <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to also upgrade the <style=cIsUtility>quality</style> of items, up to legendary <sprite name=\"QualityLegendary\"> quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
 	}
 }
