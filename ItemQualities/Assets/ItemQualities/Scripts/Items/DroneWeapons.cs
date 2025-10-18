@@ -58,12 +58,11 @@ namespace ItemQualities.Items
 			if (slot == DeployableSlot.DroneWeaponsDrone)
 			{
 				ItemQualityCounts DroneWeapons = ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCounts(self.inventory);
-				int total = (DroneWeapons.BaseItemCount > 0 ? 1 : 0) +
-							DroneWeapons.UncommonCount * 2 +
+				result += DroneWeapons.UncommonCount * 2 +
 							DroneWeapons.RareCount * 3 +
 							DroneWeapons.EpicCount * 4 +
-							DroneWeapons.LegendaryCount * 5;
-				return total;
+							DroneWeapons.LegendaryCount * 5 -
+							(DroneWeapons.BaseItemCount == 0 ? 1 : 0);
 			}
 			return result;
 		}
