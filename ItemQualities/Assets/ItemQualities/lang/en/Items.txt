@@ -1143,5 +1143,17 @@
 
 		"ITEM_TALISMAN_LEGENDARY_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
 		"ITEM_TALISMAN_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> Elite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>33%</style> <style=cStack>(+33% per stack)</style> of total equipment cooldown.",
+
+		"ITEM_BARRAGEONBOSS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
+        "ITEM_BARRAGEONBOSS_UNCOMMON_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
+
+		"ITEM_BARRAGEONBOSS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
+        "ITEM_BARRAGEONBOSS_RARE_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s).",
+
+		"ITEM_BARRAGEONBOSS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
+        "ITEM_BARRAGEONBOSS_EPIC_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s).",
+
+		"ITEM_BARRAGEONBOSS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
+        "ITEM_BARRAGEONBOSS_LEGENDARY_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
 	}
 }
