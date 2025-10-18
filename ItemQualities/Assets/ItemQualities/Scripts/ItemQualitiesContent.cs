@@ -591,6 +591,8 @@ namespace ItemQualities
             public static ItemQualityGroup Talisman;
 
             public static ItemQualityGroup BarrageOnBoss;
+
+            public static ItemQualityGroup CloverVoid;
         }
 
         public static class EquipmentQualityGroups
