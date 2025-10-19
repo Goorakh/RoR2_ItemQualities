@@ -62,7 +62,7 @@ namespace ItemQualities.Items
 
                     if (procCoefficient > 0f)
                     {
-                        float blastAttackProcCoefficientAdd = Mathf.Max(MaxProcCoefficient - behemothBlastAttack.procCoefficient, procCoefficient);
+                        float blastAttackProcCoefficientAdd = Mathf.Min(MaxProcCoefficient - behemothBlastAttack.procCoefficient, procCoefficient);
                         behemothBlastAttack.procCoefficient += blastAttackProcCoefficientAdd;
                         behemothBlastAttack.procChainMask.AddProc(ProcType.Behemoth);
 
