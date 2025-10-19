@@ -513,10 +513,10 @@ namespace ItemQualities
 
                     float cooldownReductionWindow = cooldownRefundWindow + 0.2f;
 
-                    float remainingCooldownReduction = Mathf.Pow(1f - 0.1f, utilitySkillMagazine.UncommonCount) *
-                                                       Mathf.Pow(1f - 0.2f, utilitySkillMagazine.RareCount) *
-                                                       Mathf.Pow(1f - 0.3f, utilitySkillMagazine.EpicCount) *
-                                                       Mathf.Pow(1f - 0.5f, utilitySkillMagazine.LegendaryCount);
+                    float remainingCooldownMultiplier = Mathf.Pow(1f - 0.1f, utilitySkillMagazine.UncommonCount) *
+                                                        Mathf.Pow(1f - 0.2f, utilitySkillMagazine.RareCount) *
+                                                        Mathf.Pow(1f - 0.3f, utilitySkillMagazine.EpicCount) *
+                                                        Mathf.Pow(1f - 0.5f, utilitySkillMagazine.LegendaryCount);
 
                     if (_timeSinceLastUtilitySkillRechargeAuthority <= cooldownRefundWindow)
                     {
@@ -524,7 +524,7 @@ namespace ItemQualities
                     }
                     else if (_timeSinceLastUtilitySkillRechargeAuthority <= cooldownReductionWindow)
                     {
-                        skill.rechargeStopwatch += skill.cooldownRemaining * remainingCooldownReduction;
+                        skill.rechargeStopwatch += skill.cooldownRemaining * (1f - remainingCooldownMultiplier);
                     }
                 }
             }
