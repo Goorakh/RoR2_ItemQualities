@@ -1179,5 +1179,17 @@
 
 		"ITEM_CLOVERVOID_LEGENDARY_PICKUP": "Upgrades your items at the start of each stage, <sprite name=\"Quality\"> chance to upgrade quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
 		"ITEM_CLOVERVOID_LEGENDARY_DESC": "<style=cIsUtility>Upgrades 3</style> <style=cStack>(+3 per stack)</style> random items to items of the next <style=cIsUtility>higher rarity</style> at the <style=cIsUtility>start of each stage</style>, <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to also upgrade the <style=cIsUtility>quality</style> of items, up to legendary <sprite name=\"QualityLegendary\"> quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
+
+		"ITEM_EQUIPMENTMAGAZINEVOID_UNCOMMON_PICKUP": "Add an extra charge of your Special skill. <sprite name=\"Quality\"> Increase Special Skill damage. <style=cIsVoid>Corrupts all Fuel Cells</style>.",
+		"ITEM_EQUIPMENTMAGAZINEVOID_UNCOMMON_DESC": "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Special skill</style>, reduce <style=cIsUtility>Special Skill cooldown</style> by <sprite name=\"Quality\"> <style=cIsUtility>40%</style>, and increase <style=cIsDamage>Special Skill damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style>. <style=cIsVoid>Corrupts all Fuel Cells.</style>",
+
+		"ITEM_EQUIPMENTMAGAZINEVOID_RARE_PICKUP": "Add an extra charge of your Special skill. <sprite name=\"Quality\"> Increase Special Skill damage. <style=cIsVoid>Corrupts all Fuel Cells</style>.",
+		"ITEM_EQUIPMENTMAGAZINEVOID_RARE_DESC": "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Special skill</style>, reduce <style=cIsUtility>Special Skill cooldown</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style>, and increase <style=cIsDamage>Special Skill damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>. <style=cIsVoid>Corrupts all Fuel Cells.</style>",
+
+		"ITEM_EQUIPMENTMAGAZINEVOID_EPIC_PICKUP": "Add an extra charge of your Special skill. <sprite name=\"Quality\"> Increase Special Skill damage. <style=cIsVoid>Corrupts all Fuel Cells</style>.",
+		"ITEM_EQUIPMENTMAGAZINEVOID_EPIC_DESC": "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Special skill</style>, reduce <style=cIsUtility>Special Skill cooldown</style> by <sprite name=\"Quality\"> <style=cIsUtility>60%</style>, and increase <style=cIsDamage>Special Skill damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>. <style=cIsVoid>Corrupts all Fuel Cells.</style>",
+
+		"ITEM_EQUIPMENTMAGAZINEVOID_LEGENDARY_PICKUP": "Add an extra charge of your Special skill. <sprite name=\"Quality\"> Increase Special Skill damage. <style=cIsVoid>Corrupts all Fuel Cells</style>.",
+		"ITEM_EQUIPMENTMAGAZINEVOID_LEGENDARY_DESC": "Add <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> charge of your <style=cIsUtility>Special skill</style>, reduce <style=cIsUtility>Special Skill cooldown</style> by <sprite name=\"Quality\"> <style=cIsUtility>70%</style>, and increase <style=cIsDamage>Special Skill damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style>. <style=cIsVoid>Corrupts all Fuel Cells.</style>",
 	}
 }
