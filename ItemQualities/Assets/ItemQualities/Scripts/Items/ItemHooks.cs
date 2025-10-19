@@ -18,6 +18,8 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
+            IL.EntityStates.Headstompers.HeadstompersCooldown.OnEnter += CombineGroupedItemCountsPatch;
+            IL.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.AddMultiKill += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.GetMaxIncreasedDamageMultiKillBuffsForCharacter += CombineGroupedItemCountsPatch;
@@ -29,12 +31,14 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.TriggerEnemyDebuffs += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterBody.UpdateMultiKill += CombineGroupedItemCountsPatch;
+            IL.RoR2.CharacterMaster.GetDeployableSameSlotLimit += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterMaster.OnBodyStart += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterMaster.OnInventoryChanged += CombineGroupedItemCountsPatch;
             IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
             IL.RoR2.EquipmentSlot.OnEquipmentExecuted += CombineGroupedItemCountsPatch;
             IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
+            IL.RoR2.GlobalEventManager.OnCharacterHitGroundServer += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnCrit += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.OnInteractionBegin += CombineGroupedItemCountsPatch;
             IL.RoR2.GlobalEventManager.ProcDeathMark += CombineGroupedItemCountsPatch;
@@ -52,9 +56,6 @@ namespace ItemQualities.Items
             IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += CombineGroupedItemCountsPatch;
             IL.RoR2.Util.GetItemCountForTeam += CombineGroupedItemCountsPatch;
             IL.RoR2.Util.GetItemCountGlobal += CombineGroupedItemCountsPatch;
-            IL.RoR2.GlobalEventManager.OnCharacterHitGroundServer += CombineGroupedItemCountsPatch;
-            IL.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += CombineGroupedItemCountsPatch;
-            IL.EntityStates.Headstompers.HeadstompersCooldown.OnEnter += CombineGroupedItemCountsPatch;
 
             ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
             if (itemCountsCtor != null)

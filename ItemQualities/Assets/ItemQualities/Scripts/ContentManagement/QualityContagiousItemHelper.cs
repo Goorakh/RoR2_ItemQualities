@@ -26,24 +26,17 @@ namespace ItemQualities.ContentManagement
         readonly Dictionary<ItemDef, ItemQualityGroup> _baseItemToGroupLookup = new Dictionary<ItemDef, ItemQualityGroup>();
         readonly List<AssetReferenceT<ItemDef>> _itemDefReferences = new List<AssetReferenceT<ItemDef>>();
 
-        IEnumerator initialize(ExtendedContentPack contentPack, GetContentPackAsyncArgs args, IProgress<float> progessReceiver)
+        IEnumerator initialize(ExtendedContentPack contentPack, IProgress<float> progessReceiver)
         {
             ParallelProgressCoroutine initializeCoroutine = new ParallelProgressCoroutine(progessReceiver);
 
             AsyncOperationHandle<ItemRelationshipType> contagiousItemRelationshipTypeLoad = AssetAsyncReferenceManager<ItemRelationshipType>.LoadAsset(_contagiousItemRelationshipTypeRef);
-            initializeCoroutine.Add(contagiousItemRelationshipTypeLoad);
-
-            contagiousItemRelationshipTypeLoad.Completed += handle =>
+            contagiousItemRelationshipTypeLoad.OnSuccess(contagiousItemRelationshipType =>
             {
-                if (handle.Status == AsyncOperationStatus.Succeeded && handle.Result)
-                {
-                    _contagiousItemRelationshipType = handle.Result;
-                }
-                else
-                {
-                    Log.Error($"Failed to load ContagiousItem relationship provider: {handle.OperationException}");
-                }
-            };
+                _contagiousItemRelationshipType = contagiousItemRelationshipType;
+            });
+
+            initializeCoroutine.Add(contagiousItemRelationshipTypeLoad);
 
             foreach (ItemQualityGroup itemQualityGroup in contentPack.itemQualityGroups)
             {
@@ -70,7 +63,7 @@ namespace ItemQualities.ContentManagement
         {
             if (_completedSteps == 0)
             {
-                yield return initialize(contentPack, args, progessReceiver);
+                yield return initialize(contentPack, progessReceiver);
             }
 
             bool addedContagiousItemProvider = false;

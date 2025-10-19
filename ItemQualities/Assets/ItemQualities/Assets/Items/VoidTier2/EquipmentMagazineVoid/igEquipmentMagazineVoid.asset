@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igEquipmentMagazineVoid
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 518b48ae9abacf94a8738dcdcdaa255e
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: dae8a8121013d484ea7660e956fb0e18, type: 2}
+  _rareItem: {fileID: 11400000, guid: d65fb0e584de52c41997c1ec7f856b53, type: 2}
+  _epicItem: {fileID: 11400000, guid: 99a655ea63182e04aaec48d3c93f309f, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: fd0cd4e154b50674e83d4fbaeddd5268, type: 2}
