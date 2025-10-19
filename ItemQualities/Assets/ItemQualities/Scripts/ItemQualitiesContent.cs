@@ -597,6 +597,8 @@ namespace ItemQualities
             public static ItemQualityGroup CloverVoid;
 
             public static ItemQualityGroup EquipmentMagazineVoid;
+
+            public static ItemQualityGroup BleedOnHitVoid;
         }
 
         public static class EquipmentQualityGroups
