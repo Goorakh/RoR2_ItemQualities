@@ -599,6 +599,8 @@ namespace ItemQualities
             public static ItemQualityGroup EquipmentMagazineVoid;
 
             public static ItemQualityGroup BleedOnHitVoid;
+
+            public static ItemQualityGroup VoidMegaCrabItem;
         }
 
         public static class EquipmentQualityGroups
