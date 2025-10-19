@@ -110,11 +110,11 @@ namespace ItemQualities.Items
                 ItemQualityCounts cloverVoid = ItemQualitiesContent.ItemQualityGroups.CloverVoid.GetItemCounts(inventory);
                 if (cloverVoid.TotalQualityCount > 0)
                 {
-                    float qualityUpgradeChance = Util.ConvertAmplificationPercentageIntoReductionPercentage(amplificationPercentage:
-                        (10f * cloverVoid.UncommonCount) +
-                        (25f * cloverVoid.RareCount) +
-                        (35f * cloverVoid.EpicCount) +
-                        (50f * cloverVoid.LegendaryCount));
+                    float qualityUpgradeChance = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
+                        (0.10f * cloverVoid.UncommonCount) +
+                        (0.25f * cloverVoid.RareCount) +
+                        (0.35f * cloverVoid.EpicCount) +
+                        (0.50f * cloverVoid.LegendaryCount));
 
                     QualityTier maxUpgradableQualityTier = cloverVoid.HighestQuality - 1;
 
