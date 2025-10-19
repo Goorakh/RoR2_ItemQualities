@@ -601,6 +601,8 @@ namespace ItemQualities
             public static ItemQualityGroup BleedOnHitVoid;
 
             public static ItemQualityGroup VoidMegaCrabItem;
+
+            public static ItemQualityGroup MissileVoid;
         }
 
         public static class EquipmentQualityGroups
