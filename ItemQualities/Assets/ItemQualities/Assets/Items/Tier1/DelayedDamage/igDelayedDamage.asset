@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igDelayedDamage
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 5c627a3bcd03c96408574a3d2dfc1e64
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 9e9a25b442fa5104dbe6327275a530d9, type: 2}
+  _rareItem: {fileID: 11400000, guid: d1dd761025d073c49974956804101ef4, type: 2}
+  _epicItem: {fileID: 11400000, guid: 81e594cc24ecf004b9cc7cf547e852a3, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 0901cee00b400a441b930b3438fa0651, type: 2}
