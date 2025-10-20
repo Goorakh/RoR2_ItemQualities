@@ -605,6 +605,8 @@ namespace ItemQualities
             public static ItemQualityGroup MissileVoid;
 
             public static ItemQualityGroup DelayedDamage;
+
+            public static ItemQualityGroup BearVoid;
         }
 
         public static class EquipmentQualityGroups

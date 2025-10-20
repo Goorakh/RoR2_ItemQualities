@@ -1239,5 +1239,17 @@
 
 		"ITEM_DELAYEDDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double on-hit effects.",
         "ITEM_DELAYEDDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Repeat</style> your <style=cIsUtility>on-hit</style> effects <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> time(s).",
+
+		"ITEM_BEARVOID_UNCOMMON_PICKUP": "Block the next source of damage. <sprite name=\"Quality\"> Reduce block cooldown. <style=cIsVoid>Corrupts all Tougher Times</style>.",
+		"ITEM_BEARVOID_UNCOMMON_DESC": "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <sprite name=\"Quality\"> <style=cIsUtility>14 seconds</style> <style=cStack>(-15% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.",
+
+		"ITEM_BEARVOID_RARE_PICKUP": "Block the next source of damage. <sprite name=\"Quality\"> Reduce block cooldown. <style=cIsVoid>Corrupts all Tougher Times</style>.",
+		"ITEM_BEARVOID_RARE_DESC": "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <sprite name=\"Quality\"> <style=cIsUtility>13 seconds</style> <style=cStack>(-20% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.",
+
+		"ITEM_BEARVOID_EPIC_PICKUP": "Block the next source of damage. <sprite name=\"Quality\"> Reduce block cooldown. <style=cIsVoid>Corrupts all Tougher Times</style>.",
+		"ITEM_BEARVOID_EPIC_DESC": "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <sprite name=\"Quality\"> <style=cIsUtility>12 seconds</style> <style=cStack>(-30% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.",
+
+		"ITEM_BEARVOID_LEGENDARY_PICKUP": "Block the next source of damage. <sprite name=\"Quality\"> Reduce block cooldown. <style=cIsVoid>Corrupts all Tougher Times</style>.",
+		"ITEM_BEARVOID_LEGENDARY_DESC": "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <sprite name=\"Quality\"> <style=cIsUtility>10 seconds</style> <style=cStack>(-40% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.",
 	}
 }
