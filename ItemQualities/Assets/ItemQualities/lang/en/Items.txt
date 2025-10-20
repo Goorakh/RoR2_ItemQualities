@@ -1227,5 +1227,17 @@
 
 		"ITEM_MISSILEVOID_LEGENDARY_PICKUP": "While you have shield, fire missiles on every hit. <sprite name=\"Quality\"> Increase missile damage based on shield amount. <style=cIsVoid>Corrupts all AtG Missile Mk. 1s</style>.",
 		"ITEM_MISSILEVOID_LEGENDARY_DESC": "Gain a <style=cIsHealing>shield</style> equal to <style=cIsHealing>10%</style> of your maximum health. While you have a <style=cIsHealing>shield</style>, hitting an enemy fires a missile that deals <style=cIsDamage>40%</style> <style=cStack>(+50% per stack)</style> TOTAL damage. Increases missile damage based on the portion of your <style=cIsHealing>maximum health</style> that is <style=cIsHealing>shield</style>, up to an additional <sprite name=\"Quality\"> <style=cIsDamage>500%</style> <style=cStack>(+500% per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all AtG Missile Mk. 1s</style>.",
+
+		"ITEM_DELAYEDDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double on-hit effects.",
+        "ITEM_DELAYEDDAMAGE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsUtility>repeat</style> your <style=cIsUtility>on-hit</style> effects 1 time. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> extra repeat.",
+
+		"ITEM_DELAYEDDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double on-hit effects.",
+        "ITEM_DELAYEDDAMAGE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsUtility>repeat</style> your <style=cIsUtility>on-hit</style> effects 1 time. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> extra repeat.",
+
+		"ITEM_DELAYEDDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double on-hit effects.",
+        "ITEM_DELAYEDDAMAGE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsUtility>repeat</style> your <style=cIsUtility>on-hit</style> effects 1 time. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> extra repeat.",
+
+		"ITEM_DELAYEDDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double on-hit effects.",
+        "ITEM_DELAYEDDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Repeat</style> your <style=cIsUtility>on-hit</style> effects <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> time(s).",
 	}
 }

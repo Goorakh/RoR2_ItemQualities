@@ -603,6 +603,8 @@ namespace ItemQualities
             public static ItemQualityGroup VoidMegaCrabItem;
 
             public static ItemQualityGroup MissileVoid;
+
+            public static ItemQualityGroup DelayedDamage;
         }
 
         public static class EquipmentQualityGroups
