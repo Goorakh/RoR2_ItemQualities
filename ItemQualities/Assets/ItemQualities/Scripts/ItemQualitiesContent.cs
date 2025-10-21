@@ -607,6 +607,8 @@ namespace ItemQualities
             public static ItemQualityGroup DelayedDamage;
 
             public static ItemQualityGroup BearVoid;
+
+            public static ItemQualityGroup SlowOnHitVoid;
         }
 
         public static class EquipmentQualityGroups
@@ -670,6 +672,8 @@ namespace ItemQualities
             public static GameObject MiniBossBodyAttachment;
 
             public static GameObject MeatHookDelayedForce;
+
+            public static GameObject SlowOnHitRootArea;
         }
 
         public static class ProjectilePrefabs

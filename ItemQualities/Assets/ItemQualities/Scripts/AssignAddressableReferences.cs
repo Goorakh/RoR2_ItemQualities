@@ -10,6 +10,7 @@ using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.Serialization;
 
 namespace ItemQualities
 {
@@ -138,6 +139,8 @@ namespace ItemQualities
         {
             foreach (ComponentFieldAddressableAssignment componentFieldAssignment in FieldAssignments)
             {
+                componentFieldAssignment.OnValidate();
+
                 if (!componentFieldAssignment.TargetObject)
                     continue;
 
@@ -186,7 +189,17 @@ namespace ItemQualities
         public class ComponentFieldAddressableAssignment
         {
             [Tooltip("The object to assign the field on")]
-            public UnityEngine.Object TargetObject;
+            [SerializeField]
+            [FormerlySerializedAs("TargetObject")]
+            UnityEngine.Object _targetObject;
+
+            [SerializeField]
+            [HideInInspector]
+            Component _targetObjectComponent;
+
+            [Tooltip("If set, the first component of this type will be located on the Target Object and used as the field instance")]
+            [SerializableSystemType.RequiredBaseType(typeof(Component))]
+            public SerializableSystemType TargetObjectComponentType;
 
             [Tooltip("The name of the field or property to set")]
             public string FieldName;
@@ -197,6 +210,27 @@ namespace ItemQualities
             [Tooltip("Determines what type is used to load the asset, if not set, the type of the field/property is used")]
             [SerializableSystemType.RequiredBaseType(typeof(UnityEngine.Object))]
             public SerializableSystemType AssetTypeOverride;
+
+            public UnityEngine.Object TargetObject => _targetObjectComponent ? _targetObjectComponent : _targetObject;
+
+            public void OnValidate()
+            {
+                _targetObjectComponent = null;
+
+                Type componentType = (Type)TargetObjectComponentType;
+                if (componentType != null && _targetObject)
+                {
+                    switch (_targetObject)
+                    {
+                        case GameObject targetGameObject:
+                            _targetObjectComponent = targetGameObject.GetComponent(componentType);
+                            break;
+                        case Component targetComponent:
+                            _targetObjectComponent = targetComponent.GetComponent(componentType);
+                            break;
+                    }
+                }
+            }
         }
     }
 }
