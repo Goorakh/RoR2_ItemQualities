@@ -1251,5 +1251,17 @@
 
 		"ITEM_BEARVOID_LEGENDARY_PICKUP": "Block the next source of damage. <sprite name=\"Quality\"> Reduce block cooldown. <style=cIsVoid>Corrupts all Tougher Times</style>.",
 		"ITEM_BEARVOID_LEGENDARY_DESC": "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <sprite name=\"Quality\"> <style=cIsUtility>10 seconds</style> <style=cStack>(-40% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.",
+
+		"ITEM_SLOWONHITVOID_UNCOMMON_PICKUP": "Chance to root enemies on hit. <sprite name=\"Quality\"> Root all nearby enemies after killing a rooted enemy. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
+		"ITEM_SLOWONHITVOID_UNCOMMON_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsDamage>root</style> enemies for <style=cIsUtility>1s</style> <style=cStack>(+1s per stack)</style>. Killing a rooted enemy <style=cIsDamage>roots</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>4m</style> <style=cStack>(+4m per stack)</style> for <style=cIsUtility>5</style> seconds. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
+
+		"ITEM_SLOWONHITVOID_RARE_PICKUP": "Chance to root enemies on hit. <sprite name=\"Quality\"> Root all nearby enemies after killing a rooted enemy. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
+		"ITEM_SLOWONHITVOID_RARE_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsDamage>root</style> enemies for <style=cIsUtility>1s</style> <style=cStack>(+1s per stack)</style>. Killing a rooted enemy <style=cIsDamage>roots</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>7m</style> <style=cStack>(+7m per stack)</style> for <style=cIsUtility>5</style> seconds. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
+
+		"ITEM_SLOWONHITVOID_EPIC_PICKUP": "Chance to root enemies on hit. <sprite name=\"Quality\"> Root all nearby enemies after killing a rooted enemy. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
+		"ITEM_SLOWONHITVOID_EPIC_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsDamage>root</style> enemies for <style=cIsUtility>1s</style> <style=cStack>(+1s per stack)</style>. Killing a rooted enemy <style=cIsDamage>roots</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>10m</style> <style=cStack>(+10m per stack)</style> for <style=cIsUtility>5</style> seconds. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
+
+		"ITEM_SLOWONHITVOID_LEGENDARY_PICKUP": "Chance to root enemies on hit. <sprite name=\"Quality\"> Root all nearby enemies after killing a rooted enemy. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
+		"ITEM_SLOWONHITVOID_LEGENDARY_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsDamage>root</style> enemies for <style=cIsUtility>1s</style> <style=cStack>(+1s per stack)</style>. Killing a rooted enemy <style=cIsDamage>roots</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>15m</style> <style=cStack>(+15m per stack)</style> for <style=cIsUtility>5</style> seconds. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
 	}
 }
