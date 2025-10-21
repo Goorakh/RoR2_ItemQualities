@@ -607,6 +607,8 @@ namespace ItemQualities
             public static ItemQualityGroup DelayedDamage;
 
             public static ItemQualityGroup BearVoid;
+
+            public static ItemQualityGroup ArmorReductionOnHit;
         }
 
         public static class EquipmentQualityGroups
