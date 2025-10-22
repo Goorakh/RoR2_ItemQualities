@@ -609,6 +609,8 @@ namespace ItemQualities
             public static ItemQualityGroup BearVoid;
 
             public static ItemQualityGroup SlowOnHitVoid;
+
+            public static ItemQualityGroup ElementalRingVoid;
         }
 
         public static class EquipmentQualityGroups
