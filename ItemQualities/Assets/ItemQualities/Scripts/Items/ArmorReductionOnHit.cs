@@ -3,28 +3,23 @@ using MonoMod.Cil;
 using RoR2;
 using System;
 
-
 namespace ItemQualities
 {
     public class ArmorReductionOnHit
     {
-        // Start is called before the first frame update
         [SystemInitializer]
         static void Init()
         {
-
             IL.RoR2.HealthComponent.TakeDamageProcess += QualityArmorReductionOnHit;
-
         }
 
-        private static void QualityArmorReductionOnHit(ILContext il)
+        static void QualityArmorReductionOnHit(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.ArmorReductionOnHit)),
-                               x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.ClearTimedBuffs))
-                               ))
+                               x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.ClearTimedBuffs))))
             {
                 Log.Error("Failed to find patch location");
                 return;
@@ -39,35 +34,23 @@ namespace ItemQualities
 
         static void doExtraDamage(HealthComponent hc, DamageInfo di)
         {
-
-
             CharacterBody body = hc.body;
-            if (!body) {
-                Log.Debug("Body not found");
+            if (!body)
                 return;
-            }
             
             CharacterBody attacker = di?.attacker ? di.attacker.GetComponent<CharacterBody>() : null;
             if (attacker == null)
-            {
-                Log.Debug("Attacker not found");
                 return;
-            }
 
             Inventory attackerInventory = attacker.inventory;
             if (attackerInventory == null)
-            {
-                Log.Debug("Attacker Inventory not found");
                 return;
-            }
 
             ItemQualityCounts armorReductionOnHit = ItemQualitiesContent.ItemQualityGroups.ArmorReductionOnHit.GetItemCounts(attacker.inventory);
 
-            if (armorReductionOnHit.TotalQualityCount < 1) {
-                return; //no extra handling
-            }
+            if (armorReductionOnHit.TotalQualityCount < 1)
+                return;
             
-
             float damageMultiplyer = 1.0f + (0.20f * armorReductionOnHit.UncommonCount) +
                                             (0.40f * armorReductionOnHit.RareCount) +
                                             (0.60f * armorReductionOnHit.EpicCount) +
@@ -85,10 +68,6 @@ namespace ItemQualities
             };
 
             hc.TakeDamage(newDamage);
-
-            body.ClearTimedBuffs(RoR2Content.Buffs.PulverizeBuildup);//with proc this stacks again
-
         }
-
     }
 }
