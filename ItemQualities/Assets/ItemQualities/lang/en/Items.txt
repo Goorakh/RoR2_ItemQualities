@@ -1252,6 +1252,18 @@
 		"ITEM_BEARVOID_LEGENDARY_PICKUP": "Block the next source of damage. <sprite name=\"Quality\"> Reduce block cooldown. <style=cIsVoid>Corrupts all Tougher Times</style>.",
 		"ITEM_BEARVOID_LEGENDARY_DESC": "<style=cIsHealing>Blocks</style> incoming damage once. Recharges after <sprite name=\"Quality\"> <style=cIsUtility>10 seconds</style> <style=cStack>(-40% per stack)</style>. <style=cIsVoid>Corrupts all Tougher Times</style>.",
 
+		"ITEM_ARMORREDUCTIONONHIT_UNCOMMON_PICKUP": "Shread armor on hit. <sprite name=\"Quality\"> Add damage on armor shred.",
+		"ITEM_ARMORREDUCTIONONHIT_UNCOMMON_DESC": "After hitting an enemy <style=cIsUtility>5</style> time, reduce their <style=cIsUtility>armor</style> by <style=cIsUtility>60</style> for <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds <sprite name=\"Quality\"> Deals <style=cIsDamage>100%</style> <style=cStack> (+20%) </style> damage on armor shred.",
+
+		"ITEM_ARMORREDUCTIONONHIT_RARE_PICKUP": "Shread armor on hit. <sprite name=\"Quality\"> Add damage on armor shred.",
+		"ITEM_ARMORREDUCTIONONHIT_RARE_DESC": "After hitting an enemy <style=cIsUtility>5</style> time, reduce their <style=cIsUtility>armor</style> by <style=cIsUtility>60</style> for <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds <sprite name=\"Quality\"> Deals <style=cIsDamage>100%</style> <style=cStack> (+40%) </style> damage on armor shred.",
+
+		"ITEM_ARMORREDUCTIONONHIT_EPIC_PICKUP": "Shread armor on hit. <sprite name=\"Quality\"> Add damage on armor shred.",
+		"ITEM_ARMORREDUCTIONONHIT_EPIC_DESC": "After hitting an enemy <style=cIsUtility>5</style> time, reduce their <style=cIsUtility>armor</style> by <style=cIsUtility>60</style> for <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds <sprite name=\"Quality\"> Deals <style=cIsDamage>100%</style> <style=cStack> (+60%) </style> damage on armor shred.",
+
+		"ITEM_ARMORREDUCTIONONHIT_LEGENDARY_PICKUP": "Shread armor on hit. <sprite name=\"Quality\"> Add damage on armor shred.",
+		"ITEM_ARMORREDUCTIONONHIT_LEGENDARY_DESC": "After hitting an enemy <style=cIsUtility>5</style> time, reduce their <style=cIsUtility>armor</style> by <style=cIsUtility>60</style> for <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds <sprite name=\"Quality\"> Deals <style=cIsDamage>100%</style> <style=cStack> (+100%) </style> damage on armor shred.",
+
 		"ITEM_SLOWONHITVOID_UNCOMMON_PICKUP": "Chance to root enemies on hit. <sprite name=\"Quality\"> Root all nearby enemies after killing a rooted enemy. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
 		"ITEM_SLOWONHITVOID_UNCOMMON_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsDamage>root</style> enemies for <style=cIsUtility>1s</style> <style=cStack>(+1s per stack)</style>. Killing a rooted enemy <style=cIsDamage>roots</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>4m</style> <style=cStack>(+4m per stack)</style> for <style=cIsUtility>5</style> seconds. <style=cIsVoid>Corrupts all Chronobaubles</style>.",
 

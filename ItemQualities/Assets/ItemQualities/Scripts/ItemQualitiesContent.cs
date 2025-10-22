@@ -608,6 +608,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup BearVoid;
 
+            public static ItemQualityGroup ArmorReductionOnHit;
+            
             public static ItemQualityGroup SlowOnHitVoid;
 
             public static ItemQualityGroup ElementalRingVoid;
