@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: bdBossStun
   m_EditorClassIdentifier: 
   iconPath: 
-  iconSprite: {fileID: 21300000, guid: 85c1ec34b53c6de4dbc1aafb2c48bea7, type: 3}
-  buffColor: {r: 0.8301887, g: 0.7426132, b: 0.57564974, a: 1}
+  iconSprite: {fileID: 21300000, guid: 8ea0c793aa285e74f8241a3530ef503c, type: 3}
+  buffColor: {r: 1, g: 1, b: 1, a: 1}
   canStack: 1
   eliteDef: {fileID: 0}
   isDebuff: 1
