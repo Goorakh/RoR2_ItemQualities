@@ -19,8 +19,8 @@ MonoBehaviour:
   eliteDef: {fileID: 0}
   isDebuff: 0
   isDOT: 0
-  ignoreGrowthNectar: 1
+  ignoreGrowthNectar: 0
   isCooldown: 0
-  isHidden: 0
-  flags: -1
+  isHidden: 1
+  flags: 0
   startSfx: {fileID: 0}
