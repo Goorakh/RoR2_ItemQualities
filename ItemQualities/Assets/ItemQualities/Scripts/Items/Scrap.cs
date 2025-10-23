@@ -1,6 +1,4 @@
-﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
+﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -12,111 +10,37 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.EntityStates.Scrapper.ScrappingToIdle.OnEnter += ScrappingToIdle_OnEnter;
-            IL.RoR2.UI.ScrapperInfoPanelHelper.ShowInfo += ScrapperInfoPanelHelper_ShowInfo;
+            IL.RoR2.PickupPickerController.SetOptionsFromInteractor += PickupPickerController_SetOptionsFromInteractor;
         }
 
-        static void ScrappingToIdle_OnEnter(ILContext il)
+        static void PickupPickerController_SetOptionsFromInteractor(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
-            int patchCount = 0;
-
-            VariableDefinition scrappingItemDefVar = il.AddVariable<ItemDef>();
-
-            while (c.TryGotoNext(MoveType.Before,
-                                 x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.FindScrapIndexForItemTier))))
-            {
-                Instruction findScrapCallInstruction = c.Next;
-
-                if (c.TryGotoPrev(MoveType.After,
-                                  x => x.MatchCallOrCallvirt(typeof(ItemCatalog), nameof(ItemCatalog.GetItemDef))))
-                {
-                    c.MoveAfterLabels();
-                    c.EmitStoreStack(scrappingItemDefVar);
-
-                    c.Goto(findScrapCallInstruction, MoveType.After);
-                    c.MoveAfterLabels();
-
-                    c.Emit(OpCodes.Ldloc, scrappingItemDefVar);
-                    c.EmitDelegate<Func<PickupIndex, ItemDef, PickupIndex>>(tryGetQualityScrapPickupIndex);
-
-                    static PickupIndex tryGetQualityScrapPickupIndex(PickupIndex scrapPickupIndex, ItemDef scrappingItemDef)
-                    {
-                        ItemIndex scrappingItemIndex = scrappingItemDef ? scrappingItemDef.itemIndex : ItemIndex.None;
-                        if (scrappingItemIndex != ItemIndex.None)
-                        {
-                            PickupIndex qualityScrapPickupIndex = QualityCatalog.GetScrapIndexForPickup(PickupCatalog.FindPickupIndex(scrappingItemIndex));
-                            if (qualityScrapPickupIndex != PickupIndex.none)
-                            {
-                                scrapPickupIndex = qualityScrapPickupIndex;
-                            }
-                        }
-
-                        return scrapPickupIndex;
-                    }
-                }
-                else
-                {
-                    c.Goto(findScrapCallInstruction, MoveType.After);
-                }
-
-                patchCount++;
-            }
-
-            if (patchCount == 0)
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchLdfld<ItemDef>(nameof(ItemDef.canRemove))))
             {
                 Log.Error("Failed to find patch location");
-            }
-            else
-            {
-                Log.Debug($"Found {patchCount} patch location(s)");
-            }
-        }
-
-        static void ScrapperInfoPanelHelper_ShowInfo(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (!il.Method.TryFindParameter<PickupDef>(out ParameterDefinition pickupDefParameter))
-            {
-                Log.Error("Failed to find PickupDef parameter");
                 return;
             }
 
-            int patchCount = 0;
+            c.Emit(OpCodes.Dup);
+            c.Goto(c.Next, MoveType.After);
+            c.EmitDelegate<Func<ItemDef, bool, bool>>(getCanRemoveForScrapper);
 
-            while (c.TryGotoNext(MoveType.After,
-                                 x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.FindScrapIndexForItemTier))))
+            static bool getCanRemoveForScrapper(ItemDef itemDef, bool canRemove)
             {
-                c.Emit(OpCodes.Ldarg, pickupDefParameter);
-                c.EmitDelegate<Func<PickupIndex, PickupDef, PickupIndex>>(tryGetQualityScrapPickupIndex);
-
-                static PickupIndex tryGetQualityScrapPickupIndex(PickupIndex scrapPickupIndex, PickupDef scrappingPickupDef)
+                if (canRemove)
                 {
-                    PickupIndex scrappingPickupIndex = scrappingPickupDef != null ? scrappingPickupDef.pickupIndex : PickupIndex.none;
-                    if (scrappingPickupIndex != PickupIndex.none)
+                    ItemIndex itemIndex = itemDef ? itemDef.itemIndex : ItemIndex.None;
+                    QualityTier itemQualityTier = QualityCatalog.GetQualityTier(itemIndex);
+                    if (itemIndex != ItemIndex.None && itemQualityTier > QualityTier.None)
                     {
-                        PickupIndex qualityScrapPickupIndex = QualityCatalog.GetScrapIndexForPickup(scrappingPickupIndex);
-                        if (qualityScrapPickupIndex != PickupIndex.none)
-                        {
-                            scrapPickupIndex = qualityScrapPickupIndex;
-                        }
+                        canRemove = false;
                     }
-
-                    return scrapPickupIndex;
                 }
 
-                patchCount++;
-            }
-
-            if (patchCount == 0)
-            {
-                Log.Error("Failed to find patch location");
-            }
-            else
-            {
-                Log.Debug($"Found {patchCount} patch location(s)");
+                return canRemove;
             }
         }
     }
