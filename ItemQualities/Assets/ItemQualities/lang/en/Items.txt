@@ -350,16 +350,16 @@
 		"ITEM_BLEEDONHIT_LEGENDARY_DESC": "<style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <sprite name=\"Quality\"> <style=cIsDamage>240%</style> base damage.\nIncreases <style=cIsDamage>bleed damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style>.",
 
 		"ITEM_CLOVER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Luck is on your side.",
-		"ITEM_CLOVER_UNCOMMON_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
+		"ITEM_CLOVER_UNCOMMON_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
 
 		"ITEM_CLOVER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Luck is on your side.",
-		"ITEM_CLOVER_RARE_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
+		"ITEM_CLOVER_RARE_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>+2</style> <style=cStack>(+2 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
 
 		"ITEM_CLOVER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Luck is on your side.",
-		"ITEM_CLOVER_EPIC_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
+		"ITEM_CLOVER_EPIC_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>+3</style> <style=cStack>(+3 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
 
 		"ITEM_CLOVER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Luck is on your side.",
-		"ITEM_CLOVER_LEGENDARY_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>10</style> <style=cStack>(+10 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
+		"ITEM_CLOVER_LEGENDARY_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>+5</style> <style=cStack>(+5 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
 
 		"ITEM_WARDONLEVEL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary banner.",
 		"ITEM_WARDONLEVEL_UNCOMMON_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> banner for <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds.",

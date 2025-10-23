@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using UnityEngine;
 
 namespace ItemQualities
 {
@@ -57,6 +58,27 @@ namespace ItemQualities
             IL.RoR2.MasterDropDroplet.DropItems += MasterDropDroplet_DropItems;
         }
 
+        public static PickupRollInfo GetCurrentPickupRollInfo(CharacterMaster rollOwnerMaster = null)
+        {
+            if (!rollOwnerMaster)
+            {
+                rollOwnerMaster = _currentDropGenerationOwnerMaster;
+            }
+
+            TeamIndex teamAffiliation = _currentDropGenerationTeamAffiliation;
+            if (teamAffiliation == TeamIndex.None)
+            {
+                teamAffiliation = TeamIndex.Player;
+            }
+
+            if (rollOwnerMaster)
+            {
+                teamAffiliation = rollOwnerMaster.teamIndex;
+            }
+
+            return new PickupRollInfo(rollOwnerMaster, teamAffiliation);
+        }
+
         static bool pickupCheckNotAIBlacklist(PickupIndex pickupIndex)
         {
             PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
@@ -72,96 +94,37 @@ namespace ItemQualities
 
         static PickupIndex tryUpgradeQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, CharacterMaster master = null, Func<PickupIndex, bool> isPickupAllowedFunc = null)
         {
+            rng = new Xoroshiro128Plus(rng.nextUlong);
+
             if (!_allowQualityGeneration || pickupIndex == PickupIndex.none)
                 return pickupIndex;
 
-            if (!master)
-            {
-                master = _currentDropGenerationOwnerMaster;
-            }
+            PickupRollInfo rollInfo = GetCurrentPickupRollInfo(master);
 
-            TeamIndex teamAffiliation = _currentDropGenerationTeamAffiliation;
-            if (teamAffiliation == TeamIndex.None)
-            {
-                teamAffiliation = TeamIndex.Player;
-            }
-
-            if (master)
-            {
-                teamAffiliation = master.teamIndex;
-            }
-
-            bool isPlayer = teamAffiliation == TeamIndex.Player || (master && master.playerCharacterMasterController);
-
-            ItemQualityCounts clover = default;
-            if (master)
-            {
-                clover = ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCounts(master.inventory);
-            }
-            else
-            {
-                ItemQualityCounts teamInventoryCloverCounts = default;
-
-                foreach (EnemyInfoPanelInventoryProvider enemyInventoryProvider in InstanceTracker.GetInstancesList<EnemyInfoPanelInventoryProvider>())
-                {
-                    if (enemyInventoryProvider.teamFilter && enemyInventoryProvider.teamFilter.teamIndex == teamAffiliation)
-                    {
-                        teamInventoryCloverCounts += ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCounts(enemyInventoryProvider.inventory);
-                    }
-                }
-
-                clover += teamInventoryCloverCounts;
-
-                foreach (CharacterMaster teammateMaster in CharacterMaster.readOnlyInstancesList)
-                {
-                    if (teammateMaster.teamIndex != teamAffiliation)
-                        continue;
-
-                    if (isPlayer)
-                    {
-                        PlayerCharacterMasterController playerMaster = teammateMaster.playerCharacterMasterController;
-                        if (!playerMaster || !playerMaster.isConnected)
-                            continue;
-                    }
-                    else
-                    {
-                        if (!teammateMaster.hasBody)
-                            continue;
-                    }
-
-                    clover += ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCounts(teammateMaster.inventory) - teamInventoryCloverCounts;
-                }
-            }
-
-            if (!isPlayer)
+            if (!rollInfo.IsPlayerAffiliation)
             {
                 isPickupAllowedFunc ??= pickupCheckNotAIBlacklist;
             }
 
-            int qualityLuck = (2 * clover.UncommonCount) +
-                              (3 * clover.RareCount) +
-                              (5 * clover.EpicCount) +
-                              (10 * clover.LegendaryCount);
-
             if (Configs.Debug.LogItemQualities)
             {
-                Log.Debug($"Rolling quality for pickup {pickupIndex}, luck={qualityLuck}, master={master}, teamAffiliation={teamAffiliation}");
+                Log.Debug($"Rolling quality for pickup {pickupIndex}, luck={rollInfo.Luck}, master={master}, teamAffiliation={rollInfo.TeamAffiliation}");
             }
 
             PickupIndex qualityPickupIndex = pickupIndex;
             QualityTier currentPickupQualityTier = QualityCatalog.GetQualityTier(qualityPickupIndex);
 
-            for (int i = 0; i < 1 + qualityLuck; i++)
+            if (rng.nextNormalizedFloat <= 1f - Mathf.Pow(1f - 0.04f, 1 + rollInfo.Luck))
             {
-                if (rng.nextNormalizedFloat > 0.04f)
-                    continue;
-
-                QualityTier qualityTier = rollQuality(rng);
-                PickupIndex qualityPickupIndexCandidate = QualityCatalog.GetPickupIndexOfQuality(qualityPickupIndex, qualityTier);
-                if (qualityTier > currentPickupQualityTier && (isPickupAllowedFunc == null || isPickupAllowedFunc(qualityPickupIndexCandidate)))
+                for (int i = rollInfo.Luck; i >= 0; i--)
                 {
-                    qualityPickupIndex = qualityPickupIndexCandidate;
-                    currentPickupQualityTier = qualityTier;
+                    QualityTier qualityTier = rollQuality(rng);
+                    PickupIndex qualityPickupIndexCandidate = QualityCatalog.GetPickupIndexOfQuality(qualityPickupIndex, qualityTier);
+                    if (qualityTier > currentPickupQualityTier && (isPickupAllowedFunc == null || isPickupAllowedFunc(qualityPickupIndexCandidate)))
+                    {
+                        qualityPickupIndex = qualityPickupIndexCandidate;
+                        currentPickupQualityTier = qualityTier;
+                    }
                 }
             }
 
@@ -267,9 +230,9 @@ namespace ItemQualities
             ItemTag[] requiredItemTags = Array.Empty<ItemTag>();
             ItemTag[] bannedItemTags = Array.Empty<ItemTag>();
 
-            foreach (FieldInfo field in pickupDropTable.GetType().GetFields())
+            foreach (FieldInfo field in pickupDropTable.GetType().GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance))
             {
-                if (!field.IsStatic && field.FieldType == typeof(ItemTag[]))
+                if (field.IsSerialized() && field.FieldType == typeof(ItemTag[]))
                 {
                     if (field.Name.Contains("required", StringComparison.OrdinalIgnoreCase))
                     {
@@ -319,7 +282,10 @@ namespace ItemQualities
         {
             PickupIndex dropPickupIndex = orig(self, rng);
 
-            dropPickupIndex = tryUpgradeQuality(dropPickupIndex, rng, null, getDropTableFilterFunc(self));
+            if (self is not QualityPickupDropTable)
+            {
+                dropPickupIndex = tryUpgradeQuality(dropPickupIndex, rng, null, getDropTableFilterFunc(self));
+            }
 
             return dropPickupIndex;
         }
@@ -328,11 +294,14 @@ namespace ItemQualities
         {
             PickupIndex[] dropPickupIncides = orig(self, maxDrops, rng);
 
-            Func<PickupIndex, bool> isPickupAllowedFunc = getDropTableFilterFunc(self);
-
-            for (int i = 0; i < dropPickupIncides.Length; i++)
+            if (self is not QualityPickupDropTable)
             {
-                dropPickupIncides[i] = tryUpgradeQuality(dropPickupIncides[i], rng, null, isPickupAllowedFunc);
+                Func<PickupIndex, bool> isPickupAllowedFunc = getDropTableFilterFunc(self);
+
+                for (int i = 0; i < dropPickupIncides.Length; i++)
+                {
+                    dropPickupIncides[i] = tryUpgradeQuality(dropPickupIncides[i], rng, null, isPickupAllowedFunc);
+                }
             }
 
             return dropPickupIncides;

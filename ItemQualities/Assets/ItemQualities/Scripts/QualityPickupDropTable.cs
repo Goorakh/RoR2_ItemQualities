@@ -50,7 +50,9 @@ namespace ItemQualities
 
         public float LegendaryQualityWeight = 0.02f;
 
-        readonly WeightedSelection<PickupIndex> _selector = new WeightedSelection<PickupIndex>(8);
+        readonly WeightedSelection<PickupIndex> _selector = new WeightedSelection<PickupIndex>();
+
+        readonly WeightedSelection<QualityTier> _qualityTierSelection = new WeightedSelection<QualityTier>();
 
         public override void Regenerate(Run run)
         {
@@ -96,7 +98,28 @@ namespace ItemQualities
 
         void generateWeightedSelection(Run run)
         {
-            void add(List<PickupIndex> sourceDropList, float weight)
+            _selector.Clear();
+            addPickups(run.availableTier1DropList, Tier1Weight);
+            addPickups(run.availableTier2DropList, Tier2Weight);
+            addPickups(run.availableTier3DropList, Tier3Weight);
+            addPickups(run.availableBossDropList, BossWeight);
+            addPickups(run.availableLunarItemDropList, LunarItemWeight);
+            addPickups(run.availableLunarEquipmentDropList, LunarEquipmentWeight);
+            addPickups(run.availableLunarCombinedDropList, LunarCombinedWeight);
+            addPickups(run.availableEquipmentDropList, EquipmentWeight);
+            addPickups(run.availableVoidTier1DropList, VoidTier1Weight);
+            addPickups(run.availableVoidTier2DropList, VoidTier2Weight);
+            addPickups(run.availableVoidTier3DropList, VoidTier3Weight);
+            addPickups(run.availableVoidBossDropList, VoidBossWeight);
+
+            _qualityTierSelection.Clear();
+            addQuality(QualityTier.None, BaseQualityWeight);
+            addQuality(QualityTier.Uncommon, UncommonQualityWeight);
+            addQuality(QualityTier.Rare, RareQualityWeight);
+            addQuality(QualityTier.Epic, EpicQualityWeight);
+            addQuality(QualityTier.Legendary, LegendaryQualityWeight);
+
+            void addPickups(List<PickupIndex> sourceDropList, float weight)
             {
                 if (weight <= 0f || sourceDropList.Count == 0)
                     return;
@@ -126,24 +149,48 @@ namespace ItemQualities
                 }
             }
 
-            _selector.Clear();
-            add(run.availableTier1DropList, Tier1Weight);
-            add(run.availableTier2DropList, Tier2Weight);
-            add(run.availableTier3DropList, Tier3Weight);
-            add(run.availableBossDropList, BossWeight);
-            add(run.availableLunarItemDropList, LunarItemWeight);
-            add(run.availableLunarEquipmentDropList, LunarEquipmentWeight);
-            add(run.availableLunarCombinedDropList, LunarCombinedWeight);
-            add(run.availableEquipmentDropList, EquipmentWeight);
-            add(run.availableVoidTier1DropList, VoidTier1Weight);
-            add(run.availableVoidTier2DropList, VoidTier2Weight);
-            add(run.availableVoidTier3DropList, VoidTier3Weight);
-            add(run.availableVoidBossDropList, VoidBossWeight);
+            void addQuality(QualityTier qualityTier, float weight)
+            {
+                if (weight <= 0f)
+                    return;
+
+                _qualityTierSelection.AddChoice(qualityTier, weight);
+            }
+        }
+
+        QualityTier rollQuality(Xoroshiro128Plus rng)
+        {
+            return _qualityTierSelection.Evaluate(rng.nextNormalizedFloat);
+        }
+
+        PickupIndex tryRerollQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, int qualityLuck)
+        {
+            QualityTier currentPickupQualityTier = QualityCatalog.GetQualityTier(pickupIndex);
+
+            for (int i = 0; i < qualityLuck; i++)
+            {
+                QualityTier qualityTier = rollQuality(rng);
+                PickupIndex qualityPickupIndexCandidate = QualityCatalog.GetPickupIndexOfQuality(pickupIndex, qualityTier);
+                if (qualityTier > currentPickupQualityTier && (!IsFilterRequired() || PassesFilter(qualityPickupIndexCandidate)))
+                {
+                    pickupIndex = qualityPickupIndexCandidate;
+                    currentPickupQualityTier = qualityTier;
+                }
+            }
+
+            return pickupIndex;
         }
 
         public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
         {
-            return GenerateDropFromWeightedSelection(rng, _selector);
+            rng = new Xoroshiro128Plus(rng.nextUlong);
+
+            PickupIndex pickupIndex = GenerateDropFromWeightedSelection(rng, _selector);
+
+            PickupRollInfo rollInfo = DropTableQualityHandler.GetCurrentPickupRollInfo();
+            pickupIndex = tryRerollQuality(pickupIndex, rng, rollInfo.Luck);
+
+            return pickupIndex;
         }
 
         public override int GetPickupCount()
@@ -153,7 +200,17 @@ namespace ItemQualities
 
         public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
         {
-            return GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, _selector);
+            rng = new Xoroshiro128Plus(rng.nextUlong);
+
+            PickupIndex[] pickupIndices = GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, _selector);
+
+            PickupRollInfo rollInfo = DropTableQualityHandler.GetCurrentPickupRollInfo();
+            for (int i = 0; i < pickupIndices.Length; i++)
+            {
+                pickupIndices[i] = tryRerollQuality(pickupIndices[i], rng, rollInfo.Luck);
+            }
+
+            return pickupIndices;
         }
     }
 }
