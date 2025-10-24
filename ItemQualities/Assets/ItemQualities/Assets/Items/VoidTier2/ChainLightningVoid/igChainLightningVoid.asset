@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igChainLightningVoid
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: ea1f843489575614da206621448f9a1c
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 98140208d8b0386488a9a9aacd16bb91, type: 2}
+  _rareItem: {fileID: 11400000, guid: 6093a281c8b162549b13654a9e87f31e, type: 2}
+  _epicItem: {fileID: 11400000, guid: c0e3ae6217179dd469289a045baa0e9f, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: c5d6322067d55334b89a3e69c99d8cb8, type: 2}
