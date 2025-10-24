@@ -613,6 +613,8 @@ namespace ItemQualities
             public static ItemQualityGroup SlowOnHitVoid;
 
             public static ItemQualityGroup ElementalRingVoid;
+
+            public static ItemQualityGroup ChainLightningVoid;
         }
 
         public static class EquipmentQualityGroups
