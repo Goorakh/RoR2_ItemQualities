@@ -302,7 +302,8 @@ namespace ItemQualities
                 setItemBehavior<KillEliteFrenzyQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<ArmorPlateQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<BoostAllStatsQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-            }
+				setItemBehavior<IgniteOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+			}
         }
 
         void updateOverlays()

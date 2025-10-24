@@ -597,7 +597,9 @@ namespace ItemQualities
             public static ItemQualityGroup CloverVoid;
 
             public static ItemQualityGroup EquipmentMagazineVoid;
-        }
+
+            public static ItemQualityGroup IgniteOnKill;
+		}
 
         public static class EquipmentQualityGroups
         {
