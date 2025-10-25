@@ -16,16 +16,17 @@ namespace ItemQualities.Items
 {
 	public class IgniteOnKillQualityItemBehavior : MonoBehaviour
     {
-		static GameObject icicleAuraPrefab;
-		IcicleAuraController icicleAura;
-		CharacterBody body;
+		static GameObject _icicleAuraPrefab;
+		private static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
+		private static readonly List<HurtBox> _fireAuraHurtBoxBuffer = new List<HurtBox>();
 
-		private static readonly SphereSearch igniteOnKillSphereSearch = new SphereSearch();
-		private static readonly List<HurtBox> fireAuraHurtBoxBuffer = new List<HurtBox>();
+		IcicleAuraController _icicleAura;
+		CharacterBody _body;
+		GameObject _fireAuraObj;
 
 		void Awake()
 		{
-			body = GetComponent<CharacterBody>();
+			_body = GetComponent<CharacterBody>();
 		}
 
 		[ContentInitializer]
@@ -44,15 +45,15 @@ namespace ItemQualities.Items
 				yield break;
 			}
 
-			icicleAuraPrefab = icicleAuraLoad.Result.InstantiateClone("FireAura");
+			_icicleAuraPrefab = icicleAuraLoad.Result.InstantiateClone("FireAura");
 
-			IcicleAuraController icicleAura = icicleAuraPrefab.GetComponent<IcicleAuraController>();
+			IcicleAuraController icicleAura = _icicleAuraPrefab.GetComponent<IcicleAuraController>();
 			icicleAura.icicleMaxPerStack = 0;
 			icicleAura.icicleBaseRadius = 1f;
 			icicleAura.icicleRadiusPerIcicle = 2.5f;
-			icicleAura.buffWard.buffDef = null;
+			icicleAura.buffWard = null;
 
-			Transform particles = icicleAuraPrefab.transform.Find("Particles");
+			Transform particles = _icicleAuraPrefab.transform.Find("Particles");
 			if(particles == null) {
 				Log.Error($"Failed to find Particles in icicle Aura prefab");
 				yield break;
@@ -80,72 +81,105 @@ namespace ItemQualities.Items
 		void OnEnable()
 		{
 			GlobalEventManager.onCharacterDeathGlobal += OnCharacterDeathGlobal;
-			GameObject gameObject = Object.Instantiate(icicleAuraPrefab, base.transform.position, Quaternion.identity);
-			gameObject.transform.parent = base.transform;
-			icicleAura = gameObject.GetComponent<IcicleAuraController>();
-			icicleAura.Networkowner = base.gameObject;
-			NetworkServer.Spawn(gameObject);
+			_fireAuraObj = Object.Instantiate(_icicleAuraPrefab, base.transform.position, Quaternion.identity);
+			_icicleAura = _fireAuraObj.GetComponent<IcicleAuraController>();
+			_icicleAura.Networkowner = base.gameObject;
+			NetworkServer.Spawn(_fireAuraObj);
+			_body.onInventoryChanged += OnInventoryChanged;
+			OnInventoryChanged();
 		}
 
 		void OnDisable()
 		{
 			GlobalEventManager.onCharacterDeathGlobal -= OnCharacterDeathGlobal;
-			if (icicleAura)
+			if (_icicleAura)
 			{
-				Object.Destroy(icicleAura);
-				icicleAura = null;
+				Object.Destroy(_icicleAura);
+				_icicleAura = null;
 			}
+			_body.onInventoryChanged -= OnInventoryChanged;
 		}
 
 		void OnCharacterDeathGlobal(DamageReport damageReport)
 		{
-			if (damageReport != null && damageReport.attackerBody == body && icicleAura && 
+			if (damageReport != null && damageReport.attackerBody == _body && _icicleAura && 
 				damageReport.victimBody.GetBuffCount(RoR2Content.Buffs.OnFire) > 1)
 			{
-				icicleAura.OnOwnerKillOther();
+				_icicleAura.OnOwnerKillOther();
 			}
 		}
 
 		void FixedUpdate()
 		{
 			if (!NetworkServer.active) return;
-			if (!icicleAura) return;
-			if (!body.master) return;
-			if (icicleAura.finalIcicleCount <= 0) return;
-			if (icicleAura.attackStopwatch >= icicleAura.baseIcicleAttackInterval ||
-				icicleAura.attackStopwatch == 0)
+			if (!_icicleAura) return;
+			if (!_body.master) return;
+			if (_icicleAura.finalIcicleCount <= 0) return;
+			if (_icicleAura.attackStopwatch >= _icicleAura.baseIcicleAttackInterval ||
+				_icicleAura.attackStopwatch == 0)
 			{
-				igniteOnKillSphereSearch.origin = body.corePosition;
-				igniteOnKillSphereSearch.mask = LayerIndex.entityPrecise.mask;
-				igniteOnKillSphereSearch.radius = icicleAura.actualRadius;
-				igniteOnKillSphereSearch.RefreshCandidates();
-				igniteOnKillSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(body.master.teamIndex));
-				igniteOnKillSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
-				igniteOnKillSphereSearch.OrderCandidatesByDistance();
-				igniteOnKillSphereSearch.GetHurtBoxes(fireAuraHurtBoxBuffer);
-				igniteOnKillSphereSearch.ClearCandidates();
-				for (int i = 0; i < fireAuraHurtBoxBuffer.Count; i++)
+				_igniteOnKillSphereSearch.origin = _body.corePosition;
+				_igniteOnKillSphereSearch.mask = LayerIndex.entityPrecise.mask;
+				_igniteOnKillSphereSearch.radius = _icicleAura.actualRadius;
+				_igniteOnKillSphereSearch.RefreshCandidates();
+				_igniteOnKillSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(_body.master.teamIndex));
+				_igniteOnKillSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
+				_igniteOnKillSphereSearch.GetHurtBoxes(_fireAuraHurtBoxBuffer);
+				_igniteOnKillSphereSearch.ClearCandidates();
+				for (int i = 0; i < _fireAuraHurtBoxBuffer.Count; i++)
 				{
-					HurtBox hurtBox = fireAuraHurtBoxBuffer[i];
-					if ((bool)hurtBox.healthComponent)
+					HurtBox hurtBox = _fireAuraHurtBoxBuffer[i];
+					if (hurtBox.healthComponent && hurtBox.healthComponent.body != _body)
 					{
 						InflictDotInfo dotInfo = new InflictDotInfo
 						{
 							victimObject = hurtBox.healthComponent.gameObject,
 							attackerObject = gameObject,
-							totalDamage = body.damage * 1f,
+							totalDamage = _body.damage * 1f,
 							dotIndex = DotController.DotIndex.Burn,
 							damageMultiplier = 1f
 						};
 
-						if (body.master.inventory)
+						if (_body.master.inventory)
 						{
-							StrengthenBurnUtils.CheckDotForUpgrade(body.master.inventory, ref dotInfo);
+							StrengthenBurnUtils.CheckDotForUpgrade(_body.master.inventory, ref dotInfo);
 						}
 						DotController.InflictDot(ref dotInfo);
 					}
 				}
-				fireAuraHurtBoxBuffer.Clear();
+				_fireAuraHurtBoxBuffer.Clear();
+			}
+		}
+
+		void OnInventoryChanged()
+		{
+			if (!_body) return;
+			if (!_icicleAura) return;
+
+			ItemQualityCounts IgniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCounts(_body.master.inventory);
+			_icicleAura.icicleDamageCoefficientPerTick = IgniteOnKill.UncommonCount * 1 +
+														IgniteOnKill.RareCount * 2 +
+														IgniteOnKill.EpicCount * 3 +
+														IgniteOnKill.LegendaryCount * 5;
+
+			switch (ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetHighestQualityInInventory(_body.master.inventory))
+			{
+				case QualityTier.Uncommon:
+					_icicleAura.baseIcicleMax = 4;
+					_icicleAura.icicleDuration = 3;
+					break;
+				case QualityTier.Rare:
+					_icicleAura.baseIcicleMax = 8;
+					_icicleAura.icicleDuration = 5;
+					break;
+				case QualityTier.Epic:
+					_icicleAura.baseIcicleMax = 12;
+					_icicleAura.icicleDuration = 7;
+					break;
+				case QualityTier.Legendary:
+					_icicleAura.baseIcicleMax = 20;
+					_icicleAura.icicleDuration = 10;
+					break;
 			}
 		}
 	}
