@@ -15,8 +15,8 @@ MonoBehaviour:
   deprecatedTier: 1
   _itemTierDef: {fileID: 0}
   nameToken: 
-  pickupToken: 
-  descriptionToken: 
+  pickupToken: ITEM_REGENERATINGSCRAP_RARE_PICKUP
+  descriptionToken: ITEM_REGENERATINGSCRAP_RARE_DESC
   loreToken: 
   unlockableDef: {fileID: 0}
   pickupModelPrefab: {fileID: 0}

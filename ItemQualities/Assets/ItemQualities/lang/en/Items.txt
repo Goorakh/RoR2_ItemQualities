@@ -628,6 +628,18 @@
 		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
 		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
 
+		"ITEM_REGENERATINGSCRAP_UNCOMMON_PICKUP": "Prioritized when <sprite name=\"Quality\"> used with <style=cIsHealing>Uncommon</style> 3D Printers. Usable once per stage.",
+		"ITEM_REGENERATINGSCRAP_UNCOMMON_DESC": "Does nothing. Prioritized when used with <style=cIsHealing>Uncommon</style> 3D Printers. Turns any printed items into <sprite name=\"QualityUncommon\"> uncommon quality. At the start of each stage, it regenerates.",
+
+		"ITEM_REGENERATINGSCRAP_RARE_PICKUP": "Prioritized when <sprite name=\"Quality\"> used with <style=cIsHealing>Uncommon</style> 3D Printers. Usable once per stage.",
+		"ITEM_REGENERATINGSCRAP_RARE_DESC": "Does nothing. Prioritized when used with <style=cIsHealing>Uncommon</style> 3D Printers. Turns any printed items into <sprite name=\"QualityRare\"> rare quality. At the start of each stage, it regenerates.",
+
+		"ITEM_REGENERATINGSCRAP_EPIC_PICKUP": "Prioritized when <sprite name=\"Quality\"> used with <style=cIsHealing>Uncommon</style> 3D Printers. Usable once per stage.",
+		"ITEM_REGENERATINGSCRAP_EPIC_DESC": "Does nothing. Prioritized when used with <style=cIsHealing>Uncommon</style> 3D Printers. Turns any printed items into <sprite name=\"QualityEpic\"> epic quality. At the start of each stage, it regenerates.",
+
+		"ITEM_REGENERATINGSCRAP_LEGENDARY_PICKUP": "Prioritized when <sprite name=\"Quality\"> used with <style=cIsHealing>Uncommon</style> 3D Printers. Usable once per stage.",
+		"ITEM_REGENERATINGSCRAP_LEGENDARY_DESC": "Does nothing. Prioritized when used with <style=cIsHealing>Uncommon</style> 3D Printers. Turns any printed items into <sprite name=\"QualityLegendary\"> legendary quality. At the start of each stage, it regenerates.",
+
 		"ITEM_REGENERATINGSCRAPCONSUMED_UNCOMMON_PICKUP": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityUncommon\">.",
 		"ITEM_REGENERATINGSCRAPCONSUMED_UNCOMMON_DESC": "At the start of each stage, it transforms into Regenerating Scrap <sprite name=\"QualityUncommon\">.",
 
