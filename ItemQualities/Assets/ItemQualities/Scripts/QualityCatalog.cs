@@ -532,6 +532,16 @@ namespace ItemQualities
             return GetPickupIndexOfQuality(scrapPickupIndex, GetQualityTier(scrappingPickupIndex));
         }
 
+        public static QualityTier Max(QualityTier a, QualityTier b)
+        {
+            return a > b ? a : b;
+        }
+
+        public static QualityTier Min(QualityTier a, QualityTier b)
+        {
+            return a < b ? a : b;
+        }
+
 #if UNITY_EDITOR
         public static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTier qualityTier, bool useConsumedIcon = false)
         {

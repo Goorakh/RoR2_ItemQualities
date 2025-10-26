@@ -1311,5 +1311,17 @@
 
 		"ITEM_CRITGLASSESVOID_LEGENDARY_PICKUP": "Gain a 0.5% chance to instantly kill <sprite name=\"Quality\"> all nearby non-boss enemies. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
 		"ITEM_CRITGLASSESVOID_LEGENDARY_DESC": "Your attacks have a <style=cIsDamage>0.5%</style> <style=cStack>(+0.5% per stack)</style> chance to <style=cIsDamage>instantly kill</style> all <style=cIsDamage>non-Boss enemies</style> within <sprite name=\"Quality\"> <style=cIsUtility>50m</style> <style=cStack>(+50m per stack)</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
+
+		"ITEM_EXTRALIFEVOID_UNCOMMON_PICKUP": "Get a <sprite name=\"Quality\"> <style=cIsVoid>corrupted</style> extra life. Consumed on use. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
+		"ITEM_EXTRALIFEVOID_UNCOMMON_DESC": "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style> and you will <style=cIsHealing>return to life</style> with <style=cIsHealing>3 seconds of invulnerability</style>, and all of your items that can be <style=cIsUtility>corrupted</style> will be, into at least uncommon <sprite name=\"QualityUncommon\"> quality. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
+
+		"ITEM_EXTRALIFEVOID_RARE_PICKUP": "Get a <sprite name=\"Quality\"> <style=cIsVoid>corrupted</style> extra life. Consumed on use. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
+		"ITEM_EXTRALIFEVOID_RARE_DESC": "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style> and you will <style=cIsHealing>return to life</style> with <style=cIsHealing>3 seconds of invulnerability</style>, and all of your items that can be <style=cIsUtility>corrupted</style> will be, into at least rare <sprite name=\"QualityRare\"> quality. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
+
+		"ITEM_EXTRALIFEVOID_EPIC_PICKUP": "Get a <sprite name=\"Quality\"> <style=cIsVoid>corrupted</style> extra life. Consumed on use. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
+		"ITEM_EXTRALIFEVOID_EPIC_DESC": "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style> and you will <style=cIsHealing>return to life</style> with <style=cIsHealing>3 seconds of invulnerability</style>, and all of your items that can be <style=cIsUtility>corrupted</style> will be, into at least epic <sprite name=\"QualityEpic\"> quality. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
+
+		"ITEM_EXTRALIFEVOID_LEGENDARY_PICKUP": "Get a <sprite name=\"Quality\"> <style=cIsVoid>corrupted</style> extra life. Consumed on use. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
+		"ITEM_EXTRALIFEVOID_LEGENDARY_DESC": "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style> and you will <style=cIsHealing>return to life</style> with <style=cIsHealing>3 seconds of invulnerability</style>, and all of your items that can be <style=cIsUtility>corrupted</style> will be, into legendary <sprite name=\"QualityLegendary\"> quality. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
 	}
 }
