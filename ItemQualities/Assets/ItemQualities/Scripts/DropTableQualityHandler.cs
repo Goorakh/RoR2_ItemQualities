@@ -114,7 +114,7 @@ namespace ItemQualities
             PickupIndex qualityPickupIndex = pickupIndex;
             QualityTier currentPickupQualityTier = QualityCatalog.GetQualityTier(qualityPickupIndex);
 
-            if (rng.nextNormalizedFloat <= 1f - Mathf.Pow(1f - 0.04f, 1 + rollInfo.Luck))
+            if (rng.nextNormalizedFloat <= 1f - Mathf.Pow(1f - (Configs.General.GlobalQualityChance.Value / 100f), 1 + rollInfo.Luck))
             {
                 for (int i = rollInfo.Luck; i >= 0; i--)
                 {

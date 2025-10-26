@@ -39,6 +39,8 @@ namespace ItemQualities
 
         internal static void Init(ConfigFile configFile)
         {
+            General.Init(configFile);
+
 #if DEBUG
             Debug.Init(configFile);
 #endif
@@ -47,8 +49,6 @@ namespace ItemQualities
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void InitRiskOfOptions()
         {
-            // Move this out of the debug block when non debug sections are added
-#if DEBUG
             ModSettingsManager.SetModDescription("Settings for ItemQualities", ModGuid, ModName);
 
             Sprite iconSprite = ModIconSprite;
@@ -57,6 +57,9 @@ namespace ItemQualities
                 ModSettingsManager.SetModIcon(iconSprite, ModGuid, ModName);
             }
 
+            General.InitRiskOfOptions();
+
+#if DEBUG
             Debug.InitRiskOfOptions();
 #endif
         }
