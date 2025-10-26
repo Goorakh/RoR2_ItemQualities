@@ -1323,5 +1323,17 @@
 
 		"ITEM_EXTRALIFEVOID_LEGENDARY_PICKUP": "Get a <sprite name=\"Quality\"> <style=cIsVoid>corrupted</style> extra life. Consumed on use. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
 		"ITEM_EXTRALIFEVOID_LEGENDARY_DESC": "<style=cIsUtility>Upon death</style>, this item will be <style=cIsUtility>consumed</style> and you will <style=cIsHealing>return to life</style> with <style=cIsHealing>3 seconds of invulnerability</style>, and all of your items that can be <style=cIsUtility>corrupted</style> will be, into legendary <sprite name=\"QualityLegendary\"> quality. <style=cIsVoid>Corrupts all Dio's Best Friends</style>.",
+
+		"ITEM_TREASURECACHEVOID_UNCOMMON_PICKUP": "Gain access to an Encrusted Cache that contains an <sprite name=\"QualityUncommon\"> uncommon quality void item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
+		"ITEM_TREASURECACHEVOID_UNCOMMON_DESC": "A <style=cIsUtility>hidden cache</style> containing an item (60%/<style=cIsHealing>30%</style>/<style=cIsHealth>10%</style>) will appear in a random location <style=cIsUtility>on each stage</style>, <style=cIsUtility>at least one</style> item will be of <sprite name=\"QualityUncommon\"> uncommon quality. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
+
+		"ITEM_TREASURECACHEVOID_RARE_PICKUP": "Gain access to an Encrusted Cache that contains a <sprite name=\"QualityRare\"> rare quality void item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
+		"ITEM_TREASURECACHEVOID_RARE_DESC": "A <style=cIsUtility>hidden cache</style> containing an item (60%/<style=cIsHealing>30%</style>/<style=cIsHealth>10%</style>) will appear in a random location <style=cIsUtility>on each stage</style>, <style=cIsUtility>at least one</style> item will be of <sprite name=\"QualityRare\"> rare quality. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
+
+		"ITEM_TREASURECACHEVOID_EPIC_PICKUP": "Gain access to an Encrusted Cache that contains an <sprite name=\"QualityEpic\"> epic quality void item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
+		"ITEM_TREASURECACHEVOID_EPIC_DESC": "A <style=cIsUtility>hidden cache</style> containing an item (60%/<style=cIsHealing>30%</style>/<style=cIsHealth>10%</style>) will appear in a random location <style=cIsUtility>on each stage</style>, <style=cIsUtility>at least one</style> item will be of <sprite name=\"QualityEpic\"> epic quality. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
+
+		"ITEM_TREASURECACHEVOID_LEGENDARY_PICKUP": "Gain access to an Encrusted Cache that contains a <sprite name=\"QualityLegendary\"> legendary quality void item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
+		"ITEM_TREASURECACHEVOID_LEGENDARY_DESC": "A <style=cIsUtility>hidden cache</style> containing an item (60%/<style=cIsHealing>30%</style>/<style=cIsHealth>10%</style>) will appear in a random location <style=cIsUtility>on each stage</style>, <style=cIsUtility>at least one</style> item will be of <sprite name=\"QualityLegendary\"> legendary quality. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
 	}
 }
