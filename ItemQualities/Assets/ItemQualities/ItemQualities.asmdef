@@ -33,6 +33,7 @@
         "R2API.Colors.dll",
         "R2API.Prefab.dll",
         "R2API.DamageType.dll",
+        "R2API.ProcType.dll",
         "R2API.Deployable.dll",
         "MMHOOK_RoR2.dll",
         "Newtonsoft.Json.dll",

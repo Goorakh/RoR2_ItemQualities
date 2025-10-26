@@ -1299,5 +1299,17 @@
 
 		"ITEM_CHAINLIGHTNINGVOID_LEGENDARY_PICKUP": "Chance to repeatedly strike a single enemy with lightning. <sprite name=\"Quality\"> Increase strike damage and proc coefficient. <style=cIsVoid>Corrupts all Ukuleles</style>.",
 		"ITEM_CHAINLIGHTNINGVOID_LEGENDARY_DESC": "<style=cIsDamage>25%</style> chance to fire <style=cIsDamage>lightning</style> for <style=cIsDamage>60%</style> TOTAL damage up to <style=cIsDamage>3 <style=cStack>(+3 per stack)</style></style> times.\nIncreases lightning <style=cIsUtility>proc coefficient</style> by <sprite name=\"Quality\"> <style=cIsDamage>0.8</style> <style=cStack>(+0.8 per stack)</style>, going past <style=cIsDamage>1.0</style> instead deals an additional <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all Ukuleles</style>.",
+
+		"ITEM_CRITGLASSESVOID_UNCOMMON_PICKUP": "Gain a 0.5% chance to instantly kill <sprite name=\"Quality\"> all nearby non-boss enemies. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
+		"ITEM_CRITGLASSESVOID_UNCOMMON_DESC": "Your attacks have a <style=cIsDamage>0.5%</style> <style=cStack>(+0.5% per stack)</style> chance to <style=cIsDamage>instantly kill</style> all <style=cIsDamage>non-Boss enemies</style> within <sprite name=\"Quality\"> <style=cIsUtility>15m</style> <style=cStack>(+15m per stack)</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
+
+		"ITEM_CRITGLASSESVOID_RARE_PICKUP": "Gain a 0.5% chance to instantly kill <sprite name=\"Quality\"> all nearby non-boss enemies. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
+		"ITEM_CRITGLASSESVOID_RARE_DESC": "Your attacks have a <style=cIsDamage>0.5%</style> <style=cStack>(+0.5% per stack)</style> chance to <style=cIsDamage>instantly kill</style> all <style=cIsDamage>non-Boss enemies</style> within <sprite name=\"Quality\"> <style=cIsUtility>25m</style> <style=cStack>(+25m per stack)</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
+
+		"ITEM_CRITGLASSESVOID_EPIC_PICKUP": "Gain a 0.5% chance to instantly kill <sprite name=\"Quality\"> all nearby non-boss enemies. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
+		"ITEM_CRITGLASSESVOID_EPIC_DESC": "Your attacks have a <style=cIsDamage>0.5%</style> <style=cStack>(+0.5% per stack)</style> chance to <style=cIsDamage>instantly kill</style> all <style=cIsDamage>non-Boss enemies</style> within <sprite name=\"Quality\"> <style=cIsUtility>35m</style> <style=cStack>(+35m per stack)</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
+
+		"ITEM_CRITGLASSESVOID_LEGENDARY_PICKUP": "Gain a 0.5% chance to instantly kill <sprite name=\"Quality\"> all nearby non-boss enemies. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
+		"ITEM_CRITGLASSESVOID_LEGENDARY_DESC": "Your attacks have a <style=cIsDamage>0.5%</style> <style=cStack>(+0.5% per stack)</style> chance to <style=cIsDamage>instantly kill</style> all <style=cIsDamage>non-Boss enemies</style> within <sprite name=\"Quality\"> <style=cIsUtility>50m</style> <style=cStack>(+50m per stack)</style>. <style=cIsVoid>Corrupts all Lens-Maker's Glasses</style>.",
 	}
 }
