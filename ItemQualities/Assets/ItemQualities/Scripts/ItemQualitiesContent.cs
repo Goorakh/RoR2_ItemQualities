@@ -161,6 +161,8 @@ namespace ItemQualities
             List<GameObject> bodyPrefabsList = new List<GameObject>();
             List<GameObject> masterPrefabsList = new List<GameObject>();
 
+            List<EffectDef> effectDefsList = new List<EffectDef>();
+
             List<QualityTierDef> qualityTierDefsList = new List<QualityTierDef>();
 
             List<ItemQualityGroup> itemQualityGroupsList = new List<ItemQualityGroup>();
@@ -201,6 +203,11 @@ namespace ItemQualities
                         if (prefab.GetComponent<CharacterMaster>())
                         {
                             masterPrefabsList.Add(prefab);
+                        }
+
+                        if (prefab.GetComponent<EffectComponent>())
+                        {
+                            effectDefsList.Add(new EffectDef(prefab));
                         }
 
                         if (prefab.GetComponent<NetworkBehaviour>())
@@ -271,6 +278,8 @@ namespace ItemQualities
 
             _contentPack.masterPrefabs.Add(masterPrefabsList.ToArray());
             _contentPack.bodyPrefabs.Add(bodyPrefabsList.ToArray());
+
+            _contentPack.effectDefs.Add(effectDefsList.ToArray());
 
             _contentPack.networkedObjectPrefabs.Add(networkedPrefabsList.ToArray());
 
@@ -615,6 +624,8 @@ namespace ItemQualities
             public static ItemQualityGroup ElementalRingVoid;
 
             public static ItemQualityGroup ChainLightningVoid;
+
+            public static ItemQualityGroup CritGlassesVoid;
         }
 
         public static class EquipmentQualityGroups
@@ -665,6 +676,8 @@ namespace ItemQualities
             public static GameObject QualityPickupDisplay;
 
             public static GameObject DeathMarkQualityEffect;
+
+            public static GameObject VoidDeathOrbEffect;
         }
 
         public static class NetworkedPrefabs
