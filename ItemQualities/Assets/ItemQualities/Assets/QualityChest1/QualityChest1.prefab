@@ -55,7 +55,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4517546042260280344}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.1, z: 0.15}
+  m_LocalPosition: {x: 0, y: 0.131, z: 0.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -497,7 +497,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FieldAssignments:
-  - TargetObject: {fileID: 4517546042884142512}
+  - _targetObject: {fileID: 4517546042884142512}
+    _targetObjectComponent: {fileID: 0}
+    TargetObjectComponentType:
+      assemblyQualifiedName: 
     FieldName: panelPrefab
     AssetReference:
       m_AssetGUID: 3cd08790b1abe7c4e8f4390bece3d08d
@@ -691,6 +694,25 @@ SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -6344728327540651033, guid: 7cdff1d9a46f26c42af79aff7167acc1, type: 3}
   m_PrefabInstance: {fileID: 4517546043069505378}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2151215051205362909 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2552180351454731199, guid: 7cdff1d9a46f26c42af79aff7167acc1, type: 3}
+  m_PrefabInstance: {fileID: 4517546043069505378}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8517367345211433116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2151215051205362909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cdacbe2cfdf36748839620a27429a16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionOffset: {x: 0, y: -0.4, z: 0}
+  _animator: {fileID: 4517546043069505406}
 --- !u!4 &2289578778778616849 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2411602782998911859, guid: 7cdff1d9a46f26c42af79aff7167acc1, type: 3}
@@ -740,7 +762,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FieldAssignments:
-  - TargetObject: {fileID: 4517546043069505406}
+  - _targetObject: {fileID: 4517546043069505406}
+    _targetObjectComponent: {fileID: 0}
+    TargetObjectComponentType:
+      assemblyQualifiedName: 
     FieldName: runtimeAnimatorController
     AssetReference:
       m_AssetGUID: f6a3f2d6ebc0ad34bb18ac9b9786c284
@@ -749,7 +774,10 @@ MonoBehaviour:
     AssetTypeOverride:
       assemblyQualifiedName: UnityEngine.RuntimeAnimatorController, UnityEngine.AnimationModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - TargetObject: {fileID: 4517546043069505406}
+  - _targetObject: {fileID: 4517546043069505406}
+    _targetObjectComponent: {fileID: 0}
+    TargetObjectComponentType:
+      assemblyQualifiedName: 
     FieldName: avatar
     AssetReference:
       m_AssetGUID: 5ab703d8e8dcc8b469aac019c2ad9e35
@@ -842,3 +870,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entity: {fileID: 4517546042884142498}
   entityZoneIndex: 0
+--- !u!1 &7715067395653673365 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -3053193314518712585, guid: 7cdff1d9a46f26c42af79aff7167acc1, type: 3}
+  m_PrefabInstance: {fileID: 4517546043069505378}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2576535345094976323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7715067395653673365}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cdacbe2cfdf36748839620a27429a16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionOffset: {x: 0, y: 0.25, z: -0.4}
+  _animator: {fileID: 4517546043069505406}
+--- !u!1 &7931637029677226159 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5810586806476851149, guid: 7cdff1d9a46f26c42af79aff7167acc1, type: 3}
+  m_PrefabInstance: {fileID: 4517546043069505378}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6181674920480050846
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7931637029677226159}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cdacbe2cfdf36748839620a27429a16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PositionOffset: {x: 0, y: 0.25, z: -0.4}
+  _animator: {fileID: 4517546043069505406}
