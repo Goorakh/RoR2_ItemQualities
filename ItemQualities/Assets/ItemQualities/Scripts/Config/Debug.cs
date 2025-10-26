@@ -9,13 +9,15 @@ namespace ItemQualities
         public static class Debug
         {
 #if DEBUG
+            const string SectionName = "Debug";
+
             public static bool LogItemQualities => _logItemQualitiesConfig?.Value ?? false;
 
             static ConfigEntry<bool> _logItemQualitiesConfig;
 
             internal static void Init(ConfigFile configFile)
             {
-                _logItemQualitiesConfig = configFile.Bind(new ConfigDefinition("Debug", "Log Item Qualities"), false, new ConfigDescription("If messages about rolled or missing qualities should be logged"));
+                _logItemQualitiesConfig = configFile.Bind(new ConfigDefinition(SectionName, "Log Item Qualities"), false, new ConfigDescription("If messages about rolled or missing qualities should be logged"));
             }
 
             internal static void InitRiskOfOptions()
