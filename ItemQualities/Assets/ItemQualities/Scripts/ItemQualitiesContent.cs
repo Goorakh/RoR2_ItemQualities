@@ -626,6 +626,10 @@ namespace ItemQualities
             public static ItemQualityGroup ChainLightningVoid;
 
             public static ItemQualityGroup CritGlassesVoid;
+
+            public static ItemQualityGroup ExtraLifeVoid;
+
+            public static ItemQualityGroup ExtraLifeVoidConsumed;
         }
 
         public static class EquipmentQualityGroups
