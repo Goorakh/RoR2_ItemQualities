@@ -636,6 +636,8 @@ namespace ItemQualities
             public static ItemQualityGroup ExplodeOnDeathVoid;
 
             public static ItemQualityGroup MushroomVoid;
+
+            public static ItemQualityGroup AttackSpeedPerNearbyAllyOrEnemy;
         }
 
         public static class EquipmentQualityGroups
@@ -668,6 +670,8 @@ namespace ItemQualities
             public static BuffQualityGroup ArmorPlateBuff;
 
             public static BuffQualityGroup BoostAllStatsBuff;
+
+            public static BuffQualityGroup AttackSpeedPerNearbyAllyOrEnemyBuff;
         }
 
         public static class Buffs
