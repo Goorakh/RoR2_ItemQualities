@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igMushroomVoid
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: cc95af07d5e337f418a6f3bbf06db791
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 22edc9d7165b00841bd8292a3be83220, type: 2}
+  _rareItem: {fileID: 11400000, guid: b0f398d994bb5b74bb8f8d94b650cad2, type: 2}
+  _epicItem: {fileID: 11400000, guid: 99f93deba039c364788c43f2d0789462, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 50edc1eb642faf74c9d0030a93fae49d, type: 2}
