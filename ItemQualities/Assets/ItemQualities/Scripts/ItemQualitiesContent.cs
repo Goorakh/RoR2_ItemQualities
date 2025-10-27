@@ -634,6 +634,8 @@ namespace ItemQualities
             public static ItemQualityGroup TreasureCacheVoid;
 
             public static ItemQualityGroup ExplodeOnDeathVoid;
+
+            public static ItemQualityGroup MushroomVoid;
         }
 
         public static class EquipmentQualityGroups
@@ -701,6 +703,8 @@ namespace ItemQualities
             public static GameObject MeatHookDelayedForce;
 
             public static GameObject SlowOnHitRootArea;
+
+            public static GameObject HealPackDelayed;
         }
 
         public static class ProjectilePrefabs
