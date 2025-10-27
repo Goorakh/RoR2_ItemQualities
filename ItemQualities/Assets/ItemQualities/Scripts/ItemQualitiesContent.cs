@@ -638,6 +638,8 @@ namespace ItemQualities
             public static ItemQualityGroup MushroomVoid;
 
             public static ItemQualityGroup AttackSpeedPerNearbyAllyOrEnemy;
+
+            public static ItemQualityGroup HeadHunter;
         }
 
         public static class EquipmentQualityGroups

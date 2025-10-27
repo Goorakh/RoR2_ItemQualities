@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igHeadHunter
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: dd02f88e42311854aa50b62f139eabec
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: ad181a4f335b614499d706ca370f845d, type: 2}
+  _rareItem: {fileID: 11400000, guid: 8b8069a312268cc4eb98776abb0471f3, type: 2}
+  _epicItem: {fileID: 11400000, guid: 83039f5bd0f58b94e9f7d35ef32bb95c, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 3308baf1b72a1a6409afa4d5696d219b, type: 2}
