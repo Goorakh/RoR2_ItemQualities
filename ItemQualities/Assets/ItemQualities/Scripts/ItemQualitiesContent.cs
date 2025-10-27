@@ -632,6 +632,8 @@ namespace ItemQualities
             public static ItemQualityGroup ExtraLifeVoidConsumed;
 
             public static ItemQualityGroup TreasureCacheVoid;
+
+            public static ItemQualityGroup ExplodeOnDeathVoid;
         }
 
         public static class EquipmentQualityGroups

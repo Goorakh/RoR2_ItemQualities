@@ -1347,5 +1347,17 @@
 
 		"ITEM_TREASURECACHEVOID_LEGENDARY_PICKUP": "Gain access to an Encrusted Cache that contains a <sprite name=\"QualityLegendary\"> legendary quality void item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
 		"ITEM_TREASURECACHEVOID_LEGENDARY_DESC": "A <style=cIsUtility>hidden cache</style> containing an item (60%/<style=cIsHealing>30%</style>/<style=cIsHealth>10%</style>) will appear in a random location <style=cIsUtility>on each stage</style>, <style=cIsUtility>at least one</style> item will be of <sprite name=\"QualityLegendary\"> legendary quality. Opening the cache <style=cIsUtility>consumes</style> this item. <style=cIsVoid>Corrupts all Rusted Keys</style>.",
+
+		"ITEM_EXPLODEONDEATHVOID_UNCOMMON_PICKUP": "Full health enemies <sprite name=\"Quality\"> detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.",
+		"ITEM_EXPLODEONDEATHVOID_UNCOMMON_DESC": "Upon hitting an enemy at or above <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> <style=cStack>(+2.4m per stack)</style> radius burst for <style=cIsDamage>260%</style> <style=cStack>(+156% per stack)</style> base damage plus <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.",
+
+		"ITEM_EXPLODEONDEATHVOID_RARE_PICKUP": "Full health enemies <sprite name=\"Quality\"> detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.",
+		"ITEM_EXPLODEONDEATHVOID_RARE_DESC": "Upon hitting an enemy at or above <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> <style=cStack>(+2.4m per stack)</style> radius burst for <style=cIsDamage>260%</style> <style=cStack>(+156% per stack)</style> base damage plus <sprite name=\"Quality\"> <style=cIsDamage>70%</style> <style=cStack>(+70% per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.",
+
+		"ITEM_EXPLODEONDEATHVOID_EPIC_PICKUP": "Full health enemies <sprite name=\"Quality\"> detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.",
+		"ITEM_EXPLODEONDEATHVOID_EPIC_DESC": "Upon hitting an enemy at or above <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> <style=cStack>(+2.4m per stack)</style> radius burst for <style=cIsDamage>260%</style> <style=cStack>(+156% per stack)</style> base damage plus <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.",
+
+		"ITEM_EXPLODEONDEATHVOID_LEGENDARY_PICKUP": "Full health enemies <sprite name=\"Quality\"> detonate on hit. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.",
+		"ITEM_EXPLODEONDEATHVOID_LEGENDARY_DESC": "Upon hitting an enemy at or above <style=cIsDamage>100% health</style>, <style=cIsDamage>detonate</style> them in a <style=cIsDamage>12m</style> <style=cStack>(+2.4m per stack)</style> radius burst for <style=cIsDamage>260%</style> <style=cStack>(+156% per stack)</style> base damage plus <sprite name=\"Quality\"> <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> TOTAL damage. <style=cIsVoid>Corrupts all Will-o'-the-wisps</style>.",
 	}
 }
