@@ -1383,5 +1383,17 @@
 
 		"ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies killed within the radius temporarily increases attack speed and radius.",
         "ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_LEGENDARY_DESC": "{0}\nEach enemy killed within the radius increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>35%</style> <style=cStack>(+15% per stack)</style> and increases <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>20m</style> <style=cStack>(+10m per stack)</style> for <sprite name=\"Quality\"> <style=cIsUtility>10 seconds</style>.",
+
+		"ITEM_HEADHUNTER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every unique elite buff.",
+		"ITEM_HEADHUNTER_UNCOMMON_DESC": "{0}\nElite buffs increase damage by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",
+
+		"ITEM_HEADHUNTER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every unique elite buff.",
+		"ITEM_HEADHUNTER_RARE_DESC": "{0}\nElite buffs increase damage by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>.",
+
+		"ITEM_HEADHUNTER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every unique elite buff.",
+		"ITEM_HEADHUNTER_EPIC_DESC": "{0}\nElite buffs increase damage by <sprite name=\"Quality\"> <style=cIsDamage>80%</style> <style=cStack>(+80% per stack)</style>.",
+
+		"ITEM_HEADHUNTER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every unique elite buff.",
+		"ITEM_HEADHUNTER_LEGENDARY_DESC": "{0}\nElite buffs increase damage by <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>.",
 	}
 }
