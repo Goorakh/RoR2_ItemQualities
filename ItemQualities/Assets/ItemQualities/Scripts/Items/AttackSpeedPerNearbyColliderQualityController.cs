@@ -114,38 +114,41 @@ namespace ItemQualities.Items
             if (!body || damageReport.attackerBody != body)
                 return;
 
-            if (!damageReport.victimBody || (damageReport.victimBody.corePosition - body.corePosition).magnitude > _lanternCollider.sphereCollider.radius)
-                return;
-
             ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCounts(body.inventory);
-            QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;
-
-            float buffDuration = 0f;
-            switch (qualityTier)
+            if (attackSpeedPerNearbyAllyOrEnemy.TotalQualityCount > 0)
             {
-                case QualityTier.Uncommon:
-                    buffDuration = 3f;
-                    break;
-                case QualityTier.Rare:
-                    buffDuration = 5f;
-                    break;
-                case QualityTier.Epic:
-                    buffDuration = 7f;
-                    break;
-                case QualityTier.Legendary:
-                    buffDuration = 10f;
-                    break;
-                default:
-                    Log.Error($"Quality tier {qualityTier} is not implemented");
-                    break;
-            }
+                QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;
 
-            if (buffDuration > 0f)
-            {
-                BuffIndex buffIndex = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffIndex(qualityTier);
-                body.AddTimedBuff(buffIndex, buffDuration);
+                if (damageReport.victimBody && (damageReport.victimBody.corePosition - body.corePosition).magnitude <= _lanternCollider.sphereCollider.radius)
+                {
+                    float buffDuration = 0f;
+                    switch (qualityTier)
+                    {
+                        case QualityTier.Uncommon:
+                            buffDuration = 3f;
+                            break;
+                        case QualityTier.Rare:
+                            buffDuration = 5f;
+                            break;
+                        case QualityTier.Epic:
+                            buffDuration = 7f;
+                            break;
+                        case QualityTier.Legendary:
+                            buffDuration = 10f;
+                            break;
+                        default:
+                            Log.Error($"Quality tier {qualityTier} is not implemented");
+                            break;
+                    }
 
-                updateBuffCounts();
+                    if (buffDuration > 0f)
+                    {
+                        BuffIndex buffIndex = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffIndex(qualityTier);
+                        body.AddTimedBuff(buffIndex, buffDuration);
+
+                        updateBuffCounts();
+                    }
+                }
             }
         }
 
