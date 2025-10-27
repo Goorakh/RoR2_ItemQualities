@@ -1371,5 +1371,17 @@
 
 		"ITEM_MUSHROOMVOID_LEGENDARY_PICKUP": "Heal while sprinting. <sprite name=\"Quality\"> Spawn healing orbs behind you while sprinting. <style=cIsVoid>Corrupts all Bustling Fungi</style>.",
 		"ITEM_MUSHROOMVOID_LEGENDARY_DESC": "<style=cIsHealing>Heals</style> for <style=cIsHealing>2%</style> <style=cStack>(+2% per stack)</style> of your <style=cIsHealing>health</style> every second <style=cIsUtility>while sprinting</style>. Spawns a <style=cIsHealing>healing orb</style> for <sprite name=\"Quality\"> <style=cIsHealing>10%</style> <style=cStack>(+10% per stack)</style> of your <style=cIsHealing>maximum health</style> every second <style=cIsUtility>while sprinting</style>. <style=cIsVoid>Corrupts all Bustling Fungi</style>.",
+
+		"ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies killed within the radius temporarily increases attack speed and radius.",
+        "ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_UNCOMMON_DESC": "{0}\nEach enemy killed within the radius increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+2.5% per stack)</style> and increases <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>2.5m</style> <style=cStack>(+1m per stack)</style> for <sprite name=\"Quality\"> <style=cIsUtility>3 seconds</style>.",
+
+		"ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies killed within the radius temporarily increases attack speed and radius.",
+        "ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_RARE_DESC": "{0}\nEach enemy killed within the radius increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+5% per stack)</style> and increases <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>5m</style> <style=cStack>(+2.5m per stack)</style> for <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style>.",
+
+		"ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies killed within the radius temporarily increases attack speed and radius.",
+        "ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_EPIC_DESC": "{0}\nEach enemy killed within the radius increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+10% per stack)</style> and increases <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>10m</style> <style=cStack>(+5m per stack)</style> for <sprite name=\"Quality\"> <style=cIsUtility>7 seconds</style>.",
+
+		"ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies killed within the radius temporarily increases attack speed and radius.",
+        "ITEM_ATTACKSPEEDPERNEARBYALLYORENEMY_LEGENDARY_DESC": "{0}\nEach enemy killed within the radius increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>35%</style> <style=cStack>(+15% per stack)</style> and increases <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>20m</style> <style=cStack>(+10m per stack)</style> for <sprite name=\"Quality\"> <style=cIsUtility>10 seconds</style>.",
 	}
 }
