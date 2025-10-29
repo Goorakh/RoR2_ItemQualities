@@ -674,6 +674,8 @@ namespace ItemQualities
             public static BuffQualityGroup BoostAllStatsBuff;
 
             public static BuffQualityGroup AttackSpeedPerNearbyAllyOrEnemyBuff;
+
+            public static BuffQualityGroup FragileDamageBonusBuff;
         }
 
         public static class Buffs
