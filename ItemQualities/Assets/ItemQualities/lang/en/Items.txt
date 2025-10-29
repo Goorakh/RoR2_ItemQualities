@@ -13,16 +13,16 @@
 		"ITEM_HOOF_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase movement speed.",
 		"ITEM_HOOF_LEGENDARY_DESC": "Increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>98%</style> <style=cStack>(+98% per stack)</style>.",
 		
-		"ITEM_CRITGLASSES_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
+		"ITEM_CRITGLASSES_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase critical strike damage.",
 		"ITEM_CRITGLASSES_UNCOMMON_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",
 		
-		"ITEM_CRITGLASSES_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
+		"ITEM_CRITGLASSES_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase critical strike damage.",
 		"ITEM_CRITGLASSES_RARE_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style>.",
 		
-		"ITEM_CRITGLASSES_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
+		"ITEM_CRITGLASSES_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase critical strike damage.",
 		"ITEM_CRITGLASSES_EPIC_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>.",
 		
-		"ITEM_CRITGLASSES_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase <style=cIsDamage>critical strike damage</style>.",
+		"ITEM_CRITGLASSES_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase critical strike damage.",
 		"ITEM_CRITGLASSES_LEGENDARY_DESC": "{0}\nIncreases <style=cIsDamage>Critical Strike damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style>.",
 		
 		"ITEM_SPRINTBONUS_UNCOMMON_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +40%.",
@@ -617,16 +617,16 @@
 		"ITEM_THORNS_LEGENDARY_DESC": "Getting hit causes you to explode in a burst of razors, dealing <style=cIsDamage>160% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> of damage taken. Hits up to <style=cIsDamage>5</style> <style=cStack>(+2 per stack)</style> targets in a <style=cIsDamage>25m</style> <style=cStack>(+10m per stack)</style> radius",
 
 		"ITEM_SPRINTOUTOFCOMBAT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
-		"ITEM_SPRINTOUTOFCOMBAT_UNCOMMON_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
+		"ITEM_SPRINTOUTOFCOMBAT_UNCOMMON_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencement</style>.",
 
 		"ITEM_SPRINTOUTOFCOMBAT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
-		"ITEM_SPRINTOUTOFCOMBAT_RARE_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
+		"ITEM_SPRINTOUTOFCOMBAT_RARE_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencement</style>.",
 
 		"ITEM_SPRINTOUTOFCOMBAT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
-		"ITEM_SPRINTOUTOFCOMBAT_EPIC_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
+		"ITEM_SPRINTOUTOFCOMBAT_EPIC_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencement</style>.",
 
 		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase movement speed after completing the Teleporter.",
-		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencenement</style>.",
+		"ITEM_SPRINTOUTOFCOMBAT_LEGENDARY_DESC": "{0}\nIncrease movement speed by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> after completing the <style=cIsUtility>Teleporter event</style> or charging all <style=cIsUtility>pillars on Commencement</style>.",
 
 		"ITEM_REGENERATINGSCRAP_UNCOMMON_PICKUP": "Prioritized when <sprite name=\"Quality\"> used with <style=cIsHealing>Uncommon</style> 3D Printers. Usable once per stage.",
 		"ITEM_REGENERATINGSCRAP_UNCOMMON_DESC": "Does nothing. Prioritized when used with <style=cIsHealing>Uncommon</style> 3D Printers. Turns any printed items into <sprite name=\"QualityUncommon\"> uncommon quality. At the start of each stage, it regenerates.",
@@ -797,16 +797,16 @@
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
 
 		"ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
-		"ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+80% <style=cStack>(+10% per stack <sprite name=\"QualityUncommon\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+80% <style=cStack>(+10% per stack)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 
 		"ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
-		"ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+100% <style=cStack>(+30% per stack <sprite name=\"QualityRare\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+100% <style=cStack>(+30% per stack)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 
 		"ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
-		"ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+130% <style=cStack>(+60% per stack <sprite name=\"QualityEpic\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+130% <style=cStack>(+60% per stack)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 
 		"ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
-		"ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+170% <style=cStack>(+100% per stack <sprite name=\"QualityLegendary\">)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+		"ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+170% <style=cStack>(+100% per stack)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 
 		"ITEM_JUMPBOOST_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase speed when chaining jumps. Increase air control.",
 		"ITEM_JUMPBOOST_UNCOMMON_DESC": "{0}\n<style=cIsUtility>Chained</style> jumps increase speed by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> per jump, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style>. Increases <style=cIsUtility>air control</style> when quail jumping by <sprite name=\"Quality\"> <style=cIsUtility>10%</style>",
