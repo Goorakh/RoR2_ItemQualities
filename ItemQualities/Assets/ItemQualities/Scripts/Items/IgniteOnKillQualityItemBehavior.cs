@@ -7,6 +7,7 @@ using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -16,7 +17,7 @@ namespace ItemQualities.Items
 {
 	public class IgniteOnKillQualityItemBehavior : MonoBehaviour
     {
-		static GameObject _icicleAuraPrefab;
+		static GameObject _fireAuraPrefab;
 		private static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
 		private static readonly List<HurtBox> _fireAuraHurtBoxBuffer = new List<HurtBox>();
 
@@ -45,15 +46,15 @@ namespace ItemQualities.Items
 				yield break;
 			}
 
-			_icicleAuraPrefab = icicleAuraLoad.Result.InstantiateClone("FireAura");
+			_fireAuraPrefab = icicleAuraLoad.Result.InstantiateClone("FireAura");
 
-			IcicleAuraController icicleAura = _icicleAuraPrefab.GetComponent<IcicleAuraController>();
+			IcicleAuraController icicleAura = _fireAuraPrefab.GetComponent<IcicleAuraController>();
 			icicleAura.icicleMaxPerStack = 0;
 			icicleAura.icicleBaseRadius = 1f;
 			icicleAura.icicleRadiusPerIcicle = 2.5f;
-			icicleAura.buffWard = null;
+			Destroy(icicleAura.buffWard);
 
-			Transform particles = _icicleAuraPrefab.transform.Find("Particles");
+			Transform particles = _fireAuraPrefab.transform.Find("Particles");
 			if(particles == null) {
 				Log.Error($"Failed to find Particles in icicle Aura prefab");
 				yield break;
@@ -64,6 +65,8 @@ namespace ItemQualities.Items
 			setColor(particles, "Ring, Procced");
 			setColor(particles, "SpinningSharpChunks");
 			setColor(particles, "Area");
+
+			GasHandleStacks GasStacks = _fireAuraPrefab.AddComponent<GasHandleStacks>();
 		}
 
 		static void setColor(Transform particles, string childName)
@@ -81,12 +84,15 @@ namespace ItemQualities.Items
 		void OnEnable()
 		{
 			GlobalEventManager.onCharacterDeathGlobal += OnCharacterDeathGlobal;
-			_fireAuraObj = Object.Instantiate(_icicleAuraPrefab, base.transform.position, Quaternion.identity);
+			_fireAuraObj = Object.Instantiate(_fireAuraPrefab, base.transform.position, Quaternion.identity);
 			_icicleAura = _fireAuraObj.GetComponent<IcicleAuraController>();
 			_icicleAura.Networkowner = base.gameObject;
+			GasHandleStacks gasStacks = _fireAuraObj.GetComponent<GasHandleStacks>();
+			gasStacks.Networkowner = base.gameObject;
+			_body.onInventoryChanged += gasStacks.OnInventoryChanged;
+			gasStacks.OnInventoryChanged();
+
 			NetworkServer.Spawn(_fireAuraObj);
-			_body.onInventoryChanged += OnInventoryChanged;
-			OnInventoryChanged();
 		}
 
 		void OnDisable()
@@ -97,13 +103,12 @@ namespace ItemQualities.Items
 				Object.Destroy(_icicleAura);
 				_icicleAura = null;
 			}
-			_body.onInventoryChanged -= OnInventoryChanged;
 		}
 
 		void OnCharacterDeathGlobal(DamageReport damageReport)
 		{
 			if (damageReport != null && damageReport.attackerBody == _body && _icicleAura && 
-				damageReport.victimBody.GetBuffCount(RoR2Content.Buffs.OnFire) > 1)
+				damageReport.victimBody.GetBuffCount(RoR2Content.Buffs.OnFire) > 1) //gas also ignites the enemy you killed, so needs to check for greater 1 instead
 			{
 				_icicleAura.OnOwnerKillOther();
 			}
@@ -150,19 +155,90 @@ namespace ItemQualities.Items
 				_fireAuraHurtBoxBuffer.Clear();
 			}
 		}
+	}
 
-		void OnInventoryChanged()
+	public class GasHandleStacks : NetworkBehaviour
+	{
+		private struct OwnerInfo
 		{
-			if (!_body) return;
-			if (!_icicleAura) return;
+			public readonly GameObject gameObject;
+			public readonly CharacterBody body;
+			public OwnerInfo(GameObject gameObject)
+			{
+				this.gameObject = gameObject;
+				if ((bool)gameObject)
+				{
+					body = gameObject.GetComponent<CharacterBody>();
+				}
+				else
+				{
+					body = null;
+				}
+			}
+		}
 
-			ItemQualityCounts IgniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCounts(_body.master.inventory);
+		private NetworkInstanceId ___ownerNetId;
+		private OwnerInfo _cachedOwnerInfo;
+		private IcicleAuraController _icicleAura;
+
+		[SyncVar]
+		public GameObject owner;
+
+		public GameObject Networkowner
+		{
+			get
+			{
+				return owner;
+			}
+			[param: In]
+			set
+			{
+				SetSyncVarGameObject(value, ref owner, 2u, ref ___ownerNetId);
+			}
+		}
+
+		public override void OnDeserialize(NetworkReader reader, bool initialState)
+		{
+			if (initialState)
+			{
+				___ownerNetId = reader.ReadNetworkId();
+				return;
+			}
+			int num = (int)reader.ReadPackedUInt32();
+			if ((num & 2) != 0)
+			{
+				owner = reader.ReadGameObject();
+			}
+		}
+
+		public override void PreStartClient()
+		{
+			if (!___ownerNetId.IsEmpty())
+			{
+				Networkowner = ClientScene.FindLocalObject(___ownerNetId);
+			}
+		}
+
+		private void Awake()
+		{
+			_icicleAura = GetComponent<IcicleAuraController>();
+		}
+
+		public void OnInventoryChanged()
+		{
+			if (_cachedOwnerInfo.gameObject != owner)
+			{
+				_cachedOwnerInfo = new OwnerInfo(owner);
+			}
+			if (!_cachedOwnerInfo.body) return;
+			if (!_icicleAura) return;
+			ItemQualityCounts IgniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCounts(_cachedOwnerInfo.body.master.inventory);
 			_icicleAura.icicleDamageCoefficientPerTick = IgniteOnKill.UncommonCount * 1 +
 														IgniteOnKill.RareCount * 2 +
 														IgniteOnKill.EpicCount * 3 +
 														IgniteOnKill.LegendaryCount * 5;
 
-			switch (ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetHighestQualityInInventory(_body.master.inventory))
+			switch (ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetHighestQualityInInventory(_cachedOwnerInfo.body.master.inventory))
 			{
 				case QualityTier.Uncommon:
 					_icicleAura.baseIcicleMax = 4;
