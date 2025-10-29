@@ -1,12 +1,13 @@
 ﻿using HG;
 using ItemQualities.Items;
 using RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class CharacterBodyExtraStatsTracker : NetworkBehaviour
+    public class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver
     {
         [SystemInitializer(typeof(BodyCatalog))]
         static void Init()
@@ -18,6 +19,8 @@ namespace ItemQualities
         }
 
         CharacterBody _body;
+
+        MemoizedGetComponent<CharacterMasterExtraStatsTracker> _masterExtraStatsComponent;
 
         uint _lastMoneyValue;
 
@@ -70,16 +73,6 @@ namespace ItemQualities
             {
                 recalculateStatsIfNeeded();
                 return _barrierDecayRateMultiplier;
-            }
-        }
-
-        float _watchBreakThreshold = HealthComponent.lowHealthFraction;
-        public float WatchBreakThreshold
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _watchBreakThreshold;
             }
         }
 
@@ -171,6 +164,10 @@ namespace ItemQualities
         public bool MushroomActiveServer { get; private set; }
 
         public bool HasHadAnyQualityDeathMarkDebuffServer { get; private set; }
+
+        public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _masterExtraStatsComponent.Get(_body.masterObject);
+
+        public event Action<DamageInfo> OnIncomingDamageServer;
 
         void Awake()
         {
@@ -303,6 +300,7 @@ namespace ItemQualities
                 setItemBehavior<ArmorPlateQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<BoostAllStatsQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<MushroomVoidQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory).TotalQualityCount > 0);
             }
         }
 
@@ -422,14 +420,6 @@ namespace ItemQualities
 
             _barrierDecayRateMultiplier = 1f / barrierDecayRateReduction;
 
-            float watchBreakThresholdReduction = 1f;
-            watchBreakThresholdReduction += 0.10f * fragileDamageBonus.UncommonCount;
-            watchBreakThresholdReduction += 0.25f * fragileDamageBonus.RareCount;
-            watchBreakThresholdReduction += 1.00f * fragileDamageBonus.EpicCount;
-            watchBreakThresholdReduction += 3.00f * fragileDamageBonus.LegendaryCount;
-
-            _watchBreakThreshold = HealthComponent.lowHealthFraction / watchBreakThresholdReduction;
-
             float mushroomNotMovingStopwatchThresholdReduction = 1f;
             mushroomNotMovingStopwatchThresholdReduction += 0.18f * mushroom.UncommonCount;
             mushroomNotMovingStopwatchThresholdReduction += 0.33f * mushroom.RareCount;
@@ -482,6 +472,17 @@ namespace ItemQualities
             }
 
             _airControlBonus = airControlBonus;
+        }
+
+        void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
+        {
+            CharacterMasterExtraStatsTracker masterExtraStats = _masterExtraStatsComponent.Get(_body.masterObject);
+            if (masterExtraStats)
+            {
+                masterExtraStats.OnIncomingDamageServer(damageInfo);
+            }
+
+            OnIncomingDamageServer?.Invoke(damageInfo);
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)

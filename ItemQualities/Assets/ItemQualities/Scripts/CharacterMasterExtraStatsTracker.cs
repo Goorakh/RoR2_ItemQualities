@@ -23,9 +23,27 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetSteakBonus))]
         public float SteakBonus;
 
+        int _stageIncomingDamageInstanceCountServer;
+        public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
+
         void Awake()
         {
             _master = GetComponent<CharacterMaster>();
+        }
+
+        void OnEnable()
+        {
+            Stage.onServerStageBegin += onServerStageBegin;
+        }
+
+        void OnDisable()
+        {
+            Stage.onServerStageBegin -= onServerStageBegin;
+        }
+
+        void onServerStageBegin(Stage stage)
+        {
+            _stageIncomingDamageInstanceCountServer = 0;
         }
 
         void markBodyStatsDirty()
@@ -39,6 +57,14 @@ namespace ItemQualities
                 {
                     bodyExtraStatsTracker.MarkAllStatsDirty();
                 }
+            }
+        }
+
+        public void OnIncomingDamageServer(DamageInfo damageInfo)
+        {
+            if (damageInfo.damage > 0f)
+            {
+                _stageIncomingDamageInstanceCountServer++;
             }
         }
 

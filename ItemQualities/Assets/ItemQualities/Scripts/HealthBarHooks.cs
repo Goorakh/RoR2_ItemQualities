@@ -21,13 +21,11 @@ namespace ItemQualities
         {
             public static readonly FieldInfo[] LowHealthUnderBarInfoFields = new FieldInfo[]
             {
-                typeof(AdditionalBarInfos).GetField(nameof(WatchLowHealthUnderBarInfo)),
                 typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthUnderBarInfo)),
             };
 
             public static readonly FieldInfo[] LowHealthOverBarInfoFields = new FieldInfo[]
             {
-                typeof(AdditionalBarInfos).GetField(nameof(WatchLowHealthOverBarInfo)),
                 typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthOverBarInfo)),
             };
 
@@ -37,24 +35,14 @@ namespace ItemQualities
                                                                                             .Except(LowHealthOverBarInfoFields)
                                                                                             .ToArray();
 
-            public readonly HealthBar.BarInfo WatchLowHealthUnderBarInfo;
-            public readonly HealthBar.BarInfo WatchLowHealthOverBarInfo;
-
             public readonly HealthBar.BarInfo StealthKitLowHealthUnderBarInfo;
             public readonly HealthBar.BarInfo StealthKitLowHealthOverBarInfo;
 
             public readonly int EnabledBarCount;
 
-            public AdditionalBarInfos(HealthBar.BarInfo watchLowHealthUnderBarInfo, HealthBar.BarInfo watchLowHealthOverBarInfo, HealthBar.BarInfo stealthKitLowHealthUnderBarInfo, HealthBar.BarInfo stealthKitLowHealthOverBarInfo)
+            public AdditionalBarInfos(HealthBar.BarInfo stealthKitLowHealthUnderBarInfo, HealthBar.BarInfo stealthKitLowHealthOverBarInfo)
             {
                 int enabledBarCount = 0;
-                WatchLowHealthUnderBarInfo = watchLowHealthUnderBarInfo;
-                if (WatchLowHealthUnderBarInfo.enabled)
-                    enabledBarCount++;
-
-                WatchLowHealthOverBarInfo = watchLowHealthOverBarInfo;
-                if (WatchLowHealthOverBarInfo.enabled)
-                    enabledBarCount++;
 
                 StealthKitLowHealthUnderBarInfo = stealthKitLowHealthUnderBarInfo;
                 if (StealthKitLowHealthUnderBarInfo.enabled)
@@ -111,7 +99,6 @@ namespace ItemQualities
                     }
                 }
 
-                handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus);
                 handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.Phasing);
 
                 return ignoreLowHealthItemIndices;
@@ -322,11 +309,6 @@ namespace ItemQualities
             HealthBar.BarInfo lowHealthUnderBarInfoTemplate = healthBar.barInfoCollection.lowHealthUnderBarInfo;
             HealthBar.BarInfo lowHealthOverBarInfoTemplate = healthBar.barInfoCollection.lowHealthOverBarInfo;
 
-            HealthBar.BarInfo watchLowHealthUnderBarInfo = lowHealthUnderBarInfoTemplate;
-            HealthBar.BarInfo watchLowHealthOverBarInfo = lowHealthOverBarInfoTemplate;
-            watchLowHealthUnderBarInfo.enabled = false;
-            watchLowHealthOverBarInfo.enabled = false;
-
             void setupHealthThresholdBarInfos(ref HealthBar.BarInfo underBarInfo, ref HealthBar.BarInfo overBarInfo, float healthThreshold)
             {
                 bool isBelowThreshold = healthComponent.IsHealthBelowThreshold(healthThreshold);
@@ -340,12 +322,6 @@ namespace ItemQualities
                 overBarInfo.normalizedXMax = overBarInfo.normalizedXMin + 0.005f;
             }
 
-            int qualityWatchCount = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(inventory).TotalQualityCount;
-            if (qualityWatchCount > 0)
-            {
-                setupHealthThresholdBarInfos(ref watchLowHealthUnderBarInfo, ref watchLowHealthOverBarInfo, extraStatsTracker.WatchBreakThreshold);
-            }
-
             HealthBar.BarInfo stealthKitLowHealthUnderBarInfo = lowHealthUnderBarInfoTemplate;
             HealthBar.BarInfo stealthKitLowHealthOverBarInfo = lowHealthOverBarInfoTemplate;
             stealthKitLowHealthUnderBarInfo.enabled = false;
@@ -357,7 +333,7 @@ namespace ItemQualities
                 setupHealthThresholdBarInfos(ref stealthKitLowHealthUnderBarInfo, ref stealthKitLowHealthOverBarInfo, extraStatsTracker.StealthKitActivationThreshold);
             }
 
-            return new AdditionalBarInfos(watchLowHealthUnderBarInfo, watchLowHealthOverBarInfo, stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo);
+            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo);
         }
     }
 }
