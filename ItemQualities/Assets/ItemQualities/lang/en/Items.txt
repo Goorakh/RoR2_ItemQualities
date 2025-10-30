@@ -1244,10 +1244,10 @@
         "ITEM_DELAYEDDAMAGE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsUtility>repeat</style> your <style=cIsUtility>on-hit</style> effects 1 time. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> extra repeat.",
 
         "ITEM_DELAYEDDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double on-hit effects.",
-        "ITEM_DELAYEDDAMAGE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsUtility>repeat</style> your <style=cIsUtility>on-hit</style> effects 1 time. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> extra repeat.",
+        "ITEM_DELAYEDDAMAGE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>30%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsUtility>repeat</style> your <style=cIsUtility>on-hit</style> effects 1 time. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> extra repeat.",
 
         "ITEM_DELAYEDDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double on-hit effects.",
-        "ITEM_DELAYEDDAMAGE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsUtility>repeat</style> your <style=cIsUtility>on-hit</style> effects 1 time. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> extra repeat.",
+        "ITEM_DELAYEDDAMAGE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsUtility>repeat</style> your <style=cIsUtility>on-hit</style> effects 1 time. Each interval of <style=cIsUtility>100%</style> chance reached adds 1 <style=cIsUtility>guaranteed</style> extra repeat.",
 
         "ITEM_DELAYEDDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to double on-hit effects.",
         "ITEM_DELAYEDDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Repeat</style> your <style=cIsUtility>on-hit</style> effects <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> time(s).",
