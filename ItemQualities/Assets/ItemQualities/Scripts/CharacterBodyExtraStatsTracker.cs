@@ -235,7 +235,6 @@ namespace ItemQualities
                 if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.1f)
                 {
                     QuailJumpComboAuthority = 0;
-                    Log.Debug($"{Util.GetBestBodyName(gameObject)} lost quail combo");
                 }
             }
 
@@ -613,7 +612,6 @@ namespace ItemQualities
 
                 if (resetJumpCombo)
                 {
-                    Log.Debug($"{Util.GetBestBodyName(gameObject)} lost quail combo due to jump angle difference");
                     QuailJumpComboAuthority = 0;
                 }
             }
