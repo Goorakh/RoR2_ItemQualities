@@ -28,7 +28,7 @@ namespace ItemQualities
                 {
                     if (Configs.General.EnableDifficultyModifications.Value)
                     {
-                        scalingValue *= 1.4f;
+                        scalingValue *= 1.7f;
                     }
 
                     return scalingValue;
