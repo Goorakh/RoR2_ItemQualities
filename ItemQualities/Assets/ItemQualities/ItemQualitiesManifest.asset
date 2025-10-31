@@ -81,6 +81,7 @@ MonoBehaviour:
   - assetBundleName: ItemQualitiesAssets
     assets:
     - {fileID: 102900000, guid: bbb48dd112bfe92479673f7fa9da2456, type: 3}
+    - {fileID: 102900000, guid: 11e26b04023e1f04790bc7171ed5bd20, type: 3}
 --- !u!114 &-3521809848701759815
 MonoBehaviour:
   m_ObjectHideFlags: 0
