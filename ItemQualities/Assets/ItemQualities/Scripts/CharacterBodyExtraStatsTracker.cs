@@ -165,6 +165,8 @@ namespace ItemQualities
 
         public bool HasHadAnyQualityDeathMarkDebuffServer { get; private set; }
 
+        public float CurrentMedkitProcTimeSinceLastHit { get; set; } = 0f;
+
         public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _masterExtraStatsComponent.Get(_body.masterObject);
 
         public event Action<DamageInfo> OnIncomingDamageServer;
