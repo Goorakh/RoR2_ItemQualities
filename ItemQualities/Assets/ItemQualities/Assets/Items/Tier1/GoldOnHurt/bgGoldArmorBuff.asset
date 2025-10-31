@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgGoldArmorBuff
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonBuff: {fileID: 11400000, guid: 3285e6da8f18df047a4a070794458f61, type: 2}
+  _rareBuff: {fileID: 11400000, guid: cdb2296a585deec4587bac5382f6e18b, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 2d2e921ded559a2468e17a84d317a2de, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: 62356a35bbf67a44e9a040e706b93029, type: 2}
