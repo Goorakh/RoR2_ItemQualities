@@ -88,7 +88,7 @@ namespace ItemQualities.Items
 			_icicleAura = _fireAuraObj.GetComponent<IcicleAuraController>();
 			_icicleAura.Networkowner = base.gameObject;
 			GasHandleStacks gasStacks = _fireAuraObj.GetComponent<GasHandleStacks>();
-			gasStacks.Networkowner = base.gameObject;
+			gasStacks.owner = base.gameObject;
 			_body.onInventoryChanged += gasStacks.OnInventoryChanged;
 			gasStacks.OnInventoryChanged();
 
@@ -177,47 +177,11 @@ namespace ItemQualities.Items
 			}
 		}
 
-		private NetworkInstanceId ___ownerNetId;
 		private OwnerInfo _cachedOwnerInfo;
 		private IcicleAuraController _icicleAura;
 
 		[SyncVar]
 		public GameObject owner;
-
-		public GameObject Networkowner
-		{
-			get
-			{
-				return owner;
-			}
-			[param: In]
-			set
-			{
-				SetSyncVarGameObject(value, ref owner, 2u, ref ___ownerNetId);
-			}
-		}
-
-		public override void OnDeserialize(NetworkReader reader, bool initialState)
-		{
-			if (initialState)
-			{
-				___ownerNetId = reader.ReadNetworkId();
-				return;
-			}
-			int num = (int)reader.ReadPackedUInt32();
-			if ((num & 2) != 0)
-			{
-				owner = reader.ReadGameObject();
-			}
-		}
-
-		public override void PreStartClient()
-		{
-			if (!___ownerNetId.IsEmpty())
-			{
-				Networkowner = ClientScene.FindLocalObject(___ownerNetId);
-			}
-		}
 
 		private void Awake()
 		{
