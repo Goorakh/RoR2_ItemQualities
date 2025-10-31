@@ -22,8 +22,6 @@ namespace ItemQualities
 
         MemoizedGetComponent<CharacterMasterExtraStatsTracker> _masterExtraStatsComponent;
 
-        uint _lastMoneyValue;
-
         bool _statsDirty;
 
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
@@ -207,15 +205,6 @@ namespace ItemQualities
 
         void FixedUpdate()
         {
-            CharacterMaster master = _body ? _body.master : null;
-
-            uint currentMoneyValue = master ? master.money : 0;
-            if (currentMoneyValue != _lastMoneyValue)
-            {
-                _body.MarkAllStatsDirty();
-                _lastMoneyValue = currentMoneyValue;
-            }
-
             recalculateStatsIfNeeded();
 
             if (NetworkServer.active)
@@ -303,6 +292,7 @@ namespace ItemQualities
                 setItemBehavior<IgniteOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<MushroomVoidQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCounts(_body.inventory).TotalQualityCount > 0);
             }
         }
 
