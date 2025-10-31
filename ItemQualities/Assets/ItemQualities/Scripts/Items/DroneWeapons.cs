@@ -17,7 +17,9 @@ namespace ItemQualities.Items
 		static void DroneWeaponsBehavior_OnMasterSpawned(On.RoR2.DroneWeaponsBehavior.orig_OnMasterSpawned orig, DroneWeaponsBehavior self, SpawnCard.SpawnResult spawnResult)
 		{
 			orig(self, spawnResult);
-			self.hasSpawnedDrone = false;
+			if(ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetHighestQualityInInventory(self.body.master.inventory) != QualityTier.None) {
+				self.hasSpawnedDrone = false;
+			}
 			GameObject spawnedInstance = spawnResult.spawnedInstance;
 			if (!spawnedInstance) return;
 			CharacterMaster DroneMaster = spawnedInstance.GetComponent<CharacterMaster>();
