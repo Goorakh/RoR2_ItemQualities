@@ -29,6 +29,8 @@ namespace ItemQualities
                 EntityStateMachine entityStateMachine = _pulsePrefab.GetComponent<EntityStateMachine>();
                 entityStateMachine.initialStateType = new SerializableEntityStateType(typeof(BossGroupHealNovaWindup));
                 entityStateMachine.mainStateType = new SerializableEntityStateType(typeof(BossGroupHealNovaPulse));
+
+                args.ContentPack.networkedObjectPrefabs.Add(_pulsePrefab);
             });
 
             return novaPulseLoad.AsProgressCoroutine(args.ProgressReceiver);

@@ -54,6 +54,7 @@ namespace ItemQualities.Items
                     Log.Error($"Failed to find warbanner model root on {Util.GetGameObjectHierarchyName(warbannerWardTemporaryObj)}");
                 }
 
+                args.ContentPack.networkedObjectPrefabs.Add(warbannerWardTemporaryObj);
                 _wardTemporaryPrefab = warbannerWardTemporaryObj;
             });
 

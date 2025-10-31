@@ -7,16 +7,14 @@ using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-
 namespace ItemQualities.Items
 {
 	public class IgniteOnKillQualityItemBehavior : MonoBehaviour
-    {
+	{
 		static GameObject _fireAuraPrefab;
 		private static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
 		private static readonly List<HurtBox> _fireAuraHurtBoxBuffer = new List<HurtBox>();
@@ -55,18 +53,23 @@ namespace ItemQualities.Items
 			Destroy(icicleAura.buffWard);
 
 			Transform particles = _fireAuraPrefab.transform.Find("Particles");
-			if(particles == null) {
-				Log.Error($"Failed to find Particles in icicle Aura prefab");
-				yield break;
+			if (particles)
+			{
+				setColor(particles, "Chunks");
+				setColor(particles, "Ring, Core");
+				setColor(particles, "Ring, Outer");
+				setColor(particles, "Ring, Procced");
+				setColor(particles, "SpinningSharpChunks");
+				setColor(particles, "Area");
 			}
-			setColor(particles, "Chunks");
-			setColor(particles, "Ring, Core");
-			setColor(particles, "Ring, Outer");
-			setColor(particles, "Ring, Procced");
-			setColor(particles, "SpinningSharpChunks");
-			setColor(particles, "Area");
+			else
+			{
+				Log.Error($"Failed to find Particles in icicle Aura prefab");
+			}
 
-			GasHandleStacks GasStacks = _fireAuraPrefab.AddComponent<GasHandleStacks>();
+			_fireAuraPrefab.AddComponent<GasHandleStacks>();
+
+			args.ContentPack.networkedObjectPrefabs.Add(_fireAuraPrefab);
 		}
 
 		static void setColor(Transform particles, string childName)
