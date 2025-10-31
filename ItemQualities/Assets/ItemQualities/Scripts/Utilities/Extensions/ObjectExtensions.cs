@@ -61,7 +61,11 @@ namespace ItemQualities.Utilities.Extensions
                     }
                     else if (fieldType.IsClass && fieldValue != null)
                     {
-                        if (TryFindCloneConstructor(fieldType, out ConstructorInfo cloneConstructor))
+                        if (fieldValue is UnityEngine.Object unityObject)
+                        {
+                            // TODO: Search for child/component reference in dest, they shouldn't be instantiated anyway, so safe to ignore for now.
+                        }
+                        else if (TryFindCloneConstructor(fieldType, out ConstructorInfo cloneConstructor))
                         {
                             try
                             {

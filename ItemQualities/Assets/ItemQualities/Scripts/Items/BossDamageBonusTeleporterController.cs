@@ -43,7 +43,7 @@ namespace ItemQualities.Items
                 chargingTeam = _teleporterInteraction.holdoutZoneController.chargingTeam;
             }
 
-            ItemQualityCounts teamBossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetTeamItemCounts(chargingTeam, false);
+            ItemQualityCounts teamBossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetTeamItemCounts(chargingTeam, true, false);
             if (teamBossDamageBonus.TotalQualityCount == 0)
                 return;
 
@@ -78,9 +78,12 @@ namespace ItemQualities.Items
             foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(bossTeamIndex))
             {
                 CharacterBody body = teamComponent.body;
-                if (body && !body.isBoss && body.healthComponent && body.healthComponent.alive)
+                if (!body || !body.healthComponent || !body.healthComponent.alive)
+                    continue;
+
+                if (!highestHealthBody || body.healthComponent.fullCombinedHealth > highestHealthBody.healthComponent.fullCombinedHealth)
                 {
-                    if (!highestHealthBody || body.healthComponent.fullCombinedHealth > highestHealthBody.healthComponent.fullCombinedHealth)
+                    if (isBodyValidForMiniBoss(body))
                     {
                         highestHealthBody = body;
                     }
@@ -88,6 +91,11 @@ namespace ItemQualities.Items
             }
 
             return highestHealthBody;
+        }
+
+        bool isBodyValidForMiniBoss(CharacterBody body)
+        {
+            return !body.isBoss && (!_teleporterInteraction.holdoutZoneController || _teleporterInteraction.holdoutZoneController.IsBodyInChargingRadius(body));
         }
 
         void setMiniBoss(CharacterBody body)
@@ -98,16 +106,16 @@ namespace ItemQualities.Items
             if (_currentMiniBoss)
             {
                 _currentMiniBoss.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
-                Destroy(_currentMiniBossAttachment, 1f);
+                Destroy(_currentMiniBossAttachment, 0.5f);
                 _currentMiniBossAttachment = null;
             }
 
             _currentMiniBoss = body;
 
-            Log.Debug($"New miniboss: {Util.GetBestBodyName(_currentMiniBoss ? _currentMiniBoss.gameObject : null)}");
-
             if (_currentMiniBoss)
             {
+                Log.Debug($"New miniboss: {Util.GetBestBodyName(_currentMiniBoss.gameObject)}");
+
                 _currentMiniBoss.AddBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
 
                 GameObject miniBossBodyAttachmentObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.MiniBossBodyAttachment);

@@ -94,6 +94,9 @@ namespace ItemQualities.ContentManagement
                     ItemDef sourceItemDef = contagiousItemPair.itemDef1;
                     ItemDef voidItemDef = contagiousItemPair.itemDef2;
 
+                    if (!sourceItemDef || !voidItemDef)
+                        continue;
+
                     if (_baseItemToGroupLookup.TryGetValue(sourceItemDef, out ItemQualityGroup sourceItemGroup))
                     {
                         ItemQualityGroup voidItemGroup = _baseItemToGroupLookup.GetValueOrDefault(voidItemDef);

@@ -12,7 +12,7 @@ namespace ItemQualities
         [SystemInitializer]
         static void Init()
         {
-            SceneDirector.onGenerateInteractableCardSelection += SceneDirector_onGenerateInteractableCardSelection;
+            On.RoR2.ClassicStageInfo.RebuildCards += ClassicStageInfo_RebuildCards;
 
             AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Chest1StealthedVariant.Chest1StealthedVariant_prefab).OnSuccess(cloakedChest =>
             {
@@ -34,11 +34,27 @@ namespace ItemQualities
             });
         }
 
-        static void SceneDirector_onGenerateInteractableCardSelection(SceneDirector sceneDirector, DirectorCardCategorySelection dccs)
+        static void ClassicStageInfo_RebuildCards(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)
+        {
+            orig(self, forcedMonsterCategory, forcedInteractableCategory);
+            tryAddCustomInteractables(self.interactableCategories);
+        }
+
+        static void tryAddCustomInteractables(DirectorCardCategorySelection dccs)
         {
             bool addedQualityEquipmentBarrel = false;
             bool addedQualityChest1 = false;
             bool addedQualityChest2 = false;
+
+            foreach (DirectorCardCategorySelection.Category category in dccs.categories)
+            {
+                foreach (DirectorCard card in category.cards)
+                {
+                    addedQualityEquipmentBarrel |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityEquipmentBarrel;
+                    addedQualityChest1 |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityChest1;
+                    addedQualityChest2 |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityChest2;
+                }
+            }
 
             for (int i = 0; i < dccs.categories.Length; i++)
             {

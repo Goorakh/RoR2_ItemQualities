@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igAttackSpeedPerNearbyAllyOrEnemy
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 332ce1167f0db7543bb18426623b8f9c
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 67197de7ec1b4094eb12ca2de0a4b0fe, type: 2}
+  _rareItem: {fileID: 11400000, guid: 02d568a4b4857b54a94f45b88894eebc, type: 2}
+  _epicItem: {fileID: 11400000, guid: f643513c6e1091441a0e60071b0e858f, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 549ea105b824ea04da1f91c36004184e, type: 2}

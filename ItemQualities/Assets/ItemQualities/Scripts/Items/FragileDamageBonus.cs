@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
 using System;
 
@@ -10,7 +11,27 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
+            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+
             IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
+        }
+
+        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            ItemQualityCounts fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(sender.inventory);
+            if (fragileDamageBonus.TotalQualityCount > 0)
+            {
+                BuffQualityCounts fragileDamageBonusBuff = ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.GetBuffCounts(sender);
+                if (fragileDamageBonusBuff.TotalQualityCount > 0)
+                {
+                    float damageBonusPerBuff = (0.05f * fragileDamageBonus.UncommonCount) +
+                                               (0.10f * fragileDamageBonus.RareCount) +
+                                               (0.15f * fragileDamageBonus.EpicCount) +
+                                               (0.20f * fragileDamageBonus.LegendaryCount);
+
+                    args.damageMultAdd += damageBonusPerBuff * fragileDamageBonusBuff.TotalQualityCount;
+                }
+            }
         }
 
         static void HealthComponent_UpdateLastHitTime(ILContext il)
@@ -24,21 +45,6 @@ namespace ItemQualities.Items
             {
                 Log.Error("Failed to find watch break location");
                 return;
-            }
-
-            c.Goto(foundCursors[1].Next, MoveType.After);
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<bool, HealthComponent, bool>>(isUnderWatchThreshold);
-
-            static bool isUnderWatchThreshold(bool isHealthLow, HealthComponent healthComponent)
-            {
-                if (healthComponent && healthComponent.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
-                {
-                    isHealthLow = healthComponent.IsHealthBelowThreshold(extraStatsTracker.WatchBreakThreshold);
-                }
-
-                return isHealthLow;
             }
 
             c.Goto(foundCursors[2].Next, MoveType.After);

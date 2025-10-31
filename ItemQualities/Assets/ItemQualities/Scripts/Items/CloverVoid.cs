@@ -35,6 +35,14 @@ namespace ItemQualities.Items
                 Log.Error("Failed to find CloverVoid ItemCount patch location");
             }
 
+            int upgradableItemListVarIndex = -1;
+            if (!c.TryFindNext(out _,
+                               x => x.MatchLdfld<Inventory>(nameof(Inventory.itemAcquisitionOrder)),
+                               x => x.MatchStloc(typeof(List<ItemIndex>), il, out upgradableItemListVarIndex)))
+            {
+                Log.Error("Failed to find upgradableItems list variable");
+            }
+
             VariableDefinition startingItemDefVar = il.AddVariable<ItemDef>();
 
             if (c.TryGotoNext(MoveType.Before,
@@ -102,11 +110,11 @@ namespace ItemQualities.Items
                 ItemQualityCounts cloverVoid = ItemQualitiesContent.ItemQualityGroups.CloverVoid.GetItemCounts(inventory);
                 if (cloverVoid.TotalQualityCount > 0)
                 {
-                    float qualityUpgradeChance = Util.ConvertAmplificationPercentageIntoReductionPercentage(amplificationPercentage:
-                        (10f * cloverVoid.UncommonCount) +
-                        (25f * cloverVoid.RareCount) +
-                        (35f * cloverVoid.EpicCount) +
-                        (50f * cloverVoid.LegendaryCount));
+                    float qualityUpgradeChance = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
+                        (0.10f * cloverVoid.UncommonCount) +
+                        (0.25f * cloverVoid.RareCount) +
+                        (0.35f * cloverVoid.EpicCount) +
+                        (0.50f * cloverVoid.LegendaryCount));
 
                     QualityTier maxUpgradableQualityTier = cloverVoid.HighestQuality - 1;
 
@@ -149,9 +157,19 @@ namespace ItemQualities.Items
             c.Emit(OpCodes.Ldloc, startingItemDefVar);
             c.Emit(OpCodes.Ldloc, upgradedItemDefVarIndex);
             c.Emit(OpCodes.Ldloc, upgradeItemQualitiesVar);
-            c.EmitDelegate<Action<CharacterMaster, ItemDef, ItemDef, ItemQualityCounts>>(tryQualityItemTransformations);
 
-            static void tryQualityItemTransformations(CharacterMaster master, ItemDef startingItemDef, ItemDef upgradedItemDef, ItemQualityCounts upgradeItemQualities)
+            if (upgradableItemListVarIndex != -1)
+            {
+                c.Emit(OpCodes.Ldloc, upgradableItemListVarIndex);
+            }
+            else
+            {
+                c.Emit(OpCodes.Ldnull);
+            }
+
+            c.EmitDelegate<Action<CharacterMaster, ItemDef, ItemDef, ItemQualityCounts, List<ItemIndex>>>(tryQualityItemTransformations);
+
+            static void tryQualityItemTransformations(CharacterMaster master, ItemDef startingItemDef, ItemDef upgradedItemDef, ItemQualityCounts upgradeItemQualities, List<ItemIndex> upgradableItems)
             {
                 ItemIndex startingItemIndex = startingItemDef ? startingItemDef.itemIndex : ItemIndex.None;
                 ItemIndex upgradedItemIndex = upgradedItemDef ? upgradedItemDef.itemIndex : ItemIndex.None;
@@ -165,6 +183,11 @@ namespace ItemQualities.Items
                         int qualityItemCount = upgradeItemQualities[qualityTier];
                         if (qualityItemCount > 0)
                         {
+                            if (upgradableItems != null && master.inventory.GetItemCount(qualityUpgradedItemIndex) == 0)
+                            {
+                                upgradableItems.Add(qualityUpgradedItemIndex);
+                            }
+
                             master.inventory.GiveItem(qualityUpgradedItemIndex, qualityItemCount);
 
                             if (startingItemIndex != ItemIndex.None)

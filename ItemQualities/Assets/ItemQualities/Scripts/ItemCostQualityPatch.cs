@@ -9,22 +9,24 @@ namespace ItemQualities
 {
     static class ItemCostQualityPatch
     {
-        [SystemInitializer]
+        [SystemInitializer(typeof(CostTypeCatalog))]
         static void Init()
         {
             IL.RoR2.ChestBehavior.BaseItemDrop += ChestBehavior_BaseItemDrop;
             IL.RoR2.ShopTerminalBehavior.DropPickup += ShopTerminalBehavior_DropPickup;
+            IL.RoR2.OptionChestBehavior.ItemDrop += OptionChestBehavior_ItemDrop;
         }
 
-        static PickupIndex tryUpgradeQualityFromCost(PickupIndex intendedDropPickupIndex, GameObject dropperObject, Xoroshiro128Plus rng)
+        static QualityTier getOutputQualityTierFromCost(GameObject dropperObject)
         {
             if (!dropperObject ||
                 !dropperObject.TryGetComponent(out ObjectPurchaseContext purchaseContext) ||
                 purchaseContext.Results == null)
             {
-                return intendedDropPickupIndex;
+                return QualityTier.None;
             }
 
+            CostTypeIndex costTypeIndex = purchaseContext.CostTypeIndex;
             CostTypeDef.PayCostResults payCostResults = purchaseContext.Results;
             List<PickupIndex> pickupIndicesSpentOnPurchase = new List<PickupIndex>(payCostResults.itemsTaken.Count + payCostResults.equipmentTaken.Count);
 
@@ -45,16 +47,20 @@ namespace ItemQualities
             }
 
             if (pickupIndicesSpentOnPurchase.Count == 0)
-                return intendedDropPickupIndex;
+                return QualityTier.None;
 
             float averageInputQualityTierValue = 0f;
             int numInputItemsWithQuality = 0;
 
-            QualityTier minInputQualityTier = QualityTier.Count;
-
             foreach (PickupIndex inputPickupIndex in pickupIndicesSpentOnPurchase)
             {
                 QualityTier qualityTier = QualityCatalog.GetQualityTier(inputPickupIndex);
+                if (costTypeIndex != CostTypeIndex.TreasureCacheItem &&
+                    costTypeIndex != CostTypeIndex.TreasureCacheVoidItem &&
+                    !QualityCatalog.ItemExchangeShouldPreserveQuality(inputPickupIndex))
+                {
+                    qualityTier = QualityTier.None;
+                }
 
                 averageInputQualityTierValue += (float)qualityTier;
 
@@ -62,39 +68,95 @@ namespace ItemQualities
                 {
                     numInputItemsWithQuality++;
                 }
-
-                if (qualityTier < minInputQualityTier)
-                {
-                    minInputQualityTier = qualityTier;
-                }
             }
+
+            if (numInputItemsWithQuality == 0)
+                return QualityTier.None;
 
             averageInputQualityTierValue /= pickupIndicesSpentOnPurchase.Count;
             QualityTier outputQualityTier = (QualityTier)Mathf.Clamp(Mathf.CeilToInt(averageInputQualityTierValue), 0, (int)QualityTier.Count - 1);
 
             Log.Debug($"{numInputItemsWithQuality}/{pickupIndicesSpentOnPurchase.Count} input items of quality (avg={outputQualityTier})");
 
+            return outputQualityTier;
+        }
+
+        static PickupIndex tryUpgradeQualityFromCost(PickupIndex intendedDropPickupIndex, GameObject dropperObject)
+        {
+            QualityTier outputQualityTier = getOutputQualityTierFromCost(dropperObject);
+
             PickupIndex dropPickupIndex = intendedDropPickupIndex;
             QualityTier dropQualityTier = QualityCatalog.GetQualityTier(dropPickupIndex);
 
             if (outputQualityTier > dropQualityTier)
             {
-                bool shouldUpgradeQualityTier = true;
-                if (numInputItemsWithQuality < pickupIndicesSpentOnPurchase.Count)
-                {
-                    // If at least 1 regular item in the input, reduce chance of upgrading the quality of the output
-                    float inputItemsWithQualityFraction = (float)numInputItemsWithQuality / pickupIndicesSpentOnPurchase.Count;
-                    shouldUpgradeQualityTier = rng.nextNormalizedFloat < Mathf.Pow(inputItemsWithQualityFraction, 3f);
-                }
-
-                if (shouldUpgradeQualityTier)
-                {
-                    dropPickupIndex = QualityCatalog.GetPickupIndexOfQuality(dropPickupIndex, outputQualityTier);
-                    dropQualityTier = outputQualityTier;
-                }
+                dropPickupIndex = QualityCatalog.GetPickupIndexOfQuality(dropPickupIndex, outputQualityTier);
+                dropQualityTier = outputQualityTier;
             }
 
             return dropPickupIndex;
+        }
+
+        static void OptionChestBehavior_ItemDrop(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchStfld<GenericPickupController.CreatePickupInfo>(nameof(GenericPickupController.CreatePickupInfo.pickerOptions))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<PickupPickerController.Option[], OptionChestBehavior, PickupPickerController.Option[]>>(getPickerOptions);
+
+            static PickupPickerController.Option[] getPickerOptions(PickupPickerController.Option[] options, OptionChestBehavior optionChestBehavior)
+            {
+                if (options != null && options.Length > 0 && optionChestBehavior)
+                {
+                    QualityTier outputQualityTier = getOutputQualityTierFromCost(optionChestBehavior.gameObject);
+                    if (outputQualityTier > QualityTier.None)
+                    {
+                        Xoroshiro128Plus rng = new Xoroshiro128Plus((optionChestBehavior.rng ?? RoR2Application.rng).nextUlong);
+
+                        int[] upgradeOptionIndicesPriority = new int[options.Length];
+                        for (int i = 0; i < upgradeOptionIndicesPriority.Length; i++)
+                        {
+                            upgradeOptionIndicesPriority[i] = i;
+                        }
+
+                        Util.ShuffleArray(upgradeOptionIndicesPriority, rng);
+
+                        int maxOptionsToUpgrade = 1;
+                        int numOptionsUpgraded = 0;
+
+                        foreach (int i in upgradeOptionIndicesPriority)
+                        {
+                            ref PickupIndex optionPickupIndex = ref options[i].pickupIndex;
+                            QualityTier optionQualityTier = QualityCatalog.GetQualityTier(optionPickupIndex);
+
+                            PickupIndex dropPickupIndex = QualityCatalog.GetPickupIndexOfQuality(optionPickupIndex, outputQualityTier);
+
+                            // If the pickup of the output quality does not exist, we should just move on and try the next one and not "consume" a quality upgrade
+                            if (dropPickupIndex != optionPickupIndex)
+                            {
+                                if (outputQualityTier > optionQualityTier)
+                                {
+                                    optionPickupIndex = dropPickupIndex;
+                                }
+
+                                if (++numOptionsUpgraded >= maxOptionsToUpgrade)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                return options;
+            }
         }
 
         static void ShopTerminalBehavior_DropPickup(ILContext il)
@@ -113,7 +175,7 @@ namespace ItemQualities
 
             static PickupIndex tryUpgradeQuality(PickupIndex pickupIndex, ShopTerminalBehavior shopTerminalBehavior)
             {
-                return tryUpgradeQualityFromCost(pickupIndex, shopTerminalBehavior ? shopTerminalBehavior.gameObject : null, shopTerminalBehavior ? shopTerminalBehavior.rng : RoR2Application.rng);
+                return tryUpgradeQualityFromCost(pickupIndex, shopTerminalBehavior ? shopTerminalBehavior.gameObject : null);
             }
         }
 
@@ -131,7 +193,7 @@ namespace ItemQualities
 
                 static PickupIndex tryUpgradeQuality(PickupIndex pickupIndex, ChestBehavior chestBehavior)
                 {
-                    return tryUpgradeQualityFromCost(pickupIndex, chestBehavior ? chestBehavior.gameObject : null, chestBehavior ? chestBehavior.rng : RoR2Application.rng);
+                    return tryUpgradeQualityFromCost(pickupIndex, chestBehavior ? chestBehavior.gameObject : null);
                 }
 
                 patchCount++;

@@ -1,5 +1,6 @@
 ﻿using HG;
 using RoR2;
+using System;
 using UnityEngine;
 
 namespace ItemQualities
@@ -17,11 +18,14 @@ namespace ItemQualities
             CostTypeDef.PayCostResults payCostResults = orig(self, cost, activator, purchasedObject, rng, avoidedItemIndex);
 
             ObjectPurchaseContext purchaseContext = purchasedObject.EnsureComponent<ObjectPurchaseContext>();
+            purchaseContext.CostTypeIndex = (CostTypeIndex)Mathf.Max(0, Array.IndexOf(CostTypeCatalog.costTypeDefs, self));
             purchaseContext.FirstInteractionResults ??= payCostResults;
             purchaseContext.Results = payCostResults;
 
             return payCostResults;
         }
+
+        public CostTypeIndex CostTypeIndex { get; private set; } = CostTypeIndex.None;
 
         public CostTypeDef.PayCostResults FirstInteractionResults { get; private set; }
 

@@ -39,7 +39,6 @@ namespace ItemQualities.Items
                 _sprintingStopwatch += Time.fixedDeltaTime;
                 if (Mathf.Abs(_sprintPlane.GetDistanceToPoint(_body.footPosition)) >= MaxSprintDeviationDistance)
                 {
-                    Log.Debug($"{Util.GetBestBodyName(gameObject)} deviated from sprint plane");
                     restartSprintTracking();
                 }
             }
