@@ -1,56 +1,137 @@
+using EntityStates.Headstompers;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
-using Mono.Cecil.Cil;
-using EntityStates.Headstompers;
 using System;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public class Headset
+    static class FallBoots
     {
-        
         [SystemInitializer]
         static void Init()
-        {
-           
-            IL.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += QualityStomp;
-
+        {      
+            IL.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += HeadstompersFall_DoStompExplosionAuthority;
         }
 
-        private static void QualityStomp(ILContext il)
+        static void HeadstompersFall_DoStompExplosionAuthority(ILContext il)
         {
-            var c = new ILCursor(il);
-            
-            c.Emit(OpCodes.Ldarg_0); 
-            c.EmitDelegate<Action<HeadstompersFall>>((self) =>
+            ILCursor c = new ILCursor(il);
+
+            int maxDistancePatchCount = 0;
+
+            c.Goto(0);
+            while (c.TryGotoNext(MoveType.After,
+                                 x => x.MatchLdsfld<HeadstompersFall>(nameof(HeadstompersFall.maxDistance))))
             {
-                //this is clunky but need to reset the base states so they dont re apply
-                HeadstompersFall.maxDistance = 30f;
-                HeadstompersFall.minimumDamageCoefficient = 10f;
-                HeadstompersFall.maximumDamageCoefficient = 100f;
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, HeadstompersFall, float>>(getMaxDistance);
 
-                ItemQualityCounts headset = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCounts(self.body.inventory);
-                
-                //this will keep it positive worst case 0 if you have like max int of each quality
-                
-                HeadstompersFall.maxDistance -= (3f  * (1f - 1f/ (1f + .9f * headset.UncommonCount))) +
-                                                (6f  * (1f - 1f/ (1f + .9f * headset.RareCount))) +
-                                                (9f  * (1f - 1f/ (1f + .9f * headset.EpicCount))) +
-                                                (12f * (1f - 1f/ (1f + .9f * headset.LegendaryCount)));
-                
-                HeadstompersFall.minimumDamageCoefficient += (1f  * headset.UncommonCount) +
-                                                             (2f  * headset.RareCount) +
-                                                             (3f  * headset.EpicCount) +
-                                                             (5f  * headset.LegendaryCount);
-                
-                HeadstompersFall.maximumDamageCoefficient += (10f  * headset.UncommonCount) +
-                                                             (20f  * headset.RareCount) +
-                                                             (30f  * headset.EpicCount) +
-                                                             (50f  * headset.LegendaryCount);
+                static float getMaxDistance(float maxDistance, HeadstompersFall self)
+                {
+                    Inventory inventory = self?.body ? self.body.inventory : null;
+                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCounts(inventory);
+                    if (fallBoots.TotalQualityCount > 0)
+                    {
+                        float distanceMultiplier = Mathf.Pow(1f - 0.1f, fallBoots.UncommonCount) *
+                                                   Mathf.Pow(1f - 0.2f, fallBoots.RareCount) *
+                                                   Mathf.Pow(1f - 0.3f, fallBoots.EpicCount) *
+                                                   Mathf.Pow(1f - 0.4f, fallBoots.LegendaryCount);
 
-            });
-            
+                        maxDistance *= distanceMultiplier;
+                    }
+
+                    return maxDistance;
+                }
+
+                maxDistancePatchCount++;
+            }
+
+            if (maxDistancePatchCount == 0)
+            {
+                Log.Error("Failed to find maxDistance patch location");
+            }
+            else
+            {
+                Log.Debug($"Found {maxDistancePatchCount} maxDistance patch location(s)");
+            }
+
+            int minimumDamageCoefficientPatchCount = 0;
+
+            c.Goto(0);
+            while (c.TryGotoNext(MoveType.After,
+                                 x => x.MatchLdsfld<HeadstompersFall>(nameof(HeadstompersFall.minimumDamageCoefficient))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, HeadstompersFall, float>>(getMinimumDamageCoefficient);
+
+                static float getMinimumDamageCoefficient(float minimumDamageCoefficient, HeadstompersFall self)
+                {
+                    Inventory inventory = self?.body ? self.body.inventory : null;
+                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCounts(inventory);
+                    if (fallBoots.TotalQualityCount > 0)
+                    {
+                        float damageCoefficientBonus = (1f * fallBoots.UncommonCount) +
+                                                       (2f * fallBoots.RareCount) +
+                                                       (3f * fallBoots.EpicCount) +
+                                                       (5f * fallBoots.LegendaryCount);
+
+                        minimumDamageCoefficient += damageCoefficientBonus;
+                    }
+
+                    return minimumDamageCoefficient;
+                }
+
+                minimumDamageCoefficientPatchCount++;
+            }
+
+            if (minimumDamageCoefficientPatchCount == 0)
+            {
+                Log.Error("Failed to find minimumDamageCoefficient patch location");
+            }
+            else
+            {
+                Log.Debug($"Found {minimumDamageCoefficientPatchCount} minimumDamageCoefficient patch location(s)");
+            }
+
+            int maximumDamageCoefficientPatchCount = 0;
+
+            c.Goto(0);
+            while (c.TryGotoNext(MoveType.After,
+                                 x => x.MatchLdsfld<HeadstompersFall>(nameof(HeadstompersFall.maximumDamageCoefficient))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, HeadstompersFall, float>>(getMaximumDamageCoefficient);
+
+                static float getMaximumDamageCoefficient(float maximumDamageCoefficient, HeadstompersFall self)
+                {
+                    Inventory inventory = self?.body ? self.body.inventory : null;
+                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCounts(inventory);
+                    if (fallBoots.TotalQualityCount > 0)
+                    {
+                        float damageCoefficientBonus = (10f * fallBoots.UncommonCount) +
+                                                       (20f * fallBoots.RareCount) +
+                                                       (30f * fallBoots.EpicCount) +
+                                                       (50f * fallBoots.LegendaryCount);
+
+                        maximumDamageCoefficient += damageCoefficientBonus;
+                    }
+
+                    return maximumDamageCoefficient;
+                }
+
+                maximumDamageCoefficientPatchCount++;
+            }
+
+            if (maximumDamageCoefficientPatchCount == 0)
+            {
+                Log.Error("Failed to find maximumDamageCoefficient patch location");
+            }
+            else
+            {
+                Log.Debug($"Found {maximumDamageCoefficientPatchCount} maximumDamageCoefficient patch location(s)");
+            }
         }
-
     }
 }
