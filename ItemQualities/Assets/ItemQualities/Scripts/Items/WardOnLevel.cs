@@ -23,9 +23,13 @@ namespace ItemQualities.Items
             {
                 GameObject warbannerWardTemporaryObj = warbannerWard.InstantiateClone("WarbannerWardTemporary");
 
+                GenericDurationComponent durationComponent = warbannerWardTemporaryObj.AddComponent<GenericDurationComponent>();
+
                 BuffWard buffWard = warbannerWardTemporaryObj.GetComponent<BuffWard>();
                 buffWard.expires = true;
                 buffWard.expireDuration = 15f;
+
+                durationComponent.BuffWard = buffWard;
 
                 Transform modelTransform = warbannerWardTemporaryObj.transform.Find("mdlWarbanner");
                 if (modelTransform)
@@ -48,6 +52,9 @@ namespace ItemQualities.Items
                     endBlinkController.delayBeforeBeginningBlinking = 9f;
                     endBlinkController.blinkFrequency = 10f;
                     endBlinkController.blinkingRootObject = modelRootObj;
+
+                    durationComponent.BlinkController = endBlinkController;
+                    durationComponent.BlinkDuration = 1f;
                 }
                 else
                 {
@@ -101,13 +108,10 @@ namespace ItemQualities.Items
                 teamFilter.teamIndex = interactorTeam;
 
                 BuffWard buffWard = temporaryWardObj.GetComponent<BuffWard>();
-                buffWard.radius = 8f + (8f * wardOnLevel.TotalCount);
-                buffWard.expireDuration = wardDuration;
+                buffWard.Networkradius = 8f + (8f * wardOnLevel.TotalCount);
 
-                if (temporaryWardObj.TryGetComponent(out BeginRapidlyActivatingAndDeactivating endBlinkController))
-                {
-                    endBlinkController.delayBeforeBeginningBlinking = Mathf.Max(0f, wardDuration - 1f);
-                }
+                GenericDurationComponent durationComponent = temporaryWardObj.GetComponent<GenericDurationComponent>();
+                durationComponent.Duration = wardDuration;
 
                 NetworkServer.Spawn(temporaryWardObj);
             }
