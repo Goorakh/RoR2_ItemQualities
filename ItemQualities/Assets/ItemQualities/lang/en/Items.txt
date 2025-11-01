@@ -1108,17 +1108,17 @@
         "ITEM_PERMANENTDEBUFFONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Apply more stacks with higher damage",
         "ITEM_PERMANENTDEBUFFONHIT_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> for every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by an additional <style=cIsDamage>10</style> <style=cStack>(+10 per stack)</style> permanently.",
         
-    "ITEM_SPEEDBOOSTPICKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
-        "ITEM_SPEEDBOOSTPICKUP_UNCOMMON_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second(s) per buff stack after ending.",
+        "ITEM_SPEEDBOOSTPICKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Picking up an orb while at maximum capacity grants invisibility instead.",
+        "ITEM_SPEEDBOOSTPICKUP_UNCOMMON_DESC": "{0}\nPicking up an orb while at <style=cIsUtility>6</style> or more stacks or at <style=cIsUtility>maximum capacity</style> grants <style=cIsUtility>invisibility</style> for <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second(s).",
 
-        "ITEM_SPEEDBOOSTPICKUP_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
-        "ITEM_SPEEDBOOSTPICKUP_RARE_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds per buff stack after ending.",
+        "ITEM_SPEEDBOOSTPICKUP_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Picking up an orb while at maximum capacity grants invisibility instead.",
+        "ITEM_SPEEDBOOSTPICKUP_RARE_DESC": "{0}\nPicking up an orb while at <style=cIsUtility>6</style> or more stacks or at <style=cIsUtility>maximum capacity</style> grants <style=cIsUtility>invisibility</style> for <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds.",
 
-        "ITEM_SPEEDBOOSTPICKUP_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
-        "ITEM_SPEEDBOOSTPICKUP_EPIC_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> seconds per buff stack after ending.",
+        "ITEM_SPEEDBOOSTPICKUP_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Picking up an orb while at maximum capacity grants invisibility instead.",
+        "ITEM_SPEEDBOOSTPICKUP_EPIC_DESC": "{0}\nPicking up an orb while at <style=cIsUtility>6</style> or more stacks or at <style=cIsUtility>maximum capacity</style> grants <style=cIsUtility>invisibility</style> for <sprite name=\"Quality\"> <style=cIsUtility>6</style> <style=cStack>(+6 per stack)</style> seconds.",
 
-        "ITEM_SPEEDBOOSTPICKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Movement speed buffs decay over time after ending.",
-        "ITEM_SPEEDBOOSTPICKUP_LEGENDARY_DESC": "{0}\nMovement speed buffs linger for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds per buff stack after ending.",
+        "ITEM_SPEEDBOOSTPICKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Picking up an orb while at maximum capacity grants invisibility instead.",
+        "ITEM_SPEEDBOOSTPICKUP_LEGENDARY_DESC": "{0}\nPicking up an orb while at <style=cIsUtility>6</style> or more stacks or at <style=cIsUtility>maximum capacity</style> grants <style=cIsUtility>invisibility</style> for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds.",
 
         "ITEM_BOUNCENEARBY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Hooked enemies stay grouped for longer.",
         "ITEM_BOUNCENEARBY_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Hooked</style> enemies are <style=cIsUtility>kept in place</style> for <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second(s)",
@@ -1398,7 +1398,7 @@
         
         "ITEM_IGNITEONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing burning enemies surrounds you with a fire storm",
         "ITEM_IGNITEONKILL_UNCOMMON_DESC": "{0}\nKilling a burning enemy surrounds you with a <style=cIsDamage>fire storm</style> for <sprite name=\"Quality\"> <style=cIsUtility>3 seconds</style>. The storm deals <sprite name=\"Quality\"> <style=cIsDamage>400% <style=cStack>(+400% per stack)</style> damage per second</style> and <style=cIsUtility>burns</style> enemies for <style=cIsUtility>100% damage</style>. The storm <style=cIsDamage>grows with every kill</style>, increasing its radius by <style=cIsDamage>3m</style>. Stacks up to <sprite name=\"Quality\"> <style=cIsDamage>11m</style>.",
-	
+    
         "ITEM_IGNITEONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing burning enemies surrounds you with a fire storm",
         "ITEM_IGNITEONKILL_RARE_DESC": "{0}\nKilling a burning enemy surrounds you with a <style=cIsDamage>fire storm</style> for <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style>. The storm deals <sprite name=\"Quality\"> <style=cIsDamage>800% <style=cStack>(+800% per stack)</style> damage per second</style> and <style=cIsUtility>burns</style> enemies for <style=cIsUtility>100% damage</style>. The storm <style=cIsDamage>grows with every kill</style>, increasing its radius by <style=cIsDamage>3m</style>. Stacks up to <sprite name=\"Quality\"> <style=cIsDamage>21m</style>.",
 
