@@ -47,13 +47,28 @@ namespace ItemQualities.Items
 			Destroy(_bubbleShieldPrefab.GetComponent<ProjectileNetworkTransform>());
 			Destroy(_bubbleShieldPrefab.GetComponent<ProjectileSimple>());
 			Destroy(_bubbleShieldPrefab.GetComponent<Rigidbody>());
-			_bubbleShieldPrefab.GetComponent<EntityStateMachine>().initialStateType = new SerializableEntityStateType(typeof(MushroomBubbleDeploy));
+
+			EntityStateMachine statemachine = _bubbleShieldPrefab.GetComponent<EntityStateMachine>();
+			if (!statemachine)
+			{
+				Log.Error("Missing EntityStateMachine in MushroomShield");
+				yield break;
+			}
+			SerializableEntityStateType mushroomBubbleDeploy = new SerializableEntityStateType(typeof(MushroomBubbleDeploy));
+			statemachine.initialStateType = mushroomBubbleDeploy;
+			statemachine.mainStateType = mushroomBubbleDeploy;
+
 			ChildLocator childLocator = _bubbleShieldPrefab.GetComponent<ChildLocator>();
 			if (childLocator)
 			{
-				childLocator.FindChild("Bubble").gameObject.SetActive(value: true);
+				Transform child = childLocator.FindChild("Bubble");
+				if (!child) {
+					Log.Error("Failed to find child in MushroomShield");
+					yield break;
+				}
+				child.gameObject.SetActive(value: true);
 			}
-			_bubbleShieldPrefab.AddComponent<GetOwnerBody>();
+			_bubbleShieldPrefab.AddComponent<GenericOwnership>();
 
 			args.ContentPack.networkedObjectPrefabs.Add(_bubbleShieldPrefab);
 		}
@@ -70,17 +85,12 @@ namespace ItemQualities.Items
 				if (!_currentShield)
 				{
 					_currentShield = Object.Instantiate(_bubbleShieldPrefab, base.transform.position, Quaternion.identity);
-					_currentShield.GetComponent<GetOwnerBody>().body = _body;
+					_currentShield.GetComponent<GenericOwnership>().ownerObject = base.gameObject;
 					NetworkServer.Spawn(_currentShield);
 				}
 			} else {
 				_currentShield = null;
 			}
 		}
-	}
-
-	public class GetOwnerBody : MonoBehaviour {
-		[SyncVar]
-		public CharacterBody body;
 	}
 }

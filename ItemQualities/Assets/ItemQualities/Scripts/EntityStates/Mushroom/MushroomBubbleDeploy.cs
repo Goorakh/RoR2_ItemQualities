@@ -1,8 +1,5 @@
 using ItemQualities;
-using ItemQualities.Items;
 using RoR2;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,13 +8,12 @@ namespace EntityStates.MushroomBubbleDeployController
     public class MushroomBubbleDeploy : EntityState
     {
 		static EffectIndex _bubbleShieldEndEffect = EffectIndex.Invalid;
-		public static string childLocatorString;
 		public static string initialSoundString;
 		public static string destroySoundString;
-		public static float lifetime;
 		[SerializeField]
 		public float destroyEffectRadius;
 
+		float _lifetime;
 		bool _appliedQualities = false;
 		bool _startedMoving = false;
 		CharacterBody _ownerBody;
@@ -41,16 +37,18 @@ namespace EntityStates.MushroomBubbleDeployController
 
 		public override void FixedUpdate()
 		{
+			base.FixedUpdate();
 			if (!_appliedQualities) {
 				_blinking = GetComponent<BeginRapidlyActivatingAndDeactivating>();
 				if (!_blinking) return;
-				GetOwnerBody getOwnerBody = GetComponent<GetOwnerBody>();
-				if (!getOwnerBody) return;
-				_ownerBody = getOwnerBody.body;
+				GenericOwnership getOwner = GetComponent<GenericOwnership>();
+				if (!getOwner) return;
+				if (!getOwner.ownerObject) return;
+				_ownerBody = getOwner.ownerObject.GetComponent<CharacterBody>();
 				if (!_ownerBody) return;
 
 				ItemQualityCounts Mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_ownerBody.master.inventory);
-				lifetime = Mushroom.UncommonCount +
+				_lifetime = Mushroom.UncommonCount +
 							Mushroom.RareCount * 3 +
 							Mushroom.EpicCount * 6 +
 							Mushroom.LegendaryCount * 12;
@@ -71,7 +69,7 @@ namespace EntityStates.MushroomBubbleDeployController
 						scaleMul = 0.75f;
 						break;
 				}
-				_blinking.delayBeforeBeginningBlinking = lifetime - 0.5f;
+				_blinking.delayBeforeBeginningBlinking = _lifetime - 0.5f;
 				base.gameObject.transform.localScale = Vector3.one * scaleMul;
 				destroyEffectRadius *= scaleMul;
 				_appliedQualities = true;
@@ -82,12 +80,13 @@ namespace EntityStates.MushroomBubbleDeployController
 				_startedMoving = true;
 			}
 			if (_startedMoving) {
-				base.FixedUpdate();
-				if (base.fixedAge >= lifetime && NetworkServer.active)
+				
+				if (base.fixedAge >= _lifetime && NetworkServer.active)
 				{
 					EntityState.Destroy(base.gameObject);
 				}
 			} else {
+				base.fixedAge = 0;
 				_blinking.fixedAge = 0;
 			}
 		}
