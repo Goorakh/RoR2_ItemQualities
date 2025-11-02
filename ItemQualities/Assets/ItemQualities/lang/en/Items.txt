@@ -181,17 +181,17 @@
         "ITEM_MEDKIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
         "ITEM_MEDKIT_LEGENDARY_DESC": "{0}\nFor every second since the last time you were hit, increase healing by <sprite name=\"Quality\"> <style=cIsHealing>8% <style=cStack>(+8% per stack)</style></style>, up to a maximum of <style=cIsHealing>400% <style=cStack>(+400% per stack)</style></style>.",
 
-        "ITEM_MUSHROOM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing speed and reduces required stand-still duration.",
-        "ITEM_MUSHROOM_UNCOMMON_DESC": "After standing still for <sprite name=\"Quality\"> <style=cIsHealing>0.85</style> <style=cStack>(-15% per stack)</style> seconds, create a zone that <style=cIsHealing>heals</style> for <sprite name=\"Quality\"> <style=cIsHealing>5.4%</style> <style=cStack>(+2.7% per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>3m</style> <style=cStack>(+1.5m per stack)</style>.",
+        "ITEM_MUSHROOM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.25 seconds.",
+        "ITEM_MUSHROOM_UNCOMMON_DESC": "{0} After standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <style=cIsDamage>13m radius</style>, lasting for <style=cIsDamage>1 <style=cStack>(+1 per stack)</style> seconds</style>.",
 
-        "ITEM_MUSHROOM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing speed and reduces required stand-still duration.",
-        "ITEM_MUSHROOM_RARE_DESC": "After standing still for <sprite name=\"Quality\"> <style=cIsHealing>0.75</style> <style=cStack>(-25% per stack)</style> seconds, create a zone that <style=cIsHealing>heals</style> for <sprite name=\"Quality\"> <style=cIsHealing>6.3%</style> <style=cStack>(+3.15% per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>3m</style> <style=cStack>(+1.5m per stack)</style>.",
+        "ITEM_MUSHROOM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.25 seconds.",
+        "ITEM_MUSHROOM_RARE_DESC": "{0} After standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <style=cIsDamage>11m radius</style>, lasting for <style=cIsDamage>3 <style=cStack>(+3 per stack)</style> seconds</style>.",
 
-        "ITEM_MUSHROOM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing speed and reduces required stand-still duration.",
-        "ITEM_MUSHROOM_EPIC_DESC": "After standing still for <sprite name=\"Quality\"> <style=cIsHealing>0.6</style> <style=cStack>(-40% per stack)</style> seconds, create a zone that <style=cIsHealing>heals</style> for <sprite name=\"Quality\"> <style=cIsHealing>8%</style> <style=cStack>(+4% per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>3m</style> <style=cStack>(+1.5m per stack)</style>.",
+        "ITEM_MUSHROOM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.25 seconds.",
+        "ITEM_MUSHROOM_EPIC_DESC": "{0} After standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <style=cIsDamage>9m radius</style>, lasting for <style=cIsDamage>6 <style=cStack>(+6 per stack)</style> seconds</style>.",
 
-        "ITEM_MUSHROOM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing speed and reduces required stand-still duration.",
-        "ITEM_MUSHROOM_LEGENDARY_DESC": "After standing still for <sprite name=\"Quality\"> <style=cIsHealing>0.4</style> <style=cStack>(-60% per stack)</style> seconds, create a zone that <style=cIsHealing>heals</style> for <sprite name=\"Quality\"> <style=cIsHealing>9%</style> <style=cStack>(+4.5% per stack)</style> of your <style=cIsHealing>health</style> every second to all allies within <style=cIsHealing>3m</style> <style=cStack>(+1.5m per stack)</style>.",
+        "ITEM_MUSHROOM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.25 seconds.",
+        "ITEM_MUSHROOM_LEGENDARY_DESC": "{0} After standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <style=cIsDamage>7m radius</style>, lasting for <style=cIsDamage>12 <style=cStack>(+12 per stack)</style> seconds</style>.",
 
         "ITEM_EQUIPMENTMAGAZINE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge held equipment.",
         "ITEM_EQUIPMENTMAGAZINE_UNCOMMON_DESC": "{0}\nActivating an <style=cIsUtility>equipment</style> has a <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to immediately recharge it.",
