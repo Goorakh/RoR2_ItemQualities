@@ -80,6 +80,7 @@ namespace ItemQualities.Items
 	}
 
 	public class GetOwnerBody : MonoBehaviour {
+		[SyncVar]
 		public CharacterBody body;
 	}
 }
