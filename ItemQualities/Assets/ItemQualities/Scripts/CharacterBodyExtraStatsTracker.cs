@@ -76,17 +76,6 @@ namespace ItemQualities
             }
         }
 
-        const float BaseMushroomNotMovingStopwatchThreshold = 1f;
-        float _mushroomNotMovingStopwatchThreshold = BaseMushroomNotMovingStopwatchThreshold;
-        public float MushroomNotMovingStopwatchThreshold
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _mushroomNotMovingStopwatchThreshold;
-            }
-        }
-
         public int WarCryOnMultiKill_MultiKillCount { get; private set; }
         float _warCryOnMultiKill_MultiKillTimer = 0;
         float _warCryOnMultiKill_MultiKillDuration = CharacterBody.multiKillMaxInterval;
@@ -161,8 +150,6 @@ namespace ItemQualities
 
         public int QuailJumpComboAuthority { get; private set; }
 
-        public bool MushroomActiveServer { get; private set; }
-
         public bool HasHadAnyQualityDeathMarkDebuffServer { get; private set; }
 
         public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _masterExtraStatsComponent.Get(_body.masterObject);
@@ -220,7 +207,6 @@ namespace ItemQualities
             {
                 _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
                 _shieldOutOfDanger = _body && _body.outOfDangerStopwatch >= _shieldOutOfDangerDelay;
-                MushroomActiveServer = _body && _body.notMovingStopwatch >= _mushroomNotMovingStopwatchThreshold;
 
                 if (!HasHadAnyQualityDeathMarkDebuffServer && DeathMark.HasAnyQualityDeathMarkDebuff(_body))
                 {
@@ -301,7 +287,8 @@ namespace ItemQualities
                 setItemBehavior<IgniteOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<MushroomVoidQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-            }
+                setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+			}
         }
 
         void updateOverlays()
@@ -369,7 +356,6 @@ namespace ItemQualities
             ItemQualityCounts personalShield = default;
             ItemQualityCounts barrierOnKill = default;
             ItemQualityCounts fragileDamageBonus = default;
-            ItemQualityCounts mushroom = default;
             ItemQualityCounts warCryOnMultiKill = default;
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
@@ -381,7 +367,6 @@ namespace ItemQualities
                 personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCounts(_body.inventory);
                 barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCounts(_body.inventory);
                 fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory);
-                mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory);
                 warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCounts(_body.inventory);
                 executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCounts(_body.inventory);
                 phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCounts(_body.inventory);
@@ -419,14 +404,6 @@ namespace ItemQualities
             barrierDecayRateReduction += 3.00f * barrierOnKill.LegendaryCount;
 
             _barrierDecayRateMultiplier = 1f / barrierDecayRateReduction;
-
-            float mushroomNotMovingStopwatchThresholdReduction = 1f;
-            mushroomNotMovingStopwatchThresholdReduction += 0.18f * mushroom.UncommonCount;
-            mushroomNotMovingStopwatchThresholdReduction += 0.33f * mushroom.RareCount;
-            mushroomNotMovingStopwatchThresholdReduction += 0.66f * mushroom.EpicCount;
-            mushroomNotMovingStopwatchThresholdReduction += 1.50f * mushroom.LegendaryCount;
-
-            _mushroomNotMovingStopwatchThreshold = BaseMushroomNotMovingStopwatchThreshold / mushroomNotMovingStopwatchThresholdReduction;
 
             float warCryOnMultiKill_MultiKillDurationMult = 1f;
             warCryOnMultiKill_MultiKillDurationMult += 0.3f * warCryOnMultiKill.UncommonCount;
