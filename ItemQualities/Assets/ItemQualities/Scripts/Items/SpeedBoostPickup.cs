@@ -1,8 +1,10 @@
 ﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -13,68 +15,85 @@ namespace ItemQualities.Items
         {
             IL.RoR2.CharacterBody.GetElusiveAntlersCurrentMaxStack += ItemHooks.CombineGroupedItemCountsPatch;
             IL.RoR2.ElusiveAntlersBehavior.FixedUpdate += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.ElusiveAntlersPickup.OnTriggerStay += ItemHooks.CombineGroupedItemCountsPatch;
-
-            IL.RoR2.CharacterBody.UpdateBuffs += CharacterBody_UpdateBuffs;
+            IL.RoR2.ElusiveAntlersPickup.OnTriggerStay += ElusiveAntlersPickup_OnTriggerStay;
         }
 
-        static void CharacterBody_UpdateBuffs(ILContext il)
+        static void ElusiveAntlersPickup_OnTriggerStay(ILContext il)
         {
+            ItemHooks.CombineGroupedItemCountsPatch(il);
+
             ILCursor c = new ILCursor(il);
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchCall<CharacterBody>(nameof(CharacterBody.RemoveBuff)),
-                               x => x.MatchRet()))
+                               x => x.MatchLdsfld(typeof(DLC2Content.Buffs), nameof(DLC2Content.Buffs.ElusiveAntlersBuff)),
+                               x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.AddTimedBuff))))
             {
                 Log.Error("Failed to find patch location");
                 return;
             }
 
-            VariableDefinition numRemovedAntlerBuffsVar = il.AddVariable<int>();
+            c.Goto(foundCursors[1].Next, MoveType.Before); // call CharacterBody.AddTimedBuff
 
-            c.Goto(foundCursors[0].Next, MoveType.Before); // call CharacterBody.RemoveBuff
-
-            c.Emit(OpCodes.Dup);
-            c.Emit(OpCodes.Ldloca, numRemovedAntlerBuffsVar);
-            c.EmitDelegate<OnRemoveBuffDelegate>(onRemoveBuff);
-
-            static void onRemoveBuff(BuffIndex buffIndex, ref int numRemovedAntlerBuffs)
+            int targetBodyLocalIndex = -1;
+            if (c.TryFindPrev(out _,
+                              x => x.MatchLdloc(typeof(CharacterBody), il, out targetBodyLocalIndex)))
             {
-                if (buffIndex == DLC2Content.Buffs.ElusiveAntlersBuff.buffIndex)
+                c.Emit(OpCodes.Ldloc, targetBodyLocalIndex);
+            }
+            else
+            {
+                Log.Warning("Failed to find targetBody variable");
+
+                if (!il.Method.TryFindParameter<Collider>(out ParameterDefinition otherColliderParameter))
                 {
-                    numRemovedAntlerBuffs++;
+                    Log.Error("Failed to find Collider parameter");
+                    return;
+                }
+
+                c.Emit(OpCodes.Ldarg, otherColliderParameter);
+                c.EmitDelegate<Func<Collider, CharacterBody>>(getTargetBody);
+
+                static CharacterBody getTargetBody(Collider collider)
+                {
+                    if (!collider)
+                        return null;
+
+                    if (collider.TryGetComponent(out CharacterBody body))
+                        return body;
+
+                    if (collider.TryGetComponent(out EntityLocator entityLocator) &&
+                        entityLocator.entity &&
+                        entityLocator.entity.TryGetComponent(out CharacterBody entityBody))
+                    {
+                        return entityBody;
+                    }
+
+                    return null;
                 }
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.AfterLabel); // ret
+            c.EmitDelegate<Action<CharacterBody>>(beforeGiveAntlerBuff);
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, numRemovedAntlerBuffsVar);
-            c.EmitDelegate<Action<CharacterBody, int>>(tryRefundAntlerBuffs);
-
-            static void tryRefundAntlerBuffs(CharacterBody body, int numRemovedAntlerBuffs)
+            static void beforeGiveAntlerBuff(CharacterBody body)
             {
-                if (numRemovedAntlerBuffs > 1)
+                if (!body)
+                    return;
+
+                ItemQualityCounts speedBoostPickup = ItemQualitiesContent.ItemQualityGroups.SpeedBoostPickup.GetItemCounts(body.inventory);
+                if (speedBoostPickup.TotalQualityCount > 0 &&
+                    body.GetBuffCount(DLC2Content.Buffs.ElusiveAntlersBuff) >= Mathf.Min(6, body.GetElusiveAntlersCurrentMaxStack()))
                 {
-                    Inventory inventory = body ? body.inventory : null;
+                    float invisibilityDuration = (1f * speedBoostPickup.UncommonCount) + 
+                                                 (3f * speedBoostPickup.RareCount) +
+                                                 (6f * speedBoostPickup.EpicCount) +
+                                                 (8f * speedBoostPickup.LegendaryCount);
 
-                    ItemQualityCounts speedBoostPickup = ItemQualitiesContent.ItemQualityGroups.SpeedBoostPickup.GetItemCounts(inventory);
-                    if (speedBoostPickup.TotalQualityCount > 0)
+                    if (invisibilityDuration > 0f)
                     {
-                        float decayStepDuration = (1f * speedBoostPickup.UncommonCount) +
-                                                  (3f * speedBoostPickup.RareCount) +
-                                                  (5f * speedBoostPickup.EpicCount) +
-                                                  (8f * speedBoostPickup.LegendaryCount);
-
-                        for (int i = numRemovedAntlerBuffs - 1; i > 0; i--)
-                        {
-                            body.AddTimedBuff(DLC2Content.Buffs.ElusiveAntlersBuff, i * decayStepDuration);
-                        }
+                        body.AddTimedBuff(RoR2Content.Buffs.Cloak, invisibilityDuration);
                     }
                 }
             }
         }
-
-        delegate void OnRemoveBuffDelegate(BuffIndex buffIndex, ref int numRemovedAntlerBuffs);
     }
 }

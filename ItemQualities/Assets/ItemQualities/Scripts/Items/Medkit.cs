@@ -6,6 +6,7 @@ using MonoMod.Utils;
 using RoR2;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -57,21 +58,31 @@ namespace ItemQualities.Items
 
             static float getHealAmount(float healAmount, CharacterBody body)
             {
-                Inventory inventory = body ? body.inventory : null;
-
-                if (inventory)
+                if (body && body.inventory)
                 {
-                    ItemQualityCounts medkit = ItemQualitiesContent.ItemQualityGroups.Medkit.GetItemCounts(inventory);
-
-                    float doubleHealChance = Util.ConvertAmplificationPercentageIntoReductionPercentage(amplificationPercentage:
-                        (10f * medkit.UncommonCount) +
-                        (20f * medkit.RareCount) +
-                        (50f * medkit.EpicCount) +
-                        (75f * medkit.LegendaryCount));
-
-                    if (Util.CheckRoll(doubleHealChance, body ? body.master : null))
+                    ItemQualityCounts medkit = ItemQualitiesContent.ItemQualityGroups.Medkit.GetItemCounts(body.inventory);
+                    if (medkit.TotalQualityCount > 0 && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     {
-                        healAmount *= 2f;
+                        float timeSinceLastHit = bodyExtraStats.CurrentMedkitProcTimeSinceLastHit;
+                        bodyExtraStats.CurrentMedkitProcTimeSinceLastHit = 0f;
+                        if (timeSinceLastHit > 0f)
+                        {
+                            float healingIncreasePerSecond = (0.01f * medkit.UncommonCount) +
+                                                             (0.02f * medkit.RareCount) +
+                                                             (0.04f * medkit.EpicCount) +
+                                                             (0.08f * medkit.LegendaryCount);
+
+                            float maxHealingIncrease = (1.0f * medkit.UncommonCount) +
+                                                       (1.5f * medkit.RareCount) +
+                                                       (2.5f * medkit.EpicCount) +
+                                                       (4.0f * medkit.LegendaryCount);
+
+                            float healingMultiplier = 1f + Mathf.Min(maxHealingIncrease, healingIncreasePerSecond * timeSinceLastHit);
+
+                            Log.Debug($"Time since last hit: {timeSinceLastHit}, multiplier: {healingMultiplier}");
+
+                            healAmount *= healingMultiplier;
+                        }
                     }
                 }
 
@@ -91,7 +102,7 @@ namespace ItemQualities.Items
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.medkit)),
                                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.MedkitHeal)),
-                               x => x.MatchLdcR4(2f)))
+                               x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.AddTimedBuff))))
             {
                 Log.Error("Failed to find patch location");
                 return;
@@ -100,32 +111,21 @@ namespace ItemQualities.Items
             c.Goto(foundCursors[2].Next, MoveType.After);
 
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<float, HealthComponent, float>>(getHealDelay);
+            c.EmitDelegate<Action<HealthComponent>>(onMedkitProc);
 
-            static float getHealDelay(float healDelay, HealthComponent healthComponent)
+            static void onMedkitProc(HealthComponent healthComponent)
             {
-                CharacterBody body = healthComponent ? healthComponent.body : null;
-                Inventory inventory = body ? body.inventory : null;
-
-                if (inventory)
+                if (healthComponent.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                 {
-                    ItemQualityCounts medkit = ItemQualitiesContent.ItemQualityGroups.Medkit.GetItemCounts(inventory);
-
-                    float healDelayReduction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
-                        (0.15f * medkit.UncommonCount) +
-                        (0.25f * medkit.RareCount) +
-                        (0.40f * medkit.EpicCount) +
-                        (0.60f * medkit.LegendaryCount));
-
-                    if (healDelayReduction > 0f)
+                    Run.FixedTimeStamp lastHitTime = healthComponent.lastHitTime;
+                    if (lastHitTime.isInfinity && healthComponent.body)
                     {
-                        Log.Debug($"Reduced heal delay: {healDelay} -> {healDelay * (1f - healDelayReduction)}");
-
-                        healDelay *= 1f - healDelayReduction;
+                        lastHitTime = healthComponent.body.localStartTime;
                     }
-                }
 
-                return healDelay;
+                    float timeSinceLastHit = lastHitTime.timeSince;
+                    bodyExtraStats.CurrentMedkitProcTimeSinceLastHit = timeSinceLastHit;
+                }
             }
         }
     }

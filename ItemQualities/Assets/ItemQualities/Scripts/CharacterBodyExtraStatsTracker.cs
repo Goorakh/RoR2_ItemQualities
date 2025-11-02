@@ -22,8 +22,6 @@ namespace ItemQualities
 
         MemoizedGetComponent<CharacterMasterExtraStatsTracker> _masterExtraStatsComponent;
 
-        uint _lastMoneyValue;
-
         bool _statsDirty;
 
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
@@ -152,6 +150,8 @@ namespace ItemQualities
 
         public bool HasHadAnyQualityDeathMarkDebuffServer { get; private set; }
 
+        public float CurrentMedkitProcTimeSinceLastHit { get; set; } = 0f;
+
         public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _masterExtraStatsComponent.Get(_body.masterObject);
 
         public event Action<DamageInfo> OnIncomingDamageServer;
@@ -192,15 +192,6 @@ namespace ItemQualities
 
         void FixedUpdate()
         {
-            CharacterMaster master = _body ? _body.master : null;
-
-            uint currentMoneyValue = master ? master.money : 0;
-            if (currentMoneyValue != _lastMoneyValue)
-            {
-                _body.MarkAllStatsDirty();
-                _lastMoneyValue = currentMoneyValue;
-            }
-
             recalculateStatsIfNeeded();
 
             if (NetworkServer.active)
@@ -288,7 +279,8 @@ namespace ItemQualities
                 setItemBehavior<MushroomVoidQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-			}
+                setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+            }
         }
 
         void updateOverlays()

@@ -181,12 +181,13 @@ namespace ItemQualities.Items
                     ItemQualityCounts usedSaleStars = purchaseResults.GetUsedSaleStars();
                     if (usedSaleStars.TotalQualityCount > 0)
                     {
-                        dropQualityTiers = new QualityTier[dropCount];
+                        int bonusDropCount = dropCount - 1;
+                        dropQualityTiers = new QualityTier[bonusDropCount];
 
                         int nextDropIndex = 0;
                         for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier > QualityTier.None; qualityTier--)
                         {
-                            int dropsOfQuality = Mathf.CeilToInt((usedSaleStars[qualityTier] / (float)usedSaleStars.TotalCount) * dropCount);
+                            int dropsOfQuality = Mathf.CeilToInt((usedSaleStars[qualityTier] / (float)usedSaleStars.TotalCount) * bonusDropCount);
                             int dropsOfQualityToAdd = Mathf.Min(dropsOfQuality, dropQualityTiers.Length - nextDropIndex);
                             if (dropsOfQualityToAdd > 0)
                             {
@@ -213,15 +214,14 @@ namespace ItemQualities.Items
             return dropQualityTiers;
         }
 
-        delegate PickupIndex TryUpgradePickupQualityFromSaleStarsDelegate(PickupIndex pickupIndex, QualityTier[] upgradeQualityTiers, ref int upgradePickupIndex);
-        static PickupIndex tryUpgradePickupQualityFromSaleStars(PickupIndex pickupIndex, QualityTier[] upgradeQualityTiers, ref int upgradePickupIndex)
+        delegate PickupIndex TryUpgradePickupQualityFromSaleStarsDelegate(PickupIndex pickupIndex, QualityTier[] saleStarDropQualityTiers, ref int pickupSequenceIndex);
+        static PickupIndex tryUpgradePickupQualityFromSaleStars(PickupIndex pickupIndex, QualityTier[] saleStarDropQualityTiers, ref int pickupSequenceIndex)
         {
             QualityTier pickupQuality = QualityCatalog.GetQualityTier(pickupIndex);
 
-            if (upgradeQualityTiers != null)
+            if (saleStarDropQualityTiers != null && pickupSequenceIndex > 0)
             {
-                QualityTier upgradeQualityTier = ArrayUtils.GetSafe(upgradeQualityTiers, upgradePickupIndex, QualityTier.None);
-                upgradePickupIndex++;
+                QualityTier upgradeQualityTier = ArrayUtils.GetSafe(saleStarDropQualityTiers, pickupSequenceIndex - 1, QualityTier.None);
 
                 if (upgradeQualityTier > pickupQuality)
                 {
@@ -229,6 +229,8 @@ namespace ItemQualities.Items
                     pickupQuality = upgradeQualityTier;
                 }
             }
+
+            pickupSequenceIndex++;
 
             return pickupIndex;
         }

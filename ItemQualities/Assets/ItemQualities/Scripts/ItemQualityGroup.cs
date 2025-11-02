@@ -280,7 +280,7 @@ namespace ItemQualities
 
                     TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(qualityIconTextureAssetPath);
                     textureImporter.textureType = TextureImporterType.Sprite;
-                    textureImporter.spritePixelsPerUnit = 25;
+                    textureImporter.spritePixelsPerUnit = qualityIconTexture.width / 5.12f;
                     textureImporter.alphaIsTransparency = true;
 
                     AssetDatabase.ImportAsset(qualityIconTextureAssetPath, ImportAssetOptions.ForceUpdate);

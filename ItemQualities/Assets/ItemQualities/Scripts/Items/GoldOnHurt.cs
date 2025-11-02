@@ -13,23 +13,16 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            CharacterMaster master = sender ? sender.master : null;
             Inventory inventory = sender ? sender.inventory : null;
 
-            ItemQualityCounts goldOnHurt = default;
-            if (inventory)
+            ItemQualityCounts goldOnHurt = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCounts(inventory);
+            if (goldOnHurt.TotalQualityCount > 0)
             {
-                goldOnHurt = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCounts(inventory);
-            }
-
-            if (goldOnHurt.TotalCount > goldOnHurt.BaseItemCount)
-            {
-                uint currentMoney = master ? master.money : 0;
-                if (currentMoney <= Run.instance.GetDifficultyScaledCost(25, Stage.instance.entryDifficultyCoefficient))
+                if (ItemQualitiesContent.BuffQualityGroups.GoldArmorBuff.HasQualityBuff(sender))
                 {
-                    args.armorAdd += (10f * goldOnHurt.UncommonCount) +
-                                     (25f * goldOnHurt.RareCount) +
-                                     (50f * goldOnHurt.EpicCount) +
+                    args.armorAdd += (30f * goldOnHurt.UncommonCount) +
+                                     (50f * goldOnHurt.RareCount) +
+                                     (75f * goldOnHurt.EpicCount) +
                                      (100f * goldOnHurt.LegendaryCount);
                 }
             }
