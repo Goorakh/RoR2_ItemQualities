@@ -1,5 +1,4 @@
 ﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -12,63 +11,36 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+            ItemHooks.TakeDamageModifier += modifyTakeDamage;
 
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        static void modifyTakeDamage(ref float damageValue, DamageInfo damageInfo)
         {
-            if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
-            {
-                Log.Error("Failed to find DamageInfo parameter");
+            if (damageInfo == null || (damageInfo.damageType.damageSource & DamageSource.Special) == 0)
                 return;
-            }
 
-            ILCursor c = new ILCursor(il);
-
-            int damageValueLocalIndex = -1;
-            if (!c.TryGotoNext(x => x.MatchLdfld<TeamDef>(nameof(TeamDef.friendlyFireScaling))) ||
-                !c.TryGotoPrev(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damage))) ||
-                !c.TryGotoNext(MoveType.After,
-                               x => x.MatchStloc(typeof(float), il, out damageValueLocalIndex)))
-            {
-                Log.Error("Failed to find patch location");
+            CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
+            Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+            if (!attackerInventory)
                 return;
-            }
 
-            c.Emit(OpCodes.Ldloca, damageValueLocalIndex);
-            c.Emit(OpCodes.Ldarg, damageInfoParameter);
-            c.EmitDelegate<ModifyDamageDelegate>(modifyDamage);
-
-            static void modifyDamage(ref float damageValue, DamageInfo damageInfo)
+            ItemQualityCounts equipmentMagazineVoid = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCounts(attackerInventory);
+            if (equipmentMagazineVoid.TotalQualityCount > 0)
             {
-                if ((damageInfo.damageType.damageSource & DamageSource.Special) == 0)
-                    return;
+                float damageIncrease = (0.1f * equipmentMagazineVoid.UncommonCount) +
+                                       (0.2f * equipmentMagazineVoid.RareCount) +
+                                       (0.4f * equipmentMagazineVoid.EpicCount) +
+                                       (0.5f * equipmentMagazineVoid.LegendaryCount);
 
-                CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
-                Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-                if (!attackerInventory)
-                    return;
-
-                ItemQualityCounts equipmentMagazineVoid = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCounts(attackerInventory);
-                if (equipmentMagazineVoid.TotalQualityCount > 0)
+                if (damageIncrease > 0f)
                 {
-                    float damageIncrease = (0.1f * equipmentMagazineVoid.UncommonCount) +
-                                           (0.2f * equipmentMagazineVoid.RareCount) +
-                                           (0.4f * equipmentMagazineVoid.EpicCount) +
-                                           (0.5f * equipmentMagazineVoid.LegendaryCount);
-
-                    if (damageIncrease > 0f)
-                    {
-                        damageValue *= 1f + damageIncrease;
-                        damageInfo.damageColorIndex = DamageColorIndex.Void;
-                    }
+                    damageValue *= 1f + damageIncrease;
+                    damageInfo.damageColorIndex = DamageColorIndex.Void;
                 }
             }
         }
-
-        delegate void ModifyDamageDelegate(ref float damageValue, DamageInfo damageInfo);
 
         static void CharacterBody_RecalculateStats(ILContext il)
         {

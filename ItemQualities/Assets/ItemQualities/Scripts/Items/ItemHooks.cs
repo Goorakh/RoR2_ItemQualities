@@ -8,6 +8,7 @@ using RoR2;
 using System;
 using System.Collections;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using UnityEngine.Networking;
 
@@ -15,6 +16,9 @@ namespace ItemQualities.Items
 {
     static class ItemHooks
     {
+        public delegate void ModifyDamageDelegate(ref float damageValue, DamageInfo damageInfo);
+        public static event ModifyDamageDelegate TakeDamageModifier;
+
         [SystemInitializer]
         static void Init()
         {
@@ -73,6 +77,48 @@ namespace ItemQualities.Items
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
 
             On.RoR2.CharacterBody.AddMultiKill += CharacterBody_AddMultiKill;
+
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+        }
+
+        static void HealthComponent_TakeDamageProcess(ILContext il)
+        {
+            if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
+            {
+                Log.Error("Failed to find DamageInfo parameter");
+                return;
+            }
+
+            ILCursor c = new ILCursor(il);
+
+            int damageValueLocalIndex = -1;
+            if (!c.TryGotoNext(x => x.MatchLdfld<TeamDef>(nameof(TeamDef.friendlyFireScaling))) ||
+                !c.TryGotoPrev(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damage))) ||
+                !c.TryGotoNext(MoveType.After,
+                               x => x.MatchStloc(typeof(float), il, out damageValueLocalIndex)))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldloca, damageValueLocalIndex);
+            c.Emit(OpCodes.Ldarg, damageInfoParameter);
+            c.EmitDelegate<ModifyDamageDelegate>(invokeModifyDamage);
+
+            static void invokeModifyDamage(ref float damageValue, DamageInfo damageInfo)
+            {
+                foreach (ModifyDamageDelegate takeDamageModifier in TakeDamageModifier.GetInvocationList().OfType<ModifyDamageDelegate>())
+                {
+                    try
+                    {
+                        takeDamageModifier?.Invoke(ref damageValue, damageInfo);
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error_NoCallerPrefix($"Failed to invoke TakeDamageModifier: {ex}");
+                    }
+                }
+            }
         }
 
         static void CharacterBody_AddMultiKill(On.RoR2.CharacterBody.orig_AddMultiKill orig, CharacterBody self, int kills)

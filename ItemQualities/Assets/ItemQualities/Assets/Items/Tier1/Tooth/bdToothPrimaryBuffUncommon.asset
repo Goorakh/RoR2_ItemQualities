@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bdToothPrimaryBuffUncommon
   m_EditorClassIdentifier: 
   iconPath: 
-  iconSprite: {fileID: 21300000, guid: 6e483d1f6ee7ba140b9984827318550a, type: 3}
+  iconSprite: {fileID: 21300000, guid: a507aded42b35894f81b6f1d015a13fe, type: 3}
   buffColor: {r: 1, g: 1, b: 1, a: 1}
   canStack: 0
   eliteDef: {fileID: 0}

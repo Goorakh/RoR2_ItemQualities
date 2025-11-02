@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
 using System;
 using UnityEngine;
@@ -13,7 +14,77 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
+            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+
+            ItemHooks.TakeDamageModifier += takeDamageModifier;
+
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+        }
+
+        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            BuffQualityCounts toothPrimaryBoost = ItemQualitiesContent.BuffQualityGroups.ToothPrimaryBuff.GetBuffCounts(sender);
+            if (toothPrimaryBoost.TotalQualityCount > 0)
+            {
+                switch (toothPrimaryBoost.HighestQuality)
+                {
+                    case QualityTier.Uncommon:
+                        args.attackSpeedMultAdd += 0.3f;
+                        break;
+                    case QualityTier.Rare:
+                        args.attackSpeedMultAdd += 0.5f;
+                        break;
+                    case QualityTier.Epic:
+                        args.attackSpeedMultAdd += 0.8f;
+                        break;
+                    case QualityTier.Legendary:
+                        args.attackSpeedMultAdd += 1.2f;
+                        break;
+                    default:
+                        Log.Error($"Quality tier {toothPrimaryBoost.HighestQuality} is not implemented");
+                        break;
+                }
+            }
+        }
+
+        static void takeDamageModifier(ref float damageValue, DamageInfo damageInfo)
+        {
+            if (damageInfo == null || (damageInfo.damageType.damageSource & DamageSource.Secondary) == 0)
+                return;
+
+            CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
+            if (attackerBody)
+            {
+                BuffQualityCounts toothSecondaryBoost = ItemQualitiesContent.BuffQualityGroups.ToothSecondaryBuff.GetBuffCounts(attackerBody);
+                if (toothSecondaryBoost.TotalQualityCount > 0)
+                {
+                    float damageMultiplier = 1f;
+                    switch (toothSecondaryBoost.HighestQuality)
+                    {
+                        case QualityTier.Uncommon:
+                            damageMultiplier += 0.05f;
+                            break;
+                        case QualityTier.Rare:
+                            damageMultiplier += 0.10f;
+                            break;
+                        case QualityTier.Epic:
+                            damageMultiplier += 0.15f;
+                            break;
+                        case QualityTier.Legendary:
+                            damageMultiplier += 0.20f;
+                            break;
+                        default:
+                            Log.Error($"Quality tier {toothSecondaryBoost.HighestQuality} is not implemented");
+                            break;
+                    }
+
+                    if (damageMultiplier > 1f)
+                    {
+                        damageValue *= damageMultiplier;
+                        damageInfo.damageColorIndex = DamageColorIndex.Item;
+                    }
+                }
+            }
         }
 
         static void GlobalEventManager_OnCharacterDeath(ILContext il)
