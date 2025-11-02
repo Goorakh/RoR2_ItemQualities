@@ -680,6 +680,10 @@ namespace ItemQualities
             public static BuffQualityGroup FragileDamageBonusBuff;
 
             public static BuffQualityGroup GoldArmorBuff;
+
+            public static BuffQualityGroup ToothPrimaryBuff;
+
+            public static BuffQualityGroup ToothSecondaryBuff;
         }
 
         public static class Buffs
@@ -717,6 +721,14 @@ namespace ItemQualities
             public static GameObject SlowOnHitRootArea;
 
             public static GameObject HealPackDelayed;
+
+            public static GameObject HealOrbPrimary;
+
+            public static GameObject HealOrbSecondary;
+
+            public static GameObject HealOrbUtility;
+
+            public static GameObject HealOrbSpecial;
         }
 
         public static class ProjectilePrefabs
