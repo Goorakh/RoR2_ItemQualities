@@ -2,9 +2,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Items;
-using RoR2.Orbs;
 using System;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -14,7 +12,6 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += Il_ShockNearbyBodyBehavior_FixedUpdate;
-            IL.RoR2.Orbs.LightningOrb.Begin += IL_LightningOrb_Begin;
         }
 
         static float ModifyInterval(float duration, ShockNearbyBodyBehavior behavior)
@@ -66,31 +63,6 @@ namespace ItemQualities.Items
                 c.Goto(foundCursors[1].Next, MoveType.Before);
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<float, ShockNearbyBodyBehavior, float>>(ModifyInterval);
-            }
-        }
-
-        private static void IL_LightningOrb_Begin(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                                x => x.MatchLdstr("Prefabs/Effects/OrbEffects/TeslaOrbEffect"),
-                                x => x.MatchStloc(0)))
-            {
-                Log.Error($"Failed to find LightningOrb.Begin patch location");
-                return;
-            }
-
-            c.Goto(foundCursors[1].Next, MoveType.After);
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Action<LightningOrb>>(ModifyDuration);
-
-            static void ModifyDuration(LightningOrb orb)
-            {
-                if (!orb.attacker)
-                    return;
-
-                orb.duration = ModifyInterval(orb.duration, orb.attacker.GetComponent<CharacterBody>());
             }
         }
     }
