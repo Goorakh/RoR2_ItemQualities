@@ -21,21 +21,20 @@ namespace ItemQualities.Items
 
         static float ModifyInterval(float interval, CharacterBody body)
         {
+            const float MinimumMultiplier = 0.1f;
+
             Inventory inventory = body ? body.inventory : null;
-            QualityTier shockNearby = QualityTier.None;
+            ItemQualityCounts shockNearby = default;
             if (inventory)
-                shockNearby = ItemQualitiesContent.ItemQualityGroups.ShockNearby.GetHighestQualityInInventory(inventory);
+                shockNearby = ItemQualitiesContent.ItemQualityGroups.ShockNearby.GetItemCounts(inventory);
 
-            float multiplier = shockNearby switch
-            {
-                QualityTier.Uncommon  => 1f - 0.1f,
-                QualityTier.Rare      => 1f - 0.2f,
-                QualityTier.Epic      => 1f - 0.4f,
-                QualityTier.Legendary => 1f - 0.6f,
-                _ => 1f,
-            };
+            float multiplier = 1f;
+            multiplier -= 0.1f * shockNearby.UncommonCount;
+            multiplier -= 0.2f * shockNearby.RareCount;
+            multiplier -= 0.3f * shockNearby.EpicCount;
+            multiplier -= 0.5f * shockNearby.LegendaryCount;
 
-            return interval * multiplier;
+            return interval * Math.Max(multiplier, MinimumMultiplier);
         }
 
         static void Il_ShockNearbyBodyBehavior_FixedUpdate(ILContext il)
