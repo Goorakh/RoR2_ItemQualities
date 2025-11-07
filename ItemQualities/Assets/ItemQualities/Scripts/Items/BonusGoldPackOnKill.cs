@@ -51,7 +51,7 @@ namespace ItemQualities.Items
 		private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
 		{
 			if (!sender) return;
-			args.baseDamageAdd = 0.01f * sender.baseDamage * sender.GetBuffCount(ItemQualitiesContent.Buffs.GoldenGun);
+			args.baseDamageAdd += 0.01f * sender.baseDamage * sender.GetBuffCount(ItemQualitiesContent.Buffs.GoldenGun);
 		}
 	}
 }
