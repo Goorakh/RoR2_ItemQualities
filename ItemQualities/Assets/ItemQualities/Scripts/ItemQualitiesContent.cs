@@ -695,6 +695,8 @@ namespace ItemQualities
             public static BuffDef HealCritBoost;
 
             public static BuffDef MiniBossMarker;
+
+            public static BuffDef GoldenGun;
         }
 
         public static class Prefabs

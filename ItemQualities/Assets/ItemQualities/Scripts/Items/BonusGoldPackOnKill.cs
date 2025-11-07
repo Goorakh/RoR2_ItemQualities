@@ -1,11 +1,6 @@
-﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using R2API;
 using RoR2;
 using System;
-using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -14,74 +9,49 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-        }
+			RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+			On.RoR2.CharacterMaster.UpdateMoneyBasedItems += giveBuffsOnGoldChange;
+		}
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
+		private static void giveBuffsOnGoldChange(On.RoR2.CharacterMaster.orig_UpdateMoneyBasedItems orig, CharacterMaster self)
+		{
+			orig(self);
+			CharacterBody body = self.GetBody();
+			if (!body) return;
+			QualityTier Qualities = ItemQualitiesContent.ItemQualityGroups.BonusGoldPackOnKill.GetHighestQualityInInventory(self.inventory);
+			if (Qualities != QualityTier.None)
+			{
+				ItemQualityCounts bonusGoldPackOnKill = ItemQualitiesContent.ItemQualityGroups.BonusGoldPackOnKill.GetItemCounts(body.master.inventory);
+				float multiplier = 0;
+				switch (ItemQualitiesContent.ItemQualityGroups.BonusGoldPackOnKill.GetHighestQualityInInventory(body.master.inventory))
+				{
+					case QualityTier.Uncommon:
+						multiplier = 2f;
+						break;
+					case QualityTier.Rare:
+						multiplier = 3f;
+						break;
+					case QualityTier.Epic:
+						multiplier = 3.5f;
+						break;
+					case QualityTier.Legendary:
+						multiplier = 4f;
+						break;
+				}
 
-            if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
-            {
-                Log.Error("Failed to find DamageReport parameter");
-                return;
-            }
+				float max = bonusGoldPackOnKill.UncommonCount * 20 +
+							bonusGoldPackOnKill.RareCount * 40 +
+							bonusGoldPackOnKill.EpicCount * 60 +
+							bonusGoldPackOnKill.LegendaryCount * 100;
 
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.BonusGoldPackOnKill)),
-                               x => x.MatchCallOrCallvirt(typeof(NetworkServer), nameof(NetworkServer.Spawn))))
-            {
-                Log.Error("Failed to find patch location");
-                return;
-            }
+				body.SetBuffCount(ItemQualitiesContent.Buffs.GoldenGun.buffIndex, (int)Math.Min(multiplier * body.master.money / Run.instance.GetDifficultyScaledCost(25), max));
+			}
+		}
 
-            c.Goto(foundCursors[1].Next, MoveType.Before);
-            c.Emit(OpCodes.Dup);
-            c.Emit(OpCodes.Ldarg, damageReportParameter);
-            c.EmitDelegate<Action<GameObject, DamageReport>>(beforeGoldPackSpawn);
-
-            static void beforeGoldPackSpawn(GameObject goldPack, DamageReport damageReport)
-            {
-                if (!goldPack || damageReport == null)
-                    return;
-
-                CharacterMaster attackerMaster = damageReport.attackerMaster;
-                Inventory attackerInventory = attackerMaster ? attackerMaster.inventory : null;
-
-                ItemQualityCounts bonusGoldPackOnKill = default;
-                if (attackerInventory)
-                {
-                    bonusGoldPackOnKill = ItemQualitiesContent.ItemQualityGroups.BonusGoldPackOnKill.GetItemCounts(attackerInventory);
-                }
-
-                float bigPackChance = (5f * bonusGoldPackOnKill.UncommonCount) +
-                                      (15f * bonusGoldPackOnKill.RareCount) +
-                                      (35f * bonusGoldPackOnKill.EpicCount) +
-                                      (50f * bonusGoldPackOnKill.LegendaryCount);
-
-                bool isBigPack = Util.CheckRoll(bigPackChance, attackerMaster);
-
-                int bonusGoldReward = (10 * bonusGoldPackOnKill.UncommonCount) +
-                                      (25 * bonusGoldPackOnKill.RareCount) +
-                                      (75 * bonusGoldPackOnKill.EpicCount) +
-                                      (150 * bonusGoldPackOnKill.LegendaryCount);
-
-                MoneyPickup moneyPickup = goldPack.GetComponentInChildren<MoneyPickup>();
-                if (moneyPickup)
-                {
-                    moneyPickup.baseGoldReward += bonusGoldReward;
-
-                    if (isBigPack)
-                    {
-                        moneyPickup.baseGoldReward = Mathf.RoundToInt(moneyPickup.baseGoldReward * 1.5f);
-                    }
-                }
-
-                if (isBigPack)
-                {
-                    goldPack.transform.localScale *= 1.5f;
-                }
-            }
-        }
-    }
+		private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+		{
+			if (!sender) return;
+			args.baseDamageAdd = 0.01f * sender.baseDamage * sender.GetBuffCount(ItemQualitiesContent.Buffs.GoldenGun);
+		}
+	}
 }
