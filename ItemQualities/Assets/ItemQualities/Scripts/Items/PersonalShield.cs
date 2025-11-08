@@ -1,8 +1,7 @@
-﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using R2API;
 using RoR2;
 using System;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -11,47 +10,50 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.HealthComponent.ServerFixedUpdate += HealthComponent_ServerFixedUpdate;
+			RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+			GlobalEventManager.OnInteractionsGlobal += OnInteractionsGlobal;
+			GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
+		}
 
-            IL.RoR2.CharacterBody.OnOutOfDangerChanged += CharacterBody_OnOutOfDangerChanged;
-        }
+		private static void onServerDamageDealt(DamageReport report)
+		{
+			CharacterBody victim = report.victimBody;
+			if (!victim) return;
+			victim.SetBuffCount(ItemQualitiesContent.Buffs.PersonalShield.buffIndex, (int)(victim.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) - report.damageDealt));
+		}
 
-        static void HealthComponent_ServerFixedUpdate(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
+		private static void OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject @object)
+		{
+			CharacterBody body = interactor.GetComponent<CharacterBody>();
+			if (!body) return;
+			float shieldPerInteract = 0;
+			switch(ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetHighestQualityInInventory(body.master.inventory)) {
+				case QualityTier.Uncommon:
+					shieldPerInteract = 0.01f;
+					break;
+				case QualityTier.Rare:
+					shieldPerInteract = 0.02f;
+					break;
+				case QualityTier.Epic:
+					shieldPerInteract = 0.03f;
+					break;
+				case QualityTier.Legendary:
+					shieldPerInteract = 0.04f;
+					break;
+			}
+			ItemQualityCounts Qualities = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCounts(body.master.inventory);
+			float MaxShield = Qualities.UncommonCount * 0.2f +
+							Qualities.RareCount * 0.5f +
+							Qualities.EpicCount * 0.9f +
+							Qualities.LegendaryCount * 2f;
 
-            if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchCallOrCallvirt(typeof(CharacterBody).GetProperty(nameof(CharacterBody.outOfDanger)).GetMethod)))
-            {
-                Log.Error("Failed to find patch location");
-                return;
-            }
+			body.SetBuffCount(ItemQualitiesContent.Buffs.PersonalShield.buffIndex, (int)Math.Min(body.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) + shieldPerInteract * body.maxHealth, MaxShield * body.maxHealth));
+		}
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<bool, HealthComponent, bool>>(getShieldOutOfDanger);
-            static bool getShieldOutOfDanger(bool outOfDanger, HealthComponent healthComponent)
-            {
-                if (healthComponent && healthComponent.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
-                    return extraStatsTracker.ShieldOutOfDanger;
-
-                return outOfDanger;
-            }
-        }
-
-        static void CharacterBody_OnOutOfDangerChanged(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdstr("Play_item_proc_personal_shield_recharge"),
-                               x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.PlaySound))))
-            {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
-            c.Goto(foundCursors[1].Next, MoveType.Before);
-            c.EmitSkipMethodCall(c => c.Emit(OpCodes.Ldc_I4_0));
-        }
-    }
+		private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+		{
+			if (!sender) return;
+			args.baseShieldAdd += sender.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield);
+		}
+	}
 }

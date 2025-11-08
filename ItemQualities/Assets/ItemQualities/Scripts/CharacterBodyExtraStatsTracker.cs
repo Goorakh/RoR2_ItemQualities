@@ -43,16 +43,6 @@ namespace ItemQualities
             }
         }
 
-        float _shieldOutOfDangerDelay = CharacterBody.outOfDangerDelay;
-        public float ShieldOutOfDangerDelay
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _shieldOutOfDangerDelay;
-            }
-        }
-
         const float BaseCrowbarMinHealthFraction = 0.9f;
         float _crowbarMinHealthFraction = BaseCrowbarMinHealthFraction;
         public float CrowbarMinHealthFraction
@@ -121,10 +111,6 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
         public bool SlugOutOfDanger => _slugOutOfDanger;
-
-        [SyncVar(hook = nameof(hookSetShieldOutOfDanger))]
-        bool _shieldOutOfDanger;
-        public bool ShieldOutOfDanger => _shieldOutOfDanger;
 
         [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
         bool _isPerformingQuailJump;
@@ -197,7 +183,6 @@ namespace ItemQualities
             if (NetworkServer.active)
             {
                 _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
-                _shieldOutOfDanger = _body && _body.outOfDangerStopwatch >= _shieldOutOfDangerDelay;
 
                 if (!HasHadAnyQualityDeathMarkDebuffServer && DeathMark.HasAnyQualityDeathMarkDebuff(_body))
                 {
@@ -280,7 +265,7 @@ namespace ItemQualities
                 setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-            }
+			}
         }
 
         void updateOverlays()
@@ -345,7 +330,6 @@ namespace ItemQualities
         {
             ItemQualityCounts slug = default;
             ItemQualityCounts crowbar = default;
-            ItemQualityCounts personalShield = default;
             ItemQualityCounts barrierOnKill = default;
             ItemQualityCounts fragileDamageBonus = default;
             ItemQualityCounts warCryOnMultiKill = default;
@@ -356,7 +340,6 @@ namespace ItemQualities
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
                 crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCounts(_body.inventory);
-                personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCounts(_body.inventory);
                 barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCounts(_body.inventory);
                 fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory);
                 warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCounts(_body.inventory);
@@ -380,14 +363,6 @@ namespace ItemQualities
                 (3.00f * crowbar.LegendaryCount));
 
             _crowbarMinHealthFraction = Mathf.Lerp(BaseCrowbarMinHealthFraction, BaseCrowbarMinHealthFraction * 0.5f, crowbarMinHealthFractionReduction);
-
-            float shieldOutOfDangerDelayReduction = 1f;
-            shieldOutOfDangerDelayReduction += 0.10f * personalShield.UncommonCount;
-            shieldOutOfDangerDelayReduction += 0.25f * personalShield.RareCount;
-            shieldOutOfDangerDelayReduction += 1.00f * personalShield.EpicCount;
-            shieldOutOfDangerDelayReduction += 3.00f * personalShield.LegendaryCount;
-
-            _shieldOutOfDangerDelay = CharacterBody.outOfDangerDelay / shieldOutOfDangerDelayReduction;
 
             float barrierDecayRateReduction = 1f;
             barrierDecayRateReduction += 0.10f * barrierOnKill.UncommonCount;
@@ -605,22 +580,6 @@ namespace ItemQualities
             if (changed)
             {
                 _body.MarkAllStatsDirty();
-            }
-        }
-
-        void hookSetShieldOutOfDanger(bool shieldOutOfDanger)
-        {
-            bool changed = _shieldOutOfDanger != shieldOutOfDanger;
-            _shieldOutOfDanger = shieldOutOfDanger;
-
-            if (changed)
-            {
-                _body.MarkAllStatsDirty();
-
-                if (_shieldOutOfDanger && _body.healthComponent.shield < _body.healthComponent.fullShield)
-                {
-                    Util.PlaySound("Play_item_proc_personal_shield_recharge", gameObject);
-                }
             }
         }
 
