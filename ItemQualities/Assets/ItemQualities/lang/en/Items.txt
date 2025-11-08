@@ -74,16 +74,16 @@
         "ITEM_CROWBAR_LEGENDARY_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>70% health</style> <style=cStack>(-40% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>).",
 
         "ITEM_PERSONALSHIELD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
-        "ITEM_PERSONALSHIELD_UNCOMMON_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <style=cIsHealing>1%</style> of your maximum hp, <style=cIsHealing>up to 20% <style=cStack>(+20% per stack)</style></style> maximum hp.",
+        "ITEM_PERSONALSHIELD_UNCOMMON_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>1%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 20% <style=cStack>(+20% per stack)</style></style> maximum hp.",
 
         "ITEM_PERSONALSHIELD_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
-        "ITEM_PERSONALSHIELD_RARE_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <style=cIsHealing>2%</style> of your maximum hp, <style=cIsHealing>up to 50% <style=cStack>(+50% per stack)</style></style> maximum hp.",
+        "ITEM_PERSONALSHIELD_RARE_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>2%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 50% <style=cStack>(+50% per stack)</style></style> maximum hp.",
 
         "ITEM_PERSONALSHIELD_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
-        "ITEM_PERSONALSHIELD_EPIC_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <style=cIsHealing>3%</style> of your maximum hp, <style=cIsHealing>up to 90% <style=cStack>(+90% per stack)</style></style> maximum hp.",
+        "ITEM_PERSONALSHIELD_EPIC_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>3%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 90% <style=cStack>(+90% per stack)</style></style> maximum hp.",
 
         "ITEM_PERSONALSHIELD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
-        "ITEM_PERSONALSHIELD_LEGENDARY_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <style=cIsHealing>5%</style> of your maximum hp, <style=cIsHealing>up to 200% <style=cStack>(+200% per stack)</style></style> maximum hp.",
+        "ITEM_PERSONALSHIELD_LEGENDARY_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>5%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 200% <style=cStack>(+200% per stack)</style></style> maximum hp.",
 
         "ITEM_BARRIERONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
         "ITEM_BARRIERONKILL_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
