@@ -44,11 +44,10 @@ namespace ItemQualities.Items
 				yield break;
 			}
 
-			_explosionVFX = igniteOnKillExplosionLoad.Result.InstantiateClone("opalExplosionVFX");
+			_explosionVFX = igniteOnKillExplosionLoad.Result.InstantiateClone("opalExplosionVFX", false);
 			UnityEngine.Object.Destroy(_explosionVFX.transform.Find("Flames").gameObject);
 			UnityEngine.Object.Destroy(_explosionVFX.transform.Find("Flash").gameObject);
 			args.ContentPack.effectDefs.Add(new EffectDef(_explosionVFX));
-			args.ContentPack.networkedObjectPrefabs.Add(_explosionVFX);
 		}
 
 		static void CharacterBody_OnTakeDamageServer(ILContext il)
