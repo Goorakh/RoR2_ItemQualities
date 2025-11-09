@@ -74,16 +74,16 @@
         "ITEM_CROWBAR_LEGENDARY_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>70% health</style> <style=cStack>(-40% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>).",
 
         "ITEM_PERSONALSHIELD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
-        "ITEM_PERSONALSHIELD_UNCOMMON_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <style=cIsHealing>1%</style> of your maximum hp, <style=cIsHealing>up to 20% <style=cStack>(+20% per stack)</style></style> maximum hp.",
+        "ITEM_PERSONALSHIELD_UNCOMMON_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>1%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 20% <style=cStack>(+20% per stack)</style></style> maximum hp.",
 
         "ITEM_PERSONALSHIELD_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
-        "ITEM_PERSONALSHIELD_RARE_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <style=cIsHealing>2%</style> of your maximum hp, <style=cIsHealing>up to 50% <style=cStack>(+50% per stack)</style></style> maximum hp.",
+        "ITEM_PERSONALSHIELD_RARE_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>2%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 50% <style=cStack>(+50% per stack)</style></style> maximum hp.",
 
         "ITEM_PERSONALSHIELD_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
-        "ITEM_PERSONALSHIELD_EPIC_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <style=cIsHealing>3%</style> of your maximum hp, <style=cIsHealing>up to 90% <style=cStack>(+90% per stack)</style></style> maximum hp.",
+        "ITEM_PERSONALSHIELD_EPIC_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>3%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 90% <style=cStack>(+90% per stack)</style></style> maximum hp.",
 
         "ITEM_PERSONALSHIELD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
-        "ITEM_PERSONALSHIELD_LEGENDARY_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <style=cIsHealing>5%</style> of your maximum hp, <style=cIsHealing>up to 200% <style=cStack>(+200% per stack)</style></style> maximum hp.",
+        "ITEM_PERSONALSHIELD_LEGENDARY_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>5%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 200% <style=cStack>(+200% per stack)</style></style> maximum hp.",
 
         "ITEM_BARRIERONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
         "ITEM_BARRIERONKILL_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
@@ -182,16 +182,16 @@
         "ITEM_MEDKIT_LEGENDARY_DESC": "{0}\nFor every second since the last time you were hit, increase healing by <sprite name=\"Quality\"> <style=cIsHealing>8% <style=cStack>(+8% per stack)</style></style>, up to a maximum of <style=cIsHealing>400% <style=cStack>(+400% per stack)</style></style>.",
 
         "ITEM_MUSHROOM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.25 seconds.",
-        "ITEM_MUSHROOM_UNCOMMON_DESC": "{0} After standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <style=cIsDamage>13m radius</style>, lasting for <style=cIsDamage>1 <style=cStack>(+1 per stack)</style> seconds</style>.",
+        "ITEM_MUSHROOM_UNCOMMON_DESC": "{0}\nAfter standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <sprite name=\"Quality\"> <style=cIsDamage>13m radius</style>, lasting for <sprite name=\"Quality\"> <style=cIsDamage>1 <style=cStack>(+1 per stack)</style> seconds</style>.",
 
         "ITEM_MUSHROOM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.25 seconds.",
-        "ITEM_MUSHROOM_RARE_DESC": "{0} After standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <style=cIsDamage>11m radius</style>, lasting for <style=cIsDamage>3 <style=cStack>(+3 per stack)</style> seconds</style>.",
+        "ITEM_MUSHROOM_RARE_DESC": "{0}\nAfter standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <sprite name=\"Quality\"> <style=cIsDamage>11m radius</style>, lasting for <sprite name=\"Quality\"> <style=cIsDamage>3 <style=cStack>(+3 per stack)</style> seconds</style>.",
 
         "ITEM_MUSHROOM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.25 seconds.",
-        "ITEM_MUSHROOM_EPIC_DESC": "{0} After standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <style=cIsDamage>9m radius</style>, lasting for <style=cIsDamage>6 <style=cStack>(+6 per stack)</style> seconds</style>.",
+        "ITEM_MUSHROOM_EPIC_DESC": "{0}\nAfter standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <sprite name=\"Quality\"> <style=cIsDamage>9m radius</style>, lasting for <sprite name=\"Quality\"> <style=cIsDamage>6 <style=cStack>(+6 per stack)</style> seconds</style>.",
 
         "ITEM_MUSHROOM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.25 seconds.",
-        "ITEM_MUSHROOM_LEGENDARY_DESC": "{0} After standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <style=cIsDamage>7m radius</style>, lasting for <style=cIsDamage>12 <style=cStack>(+12 per stack)</style> seconds</style>.",
+        "ITEM_MUSHROOM_LEGENDARY_DESC": "{0}\nAfter standing still for <style=cIsUtility>0.25 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <sprite name=\"Quality\"> <style=cIsDamage>7m radius</style>, lasting for <sprite name=\"Quality\"> <style=cIsDamage>12 <style=cStack>(+12 per stack)</style> seconds</style>.",
 
         "ITEM_EQUIPMENTMAGAZINE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge held equipment.",
         "ITEM_EQUIPMENTMAGAZINE_UNCOMMON_DESC": "{0}\nActivating an <style=cIsUtility>equipment</style> has a <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to immediately recharge it.",
