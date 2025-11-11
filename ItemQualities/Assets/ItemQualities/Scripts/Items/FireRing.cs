@@ -1,6 +1,5 @@
 ﻿using HG.Coroutines;
 using ItemQualities.Utilities;
-using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.Projectile;
 using RoR2BepInExPack.GameAssetPathsBetter;
@@ -15,8 +14,8 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static IEnumerator Init()
         {
-            AsyncOperationHandle<GameObject> fireTornadoLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_ElementalRings.FireTornado_prefab);
-            AsyncOperationHandle<GameObject> fireTornadoGhostLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_ElementalRings.FireTornadoGhost_prefab);
+            AsyncOperationHandle<GameObject> fireTornadoLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_ElementalRings.FireTornado_prefab);
+            AsyncOperationHandle<GameObject> fireTornadoGhostLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_ElementalRings.FireTornadoGhost_prefab);
 
             ParallelCoroutine loadCoroutine = new ParallelCoroutine();
             loadCoroutine.Add(fireTornadoLoad);

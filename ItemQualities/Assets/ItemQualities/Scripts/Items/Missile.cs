@@ -25,7 +25,7 @@ namespace ItemQualities.Items
         {
             AsyncOperationHandle<GameObject> missileProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Common.MissileProjectile_prefab);
             AsyncOperationHandle<GameObject> missileGhostLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Common.MissileGhost_prefab);
-            AsyncOperationHandle<GameObject> explodeEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Common_VFX.OmniExplosionVFXQuick_prefab);
+            AsyncOperationHandle<GameObject> explodeEffectLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Common_VFX.OmniExplosionVFXQuick_prefab);
 
             ParallelProgressCoroutine prefabsLoadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
             prefabsLoadCoroutine.Add(missileProjectileLoad);

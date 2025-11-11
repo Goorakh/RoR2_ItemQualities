@@ -3,7 +3,6 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -16,7 +15,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static IEnumerator Init()
         {
-            AsyncOperationHandle<GameObject> lanternAttachmentLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC2_Items_AttackSpeedPerNearbyAllyOrEnemy.BolsteringLanternBonusIndicator_prefab);
+            AsyncOperationHandle<GameObject> lanternAttachmentLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_AttackSpeedPerNearbyAllyOrEnemy.BolsteringLanternBonusIndicator_prefab);
             lanternAttachmentLoad.OnSuccess(lanternAttachment =>
             {
                 lanternAttachment.EnsureComponent<AttackSpeedPerNearbyColliderQualityController>();

@@ -20,7 +20,7 @@ namespace ItemQualities.Items
         {
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
 
-            AsyncOperationHandle<GameObject> blackHoleProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_ElementalRingVoid.ElementalRingVoidBlackHole_prefab);
+            AsyncOperationHandle<GameObject> blackHoleProjectileLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC1_ElementalRingVoid.ElementalRingVoidBlackHole_prefab);
             blackHoleProjectileLoad.OnSuccess(blackHoleProjectile =>
             {
                 ParticleSystem[] particleSystems = blackHoleProjectile.GetComponentsInChildren<ParticleSystem>(true);

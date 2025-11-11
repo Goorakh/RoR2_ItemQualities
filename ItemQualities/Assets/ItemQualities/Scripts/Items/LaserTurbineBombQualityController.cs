@@ -13,7 +13,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_LaserTurbine.LaserTurbineBomb_prefab).OnSuccess(laserTurbineBomb =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_LaserTurbine.LaserTurbineBomb_prefab).OnSuccess(laserTurbineBomb =>
             {
                 laserTurbineBomb.EnsureComponent<LaserTurbineBombQualityController>();
             });

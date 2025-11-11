@@ -2,6 +2,7 @@
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPathsBetter.RoR2_DLC2_Items_ExtraStatsOnLevelUp.ExtraStatsOnLevelUpScrapEffect_prefab).OnSuccess(scrapEffect =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_ExtraStatsOnLevelUp.ExtraStatsOnLevelUpScrapEffect_prefab).OnSuccess(scrapEffect =>
             {
                 scrapEffect.EnsureComponent<ExtraStatsOnLevelUpEffectAppendQualityInfo>();
             });

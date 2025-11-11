@@ -15,7 +15,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Bandolier.AmmoPack_prefab).OnSuccess(bandolierPrefab =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Bandolier.AmmoPack_prefab).OnSuccess(bandolierPrefab =>
             {
                 bandolierPrefab.EnsureComponent<BandolierQualityInfo>();
             });

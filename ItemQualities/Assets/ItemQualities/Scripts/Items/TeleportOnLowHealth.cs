@@ -27,7 +27,7 @@ namespace ItemQualities.Items
 
             IL.RoR2.TeleportOnLowHealthBehavior.Update += ItemHooks.CombineGroupedItemCountsPatch;
 
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC2_Items_TeleportOnLowHealth.TeleportOnLowHealthExplosion_prefab).OnSuccess(teleportOnLowHealthExplosion =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_TeleportOnLowHealth.TeleportOnLowHealthExplosion_prefab).OnSuccess(teleportOnLowHealthExplosion =>
             {
                 teleportOnLowHealthExplosion.EnsureComponent<TeleportOnLowHealthAuraQualityController>();
             });
