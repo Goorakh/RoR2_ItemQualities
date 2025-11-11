@@ -78,7 +78,7 @@ namespace ItemQualities.Items
 				if (!body) return;
 
 				float radius = 0;
-				switch (ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor.GetHighestQualityInInventory(body.master.inventory))
+				switch (ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor.GetHighestQualityInInventory(body.inventory))
 				{
 					case QualityTier.Uncommon:
 						radius = 10;
