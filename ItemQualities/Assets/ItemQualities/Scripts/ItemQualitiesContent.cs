@@ -642,6 +642,14 @@ namespace ItemQualities
             public static ItemQualityGroup AttackSpeedPerNearbyAllyOrEnemy;
 
             public static ItemQualityGroup HeadHunter;
+
+            public static ItemQualityGroup ScrapWhite;
+
+            public static ItemQualityGroup ScrapGreen;
+
+            public static ItemQualityGroup ScrapRed;
+
+            public static ItemQualityGroup ScrapYellow;
         }
 
         public static class EquipmentQualityGroups

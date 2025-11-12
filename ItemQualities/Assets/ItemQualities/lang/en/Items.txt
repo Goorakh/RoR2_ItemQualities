@@ -1407,5 +1407,8 @@
 
         "ITEM_IGNITEONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing burning enemies surrounds you with a fire storm",
         "ITEM_IGNITEONKILL_LEGENDARY_DESC": "{0}\nKilling a burning enemy surrounds you with a <style=cIsDamage>fire storm</style> for <sprite name=\"Quality\"> <style=cIsUtility>10 seconds</style>. The storm deals <sprite name=\"Quality\"> <style=cIsDamage>2000% <style=cStack>(+2000% per stack)</style> damage per second</style> and <style=cIsUtility>burns</style> enemies for <style=cIsUtility>100% damage</style>. The storm <style=cIsDamage>grows with every kill</style>, increasing its radius by <style=cIsDamage>3m</style>. Stacks up to <sprite name=\"Quality\"> <style=cIsDamage>51m</style>.",
+
+        "ITEM_SCRAP_QUALITY_PICKUP": "Does nothing. Can be used in <sprite name=\"Quality\"> Quality 3D Printers.",
+        "ITEM_SCRAP_QUALITY_DESC": "Does nothing. Can be used in <sprite name=\"Quality\"> Quality 3D Printers.",
     }
 }

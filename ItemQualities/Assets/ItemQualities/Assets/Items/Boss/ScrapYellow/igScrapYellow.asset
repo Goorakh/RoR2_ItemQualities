@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igScrapYellow
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: d394f692613dd114dac03f9d08aca058
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 7c8da7caa18c59449864f0dc279bcef3, type: 2}
+  _rareItem: {fileID: 11400000, guid: 867f13ecd3ced894a89ddbedd9c98b35, type: 2}
+  _epicItem: {fileID: 11400000, guid: 32a165a91e1aef441accab412bb8f379, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 7db445ddc9996b9458d86e1af1b4ca95, type: 2}

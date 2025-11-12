@@ -1,8 +1,11 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using RoR2;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace ItemQualities
@@ -12,9 +15,87 @@ namespace ItemQualities
         [SystemInitializer(typeof(CostTypeCatalog))]
         static void Init()
         {
+            CostTypeDef itemCostDef = CostTypeCatalog.GetCostTypeDef(CostTypeIndex.WhiteItem);
+            if (itemCostDef?.isAffordable?.Method != null)
+            {
+                new Hook(itemCostDef.isAffordable.Method, new Func<CostTypeCatalog_IsAffordableItem_orig, CostTypeDef, CostTypeDef.IsAffordableContext, bool>(CostTypeCatalog_IsAffordableItem));
+            }
+            else
+            {
+                Log.Error("Failed to find IsAffordableItem method");
+            }
+
+            if (itemCostDef?.payCost?.Method != null)
+            {
+                new ILHook(itemCostDef.payCost.Method, CostTypeCatalog_PayCostItems);
+            }
+            else
+            {
+                Log.Error("Failed to find PayCostItems method");
+            }
+
             IL.RoR2.ChestBehavior.BaseItemDrop += ChestBehavior_BaseItemDrop;
             IL.RoR2.ShopTerminalBehavior.DropPickup += ShopTerminalBehavior_DropPickup;
             IL.RoR2.OptionChestBehavior.ItemDrop += OptionChestBehavior_ItemDrop;
+        }
+
+        delegate bool CostTypeCatalog_IsAffordableItem_orig(CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context);
+        static bool CostTypeCatalog_IsAffordableItem(CostTypeCatalog_IsAffordableItem_orig orig, CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context)
+        {
+            if (!orig(costTypeDef, context))
+                return false;
+
+            bool hasEnoughNonQualityItems = context.cost == 0;
+            if (context.cost > 0 && context.activator && context.activator.TryGetComponent(out CharacterBody activatorBody) && activatorBody.inventory)
+            {
+                int foundItems = 0;
+                foreach (ItemDef itemDef in ItemCatalog.allItemDefs)
+                {
+                    if (itemDef && itemDef.tier == costTypeDef.itemTier && QualityCatalog.GetQualityTier(itemDef.itemIndex) == QualityTier.None)
+                    {
+                        foundItems += activatorBody.inventory.GetItemCount(itemDef);
+                        if (foundItems >= context.cost)
+                        {
+                            hasEnoughNonQualityItems = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return hasEnoughNonQualityItems;
+        }
+
+        static void CostTypeCatalog_PayCostItems(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            ILLabel skipItemLabel = default;
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdfld<CostTypeDef.PayCostContext>(nameof(CostTypeDef.PayCostContext.avoidedItemIndex)),
+                               x => x.MatchBeq(out skipItemLabel)))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After); // beq
+
+            if (!c.TryFindForeachVariable(out VariableDefinition itemIndexVar))
+            {
+                Log.Error("Failed to find ItemIndex variable");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldloc, itemIndexVar);
+            c.EmitDelegate<Func<ItemIndex, bool>>(isQualityItem);
+            c.Emit(OpCodes.Brtrue, skipItemLabel);
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static bool isQualityItem(ItemIndex itemIndex)
+            {
+                return QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None;
+            }
         }
 
         static QualityTier getOutputQualityTierFromCost(GameObject dropperObject)
