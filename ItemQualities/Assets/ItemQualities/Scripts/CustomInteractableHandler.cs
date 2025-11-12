@@ -213,7 +213,7 @@ namespace ItemQualities
                     DirectorCard qualityDuplicatorCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicator,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorCard.selectionWeight * 0.35f)),
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorCard.selectionWeight * 0.4f)),
                         minimumStageCompletions = duplicatorCard.minimumStageCompletions
                     };
 
@@ -229,7 +229,7 @@ namespace ItemQualities
                     DirectorCard qualityDuplicatorLargeCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicatorLarge,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorLargeCard.selectionWeight * 0.35f)),
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorLargeCard.selectionWeight * 0.6f)),
                         minimumStageCompletions = duplicatorLargeCard.minimumStageCompletions
                     };
 
@@ -245,7 +245,7 @@ namespace ItemQualities
                     DirectorCard qualityDuplicatorMilitaryCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicatorMilitary,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorMilitaryCard.selectionWeight * 0.35f)),
+                        selectionWeight = duplicatorMilitaryCard.selectionWeight,
                         minimumStageCompletions = duplicatorMilitaryCard.minimumStageCompletions
                     };
 
@@ -261,7 +261,7 @@ namespace ItemQualities
                     DirectorCard qualityDuplicatorWildCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicatorWild,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorWildCard.selectionWeight * 0.35f)),
+                        selectionWeight = duplicatorWildCard.selectionWeight,
                         minimumStageCompletions = duplicatorWildCard.minimumStageCompletions
                     };
 

@@ -171,11 +171,19 @@ namespace ItemQualities
                     _searchedSceneIndices.Add(currentSceneIndex);
 
                     Dictionary<string, InteractableAppearenceInfo> appearenceInfoByInteractableName = new Dictionary<string, InteractableAppearenceInfo>(TestInteractableNames.Length);
-
+                    
                     foreach (PurchaseInteraction purchaseInteraction in InstanceTracker.GetInstancesList<PurchaseInteraction>())
                     {
                         string interactableObjectName = purchaseInteraction.name;
-                        string interactableName = Array.Find(TestInteractableNames, testInteractableName => interactableObjectName.StartsWith(testInteractableName));
+                        string interactableName = Array.Find(TestInteractableNames, testInteractableName =>
+                        {
+                            string objectName = interactableObjectName;
+                            if (objectName.EndsWith("(Clone)"))
+                                objectName = objectName.Remove(objectName.Length - "(Clone)".Length);
+
+                            return objectName == testInteractableName;
+                        });
+
                         if (!string.IsNullOrEmpty(interactableName))
                         {
                             if (!appearenceInfoByInteractableName.TryGetValue(interactableName, out InteractableAppearenceInfo appearenceInfo))
