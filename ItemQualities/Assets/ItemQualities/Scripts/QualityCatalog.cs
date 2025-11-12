@@ -532,19 +532,6 @@ namespace ItemQualities
             return GetPickupIndexOfQuality(scrapPickupIndex, GetQualityTier(scrappingPickupIndex));
         }
 
-        public static bool ItemExchangeShouldPreserveQuality(PickupIndex inputPickupIndex)
-        {
-            PickupDef pickupDef = PickupCatalog.GetPickupDef(inputPickupIndex);
-            if (pickupDef == null)
-                return false;
-
-            if (pickupDef.itemIndex == ItemIndex.None)
-                return false;
-
-            ItemDef itemDef = ItemCatalog.GetItemDef(pickupDef.itemIndex);
-            return itemDef && (itemDef.ContainsTag(ItemTag.Scrap) || itemDef.ContainsTag(ItemTag.PriorityScrap));
-        }
-
         public static QualityTier Max(QualityTier a, QualityTier b)
         {
             return a > b ? a : b;

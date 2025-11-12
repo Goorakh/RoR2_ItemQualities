@@ -1,4 +1,5 @@
 ﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
@@ -42,32 +43,21 @@ namespace ItemQualities
         delegate bool CostTypeCatalog_IsAffordableItem_orig(CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context);
         static bool CostTypeCatalog_IsAffordableItem(CostTypeCatalog_IsAffordableItem_orig orig, CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context)
         {
-            if (!orig(costTypeDef, context))
-                return false;
-
-            bool hasEnoughNonQualityItems = context.cost == 0;
-            if (context.cost > 0 && context.activator && context.activator.TryGetComponent(out CharacterBody activatorBody) && activatorBody.inventory)
-            {
-                int foundItems = 0;
-                foreach (ItemDef itemDef in ItemCatalog.allItemDefs)
-                {
-                    if (itemDef && itemDef.tier == costTypeDef.itemTier && QualityCatalog.GetQualityTier(itemDef.itemIndex) == QualityTier.None)
-                    {
-                        foundItems += activatorBody.inventory.GetItemCount(itemDef);
-                        if (foundItems >= context.cost)
-                        {
-                            hasEnoughNonQualityItems = true;
-                            break;
-                        }
-                    }
-                }
-            }
-
-            return hasEnoughNonQualityItems;
+            return orig(costTypeDef, context) &&
+                   context.activator &&
+                   context.activator.TryGetComponent(out CharacterBody activatorBody) &&
+                   activatorBody.inventory &&
+                   activatorBody.inventory.HasAtLeastXTotalNonQualityItemsOfTier(costTypeDef.itemTier, context.cost);
         }
 
         static void CostTypeCatalog_PayCostItems(ILContext il)
         {
+            if (!il.Method.TryFindParameter<CostTypeDef>(out ParameterDefinition costTypeDefParameter))
+            {
+                Log.Error("Failed to find CostTypeDef parameter");
+                return;
+            }
+
             ILCursor c = new ILCursor(il);
 
             ILLabel skipItemLabel = default;
@@ -87,14 +77,17 @@ namespace ItemQualities
                 return;
             }
 
+            c.Emit(OpCodes.Ldarg, costTypeDefParameter);
             c.Emit(OpCodes.Ldloc, itemIndexVar);
-            c.EmitDelegate<Func<ItemIndex, bool>>(isQualityItem);
-            c.Emit(OpCodes.Brtrue, skipItemLabel);
+            c.EmitDelegate<Func<CostTypeDef, ItemIndex, bool>>(isItemAllowed);
+            c.Emit(OpCodes.Brfalse, skipItemLabel);
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static bool isQualityItem(ItemIndex itemIndex)
+            static bool isItemAllowed(CostTypeDef costTypeDef, ItemIndex itemIndex)
             {
-                return QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None;
+                bool isQualityItem = QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None;
+                bool requireQualityItem = CustomCostTypeIndex.IsQualityItemCostType(costTypeDef);
+                return isQualityItem == requireQualityItem;
             }
         }
 
@@ -136,12 +129,6 @@ namespace ItemQualities
             foreach (PickupIndex inputPickupIndex in pickupIndicesSpentOnPurchase)
             {
                 QualityTier qualityTier = QualityCatalog.GetQualityTier(inputPickupIndex);
-                if (costTypeIndex != CostTypeIndex.TreasureCacheItem &&
-                    costTypeIndex != CostTypeIndex.TreasureCacheVoidItem &&
-                    !QualityCatalog.ItemExchangeShouldPreserveQuality(inputPickupIndex))
-                {
-                    qualityTier = QualityTier.None;
-                }
 
                 averageInputQualityTierValue += (float)qualityTier;
 

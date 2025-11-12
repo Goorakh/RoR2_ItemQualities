@@ -50,6 +50,8 @@ namespace ItemQualities
             ItemQualitiesContent contentProvider = new ItemQualitiesContent();
             contentProvider.Register();
 
+            CustomCostTypeIndex.Register();
+
             LanguageFolderHandler.Register(Path.GetDirectoryName(Info.Location));
 
             stopwatch.Stop();

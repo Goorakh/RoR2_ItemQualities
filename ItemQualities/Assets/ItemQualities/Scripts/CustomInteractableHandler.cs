@@ -3,13 +3,14 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
+using System.Diagnostics;
 using UnityEngine;
 
 namespace ItemQualities
 {
     static class CustomInteractableHandler
     {
-        [SystemInitializer]
+        [SystemInitializer(typeof(CustomCostTypeIndex))]
         static void Init()
         {
             On.RoR2.ClassicStageInfo.RebuildCards += ClassicStageInfo_RebuildCards;
@@ -32,6 +33,34 @@ namespace ItemQualities
                     }
                 }
             });
+
+            static void setInteractableCostType(InteractableSpawnCard spawnCard, CostTypeIndex costType)
+            {
+                if (!spawnCard)
+                {
+                    Log.Error($"Null spawncard: {new StackTrace()}");
+                    return;
+                }
+
+                if (!spawnCard.prefab)
+                {
+                    Log.Error($"Null prefab in spawncard {spawnCard}");
+                    return;
+                }
+
+                if (!spawnCard.prefab.TryGetComponent(out PurchaseInteraction purchaseInteraction))
+                {
+                    Log.Error($"{spawnCard} prefab {spawnCard.prefab.name} is missing PurchaseInteraction component");
+                    return;
+                }
+
+                purchaseInteraction.costType = costType;
+            }
+
+            setInteractableCostType(ItemQualitiesContent.SpawnCards.QualityDuplicator, CustomCostTypeIndex.WhiteItemQuality);
+            setInteractableCostType(ItemQualitiesContent.SpawnCards.QualityDuplicatorLarge, CustomCostTypeIndex.GreenItemQuality);
+            setInteractableCostType(ItemQualitiesContent.SpawnCards.QualityDuplicatorMilitary, CustomCostTypeIndex.RedItemQuality);
+            setInteractableCostType(ItemQualitiesContent.SpawnCards.QualityDuplicatorWild, CustomCostTypeIndex.BossItemQuality);
         }
 
         static void ClassicStageInfo_RebuildCards(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)
@@ -45,6 +74,10 @@ namespace ItemQualities
             bool addedQualityEquipmentBarrel = false;
             bool addedQualityChest1 = false;
             bool addedQualityChest2 = false;
+            bool addedQualityDuplicator = false;
+            bool addedQualityDuplicatorLarge = false;
+            bool addedQualityDuplicatorMilitary = false;
+            bool addedQualityDuplicatorWild = false;
 
             foreach (DirectorCardCategorySelection.Category category in dccs.categories)
             {
@@ -53,6 +86,10 @@ namespace ItemQualities
                     addedQualityEquipmentBarrel |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityEquipmentBarrel;
                     addedQualityChest1 |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityChest1;
                     addedQualityChest2 |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityChest2;
+                    addedQualityDuplicator |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityDuplicator;
+                    addedQualityDuplicatorLarge |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityDuplicatorLarge;
+                    addedQualityDuplicatorMilitary |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityDuplicatorMilitary;
+                    addedQualityDuplicatorWild |= card.spawnCard == ItemQualitiesContent.SpawnCards.QualityDuplicatorWild;
                 }
             }
 
@@ -60,49 +97,76 @@ namespace ItemQualities
             {
                 ref DirectorCardCategorySelection.Category category = ref dccs.categories[i];
 
-                bool containsEquipmentBarrel = false;
-                int equipmentBarrelWeight = 0;
+                DirectorCard equipmentBarrelCard = null;
 
-                bool containsCategoryChest1 = false;
-                int categoryChest1Weight = 0;
+                DirectorCard categoryChest1Card = null;
 
-                bool containsCategoryChest2 = false;
-                int categoryChest2Weight = 0;
+                DirectorCard categoryChest2Card = null;
+
+                DirectorCard duplicatorCard = null;
+
+                DirectorCard duplicatorLargeCard = null;
+
+                DirectorCard duplicatorMilitaryCard = null;
+
+                DirectorCard duplicatorWildCard = null;
 
                 foreach (DirectorCard card in category.cards)
                 {
-                    if (!containsEquipmentBarrel &&
+                    if (equipmentBarrelCard == null &&
                         matchDirectorCard(card, "iscEquipmentBarrel", RoR2_Base_EquipmentBarrel.iscEquipmentBarrel_asset))
                     {
-                        equipmentBarrelWeight = card.selectionWeight;
-                        containsEquipmentBarrel = true;
+                        equipmentBarrelCard = card;
                     }
 
-                    if (!containsCategoryChest1 &&
+                    if (categoryChest1Card == null &&
                         (matchDirectorCard(card, "iscCategoryChestDamage", RoR2_Base_CategoryChest.iscCategoryChestDamage_asset) ||
                          matchDirectorCard(card, "iscCategoryChestUtility", RoR2_Base_CategoryChest.iscCategoryChestUtility_asset) ||
                          matchDirectorCard(card, "iscCategoryChestHealing", RoR2_Base_CategoryChest.iscCategoryChestHealing_asset)))
                     {
-                        categoryChest1Weight = card.selectionWeight;
-                        containsCategoryChest1 = true;
+                        categoryChest1Card = card;
                     }
 
-                    if (!containsCategoryChest2 &&
+                    if (categoryChest2Card == null &&
                         (matchDirectorCard(card, "iscCategoryChest2Damage", RoR2_DLC1_CategoryChest2.iscCategoryChest2Damage_asset) ||
                          matchDirectorCard(card, "iscCategoryChest2Utility", RoR2_DLC1_CategoryChest2.iscCategoryChest2Utility_asset) ||
                          matchDirectorCard(card, "iscCategoryChest2Healing", RoR2_DLC1_CategoryChest2.iscCategoryChest2Healing_asset)))
                     {
-                        categoryChest2Weight = card.selectionWeight;
-                        containsCategoryChest2 = true;
+                        categoryChest2Card = card;
+                    }
+
+                    if (duplicatorCard == null &&
+                        matchDirectorCard(card, "iscDuplicator", RoR2_Base_Duplicator.iscDuplicator_asset))
+                    {
+                        duplicatorCard = card;
+                    }
+
+                    if (duplicatorLargeCard == null &&
+                        matchDirectorCard(card, "iscDuplicatorLarge", RoR2_Base_DuplicatorLarge.iscDuplicatorLarge_asset))
+                    {
+                        duplicatorLargeCard = card;
+                    }
+
+                    if (duplicatorMilitaryCard == null &&
+                        matchDirectorCard(card, "iscDuplicatorMilitary", RoR2_Base_DuplicatorMilitary.iscDuplicatorMilitary_asset))
+                    {
+                        duplicatorMilitaryCard = card;
+                    }
+
+                    if (duplicatorWildCard == null &&
+                        matchDirectorCard(card, "iscDuplicatorWild", RoR2_Base_DuplicatorWild.iscDuplicatorWild_asset))
+                    {
+                        duplicatorWildCard = card;
                     }
                 }
 
-                if (containsEquipmentBarrel && !addedQualityEquipmentBarrel)
+                if (equipmentBarrelCard != null && !addedQualityEquipmentBarrel)
                 {
                     DirectorCard qualityEquipmentBarrelCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityEquipmentBarrel,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(equipmentBarrelWeight * 0.35f))
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(equipmentBarrelCard.selectionWeight * 0.35f)),
+                        minimumStageCompletions = equipmentBarrelCard.minimumStageCompletions
                     };
 
                     ArrayUtils.ArrayAppend(ref category.cards, qualityEquipmentBarrelCard);
@@ -112,12 +176,13 @@ namespace ItemQualities
                     addedQualityEquipmentBarrel = true;
                 }
 
-                if (containsCategoryChest1 && !addedQualityChest1)
+                if (categoryChest1Card != null && !addedQualityChest1)
                 {
                     DirectorCard qualityChest1Card = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityChest1,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest1Weight * 2f))
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest1Card.selectionWeight * 2f)),
+                        minimumStageCompletions = categoryChest1Card.minimumStageCompletions
                     };
 
                     ArrayUtils.ArrayAppend(ref category.cards, qualityChest1Card);
@@ -127,12 +192,13 @@ namespace ItemQualities
                     addedQualityChest1 = true;
                 }
 
-                if (containsCategoryChest2 && !addedQualityChest2)
+                if (categoryChest2Card != null && !addedQualityChest2)
                 {
                     DirectorCard qualityChest2Card = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityChest2,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest2Weight * 1.5f))
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest2Card.selectionWeight * 1.5f)),
+                        minimumStageCompletions = categoryChest2Card.minimumStageCompletions
                     };
 
                     ArrayUtils.ArrayAppend(ref category.cards, qualityChest2Card);
@@ -140,6 +206,70 @@ namespace ItemQualities
                     Log.Debug($"Appended quality large chest to {dccs.name} ({category.name}) with weight {qualityChest2Card.selectionWeight}");
 
                     addedQualityChest2 = true;
+                }
+
+                if (duplicatorCard != null && !addedQualityDuplicator)
+                {
+                    DirectorCard qualityDuplicatorCard = new DirectorCard
+                    {
+                        spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicator,
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorCard.selectionWeight * 0.35f)),
+                        minimumStageCompletions = duplicatorCard.minimumStageCompletions
+                    };
+
+                    ArrayUtils.ArrayAppend(ref category.cards, qualityDuplicatorCard);
+
+                    Log.Debug($"Appended quality white printer to {dccs.name} ({category.name}) with weight {qualityDuplicatorCard.selectionWeight}");
+
+                    addedQualityDuplicator = true;
+                }
+
+                if (duplicatorLargeCard != null && !addedQualityDuplicatorLarge)
+                {
+                    DirectorCard qualityDuplicatorLargeCard = new DirectorCard
+                    {
+                        spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicatorLarge,
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorLargeCard.selectionWeight * 0.35f)),
+                        minimumStageCompletions = duplicatorLargeCard.minimumStageCompletions
+                    };
+
+                    ArrayUtils.ArrayAppend(ref category.cards, qualityDuplicatorLargeCard);
+
+                    Log.Debug($"Appended quality green printer to {dccs.name} ({category.name}) with weight {qualityDuplicatorLargeCard.selectionWeight}");
+
+                    addedQualityDuplicatorLarge = true;
+                }
+
+                if (duplicatorMilitaryCard != null && !addedQualityDuplicatorMilitary)
+                {
+                    DirectorCard qualityDuplicatorMilitaryCard = new DirectorCard
+                    {
+                        spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicatorMilitary,
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorMilitaryCard.selectionWeight * 0.35f)),
+                        minimumStageCompletions = duplicatorMilitaryCard.minimumStageCompletions
+                    };
+
+                    ArrayUtils.ArrayAppend(ref category.cards, qualityDuplicatorMilitaryCard);
+
+                    Log.Debug($"Appended quality red printer to {dccs.name} ({category.name}) with weight {qualityDuplicatorMilitaryCard.selectionWeight}");
+
+                    addedQualityDuplicatorMilitary = true;
+                }
+
+                if (duplicatorWildCard != null && !addedQualityDuplicatorWild)
+                {
+                    DirectorCard qualityDuplicatorWildCard = new DirectorCard
+                    {
+                        spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicatorWild,
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorWildCard.selectionWeight * 0.35f)),
+                        minimumStageCompletions = duplicatorWildCard.minimumStageCompletions
+                    };
+
+                    ArrayUtils.ArrayAppend(ref category.cards, qualityDuplicatorWildCard);
+
+                    Log.Debug($"Appended quality boss printer to {dccs.name} ({category.name}) with weight {qualityDuplicatorWildCard.selectionWeight}");
+
+                    addedQualityDuplicatorWild = true;
                 }
             }
         }
