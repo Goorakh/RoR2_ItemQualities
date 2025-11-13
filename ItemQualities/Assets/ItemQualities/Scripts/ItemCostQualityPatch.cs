@@ -1,5 +1,8 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
 using RoR2;
 using System;
 using System.Collections.Generic;
@@ -12,9 +15,100 @@ namespace ItemQualities
         [SystemInitializer(typeof(CostTypeCatalog))]
         static void Init()
         {
+            CostTypeDef itemCostDef = CostTypeCatalog.GetCostTypeDef(CostTypeIndex.WhiteItem);
+            if (itemCostDef?.isAffordable?.Method != null)
+            {
+                new Hook(itemCostDef.isAffordable.Method, new Func<CostTypeCatalog_IsAffordableItem_orig, CostTypeDef, CostTypeDef.IsAffordableContext, bool>(CostTypeCatalog_IsAffordableItem));
+            }
+            else
+            {
+                Log.Error("Failed to find IsAffordableItem method");
+            }
+
+            if (itemCostDef?.payCost?.Method != null)
+            {
+                new ILHook(itemCostDef.payCost.Method, CostTypeCatalog_PayCostItems);
+            }
+            else
+            {
+                Log.Error("Failed to find PayCostItems method");
+            }
+
             IL.RoR2.ChestBehavior.BaseItemDrop += ChestBehavior_BaseItemDrop;
             IL.RoR2.ShopTerminalBehavior.DropPickup += ShopTerminalBehavior_DropPickup;
             IL.RoR2.OptionChestBehavior.ItemDrop += OptionChestBehavior_ItemDrop;
+        }
+
+        delegate bool CostTypeCatalog_IsAffordableItem_orig(CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context);
+        static bool CostTypeCatalog_IsAffordableItem(CostTypeCatalog_IsAffordableItem_orig orig, CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context)
+        {
+            return orig(costTypeDef, context) &&
+                   context.activator &&
+                   context.activator.TryGetComponent(out CharacterBody activatorBody) &&
+                   activatorBody.inventory &&
+                   activatorBody.inventory.HasAtLeastXTotalRemovableNonQualityItemsOfTier(costTypeDef.itemTier, context.cost);
+        }
+
+        static void CostTypeCatalog_PayCostItems(ILContext il)
+        {
+            if (!il.Method.TryFindParameter<CostTypeDef>(out ParameterDefinition costTypeDefParameter))
+            {
+                Log.Error("Failed to find CostTypeDef parameter");
+                return;
+            }
+
+            if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contentParameter))
+            {
+                Log.Error("Failed to find PayCostContext parameter");
+                return;
+            }
+
+            ILCursor c = new ILCursor(il);
+
+            ILLabel skipItemLabel = default;
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdfld<CostTypeDef.PayCostContext>(nameof(CostTypeDef.PayCostContext.avoidedItemIndex)),
+                               x => x.MatchBeq(out skipItemLabel)))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After); // beq
+
+            if (!c.TryFindForeachVariable(out VariableDefinition itemIndexVar))
+            {
+                Log.Error("Failed to find ItemIndex variable");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg, costTypeDefParameter);
+            c.Emit(OpCodes.Ldarg, contentParameter);
+            c.Emit(OpCodes.Ldloc, itemIndexVar);
+            c.EmitDelegate<Func<CostTypeDef, CostTypeDef.PayCostContext, ItemIndex, bool>>(isItemAllowed);
+            c.Emit(OpCodes.Brfalse, skipItemLabel);
+
+            static bool isItemAllowed(CostTypeDef costTypeDef, CostTypeDef.PayCostContext context, ItemIndex itemIndex)
+            {
+                bool isQualityItem = QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None;
+                bool requireQualityItem = CustomCostTypeIndex.IsQualityItemCostType(costTypeDef);
+                if (isQualityItem != requireQualityItem)
+                    return false;
+
+                /*
+                if (requireQualityItem)
+                {
+                    ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
+                    ItemQualityGroupIndex avoidedItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(context.avoidedItemIndex);
+
+                    // Match the avoided item regardless of quality
+                    if (itemGroupIndex == avoidedItemGroupIndex)
+                        return false;
+                }
+                */
+
+                return true;
+            }
         }
 
         static QualityTier getOutputQualityTierFromCost(GameObject dropperObject)
@@ -26,7 +120,6 @@ namespace ItemQualities
                 return QualityTier.None;
             }
 
-            CostTypeIndex costTypeIndex = purchaseContext.CostTypeIndex;
             CostTypeDef.PayCostResults payCostResults = purchaseContext.Results;
             List<PickupIndex> pickupIndicesSpentOnPurchase = new List<PickupIndex>(payCostResults.itemsTaken.Count + payCostResults.equipmentTaken.Count);
 
@@ -55,12 +148,6 @@ namespace ItemQualities
             foreach (PickupIndex inputPickupIndex in pickupIndicesSpentOnPurchase)
             {
                 QualityTier qualityTier = QualityCatalog.GetQualityTier(inputPickupIndex);
-                if (costTypeIndex != CostTypeIndex.TreasureCacheItem &&
-                    costTypeIndex != CostTypeIndex.TreasureCacheVoidItem &&
-                    !QualityCatalog.ItemExchangeShouldPreserveQuality(inputPickupIndex))
-                {
-                    qualityTier = QualityTier.None;
-                }
 
                 averageInputQualityTierValue += (float)qualityTier;
 

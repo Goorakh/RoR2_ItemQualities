@@ -40,6 +40,9 @@ namespace ItemQualities
 
         [Header("Quality")]
 
+        [Tooltip("If set, all pickups added to the droptable must have all quality tiers implemented, regardless of the quality tier weights")]
+        public bool RequireAllQualitiesImplemented;
+
         public float BaseQualityWeight = 0f;
 
         public float UncommonQualityWeight = 0.7f;
@@ -66,7 +69,7 @@ namespace ItemQualities
 
         public bool IsFilterRequired()
         {
-            return RequiredItemTags.Length > 0 || BannedItemTags.Length > 0;
+            return RequiredItemTags.Length > 0 || BannedItemTags.Length > 0 || RequireAllQualitiesImplemented;
         }
 
         public bool PassesFilter(PickupIndex pickupIndex)
@@ -89,6 +92,38 @@ namespace ItemQualities
                     if (Array.IndexOf(itemDef.tags, bannedTag) != -1)
                     {
                         return false;
+                    }
+                }
+
+                if (RequireAllQualitiesImplemented)
+                {
+                    ItemQualityGroup itemQualityGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(pickupDef.itemIndex));
+                    if (!itemQualityGroup)
+                        return false;
+
+                    for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                    {
+                        if (itemQualityGroup.GetItemIndex(qualityTier) == ItemIndex.None)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            else if (pickupDef.equipmentIndex != EquipmentIndex.None)
+            {
+                if (RequireAllQualitiesImplemented)
+                {
+                    EquipmentQualityGroup equipmentQualityGroup = QualityCatalog.GetEquipmentQualityGroup(QualityCatalog.FindEquipmentQualityGroupIndex(pickupDef.equipmentIndex));
+                    if (!equipmentQualityGroup)
+                        return false;
+
+                    for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                    {
+                        if (equipmentQualityGroup.GetEquipmentIndex(qualityTier) == EquipmentIndex.None)
+                        {
+                            return false;
+                        }
                     }
                 }
             }

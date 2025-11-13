@@ -642,6 +642,14 @@ namespace ItemQualities
             public static ItemQualityGroup AttackSpeedPerNearbyAllyOrEnemy;
 
             public static ItemQualityGroup HeadHunter;
+
+            public static ItemQualityGroup ScrapWhite;
+
+            public static ItemQualityGroup ScrapGreen;
+
+            public static ItemQualityGroup ScrapRed;
+
+            public static ItemQualityGroup ScrapYellow;
         }
 
         public static class EquipmentQualityGroups
@@ -754,6 +762,18 @@ namespace ItemQualities
 
             [TargetAssetName("iscQualityChest1")]
             public static InteractableSpawnCard QualityChest1;
+
+            [TargetAssetName("iscQualityDuplicator")]
+            public static InteractableSpawnCard QualityDuplicator;
+
+            [TargetAssetName("iscQualityDuplicatorLarge")]
+            public static InteractableSpawnCard QualityDuplicatorLarge;
+
+            [TargetAssetName("iscQualityDuplicatorMilitary")]
+            public static InteractableSpawnCard QualityDuplicatorMilitary;
+
+            [TargetAssetName("iscQualityDuplicatorWild")]
+            public static InteractableSpawnCard QualityDuplicatorWild;
         }
     }
 }
