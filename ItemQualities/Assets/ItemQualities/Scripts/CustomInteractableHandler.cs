@@ -48,13 +48,15 @@ namespace ItemQualities
                     return;
                 }
 
-                if (!spawnCard.prefab.TryGetComponent(out PurchaseInteraction purchaseInteraction))
+                if (spawnCard.prefab.TryGetComponent(out PurchaseInteraction purchaseInteraction))
                 {
-                    Log.Error($"{spawnCard} prefab {spawnCard.prefab.name} is missing PurchaseInteraction component");
-                    return;
+                    purchaseInteraction.costType = costType;
                 }
 
-                purchaseInteraction.costType = costType;
+                if (spawnCard.prefab.TryGetComponent(out QualityDuplicatorBehavior qualityDuplicatorController))
+                {
+                    qualityDuplicatorController.CostTypeIndex = costType;
+                }
             }
 
             setInteractableCostType(ItemQualitiesContent.SpawnCards.QualityDuplicator, CustomCostTypeIndex.WhiteItemQuality);

@@ -106,7 +106,7 @@ namespace ItemQualities
         {
             CharacterBody activatorBody = context.activator ? context.activator.GetComponent<CharacterBody>() : null;
             Inventory activatorInventory = activatorBody ? activatorBody.inventory : null;
-            return activatorInventory && activatorInventory.HasAtLeastXTotalQualityItemsOfTier(costTypeDef.itemTier, context.cost);
+            return activatorInventory && activatorInventory.HasAtLeastXTotalRemovableQualityItemsOfTier(costTypeDef.itemTier, context.cost);
         }
 
         static void payCostQualityItems(CostTypeDef costTypeDef, CostTypeDef.PayCostContext context)

@@ -7,6 +7,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -4936127727053494729, guid: 3ed72a382236b084a8d27246f257edd1, type: 3}
+      propertyPath: displayToken
+      value: DUPLICATOR_MILITARY_QUALITY_NAME
+      objectReference: {fileID: 0}
     - target: {fileID: 133376595409305959, guid: 3ed72a382236b084a8d27246f257edd1, type: 3}
       propertyPath: m_Name
       value: QualityDuplicatorMilitary
@@ -134,6 +138,10 @@ PrefabInstance:
     - target: {fileID: 7474175367444819561, guid: 3ed72a382236b084a8d27246f257edd1, type: 3}
       propertyPath: displayNameToken
       value: DUPLICATOR_MILITARY_QUALITY_NAME
+      objectReference: {fileID: 0}
+    - target: {fileID: 7845535346165912041, guid: 3ed72a382236b084a8d27246f257edd1, type: 3}
+      propertyPath: ContextToken
+      value: DUPLICATOR_MILITARY_QUALITY_CONTEXT
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ed72a382236b084a8d27246f257edd1, type: 3}

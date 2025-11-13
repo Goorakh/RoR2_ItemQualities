@@ -6,7 +6,6 @@ using MonoMod.RuntimeDetour;
 using RoR2;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace ItemQualities
@@ -47,7 +46,7 @@ namespace ItemQualities
                    context.activator &&
                    context.activator.TryGetComponent(out CharacterBody activatorBody) &&
                    activatorBody.inventory &&
-                   activatorBody.inventory.HasAtLeastXTotalNonQualityItemsOfTier(costTypeDef.itemTier, context.cost);
+                   activatorBody.inventory.HasAtLeastXTotalRemovableNonQualityItemsOfTier(costTypeDef.itemTier, context.cost);
         }
 
         static void CostTypeCatalog_PayCostItems(ILContext il)
@@ -55,6 +54,12 @@ namespace ItemQualities
             if (!il.Method.TryFindParameter<CostTypeDef>(out ParameterDefinition costTypeDefParameter))
             {
                 Log.Error("Failed to find CostTypeDef parameter");
+                return;
+            }
+
+            if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contentParameter))
+            {
+                Log.Error("Failed to find PayCostContext parameter");
                 return;
             }
 
@@ -78,16 +83,31 @@ namespace ItemQualities
             }
 
             c.Emit(OpCodes.Ldarg, costTypeDefParameter);
+            c.Emit(OpCodes.Ldarg, contentParameter);
             c.Emit(OpCodes.Ldloc, itemIndexVar);
-            c.EmitDelegate<Func<CostTypeDef, ItemIndex, bool>>(isItemAllowed);
+            c.EmitDelegate<Func<CostTypeDef, CostTypeDef.PayCostContext, ItemIndex, bool>>(isItemAllowed);
             c.Emit(OpCodes.Brfalse, skipItemLabel);
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static bool isItemAllowed(CostTypeDef costTypeDef, ItemIndex itemIndex)
+            static bool isItemAllowed(CostTypeDef costTypeDef, CostTypeDef.PayCostContext context, ItemIndex itemIndex)
             {
                 bool isQualityItem = QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None;
                 bool requireQualityItem = CustomCostTypeIndex.IsQualityItemCostType(costTypeDef);
-                return isQualityItem == requireQualityItem;
+                if (isQualityItem != requireQualityItem)
+                    return false;
+
+                /*
+                if (requireQualityItem)
+                {
+                    ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
+                    ItemQualityGroupIndex avoidedItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(context.avoidedItemIndex);
+
+                    // Match the avoided item regardless of quality
+                    if (itemGroupIndex == avoidedItemGroupIndex)
+                        return false;
+                }
+                */
+
+                return true;
             }
         }
 
@@ -100,7 +120,6 @@ namespace ItemQualities
                 return QualityTier.None;
             }
 
-            CostTypeIndex costTypeIndex = purchaseContext.CostTypeIndex;
             CostTypeDef.PayCostResults payCostResults = purchaseContext.Results;
             List<PickupIndex> pickupIndicesSpentOnPurchase = new List<PickupIndex>(payCostResults.itemsTaken.Count + payCostResults.equipmentTaken.Count);
 

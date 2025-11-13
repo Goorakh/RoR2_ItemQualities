@@ -4,7 +4,7 @@ namespace ItemQualities.Utilities.Extensions
 {
     public static class InventoryExtensions
     {
-        public static bool HasAtLeastXTotalQualityItemsOfTier(this Inventory inventory, ItemTier itemTier, int x)
+        public static bool HasAtLeastXTotalRemovableQualityItemsOfTier(this Inventory inventory, ItemTier itemTier, int x)
         {
             if (x <= 0)
                 return true;
@@ -13,7 +13,7 @@ namespace ItemQualities.Utilities.Extensions
             foreach (ItemIndex itemIndex in inventory.itemAcquisitionOrder)
             {
                 ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                if (itemDef && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
+                if (itemDef && itemDef.canRemove && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
                 {
                     totalCount += inventory.GetItemCount(itemIndex);
                     if (totalCount >= x)
@@ -24,7 +24,7 @@ namespace ItemQualities.Utilities.Extensions
             return false;
         }
 
-        public static bool HasAtLeastXTotalNonQualityItemsOfTier(this Inventory inventory, ItemTier itemTier, int x)
+        public static bool HasAtLeastXTotalRemovableNonQualityItemsOfTier(this Inventory inventory, ItemTier itemTier, int x)
         {
             if (x <= 0)
                 return true;
@@ -33,7 +33,7 @@ namespace ItemQualities.Utilities.Extensions
             foreach (ItemIndex itemIndex in inventory.itemAcquisitionOrder)
             {
                 ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                if (itemDef && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None)
+                if (itemDef && itemDef.canRemove && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None)
                 {
                     totalCount += inventory.GetItemCount(itemIndex);
                     if (totalCount >= x)

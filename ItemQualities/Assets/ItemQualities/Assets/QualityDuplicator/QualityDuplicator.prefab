@@ -14,12 +14,16 @@ GameObject:
   - component: {fileID: 8318505763939278633}
   - component: {fileID: 8844289961095817703}
   - component: {fileID: 7525952887716192246}
-  - component: {fileID: 7474175367444819561}
-  - component: {fileID: 3959598177297909944}
   - component: {fileID: 1386743312061916508}
   - component: {fileID: 4216515255286292405}
+  - component: {fileID: 7845535346165912041}
+  - component: {fileID: 3959598177297909944}
   - component: {fileID: 6378681955861773747}
+  - component: {fileID: -4936127727053494729}
   - component: {fileID: 4887950223852862703}
+  - component: {fileID: -1082178284506308187}
+  - component: {fileID: -1461987443151557766}
+  - component: {fileID: 3657872071859354645}
   m_Layer: 0
   m_Name: QualityDuplicator
   m_TagString: Untagged
@@ -153,7 +157,7 @@ MonoBehaviour:
   highlightColor: 0
   CustomColor: {r: 1, g: 0, b: 1, a: 1}
   isOn: 0
---- !u!114 &7474175367444819561
+--- !u!114 &1386743312061916508
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -162,39 +166,77 @@ MonoBehaviour:
   m_GameObject: {fileID: 133376595409305959}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 370243918, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Script: {fileID: -1322397448, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  displayNameToken: DUPLICATOR_QUALITY_NAME
-  contextToken: DUPLICATOR_QUALITY_CONTEXT
-  costType: 4
-  available: 1
-  cost: 1
-  solitudeCost: 0
-  automaticallyScaleCostWithDifficulty: 0
-  requiredUnlockable: 
-  ignoreSpherecastForInteractability: 0
-  purchaseStatNames: []
-  setUnavailableOnTeleporterActivated: 0
-  isShrine: 0
-  isGoldShrine: 0
-  shouldProximityHighlight: 1
-  saleStarCompatible: 0
-  requiredExpansion: {fileID: 0}
-  lastActivator: {fileID: 0}
-  lockGameObject: {fileID: 0}
-  onPurchase:
+  displayDistance: 15
+  hologramPivot: {fileID: 7769660839425818605}
+  disableHologramRotation: 1
+  hologramContentInstance: {fileID: 0}
+--- !u!114 &4216515255286292405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 952828898, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deathSound: 
+  barkSound: 
+  openSound: Play_UI_3D_printer_process
+  landingSound: 
+  fallDamageSound: 
+  aliveLoopStart: 
+  aliveLoopStop: 
+  sprintLoopStart: 
+  sprintLoopStop: 
+--- !u!114 &7845535346165912041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c80234594576405419dbc11975d1cd42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CostTypeIndex: 4
+  Cost: 1
+  ContextToken: DUPLICATOR_QUALITY_CONTEXT
+  HologramContentPrefab:
+    m_AssetGUID: f71c9d1c742f47442a04662508bae873
+    m_SubObjectName: 
+    m_SubObjectType: 
+  OnPurchase:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7474175367444819561}
-        m_TargetAssemblyTypeName: 
+      - m_Target: {fileID: -1082178284506308187}
+        m_TargetAssemblyTypeName: RoR2.NetworkUIPromptController, RoR2
+        m_MethodName: ClearParticipant
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7845535346165912041}
+        m_TargetAssemblyTypeName: ItemQualities.QualityDuplicatorBehavior, ItemQualities
         m_MethodName: SetAvailable
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 1
+          m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -237,8 +279,8 @@ MonoBehaviour:
   action:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7474175367444819561}
-        m_TargetAssemblyTypeName: RoR2.PurchaseInteraction, RoR2
+      - m_Target: {fileID: 7845535346165912041}
+        m_TargetAssemblyTypeName: ItemQualities.QualityDuplicatorBehavior, ItemQualities
         m_MethodName: SetAvailable
         m_Mode: 6
         m_Arguments:
@@ -250,43 +292,6 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   timeStepType: 2
---- !u!114 &1386743312061916508
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133376595409305959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1322397448, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  displayDistance: 15
-  hologramPivot: {fileID: 7769660839425818605}
-  disableHologramRotation: 1
-  hologramContentInstance: {fileID: 0}
---- !u!114 &4216515255286292405
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133376595409305959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 952828898, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deathSound: 
-  barkSound: 
-  openSound: Play_UI_3D_printer_process
-  landingSound: 
-  fallDamageSound: 
-  aliveLoopStart: 
-  aliveLoopStop: 
-  sprintLoopStart: 
-  sprintLoopStop: 
 --- !u!114 &6378681955861773747
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -313,6 +318,19 @@ MonoBehaviour:
   itemTier: 0
   bannedItemTag: 15
   selfGeneratePickup: 1
+--- !u!114 &-4936127727053494729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1620867292, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  displayToken: DUPLICATOR_QUALITY_NAME
 --- !u!114 &4887950223852862703
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,6 +345,94 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InspectInfo: {fileID: 11400000, guid: 93f9d9142b4b59b49b80cf23d244618e, type: 2}
   inspectHintOverrideToken: 
+--- !u!114 &-1082178284506308187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1977880532, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-1461987443151557766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1175172885, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panelPrefab: {fileID: 0}
+  onPickupSelected:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845535346165912041}
+        m_TargetAssemblyTypeName: ItemQualities.QualityDuplicatorBehavior, ItemQualities
+        m_MethodName: OnPickupSelected
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onServerInteractionBegin:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7845535346165912041}
+        m_TargetAssemblyTypeName: ItemQualities.QualityDuplicatorBehavior, ItemQualities
+        m_MethodName: SetQualityScrapOptionsFromInteractor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  cutoffDistance: 10
+  contextString: 
+  shouldProximityHighlight: 1
+  synchronizeItemSelectionAcrossNetwork: 1
+  isDelusionChoice: 0
+  isRebirthChoice: 0
+  chestGeneratedFrom: {fileID: 0}
+  multiOptionsAvailable: 0
+--- !u!114 &3657872071859354645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 099ecf8d44d7a9644b7beb48d3648467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FieldAssignments:
+  - _targetObject: {fileID: -1461987443151557766}
+    _targetObjectComponent: {fileID: 0}
+    TargetObjectComponentType:
+      assemblyQualifiedName: 
+    FieldName: panelPrefab
+    AssetReference:
+      m_AssetGUID: d92580332d8e02b42a424021ab61dbb6
+      m_SubObjectName: 
+      m_SubObjectType: 
+    AssetTypeOverride:
+      assemblyQualifiedName: 
+  _hasLoaded: 0
 --- !u!1 &969132586740268829
 GameObject:
   m_ObjectHideFlags: 0
