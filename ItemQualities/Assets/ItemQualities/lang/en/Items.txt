@@ -953,16 +953,16 @@
         "ITEM_ICICLE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance for enemies hit by the <style=cIsDamage>ice storm</style> to receive <style=cIsUtility>frost</style>, enemies are <style=cIsUtility>frozen</style> upon reaching <style=cIsUtility>6</style> stacks of <style=cIsUtility>frost</style>. Increases ice storm radius by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style>",
 
         "ITEM_OUTOFCOMBATARMOR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Breaking the bubble stuns enemies.",
-        "ITEM_OUTOFCOMBATARMOR_UNCOMMON_DESC": "{0}\nUpon breaking the bubble, <style=cIsUtility>stun</style> all enemies in a <sprite name=\"Quality\"> 10m radius for <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> second(s).",
+        "ITEM_OUTOFCOMBATARMOR_UNCOMMON_DESC": "{0}\nUpon breaking the bubble, <style=cIsUtility>stun</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>10m</style> for <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> seconds.",
 
         "ITEM_OUTOFCOMBATARMOR_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Breaking the bubble stuns enemies.",
-        "ITEM_OUTOFCOMBATARMOR_UNCOMMON_DESC": "{0}\nUpon breaking the bubble, <style=cIsUtility>stun</style> all enemies in a <sprite name=\"Quality\"> 20m radius for <sprite name=\"Quality\"> <style=cIsUtility>4</style> <style=cStack>(+4 per stack)</style> second(s).",
+        "ITEM_OUTOFCOMBATARMOR_RARE_DESC": "{0}\nUpon breaking the bubble, <style=cIsUtility>stun</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>20m</style> for <sprite name=\"Quality\"> <style=cIsUtility>4</style> <style=cStack>(+4 per stack)</style> seconds.",
 
         "ITEM_OUTOFCOMBATARMOR_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Breaking the bubble stuns enemies.",
-        "ITEM_OUTOFCOMBATARMOR_UNCOMMON_DESC": "{0}\nUpon breaking the bubble, <style=cIsUtility>stun</style> all enemies in a <sprite name=\"Quality\"> 30m radius for <sprite name=\"Quality\"> <style=cIsUtility>6</style> <style=cStack>(+6 per stack)</style> second(s).",
+        "ITEM_OUTOFCOMBATARMOR_EPIC_DESC": "{0}\nUpon breaking the bubble, <style=cIsUtility>stun</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>30m</style> for <sprite name=\"Quality\"> <style=cIsUtility>6</style> <style=cStack>(+6 per stack)</style> seconds.",
 
         "ITEM_OUTOFCOMBATARMOR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Breaking the bubble stuns enemies.",
-        "ITEM_OUTOFCOMBATARMOR_UNCOMMON_DESC": "{0}\nUpon breaking the bubble, <style=cIsUtility>stun</style> all enemies in a <sprite name=\"Quality\"> 50m radius for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> second(s).",
+        "ITEM_OUTOFCOMBATARMOR_LEGENDARY_DESC": "{0}\nUpon breaking the bubble, <style=cIsUtility>stun</style> all enemies within <sprite name=\"Quality\"> <style=cIsUtility>50m</style> for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds.",
         
         "ITEM_BOOSTALLSTATS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce cooldowns while you have 8 or more buffs.",
         "ITEM_BOOSTALLSTATS_UNCOMMON_DESC": "{0}\nWhile you have 8 or more buffs, reduce skill cooldowns by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>.",
