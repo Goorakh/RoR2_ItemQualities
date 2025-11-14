@@ -438,8 +438,8 @@ namespace ItemQualities
             {
                 ItemQualityCounts secondarySkillMagazine = ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCounts(_body.inventory);
 
-                float freeRestockChance = (5f * secondarySkillMagazine.UncommonCount) +
-                                          (15f * secondarySkillMagazine.RareCount) +
+                float freeRestockChance = (10f * secondarySkillMagazine.UncommonCount) +
+                                          (20f * secondarySkillMagazine.RareCount) +
                                           (35f * secondarySkillMagazine.EpicCount) +
                                           (60f * secondarySkillMagazine.LegendaryCount);
 
