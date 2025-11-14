@@ -707,6 +707,8 @@ namespace ItemQualities
             public static BuffDef GoldenGun;
 
             public static BuffDef PersonalShield;
+
+            public static BuffDef FeatherExtraJumps;
         }
 
         public static class Prefabs
