@@ -1,11 +1,11 @@
 ﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using RoR2;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace ItemQualities
@@ -46,23 +46,11 @@ namespace ItemQualities
                    context.activator &&
                    context.activator.TryGetComponent(out CharacterBody activatorBody) &&
                    activatorBody.inventory &&
-                   activatorBody.inventory.HasAtLeastXTotalRemovableNonQualityItemsOfTier(costTypeDef.itemTier, context.cost);
+                   activatorBody.inventory.HasAtLeastXTotalNonQualityItemsOfTierForPurchase(costTypeDef.itemTier, context.cost);
         }
 
         static void CostTypeCatalog_PayCostItems(ILContext il)
         {
-            if (!il.Method.TryFindParameter<CostTypeDef>(out ParameterDefinition costTypeDefParameter))
-            {
-                Log.Error("Failed to find CostTypeDef parameter");
-                return;
-            }
-
-            if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contentParameter))
-            {
-                Log.Error("Failed to find PayCostContext parameter");
-                return;
-            }
-
             ILCursor c = new ILCursor(il);
 
             ILLabel skipItemLabel = default;
@@ -82,32 +70,15 @@ namespace ItemQualities
                 return;
             }
 
-            c.Emit(OpCodes.Ldarg, costTypeDefParameter);
-            c.Emit(OpCodes.Ldarg, contentParameter);
             c.Emit(OpCodes.Ldloc, itemIndexVar);
-            c.EmitDelegate<Func<CostTypeDef, CostTypeDef.PayCostContext, ItemIndex, bool>>(isItemAllowed);
+            c.EmitDelegate<Func<ItemIndex, bool>>(isItemAllowed);
             c.Emit(OpCodes.Brfalse, skipItemLabel);
 
-            static bool isItemAllowed(CostTypeDef costTypeDef, CostTypeDef.PayCostContext context, ItemIndex itemIndex)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static bool isItemAllowed(ItemIndex itemIndex)
             {
-                bool isQualityItem = QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None;
-                bool requireQualityItem = CustomCostTypeIndex.IsQualityItemCostType(costTypeDef);
-                if (isQualityItem != requireQualityItem)
-                    return false;
-
-                /*
-                if (requireQualityItem)
-                {
-                    ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
-                    ItemQualityGroupIndex avoidedItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(context.avoidedItemIndex);
-
-                    // Match the avoided item regardless of quality
-                    if (itemGroupIndex == avoidedItemGroupIndex)
-                        return false;
-                }
-                */
-
-                return true;
+                return QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None ||
+                       QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex;
             }
         }
 

@@ -24,7 +24,7 @@ namespace ItemQualities.Utilities.Extensions
             return false;
         }
 
-        public static bool HasAtLeastXTotalRemovableNonQualityItemsOfTier(this Inventory inventory, ItemTier itemTier, int x)
+        public static bool HasAtLeastXTotalNonQualityItemsOfTierForPurchase(this Inventory inventory, ItemTier itemTier, int x)
         {
             if (x <= 0)
                 return true;
@@ -32,12 +32,16 @@ namespace ItemQualities.Utilities.Extensions
             int totalCount = 0;
             foreach (ItemIndex itemIndex in inventory.itemAcquisitionOrder)
             {
-                ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                if (itemDef && itemDef.canRemove && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None)
+                if (QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None ||
+                    QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
                 {
-                    totalCount += inventory.GetItemCount(itemIndex);
-                    if (totalCount >= x)
-                        return true;
+                    ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+                    if (itemDef && itemDef.canRemove && itemDef.tier == itemTier)
+                    {
+                        totalCount += inventory.GetItemCount(itemIndex);
+                        if (totalCount >= x)
+                            return true;
+                    }
                 }
             }
 
