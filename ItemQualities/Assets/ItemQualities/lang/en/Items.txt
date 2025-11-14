@@ -493,17 +493,17 @@
         "ITEM_MOVESPEEDONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
         "ITEM_MOVESPEEDONKILL_LEGENDARY_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>25</style> <style=cStack>(+25 per stack)</style> times. Resets on stage exit or death.",
 
-        "ITEM_FEATHER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase jump height and reduce fall damage.",
-        "ITEM_FEATHER_UNCOMMON_DESC": "{0}\nIncreases <style=cIsUtility>jump height</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> and reduce <style=cIsUtility>fall damage</style> by <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style>",
+        "ITEM_FEATHER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain extra jumps from kills mid air.",
+        "ITEM_FEATHER_UNCOMMON_DESC": "{0}\nKilling an enemy while in the air grants an <style=cIsUtility>additional jump</style>, caps at <sprite name=\"Quality\"> <style=cIsUtility>2 <style=cStack>(+2 per stack)</style> extra jumps</style>",
 
-        "ITEM_FEATHER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase jump height and reduce fall damage.",
-        "ITEM_FEATHER_RARE_DESC": "{0}\nIncreases <style=cIsUtility>jump height</style> by <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style> and reduce <style=cIsUtility>fall damage</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>",
+        "ITEM_FEATHER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain extra jumps from kills mid air.",
+        "ITEM_FEATHER_RARE_DESC": "{0}\nKilling an enemy while in the air grants an <style=cIsUtility>additional jump</style>, caps at <sprite name=\"Quality\"> <style=cIsUtility>4 <style=cStack>(+4 per stack)</style> extra jumps</style>",
 
-        "ITEM_FEATHER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase jump height and reduce fall damage.",
-        "ITEM_FEATHER_EPIC_DESC": "{0}\nIncreases <style=cIsUtility>jump height</style> by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style> and reduce <style=cIsUtility>fall damage</style> by <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style>",
+        "ITEM_FEATHER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain extra jumps from kills mid air.",
+        "ITEM_FEATHER_EPIC_DESC": "{0}\nKilling an enemy while in the air grants an <style=cIsUtility>additional jump</style>, caps at <sprite name=\"Quality\"> <style=cIsUtility>6 <style=cStack>(+6 per stack)</style> extra jumps</style>",
 
-        "ITEM_FEATHER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase jump height and reduce fall damage.",
-        "ITEM_FEATHER_LEGENDARY_DESC": "{0}\nIncreases <style=cIsUtility>jump height</style> by <sprite name=\"Quality\"> <style=cIsUtility>45%</style> <style=cStack>(+45% per stack)</style> and reduce <style=cIsUtility>fall damage</style> by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style>",
+        "ITEM_FEATHER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain extra jumps from kills mid air.",
+        "ITEM_FEATHER_LEGENDARY_DESC": "{0}\nKilling an enemy while in the air grants an <style=cIsUtility>additional jump</style>, caps at <sprite name=\"Quality\"> <style=cIsUtility>8 <style=cStack>(+8 per stack)</style> extra jumps</style>",
 
         "ITEM_STRENGTHENBURN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 'Critical Strikes' ignite enemies.",
         "ITEM_STRENGTHENBURN_UNCOMMON_DESC": "{0}\n'<style=cIsDamage>Critical Strikes</style>' <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> base damage.",
