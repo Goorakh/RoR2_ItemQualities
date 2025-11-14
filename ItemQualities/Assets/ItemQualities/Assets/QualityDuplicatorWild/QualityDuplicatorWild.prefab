@@ -143,5 +143,13 @@ PrefabInstance:
       propertyPath: ContextToken
       value: DUPLICATOR_WILD_QUALITY_CONTEXT
       objectReference: {fileID: 0}
+    - target: {fileID: 8159439704467611923, guid: 3ed72a382236b084a8d27246f257edd1, type: 3}
+      propertyPath: contextToken
+      value: DUPLICATOR_WILD_QUALITY_CONTEXT
+      objectReference: {fileID: 0}
+    - target: {fileID: 8159439704467611923, guid: 3ed72a382236b084a8d27246f257edd1, type: 3}
+      propertyPath: displayNameToken
+      value: DUPLICATOR_WILD_QUALITY_NAME
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3ed72a382236b084a8d27246f257edd1, type: 3}
