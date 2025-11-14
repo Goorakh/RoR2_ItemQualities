@@ -29,6 +29,18 @@ namespace ItemQualities.Utilities
             return loadHandle;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AsyncOperationHandle<T> LoadAssetAsync<T>(string assetKey, AsyncReferenceHandleUnloadType unloadType = AsyncReferenceHandleUnloadType.AtWill) where T : UnityEngine.Object
+        {
+            return LoadAssetAsync(new AssetReferenceT<T>(assetKey), unloadType);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static AsyncOperationHandle<T> LoadAssetAsync<T>(AssetReferenceT<T> assetReference, AsyncReferenceHandleUnloadType unloadType = AsyncReferenceHandleUnloadType.AtWill) where T : UnityEngine.Object
+        {
+            return AssetAsyncReferenceManager<T>.LoadAsset(assetReference, unloadType);
+        }
+
         public static AsyncOperationHandle LoadAssetAsync(AssetReference assetReference, Type assetType, AsyncReferenceHandleUnloadType unloadType = AsyncReferenceHandleUnloadType.AtWill)
         {
             AssetAsyncReferenceManagerInstance assetAsyncReferenceManager = getOrCreateAssetAsyncReferenceManager(assetType);

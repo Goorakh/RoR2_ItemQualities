@@ -19,8 +19,8 @@ namespace ItemQualities.Items
         {
             IL.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate;
 
-            AsyncOperationHandle<GameObject> shurikenLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_PrimarySkillShuriken.ShurikenProjectile_prefab);
-            AsyncOperationHandle<GameObject> shurikenGhostLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_PrimarySkillShuriken.ShurikenGhost_prefab);
+            AsyncOperationHandle<GameObject> shurikenLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC1_PrimarySkillShuriken.ShurikenProjectile_prefab);
+            AsyncOperationHandle<GameObject> shurikenGhostLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC1_PrimarySkillShuriken.ShurikenGhost_prefab);
 
             ParallelCoroutine loadCoroutine = new ParallelCoroutine();
             loadCoroutine.Add(shurikenLoad);

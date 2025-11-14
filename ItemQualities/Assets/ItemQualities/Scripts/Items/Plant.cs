@@ -17,7 +17,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Plant.InterstellarDeskPlant_prefab).OnSuccess(deskPlantPrefab =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Plant.InterstellarDeskPlant_prefab).OnSuccess(deskPlantPrefab =>
             {
                 deskPlantPrefab.EnsureComponent<GenericOwnership>();
             });

@@ -3,6 +3,7 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.Projectile;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -12,7 +13,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPathsBetter.RoR2_Base_StickyBomb.StickyBomb_prefab).OnSuccess(stickyBombPrefab =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_StickyBomb.StickyBomb_prefab).OnSuccess(stickyBombPrefab =>
             {
                 stickyBombPrefab.EnsureComponent<StickyBombQualityFuseController>();
             });

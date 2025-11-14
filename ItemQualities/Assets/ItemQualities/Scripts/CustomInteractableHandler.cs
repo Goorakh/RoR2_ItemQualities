@@ -15,7 +15,7 @@ namespace ItemQualities
         {
             On.RoR2.ClassicStageInfo.RebuildCards += ClassicStageInfo_RebuildCards;
 
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Chest1StealthedVariant.Chest1StealthedVariant_prefab).OnSuccess(cloakedChest =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Chest1StealthedVariant.Chest1StealthedVariant_prefab).OnSuccess(cloakedChest =>
             {
                 if (cloakedChest.TryGetComponent(out ChestBehavior cloakedChestBehavior))
                 {

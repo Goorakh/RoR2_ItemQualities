@@ -15,7 +15,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC2_Items_StunAndPierce.StunAndPierceBoomerang_prefab).OnSuccess(boomerangPrefab =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_StunAndPierce.StunAndPierceBoomerang_prefab).OnSuccess(boomerangPrefab =>
             {
                 boomerangPrefab.EnsureComponent<StunAndPierceProjectileController>();
             });

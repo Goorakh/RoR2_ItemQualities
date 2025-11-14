@@ -131,7 +131,11 @@ namespace ItemQualities
                         if (baseItem.itemIndex != ItemIndex.None)
                         {
                             itemQualityGroup.BaseItemIndex = baseItem.itemIndex;
-                            _itemIndexToQualityGroupIndex[(int)baseItem.itemIndex] = itemQualityGroupIndex;
+                            recordItemInGroup(baseItem.itemIndex, QualityTier.None);
+                        }
+                        else
+                        {
+                            Log.Warning($"Unable to find item index for {baseItem} in group {itemQualityGroup}");
                         }
                     });
 
@@ -167,7 +171,11 @@ namespace ItemQualities
                         if (baseEquipment.equipmentIndex != EquipmentIndex.None)
                         {
                             equipmentQualityGroup.BaseEquipmentIndex = baseEquipment.equipmentIndex;
-                            _equipmentIndexToQualityGroupIndex[(int)baseEquipment.equipmentIndex] = equipmentQualityGroupIndex;
+                            recordEquipmentInGroup(baseEquipment.equipmentIndex, QualityTier.None);
+                        }
+                        else
+                        {
+                            Log.Warning($"Unable to find equipment index for {baseEquipment} in group {equipmentQualityGroup}");
                         }
                     });
 
@@ -203,7 +211,11 @@ namespace ItemQualities
                         if (baseBuff.buffIndex != BuffIndex.None)
                         {
                             buffQualityGroup.BaseBuffIndex = baseBuff.buffIndex;
-                            _buffIndexToQualityGroupIndex[(int)baseBuff.buffIndex] = buffQualityGroupIndex;
+                            recordBuffInGroup(baseBuff.buffIndex, QualityTier.None);
+                        }
+                        else
+                        {
+                            Log.Warning($"Unable to find buff index for {baseBuff} in group {buffQualityGroup}");
                         }
                     });
 

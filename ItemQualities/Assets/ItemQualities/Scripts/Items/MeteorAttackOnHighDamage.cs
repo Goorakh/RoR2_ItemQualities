@@ -20,7 +20,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC2_Items_MeteorAttackOnHighDamage.RunicMeteorStrikePredictionEffect_prefab).OnSuccess(meteorPredictionEffect =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_MeteorAttackOnHighDamage.RunicMeteorStrikePredictionEffect_prefab).OnSuccess(meteorPredictionEffect =>
             {
                 float baseScale = meteorPredictionEffect.transform.localScale.x;
                 _radiusToPredictionScale *= baseScale;
@@ -31,7 +31,7 @@ namespace ItemQualities.Items
                 }
             });
 
-            AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC2_Items_MeteorAttackOnHighDamage.RunicMeteorStrikeImpact_prefab).OnSuccess(meteorImpactEffect =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_MeteorAttackOnHighDamage.RunicMeteorStrikeImpact_prefab).OnSuccess(meteorImpactEffect =>
             {
                 float baseRadius = meteorImpactEffect.transform.localScale.x;
                 _radiusToImpactScale *= baseRadius;
