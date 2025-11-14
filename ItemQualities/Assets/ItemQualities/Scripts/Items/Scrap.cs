@@ -4,16 +4,87 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ItemQualities.Items
 {
-    class Scrap
+    static class Scrap
     {
-        [SystemInitializer]
+        static SceneIndex[] _convertScrapOnEntrySceneIndices = Array.Empty<SceneIndex>();
+
+        [SystemInitializer(typeof(SceneCatalog))]
         static void Init()
         {
+            HashSet<SceneIndex> convertScrapOnEntrySceneIncides = new HashSet<SceneIndex>();
+
+            static void tryAddSceneIndexByName(string sceneName, ICollection<SceneIndex> sceneIndicesList)
+            {
+                SceneIndex sceneIndex = SceneCatalog.FindSceneIndex(sceneName);
+                if (sceneIndex != SceneIndex.Invalid)
+                {
+                    sceneIndicesList.Add(sceneIndex);
+                }
+                else
+                {
+                    Log.Warning($"Failed to find scene '{sceneName}'");
+                }
+            }
+
+            tryAddSceneIndexByName("moon", convertScrapOnEntrySceneIncides);
+            tryAddSceneIndexByName("moon2", convertScrapOnEntrySceneIncides);
+
+            _convertScrapOnEntrySceneIndices = convertScrapOnEntrySceneIncides.ToArray();
+            Array.Sort(_convertScrapOnEntrySceneIndices);
+
             IL.EntityStates.Scrapper.ScrappingToIdle.OnEnter += ScrappingToIdle_OnEnter;
             IL.RoR2.UI.ScrapperInfoPanelHelper.ShowInfo += ScrapperInfoPanelHelper_ShowInfo;
+
+            Stage.onServerStageBegin += onServerStageBegin;
+        }
+
+        static void onServerStageBegin(Stage stage)
+        {
+            SceneDef sceneDef = stage ? stage.sceneDef : null;
+            SceneIndex sceneIndex = sceneDef ? sceneDef.sceneDefIndex : SceneIndex.Invalid;
+            if (sceneIndex != SceneIndex.Invalid && Array.BinarySearch(_convertScrapOnEntrySceneIndices, sceneIndex) >= 0)
+            {
+                foreach (PlayerCharacterMasterController playerMaster in PlayerCharacterMasterController.instances)
+                {
+                    if (playerMaster.isConnected && playerMaster.master)
+                    {
+                        convertQualityScrap(playerMaster.master.inventory);
+                    }
+                }
+            }
+        }
+
+        static void convertQualityScrap(Inventory inventory)
+        {
+            CharacterMaster master = inventory.GetComponent<CharacterMaster>();
+
+            for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
+            {
+                ItemIndex baseItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
+                if (baseItemIndex != ItemIndex.None && baseItemIndex != itemIndex)
+                {
+                    int itemCount = inventory.GetItemCount(itemIndex);
+                    if (itemCount > 0)
+                    {
+                        ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+                        if (itemDef && itemDef.ContainsTag(ItemTag.Scrap))
+                        {
+                            inventory.RemoveItem(itemIndex, itemCount);
+                            inventory.GiveItem(baseItemIndex, itemCount);
+
+                            if (master && master.playerCharacterMasterController)
+                            {
+                                CharacterMasterNotificationQueue.SendTransformNotification(master, itemIndex, baseItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         static void ScrappingToIdle_OnEnter(ILContext il)

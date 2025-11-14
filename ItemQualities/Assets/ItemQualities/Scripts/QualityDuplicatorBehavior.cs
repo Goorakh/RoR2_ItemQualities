@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using RoR2.Audio;
 using RoR2.ContentManagement;
 using System;
 using System.Collections.Generic;
@@ -137,6 +138,7 @@ namespace ItemQualities
                                     interactorInventory.GiveItem(DLC1Content.Items.RegeneratingScrapConsumed);
                                     tookRegeneratingScrap = true;
 
+                                    EntitySoundManager.EmitSoundServer(NetworkSoundEventCatalog.FindNetworkSoundEventIndex("Play_item_proc_regenScrap_consume"), interactorBody.gameObject);
                                     if (_regeneratingScrapExplosionDisplayEffectIndex != EffectIndex.Invalid)
                                     {
                                         if (interactorBody.modelLocator &&

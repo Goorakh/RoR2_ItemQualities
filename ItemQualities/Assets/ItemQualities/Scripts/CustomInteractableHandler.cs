@@ -215,7 +215,7 @@ namespace ItemQualities
                     DirectorCard qualityDuplicatorCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicator,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorCard.selectionWeight * 0.4f)),
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorCard.selectionWeight * 0.3f)),
                         minimumStageCompletions = duplicatorCard.minimumStageCompletions
                     };
 
@@ -231,7 +231,7 @@ namespace ItemQualities
                     DirectorCard qualityDuplicatorLargeCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityDuplicatorLarge,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorLargeCard.selectionWeight * 0.6f)),
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(duplicatorLargeCard.selectionWeight * 0.9f)),
                         minimumStageCompletions = duplicatorLargeCard.minimumStageCompletions
                     };
 
