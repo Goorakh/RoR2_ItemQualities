@@ -41,16 +41,16 @@ namespace ItemQualities.Items
 
             if (featherEffectLoad.Status != AsyncOperationStatus.Succeeded || !featherEffectLoad.Result)
             {
-                Log.Error($"Failed to load icicle Aura prefab: {featherEffectLoad.OperationException}");
+                Log.Error($"Failed to load feather effect prefab: {featherEffectLoad.OperationException}");
                 yield break;
             }
 
-            _featherEffectOut = featherEffectLoad.Result.InstantiateClone("featherEffectOut");
+            _featherEffectOut = featherEffectLoad.Result.InstantiateClone("featherEffectOut", false);
             change_color(_featherEffectOut.transform.Find("Big Feathers"), new Color(1, 0.9f, 0));
             change_color(_featherEffectOut.transform.Find("Ring"), new Color(1, 0.9f, 0));
             args.ContentPack.effectDefs.Add(new EffectDef(_featherEffectOut));
 
-            _featherEffectLast = featherEffectLoad.Result.InstantiateClone("featherEffectLast");
+            _featherEffectLast = featherEffectLoad.Result.InstantiateClone("featherEffectLast", false);
             change_color(_featherEffectLast.transform.Find("Big Feathers"), new Color(1, 0.05f, 0));
             change_color(_featherEffectLast.transform.Find("Ring"), new Color(1, 0.05f, 0));
             args.ContentPack.effectDefs.Add(new EffectDef(_featherEffectLast));
@@ -67,16 +67,18 @@ namespace ItemQualities.Items
         private static void FeatherEffect(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(
-                    x => x.MatchLdstr("Prefabs/Effects/FeatherEffect")
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                    x => x.MatchLdstr("Prefabs/Effects/FeatherEffect"),
+                    x => x.MatchCall(typeof(LegacyResourcesAPI), "Load")
                 ))
             {
-                c.Index += 2;
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<GameObject, GenericCharacterMain, GameObject>>(changeFeatherEffect);
-            } else {
                 Log.Error(il.Method.Name + " IL Hook failed!");
+                return;
             }
+
+            c.Goto(foundCursors[1].Next, MoveType.After);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, GenericCharacterMain, GameObject>>(changeFeatherEffect);
         }
 
         static GameObject changeFeatherEffect(GameObject prefab, GenericCharacterMain self) {
@@ -85,7 +87,8 @@ namespace ItemQualities.Items
                             feather.RareCount * 5 +
                             feather.EpicCount * 7 +
                             feather.LegendaryCount * 9 +
-                            feather.BaseItemCount;
+                            feather.BaseItemCount +
+                            self.characterBody.baseJumpCount - 1;
 
             if (self.characterMotor.jumpCount == self.characterBody.maxJumpCount - 1)
             {
