@@ -157,6 +157,9 @@ namespace ItemQualities
                         case CostTypeIndex.TreasureCacheVoidItem:
                             isItemCost = true;
                             break;
+                        default:
+                            isItemCost |= CustomCostTypeIndex.IsQualityItemCostType(purchaseInteraction.costType);
+                            break;
                     }
                 }
 
