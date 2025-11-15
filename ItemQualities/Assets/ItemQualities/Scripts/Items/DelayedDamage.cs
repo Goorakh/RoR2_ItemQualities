@@ -57,12 +57,15 @@ namespace ItemQualities.Items
                     repeatDamageInfos = new DamageInfo[repeatProcsCount];
                     for (int i = 0; i < repeatDamageInfos.Length; i++)
                     {
-                        repeatDamageInfos[i] = damageInfo.ShallowCopy();
+                        DamageInfo repeatDamageInfo = damageInfo.ShallowCopy();
+                        repeatDamageInfo.delayedDamageSecondHalf = true;
+                        repeatDamageInfo.firstHitOfDelayedDamageSecondHalf = false;
+                        repeatDamageInfos[i] = repeatDamageInfo;
                     }
                 }
 
-                orig(self, damageInfo);
                 invokedOrig = true;
+                orig(self, damageInfo);
 
                 if (repeatDamageInfos.Length > 0)
                 {

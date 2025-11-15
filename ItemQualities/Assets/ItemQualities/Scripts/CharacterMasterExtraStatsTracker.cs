@@ -62,7 +62,7 @@ namespace ItemQualities
 
         public void OnIncomingDamageServer(DamageInfo damageInfo)
         {
-            if (damageInfo.damage > 0f)
+            if (damageInfo.damage > 0f && !damageInfo.delayedDamageSecondHalf)
             {
                 _stageIncomingDamageInstanceCountServer++;
             }

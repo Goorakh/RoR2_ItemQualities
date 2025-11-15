@@ -65,7 +65,7 @@ namespace ItemQualities.Items
 
         void onIncomingDamageServer(DamageInfo damageInfo)
         {
-            if (damageInfo.damage > 0f)
+            if (damageInfo.damage > 0f && !damageInfo.delayedDamageSecondHalf)
             {
                 _buffCountsDirty = true;
             }
