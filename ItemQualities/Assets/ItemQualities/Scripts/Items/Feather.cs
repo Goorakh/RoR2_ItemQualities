@@ -55,10 +55,15 @@ namespace ItemQualities.Items
             change_color(_featherEffectLast.transform.Find("Ring"), new Color(1, 0.05f, 0));
             args.ContentPack.effectDefs.Add(new EffectDef(_featherEffectLast));
 
-            void change_color(Transform child, Color color) {
-                if (!child) return;
+            void change_color(Transform child, Color color)
+            {
+                if (!child)
+                    return;
+
                 ParticleSystemRenderer partsys = child.GetComponent<ParticleSystemRenderer>();
-                if (!partsys) return;
+                if (!partsys)
+                    return;
+
                 partsys.material.SetColor("_TintColor", color);
                 partsys.material.SetColor("_Color", color);
             }
@@ -81,24 +86,32 @@ namespace ItemQualities.Items
             c.EmitDelegate<Func<GameObject, GenericCharacterMain, GameObject>>(changeFeatherEffect);
         }
 
-        static GameObject changeFeatherEffect(GameObject prefab, GenericCharacterMain self) {
-            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCounts(self.characterBody.master.inventory);
-            int maxJumps =  feather.UncommonCount * 3 +
-                            feather.RareCount * 5 +
-                            feather.EpicCount * 7 +
-                            feather.LegendaryCount * 9 +
-                            feather.BaseItemCount +
-                            self.characterBody.baseJumpCount - 1;
+        static GameObject changeFeatherEffect(GameObject prefab, GenericCharacterMain self)
+        {
+            if (!self?.characterBody)
+                return prefab;
+
+            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCounts(self.characterBody.inventory);
+            int maxJumps = (feather.UncommonCount * 3) +
+                           (feather.RareCount * 5) +
+                           (feather.EpicCount * 7) +
+                           (feather.LegendaryCount * 9) +
+                           feather.BaseItemCount +
+                           self.characterBody.baseJumpCount - 1;
 
             if (self.characterMotor.jumpCount == self.characterBody.maxJumpCount - 1)
             {
                 if (self.characterMotor.jumpCount == maxJumps)
                 {
                     return _featherEffectLast;
-                } else {
+                }
+                else
+                {
                     return _featherEffectOut;
                 }
-            } else {
+            }
+            else
+            {
                 return prefab;
             }
         }
@@ -111,14 +124,18 @@ namespace ItemQualities.Items
 
         private static void onCharacterDeathGlobal(DamageReport report)
         {
-            if (report == null) return;
-            if (report.attackerBody == null) return;
-            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCounts(report.attackerBody.master.inventory);
+            if (report == null)
+                return;
 
-            int maxJumps = feather.UncommonCount * 2 +
-                            feather.RareCount * 4 +
-                            feather.EpicCount * 6 +
-                            feather.LegendaryCount * 8;
+            if (report.attackerBody == null)
+                return;
+
+            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCounts(report.attackerBody.inventory);
+
+            int maxJumps = (feather.UncommonCount * 2) +
+                           (feather.RareCount * 4) +
+                           (feather.EpicCount * 6) +
+                           (feather.LegendaryCount * 8);
 
             int currentBuffs = report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps);
             report.attackerBody.SetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps.buffIndex, Math.Min(currentBuffs + 1, maxJumps));
@@ -126,7 +143,9 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender) return;
+            if (!sender)
+                return;
+
             args.jumpCountAdd += sender.GetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps);
         }
     }
