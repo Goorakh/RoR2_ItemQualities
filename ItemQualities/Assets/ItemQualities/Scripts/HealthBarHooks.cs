@@ -8,7 +8,6 @@ using RoR2;
 using RoR2.UI;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -29,28 +28,35 @@ namespace ItemQualities
                 typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthOverBarInfo)),
             };
 
-            public static readonly FieldInfo[] EndBarInfoFields = typeof(AdditionalBarInfos).GetFields(BindingFlags.Public | BindingFlags.Instance)
-                                                                                            .Where(f => f.FieldType == typeof(HealthBar.BarInfo))
-                                                                                            .Except(LowHealthUnderBarInfoFields)
-                                                                                            .Except(LowHealthOverBarInfoFields)
-                                                                                            .ToArray();
+            public static readonly FieldInfo[] ShieldOverlayBarInfoFields = new FieldInfo[]
+            {
+                typeof(AdditionalBarInfos).GetField(nameof(TemporaryShieldBarInfo)),
+            };
+
+            public static readonly FieldInfo[] EndBarInfoFields = Array.Empty<FieldInfo>();
 
             public readonly HealthBar.BarInfo StealthKitLowHealthUnderBarInfo;
             public readonly HealthBar.BarInfo StealthKitLowHealthOverBarInfo;
 
+            public readonly HealthBar.BarInfo TemporaryShieldBarInfo;
+
             public readonly int EnabledBarCount;
 
-            public AdditionalBarInfos(HealthBar.BarInfo stealthKitLowHealthUnderBarInfo, HealthBar.BarInfo stealthKitLowHealthOverBarInfo)
+            public AdditionalBarInfos(HealthBar.BarInfo stealthKitLowHealthUnderBarInfo, HealthBar.BarInfo stealthKitLowHealthOverBarInfo, HealthBar.BarInfo temporaryShieldBarInfo)
             {
                 int enabledBarCount = 0;
 
-                StealthKitLowHealthUnderBarInfo = stealthKitLowHealthUnderBarInfo;
-                if (StealthKitLowHealthUnderBarInfo.enabled)
-                    enabledBarCount++;
+                void setBarInfo(out HealthBar.BarInfo barInfoField, HealthBar.BarInfo barInfo)
+                {
+                    barInfoField = barInfo;
+                    enabledBarCount += barInfoField.enabled ? 1 : 0;
+                }
 
-                StealthKitLowHealthOverBarInfo = stealthKitLowHealthOverBarInfo;
-                if (StealthKitLowHealthOverBarInfo.enabled)
-                    enabledBarCount++;
+                setBarInfo(out StealthKitLowHealthUnderBarInfo, stealthKitLowHealthUnderBarInfo);
+
+                setBarInfo(out StealthKitLowHealthOverBarInfo, stealthKitLowHealthOverBarInfo);
+
+                setBarInfo(out TemporaryShieldBarInfo, temporaryShieldBarInfo);
 
                 EnabledBarCount = enabledBarCount;
             }
@@ -178,16 +184,7 @@ namespace ItemQualities
 
             MethodReference handleBarMethodRef = null;
 
-            static bool nameStartsWith(MethodReference methodReference, string value)
-            {
-                // This is dumb
-                if (methodReference == null || methodReference.Name == null)
-                    return false;
-
-                return methodReference.Name.StartsWith(value);
-            }
-
-            if (!c.TryGotoNext(x => x.MatchCallOrCallvirt(out handleBarMethodRef) && nameStartsWith(handleBarMethodRef, "<ApplyBars>g__HandleBar|")))
+            if (!c.TryGotoNext(x => x.MatchCallOrCallvirt(out handleBarMethodRef) && handleBarMethodRef?.Name?.StartsWith("<ApplyBars>g__HandleBar|") == true))
             {
                 Log.Error("Failed to find HandleBar method");
                 return;
@@ -281,6 +278,23 @@ namespace ItemQualities
                 Log.Error("Failed to find low health over bars patch location");
             }
 
+            if (c.TryFindNext(out foundCursors,
+                              x => x.MatchLdflda<HealthBar.BarInfoCollection>(nameof(HealthBar.BarInfoCollection.shieldBarInfo)),
+                              x => x.MatchCallOrCallvirt(handleBarMethod)))
+            {
+                ILCursor overBarsCursor = new ILCursor(il);
+                overBarsCursor.Goto(foundCursors[1].Next, MoveType.After);
+
+                foreach (FieldInfo barInfoField in AdditionalBarInfos.ShieldOverlayBarInfoFields)
+                {
+                    emitHandleBarInfoField(overBarsCursor, barInfoField);
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find shield bars patch location");
+            }
+
             c.Index = -1;
             if (c.TryGotoPrev(MoveType.After,
                               x => x.MatchCallOrCallvirt(handleBarMethod)))
@@ -308,6 +322,7 @@ namespace ItemQualities
 
             HealthBar.BarInfo lowHealthUnderBarInfoTemplate = healthBar.barInfoCollection.lowHealthUnderBarInfo;
             HealthBar.BarInfo lowHealthOverBarInfoTemplate = healthBar.barInfoCollection.lowHealthOverBarInfo;
+            HealthBar.BarInfo shieldBarInfoTemplate = healthBar.barInfoCollection.shieldBarInfo;
 
             void setupHealthThresholdBarInfos(ref HealthBar.BarInfo underBarInfo, ref HealthBar.BarInfo overBarInfo, float healthThreshold)
             {
@@ -333,7 +348,23 @@ namespace ItemQualities
                 setupHealthThresholdBarInfos(ref stealthKitLowHealthUnderBarInfo, ref stealthKitLowHealthOverBarInfo, extraStatsTracker.StealthKitActivationThreshold);
             }
 
-            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo);
+            HealthBar.BarInfo temporaryShieldBarInfo = shieldBarInfoTemplate;
+            temporaryShieldBarInfo.enabled = false;
+
+            float temporaryShieldFraction = body.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) / body.maxShield;
+            if (temporaryShieldFraction > 0f && healthComponent.shield > 0f)
+            {
+                float shieldBarSize = shieldBarInfoTemplate.normalizedXMax - shieldBarInfoTemplate.normalizedXMin;
+
+                temporaryShieldBarInfo.enabled = true;
+                temporaryShieldBarInfo.normalizedXMax = shieldBarInfoTemplate.normalizedXMax;
+                temporaryShieldBarInfo.normalizedXMin = shieldBarInfoTemplate.normalizedXMax - (shieldBarSize * temporaryShieldFraction);
+
+                Color.RGBToHSV(shieldBarInfoTemplate.color, out float h, out float s, out float v);
+                temporaryShieldBarInfo.color = Color.HSVToRGB(h, s, v * 1.5f);
+            }
+
+            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo, temporaryShieldBarInfo);
         }
     }
 }
