@@ -1,9 +1,11 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Projectile;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using UnityEngine;
 
@@ -14,32 +16,29 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_StickyBomb.StickyBombGhost_prefab).OnSuccess(stickyBombGhost =>
+            {
+                if (stickyBombGhost.TryGetComponent(out ProjectileGhostController ghostController))
+                {
+                    ghostController.inheritScaleFromProjectile = true;
+                }
+            });
+
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        public static float ModifyStickyBombFuse(float baseFuse, CharacterBody ownerBody)
+        public static float GetStickyBombScaleMultiplier(CharacterBody ownerBody)
         {
-            float fuse = baseFuse;
-
             Inventory inventory = ownerBody ? ownerBody.inventory : null;
 
-            ItemQualityCounts stickyBomb = default;
-            if (inventory)
-            {
-                stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCounts(inventory);
-            }
+            ItemQualityCounts stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCounts(inventory);
 
-            float fuseSpeedIncrease = (0.10f * stickyBomb.UncommonCount) + // 10%
-                                      (0.25f * stickyBomb.RareCount) +     // 20%
-                                      (0.50f * stickyBomb.EpicCount) +     // 30%
-                                      (1.00f * stickyBomb.LegendaryCount); // 50%
+            float scaleMultiplier = 1f + (0.2f * stickyBomb.UncommonCount) +
+                                         (0.5f * stickyBomb.RareCount) +
+                                         (1.0f * stickyBomb.EpicCount) +
+                                         (2.0f * stickyBomb.LegendaryCount);
 
-            if (fuseSpeedIncrease > 0)
-            {
-                fuse /= 1f + fuseSpeedIncrease;
-            }
-
-            return fuse;
+            return scaleMultiplier;
         }
 
         static void GlobalEventManager_ProcessHitEnemy(ILContext il)
@@ -72,21 +71,15 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts stickyBomb = default;
-                if (attackerInventory)
-                {
-                    stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCounts(attackerInventory);
-                }
+                ItemQualityCounts stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCounts(attackerInventory);
 
-                damageCoefficient += (0.1f * stickyBomb.UncommonCount) +
-                                     (0.3f * stickyBomb.RareCount) +
-                                     (0.6f * stickyBomb.EpicCount) +
-                                     (1.0f * stickyBomb.LegendaryCount);
+                damageCoefficient += (0.5f * stickyBomb.UncommonCount) +
+                                     (0.8f * stickyBomb.RareCount) +
+                                     (1.2f * stickyBomb.EpicCount) +
+                                     (2.0f * stickyBomb.LegendaryCount);
 
                 return damageCoefficient;
             }
-
-            c.Goto(foundCursors[2].Next, MoveType.Before);
         }
     }
 }
