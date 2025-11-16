@@ -361,17 +361,17 @@
         "ITEM_CLOVER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Luck is on your side.",
         "ITEM_CLOVER_LEGENDARY_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>+5</style> <style=cStack>(+5 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
 
-        "ITEM_WARDONLEVEL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary banner.",
-        "ITEM_WARDONLEVEL_UNCOMMON_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> banner for <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds.",
+        "ITEM_WARDONLEVEL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
+        "ITEM_WARDONLEVEL_UNCOMMON_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds.",
 
-        "ITEM_WARDONLEVEL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary banner.",
-        "ITEM_WARDONLEVEL_RARE_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> banner for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds.",
+        "ITEM_WARDONLEVEL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
+        "ITEM_WARDONLEVEL_RARE_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds.",
 
-        "ITEM_WARDONLEVEL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary banner.",
-        "ITEM_WARDONLEVEL_EPIC_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> banner for <sprite name=\"Quality\"> <style=cIsUtility>15</style> <style=cStack>(+15 per stack)</style> seconds.",
+        "ITEM_WARDONLEVEL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
+        "ITEM_WARDONLEVEL_EPIC_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>15</style> <style=cStack>(+15 per stack)</style> seconds.",
 
-        "ITEM_WARDONLEVEL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary banner.",
-        "ITEM_WARDONLEVEL_LEGENDARY_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> banner for <sprite name=\"Quality\"> <style=cIsUtility>30</style> <style=cStack>(+30 per stack)</style> seconds.",
+        "ITEM_WARDONLEVEL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
+        "ITEM_WARDONLEVEL_LEGENDARY_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>30</style> <style=cStack>(+30 per stack)</style> seconds.",
 
         "ITEM_BEAR_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
         "ITEM_BEAR_UNCOMMON_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>20%</style> <style=cStack>(+20% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
