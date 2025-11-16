@@ -49,9 +49,9 @@ namespace ItemQualities.Items
                     ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(victimBody, QualityTier.None);
 
                     float buffDuration = (3f * armorPlate.UncommonCount) +
-                                         (7f * armorPlate.RareCount) +
-                                         (15f * armorPlate.EpicCount) +
-                                         (20f * armorPlate.LegendaryCount);
+                                         (6f * armorPlate.RareCount) +
+                                         (9f * armorPlate.EpicCount) +
+                                         (12f * armorPlate.LegendaryCount);
 
                     victimBody.AddTimedBuff(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff.GetBuffIndex(armorPlateQuality), buffDuration);
                 }
