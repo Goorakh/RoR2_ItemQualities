@@ -29,7 +29,7 @@ namespace ItemQualities.Items
 
             if (bossStunCount > 0)
             {
-                args.attackSpeedReductionMultAdd += 0.1f * bossStunCount;
+                args.attackSpeedReductionMultAdd += 0.2f * bossStunCount;
             }
         }
 
@@ -46,11 +46,7 @@ namespace ItemQualities.Items
             CharacterMaster attackerMaster = damageReport.attackerMaster;
             Inventory attackerInventory = attackerMaster ? attackerMaster.inventory : null;
 
-            ItemQualityCounts stunChanceOnHit = default;
-            if (attackerInventory)
-            {
-                stunChanceOnHit = ItemQualitiesContent.ItemQualityGroups.StunChanceOnHit.GetItemCounts(attackerInventory);
-            }
+            ItemQualityCounts stunChanceOnHit = ItemQualitiesContent.ItemQualityGroups.StunChanceOnHit.GetItemCounts(attackerInventory);
 
             if (stunChanceOnHit.TotalQualityCount <= 0)
                 return;
@@ -61,7 +57,7 @@ namespace ItemQualities.Items
                 int bossStunCount = (1 * stunChanceOnHit.UncommonCount) +
                                     (2 * stunChanceOnHit.RareCount) +
                                     (4 * stunChanceOnHit.EpicCount) +
-                                    (5 * stunChanceOnHit.LegendaryCount);
+                                    (7 * stunChanceOnHit.LegendaryCount);
 
                 const float StunDuration = 1.5f;
 
@@ -82,11 +78,14 @@ namespace ItemQualities.Items
                     victimBody.AddTimedBuff(ItemQualitiesContent.Buffs.BossStun, StunDuration);
                 }
 
-                EffectManager.SpawnEffect(_stunGrenadeImpactIndex, new EffectData
+                if (_stunGrenadeImpactIndex != EffectIndex.Invalid)
                 {
-                    origin = damageReport.damageInfo.position,
-                    rotation = Util.QuaternionSafeLookRotation(-damageReport.damageInfo.force)
-                }, true);
+                    EffectManager.SpawnEffect(_stunGrenadeImpactIndex, new EffectData
+                    {
+                        origin = damageReport.damageInfo.position,
+                        rotation = Util.QuaternionSafeLookRotation(-damageReport.damageInfo.force)
+                    }, true);
+                }
             }
         }
     }
