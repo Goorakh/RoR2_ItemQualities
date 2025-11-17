@@ -373,17 +373,17 @@
         "ITEM_WARDONLEVEL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
         "ITEM_WARDONLEVEL_LEGENDARY_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>30</style> <style=cStack>(+30 per stack)</style> seconds.",
 
-        "ITEM_BEAR_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
-        "ITEM_BEAR_UNCOMMON_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>20%</style> <style=cStack>(+20% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
+        "ITEM_BEAR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocking damage grants temporary invincibility.",
+        "ITEM_BEAR_UNCOMMON_DESC": "{0}\nFor every <style=cIsUtility>10%</style> of <style=cIsHealing>maximum health</style> blocked, become <style=cIsUtility>immune</style> to all damage for <sprite name=\"Quality\"> <style=cIsHealing>0.1</style> <style=cStack>(+0.1 per stack)</style> seconds.",
 
-        "ITEM_BEAR_RARE_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
-        "ITEM_BEAR_RARE_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>30%</style> <style=cStack>(+30% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
+        "ITEM_BEAR_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocking damage grants temporary invincibility.",
+        "ITEM_BEAR_RARE_DESC": "{0}\nFor every <style=cIsUtility>10%</style> of <style=cIsHealing>maximum health</style> blocked, become <style=cIsUtility>immune</style> to all damage for <sprite name=\"Quality\"> <style=cIsHealing>0.5</style> <style=cStack>(+0.5 per stack)</style> seconds.",
 
-        "ITEM_BEAR_EPIC_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
-        "ITEM_BEAR_EPIC_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>40%</style> <style=cStack>(+40% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
+        "ITEM_BEAR_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocking damage grants temporary invincibility.",
+        "ITEM_BEAR_EPIC_DESC": "{0}\nFor every <style=cIsUtility>10%</style> of <style=cIsHealing>maximum health</style> blocked, become <style=cIsUtility>immune</style> to all damage for <sprite name=\"Quality\"> <style=cIsHealing>1.5</style> <style=cStack>(+1.5 per stack)</style> seconds.",
 
-        "ITEM_BEAR_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Chance to block incoming damage.",
-        "ITEM_BEAR_LEGENDARY_DESC": "<sprite name=\"Quality\"> <style=cIsHealing>50%</style> <style=cStack>(+50% per stack)</style> chance to <style=cIsHealing>block</style> incoming damage. <style=cIsUtility>Unaffected by luck</style>.",
+        "ITEM_BEAR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocking damage grants temporary invincibility.",
+        "ITEM_BEAR_LEGENDARY_DESC": "{0}\nFor every <style=cIsUtility>10%</style> of <style=cIsHealing>maximum health</style> blocked, become <style=cIsUtility>immune</style> to all damage for <sprite name=\"Quality\"> <style=cIsHealing>2.5</style> <style=cStack>(+2.5 per stack)</style> seconds.",
 
         "ITEM_MISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a big missile.",
         "ITEM_MISSILE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <sprite name=\"Quality\"> <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> TOTAL damage.",
