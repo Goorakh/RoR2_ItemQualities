@@ -64,8 +64,19 @@ namespace ItemQualities
                 itemQualityGroup.GroupIndex = ItemQualityGroupIndex.Invalid;
             }
 
+            static void sortUnityObjectsByName(UnityEngine.Object[] array, StringComparison stringComparison = StringComparison.Ordinal)
+            {
+                string[] keys = new string[array.Length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    keys[i] = array[i].name;
+                }
+
+                Array.Sort(keys, array, StringComparer.FromComparison(stringComparison));
+            }
+
             _allItemQualityGroups = itemQualityGroups.ToArray();
-            Array.Sort(_allItemQualityGroups, (a, b) => string.Compare(a.name, b.name));
+            sortUnityObjectsByName(_allItemQualityGroups);
 
             Array.Resize(ref _itemIndexToQuality, ItemCatalog.itemCount);
             Array.Fill(_itemIndexToQuality, QualityTier.None);
@@ -79,7 +90,7 @@ namespace ItemQualities
             }
 
             _allEquipmentQualityGroups = equipmentQualityGroups.ToArray();
-            Array.Sort(_allEquipmentQualityGroups, (a, b) => string.Compare(a.name, b.name));
+            sortUnityObjectsByName(_allEquipmentQualityGroups);
 
             Array.Resize(ref _equipmentIndexToQuality, EquipmentCatalog.equipmentCount);
             Array.Fill(_equipmentIndexToQuality, QualityTier.None);
@@ -93,7 +104,7 @@ namespace ItemQualities
             }
 
             _allBuffQualityGroups = buffQualityGroups.ToArray();
-            Array.Sort(_allBuffQualityGroups, (a, b) => string.Compare(a.name, b.name));
+            sortUnityObjectsByName(_allBuffQualityGroups);
 
             Array.Resize(ref _buffIndexToQuality, BuffCatalog.buffCount);
             Array.Fill(_buffIndexToQuality, QualityTier.None);
@@ -234,11 +245,12 @@ namespace ItemQualities
                     continue;
                 }
 
-                void resolveLanguageToken(ItemIndex itemIndex, QualityTier qualityTier)
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
+                    ItemIndex itemIndex = itemQualityGroup.GetItemIndex(qualityTier);
                     ItemDef item = ItemCatalog.GetItemDef(itemIndex);
                     if (!item)
-                        return;
+                        continue;
 
                     string qualityTierName = qualityTier.ToString().ToUpper();
 
@@ -293,11 +305,6 @@ namespace ItemQualities
                         }
                     }
                 }
-
-                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-                {
-                    resolveLanguageToken(itemQualityGroup.GetItemIndex(qualityTier), qualityTier);
-                }
             }
 
             foreach (EquipmentQualityGroup equipmentQualityGroup in _allEquipmentQualityGroups)
@@ -309,11 +316,12 @@ namespace ItemQualities
                     continue;
                 }
 
-                void resolveLanguageToken(EquipmentIndex equipmentIndex, QualityTier qualityTier)
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
+                    EquipmentIndex equipmentIndex = equipmentQualityGroup.GetEquipmentIndex(qualityTier);
                     EquipmentDef equipment = EquipmentCatalog.GetEquipmentDef(equipmentIndex);
                     if (!equipment)
-                        return;
+                        continue;
 
                     string qualityTierName = qualityTier.ToString().ToUpper();
                     string qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
@@ -358,11 +366,6 @@ namespace ItemQualities
                             }
                         }
                     }
-                }
-
-                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-                {
-                    resolveLanguageToken(equipmentQualityGroup.GetEquipmentIndex(qualityTier), qualityTier);
                 }
             }
         }

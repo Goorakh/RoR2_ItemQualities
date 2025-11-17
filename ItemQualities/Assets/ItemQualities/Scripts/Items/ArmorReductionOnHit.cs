@@ -3,9 +3,9 @@ using MonoMod.Cil;
 using RoR2;
 using System;
 
-namespace ItemQualities
+namespace ItemQualities.Items
 {
-    public class ArmorReductionOnHit
+    static class ArmorReductionOnHit
     {
         [SystemInitializer]
         static void Init()
