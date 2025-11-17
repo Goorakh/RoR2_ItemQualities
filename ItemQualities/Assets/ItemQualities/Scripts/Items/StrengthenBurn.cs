@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using R2API;
+using RoR2;
 
 namespace ItemQualities.Items
 {
@@ -7,9 +8,20 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
+            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+
             IL.RoR2.StrengthenBurnUtils.CheckDotForUpgrade += ItemHooks.CombineGroupedItemCountsPatch;
 
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
+        }
+
+        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            ItemQualityCounts strengthenBurn = ItemQualitiesContent.ItemQualityGroups.StrengthenBurn.GetItemCounts(sender.inventory);
+            if (strengthenBurn.TotalQualityCount > 0)
+            {
+                args.critAdd += 5f;
+            }
         }
 
         static void onServerDamageDealt(DamageReport damageReport)
