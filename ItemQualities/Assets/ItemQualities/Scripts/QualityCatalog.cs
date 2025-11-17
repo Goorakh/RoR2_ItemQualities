@@ -281,8 +281,6 @@ namespace ItemQualities
 
                             if (pickupString.Contains("{0}"))
                             {
-                                item.pickupToken += "_GEN";
-
                                 pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseItem.pickupToken));
                                 LanguageAPI.Add(item.pickupToken, pickupString, language.name);
                             }
@@ -297,8 +295,6 @@ namespace ItemQualities
 
                             if (pickupString.Contains("{0}"))
                             {
-                                item.descriptionToken += "_GEN";
-
                                 pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseItem.descriptionToken));
                                 LanguageAPI.Add(item.descriptionToken, pickupString, language.name);
                             }
@@ -343,8 +339,6 @@ namespace ItemQualities
 
                             if (pickupString.Contains("{0}"))
                             {
-                                equipment.pickupToken += "_GEN";
-
                                 pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseEquipment.pickupToken));
                                 LanguageAPI.Add(equipment.pickupToken, pickupString, language.name);
                             }
@@ -359,8 +353,6 @@ namespace ItemQualities
 
                             if (pickupString.Contains("{0}"))
                             {
-                                equipment.descriptionToken += "_GEN";
-
                                 pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseEquipment.descriptionToken));
                                 LanguageAPI.Add(equipment.descriptionToken, pickupString, language.name);
                             }
