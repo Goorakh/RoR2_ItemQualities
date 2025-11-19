@@ -34,7 +34,7 @@ namespace ItemQualities.Items
             if (!attackerInventory)
                 return;
 
-            ItemQualityCounts slowOnHitVoid = ItemQualitiesContent.ItemQualityGroups.SlowOnHitVoid.GetItemCounts(attackerInventory);
+            ItemQualityCounts slowOnHitVoid = ItemQualitiesContent.ItemQualityGroups.SlowOnHitVoid.GetItemCountsEffective(attackerInventory);
 
             if (slowOnHitVoid.TotalQualityCount > 0 && deathReport.victimBody && deathReport.victimBody.HasBuff(RoR2Content.Buffs.Nullified))
             {

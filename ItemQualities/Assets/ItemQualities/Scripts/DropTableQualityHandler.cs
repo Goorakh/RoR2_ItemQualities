@@ -1,5 +1,4 @@
-﻿using HG;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -32,8 +31,8 @@ namespace ItemQualities
         [SystemInitializer]
         static void Init()
         {
-            On.RoR2.PickupDropTable.GenerateDrop += PickupDropTable_GenerateDrop;
-            On.RoR2.PickupDropTable.GenerateUniqueDrops += PickupDropTable_GenerateUniqueDrops;
+            On.RoR2.PickupDropTable.GeneratePickup += PickupDropTable_GeneratePickup;
+            On.RoR2.PickupDropTable.GenerateDistinctPickups += PickupDropTable_GenerateDistinctPickups;
 
             On.RoR2.ShopTerminalBehavior.GenerateNewPickupServer_bool += On_ShopTerminalBehavior_GenerateNewPickupServer_bool;
             On.RoR2.ArenaMissionController.AddItemStack += ArenaMissionController_AddItemStack;
@@ -41,13 +40,11 @@ namespace ItemQualities
             On.RoR2.InfiniteTowerRun.AdvanceWave += InfiniteTowerRun_AdvanceWave;
             On.RoR2.ScavengerItemGranter.Start += ScavengerItemGranter_Start;
 
-            On.RoR2.Items.RandomlyLunarUtils.CheckForLunarReplacement += RandomlyLunarUtils_CheckForLunarReplacement;
-            On.RoR2.Items.RandomlyLunarUtils.CheckForLunarReplacementUniqueArray += RandomlyLunarUtils_CheckForLunarReplacementUniqueArray;
-
             // All the things that are too old to use a droptable...
             IL.RoR2.ChestBehavior.PickFromList += ChestBehavior_PickFromList;
             IL.EntityStates.ScavMonster.FindItem.OnEnter += FindItem_OnEnter;
-            IL.RoR2.Inventory.GiveRandomItems += Inventory_GiveRandomItems;
+            IL.RoR2.Inventory.GiveRandomItems_int_bool_bool += Inventory_GiveRandomItems;
+            IL.RoR2.Inventory.GiveRandomItems_int_ItemTierArray += Inventory_GiveRandomItems;
             IL.RoR2.MultiShopController.CreateTerminals += MultiShopController_CreateTerminals;
             IL.RoR2.ScavBackpackBehavior.PickFromList += ScavBackpackBehavior_PickFromList;
             IL.RoR2.ShopTerminalBehavior.GenerateNewPickupServer_bool += IL_ShopTerminalBehavior_GenerateNewPickupServer_bool;
@@ -281,57 +278,30 @@ namespace ItemQualities
             return pickupPassesFilter;
         }
         
-        static PickupIndex PickupDropTable_GenerateDrop(On.RoR2.PickupDropTable.orig_GenerateDrop orig, PickupDropTable self, Xoroshiro128Plus rng)
+        static UniquePickup PickupDropTable_GeneratePickup(On.RoR2.PickupDropTable.orig_GeneratePickup orig, PickupDropTable self, Xoroshiro128Plus rng)
         {
-            PickupIndex dropPickupIndex = orig(self, rng);
+            UniquePickup dropPickupIndex = orig(self, rng);
 
             if (self is not QualityPickupDropTable)
             {
-                dropPickupIndex = tryUpgradeQuality(dropPickupIndex, rng, null, getDropTableFilterFunc(self));
+                dropPickupIndex = dropPickupIndex.WithPickupIndex(tryUpgradeQuality(dropPickupIndex.pickupIndex, rng, null, getDropTableFilterFunc(self)));
             }
 
             return dropPickupIndex;
         }
 
-        static PickupIndex[] PickupDropTable_GenerateUniqueDrops(On.RoR2.PickupDropTable.orig_GenerateUniqueDrops orig, PickupDropTable self, int maxDrops, Xoroshiro128Plus rng)
+        static void PickupDropTable_GenerateDistinctPickups(On.RoR2.PickupDropTable.orig_GenerateDistinctPickups orig, PickupDropTable self, List<UniquePickup> dest, int desiredCount, Xoroshiro128Plus rng, bool allowLoop)
         {
-            PickupIndex[] dropPickupIncides = orig(self, maxDrops, rng);
+            orig(self, dest, desiredCount, rng, allowLoop);
 
             if (self is not QualityPickupDropTable)
             {
                 Func<PickupIndex, bool> isPickupAllowedFunc = getDropTableFilterFunc(self);
 
-                for (int i = 0; i < dropPickupIncides.Length; i++)
+                for (int i = 0; i < Math.Min(desiredCount, dest.Count); i++)
                 {
-                    dropPickupIncides[i] = tryUpgradeQuality(dropPickupIncides[i], rng, null, isPickupAllowedFunc);
+                    dest[i] = dest[i].WithPickupIndex(tryUpgradeQuality(dest[i].pickupIndex, rng, null, isPickupAllowedFunc));
                 }
-            }
-
-            return dropPickupIncides;
-        }
-
-        static PickupIndex RandomlyLunarUtils_CheckForLunarReplacement(On.RoR2.Items.RandomlyLunarUtils.orig_CheckForLunarReplacement orig, PickupIndex pickupIndex, Xoroshiro128Plus rng)
-        {
-            QualityTier qualityTier = QualityCatalog.GetQualityTier(pickupIndex);
-
-            return QualityCatalog.GetPickupIndexOfQuality(orig(pickupIndex, rng), qualityTier);
-        }
-
-        static void RandomlyLunarUtils_CheckForLunarReplacementUniqueArray(On.RoR2.Items.RandomlyLunarUtils.orig_CheckForLunarReplacementUniqueArray orig, PickupIndex[] pickupIndices, Xoroshiro128Plus rng)
-        {
-            QualityTier[] qualityTiers = new QualityTier[pickupIndices.Length];
-
-            for (int i = 0; i < pickupIndices.Length; i++)
-            {
-                qualityTiers[i] = QualityCatalog.GetQualityTier(pickupIndices[i]);
-            }
-
-            orig(pickupIndices, rng);
-
-            for (int i = 0; i < pickupIndices.Length; i++)
-            {
-                QualityTier qualityTier = ArrayUtils.GetSafe(qualityTiers, i, QualityTier.None);
-                pickupIndices[i] = QualityCatalog.GetPickupIndexOfQuality(pickupIndices[i], qualityTier);
             }
         }
 
@@ -342,14 +312,19 @@ namespace ItemQualities
             int patchCount = 0;
 
             while (c.TryGotoNext(MoveType.Before,
-                                 x => x.MatchCallOrCallvirt<ChestBehavior>("set_" + nameof(ChestBehavior.dropPickup))))
+                                 x => x.MatchCallOrCallvirt<ChestBehavior>("set_" + nameof(ChestBehavior.currentPickup))))
             {
                 c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<PickupIndex, ChestBehavior, PickupIndex>>(pickQuality);
+                c.EmitDelegate<Func<UniquePickup, ChestBehavior, UniquePickup>>(pickQuality);
 
-                static PickupIndex pickQuality(PickupIndex originalPickupIndex, ChestBehavior chestBehavior)
+                static UniquePickup pickQuality(UniquePickup originalPickup, ChestBehavior chestBehavior)
                 {
-                    return tryUpgradeQuality(originalPickupIndex, chestBehavior.rng);
+                    if (originalPickup.isValid)
+                    {
+                        return originalPickup.WithPickupIndex(tryUpgradeQuality(originalPickup.pickupIndex, chestBehavior.rng));
+                    }
+
+                    return originalPickup;
                 }
 
                 patchCount++;

@@ -22,7 +22,7 @@ namespace ItemQualities
             ItemQualityCounts clover = default;
             if (master)
             {
-                clover = ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCounts(master.inventory);
+                clover = ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCountsEffective(master.inventory);
             }
             else
             {
@@ -32,7 +32,7 @@ namespace ItemQualities
                 {
                     if (enemyInventoryProvider.teamFilter && enemyInventoryProvider.teamFilter.teamIndex == teamAffiliation)
                     {
-                        teamInventoryCloverCounts += ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCounts(enemyInventoryProvider.inventory);
+                        teamInventoryCloverCounts += ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCountsEffective(enemyInventoryProvider.inventory);
                     }
                 }
 
@@ -55,7 +55,7 @@ namespace ItemQualities
                             continue;
                     }
 
-                    clover += ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCounts(teammateMaster.inventory) - teamInventoryCloverCounts;
+                    clover += ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCountsEffective(teammateMaster.inventory) - teamInventoryCloverCounts;
                 }
             }
 

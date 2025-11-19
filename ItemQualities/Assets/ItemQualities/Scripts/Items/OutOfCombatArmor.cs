@@ -18,39 +18,39 @@ namespace ItemQualities.Items
 {
     static class OutOfCombatArmor
     {
-		static readonly SphereSearch _opalSphereSearch = new SphereSearch();
-		static readonly List<HurtBox> _opalHurtBoxBuffer = new List<HurtBox>();
-		static GameObject _explosionVFX;
+        static readonly SphereSearch _opalSphereSearch = new SphereSearch();
+        static readonly List<HurtBox> _opalHurtBoxBuffer = new List<HurtBox>();
+        static GameObject _explosionVFX;
 
-		[SystemInitializer]
+        [SystemInitializer]
         static void Init()
         {
             IL.RoR2.CharacterBody.OnTakeDamageServer += CharacterBody_OnTakeDamageServer;
         }
 
-		[ContentInitializer]
-		static IEnumerator LoadContent(ContentIntializerArgs args)
-		{
-			AsyncOperationHandle<GameObject> igniteOnKillExplosionLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_IgniteOnKill.IgniteExplosionVFX_prefab);
+        [ContentInitializer]
+        static IEnumerator LoadContent(ContentIntializerArgs args)
+        {
+            AsyncOperationHandle<GameObject> igniteOnKillExplosionLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_IgniteOnKill.IgniteExplosionVFX_prefab);
 
-			ParallelProgressCoroutine prefabsLoadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
-			prefabsLoadCoroutine.Add(igniteOnKillExplosionLoad);
+            ParallelProgressCoroutine prefabsLoadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
+            prefabsLoadCoroutine.Add(igniteOnKillExplosionLoad);
 
-			yield return prefabsLoadCoroutine;
+            yield return prefabsLoadCoroutine;
 
-			if (igniteOnKillExplosionLoad.Status != AsyncOperationStatus.Succeeded || !igniteOnKillExplosionLoad.Result)
-			{
-				Log.Error($"Failed to load igniteOnKill VFX prefab: {igniteOnKillExplosionLoad.OperationException}");
-				yield break;
-			}
+            if (igniteOnKillExplosionLoad.Status != AsyncOperationStatus.Succeeded || !igniteOnKillExplosionLoad.Result)
+            {
+                Log.Error($"Failed to load igniteOnKill VFX prefab: {igniteOnKillExplosionLoad.OperationException}");
+                yield break;
+            }
 
-			_explosionVFX = igniteOnKillExplosionLoad.Result.InstantiateClone("opalExplosionVFX", false);
-			UnityEngine.Object.Destroy(_explosionVFX.transform.Find("Flames").gameObject);
-			UnityEngine.Object.Destroy(_explosionVFX.transform.Find("Flash").gameObject);
-			args.ContentPack.effectDefs.Add(new EffectDef(_explosionVFX));
-		}
+            _explosionVFX = igniteOnKillExplosionLoad.Result.InstantiateClone("opalExplosionVFX", false);
+            UnityEngine.Object.Destroy(_explosionVFX.transform.Find("Flames").gameObject);
+            UnityEngine.Object.Destroy(_explosionVFX.transform.Find("Flash").gameObject);
+            args.ContentPack.effectDefs.Add(new EffectDef(_explosionVFX));
+        }
 
-		static void CharacterBody_OnTakeDamageServer(ILContext il)
+        static void CharacterBody_OnTakeDamageServer(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
@@ -73,64 +73,71 @@ namespace ItemQualities.Items
 
             static void onEnterDanger(CharacterBody victim, DamageReport damageReport)
             {
-                if (!victim || damageReport?.damageInfo == null) return;
-				CharacterBody body = victim.GetBody();
-				if (!body) return;
+                if (!victim || damageReport?.damageInfo == null)
+                    return;
 
-				float radius = 0;
-				switch (ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor.GetHighestQualityInInventory(body.inventory))
-				{
-					case QualityTier.Uncommon:
-						radius = 10;
-						break;
-					case QualityTier.Rare:
-						radius = 20;
-						break;
-					case QualityTier.Epic:
-						radius = 30;
-						break;
-					case QualityTier.Legendary:
-						radius = 50;
-						break;
-					default:
-						return;
-				}
+                CharacterBody body = victim.GetBody();
+                if (!body)
+                    return;
 
-				ItemQualityCounts outOfCombatArmor = ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor.GetItemCounts(body.master.inventory);
-				float duration =	outOfCombatArmor.UncommonCount * 2 +
-									outOfCombatArmor.RareCount * 4 +
-									outOfCombatArmor.EpicCount * 6 +
-									outOfCombatArmor.LegendaryCount * 8;
+                ItemQualityCounts outOfCombatArmor = ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor.GetItemCountsEffective(body.inventory);
+                if (outOfCombatArmor.TotalQualityCount <= 0)
+                    return;
+
+                float radius = 0;
+                switch (outOfCombatArmor.HighestQuality)
+                {
+                    case QualityTier.Uncommon:
+                        radius = 10;
+                        break;
+                    case QualityTier.Rare:
+                        radius = 20;
+                        break;
+                    case QualityTier.Epic:
+                        radius = 30;
+                        break;
+                    case QualityTier.Legendary:
+                        radius = 50;
+                        break;
+                }
+
+                float stunDuration = (outOfCombatArmor.UncommonCount * 2) +
+                                     (outOfCombatArmor.RareCount * 4) +
+                                     (outOfCombatArmor.EpicCount * 6) +
+                                     (outOfCombatArmor.LegendaryCount * 8);
 
                 if (victim.HasBuff(DLC1Content.Buffs.OutOfCombatArmorBuff))
                 {
-					_opalSphereSearch.origin = body.corePosition;
-					_opalSphereSearch.mask = LayerIndex.entityPrecise.mask;
-					_opalSphereSearch.radius = radius;
-					_opalSphereSearch.RefreshCandidates();
-					_opalSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(body.master.teamIndex));
-					_opalSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
-					_opalSphereSearch.GetHurtBoxes(_opalHurtBoxBuffer);
-					_opalSphereSearch.ClearCandidates();
-					for (int i = 0; i < _opalHurtBoxBuffer.Count; i++)
-					{
-						HurtBox hurtBox = _opalHurtBoxBuffer[i];
-						if (hurtBox.healthComponent && hurtBox.healthComponent.body != body)
-						{
-							if (hurtBox.healthComponent.TryGetComponent(out SetStateOnHurt attackerSetStateOnHurt) && attackerSetStateOnHurt.canBeStunned) {
-								attackerSetStateOnHurt.SetStun(duration);
-							}
-						}
-					}
-					_opalHurtBoxBuffer.Clear();
+                    _opalSphereSearch.origin = body.corePosition;
+                    _opalSphereSearch.mask = LayerIndex.entityPrecise.mask;
+                    _opalSphereSearch.radius = radius;
+                    _opalSphereSearch.RefreshCandidates();
+                    _opalSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(body.teamComponent.teamIndex));
+                    _opalSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
+                    _opalSphereSearch.GetHurtBoxes(_opalHurtBoxBuffer);
+                    _opalSphereSearch.ClearCandidates();
 
-					EffectManager.SpawnEffect(_explosionVFX, new EffectData
-					{
-						origin = victim.corePosition,
-						scale = radius,
-						rotation = Util.QuaternionSafeLookRotation(damageReport.damageInfo.force)
-					}, transmit: true);
-				}
+                    for (int i = 0; i < _opalHurtBoxBuffer.Count; i++)
+                    {
+                        HurtBox hurtBox = _opalHurtBoxBuffer[i];
+                        if (hurtBox.healthComponent && hurtBox.healthComponent.body != body)
+                        {
+                            if (hurtBox.healthComponent.TryGetComponent(out SetStateOnHurt attackerSetStateOnHurt) && attackerSetStateOnHurt.canBeStunned)
+                            {
+                                attackerSetStateOnHurt.SetStun(stunDuration);
+                            }
+                        }
+                    }
+
+                    _opalHurtBoxBuffer.Clear();
+
+                    EffectManager.SpawnEffect(_explosionVFX, new EffectData
+                    {
+                        origin = victim.corePosition,
+                        scale = radius,
+                        rotation = Util.QuaternionSafeLookRotation(damageReport.damageInfo.force)
+                    }, true);
+                }
             }
         }
     }

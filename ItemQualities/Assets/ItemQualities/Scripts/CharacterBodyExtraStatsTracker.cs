@@ -250,21 +250,21 @@ namespace ItemQualities
 
             if (NetworkServer.active)
             {
-                setItemBehavior<MoveSpeedOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<AttackSpeedOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<SprintOutOfCombatQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<SprintArmorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<HealOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<EnergizedOnEquipmentUseItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<BarrierOnOverHealQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<KillEliteFrenzyQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<ArmorPlateQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<BoostAllStatsQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<IgniteOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<MushroomVoidQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCounts(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<MoveSpeedOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<AttackSpeedOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<SprintOutOfCombatQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<SprintArmorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<HealOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<EnergizedOnEquipmentUseItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<BarrierOnOverHealQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<KillEliteFrenzyQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<ArmorPlateQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<BoostAllStatsQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<IgniteOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<MushroomVoidQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
 			}
         }
 
@@ -331,21 +331,19 @@ namespace ItemQualities
             ItemQualityCounts slug = default;
             ItemQualityCounts crowbar = default;
             ItemQualityCounts barrierOnKill = default;
-            ItemQualityCounts fragileDamageBonus = default;
             ItemQualityCounts warCryOnMultiKill = default;
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
             ItemQualityCounts jumpBoost = default;
             if (_body && _body.inventory)
             {
-                slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCounts(_body.inventory);
-                crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCounts(_body.inventory);
-                barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCounts(_body.inventory);
-                fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCounts(_body.inventory);
-                warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCounts(_body.inventory);
-                executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCounts(_body.inventory);
-                phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCounts(_body.inventory);
-                jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCounts(_body.inventory);
+                slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCountsEffective(_body.inventory);
+                crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(_body.inventory);
+                barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCountsEffective(_body.inventory);
+                warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(_body.inventory);
+                executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCountsEffective(_body.inventory);
+                phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(_body.inventory);
+                jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCountsEffective(_body.inventory);
             }
 
             float slugOutOfDangerDelayReduction = 1f;
@@ -436,7 +434,7 @@ namespace ItemQualities
 
             if (_body.skillLocator.secondary == skill)
             {
-                ItemQualityCounts secondarySkillMagazine = ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCounts(_body.inventory);
+                ItemQualityCounts secondarySkillMagazine = ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCountsEffective(_body.inventory);
 
                 float freeRestockChance = (10f * secondarySkillMagazine.UncommonCount) +
                                           (20f * secondarySkillMagazine.RareCount) +
@@ -451,7 +449,7 @@ namespace ItemQualities
 
             if (_body.skillLocator.utility == skill)
             {
-                ItemQualityCounts utilitySkillMagazine = ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCounts(_body.inventory);
+                ItemQualityCounts utilitySkillMagazine = ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCountsEffective(_body.inventory);
 
                 if (utilitySkillMagazine.TotalQualityCount > 0)
                 {
@@ -492,7 +490,7 @@ namespace ItemQualities
             if (!_body || !_body.inventory || _body.equipmentSlot != equipmentSlot || equipmentIndex == EquipmentIndex.None)
                 return;
 
-            ItemQualityCounts equipmentMagazine = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCounts(_body.inventory);
+            ItemQualityCounts equipmentMagazine = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCountsEffective(_body.inventory);
 
             float freeRestockChance = (10f * equipmentMagazine.UncommonCount) +
                                       (20f * equipmentMagazine.RareCount) +
@@ -501,7 +499,7 @@ namespace ItemQualities
 
             if (Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master))
             {
-                _body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, 1);
+                _body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, equipmentSlot.activeEquipmentSet[equipmentSlot.activeEquipmentSlot], 1);
             }
         }
 

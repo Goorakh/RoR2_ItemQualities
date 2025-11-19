@@ -99,7 +99,7 @@ namespace ItemQualities
 
                     sb.Append(' ', 4).AppendLine($"Total: {totalAppearenceCount}");
                     sb.Append(' ', 4).AppendLine($"Avg. per stage: {totalAppearenceCount / (float)_stageSearchCount}");
-                    sb.Append(' ', 4).AppendLine($"Avg. per loop: {totalAppearenceCount / ((float)_stageSearchCount / Run.stagesPerLoop)}");
+                    sb.Append(' ', 4).AppendLine($"Avg. per loop: {totalAppearenceCount / (_stageSearchCount / 5f)}");
 
                     if (interactableCountAppearences.Length > 0)
                     {

@@ -44,7 +44,7 @@ namespace ItemQualities.Items
             {
                 if (body && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                 {
-                    bodyExtraStats.LastExtraStatsOnLevelUpCounts = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCounts(body.inventory);
+                    bodyExtraStats.LastExtraStatsOnLevelUpCounts = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
                 }
             }
 
@@ -61,7 +61,7 @@ namespace ItemQualities.Items
                 if (!body || !body.isPlayerControlled || !body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     return PackLevelBonuses(0, 0);
 
-                ItemQualityCounts extraStatsOnLevelUp = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCounts(body.inventory);
+                ItemQualityCounts extraStatsOnLevelUp = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
 
                 ItemQualityCounts beadsSpent = bodyExtraStats.LastExtraStatsOnLevelUpCounts - extraStatsOnLevelUp;
 

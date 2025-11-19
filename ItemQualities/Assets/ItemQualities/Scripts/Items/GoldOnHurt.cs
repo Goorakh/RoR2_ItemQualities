@@ -15,7 +15,7 @@ namespace ItemQualities.Items
         {
             Inventory inventory = sender ? sender.inventory : null;
 
-            ItemQualityCounts goldOnHurt = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCounts(inventory);
+            ItemQualityCounts goldOnHurt = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(inventory);
             if (goldOnHurt.TotalQualityCount > 0)
             {
                 if (ItemQualitiesContent.BuffQualityGroups.GoldArmorBuff.HasQualityBuff(sender))

@@ -39,7 +39,7 @@ namespace ItemQualities.Items
             {
                 Inventory victimInventory = damageReport?.victimBody ? damageReport.victimBody.inventory : null;
 
-                ItemQualityCounts thorns = ItemQualitiesContent.ItemQualityGroups.Thorns.GetItemCounts(victimInventory);
+                ItemQualityCounts thorns = ItemQualitiesContent.ItemQualityGroups.Thorns.GetItemCountsEffective(victimInventory);
                 if (thorns.TotalQualityCount > 0)
                 {
                     float returnDamageCoefficient = (0.05f * thorns.UncommonCount) +

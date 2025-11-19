@@ -34,25 +34,27 @@ namespace ItemQualities.Items
 
             if (damageReport.damageDealt > 0f && !damageReport.damageInfo.rejected)
             {
-                ItemQualityCounts phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCounts(damageReport.victimBody.inventory);
-
-                float stealthProcChance = (5f * phasing.UncommonCount) +
-                                          (15f * phasing.RareCount) +
-                                          (30f * phasing.EpicCount) +
-                                          (60f * phasing.LegendaryCount);
-
-                if (Util.CheckRoll(stealthProcChance, damageReport.victimMaster) && !damageReport.victimBody.hasCloakBuff)
+                ItemQualityCounts phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(damageReport.victimBody.inventory);
+                if (phasing.TotalQualityCount > 0)
                 {
-                    damageReport.victimBody.AddTimedBuff(RoR2Content.Buffs.Cloak, 5f);
-                    damageReport.victimBody.AddTimedBuff(RoR2Content.Buffs.CloakSpeed, 5f);
+                    float stealthProcChance = (5f * phasing.UncommonCount) +
+                                              (15f * phasing.RareCount) +
+                                              (30f * phasing.EpicCount) +
+                                              (60f * phasing.LegendaryCount);
 
-                    if (_stealthKitProcEffectIndex != EffectIndex.Invalid)
+                    if (Util.CheckRoll(stealthProcChance, damageReport.victimMaster) && !damageReport.victimBody.hasCloakBuff)
                     {
-                        EffectManager.SpawnEffect(_stealthKitProcEffectIndex, new EffectData
+                        damageReport.victimBody.AddTimedBuff(RoR2Content.Buffs.Cloak, 5f);
+                        damageReport.victimBody.AddTimedBuff(RoR2Content.Buffs.CloakSpeed, 5f);
+
+                        if (_stealthKitProcEffectIndex != EffectIndex.Invalid)
                         {
-                            origin = damageReport.victimBody.corePosition,
-                            rotation = Quaternion.identity
-                        }, true);
+                            EffectManager.SpawnEffect(_stealthKitProcEffectIndex, new EffectData
+                            {
+                                origin = damageReport.victimBody.corePosition,
+                                rotation = Quaternion.identity
+                            }, true);
+                        }
                     }
                 }
             }

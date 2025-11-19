@@ -106,14 +106,14 @@ namespace ItemQualities
             return activatorInventory && activatorInventory.HasAtLeastXTotalRemovableQualityItemsOfTier(costTypeDef.itemTier, context.cost);
         }
 
-        static void payCostQualityItems(CostTypeDef costTypeDef, CostTypeDef.PayCostContext context)
+        static void payCostQualityItems(CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
         {
             if (context.activatorBody)
             {
                 Inventory inventory = context.activatorBody.inventory;
                 if (inventory)
                 {
-                    List<ItemIndex> itemsToTake = ListPool<ItemIndex>.RentCollection();
+                    using var _ = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> itemsToTake);
 
                     WeightedSelection<ItemIndex> itemSelection = new WeightedSelection<ItemIndex>();
                     WeightedSelection<ItemIndex>[] scrapSelectionsByQuality = new WeightedSelection<ItemIndex>[(int)QualityTier.Count];
@@ -131,14 +131,14 @@ namespace ItemQualities
                         if (itemGroupIndex == avoidedItemGroupIndex)
                             continue;
 
-                        int itemCount = inventory.GetItemCount(itemIndex);
+                        int itemCount = inventory.GetItemCountPermanent(itemIndex);
                         if (itemCount <= 0)
                             continue;
 
                         ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                        if (itemDef.tier != costTypeDef.itemTier)
+                        if (itemDef.tier != context.costTypeDef.itemTier || !itemDef.canRemove || itemDef.ContainsTag(ItemTag.ObjectiveRelated))
                             continue;
-                        
+
                         WeightedSelection<ItemIndex>[] targetSelectionsByQuality = null;
                         if (itemDef.ContainsTag(ItemTag.PriorityScrap))
                         {
@@ -209,7 +209,7 @@ namespace ItemQualities
                     {
                         if (itemsToTake.Count < context.cost)
                         {
-                            ItemQualityCounts avoidedItemCounts = avoidedItemGroup.GetItemCounts(inventory);
+                            ItemQualityCounts avoidedItemCounts = avoidedItemGroup.GetItemCountsPermanent(inventory);
                             for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
                             {
                                 int itemCount = avoidedItemCounts[qualityTier];
@@ -237,56 +237,62 @@ namespace ItemQualities
                         }
                     }
 
-                    ItemQualityCounts takenRegeneratingScrapCounts = new ItemQualityCounts();
+                    bool hasTakenAnyRegeneratingScrap = false;
                     foreach (ItemIndex itemIndex in itemsToTake)
                     {
-                        context.results.itemsTaken.Add(itemIndex);
-                        if (QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None) == DLC1Content.Items.RegeneratingScrap.itemIndex)
+                        Inventory.ItemTransformation takeItemTransformation = new Inventory.ItemTransformation
                         {
-                            QualityTier scrapQualityTier = QualityCatalog.GetQualityTier(itemIndex);
-                            takenRegeneratingScrapCounts[scrapQualityTier]++;
+                            originalItemIndex = itemIndex,
+                            newItemIndex = ItemIndex.None,
+                            maxToTransform = 1,
+                            forbidTempItems = true,
+                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.None,
+                        };
 
-                            inventory.GiveItem(QualityCatalog.GetItemIndexOfQuality(DLC1Content.Items.RegeneratingScrapConsumed.itemIndex, scrapQualityTier));
-                            EntitySoundManager.EmitSoundServer(NetworkSoundEventCatalog.FindNetworkSoundEventIndex("Play_item_proc_regenScrap_consume"), context.activatorBody.gameObject);
-                            ModelLocator modelLocator = context.activatorBody.modelLocator;
-                            if (modelLocator && modelLocator.modelTransform && modelLocator.modelTransform.TryGetComponent(out CharacterModel characterModel))
-                            {
-                                List<GameObject> itemDisplayObjects = characterModel.GetItemDisplayObjects(DLC1Content.Items.RegeneratingScrap.itemIndex);
-                                if (itemDisplayObjects.Count > 0)
-                                {
-                                    GameObject effectRoot = itemDisplayObjects[0];
-                                    GameObject effectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/RegeneratingScrap/RegeneratingScrapExplosionDisplay.prefab").WaitForCompletion();
-                                    EffectData effectData = new EffectData
-                                    {
-                                        origin = effectRoot.transform.position,
-                                        rotation = effectRoot.transform.rotation
-                                    };
-
-                                    EffectManager.SpawnEffect(effectPrefab, effectData, transmit: true);
-                                }
-                            }
-
-                            EffectManager.SimpleMuzzleFlash(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/RegeneratingScrap/RegeneratingScrapExplosionInPrinter.prefab").WaitForCompletion(), context.purchasedObject, "DropPivot", transmit: true);
+                        if (QualityCatalog.FindItemQualityGroupIndex(takeItemTransformation.originalItemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
+                        {
+                            takeItemTransformation.newItemIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GetItemIndex(QualityCatalog.GetQualityTier(takeItemTransformation.originalItemIndex));
                         }
 
-                        inventory.RemoveItem(itemIndex);
+                        if (takeItemTransformation.newItemIndex != ItemIndex.None)
+                        {
+                            takeItemTransformation.transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default;
+                        }
+
+                        if (takeItemTransformation.TryTransform(inventory, out Inventory.ItemTransformation.TryTransformResult tryTransformResult))
+                        {
+                            result.AddTakenItemsFromTransformation(tryTransformResult);
+
+                            if (QualityCatalog.FindItemQualityGroupIndex(tryTransformResult.takenItem.itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
+                            {
+                                hasTakenAnyRegeneratingScrap = true;
+                            }
+                        }
                     }
 
-                    if (takenRegeneratingScrapCounts.TotalCount > 0)
+                    if (hasTakenAnyRegeneratingScrap)
                     {
-                        for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                        EntitySoundManager.EmitSoundServer(NetworkSoundEventCatalog.FindNetworkSoundEventIndex("Play_item_proc_regenScrap_consume"), context.activatorBody.gameObject);
+                        ModelLocator modelLocator = context.activatorBody.modelLocator;
+                        if (modelLocator && modelLocator.modelTransform && modelLocator.modelTransform.TryGetComponent(out CharacterModel characterModel))
                         {
-                            if (takenRegeneratingScrapCounts[qualityTier] > 0)
+                            List<GameObject> itemDisplayObjects = characterModel.GetItemDisplayObjects(DLC1Content.Items.RegeneratingScrap.itemIndex);
+                            if (itemDisplayObjects.Count > 0)
                             {
-                                ItemIndex regeneratingScrapItemIndex = QualityCatalog.GetItemIndexOfQuality(DLC1Content.Items.RegeneratingScrap.itemIndex, qualityTier);
-                                ItemIndex regeneratingScrapConsumedItemIndex = QualityCatalog.GetItemIndexOfQuality(DLC1Content.Items.RegeneratingScrapConsumed.itemIndex, qualityTier);
+                                GameObject effectRoot = itemDisplayObjects[0];
+                                GameObject effectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/RegeneratingScrap/RegeneratingScrapExplosionDisplay.prefab").WaitForCompletion();
+                                EffectData effectData = new EffectData
+                                {
+                                    origin = effectRoot.transform.position,
+                                    rotation = effectRoot.transform.rotation
+                                };
 
-                                CharacterMasterNotificationQueue.SendTransformNotification(context.activatorBody.master, regeneratingScrapItemIndex, regeneratingScrapConsumedItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
+                                EffectManager.SpawnEffect(effectPrefab, effectData, transmit: true);
                             }
                         }
-                    }
 
-                    ListPool<ItemIndex>.ReturnCollection(itemsToTake);
+                        EffectManager.SimpleMuzzleFlash(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/RegeneratingScrap/RegeneratingScrapExplosionInPrinter.prefab").WaitForCompletion(), context.purchasedObject, "DropPivot", transmit: true);
+                    }
                 }
             }
 

@@ -48,7 +48,7 @@ namespace ItemQualities.Items
             {
                 Inventory attackerInventory = damageReport?.attackerBody ? damageReport.attackerBody.inventory : null;
 
-                ItemQualityCounts itemDropChanceOnKill = ItemQualitiesContent.ItemQualityGroups.ItemDropChanceOnKill.GetItemCounts(attackerInventory);
+                ItemQualityCounts itemDropChanceOnKill = ItemQualitiesContent.ItemQualityGroups.ItemDropChanceOnKill.GetItemCountsEffective(attackerInventory);
                 if (itemDropChanceOnKill.TotalQualityCount <= 0)
                     return null;
 

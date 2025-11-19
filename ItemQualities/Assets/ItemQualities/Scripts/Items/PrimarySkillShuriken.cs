@@ -57,7 +57,7 @@ namespace ItemQualities.Items
         {
             Inventory inventory = body ? body.inventory : null;
 
-            ItemQualityCounts primarySkillShuriken = ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken.GetItemCounts(inventory);
+            ItemQualityCounts primarySkillShuriken = ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken.GetItemCountsEffective(inventory);
 
             if (primarySkillShuriken.TotalQualityCount > 0)
             {

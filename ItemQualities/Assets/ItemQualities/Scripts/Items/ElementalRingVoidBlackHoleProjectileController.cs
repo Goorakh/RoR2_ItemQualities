@@ -41,7 +41,7 @@ namespace ItemQualities.Items
             ItemQualityCounts elementalRingVoid = default;
             if (projectileController && projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody))
             {
-                elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCounts(ownerBody.inventory);
+                elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCountsEffective(ownerBody.inventory);
             }
 
             float scaleMultiplier = 1f;

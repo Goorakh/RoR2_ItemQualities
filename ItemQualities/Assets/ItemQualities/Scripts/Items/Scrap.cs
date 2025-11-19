@@ -61,27 +61,25 @@ namespace ItemQualities.Items
 
         static void convertQualityScrap(Inventory inventory)
         {
-            CharacterMaster master = inventory.GetComponent<CharacterMaster>();
-
             for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
             {
-                ItemIndex baseItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
-                if (baseItemIndex != ItemIndex.None && baseItemIndex != itemIndex)
+                ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+                if (itemDef && itemDef.ContainsTag(ItemTag.Scrap))
                 {
-                    int itemCount = inventory.GetItemCount(itemIndex);
-                    if (itemCount > 0)
+                    ItemIndex baseItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
+                    if (baseItemIndex != ItemIndex.None && baseItemIndex != itemIndex)
                     {
-                        ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                        if (itemDef && itemDef.ContainsTag(ItemTag.Scrap))
+                        Inventory.ItemTransformation scrapTransformation = new Inventory.ItemTransformation
                         {
-                            inventory.RemoveItem(itemIndex, itemCount);
-                            inventory.GiveItem(baseItemIndex, itemCount);
+                            originalItemIndex = itemIndex,
+                            newItemIndex = baseItemIndex,
+                            minToTransform = 1,
+                            maxToTransform = int.MaxValue,
+                            allowWhenDisabled = true,
+                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
+                        };
 
-                            if (master && master.playerCharacterMasterController)
-                            {
-                                CharacterMasterNotificationQueue.SendTransformNotification(master, itemIndex, baseItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-                            }
-                        }
+                        scrapTransformation.TryTransform(inventory, out _);
                     }
                 }
             }

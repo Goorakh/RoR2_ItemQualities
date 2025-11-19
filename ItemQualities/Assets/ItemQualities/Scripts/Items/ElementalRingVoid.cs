@@ -65,7 +65,7 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCounts(attackerInventory);
+                ItemQualityCounts elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCountsEffective(attackerInventory);
                 if (elementalRingVoid.TotalQualityCount > 0)
                 {
                     switch (elementalRingVoid.HighestQuality)
@@ -101,7 +101,7 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCounts(attackerInventory);
+                ItemQualityCounts elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCountsEffective(attackerInventory);
                 if (elementalRingVoid.TotalQualityCount > 0)
                 {
                     damageCoefficient += (0.50f * elementalRingVoid.UncommonCount) +

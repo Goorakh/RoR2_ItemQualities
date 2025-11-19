@@ -14,7 +14,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.FreeChestDropTable.GenerateDropPreReplacement += ItemHooks.CombineGroupedItemCountsPatch;
+            IL.RoR2.FreeChestDropTable.RebuildSelection += ItemHooks.CombineGroupedItemCountsPatch;
 
             IL.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
         }
@@ -64,7 +64,7 @@ namespace ItemQualities.Items
             {
                 Inventory inventory = master ? master.inventory : null;
 
-                ItemQualityCounts freeChest = ItemQualitiesContent.ItemQualityGroups.FreeChest.GetItemCounts(inventory);
+                ItemQualityCounts freeChest = ItemQualitiesContent.ItemQualityGroups.FreeChest.GetItemCountsEffective(inventory);
 
                 int extraSpawnCount = 0;
 

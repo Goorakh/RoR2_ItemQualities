@@ -61,7 +61,7 @@ namespace ItemQualities.Items
             {
                 Inventory inventory = genericCharacterMain?.characterBody ? genericCharacterMain.characterBody.inventory : null;
 
-                ItemQualityCounts jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCounts(inventory);
+                ItemQualityCounts jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCountsEffective(inventory);
                 if (jumpBoost.TotalQualityCount > 0 &&
                     genericCharacterMain.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats) &&
                     bodyExtraStats.QuailJumpComboAuthority > 0)

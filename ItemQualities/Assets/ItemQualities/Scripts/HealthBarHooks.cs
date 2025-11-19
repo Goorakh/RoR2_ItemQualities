@@ -92,7 +92,7 @@ namespace ItemQualities
 
                 void handleCustomQualityLowHealthThreshold(ItemQualityGroup itemGroup)
                 {
-                    ItemQualityCounts itemCounts = itemGroup.GetItemCounts(inventory);
+                    ItemQualityCounts itemCounts = itemGroup.GetItemCountsEffective(inventory);
                     if (itemCounts.TotalQualityCount > 0)
                     {
                         for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
@@ -342,7 +342,7 @@ namespace ItemQualities
             stealthKitLowHealthUnderBarInfo.enabled = false;
             stealthKitLowHealthOverBarInfo.enabled = false;
 
-            ItemQualityCounts phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCounts(inventory);
+            ItemQualityCounts phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(inventory);
             if (phasing.TotalQualityCount > 0)
             {
                 setupHealthThresholdBarInfos(ref stealthKitLowHealthUnderBarInfo, ref stealthKitLowHealthOverBarInfo, extraStatsTracker.StealthKitActivationThreshold);

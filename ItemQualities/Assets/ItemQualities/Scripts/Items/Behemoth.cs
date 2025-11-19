@@ -50,7 +50,7 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts behemoth = ItemQualitiesContent.ItemQualityGroups.Behemoth.GetItemCounts(attackerInventory);
+                ItemQualityCounts behemoth = ItemQualitiesContent.ItemQualityGroups.Behemoth.GetItemCountsEffective(attackerInventory);
                 if (behemoth.TotalQualityCount > 0)
                 {
                     float procCoefficient = (0.1f * behemoth.UncommonCount) +

@@ -36,7 +36,7 @@ namespace ItemQualities.Items
                     victimInventory = victimBody.inventory;
                 }
 
-                ItemQualityCounts delayedDamage = ItemQualitiesContent.ItemQualityGroups.DelayedDamage.GetItemCounts(victimInventory);
+                ItemQualityCounts delayedDamage = ItemQualitiesContent.ItemQualityGroups.DelayedDamage.GetItemCountsEffective(victimInventory);
 
                 if (delayedDamage.TotalQualityCount > 0 &&
                     !damageInfo.rejected &&

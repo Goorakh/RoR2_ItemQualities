@@ -3,90 +3,114 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-	static class DroneWeapons
-	{
-		[SystemInitializer]
-		static void Init()
-		{
-			On.RoR2.CharacterMaster.GetDeployableSameSlotLimit += CharacterMaster_GetDeployableSameSlotLimit;
-			On.RoR2.DroneWeaponsBehavior.FixedUpdate += DroneWeaponsBehavior_FixedUpdate;
-			On.RoR2.DroneWeaponsBehavior.TrySpawnDrone += DroneWeaponsBehavior_TrySpawnDrone;
-			On.RoR2.DroneWeaponsBehavior.OnMasterSpawned += DroneWeaponsBehavior_OnMasterSpawned;
-		}
+    static class DroneWeapons
+    {
+        [SystemInitializer]
+        static void Init()
+        {
+            On.RoR2.CharacterMaster.GetDeployableSameSlotLimit += CharacterMaster_GetDeployableSameSlotLimit;
+            On.RoR2.DroneWeaponsBehavior.FixedUpdate += DroneWeaponsBehavior_FixedUpdate;
+            On.RoR2.DroneWeaponsBehavior.TrySpawnDrone += DroneWeaponsBehavior_TrySpawnDrone;
+            On.RoR2.DroneWeaponsBehavior.OnMasterSpawned += DroneWeaponsBehavior_OnMasterSpawned;
+        }
 
-		static void DroneWeaponsBehavior_OnMasterSpawned(On.RoR2.DroneWeaponsBehavior.orig_OnMasterSpawned orig, DroneWeaponsBehavior self, SpawnCard.SpawnResult spawnResult)
-		{
-			orig(self, spawnResult);
-			if(ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetHighestQualityInInventory(self.body.master.inventory) != QualityTier.None) {
-				self.hasSpawnedDrone = false;
-			}
-			GameObject spawnedInstance = spawnResult.spawnedInstance;
-			if (!spawnedInstance) return;
-			CharacterMaster DroneMaster = spawnedInstance.GetComponent<CharacterMaster>();
-			if(!DroneMaster) return;
-			GameObject body = DroneMaster.bodyInstanceObject;
-			if(!body) return;
-			Deployable deployable = body.GetComponent<Deployable>();
-			if (deployable)
-			{
-				self.body.master.AddDeployable(deployable, DeployableSlot.DroneWeaponsDrone);
-			}
-		}
+        static void DroneWeaponsBehavior_OnMasterSpawned(On.RoR2.DroneWeaponsBehavior.orig_OnMasterSpawned orig, DroneWeaponsBehavior self, SpawnCard.SpawnResult spawnResult)
+        {
+            orig(self, spawnResult);
 
-		static void DroneWeaponsBehavior_TrySpawnDrone(On.RoR2.DroneWeaponsBehavior.orig_TrySpawnDrone orig, DroneWeaponsBehavior self)
-		{
-			orig(self);
-			switch (ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetHighestQualityInInventory(self.body.master.inventory))
-			{
-				case QualityTier.Uncommon:
-					self.spawnDelay = 120f;
-					break;
-				case QualityTier.Rare:
-					self.spawnDelay = 90f;
-					break;
-				case QualityTier.Epic:
-					self.spawnDelay = 45f;
-					break;
-				case QualityTier.Legendary:
-					self.spawnDelay = 1f;
-					break;
-			}
-		}
+            if (!self.body)
+                return;
 
-		static int CharacterMaster_GetDeployableSameSlotLimit(On.RoR2.CharacterMaster.orig_GetDeployableSameSlotLimit orig, CharacterMaster self, DeployableSlot slot)
-		{
-			int result = orig(self, slot);
-			if (slot == DeployableSlot.DroneWeaponsDrone)
-			{
-				ItemQualityCounts DroneWeapons = ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCounts(self.inventory);
-				result += DroneWeapons.UncommonCount * 2 +
-							DroneWeapons.RareCount * 3 +
-							DroneWeapons.EpicCount * 4 +
-							DroneWeapons.LegendaryCount * 5 -
-							(DroneWeapons.BaseItemCount == 0 ? 1 : 0);
-			}
-			return result;
-		}
+            if (ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCountsEffective(self.body.inventory).TotalQualityCount > 0)
+            {
+                self.hasSpawnedDrone = false;
+            }
 
-		static void DroneWeaponsBehavior_FixedUpdate(On.RoR2.DroneWeaponsBehavior.orig_FixedUpdate orig, DroneWeaponsBehavior self) {
-			orig(self);
-			if (self.body.master.IsDeployableLimited(DeployableSlot.DroneWeaponsDrone))
-			{
-				switch(ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetHighestQualityInInventory(self.body.master.inventory)) {
-					case QualityTier.Uncommon:
-						self.spawnDelay = 120f;
-						break;
-					case QualityTier.Rare:
-						self.spawnDelay = 90f;
-						break;
-					case QualityTier.Epic:
-						self.spawnDelay = 45f;
-						break;
-					case QualityTier.Legendary:
-						self.spawnDelay = 1f;
-						break;
-				}
-			}
-		}
-	}
+            GameObject spawnedInstance = spawnResult.spawnedInstance;
+            if (!spawnedInstance)
+                return;
+
+            CharacterMaster droneMaster = spawnedInstance.GetComponent<CharacterMaster>();
+            if (!droneMaster)
+                return;
+
+            GameObject droneBodyObject = droneMaster.bodyInstanceObject;
+            if (!droneBodyObject)
+                return;
+
+            Deployable deployable = droneBodyObject.GetComponent<Deployable>();
+            if (deployable)
+            {
+                self.body.master.AddDeployable(deployable, DeployableSlot.DroneWeaponsDrone);
+            }
+        }
+
+        static void DroneWeaponsBehavior_TrySpawnDrone(On.RoR2.DroneWeaponsBehavior.orig_TrySpawnDrone orig, DroneWeaponsBehavior self)
+        {
+            orig(self);
+
+            if (self.body)
+            {
+                switch (ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCountsEffective(self.body.inventory).HighestQuality)
+                {
+                    case QualityTier.Uncommon:
+                        self.spawnDelay = 120f;
+                        break;
+                    case QualityTier.Rare:
+                        self.spawnDelay = 90f;
+                        break;
+                    case QualityTier.Epic:
+                        self.spawnDelay = 45f;
+                        break;
+                    case QualityTier.Legendary:
+                        self.spawnDelay = 1f;
+                        break;
+                }
+            }
+        }
+
+        static int CharacterMaster_GetDeployableSameSlotLimit(On.RoR2.CharacterMaster.orig_GetDeployableSameSlotLimit orig, CharacterMaster self, DeployableSlot slot)
+        {
+            int result = orig(self, slot);
+
+            if (slot == DeployableSlot.DroneWeaponsDrone)
+            {
+                ItemQualityCounts droneWeapons = ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCountsEffective(self.inventory);
+
+                if (droneWeapons.TotalQualityCount > 0)
+                {
+                    result += (droneWeapons.UncommonCount * 2) +
+                              (droneWeapons.RareCount * 3) +
+                              (droneWeapons.EpicCount * 4) +
+                              (droneWeapons.LegendaryCount * 5) - 1;
+                }
+            }
+
+            return result;
+        }
+
+        static void DroneWeaponsBehavior_FixedUpdate(On.RoR2.DroneWeaponsBehavior.orig_FixedUpdate orig, DroneWeaponsBehavior self)
+        {
+            orig(self);
+
+            if (self.body && self.body.master && self.body.master.IsDeployableLimited(DeployableSlot.DroneWeaponsDrone))
+            {
+                switch (ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCountsEffective(self.body.inventory).HighestQuality)
+                {
+                    case QualityTier.Uncommon:
+                        self.spawnDelay = 120f;
+                        break;
+                    case QualityTier.Rare:
+                        self.spawnDelay = 90f;
+                        break;
+                    case QualityTier.Epic:
+                        self.spawnDelay = 45f;
+                        break;
+                    case QualityTier.Legendary:
+                        self.spawnDelay = 1f;
+                        break;
+                }
+            }
+        }
+    }
 }

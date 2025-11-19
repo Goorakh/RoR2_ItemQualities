@@ -39,13 +39,17 @@ namespace ItemQualities.Items
                     ItemIndex qualityScrapIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GetItemIndex(qualityTier);
                     ItemIndex qualityConsumedScrapIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrapConsumed.GetItemIndex(qualityTier);
 
-                    int qualityScrapCount = self.inventory.GetItemCount(qualityConsumedScrapIndex);
-                    if (qualityScrapCount > 0)
+                    if (qualityScrapIndex != ItemIndex.None && qualityConsumedScrapIndex != ItemIndex.None)
                     {
-                        self.inventory.RemoveItem(qualityConsumedScrapIndex, qualityScrapCount);
-                        self.inventory.GiveItem(qualityScrapIndex, qualityScrapCount);
+                        Inventory.ItemTransformation qualityRegenScrapTransformation = new Inventory.ItemTransformation
+                        {
+                            originalItemIndex = qualityConsumedScrapIndex,
+                            newItemIndex = qualityScrapIndex,
+                            maxToTransform = int.MaxValue,
+                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.SaleStarRegen
+                        };
 
-                        CharacterMasterNotificationQueue.SendTransformNotification(self, qualityConsumedScrapIndex, qualityScrapIndex, CharacterMasterNotificationQueue.TransformationType.RegeneratingScrapRegen);
+                        qualityRegenScrapTransformation.TryTransform(self.inventory, out _);
                     }
                 }
             }
@@ -62,108 +66,36 @@ namespace ItemQualities.Items
             }
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdfld<CostTypeDef.PayCostResults>(nameof(CostTypeDef.PayCostResults.itemsTaken)),
+                               x => x.MatchInitobj<Inventory.ItemTransformation>(),
+                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>("get_" + nameof(Inventory.ItemTransformation.originalItemIndex)),
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.RegeneratingScrap)),
-                               x => x.MatchBneUn(out _),
-                               x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.RegeneratingScrapConsumed)),
-                               x => x.MatchCallOrCallvirt(typeof(CharacterMasterNotificationQueue), nameof(CharacterMasterNotificationQueue.SendTransformNotification))))
+                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>("get_" + nameof(Inventory.ItemTransformation.newItemIndex))))
             {
                 Log.Error("Failed to find patch location");
                 return;
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.Before); // ldsfld DLC1Content.Items.RegeneratingScrap
+            c.Goto(foundCursors[1].Next, MoveType.After); // call Inventory.ItemTransformation.get_originalItemIndex
 
-            int itemTakenLocalIndex = -1;
-            if (!c.TryGotoPrev(MoveType.After, x => x.MatchLdloc(typeof(ItemIndex), il, out itemTakenLocalIndex)))
-            {
-                Log.Error("Failed to find taken item local index");
-                return;
-            }
+            VariableDefinition originalItemIndexVar = il.AddVariable<ItemIndex>();
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Stloc, originalItemIndexVar);
 
-            c.EmitDelegate<Func<ItemIndex, ItemIndex>>(getTakenNonQualityItem);
+            c.EmitDelegate<Func<ItemIndex, ItemIndex>>(getNonQualityItem);
 
-            static ItemIndex getTakenNonQualityItem(ItemIndex itemIndex)
+            static ItemIndex getNonQualityItem(ItemIndex itemIndex)
             {
                 return QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
             }
 
-            c.Goto(foundCursors[3].Next, MoveType.After); // ldsfld RegeneratingScrapConsumed
+            c.Goto(foundCursors[3].Next, MoveType.Before); // call Inventory.ItemTransformation.set_newItemIndex
 
-            c.Emit(OpCodes.Ldloc, itemTakenLocalIndex);
-            c.EmitDelegate<Func<ItemDef, ItemIndex, ItemDef>>(getQualityRegeneratingScrapConsumed);
+            c.Emit(OpCodes.Ldloc, originalItemIndexVar);
+            c.EmitDelegate<Func<ItemIndex, ItemIndex, ItemIndex>>(tryGetQualityRegeneratingScrap);
 
-            static ItemDef getQualityRegeneratingScrapConsumed(ItemDef regenScrapConsumed, ItemIndex takenItemIndex)
+            static ItemIndex tryGetQualityRegeneratingScrap(ItemIndex consumedScrapIndex, ItemIndex originalItemIndex)
             {
-                QualityTier qualityTier = QualityCatalog.GetQualityTier(takenItemIndex);
-
-                ItemIndex qualityRegenScrapConsumedItemIndex = QualityCatalog.GetItemIndexOfQuality(regenScrapConsumed ? regenScrapConsumed.itemIndex : ItemIndex.None, qualityTier);
-                ItemDef qualityRegenScrapConsumed = ItemCatalog.GetItemDef(qualityRegenScrapConsumedItemIndex);
-
-                if (qualityRegenScrapConsumed)
-                {
-                    regenScrapConsumed = qualityRegenScrapConsumed;
-                }
-
-                return regenScrapConsumed;
-            }
-
-            c.Goto(foundCursors[4].Next, MoveType.Before); // call CharacterMasterNotificationQueue.SendTransformNotification
-
-            c.Emit(OpCodes.Ldarg, contextParameter);
-            c.EmitDelegate<Func<CostTypeDef.PayCostContext, bool>>(tookAnyNonQualityRegeneratingScrap);
-            c.EmitSkipMethodCall(OpCodes.Brfalse);
-
-            static bool tookAnyNonQualityRegeneratingScrap(CostTypeDef.PayCostContext context)
-            {
-                if (context.results != null)
-                {
-                    foreach (ItemIndex takenItemIndex in context.results.itemsTaken)
-                    {
-                        if (takenItemIndex == DLC1Content.Items.RegeneratingScrap.itemIndex)
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-
-            c.Emit(OpCodes.Ldarg, contextParameter);
-            c.EmitDelegate<Action<CostTypeDef.PayCostContext>>(handleQualityRegeneratingScrap);
-
-            static void handleQualityRegeneratingScrap(CostTypeDef.PayCostContext context)
-            {
-                if (!context.activatorMaster || context.results == null)
-                    return;
-
-                bool[] hasTakenQualityTierScrap = new bool[(int)QualityTier.Count];
-
-                foreach (ItemIndex takenItemIndex in context.results.itemsTaken)
-                {
-                    QualityTier takenQualityTier = QualityCatalog.GetQualityTier(takenItemIndex);
-                    if (takenQualityTier <= QualityTier.None)
-                        continue;
-
-                    ItemQualityGroup takenItemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(takenItemIndex));
-                    if (!takenItemGroup || takenItemGroup.BaseItemIndex != DLC1Content.Items.RegeneratingScrap.itemIndex)
-                        continue;
-
-                    hasTakenQualityTierScrap[(int)takenQualityTier] = true;
-                }
-
-                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-                {
-                    bool hasTakenScrapOfTier = hasTakenQualityTierScrap[(int)qualityTier];
-                    if (hasTakenScrapOfTier)
-                    {
-                        ItemIndex qualityScrapIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GetItemIndex(qualityTier);
-                        ItemIndex qualityConsumedScrapIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrapConsumed.GetItemIndex(qualityTier);
-
-                        CharacterMasterNotificationQueue.SendTransformNotification(context.activatorMaster, qualityScrapIndex, qualityConsumedScrapIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-                    }
-                }
+                return QualityCatalog.GetItemIndexOfQuality(consumedScrapIndex, QualityCatalog.GetQualityTier(originalItemIndex));
             }
         }
     }

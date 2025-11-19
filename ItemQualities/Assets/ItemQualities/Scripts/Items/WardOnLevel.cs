@@ -87,33 +87,32 @@ namespace ItemQualities.Items
 
             Inventory interactorInventory = interactorBody ? interactorBody.inventory : null;
 
-            ItemQualityCounts wardOnLevel = default;
-            if (interactorInventory)
+            ItemQualityCounts wardOnLevel = ItemQualitiesContent.ItemQualityGroups.WardOnLevel.GetItemCountsEffective(interactorInventory);
+
+            if (wardOnLevel.TotalQualityCount > 0)
             {
-                wardOnLevel = ItemQualitiesContent.ItemQualityGroups.WardOnLevel.GetItemCounts(interactorInventory);
-            }
+                float wardDuration = (3f * wardOnLevel.UncommonCount) +
+                                     (8f * wardOnLevel.RareCount) +
+                                     (15f * wardOnLevel.EpicCount) +
+                                     (30f * wardOnLevel.LegendaryCount);
 
-            float wardDuration = (3f * wardOnLevel.UncommonCount) +
-                                 (8f * wardOnLevel.RareCount) +
-                                 (15f * wardOnLevel.EpicCount) +
-                                 (30f * wardOnLevel.LegendaryCount);
+                if (wardDuration > 0f)
+                {
+                    Vector3 wardSpawnPosition = interactorBody ? interactorBody.footPosition : interactableObject.transform.position;
 
-            if (wardDuration > 0f)
-            {
-                Vector3 wardSpawnPosition = interactorBody ? interactorBody.footPosition : interactableObject.transform.position;
+                    GameObject temporaryWardObj = GameObject.Instantiate(_wardTemporaryPrefab, wardSpawnPosition, Quaternion.identity);
 
-                GameObject temporaryWardObj = GameObject.Instantiate(_wardTemporaryPrefab, wardSpawnPosition, Quaternion.identity);
+                    TeamFilter teamFilter = temporaryWardObj.GetComponent<TeamFilter>();
+                    teamFilter.teamIndex = interactorTeam;
 
-                TeamFilter teamFilter = temporaryWardObj.GetComponent<TeamFilter>();
-                teamFilter.teamIndex = interactorTeam;
+                    BuffWard buffWard = temporaryWardObj.GetComponent<BuffWard>();
+                    buffWard.Networkradius = 8f + (8f * wardOnLevel.TotalCount);
 
-                BuffWard buffWard = temporaryWardObj.GetComponent<BuffWard>();
-                buffWard.Networkradius = 8f + (8f * wardOnLevel.TotalCount);
+                    GenericDurationComponent durationComponent = temporaryWardObj.GetComponent<GenericDurationComponent>();
+                    durationComponent.Duration = wardDuration;
 
-                GenericDurationComponent durationComponent = temporaryWardObj.GetComponent<GenericDurationComponent>();
-                durationComponent.Duration = wardDuration;
-
-                NetworkServer.Spawn(temporaryWardObj);
+                    NetworkServer.Spawn(temporaryWardObj);
+                }
             }
         }
     }

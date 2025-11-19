@@ -47,12 +47,15 @@ namespace ItemQualities.Items
             const float SpawnDelay = 0.2f;
             yield return new WaitForSeconds(SpawnDelay);
 
-            ItemQualityCounts mushroomVoid = ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCounts(_body.inventory);
+            ItemQualityCounts mushroomVoid = ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCountsEffective(_body.inventory);
+            if (mushroomVoid.TotalQualityCount <= 0)
+                yield break;
 
             int healPackSizeBase = (1 * mushroomVoid.UncommonCount) +
                                    (2 * mushroomVoid.RareCount) +
                                    (3 * mushroomVoid.EpicCount) +
                                    (4 * mushroomVoid.LegendaryCount);
+
             float healPackSize = Mathf.Pow(healPackSizeBase, 0.25f);
 
             float flatHealing = _body.maxHealth * ((0.01f * mushroomVoid.UncommonCount) +

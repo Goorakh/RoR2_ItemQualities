@@ -56,7 +56,7 @@ namespace ItemQualities
                 CharacterMaster master = playerMaster ? playerMaster.master : null;
                 if (master && master.inventory)
                 {
-                    totalWarbondsCounts += ItemQualitiesContent.ItemQualityGroups.BarrageOnBoss.GetItemCounts(master.inventory);
+                    totalWarbondsCounts += ItemQualitiesContent.ItemQualityGroups.BarrageOnBoss.GetItemCountsEffective(master.inventory);
                 }
             }
 

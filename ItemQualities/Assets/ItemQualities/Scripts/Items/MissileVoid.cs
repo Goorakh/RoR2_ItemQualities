@@ -45,7 +45,7 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts missileVoid = ItemQualitiesContent.ItemQualityGroups.MissileVoid.GetItemCounts(attackerInventory);
+                ItemQualityCounts missileVoid = ItemQualitiesContent.ItemQualityGroups.MissileVoid.GetItemCountsEffective(attackerInventory);
                 if (missileVoid.TotalQualityCount > 0)
                 {
                     float maxDamageCoefficient = (1f * missileVoid.UncommonCount) +

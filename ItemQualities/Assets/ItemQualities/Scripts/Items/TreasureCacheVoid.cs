@@ -1,125 +1,35 @@
-﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
-using RoR2;
-using System;
-using System.Reflection;
-using UnityEngine;
+﻿using RoR2;
 
 namespace ItemQualities.Items
 {
     static class TreasureCacheVoid
     {
-        [SystemInitializer(typeof(CostTypeCatalog))]
+        [SystemInitializer]
         static void Init()
         {
-            CostTypeDef voidKeyCostDef = CostTypeCatalog.GetCostTypeDef(CostTypeIndex.TreasureCacheVoidItem);
-
-            MethodInfo voidKeyCostIsAffordableMethod = voidKeyCostDef?.isAffordable?.Method;
-            if (voidKeyCostIsAffordableMethod != null)
-            {
-                new ILHook(voidKeyCostIsAffordableMethod, ItemHooks.CombineGroupedItemCountsPatch);
-            }
-            else
-            {
-                Log.Error("Failed to find Void Key IsAffordable method");
-            }
-
-            MethodInfo voidKeyPayCostMethod = voidKeyCostDef?.payCost?.Method;
-            if (voidKeyPayCostMethod != null)
-            {
-                new ILHook(voidKeyPayCostMethod, KeyCostDef_PayCost);
-            }
-            else
-            {
-                Log.Error("Failed to find Void Key PayCost method");
-            }
+            SpecificItemCostTransformationHooks.ModifyItemCostTransformation += modifyItemCostTransformation;
         }
 
-        static void KeyCostDef_PayCost(ILContext il)
+        static void modifyItemCostTransformation(ref Inventory.ItemTransformation itemTransformation, Interactor activator, int cost)
         {
-            ILCursor c = new ILCursor(il);
-
-            if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contextParameter))
-            {
-                Log.Error("Failed to find PayCostContext parameter");
+            if (itemTransformation.originalItemIndex != DLC1Content.Items.TreasureCacheVoid.itemIndex)
                 return;
-            }
 
-            c.Emit(OpCodes.Ldarga, contextParameter);
-            c.EmitDelegate<TryPayQualityKeysDelegate>(tryPayQualityKeys);
-            static int tryPayQualityKeys(ref CostTypeDef.PayCostContext context)
-            {
-                CharacterBody body = context.activatorBody;
-                Inventory inventory = body ? body.inventory : null;
-                if (!inventory)
-                    return 0;
-
-                int totalQualityKeysSpent = 0;
-
-                for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier > QualityTier.None; qualityTier--)
-                {
-                    ItemIndex qualityKeyItemIndex = ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid.GetItemIndex(qualityTier);
-                    int qualityKeyItemCount = inventory.GetItemCount(qualityKeyItemIndex);
-                    int keysOfQualityToSpend = Mathf.Min(context.cost - totalQualityKeysSpent, qualityKeyItemCount);
-                    if (keysOfQualityToSpend > 0)
-                    {
-                        inventory.RemoveItem(qualityKeyItemIndex, keysOfQualityToSpend);
-
-                        for (int i = 0; i < keysOfQualityToSpend; i++)
-                        {
-                            context.results.itemsTaken.Add(qualityKeyItemIndex);
-                        }
-
-                        totalQualityKeysSpent += keysOfQualityToSpend;
-
-                        if (totalQualityKeysSpent >= context.cost)
-                            break;
-                    }
-                }
-
-                return totalQualityKeysSpent;
-            }
-
-            VariableDefinition numQualityKeysPaidVar = il.AddVariable<int>();
-            c.Emit(OpCodes.Stloc, numQualityKeysPaidVar);
-
-            if (!c.TryGotoNext(MoveType.Before,
-                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.RemoveItem))))
-            {
-                Log.Error("Failed to find key item remove patch location");
+            CharacterBody activatorBody = activator ? activator.GetComponent<CharacterBody>() : null;
+            Inventory activatorInventory = activatorBody ? activatorBody.inventory : null;
+            if (!activatorInventory)
                 return;
-            }
 
-            c.Emit(OpCodes.Ldloc, numQualityKeysPaidVar);
-            c.EmitDelegate<Func<int, int, int>>(getRemainingNonQualityCost);
-            static int getRemainingNonQualityCost(int totalKeysCost, int numQualityKeysPaid)
+            ItemQualityCounts treasureCache = ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid.GetItemCountsPermanent(activatorInventory);
+            for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier > QualityTier.None; qualityTier--)
             {
-                return Mathf.Max(0, totalKeysCost - numQualityKeysPaid);
-            }
-
-            c.Emit(OpCodes.Dup);
-
-            VariableDefinition numNonQualityKeysPaidVar = il.AddVariable<int>();
-            c.Emit(OpCodes.Stloc, numNonQualityKeysPaidVar);
-
-            c.Index++;
-
-            c.Emit(OpCodes.Ldloc, numNonQualityKeysPaidVar);
-            c.Emit(OpCodes.Ldarga, contextParameter);
-            c.EmitDelegate<OnNonQualityKeysPaidDelegate>(onNonQualityKeysPaid);
-            static void onNonQualityKeysPaid(int numNonQualityKeysPaid, ref CostTypeDef.PayCostContext context)
-            {
-                for (int i = 0; i < numNonQualityKeysPaid; i++)
+                if (treasureCache[qualityTier] >= cost)
                 {
-                    context.results.itemsTaken.Add(DLC1Content.Items.TreasureCacheVoid.itemIndex);
+                    itemTransformation.originalItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.originalItemIndex, qualityTier);
+                    itemTransformation.newItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.newItemIndex, qualityTier);
+                    break;
                 }
             }
         }
-
-        delegate int TryPayQualityKeysDelegate(ref CostTypeDef.PayCostContext context);
-        delegate void OnNonQualityKeysPaidDelegate(int numNonQualityKeysPaid, ref CostTypeDef.PayCostContext context);
     }
 }

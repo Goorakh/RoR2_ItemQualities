@@ -60,14 +60,17 @@ namespace ItemQualities.Items
 
                 if (projectileController.owner.TryGetComponent(out CharacterBody ownerBody))
                 {
-                    ItemQualityCounts stunAndPierce = ItemQualitiesContent.ItemQualityGroups.StunAndPierce.GetItemCounts(ownerBody.inventory);
+                    ItemQualityCounts stunAndPierce = ItemQualitiesContent.ItemQualityGroups.StunAndPierce.GetItemCountsEffective(ownerBody.inventory);
 
-                    float bounceChance = (30f * stunAndPierce.UncommonCount) +
-                                         (50f * stunAndPierce.RareCount) +
-                                         (80f * stunAndPierce.EpicCount) +
-                                         (100f * stunAndPierce.LegendaryCount);
+                    if (stunAndPierce.TotalQualityCount > 0)
+                    {
+                        float bounceChance = (30f * stunAndPierce.UncommonCount) +
+                                             (50f * stunAndPierce.RareCount) +
+                                             (80f * stunAndPierce.EpicCount) +
+                                             (100f * stunAndPierce.LegendaryCount);
 
-                    _bouncesRemaining = RollUtil.GetOverflowRoll(bounceChance, ownerBody.master);
+                        _bouncesRemaining = RollUtil.GetOverflowRoll(bounceChance, ownerBody.master);
+                    }
                 }
             }
         }

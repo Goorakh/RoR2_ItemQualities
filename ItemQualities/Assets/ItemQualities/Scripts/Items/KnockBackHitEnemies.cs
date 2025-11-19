@@ -39,16 +39,15 @@ namespace ItemQualities.Items
             {
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts knockBackHitEnemies = default;
-                if (attackerInventory)
-                {
-                    knockBackHitEnemies = ItemQualitiesContent.ItemQualityGroups.KnockBackHitEnemies.GetItemCounts(attackerInventory);
-                }
+                ItemQualityCounts knockBackHitEnemies = ItemQualitiesContent.ItemQualityGroups.KnockBackHitEnemies.GetItemCountsEffective(attackerInventory);
 
-                damageCoefficient += (0.05f * knockBackHitEnemies.UncommonCount) +
-                                     (0.10f * knockBackHitEnemies.RareCount) +
-                                     (0.20f * knockBackHitEnemies.EpicCount) +
-                                     (0.35f * knockBackHitEnemies.LegendaryCount);
+                if (knockBackHitEnemies.TotalQualityCount > 0)
+                {
+                    damageCoefficient += (0.05f * knockBackHitEnemies.UncommonCount) +
+                                         (0.10f * knockBackHitEnemies.RareCount) +
+                                         (0.20f * knockBackHitEnemies.EpicCount) +
+                                         (0.35f * knockBackHitEnemies.LegendaryCount);
+                }
 
                 return damageCoefficient;
             }

@@ -29,7 +29,7 @@ namespace ItemQualities.Items
 
         void onInventoryChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetHighestQualityInInventory(_body.inventory);
+            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCountsEffective(_body.inventory).HighestQuality;
             ItemQualitiesContent.BuffQualityGroups.Energized.EnsureBuffQualities(_body, buffQualityTier, true);
         }
     }

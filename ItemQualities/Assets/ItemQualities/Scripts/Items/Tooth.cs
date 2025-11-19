@@ -125,7 +125,7 @@ namespace ItemQualities.Items
                     CharacterMaster attackerMaster = damageReport.attackerMaster;
                     Inventory attackerInventory = attackerMaster ? attackerMaster.inventory : null;
 
-                    ItemQualityCounts tooth = ItemQualitiesContent.ItemQualityGroups.Tooth.GetItemCounts(attackerInventory);
+                    ItemQualityCounts tooth = ItemQualitiesContent.ItemQualityGroups.Tooth.GetItemCountsEffective(attackerInventory);
                     if (tooth.TotalQualityCount > 0)
                     {
                         GameObject overrideHealOrbPrefab = null;

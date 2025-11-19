@@ -93,7 +93,7 @@ namespace ItemQualities.Items
 
                 bool consumedQualityTransmitter = false;
 
-                ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCounts(inventory);
+                ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(inventory);
                 if (teleportOnLowHealth.BaseItemCount == 0 && teleportOnLowHealth.TotalQualityCount > 0)
                 {
                     for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
@@ -138,7 +138,7 @@ namespace ItemQualities.Items
                     CharacterBody body = teleportOnLowHealthBehavior ? teleportOnLowHealthBehavior.body : null;
                     Inventory inventory = body ? body.inventory : null;
 
-                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCounts(inventory);
+                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(inventory);
 
                     if (teleportOnLowHealth.UncommonCount > 0)
                     {
@@ -193,12 +193,15 @@ namespace ItemQualities.Items
                 {
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCounts(attackerInventory);
+                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(attackerInventory);
 
-                    bleedDuration += (1.0f * teleportOnLowHealth.UncommonCount) +
-                                     (2.0f * teleportOnLowHealth.RareCount) +
-                                     (3.5f * teleportOnLowHealth.EpicCount) +
-                                     (5.0f * teleportOnLowHealth.LegendaryCount);
+                    if (teleportOnLowHealth.TotalQualityCount > 0)
+                    {
+                        bleedDuration += (1.0f * teleportOnLowHealth.UncommonCount) +
+                                         (2.0f * teleportOnLowHealth.RareCount) +
+                                         (3.5f * teleportOnLowHealth.EpicCount) +
+                                         (5.0f * teleportOnLowHealth.LegendaryCount);
+                    }
 
                     return bleedDuration;
                 }

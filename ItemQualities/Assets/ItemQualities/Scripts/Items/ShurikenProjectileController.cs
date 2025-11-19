@@ -30,7 +30,7 @@ namespace ItemQualities.Items
             ItemQualityCounts primarySkillShuriken = default;
             if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody))
             {
-                primarySkillShuriken = ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken.GetItemCounts(ownerBody.inventory);
+                primarySkillShuriken = ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken.GetItemCountsEffective(ownerBody.inventory);
             }
 
             Vector3 scale = transform.localScale;

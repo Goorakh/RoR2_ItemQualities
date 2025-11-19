@@ -79,7 +79,7 @@ namespace ItemQualities.Items
                 if (!body)
                     return;
 
-                ItemQualityCounts speedBoostPickup = ItemQualitiesContent.ItemQualityGroups.SpeedBoostPickup.GetItemCounts(body.inventory);
+                ItemQualityCounts speedBoostPickup = ItemQualitiesContent.ItemQualityGroups.SpeedBoostPickup.GetItemCountsEffective(body.inventory);
                 if (speedBoostPickup.TotalQualityCount > 0 &&
                     body.GetBuffCount(DLC2Content.Buffs.ElusiveAntlersBuff) >= Mathf.Min(6, body.GetElusiveAntlersCurrentMaxStack()))
                 {

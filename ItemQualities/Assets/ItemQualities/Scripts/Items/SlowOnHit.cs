@@ -57,7 +57,12 @@ namespace ItemQualities.Items
                 CharacterMaster attackerMaster = attackerBody ? attackerBody.master : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts slowOnHit = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetItemCounts(attackerInventory);
+                ItemQualityCounts slowOnHit = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetItemCountsEffective(attackerInventory);
+                if (slowOnHit.TotalQualityCount <= 0)
+                {
+                    isQualityProc = false;
+                    return true;
+                }
 
                 float qualitySlowOnHitChance = (10f * slowOnHit.UncommonCount) +
                                                (20f * slowOnHit.RareCount) +
@@ -92,9 +97,9 @@ namespace ItemQualities.Items
                 CharacterMaster attackerMaster = attackerBody ? attackerBody.master : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts slowOnHit = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetItemCounts(attackerInventory);
+                ItemQualityCounts slowOnHit = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetItemCountsEffective(attackerInventory);
 
-                QualityTier slowOnHitQuality = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetHighestQualityInInventory(attackerInventory);
+                QualityTier slowOnHitQuality = slowOnHit.HighestQuality;
                 if (slowOnHitQuality == QualityTier.None)
                     return;
 

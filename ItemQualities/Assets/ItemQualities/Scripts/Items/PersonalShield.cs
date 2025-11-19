@@ -33,7 +33,7 @@ namespace ItemQualities.Items
             if (!body)
                 return;
 
-            ItemQualityCounts personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCounts(body.inventory);
+            ItemQualityCounts personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCountsEffective(body.inventory);
             if (personalShield.TotalQualityCount <= 0)
                 return;
 

@@ -55,7 +55,7 @@ namespace ItemQualities.Items
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts bounceNearby = ItemQualitiesContent.ItemQualityGroups.BounceNearby.GetItemCounts(attackerInventory);
+                    ItemQualityCounts bounceNearby = ItemQualitiesContent.ItemQualityGroups.BounceNearby.GetItemCountsEffective(attackerInventory);
                     if (bounceNearby.TotalQualityCount > 0)
                     {
                         float forceDuration = (1f * bounceNearby.UncommonCount) +

@@ -48,7 +48,7 @@ namespace ItemQualities.Items
                 {
                     Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
 
-                    ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCounts(ownerInventory);
+                    ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCountsEffective(ownerInventory);
                     if (icicle.TotalQualityCount > 0)
                     {
                         float frostChance = (5f * icicle.UncommonCount) +
@@ -74,12 +74,12 @@ namespace ItemQualities.Items
             CharacterBody ownerBody = self ? self.cachedOwnerInfo.characterBody : null;
             Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
 
-            ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCounts(ownerInventory);
+            ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCountsEffective(ownerInventory);
             if (icicle.TotalQualityCount > 0)
             {
                 float radiusIncrease = (0.05f * icicle.UncommonCount) +
-                                       (0.1f * icicle.RareCount) +
-                                       (0.2f * icicle.EpicCount) +
+                                       (0.10f * icicle.RareCount) +
+                                       (0.20f * icicle.EpicCount) +
                                        (0.25f * icicle.LegendaryCount);
 
                 if (radiusIncrease > 0)

@@ -41,7 +41,7 @@ namespace ItemQualities.Items
             {
                 if (healthComponent && healthComponent.body)
                 {
-                    ItemQualityCounts increaseHealing = ItemQualitiesContent.ItemQualityGroups.IncreaseHealing.GetItemCounts(healthComponent.body.inventory);
+                    ItemQualityCounts increaseHealing = ItemQualitiesContent.ItemQualityGroups.IncreaseHealing.GetItemCountsEffective(healthComponent.body.inventory);
                     if (increaseHealing.TotalQualityCount > 0)
                     {
                         healingIncrease += ((1.5f - 1f) * increaseHealing.UncommonCount) +

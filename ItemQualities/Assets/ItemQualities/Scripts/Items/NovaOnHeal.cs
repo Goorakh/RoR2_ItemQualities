@@ -41,7 +41,7 @@ namespace ItemQualities.Items
                 if (devilOrb == null || !healthComponent || !healthComponent.body)
                     return;
 
-                ItemQualityCounts novaOnHeal = ItemQualitiesContent.ItemQualityGroups.NovaOnHeal.GetItemCounts(healthComponent.body.inventory);
+                ItemQualityCounts novaOnHeal = ItemQualitiesContent.ItemQualityGroups.NovaOnHeal.GetItemCountsEffective(healthComponent.body.inventory);
                 if (novaOnHeal.TotalQualityCount > 0)
                 {
                     float procCoefficient = novaOnHeal.HighestQuality switch

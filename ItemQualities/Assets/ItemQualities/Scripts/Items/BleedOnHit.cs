@@ -17,11 +17,7 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = inflictDotInfo.attackerObject ? inflictDotInfo.attackerObject.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts bleedOnHit = default;
-                if (attackerInventory)
-                {
-                    bleedOnHit = ItemQualitiesContent.ItemQualityGroups.BleedOnHit.GetItemCounts(attackerInventory);
-                }
+                ItemQualityCounts bleedOnHit = ItemQualitiesContent.ItemQualityGroups.BleedOnHit.GetItemCountsEffective(attackerInventory);
 
                 float damageMultAdd = (0.10f * bleedOnHit.UncommonCount) +
                                       (0.20f * bleedOnHit.RareCount) +

@@ -17,7 +17,7 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts strengthenBurn = ItemQualitiesContent.ItemQualityGroups.StrengthenBurn.GetItemCounts(sender.inventory);
+            ItemQualityCounts strengthenBurn = ItemQualitiesContent.ItemQualityGroups.StrengthenBurn.GetItemCountsEffective(sender.inventory);
             if (strengthenBurn.TotalQualityCount > 0)
             {
                 args.critAdd += 5f;
@@ -33,7 +33,7 @@ namespace ItemQualities.Items
             {
                 if (damageReport.damageInfo.crit)
                 {
-                    ItemQualityCounts strengthenBurn = ItemQualitiesContent.ItemQualityGroups.StrengthenBurn.GetItemCounts(damageReport.attackerMaster.inventory);
+                    ItemQualityCounts strengthenBurn = ItemQualitiesContent.ItemQualityGroups.StrengthenBurn.GetItemCountsEffective(damageReport.attackerMaster.inventory);
 
                     if (strengthenBurn.TotalQualityCount > 0)
                     {

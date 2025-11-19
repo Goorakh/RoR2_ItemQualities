@@ -21,16 +21,14 @@ namespace ItemQualities.Items
         {
             Inventory inventory = body ? body.inventory : null;
 
-            ItemQualityCounts increaseDamageOnMultiKill = default;
-            if (inventory)
+            ItemQualityCounts increaseDamageOnMultiKill = ItemQualitiesContent.ItemQualityGroups.IncreaseDamageOnMultiKill.GetItemCountsEffective(inventory);
+            if (increaseDamageOnMultiKill.TotalQualityCount > 0)
             {
-                increaseDamageOnMultiKill = ItemQualitiesContent.ItemQualityGroups.IncreaseDamageOnMultiKill.GetItemCounts(inventory);
+                baseDuration += 1f * increaseDamageOnMultiKill.UncommonCount;
+                baseDuration += 3f * increaseDamageOnMultiKill.RareCount;
+                baseDuration += 5f * increaseDamageOnMultiKill.EpicCount;
+                baseDuration += 7f * increaseDamageOnMultiKill.LegendaryCount;
             }
-
-            baseDuration += 1f * increaseDamageOnMultiKill.UncommonCount;
-            baseDuration += 3f * increaseDamageOnMultiKill.RareCount;
-            baseDuration += 5f * increaseDamageOnMultiKill.EpicCount;
-            baseDuration += 7f * increaseDamageOnMultiKill.LegendaryCount;
 
             return baseDuration;
         }
@@ -99,32 +97,25 @@ namespace ItemQualities.Items
             {
                 Inventory inventory = body ? body.inventory : null;
 
-                ItemQualityCounts increaseDamageOnMultiKill = default;
-                if (inventory)
-                {
-                    increaseDamageOnMultiKill = ItemQualitiesContent.ItemQualityGroups.IncreaseDamageOnMultiKill.GetItemCounts(inventory);
-                }
+                ItemQualityCounts increaseDamageOnMultiKill = ItemQualitiesContent.ItemQualityGroups.IncreaseDamageOnMultiKill.GetItemCountsEffective(inventory);
 
                 int maxStacksToRemove;
-                if (increaseDamageOnMultiKill.LegendaryCount > 0)
+                switch (increaseDamageOnMultiKill.HighestQuality)
                 {
-                    maxStacksToRemove = 1;
-                }
-                else if (increaseDamageOnMultiKill.EpicCount > 0)
-                {
-                    maxStacksToRemove = 3;
-                }
-                else if (increaseDamageOnMultiKill.RareCount > 0)
-                {
-                    maxStacksToRemove = 5;
-                }
-                else if (increaseDamageOnMultiKill.UncommonCount > 0)
-                {
-                    maxStacksToRemove = 10;
-                }
-                else
-                {
-                    return false;
+                    case QualityTier.Uncommon:
+                        maxStacksToRemove = 10;
+                        break;
+                    case QualityTier.Rare:
+                        maxStacksToRemove = 5;
+                        break;
+                    case QualityTier.Epic:
+                        maxStacksToRemove = 3;
+                        break;
+                    case QualityTier.Legendary:
+                        maxStacksToRemove = 1;
+                        break;
+                    default:
+                        return false;
                 }
 
                 body.SetBuffCount(DLC2Content.Buffs.IncreaseDamageBuff.buffIndex, Mathf.Max(0, body.GetBuffCount(DLC2Content.Buffs.IncreaseDamageBuff) - maxStacksToRemove));

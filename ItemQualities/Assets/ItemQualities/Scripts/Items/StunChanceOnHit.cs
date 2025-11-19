@@ -46,7 +46,7 @@ namespace ItemQualities.Items
             CharacterMaster attackerMaster = damageReport.attackerMaster;
             Inventory attackerInventory = attackerMaster ? attackerMaster.inventory : null;
 
-            ItemQualityCounts stunChanceOnHit = ItemQualitiesContent.ItemQualityGroups.StunChanceOnHit.GetItemCounts(attackerInventory);
+            ItemQualityCounts stunChanceOnHit = ItemQualitiesContent.ItemQualityGroups.StunChanceOnHit.GetItemCountsEffective(attackerInventory);
 
             if (stunChanceOnHit.TotalQualityCount <= 0)
                 return;

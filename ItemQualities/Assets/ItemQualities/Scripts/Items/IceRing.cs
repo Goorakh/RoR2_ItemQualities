@@ -25,18 +25,20 @@ namespace ItemQualities.Items
 
         static float getFreezeExecuteThreshold(float defaultFreezeThreshold, CharacterBody attackerBody)
         {
-            Inventory inventory = attackerBody ? attackerBody.inventory : null;
-
-            ItemQualityCounts iceRing = ItemQualitiesContent.ItemQualityGroups.IceRing.GetItemCounts(inventory);
-
             float freezeThreshold = defaultFreezeThreshold;
 
-            float freezeThresholdReduction = (0.05f * iceRing.UncommonCount) +
-                                             (0.10f * iceRing.RareCount) +
-                                             (0.20f * iceRing.EpicCount) +
-                                             (0.40f * iceRing.LegendaryCount);
+            Inventory inventory = attackerBody ? attackerBody.inventory : null;
 
-            freezeThreshold = 1f - ((1f - freezeThreshold) / (1f + freezeThresholdReduction));
+            ItemQualityCounts iceRing = ItemQualitiesContent.ItemQualityGroups.IceRing.GetItemCountsEffective(inventory);
+            if (iceRing.TotalQualityCount > 0)
+            {
+                float freezeThresholdReduction = (0.05f * iceRing.UncommonCount) +
+                                                 (0.10f * iceRing.RareCount) +
+                                                 (0.20f * iceRing.EpicCount) +
+                                                 (0.40f * iceRing.LegendaryCount);
+
+                freezeThreshold = 1f - ((1f - freezeThreshold) / (1f + freezeThresholdReduction));
+            }
 
             return freezeThreshold;
         }
@@ -78,7 +80,7 @@ namespace ItemQualities.Items
                     CharacterBody attackerBody = procDamageInfo?.attacker ? procDamageInfo.attacker.GetComponent<CharacterBody>() : null;
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts iceRing = ItemQualitiesContent.ItemQualityGroups.IceRing.GetItemCounts(attackerInventory);
+                    ItemQualityCounts iceRing = ItemQualitiesContent.ItemQualityGroups.IceRing.GetItemCountsEffective(attackerInventory);
                     if (iceRing.TotalQualityCount > 0)
                     {
                         iceBandDamageInfo.damageType |= DamageType.Freeze2s;

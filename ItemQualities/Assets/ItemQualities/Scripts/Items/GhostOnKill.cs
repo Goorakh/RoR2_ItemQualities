@@ -54,7 +54,7 @@ namespace ItemQualities.Items
             {
                 Inventory attackerInventory = damageReport?.attackerBody ? damageReport.attackerBody.inventory : null;
 
-                ItemQualityCounts ghostOnKill = ItemQualitiesContent.ItemQualityGroups.GhostOnKill.GetItemCounts(attackerInventory);
+                ItemQualityCounts ghostOnKill = ItemQualitiesContent.ItemQualityGroups.GhostOnKill.GetItemCountsEffective(attackerInventory);
                 if (ghostOnKill.TotalQualityCount > 0)
                 {
                     spawnChance += (5f * ghostOnKill.UncommonCount) +

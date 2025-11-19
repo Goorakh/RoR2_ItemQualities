@@ -39,7 +39,7 @@ namespace ItemQualities.Items
                 CharacterBody body = healthComponent ? healthComponent.body : null;
                 Inventory inventory = body ? body.inventory : null;
 
-                ItemQualityCounts bearVoid = ItemQualitiesContent.ItemQualityGroups.BearVoid.GetItemCounts(inventory);
+                ItemQualityCounts bearVoid = ItemQualitiesContent.ItemQualityGroups.BearVoid.GetItemCountsEffective(inventory);
                 if (bearVoid.TotalQualityCount > 0)
                 {
                     cooldown *= Mathf.Pow(1f - 0.05f, bearVoid.UncommonCount) *

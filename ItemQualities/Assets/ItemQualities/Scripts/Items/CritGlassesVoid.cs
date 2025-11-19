@@ -31,7 +31,7 @@ namespace ItemQualities.Items
             if (!damageReport.attackerBody)
                 return;
 
-            ItemQualityCounts critGlassesVoid = ItemQualitiesContent.ItemQualityGroups.CritGlassesVoid.GetItemCounts(damageReport.attackerBody.inventory);
+            ItemQualityCounts critGlassesVoid = ItemQualitiesContent.ItemQualityGroups.CritGlassesVoid.GetItemCountsEffective(damageReport.attackerBody.inventory);
             if (critGlassesVoid.TotalQualityCount <= 0)
                 return;
 

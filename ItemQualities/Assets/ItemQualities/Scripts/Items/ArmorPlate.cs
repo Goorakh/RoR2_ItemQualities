@@ -37,7 +37,7 @@ namespace ItemQualities.Items
             if (!victimBody)
                 return;
 
-            ItemQualityCounts armorPlate = ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCounts(victimBody.inventory);
+            ItemQualityCounts armorPlate = ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCountsEffective(victimBody.inventory);
             if (armorPlate.TotalQualityCount > 0)
             {
                 QualityTier armorPlateQuality = armorPlate.HighestQuality;

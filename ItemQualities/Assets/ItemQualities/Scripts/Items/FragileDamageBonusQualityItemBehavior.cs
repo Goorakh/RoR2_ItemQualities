@@ -75,7 +75,7 @@ namespace ItemQualities.Items
         {
             ensureBuffQualities();
 
-            QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetHighestQualityInInventory(_body.inventory);
+            QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).HighestQuality;
             switch (qualityTier)
             {
                 case QualityTier.Uncommon:
@@ -100,7 +100,7 @@ namespace ItemQualities.Items
 
         void ensureBuffQualities()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetHighestQualityInInventory(_body.inventory);
+            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).HighestQuality;
             ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.EnsureBuffQualities(_body, buffQualityTier);
         }
 
@@ -116,7 +116,7 @@ namespace ItemQualities.Items
             {
                 ensureBuffQualities();
 
-                QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetHighestQualityInInventory(_body.inventory);
+                QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).HighestQuality;
                 BuffIndex buffIndex = ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.GetBuffIndex(buffQualityTier);
 
                 if (buffCountDiff > 0)

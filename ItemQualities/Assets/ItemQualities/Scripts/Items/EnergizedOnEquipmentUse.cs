@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                 BuffIndex warhornBuffIndex = warhornBuffDef ? warhornBuffDef.buffIndex : BuffIndex.None;
                 if (warhornBuffIndex != BuffIndex.None)
                 {
-                    QualityTier buffQuality = ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetHighestQualityInInventory(inventory);
+                    QualityTier buffQuality = ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCountsEffective(inventory).HighestQuality;
                     BuffIndex qualityWarhornBuffIndex = QualityCatalog.GetBuffIndexOfQuality(warhornBuffIndex, buffQuality);
 
                     if (qualityWarhornBuffIndex != BuffIndex.None && qualityWarhornBuffIndex != warhornBuffIndex)

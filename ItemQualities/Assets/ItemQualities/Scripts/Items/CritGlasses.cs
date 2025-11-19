@@ -13,22 +13,14 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            int critGlassesUncommonCount = 0;
-            int critGlassesRareCount = 0;
-            int critGlassesEpicCount = 0;
-            int critGlassesLegendaryCount = 0;
-            if (sender.inventory)
+            ItemQualityCounts critGlasses = ItemQualitiesContent.ItemQualityGroups.CritGlasses.GetItemCountsEffective(sender.inventory);
+            if (critGlasses.TotalQualityCount > 0)
             {
-                critGlassesUncommonCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.CritGlasses.UncommonItemIndex);
-                critGlassesRareCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.CritGlasses.RareItemIndex);
-                critGlassesEpicCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.CritGlasses.EpicItemIndex);
-                critGlassesLegendaryCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.CritGlasses.LegendaryItemIndex);
+                args.critDamageMultAdd += (0.2f * critGlasses.UncommonCount) +
+                                          (0.4f * critGlasses.RareCount) +
+                                          (1.0f * critGlasses.EpicCount) +
+                                          (1.5f * critGlasses.LegendaryCount);
             }
-
-            args.critDamageMultAdd += (0.2f * critGlassesUncommonCount)
-                                    + (0.4f * critGlassesRareCount)
-                                    + (1.0f * critGlassesEpicCount)
-                                    + (1.5f * critGlassesLegendaryCount);
         }
     }
 }

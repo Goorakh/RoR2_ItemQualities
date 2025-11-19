@@ -59,7 +59,7 @@ namespace ItemQualities.Items
             
             if (attackerBody)
             {
-                ItemQualityCounts meteorAttackOnHighDamage = ItemQualitiesContent.ItemQualityGroups.MeteorAttackOnHighDamage.GetItemCounts(attackerBody.inventory);
+                ItemQualityCounts meteorAttackOnHighDamage = ItemQualitiesContent.ItemQualityGroups.MeteorAttackOnHighDamage.GetItemCountsEffective(attackerBody.inventory);
 
                 if (meteorAttackOnHighDamage.TotalQualityCount > 0)
                 {
@@ -100,7 +100,7 @@ namespace ItemQualities.Items
             {
                 if (meteorItemBehavior && meteorItemBehavior.body)
                 {
-                    ItemQualityCounts meteorAttackOnHighDamage = ItemQualitiesContent.ItemQualityGroups.MeteorAttackOnHighDamage.GetItemCounts(meteorItemBehavior.body.inventory);
+                    ItemQualityCounts meteorAttackOnHighDamage = ItemQualitiesContent.ItemQualityGroups.MeteorAttackOnHighDamage.GetItemCountsEffective(meteorItemBehavior.body.inventory);
 
                     if (meteorAttackOnHighDamage.TotalQualityCount > 0)
                     {

@@ -58,7 +58,7 @@ namespace ItemQualities.Items
                 {
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts critDamage = ItemQualitiesContent.ItemQualityGroups.CritDamage.GetItemCounts(attackerInventory);
+                    ItemQualityCounts critDamage = ItemQualitiesContent.ItemQualityGroups.CritDamage.GetItemCountsEffective(attackerInventory);
                     if (critDamage.TotalQualityCount > 0)
                     {
                         float maxCritStackChance = (5f * critDamage.UncommonCount) +

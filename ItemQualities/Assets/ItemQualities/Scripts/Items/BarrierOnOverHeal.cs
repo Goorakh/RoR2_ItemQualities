@@ -18,7 +18,7 @@ namespace ItemQualities.Items
 
             Inventory inventory = sender.inventory;
 
-            ItemQualityCounts barrierOnOverHeal = ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal.GetItemCounts(inventory);
+            ItemQualityCounts barrierOnOverHeal = ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal.GetItemCountsEffective(inventory);
             if (barrierOnOverHeal.TotalQualityCount > 0 && sender.healthComponent.barrier > 0f)
             {
                 args.armorAdd += (20 * barrierOnOverHeal.UncommonCount) +

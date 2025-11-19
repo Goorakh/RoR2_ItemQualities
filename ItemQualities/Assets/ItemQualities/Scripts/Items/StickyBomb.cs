@@ -31,7 +31,9 @@ namespace ItemQualities.Items
         {
             Inventory inventory = ownerBody ? ownerBody.inventory : null;
 
-            ItemQualityCounts stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCounts(inventory);
+            ItemQualityCounts stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCountsEffective(inventory);
+            if (stickyBomb.TotalQualityCount <= 0)
+                return 1f;
 
             float scaleMultiplier = 1f + (0.2f * stickyBomb.UncommonCount) +
                                          (0.5f * stickyBomb.RareCount) +
@@ -71,12 +73,15 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCounts(attackerInventory);
+                ItemQualityCounts stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCountsEffective(attackerInventory);
 
-                damageCoefficient += (0.5f * stickyBomb.UncommonCount) +
-                                     (0.8f * stickyBomb.RareCount) +
-                                     (1.2f * stickyBomb.EpicCount) +
-                                     (2.0f * stickyBomb.LegendaryCount);
+                if (stickyBomb.TotalQualityCount > 0)
+                {
+                    damageCoefficient += (0.5f * stickyBomb.UncommonCount) +
+                                         (0.8f * stickyBomb.RareCount) +
+                                         (1.2f * stickyBomb.EpicCount) +
+                                         (2.0f * stickyBomb.LegendaryCount);
+                }
 
                 return damageCoefficient;
             }
