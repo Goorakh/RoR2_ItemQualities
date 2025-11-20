@@ -505,23 +505,23 @@ namespace ItemQualities
         public static PickupIndex GetPickupIndexOfQuality(PickupIndex pickupIndex, QualityTier qualityTier)
         {
             PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
-            if (pickupDef == null)
-                return pickupIndex;
-
-            if (pickupDef.itemIndex != ItemIndex.None)
+            if (pickupDef != null)
             {
-                PickupIndex qualityPickupIndex = PickupCatalog.FindPickupIndex(GetItemIndexOfQuality(pickupDef.itemIndex, qualityTier));
-                if (qualityPickupIndex != PickupIndex.none)
+                if (pickupDef.itemIndex != ItemIndex.None)
                 {
-                    pickupIndex = qualityPickupIndex;
+                    PickupIndex qualityPickupIndex = PickupCatalog.FindPickupIndex(GetItemIndexOfQuality(pickupDef.itemIndex, qualityTier));
+                    if (qualityPickupIndex != PickupIndex.none)
+                    {
+                        return qualityPickupIndex;
+                    }
                 }
-            }
-            else if (pickupDef.equipmentIndex != EquipmentIndex.None)
-            {
-                PickupIndex qualityPickupIndex = PickupCatalog.FindPickupIndex(GetEquipmentIndexOfQuality(pickupDef.equipmentIndex, qualityTier));
-                if (qualityPickupIndex != PickupIndex.none)
+                else if (pickupDef.equipmentIndex != EquipmentIndex.None)
                 {
-                    pickupIndex = qualityPickupIndex;
+                    PickupIndex qualityPickupIndex = PickupCatalog.FindPickupIndex(GetEquipmentIndexOfQuality(pickupDef.equipmentIndex, qualityTier));
+                    if (qualityPickupIndex != PickupIndex.none)
+                    {
+                        return qualityPickupIndex;
+                    }
                 }
             }
 
