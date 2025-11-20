@@ -13,6 +13,15 @@ namespace ItemQualities.Items
             if (interactableBehavior.TryGetComponent(out InteractionProcFilter interactionProcFilter))
                 return interactionProcFilter.shouldAllowOnInteractionBeginProc;
 
+            if (interactableBehavior.TryGetComponent(out PurchaseInteraction purchaseInteraction))
+                return !purchaseInteraction.disableSpawnOnInteraction;
+
+            if (interactableBehavior.TryGetComponent(out PowerPedestal powerPedestal))
+                return powerPedestal.CanTriggerFireworks;
+
+            if (interactableBehavior.TryGetComponent(out AccessCodesNodeController accessCodesNodeController))
+                return accessCodesNodeController.CheckInteractionOrder();
+
             if (interactableBehavior.GetComponent<DelusionChestController>())
                 return !interactableBehavior.TryGetComponent(out PickupPickerController pickupPickerController) || !pickupPickerController.enabled;
 
