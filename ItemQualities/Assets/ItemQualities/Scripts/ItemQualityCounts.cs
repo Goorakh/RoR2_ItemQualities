@@ -1,63 +1,34 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace ItemQualities
 {
-    public struct ItemQualityCounts : IEquatable<ItemQualityCounts>
+    [StructLayout(LayoutKind.Explicit)]
+    public unsafe struct ItemQualityCounts : IEquatable<ItemQualityCounts>
     {
+        [FieldOffset(0)]
+        fixed int _itemCounts[(int)QualityTier.Count + 1];
+
+        [FieldOffset(0)]
         public int BaseItemCount;
+
+        [FieldOffset(sizeof(int) * 1)]
         public int UncommonCount;
+        
+        [FieldOffset(sizeof(int) * 2)]
         public int RareCount;
+        
+        [FieldOffset(sizeof(int) * 3)]
         public int EpicCount;
+
+        [FieldOffset(sizeof(int) * 4)]
         public int LegendaryCount;
 
         public readonly int TotalCount => BaseItemCount + UncommonCount + RareCount + EpicCount + LegendaryCount;
 
         public readonly int TotalQualityCount => UncommonCount + RareCount + EpicCount + LegendaryCount;
 
-        public int this[QualityTier qualityTier]
-        {
-            readonly get
-            {
-                switch (qualityTier)
-                {
-                    case QualityTier.None:
-                        return BaseItemCount;
-                    case QualityTier.Uncommon:
-                        return UncommonCount;
-                    case QualityTier.Rare:
-                        return RareCount;
-                    case QualityTier.Epic:
-                        return EpicCount;
-                    case QualityTier.Legendary:
-                        return LegendaryCount;
-                    default:
-                        throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
-                }
-            }
-            set
-            {
-                switch (qualityTier)
-                {
-                    case QualityTier.None:
-                        BaseItemCount = value;
-                        break;
-                    case QualityTier.Uncommon:
-                        UncommonCount = value;
-                        break;
-                    case QualityTier.Rare:
-                        RareCount = value;
-                        break;
-                    case QualityTier.Epic:
-                        EpicCount = value;
-                        break;
-                    case QualityTier.Legendary:
-                        LegendaryCount = value;
-                        break;
-                    default:
-                        throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
-                }
-            }
-        }
+        public ref int this[QualityTier qualityTier] => ref _itemCounts[(int)qualityTier + 1];
 
         public readonly QualityTier HighestQuality
         {
@@ -65,7 +36,7 @@ namespace ItemQualities
             {
                 for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
                 {
-                    if (this[qualityTier] > 0)
+                    if (_itemCounts[(int)qualityTier + 1] > 0)
                     {
                         return qualityTier;
                     }
@@ -139,62 +110,32 @@ namespace ItemQualities
         }
     }
 
-    public struct TempItemQualityCounts : IEquatable<TempItemQualityCounts>
+    [StructLayout(LayoutKind.Explicit)]
+    public unsafe struct TempItemQualityCounts : IEquatable<TempItemQualityCounts>
     {
+        [FieldOffset(0)]
+        fixed float _itemCounts[(int)QualityTier.Count + 1];
+
+        [FieldOffset(0)]
         public float BaseItemCount;
+        
+        [FieldOffset(sizeof(int) * 1)]
         public float UncommonCount;
+        
+        [FieldOffset(sizeof(int) * 2)]
         public float RareCount;
+        
+        [FieldOffset(sizeof(int) * 3)]
         public float EpicCount;
+
+        [FieldOffset(sizeof(int) * 4)]
         public float LegendaryCount;
 
         public readonly float TotalCount => BaseItemCount + UncommonCount + RareCount + EpicCount + LegendaryCount;
 
         public readonly float TotalQualityCount => UncommonCount + RareCount + EpicCount + LegendaryCount;
 
-        public float this[QualityTier qualityTier]
-        {
-            readonly get
-            {
-                switch (qualityTier)
-                {
-                    case QualityTier.None:
-                        return BaseItemCount;
-                    case QualityTier.Uncommon:
-                        return UncommonCount;
-                    case QualityTier.Rare:
-                        return RareCount;
-                    case QualityTier.Epic:
-                        return EpicCount;
-                    case QualityTier.Legendary:
-                        return LegendaryCount;
-                    default:
-                        throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
-                }
-            }
-            set
-            {
-                switch (qualityTier)
-                {
-                    case QualityTier.None:
-                        BaseItemCount = value;
-                        break;
-                    case QualityTier.Uncommon:
-                        UncommonCount = value;
-                        break;
-                    case QualityTier.Rare:
-                        RareCount = value;
-                        break;
-                    case QualityTier.Epic:
-                        EpicCount = value;
-                        break;
-                    case QualityTier.Legendary:
-                        LegendaryCount = value;
-                        break;
-                    default:
-                        throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
-                }
-            }
-        }
+        public ref float this[QualityTier qualityTier] => ref _itemCounts[(int)qualityTier + 1];
 
         public readonly QualityTier HighestQuality
         {
@@ -202,7 +143,7 @@ namespace ItemQualities
             {
                 for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
                 {
-                    if (this[qualityTier] > 0)
+                    if (_itemCounts[(int)qualityTier + 1] > 0)
                     {
                         return qualityTier;
                     }
