@@ -20,10 +20,9 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.Inventory.UpdateEffectiveItemStacks += IL_Inventory_UpdateEffectiveItemStacks;
-            On.RoR2.Inventory.UpdateEffectiveItemStacks += Inventory_UpdateEffectiveItemStacks;
+            IL.RoR2.Inventory.UpdateEffectiveItemStacks += Inventory_UpdateEffectiveItemStacks;
 
-            //On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
+            On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
 
             On.RoR2.HealthComponent.GetBarrierDecayRate += HealthComponent_GetBarrierDecayRate;
 
@@ -32,7 +31,7 @@ namespace ItemQualities.Items
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void IL_Inventory_UpdateEffectiveItemStacks(ILContext il)
+        static void Inventory_UpdateEffectiveItemStacks(ILContext il)
         {
             if (!il.Method.TryFindParameter<ItemIndex>(out ParameterDefinition itemIndexParameter))
             {
@@ -51,7 +50,23 @@ namespace ItemQualities.Items
                 return;
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.Before); // call ItemCollection.SetStackValue
+            c.Goto(foundCursors[1].Next, MoveType.After); // call ItemCollection.SetStackValue
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg, itemIndexParameter);
+            c.EmitDelegate<Action<Inventory, ItemIndex>>(onSetEffectiveItemCount);
+
+            static void onSetEffectiveItemCount(Inventory inventory, ItemIndex itemIndex)
+            {
+                if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
+                {
+                    ItemIndex baseQualityItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
+                    if (baseQualityItemIndex != ItemIndex.None && baseQualityItemIndex != itemIndex)
+                    {
+                        inventory.UpdateEffectiveItemStacks(baseQualityItemIndex);
+                    }
+                }
+            }
 
             int effectiveItemCountVarIndex = -1;
             if (!c.TryFindPrev(out foundCursors,
@@ -90,20 +105,6 @@ namespace ItemQualities.Items
                     return 0;
 
                 return qualityGroup.GetItemCountsEffective(inventory).TotalQualityCount;
-            }
-        }
-
-        static void Inventory_UpdateEffectiveItemStacks(On.RoR2.Inventory.orig_UpdateEffectiveItemStacks orig, Inventory self, ItemIndex itemIndex)
-        {
-            orig(self, itemIndex);
-
-            if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
-            {
-                ItemIndex baseQualityItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
-                if (baseQualityItemIndex != ItemIndex.None && baseQualityItemIndex != itemIndex)
-                {
-                    self.UpdateEffectiveItemStacks(baseQualityItemIndex);
-                }
             }
         }
 
@@ -171,13 +172,7 @@ namespace ItemQualities.Items
 
         static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)
         {
-            ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
-            if (itemGroup)
-            {
-                itemIndex = itemGroup.BaseItemIndex;
-            }
-
-            return orig(self, itemIndex);
+            return orig(self, QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None));
         }
 
         [Obsolete]
