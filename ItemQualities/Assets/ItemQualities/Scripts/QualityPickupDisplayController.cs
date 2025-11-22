@@ -25,7 +25,8 @@ namespace ItemQualities
         {
             orig(self, modelObjectOverride);
 
-            if (self.TryGetComponent(out QualityPickupDisplayController qualityDisplayController))
+            QualityPickupDisplayController qualityDisplayController = self.GetComponentInChildren<QualityPickupDisplayController>();
+            if (qualityDisplayController)
             {
                 self.modelRenderers.AddRange(qualityDisplayController.Renderers);
             }
