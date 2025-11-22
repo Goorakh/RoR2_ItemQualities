@@ -6,12 +6,16 @@ using RoR2.Items;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 
 namespace ItemQualities
 {
     static class CustomCostTypeIndex
     {
+        static EffectIndex _regeneratingScrapDisplayExplosionEffectIndex = EffectIndex.Invalid;
+        static EffectIndex _regeneratingScrapPrinterExplosionEffectIndex = EffectIndex.Invalid;
+
+        static NetworkSoundEventIndex _regeneratingScrapProcSoundEventIndex = NetworkSoundEventIndex.Invalid;
+
         static readonly CostTypeDef _whiteItemQualityCostDef = new CostTypeDef
         {
             name = "WhiteItemQuality",
@@ -61,9 +65,27 @@ namespace ItemQualities
 
         public static CostTypeIndex BossItemQuality { get; private set; } = CostTypeIndex.None;
 
-        [SystemInitializer(typeof(CostTypeCatalog))]
+        [SystemInitializer(typeof(CostTypeCatalog), typeof(EffectCatalogUtils), typeof(NetworkSoundEventCatalog))]
         static void Init()
         {
+            _regeneratingScrapDisplayExplosionEffectIndex = EffectCatalogUtils.FindEffectIndex("RegeneratingScrapExplosionDisplay");
+            if (_regeneratingScrapDisplayExplosionEffectIndex == EffectIndex.Invalid)
+            {
+                Log.Warning("Failed to find RegeneratingScrapExplosionDisplay effect index");
+            }
+
+            _regeneratingScrapPrinterExplosionEffectIndex = EffectCatalogUtils.FindEffectIndex("RegeneratingScrapExplosionInPrinter");
+            if (_regeneratingScrapPrinterExplosionEffectIndex == EffectIndex.Invalid)
+            {
+                Log.Warning("Failed to find RegeneratingScrapExplosionInPrinter effect index");
+            }
+
+            _regeneratingScrapProcSoundEventIndex = NetworkSoundEventCatalog.FindNetworkSoundEventIndex("Play_item_proc_regenScrap_consume");
+            if (_regeneratingScrapProcSoundEventIndex == NetworkSoundEventIndex.Invalid)
+            {
+                Log.Warning("Failed to find regenerating scrap proc sound event index");
+            }
+
             for (CostTypeIndex costTypeIndex = 0; (int)costTypeIndex < CostTypeCatalog.costTypeCount; costTypeIndex++)
             {
                 CostTypeDef costTypeDef = CostTypeCatalog.GetCostTypeDef(costTypeIndex);
@@ -204,7 +226,7 @@ namespace ItemQualities
                     TakeItemsFromWeightedSelections(scrapSelectionsByQuality);
                     TakeItemsFromWeightedSelection(itemSelection);
 
-                    ItemQualityGroup avoidedItemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(context.avoidedItemIndex));
+                    ItemQualityGroup avoidedItemGroup = QualityCatalog.GetItemQualityGroup(avoidedItemGroupIndex);
                     if (avoidedItemGroup)
                     {
                         if (itemsToTake.Count < context.cost)
@@ -272,26 +294,52 @@ namespace ItemQualities
 
                     if (hasTakenAnyRegeneratingScrap)
                     {
-                        EntitySoundManager.EmitSoundServer(NetworkSoundEventCatalog.FindNetworkSoundEventIndex("Play_item_proc_regenScrap_consume"), context.activatorBody.gameObject);
-                        ModelLocator modelLocator = context.activatorBody.modelLocator;
-                        if (modelLocator && modelLocator.modelTransform && modelLocator.modelTransform.TryGetComponent(out CharacterModel characterModel))
+                        if (_regeneratingScrapProcSoundEventIndex != NetworkSoundEventIndex.Invalid)
                         {
-                            List<GameObject> itemDisplayObjects = characterModel.GetItemDisplayObjects(DLC1Content.Items.RegeneratingScrap.itemIndex);
-                            if (itemDisplayObjects.Count > 0)
-                            {
-                                GameObject effectRoot = itemDisplayObjects[0];
-                                GameObject effectPrefab = Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/RegeneratingScrap/RegeneratingScrapExplosionDisplay.prefab").WaitForCompletion();
-                                EffectData effectData = new EffectData
-                                {
-                                    origin = effectRoot.transform.position,
-                                    rotation = effectRoot.transform.rotation
-                                };
+                            EntitySoundManager.EmitSoundServer(_regeneratingScrapProcSoundEventIndex, context.activatorBody.gameObject);
+                        }
 
-                                EffectManager.SpawnEffect(effectPrefab, effectData, transmit: true);
+                        if (_regeneratingScrapDisplayExplosionEffectIndex != EffectIndex.Invalid)
+                        {
+                            ModelLocator activatorModelLocator = context.activatorBody.modelLocator;
+                            if (activatorModelLocator && activatorModelLocator.modelTransform && activatorModelLocator.modelTransform.TryGetComponent(out CharacterModel characterModel))
+                            {
+                                List<GameObject> itemDisplayObjects = characterModel.GetItemDisplayObjects(DLC1Content.Items.RegeneratingScrap.itemIndex);
+                                if (itemDisplayObjects.Count > 0)
+                                {
+                                    GameObject effectRoot = itemDisplayObjects[0];
+                                    EffectData effectData = new EffectData
+                                    {
+                                        origin = effectRoot.transform.position,
+                                        rotation = effectRoot.transform.rotation
+                                    };
+
+                                    EffectManager.SpawnEffect(_regeneratingScrapDisplayExplosionEffectIndex, effectData, true);
+                                }
                             }
                         }
 
-                        EffectManager.SimpleMuzzleFlash(Addressables.LoadAssetAsync<GameObject>("RoR2/DLC1/RegeneratingScrap/RegeneratingScrapExplosionInPrinter.prefab").WaitForCompletion(), context.purchasedObject, "DropPivot", transmit: true);
+                        if (_regeneratingScrapPrinterExplosionEffectIndex != EffectIndex.Invalid)
+                        {
+                            if (context.purchasedObject.TryGetComponent(out ModelLocator purchasedObjectModelLocator))
+                            {
+                                ChildLocator modelChildLocator = purchasedObjectModelLocator.modelChildLocator;
+                                if (modelChildLocator)
+                                {
+                                    int dropPivotChildIndex = modelChildLocator.FindChildIndex("DropPivot");
+                                    Transform dropPivot = modelChildLocator.FindChild(dropPivotChildIndex);
+                                    if (dropPivot)
+                                    {
+                                        EffectData effectData = new EffectData
+                                        {
+                                            origin = dropPivot.position
+                                        };
+                                        effectData.SetChildLocatorTransformReference(context.purchasedObject, dropPivotChildIndex);
+                                        EffectManager.SpawnEffect(_regeneratingScrapPrinterExplosionEffectIndex, effectData, true);
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

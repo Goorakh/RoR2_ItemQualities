@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver
+    public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver
     {
         [SystemInitializer(typeof(BodyCatalog))]
         static void Init()
@@ -18,9 +18,11 @@ namespace ItemQualities
             }
         }
 
+        NetworkIdentity _netIdentity;
+
         CharacterBody _body;
 
-        MemoizedGetComponent<CharacterMasterExtraStatsTracker> _masterExtraStatsComponent;
+        CharacterModel _cachedCharacterModel;
 
         bool _statsDirty;
 
@@ -106,7 +108,7 @@ namespace ItemQualities
             }
         }
 
-        public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(gameObject);
+        public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
 
         [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
         bool _slugOutOfDanger;
@@ -138,13 +140,22 @@ namespace ItemQualities
 
         public float CurrentMedkitProcTimeSinceLastHit { get; set; } = 0f;
 
-        public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _masterExtraStatsComponent.Get(_body.masterObject);
+        public CharacterMasterExtraStatsTracker MasterExtraStatsTracker { get; private set; }
 
         public event Action<DamageInfo> OnIncomingDamageServer;
 
         void Awake()
         {
+            _netIdentity = GetComponent<NetworkIdentity>();
             _body = GetComponent<CharacterBody>();
+        }
+
+        void Start()
+        {
+            if (_body.master)
+            {
+                MasterExtraStatsTracker = _body.master.GetComponent<CharacterMasterExtraStatsTracker>();
+            }
         }
 
         void OnEnable()
@@ -158,6 +169,13 @@ namespace ItemQualities
                 _body.characterMotor.onHitGroundAuthority += onHitGroundAuthority;
             }
 
+            if (_body.modelLocator)
+            {
+                _body.modelLocator.onModelChanged += refreshModelReference;
+            }
+
+            refreshModelReference(_body.modelLocator ? _body.modelLocator.modelTransform : null);
+
             EquipmentSlot.onServerEquipmentActivated += onServerEquipmentActivated;
             GenericSkillHooks.OnSkillRechargeAuthority += onSkillRechargeAuthority;
         }
@@ -170,6 +188,11 @@ namespace ItemQualities
             if (_body.characterMotor)
             {
                 _body.characterMotor.onHitGroundAuthority -= onHitGroundAuthority;
+            }
+
+            if (_body.modelLocator)
+            {
+                _body.modelLocator.onModelChanged -= refreshModelReference;
             }
 
             EquipmentSlot.onServerEquipmentActivated -= onServerEquipmentActivated;
@@ -268,25 +291,24 @@ namespace ItemQualities
 			}
         }
 
+        void refreshModelReference(Transform modelTransform)
+        {
+            _cachedCharacterModel = modelTransform ? modelTransform.GetComponent<CharacterModel>() : null;
+        }
+
         void updateOverlays()
         {
-            CharacterModel characterModel = null;
-            if (_body && _body.modelLocator && _body.modelLocator.modelTransform)
-            {
-                characterModel = _body.modelLocator.modelTransform.GetComponent<CharacterModel>();
-            }
-
             void setOverlay(ref TemporaryOverlayInstance overlayInstance, Material material, bool active)
             {
                 if (!material)
                     return;
 
-                if (!characterModel)
+                if (!_cachedCharacterModel)
                 {
                     active = false;
                 }
 
-                bool overlayActive = overlayInstance != null && overlayInstance.assignedCharacterModel == characterModel;
+                bool overlayActive = overlayInstance != null && overlayInstance.assignedCharacterModel == _cachedCharacterModel;
                 if (overlayActive == active)
                     return;
 
@@ -305,7 +327,7 @@ namespace ItemQualities
                         originalMaterial = material
                     };
 
-                    overlayInstance.AddToCharacterModel(characterModel);
+                    overlayInstance.AddToCharacterModel(_cachedCharacterModel);
                 }
             }
 
@@ -418,10 +440,9 @@ namespace ItemQualities
 
         void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
         {
-            CharacterMasterExtraStatsTracker masterExtraStats = _masterExtraStatsComponent.Get(_body.masterObject);
-            if (masterExtraStats)
+            if (MasterExtraStatsTracker)
             {
-                masterExtraStats.OnIncomingDamageServer(damageInfo);
+                MasterExtraStatsTracker.OnIncomingDamageServer(damageInfo);
             }
 
             OnIncomingDamageServer?.Invoke(damageInfo);
@@ -446,8 +467,7 @@ namespace ItemQualities
                     skill.AddOneStock();
                 }
             }
-
-            if (_body.skillLocator.utility == skill)
+            else if (_body.skillLocator.utility == skill)
             {
                 ItemQualityCounts utilitySkillMagazine = ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCountsEffective(_body.inventory);
 

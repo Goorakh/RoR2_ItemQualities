@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ItemQualities
 {
     [RequireComponent(typeof(TemporaryVisualEffect))]
-    public class CharacterOutlineVisualEffect : MonoBehaviour
+    public sealed class CharacterOutlineVisualEffect : MonoBehaviour
     {
         public Highlight.HighlightColor HighlightColor;
 
@@ -15,7 +15,7 @@ namespace ItemQualities
 
         TemporaryVisualEffect _visualEffect;
 
-        readonly List<Highlight> _highlights = new List<Highlight>();
+        Highlight _highlight;
 
         void Awake()
         {
@@ -38,33 +38,44 @@ namespace ItemQualities
                 }
             }
 
+            List<Renderer> highlightRenderers = new List<Renderer>();
+
             if (attachedCharacterModel)
             {
                 foreach (CharacterModel.RendererInfo rendererInfo in attachedCharacterModel.baseRendererInfos)
                 {
                     if (!rendererInfo.ignoreOverlays && rendererInfo.renderer)
                     {
-                        Highlight highlight = rendererInfo.renderer.gameObject.AddComponent<Highlight>();
-                        highlight.targetRenderer = rendererInfo.renderer;
-                        highlight.strength = HighlightStrength;
-                        highlight.highlightColor = HighlightColor;
-                        highlight.CustomColor = CustomHighlightColor;
-                        highlight.isOn = true;
-
-                        _highlights.Add(highlight);
+                        highlightRenderers.Add(rendererInfo.renderer);
                     }
                 }
+            }
+
+            if (highlightRenderers.Count > 0)
+            {
+                if (!_highlight)
+                {
+                    _highlight = gameObject.AddComponent<Highlight>();
+                    _highlight.strength = HighlightStrength;
+                    _highlight.highlightColor = HighlightColor;
+                    _highlight.CustomColor = CustomHighlightColor;
+                    _highlight.isOn = true;
+                }
+                else
+                {
+                    _highlight.enabled = true;
+                }
+
+                _highlight.SetTargetRendererList(highlightRenderers);
             }
         }
 
         void OnDisable()
         {
-            foreach (Highlight highlight in _highlights)
+            if (_highlight)
             {
-                Destroy(highlight);
+                _highlight.enabled = false;
             }
-
-            _highlights.Clear();
         }
     }
 }
