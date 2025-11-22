@@ -169,7 +169,7 @@ namespace ItemQualities.Items
 
                 if (upgradeQualityTier > pickupQuality)
                 {
-                    pickup = pickup.WithPickupIndex(QualityCatalog.GetPickupIndexOfQuality(pickup.pickupIndex, upgradeQualityTier));
+                    pickup = pickup.WithQualityTier(upgradeQualityTier);
                     pickupQuality = upgradeQualityTier;
                 }
             }
