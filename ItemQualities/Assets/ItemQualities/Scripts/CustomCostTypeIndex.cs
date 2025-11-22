@@ -231,8 +231,16 @@ namespace ItemQualities
                     {
                         if (itemsToTake.Count < context.cost)
                         {
+                            Span<QualityTier> avoidedItemQualityTakeOrder = stackalloc QualityTier[(int)QualityTier.Count];
+                            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                            {
+                                avoidedItemQualityTakeOrder[(int)qualityTier] = qualityTier;
+                            }
+
+                            Util.ShuffleSpan(avoidedItemQualityTakeOrder, context.rng);
+
                             ItemQualityCounts avoidedItemCounts = avoidedItemGroup.GetItemCountsPermanent(inventory);
-                            for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
+                            foreach (QualityTier qualityTier in avoidedItemQualityTakeOrder)
                             {
                                 int itemCount = avoidedItemCounts[qualityTier];
                                 int itemCountToAdd = Math.Min(itemCount, context.cost - itemsToTake.Count);
