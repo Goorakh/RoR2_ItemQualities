@@ -6,6 +6,7 @@ using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using RoR2;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
@@ -18,7 +19,7 @@ namespace ItemQualities
 
         static MethodInfo _getTransformationForSpecificItemCostMethod;
 
-        [SystemInitializer]
+        [SystemInitializer(typeof(CostTypeCatalog))]
         static void Init()
         {
             _getTransformationForSpecificItemCostMethod = typeof(CostTypeCatalog).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).SingleOrDefault(m => m.Name.StartsWith("<Init>g__GetTransformationForSpecificItemCost|"));
@@ -28,65 +29,55 @@ namespace ItemQualities
                 return;
             }
 
-            MethodInfo getSpecificItemIsAffordableMethod = typeof(CostTypeCatalog).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).SingleOrDefault(m => m.Name.StartsWith("<Init>g__GetSpecificItemIsAffordableMethod|"));
-            if (getSpecificItemIsAffordableMethod != null)
+            HashSet<MethodInfo> patchedMethods = new HashSet<MethodInfo>();
+
+            Span<CostTypeIndex> specificItemCostTypeIndices = stackalloc CostTypeIndex[]
             {
-                MethodBase isAffordableMethod = getReturnedMethod(getSpecificItemIsAffordableMethod);
-                if (isAffordableMethod != null)
+                CostTypeIndex.ArtifactShellKillerItem,
+                CostTypeIndex.TreasureCacheItem,
+                CostTypeIndex.TreasureCacheVoidItem
+            };
+
+            int foundIsAffordableMethodCount = 0;
+            int foundPayCostMethodCount = 0;
+
+            foreach (CostTypeIndex costTypeIndex in specificItemCostTypeIndices)
+            {
+                CostTypeDef costTypeDef = CostTypeCatalog.GetCostTypeDef(costTypeIndex);
+                if (costTypeDef != null)
                 {
-                    new ILHook(isAffordableMethod, IsAffordableHooksPatch);
+                    MethodInfo isAffordableMethod = costTypeDef.isAffordable?.Method;
+                    if (isAffordableMethod != null && patchedMethods.Add(isAffordableMethod))
+                    {
+                        foundIsAffordableMethodCount++;
+                        new ILHook(isAffordableMethod, IsAffordableHooksPatch);
+                    }
+
+                    MethodInfo payCostMethod = costTypeDef.payCost?.Method;
+                    if (payCostMethod != null && patchedMethods.Add(payCostMethod))
+                    {
+                        foundPayCostMethodCount++;
+                        new ILHook(payCostMethod, PayCostHooksPatch);
+                    }
                 }
-                else
-                {
-                    Log.Error($"Failed to find isAffordable method in {getSpecificItemIsAffordableMethod.DeclaringType.FullName}.{getSpecificItemIsAffordableMethod.Name}");
-                }
+            }
+
+            if (foundIsAffordableMethodCount == 0)
+            {
+                Log.Error("Failed to find specific item isAffordable method");
             }
             else
             {
-                Log.Error("Failed to find GetSpecificItemIsAffordableMethod method");
+                Log.Debug($"Found {foundIsAffordableMethodCount} specific item isAffordable method(s)");
             }
 
-            MethodInfo getSpecificItemPayCostMethod = typeof(CostTypeCatalog).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).SingleOrDefault(m => m.Name.StartsWith("<Init>g__GetSpecificItemPayCostMethod|"));
-            if (getSpecificItemPayCostMethod != null)
+            if (foundPayCostMethodCount == 0)
             {
-                MethodBase payCostMethod = getReturnedMethod(getSpecificItemPayCostMethod);
-                if (payCostMethod != null)
-                {
-                    new ILHook(payCostMethod, PayCostHooksPatch);
-                }
-                else
-                {
-                    Log.Error($"Failed to find payCost method in {getSpecificItemPayCostMethod.DeclaringType.FullName}.{getSpecificItemPayCostMethod.Name}");
-                }
+                Log.Error("Failed to find specific item payCost method");
             }
             else
             {
-                Log.Error("Failed to find GetSpecificItemPayCostMethod method");
-            }
-        }
-
-        static MethodBase getReturnedMethod(MethodBase method)
-        {
-            using DynamicMethodDefinition dmd = new DynamicMethodDefinition(method);
-            using ILContext il = new ILContext(dmd.Definition);
-            ILCursor c = new ILCursor(il);
-
-            c.Index = c.Instrs.Count - 1;
-            MethodReference methodReference = null;
-            if (!c.TryGotoPrev(x => x.MatchLdftn(out methodReference)))
-            {
-                Log.Error($"Failed to find ldftn instruction in {method.DeclaringType.FullName}.{method.Name}");
-                return null;
-            }
-
-            try
-            {
-                return methodReference.ResolveReflection();
-            }
-            catch (Exception e)
-            {
-                Log.Error_NoCallerPrefix($"Failed to resolve method {methodReference.FullName} for {method.DeclaringType.FullName}.{method.Name}: {e}");
-                return null;
+                Log.Debug($"Found {foundPayCostMethodCount} specific item payCost method(s)");
             }
         }
 
