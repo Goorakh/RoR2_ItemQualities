@@ -12,18 +12,20 @@ namespace ItemQualities
         [SystemInitializer]
         static void Init()
         {
-            PurchaseInteraction.onPurchaseGlobalServer += onPurchaseGlobalServer;
+            On.RoR2.CostTypeDef.PayCost += CostTypeDef_PayCost;
             QualityDuplicatorBehavior.OnPickupsSelectedForPurchase += QualityDuplicatorBehavior_OnPickupsSelectedForPurchase;
         }
 
-        static void onPurchaseGlobalServer(CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults payCostResult)
+        static void CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost orig, CostTypeDef self, CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
         {
-            PurchaseResults result = new PurchaseResults(payCostResult);
+            orig(self, context, result);
+
+            PurchaseResults purchaseResult = new PurchaseResults(result);
 
             ObjectPurchaseContext purchaseContext = context.purchasedObject.EnsureComponent<ObjectPurchaseContext>();
-            purchaseContext.CostTypeIndex = (CostTypeIndex)Mathf.Max(0, Array.IndexOf(CostTypeCatalog.costTypeDefs, context.costTypeDef));
-            purchaseContext.FirstInteractionResults ??= result;
-            purchaseContext.Results = result;
+            purchaseContext.CostTypeIndex = (CostTypeIndex)Math.Max(0, Array.IndexOf(CostTypeCatalog.costTypeDefs, context.costTypeDef));
+            purchaseContext.FirstInteractionResults ??= purchaseResult;
+            purchaseContext.Results = purchaseResult;
         }
 
         static void QualityDuplicatorBehavior_OnPickupsSelectedForPurchase(QualityDuplicatorBehavior qualityDuplicatorBehavior, Interactor activator, IReadOnlyList<PickupIndex> pickupsSpent)

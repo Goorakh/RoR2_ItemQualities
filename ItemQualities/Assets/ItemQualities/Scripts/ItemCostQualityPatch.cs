@@ -173,38 +173,12 @@ namespace ItemQualities
                     QualityTier outputQualityTier = getOutputQualityTierFromCost(optionChestBehavior.gameObject);
                     if (outputQualityTier > QualityTier.None)
                     {
-                        Xoroshiro128Plus rng = new Xoroshiro128Plus((optionChestBehavior.rng ?? RoR2Application.rng).nextUlong);
-
-                        Span<int> upgradeOptionIndicesPriority = stackalloc int[options.Length];
-                        for (int i = 0; i < upgradeOptionIndicesPriority.Length; i++)
+                        for (int i = 0; i < options.Length; i++)
                         {
-                            upgradeOptionIndicesPriority[i] = i;
-                        }
-
-                        Util.ShuffleSpan(upgradeOptionIndicesPriority, rng);
-
-                        int maxOptionsToUpgrade = 1;
-                        int numOptionsUpgraded = 0;
-
-                        foreach (int i in upgradeOptionIndicesPriority)
-                        {
-                            ref UniquePickup optionPickup = ref options[i].pickup;
-                            QualityTier optionQualityTier = QualityCatalog.GetQualityTier(optionPickup.pickupIndex);
-
-                            PickupIndex dropPickupIndex = QualityCatalog.GetPickupIndexOfQuality(optionPickup.pickupIndex, outputQualityTier);
-
-                            // If the pickup of the output quality does not exist, we should just move on and try the next one and not "consume" a quality upgrade
-                            if (dropPickupIndex != optionPickup.pickupIndex)
+                            ref UniquePickup pickup = ref options[i].pickup;
+                            if (pickup.isValid && QualityCatalog.GetQualityTier(pickup.pickupIndex) < outputQualityTier)
                             {
-                                if (outputQualityTier > optionQualityTier)
-                                {
-                                    optionPickup = optionPickup.WithPickupIndex(dropPickupIndex);
-                                }
-
-                                if (++numOptionsUpgraded >= maxOptionsToUpgrade)
-                                {
-                                    break;
-                                }
+                                pickup = pickup.WithQualityTier(outputQualityTier);
                             }
                         }
                     }
