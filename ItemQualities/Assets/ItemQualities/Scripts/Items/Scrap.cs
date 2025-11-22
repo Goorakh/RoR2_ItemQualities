@@ -59,13 +59,10 @@ namespace ItemQualities.Items
 
             Stage.onServerStageBegin += onServerStageBegin;
 
-            IL.RoR2.Projectile.TinkerProjectile.TransmuteTargetObject += ReplaceScrapFromItemDefTierQualityPatch;
-            IL.RoR2.ScrapperController.BeginScrapping_UniquePickup += ReplaceScrapFromItemDefTierQualityPatch;
+            IL.RoR2.ScrapperController.BeginScrapping_UniquePickup += ReplaceScrapPickupFromItemDefTierQualityPatch;
 
             On.RoR2.UI.ScrapperInfoPanelHelper.ShowInfo += ScrapperInfoPanelHelper_ShowInfo;
             IL.RoR2.UI.ScrapperInfoPanelHelper.ShowTierInfoInternal_MPButton_ItemTier_int += ScrapperInfoPanelHelper_ShowTierInfoInternal_MPButton_ItemTier_int;
-
-            IL.RoR2.DrifterTracker.IsWhitelist += DrifterTracker_IsWhitelist;
         }
 
         static void onServerStageBegin(Stage stage)
@@ -156,7 +153,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ReplaceScrapFromItemDefTierQualityPatch(ILContext il)
+        public static void ReplaceScrapPickupFromItemDefTierQualityPatch(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -212,45 +209,5 @@ namespace ItemQualities.Items
                 Log.Debug($"Found all {patchCount} patch location(s) for {il.Method.FullName}");
             }
         }
-
-        static void DrifterTracker_IsWhitelist(ILContext il)
-        {
-            if (!il.Method.TryFindParameter(typeof(UniquePickup).MakeByRefType(), out ParameterDefinition pickupParameter))
-            {
-                Log.Error("Failed to find pickup parameter");
-                return;
-            }
-
-            ILCursor c = new ILCursor(il);
-
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdcI4((int)ItemTag.WorldUnique),
-                               x => x.MatchCallOrCallvirt<ItemDef>(nameof(ItemDef.ContainsTag))))
-            {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
-            c.Goto(foundCursors[1].Next, MoveType.After); // call ItemDef.ContainsTag
-
-            c.Emit(OpCodes.Ldarg, pickupParameter);
-            c.EmitDelegate<GetBaseQualityIsWorldUniqueDelegate>(getBaseQualityIsWorldUnique);
-
-            static bool getBaseQualityIsWorldUnique(bool isWorldUnique, in UniquePickup pickup)
-            {
-                PickupIndex basePickupIndex = QualityCatalog.GetPickupIndexOfQuality(pickup.pickupIndex, QualityTier.None);
-                if (basePickupIndex == pickup.pickupIndex)
-                    return isWorldUnique;
-
-                PickupDef basePickupDef = PickupCatalog.GetPickupDef(basePickupIndex);
-                ItemDef baseItemDef = basePickupDef != null ? ItemCatalog.GetItemDef(basePickupDef.itemIndex) : null;
-                if (!baseItemDef)
-                    return isWorldUnique;
-
-                return baseItemDef.ContainsTag(ItemTag.WorldUnique);
-            }
-        }
-
-        delegate bool GetBaseQualityIsWorldUniqueDelegate(bool isWorldUnique, in UniquePickup pickup);
     }
 }

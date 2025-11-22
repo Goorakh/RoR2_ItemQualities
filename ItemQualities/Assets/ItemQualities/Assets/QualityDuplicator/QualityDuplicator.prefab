@@ -20,6 +20,9 @@ GameObject:
   - component: {fileID: 3959598177297909944}
   - component: {fileID: 6378681955861773747}
   - component: {fileID: 4887950223852862703}
+  - component: {fileID: 8737935809385704075}
+  - component: {fileID: 4655093927535174162}
+  - component: {fileID: 4989551213886774324}
   m_Layer: 0
   m_Name: QualityDuplicator
   m_TagString: Untagged
@@ -125,6 +128,7 @@ MonoBehaviour:
   modelVisibility: {fileID: 0}
   modelBaseTransform: {fileID: 0}
   modelScaleCompensation: 1
+  initialScale: {x: 0, y: 0, z: 0}
   autoUpdateModelTransform: 0
   dontDetatchFromParent: 1
   noCorpse: 0
@@ -134,6 +138,8 @@ MonoBehaviour:
   normalizeToFloor: 0
   normalSmoothdampTime: 0.1
   normalMaxAngleDelta: 90
+  shouldOverrideLogbookModel: 0
+  logbookOverrideBodyName: 
 --- !u!114 &7525952887716192246
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146,8 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 871971028, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupIndex:
-    value: 0
   targetRenderer: {fileID: 534211427301023847}
   strength: 1
   highlightColor: 0
@@ -184,6 +188,7 @@ MonoBehaviour:
   deathSound: 
   barkSound: 
   openSound: Play_UI_3D_printer_process
+  jumpSound: 
   landingSound: 
   fallDamageSound: 
   aliveLoopStart: 
@@ -215,8 +220,11 @@ MonoBehaviour:
   setUnavailableOnTeleporterActivated: 0
   isShrine: 0
   isGoldShrine: 0
+  isDrone: 0
   shouldProximityHighlight: 1
   saleStarCompatible: 0
+  disableSpawnOnInteraction: 0
+  allowRemoteOpInteraction: 0
   requiredExpansion: {fileID: 0}
   lastActivator: {fileID: 0}
   lockGameObject: {fileID: 0}
@@ -259,6 +267,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDetailedPurchaseServer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3959598177297909944
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,13 +314,24 @@ MonoBehaviour:
   dropTransform: {fileID: 1887743922162787760}
   dropTable: {fileID: 11400000, guid: 8107a4fecd05c974e9277213d7852e8e, type: 2}
   dropVelocity: {x: 0, y: 15, z: 6}
+  tempItemDropRangeX:
+    min: -3
+    max: 3
+  tempItemDropRangeY:
+    min: 20
+    max: 20
+  tempItemDropRangeZ:
+    min: -3
+    max: 3
   animator: {fileID: 0}
+  dropAmount: 1
   MysteryItemInspectDef: {fileID: 0}
   inspectHintOverrideToken: ACTION_INSPECT_PRINTABLE
   hintWantsItemFormatting: 0
   disablesInspectionOnPurchase: 0
   inspectShop: 0
   shopInspectDef: {fileID: 0}
+  ignorePingFormatting: 0
   itemTier: 0
   bannedItemTag: 15
   selfGeneratePickup: 1
@@ -327,6 +349,97 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InspectInfo: {fileID: 11400000, guid: 93f9d9142b4b59b49b80cf23d244618e, type: 2}
   inspectHintOverrideToken: 
+--- !u!114 &8737935809385704075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 288573216, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pingIconOverride: {fileID: 21300000, guid: 0d59ace6fd744fb449d8bc560181b41f, type: 3}
+  isWeakSpot: 0
+  forceUseHitOriginForPosition: 0
+  networkedBodyAttachmentOverride: {fileID: 0}
+--- !u!114 &4655093927535174162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1231560309, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabbable: 1
+  breakoutState:
+    _typeName: 
+  dodgeState:
+    _typeName: 
+  breakoutStateMachineName: 
+  massOverride: 500
+  damageOverride: -1
+  damageTypeOverride:
+    damageType: 0
+    damageTypeExtended: 0
+    damageSource: 0
+  collisionToDisable:
+  - {fileID: 1749797109504405659}
+  - {fileID: 6238796533032662430}
+  renderersToDisable:
+  - {fileID: 8436662611888478385}
+  - {fileID: 1996285709915895974}
+  - {fileID: 2605070869462069093}
+  - {fileID: 8964150247188651557}
+  - {fileID: 534211427301023847}
+  behavioursToDisable:
+  - {fileID: 7525952887716192246}
+  - {fileID: 8159439704467611923}
+  - {fileID: 1386743312061916508}
+  childObjectsToDisable: []
+  pickupDisplaysToDisable:
+  - {fileID: 3242710292739512866}
+  lightsToDisable: []
+  objectsToDetach: []
+  soundEventsToStop: []
+  soundEventsToPlay: []
+  childSpecialObjectAttributes: []
+  indicatorOffset: {fileID: 4378022427430539321}
+  hullClassification: 1
+  maxDurability: 0
+  orientToFloor: 1
+  durability: 0
+  useSkillHighlightRenderers: 1
+  skillHighlightRenderers:
+  - {fileID: 534211427301023847}
+  - {fileID: 8964150247188651557}
+  - {fileID: 8436662611888478385}
+  - {fileID: 1996285709915895974}
+  - {fileID: 2605070869462069093}
+  isVoid: 0
+  bestName: 
+  portraitIcon: {fileID: 0}
+--- !u!114 &4989551213886774324
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133376595409305959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -545519276, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxTinkers: 0
+  tinkers: 0
+  indicatorOffset: {fileID: 726604330257270292}
 --- !u!1 &969132586740268829
 GameObject:
   m_ObjectHideFlags: 0
@@ -358,7 +471,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8249699712745572800}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3242710292739512866
 MonoBehaviour:
@@ -385,7 +498,9 @@ MonoBehaviour:
   lunarParticleEffect: {fileID: 0}
   bossParticleEffect: {fileID: 0}
   voidParticleEffect: {fileID: 0}
+  foodParticleEffect: {fileID: 0}
   coloredParticleSystems: []
+  temporaryItemIndicator: {fileID: 0}
   highlight: {fileID: 7948923387591692034}
 --- !u!114 &7948923387591692034
 MonoBehaviour:
@@ -399,8 +514,6 @@ MonoBehaviour:
   m_Script: {fileID: 871971028, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupIndex:
-    value: 0
   targetRenderer: {fileID: 0}
   strength: 1
   highlightColor: 2
@@ -435,7 +548,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8249699712745572800}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6238796533032662430
 GameObject:
@@ -468,7 +581,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8249699712745572800}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &462631018890500538
 BoxCollider:
@@ -481,8 +594,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1.7060515, y: 2.61, z: 1.9593824}
-  m_Center: {x: 0.99198973, y: 0.026211156, z: -0.15768105}
+  m_Size: {x: 1.9463562, y: 2.6099994, z: 1.959382}
+  m_Center: {x: 0.50369954, y: 0.026211143, z: -0.15768105}
 --- !u!114 &7283572029061308461
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -496,7 +609,38 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   entity: {fileID: 133376595409305959}
-  entityZoneIndex: 0
+  entityZoneIndex: 1
+--- !u!1 &7157374562578333482
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4378022427430539321}
+  m_Layer: 0
+  m_Name: CoreTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4378022427430539321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7157374562578333482}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.5, y: 0.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8249699712745572800}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7546264203439821743
 GameObject:
   m_ObjectHideFlags: 0
@@ -526,7 +670,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8249699712745572800}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &8500099352804126251
 PrefabInstance:
@@ -622,8 +766,8 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 0.03806212, y: 0.02976685, z: 0.026038546}
-  m_Center: {x: -0.07691449, y: 0.0007204697, z: 0.0016455572}
+  m_Size: {x: 0.018967653, y: 0.02976685, z: 0.021088628}
+  m_Center: {x: -0.0864619, y: 0.0007204697, z: -0.0008293964}
 --- !u!114 &1993384277674216685
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,9 +782,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   entity: {fileID: 133376595409305959}
   entityZoneIndex: 0
+--- !u!23 &1996285709915895974 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7945000746692597389, guid: 7fd17239eb6d13741b8706f093ab7b60, type: 3}
+  m_PrefabInstance: {fileID: 8500099352804126251}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2605070869462069093 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -3327745109949431474, guid: 7fd17239eb6d13741b8706f093ab7b60, type: 3}
+  m_PrefabInstance: {fileID: 8500099352804126251}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8249699712745572800 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7fd17239eb6d13741b8706f093ab7b60, type: 3}
+  m_PrefabInstance: {fileID: 8500099352804126251}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8436662611888478385 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 64001065796007578, guid: 7fd17239eb6d13741b8706f093ab7b60, type: 3}
   m_PrefabInstance: {fileID: 8500099352804126251}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &8734452762016207738 stripped
@@ -721,3 +880,8 @@ MonoBehaviour:
   transformPairs:
   - name: DropPivot
     transform: {fileID: 1887743922162787760}
+--- !u!23 &8964150247188651557 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 689442670355034126, guid: 7fd17239eb6d13741b8706f093ab7b60, type: 3}
+  m_PrefabInstance: {fileID: 8500099352804126251}
+  m_PrefabAsset: {fileID: 0}

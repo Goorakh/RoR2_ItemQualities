@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: idDuplicatorBoss
   m_EditorClassIdentifier: 
   Info:
-    Visual: {fileID: 955084517, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
+    Visual: {fileID: 21300000, guid: 0d59ace6fd744fb449d8bc560181b41f, type: 3}
     TitleToken: DUPLICATOR_WILD_QUALITY_NAME
     DescriptionToken: DUPLICATOR_WILD_QUALITY_DESCRIPTION
     FlavorToken: DUPLICATOR_WILD_LORE
     TitleColor: {r: 1, g: 1, b: 1, a: 1}
     isConsumedItem: 0
+    upgradeCount: 0
