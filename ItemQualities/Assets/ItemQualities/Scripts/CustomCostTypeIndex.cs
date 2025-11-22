@@ -273,7 +273,7 @@ namespace ItemQualities
 
                         if (QualityCatalog.FindItemQualityGroupIndex(takeItemTransformation.originalItemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
                         {
-                            takeItemTransformation.newItemIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GetItemIndex(QualityCatalog.GetQualityTier(takeItemTransformation.originalItemIndex));
+                            takeItemTransformation.newItemIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrapConsumed.GetItemIndex(QualityCatalog.GetQualityTier(takeItemTransformation.originalItemIndex));
                         }
 
                         if (takeItemTransformation.newItemIndex != ItemIndex.None)
