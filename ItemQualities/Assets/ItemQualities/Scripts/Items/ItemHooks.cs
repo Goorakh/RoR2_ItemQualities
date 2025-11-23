@@ -4,6 +4,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using RoR2;
+using RoR2.UI;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -21,6 +22,9 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.Inventory.UpdateEffectiveItemStacks += Inventory_UpdateEffectiveItemStacks;
+
+            IL.RoR2.UI.ItemInventoryDisplay.OnInventoryChanged += ItemInventoryDisplay_OnInventoryChanged;
+            IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
 
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
 
@@ -105,6 +109,73 @@ namespace ItemQualities.Items
                     return 0;
 
                 return qualityGroup.GetItemCountsEffective(inventory).TotalQualityCount;
+            }
+        }
+
+        static void ItemInventoryDisplay_OnInventoryChanged(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.WriteItemStacks))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<ItemInventoryDisplay>>(undoQualityEffectiveStacks);
+
+            static void undoQualityEffectiveStacks(ItemInventoryDisplay itemInventoryDisplay)
+            {
+                if (!itemInventoryDisplay.inventory || itemInventoryDisplay.itemStacks == null || itemInventoryDisplay.itemStacks.Length != ItemCatalog.itemCount)
+                    return;
+
+                for (ItemQualityGroupIndex itemGroupIndex = 0; (int)itemGroupIndex < QualityCatalog.ItemQualityGroupCount; itemGroupIndex++)
+                {
+                    ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(itemGroupIndex);
+                    if (itemGroup.BaseItemIndex != ItemIndex.None)
+                    {
+                        ref int baseItemCount = ref itemInventoryDisplay.itemStacks[(int)itemGroup.BaseItemIndex];
+                        if (baseItemCount > 0)
+                        {
+                            ItemQualityCounts itemCounts = itemGroup.GetItemCountsEffective(itemInventoryDisplay.inventory);
+                            baseItemCount = Math.Max(0, baseItemCount - itemCounts.TotalQualityCount);
+                        }
+                    }
+                }
+            }
+        }
+
+        static void ScrapperInfoPanelHelper_AddQuantityToPickerButton(ILContext il)
+        {
+            if (!il.Method.TryFindParameter<PickupDef>(out ParameterDefinition pickupDefParameter))
+            {
+                Log.Error("Failed to find PickupDef parameter");
+                return;
+            }
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg, pickupDefParameter);
+            c.EmitDelegate<Func<int, ScrapperInfoPanelHelper, PickupDef, int>>(getItemCountPermanent);
+
+            static int getItemCountPermanent(int itemCount, ScrapperInfoPanelHelper scrapperInfoPanelHelper, PickupDef pickupDef)
+            {
+                if (pickupDef != null && pickupDef.itemIndex != ItemIndex.None && scrapperInfoPanelHelper && scrapperInfoPanelHelper.cachedBodyInventory)
+                {
+                    itemCount = scrapperInfoPanelHelper.cachedBodyInventory.GetItemCountPermanent(pickupDef.itemIndex);
+                }
+
+                return itemCount;
             }
         }
 
