@@ -266,7 +266,7 @@ namespace ItemQualities.Items
             int itemCountVariableIndex = -1;
             if (c.TryFindNext(out ILCursor[] foundCursors,
                               x => x.MatchLdsfld(itemDeclaringType, itemName),
-                              x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
+                              x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective)),
                               x => x.MatchStloc(out itemCountVariableIndex) && c.Context.Method.Body.Variables[itemCountVariableIndex].VariableType.Is(typeof(int))))
             {
                 itemCountVariable = c.Context.Method.Body.Variables[itemCountVariableIndex];

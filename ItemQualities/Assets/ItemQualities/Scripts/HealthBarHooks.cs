@@ -113,7 +113,7 @@ namespace ItemQualities
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdcI4((int)ItemTag.LowHealth),
                                x => x.MatchCallOrCallvirt(typeof(ItemCatalog), nameof(ItemCatalog.GetItemsWithTag)),
-                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount))))
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
             {
                 Log.Error($"Failed to find patch location");
                 return;
