@@ -46,7 +46,7 @@ namespace ItemQualities.Items
                             originalItemIndex = qualityConsumedScrapIndex,
                             newItemIndex = qualityScrapIndex,
                             maxToTransform = int.MaxValue,
-                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.SaleStarRegen
+                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.RegeneratingScrapRegen
                         };
 
                         qualityRegenScrapTransformation.TryTransform(self.inventory, out _);
@@ -61,7 +61,7 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contextParameter))
             {
-                Log.Error("Failed to find context parameter");
+                Log.Fatal("Failed to find context parameter");
                 return;
             }
 
@@ -69,9 +69,9 @@ namespace ItemQualities.Items
                                x => x.MatchInitobj<Inventory.ItemTransformation>(),
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>("get_" + nameof(Inventory.ItemTransformation.originalItemIndex)),
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.RegeneratingScrap)),
-                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>("get_" + nameof(Inventory.ItemTransformation.newItemIndex))))
+                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>("set_" + nameof(Inventory.ItemTransformation.newItemIndex))))
             {
-                Log.Error("Failed to find patch location");
+                Log.Fatal("Failed to find patch location");
                 return;
             }
 
@@ -96,6 +96,17 @@ namespace ItemQualities.Items
             static ItemIndex tryGetQualityRegeneratingScrap(ItemIndex consumedScrapIndex, ItemIndex originalItemIndex)
             {
                 return QualityCatalog.GetItemIndexOfQuality(consumedScrapIndex, QualityCatalog.GetQualityTier(originalItemIndex));
+            }
+
+            c.Index = 0;
+            if (c.TryGotoNext(MoveType.Before,
+                              x => x.MatchCallOrCallvirt<CharacterMasterNotificationQueue>(nameof(CharacterMasterNotificationQueue.SendTransformNotification))))
+            {
+                c.EmitSkipMethodCall();
+            }
+            else
+            {
+                Log.Warning("Failed to find duplicate CharacterMasterNotificationQueue.SendTransformNotification call, it was likely removed");
             }
         }
     }

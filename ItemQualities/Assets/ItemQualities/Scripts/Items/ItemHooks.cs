@@ -261,6 +261,19 @@ namespace ItemQualities.Items
             }
         }
 
+        public static bool MatchCallLocalCheckRoll(Instruction instruction)
+        {
+            if (instruction.MatchCallOrCallvirt(out MethodReference method) && !string.IsNullOrEmpty(method?.Name))
+            {
+                if (method.Name.Contains(">g__LocalCheckRoll|"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public static bool TryFindNextItemCountVariable(ILCursor c, Type itemDeclaringType, string itemName, out VariableDefinition itemCountVariable)
         {
             int itemCountVariableIndex = -1;

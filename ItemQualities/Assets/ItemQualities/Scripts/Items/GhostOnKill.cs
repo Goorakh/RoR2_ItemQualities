@@ -32,7 +32,7 @@ namespace ItemQualities.Items
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.GhostOnKill)),
                                x => x.MatchLdcR4(7f),
-                               x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll)),
+                               x => ItemHooks.MatchCallLocalCheckRoll(x),
                                x => x.MatchBrfalse(out _),
                                x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.TryToCreateGhost)),
                                x => x.MatchPop()))
