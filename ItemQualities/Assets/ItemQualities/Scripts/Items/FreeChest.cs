@@ -14,8 +14,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.FreeChestDropTable.RebuildSelection += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
         }
 

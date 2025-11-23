@@ -10,8 +10,6 @@ namespace ItemQualities.Items
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
-            IL.RoR2.StrengthenBurnUtils.CheckDotForUpgrade += ItemHooks.CombineGroupedItemCountsPatch;
-
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 

@@ -1,10 +1,8 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
 using R2API;
 using RoR2;
 using System;
-using System.Reflection;
 
 namespace ItemQualities.Items
 {
@@ -13,16 +11,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            PropertyInfo maxIcicleCountProperty = typeof(IcicleAuraController).GetProperty(nameof(IcicleAuraController.maxIcicleCount), ~(BindingFlags)0);
-            if (maxIcicleCountProperty?.GetMethod != null)
-            {
-                new ILHook(maxIcicleCountProperty.GetMethod, ItemHooks.CombineGroupedItemCountsPatch);
-            }
-            else
-            {
-                Log.Error("Failed to find IcicleAuraController.maxIcicleCount property getter");
-            }
-
             IL.RoR2.IcicleAuraController.FixedUpdate += IcicleAuraController_FixedUpdate;
             On.RoR2.IcicleAuraController.UpdateRadius += IcicleAuraController_UpdateRadius;
         }

@@ -80,8 +80,6 @@ namespace ItemQualities.Items
 
         static void MeteorAttackOnHighDamageBodyBehavior_DetonateRunicLensMeteor(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
-
             ILCursor c = new ILCursor(il);
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,

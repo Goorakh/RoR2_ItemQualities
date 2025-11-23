@@ -16,7 +16,6 @@ namespace ItemQualities.Items
         {
             On.RoR2.CharacterMaster.TrySaleStar += CharacterMaster_TrySaleStar;
 
-            IL.RoR2.InteractionDriver.MyFixedUpdate += ItemHooks.CombineGroupedItemCountsPatch;
             IL.RoR2.PurchaseInteraction.OnInteractionBegin += PurchaseInteraction_OnInteractionBegin;
 
             IL.RoR2.ChestBehavior.BaseItemDrop += ChestBehavior_BaseItemDrop;

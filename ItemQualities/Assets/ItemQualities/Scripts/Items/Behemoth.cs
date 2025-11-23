@@ -18,8 +18,6 @@ namespace ItemQualities.Items
 
         static void GlobalEventManager_OnHitAllProcess(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
-
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
                 Log.Error("Failed to find DamageInfo parameter");

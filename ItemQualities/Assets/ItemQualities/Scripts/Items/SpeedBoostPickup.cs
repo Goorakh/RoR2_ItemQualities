@@ -13,15 +13,11 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.CharacterBody.GetElusiveAntlersCurrentMaxStack += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.ElusiveAntlersBehavior.FixedUpdate += ItemHooks.CombineGroupedItemCountsPatch;
             IL.RoR2.ElusiveAntlersPickup.OnTriggerStay += ElusiveAntlersPickup_OnTriggerStay;
         }
 
         static void ElusiveAntlersPickup_OnTriggerStay(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
-
             ILCursor c = new ILCursor(il);
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,

@@ -20,7 +20,6 @@ namespace ItemQualities.Items
 
         static void GenericCharacterMain_ProcessJump_bool(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
             ApplyAirControlModifiersPatch(il);
 
             ILCursor c = new ILCursor(il);

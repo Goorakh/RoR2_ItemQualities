@@ -11,8 +11,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.EntityStates.LaserTurbine.LaserTurbineBaseState.GetDamage += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.LaserTurbineController.OnOwnerKilledOtherServer += LaserTurbineController_OnOwnerKilledOtherServer;
         }
 

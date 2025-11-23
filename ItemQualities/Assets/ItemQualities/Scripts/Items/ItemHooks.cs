@@ -7,7 +7,6 @@ using RoR2;
 using RoR2.UI;
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Linq;
 using UnityEngine.Networking;
 
@@ -244,92 +243,6 @@ namespace ItemQualities.Items
         static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)
         {
             return orig(self, QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None));
-        }
-
-        [Obsolete]
-        public static void CombineGroupedItemCountsPatch(ILContext il)
-        {
-            return;
-
-            ILCursor c = new ILCursor(il);
-
-            VariableDefinition inventoryTempVar = il.AddVariable<Inventory>();
-            VariableDefinition itemIndexTempVar = il.AddVariable<ItemIndex>();
-            VariableDefinition itemDefTempVar = il.AddVariable<ItemDef>();
-
-            int patchCount = 0;
-
-            while (c.TryGotoNext(MoveType.Before,
-                                 x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount))))
-            {
-                EmitSingleCombineGroupedItemCounts(c, inventoryTempVar, itemIndexTempVar, itemDefTempVar);
-
-                patchCount++;
-            }
-
-            if (patchCount == 0)
-            {
-                Log.Error($"Failed to find patch location for {il.Method.FullName}");
-            }
-            else
-            {
-                Log.Debug($"Found {patchCount} patch location(s) for {il.Method.FullName}");
-            }
-        }
-
-        [Obsolete]
-        public static void EmitSingleCombineGroupedItemCounts(ILCursor c, VariableDefinition inventoryTempVar = null, VariableDefinition itemIndexTempVar = null, VariableDefinition itemDefTempVar = null)
-        {
-            if (!c.Next.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)))
-            {
-                Log.Error($"Cursor must be placed before a GetItemCount call: {new StackTrace()}");
-                return;
-            }
-
-            inventoryTempVar ??= c.Context.AddVariable<Inventory>();
-
-            bool isItemIndex = ((MethodReference)c.Next.Operand).Parameters[0].ParameterType.Is(typeof(ItemIndex));
-
-            VariableDefinition itemArgTempVar = isItemIndex ? itemIndexTempVar : itemDefTempVar;
-            itemArgTempVar ??= c.Context.AddVariable(isItemIndex ? typeof(ItemIndex) : typeof(ItemDef));
-
-            c.EmitStoreStack(inventoryTempVar, itemArgTempVar);
-
-            c.Index++;
-
-            c.Emit(OpCodes.Ldloc, inventoryTempVar);
-            c.Emit(OpCodes.Ldloc, itemArgTempVar);
-
-            static int tryGetCombinedItemCountShared(int baseItemCount, Inventory inventory, ItemIndex itemIndex)
-            {
-                if (inventory)
-                {
-                    ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
-                    if (itemGroup)
-                    {
-                        baseItemCount = itemGroup.GetItemCounts(inventory).TotalCount;
-                    }
-                }
-
-                return baseItemCount;
-            }
-
-            if (isItemIndex)
-            {
-                c.EmitDelegate<Func<int, Inventory, ItemIndex, int>>(tryGetCombinedItemCount);
-                static int tryGetCombinedItemCount(int baseItemCount, Inventory inventory, ItemIndex itemIndex)
-                {
-                    return tryGetCombinedItemCountShared(baseItemCount, inventory, itemIndex);
-                }
-            }
-            else
-            {
-                c.EmitDelegate<Func<int, Inventory, ItemDef, int>>(tryGetCombinedItemCount);
-                static int tryGetCombinedItemCount(int baseItemCount, Inventory inventory, ItemDef itemDef)
-                {
-                    return tryGetCombinedItemCountShared(baseItemCount, inventory, itemDef ? itemDef.itemIndex : ItemIndex.None);
-                }
-            }
         }
 
         public static bool MatchCallLocalCheckRoll(Instruction instruction)

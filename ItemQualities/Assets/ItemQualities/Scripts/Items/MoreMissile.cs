@@ -38,8 +38,6 @@ namespace ItemQualities.Items
 
         static void MissileUtils_FireMissile(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
-
             if (!il.Method.TryFindParameter<CharacterBody>("attackerBody", out ParameterDefinition attackerBodyParameter))
             {
                 Log.Warning("Failed to find attackerBody parameter");

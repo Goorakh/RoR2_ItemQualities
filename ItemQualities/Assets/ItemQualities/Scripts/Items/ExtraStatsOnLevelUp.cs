@@ -4,7 +4,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
@@ -15,8 +14,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.CharacterMaster.TrackBeadExperience += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
 

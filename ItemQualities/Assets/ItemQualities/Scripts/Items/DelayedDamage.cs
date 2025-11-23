@@ -13,8 +13,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.CharacterBody.UpdateDelayedDamage += ItemHooks.CombineGroupedItemCountsPatch;
-
             On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 

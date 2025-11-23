@@ -1,6 +1,5 @@
 ﻿using R2API;
 using RoR2;
-using System;
 
 namespace ItemQualities.Items
 {
@@ -9,9 +8,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.AttackSpeedPerNearbyCollider.ServerUpdateValuesFromInventory += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.AttackSpeedPerNearbyCollider.Start += ItemHooks.CombineGroupedItemCountsPatch;
-
             On.RoR2.AttackSpeedPerNearbyCollider.UpdateValues += AttackSpeedPerNearbyCollider_UpdateValues;
 
             On.RoR2.AttackSpeedPerNearbyCollider.SetIndicatorDiameter += AttackSpeedPerNearbyCollider_SetIndicatorDiameter;

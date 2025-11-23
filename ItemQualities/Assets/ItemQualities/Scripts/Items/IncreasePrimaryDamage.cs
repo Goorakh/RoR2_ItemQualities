@@ -16,10 +16,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.EntityStates.Seeker.UnseenHand.FixedUpdate += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.AddIncreasePrimaryDamageStack += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.OnSkillActivated += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
 
             On.RoR2.IncreasePrimaryDamageEffectUpdater.LightUpRings += IncreasePrimaryDamageEffectUpdater_LightUpRings;

@@ -94,21 +94,6 @@ namespace ItemQualities
             }
         }
 
-        [Obsolete]
-        public ItemQualityCounts GetItemCounts(Inventory inventory)
-        {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.GetItemCount(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCount(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCount(RareItemIndex);
-            int epicItemCount = inventory.GetItemCount(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCount(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
-        }
-
         public ItemQualityCounts GetItemCountsEffective(Inventory inventory)
         {
             if (!inventory)

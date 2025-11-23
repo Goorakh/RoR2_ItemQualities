@@ -10,8 +10,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.VoidMegaCrabItemBehavior.GetMaxProjectiles += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.VoidMegaCrabItemBehavior.FixedUpdate += VoidMegaCrabItemBehavior_FixedUpdate;
             On.RoR2.VoidMegaCrabItemBehavior.OnMasterSpawned += VoidMegaCrabItemBehavior_OnMasterSpawned;
         }
