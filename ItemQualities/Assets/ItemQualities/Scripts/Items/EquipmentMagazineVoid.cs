@@ -26,7 +26,7 @@ namespace ItemQualities.Items
             if (!attackerInventory)
                 return;
 
-            ItemQualityCounts equipmentMagazineVoid = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCounts(attackerInventory);
+            ItemQualityCounts equipmentMagazineVoid = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCountsEffective(attackerInventory);
             if (equipmentMagazineVoid.TotalQualityCount > 0)
             {
                 float damageIncrease = (0.1f * equipmentMagazineVoid.UncommonCount) +
@@ -68,7 +68,8 @@ namespace ItemQualities.Items
 
             static float getCooldownScale(float cooldownScale, CharacterBody body)
             {
-                QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetHighestQualityInInventory(body ? body.inventory : null);
+                Inventory inventory = body ? body.inventory : null;
+                QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCountsEffective(inventory).HighestQuality;
                 switch (qualityTier)
                 {
                     case QualityTier.Uncommon:

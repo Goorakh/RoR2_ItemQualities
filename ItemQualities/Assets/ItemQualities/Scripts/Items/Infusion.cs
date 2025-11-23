@@ -37,7 +37,7 @@ namespace ItemQualities.Items
 
             if (damageReport.attackerBody && damageReport.attackerMaster)
             {
-                ItemQualityCounts infusion = ItemQualitiesContent.ItemQualityGroups.Infusion.GetItemCounts(damageReport.attackerMaster.inventory);
+                ItemQualityCounts infusion = ItemQualitiesContent.ItemQualityGroups.Infusion.GetItemCountsEffective(damageReport.attackerMaster.inventory);
 
                 if (infusion.TotalQualityCount > 0)
                 {

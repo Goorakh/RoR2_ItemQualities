@@ -68,7 +68,11 @@ namespace ItemQualities
         static void ClassicStageInfo_RebuildCards(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)
         {
             orig(self, forcedMonsterCategory, forcedInteractableCategory);
-            tryAddCustomInteractables(self.interactableCategories);
+
+            if (self.interactableCategories)
+            {
+                tryAddCustomInteractables(self.interactableCategories);
+            }
         }
 
         static void tryAddCustomInteractables(DirectorCardCategorySelection dccs)
@@ -120,42 +124,36 @@ namespace ItemQualities
                     {
                         equipmentBarrelCard = card;
                     }
-
-                    if (categoryChest1Card == null &&
+                    else if (categoryChest1Card == null &&
                         (matchDirectorCard(card, "iscCategoryChestDamage", RoR2_Base_CategoryChest.iscCategoryChestDamage_asset) ||
                          matchDirectorCard(card, "iscCategoryChestUtility", RoR2_Base_CategoryChest.iscCategoryChestUtility_asset) ||
                          matchDirectorCard(card, "iscCategoryChestHealing", RoR2_Base_CategoryChest.iscCategoryChestHealing_asset)))
                     {
                         categoryChest1Card = card;
                     }
-
-                    if (categoryChest2Card == null &&
+                    else if (categoryChest2Card == null &&
                         (matchDirectorCard(card, "iscCategoryChest2Damage", RoR2_DLC1_CategoryChest2.iscCategoryChest2Damage_asset) ||
                          matchDirectorCard(card, "iscCategoryChest2Utility", RoR2_DLC1_CategoryChest2.iscCategoryChest2Utility_asset) ||
                          matchDirectorCard(card, "iscCategoryChest2Healing", RoR2_DLC1_CategoryChest2.iscCategoryChest2Healing_asset)))
                     {
                         categoryChest2Card = card;
                     }
-
-                    if (duplicatorCard == null &&
+                    else if (duplicatorCard == null &&
                         matchDirectorCard(card, "iscDuplicator", RoR2_Base_Duplicator.iscDuplicator_asset))
                     {
                         duplicatorCard = card;
                     }
-
-                    if (duplicatorLargeCard == null &&
+                    else if (duplicatorLargeCard == null &&
                         matchDirectorCard(card, "iscDuplicatorLarge", RoR2_Base_DuplicatorLarge.iscDuplicatorLarge_asset))
                     {
                         duplicatorLargeCard = card;
                     }
-
-                    if (duplicatorMilitaryCard == null &&
+                    else if (duplicatorMilitaryCard == null &&
                         matchDirectorCard(card, "iscDuplicatorMilitary", RoR2_Base_DuplicatorMilitary.iscDuplicatorMilitary_asset))
                     {
                         duplicatorMilitaryCard = card;
                     }
-
-                    if (duplicatorWildCard == null &&
+                    else if (duplicatorWildCard == null &&
                         matchDirectorCard(card, "iscDuplicatorWild", RoR2_Base_DuplicatorWild.iscDuplicatorWild_asset))
                     {
                         duplicatorWildCard = card;

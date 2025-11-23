@@ -42,11 +42,10 @@ namespace ItemQualities.Items
 
         void updateAccumulatedHealing()
         {
-            ItemQualityCounts healOnCrit = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCounts(_body.inventory);
-            QualityTier healOnCritQualityTier = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetHighestQualityInInventory(_body.inventory);
+            ItemQualityCounts healOnCrit = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(_body.inventory);
 
             float healingThreshold = 0f;
-            switch (healOnCritQualityTier)
+            switch (healOnCrit.HighestQuality)
             {
                 case QualityTier.Uncommon:
                     healingThreshold = 2000f;
@@ -61,7 +60,7 @@ namespace ItemQualities.Items
                     healingThreshold = 400f;
                     break;
                 default:
-                    Log.Error($"Quality tier {healOnCritQualityTier} is not implemented");
+                    Log.Error($"Quality tier {healOnCrit.HighestQuality} is not implemented");
                     break;
             }
 

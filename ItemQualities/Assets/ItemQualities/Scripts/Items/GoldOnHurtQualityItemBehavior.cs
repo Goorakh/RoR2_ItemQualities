@@ -50,7 +50,7 @@ namespace ItemQualities.Items
 
         void onInventoryChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetHighestQualityInInventory(_body.inventory);
+            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(_body.inventory).HighestQuality;
             ItemQualitiesContent.BuffQualityGroups.GoldArmorBuff.EnsureBuffQualities(_body, buffQualityTier);
         }
 
@@ -67,7 +67,7 @@ namespace ItemQualities.Items
 
             if (active)
             {
-                QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetHighestQualityInInventory(_body.inventory);
+                QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(_body.inventory).HighestQuality;
                 _body.AddBuff(ItemQualitiesContent.BuffQualityGroups.GoldArmorBuff.GetBuffIndex(buffQualityTier));
             }
             else

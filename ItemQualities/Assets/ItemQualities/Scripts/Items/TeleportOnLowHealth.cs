@@ -5,7 +5,6 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
-using RoR2.Items;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using UnityEngine;
@@ -25,8 +24,6 @@ namespace ItemQualities.Items
 
             IL.RoR2.HealthComponent.DoWarp += HealthComponent_DoWarp;
 
-            IL.RoR2.TeleportOnLowHealthBehavior.Update += ItemHooks.CombineGroupedItemCountsPatch;
-
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_TeleportOnLowHealth.TeleportOnLowHealthExplosion_prefab).OnSuccess(teleportOnLowHealthExplosion =>
             {
                 teleportOnLowHealthExplosion.EnsureComponent<TeleportOnLowHealthAuraQualityController>();
@@ -37,18 +34,25 @@ namespace ItemQualities.Items
         {
             orig(self);
 
-            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+            if (self && self.inventory)
             {
-                ItemIndex itemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemIndex(qualityTier);
-                ItemIndex consumedItemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealthConsumed.GetItemIndex(qualityTier);
-
-                int consumedItemCount = self.inventory.GetItemCount(consumedItemIndex);
-                if (consumedItemCount > 0)
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
-                    self.inventory.RemoveItem(consumedItemIndex, consumedItemCount);
-                    self.inventory.GiveItem(itemIndex, consumedItemCount);
+                    ItemIndex itemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemIndex(qualityTier);
+                    ItemIndex consumedItemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealthConsumed.GetItemIndex(qualityTier);
 
-                    CharacterMasterNotificationQueue.SendTransformNotification(self, consumedItemIndex, itemIndex, CharacterMasterNotificationQueue.TransformationType.TeleportOnLowHealthRegen);
+                    if (itemIndex != ItemIndex.None && consumedItemIndex != ItemIndex.None)
+                    {
+                        Inventory.ItemTransformation regenerateTransformation = new Inventory.ItemTransformation
+                        {
+                            originalItemIndex = consumedItemIndex,
+                            newItemIndex = itemIndex,
+                            maxToTransform = int.MaxValue,
+                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.TeleportOnLowHealthRegen
+                        };
+
+                        regenerateTransformation.TryTransform(self.inventory, out _);
+                    }
                 }
             }
         }
@@ -57,67 +61,53 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(DLC2Content.Items), nameof(DLC2Content.Items.TeleportOnLowHealth)),
-                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.RemoveItem)),
-                               x => x.MatchCallOrCallvirt<CharacterMasterNotificationQueue>(nameof(CharacterMasterNotificationQueue.SendTransformNotification))))
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
-                Log.Error("Failed to find transmitter consume end instruction");
+                Log.Fatal("Failed to find transmitter consume transformation call");
                 return;
             }
 
-            c.Goto(foundCursors[2].Next, MoveType.After);
-            ILLabel afterBaseTransmitterConsumeLabel = c.MarkLabel();
-
-            c.Goto(foundCursors[1].Next, MoveType.Before);
-            if (!c.TryGotoPrev(MoveType.Before,
-                               x => x.MatchLdarg(0),
-                               x => x.MatchCallOrCallvirt<BaseItemBodyBehavior>("get_" + nameof(BaseItemBodyBehavior.body)),
-                               x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory))))
+            int itemTransformationLocalIndex = -1;
+            if (!c.TryFindPrev(out _,
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationLocalIndex),
+                               x => x.MatchInitobj<Inventory.ItemTransformation>()))
             {
-                Log.Error("Failed to find patch location");
+                Log.Fatal("Failed to find ItemTransformation variable");
                 return;
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<TeleportOnLowHealthBehavior, bool>>(tryHandleQualityTransmitters);
-            c.Emit(OpCodes.Brtrue, afterBaseTransmitterConsumeLabel);
+            c.Emit(OpCodes.Ldloc, itemTransformationLocalIndex);
+            c.EmitDelegate<Func<bool, TeleportOnLowHealthBehavior, Inventory.ItemTransformation, bool>>(tryConsumeQualityTransmitters);
 
-            static bool tryHandleQualityTransmitters(TeleportOnLowHealthBehavior teleportOnLowHealthBehavior)
+            static bool tryConsumeQualityTransmitters(bool consumedRegularTransmitter, TeleportOnLowHealthBehavior teleportOnLowHealthBehavior, Inventory.ItemTransformation itemTransformation)
             {
+                if (consumedRegularTransmitter)
+                    return true;
+
                 CharacterBody body = teleportOnLowHealthBehavior ? teleportOnLowHealthBehavior.body : null;
                 Inventory inventory = body ? body.inventory : null;
                 CharacterMaster master = body ? body.master : null;
-                if (!inventory)
-                    return false;
-
-                bool consumedQualityTransmitter = false;
-
-                ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCounts(inventory);
-                if (teleportOnLowHealth.BaseItemCount == 0 && teleportOnLowHealth.TotalQualityCount > 0)
+                if (inventory)
                 {
                     for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                     {
-                        if (teleportOnLowHealth[qualityTier] > 0)
+                        ItemIndex itemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemIndex(qualityTier);
+                        ItemIndex consumedItemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealthConsumed.GetItemIndex(qualityTier);
+
+                        Inventory.ItemTransformation qualityItemTransformation = itemTransformation;
+                        qualityItemTransformation.originalItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.originalItemIndex, qualityTier);
+                        qualityItemTransformation.newItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.newItemIndex, qualityTier);
+
+                        if (qualityItemTransformation.TryTransform(inventory, out Inventory.ItemTransformation.TryTransformResult transformResult))
                         {
-                            ItemIndex itemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemIndex(qualityTier);
-                            ItemIndex consumedItemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealthConsumed.GetItemIndex(qualityTier);
-
-                            inventory.RemoveItem(itemIndex);
-                            inventory.GiveItem(consumedItemIndex);
-
-                            if (master)
-                            {
-                                CharacterMasterNotificationQueue.SendTransformNotification(master, itemIndex, consumedItemIndex, CharacterMasterNotificationQueue.TransformationType.TeleportOnLowHealthRegen);
-                            }
-
-                            consumedQualityTransmitter = true;
-                            break;
+                            return true;
                         }
                     }
                 }
 
-                return consumedQualityTransmitter;
+                return false;
             }
         }
 
@@ -138,7 +128,7 @@ namespace ItemQualities.Items
                     CharacterBody body = teleportOnLowHealthBehavior ? teleportOnLowHealthBehavior.body : null;
                     Inventory inventory = body ? body.inventory : null;
 
-                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCounts(inventory);
+                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(inventory);
 
                     if (teleportOnLowHealth.UncommonCount > 0)
                     {
@@ -171,8 +161,6 @@ namespace ItemQualities.Items
 
         static void HealthComponent_DoWarp(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
-
             if (!il.Method.TryFindParameter<CharacterBody>("attackerBody", out ParameterDefinition attackerBodyParameter))
             {
                 Log.Error("Failed to find attackerBody parameter");
@@ -193,12 +181,15 @@ namespace ItemQualities.Items
                 {
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCounts(attackerInventory);
+                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(attackerInventory);
 
-                    bleedDuration += (1.0f * teleportOnLowHealth.UncommonCount) +
-                                     (2.0f * teleportOnLowHealth.RareCount) +
-                                     (3.5f * teleportOnLowHealth.EpicCount) +
-                                     (5.0f * teleportOnLowHealth.LegendaryCount);
+                    if (teleportOnLowHealth.TotalQualityCount > 0)
+                    {
+                        bleedDuration += (1.0f * teleportOnLowHealth.UncommonCount) +
+                                         (2.0f * teleportOnLowHealth.RareCount) +
+                                         (3.5f * teleportOnLowHealth.EpicCount) +
+                                         (5.0f * teleportOnLowHealth.LegendaryCount);
+                    }
 
                     return bleedDuration;
                 }

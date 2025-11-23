@@ -142,7 +142,7 @@ namespace ItemQualities.Items
                     return false;
 
                 Inventory attackerInventory = attackerMaster.inventory;
-                ItemQualityCounts deathMark = ItemQualitiesContent.ItemQualityGroups.DeathMark.GetItemCounts(attackerInventory);
+                ItemQualityCounts deathMark = ItemQualitiesContent.ItemQualityGroups.DeathMark.GetItemCountsEffective(attackerInventory);
                 if (deathMark.TotalQualityCount > 0)
                 {
                     if (victimBody.TryGetComponent(out CharacterBodyExtraStatsTracker victimBodyExtraStats) &&
@@ -185,18 +185,9 @@ namespace ItemQualities.Items
             {
                 if (debuffCount >= 7 && allowQualityDeathMarkProc(attackerMaster, victimBody))
                 {
-                    ItemQualityCounts deathMark = ItemQualitiesContent.ItemQualityGroups.DeathMark.GetItemCounts(attackerMaster.inventory);
+                    ItemQualityCounts deathMark = ItemQualitiesContent.ItemQualityGroups.DeathMark.GetItemCountsEffective(attackerMaster.inventory);
 
-                    QualityTier highestDeathMarkQuality = QualityTier.None;
-                    for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
-                    {
-                        ItemIndex qualityDeathMarkItemIndex = ItemQualitiesContent.ItemQualityGroups.DeathMark.GetItemIndex(qualityTier);
-                        if (attackerMaster.inventory.GetItemCount(qualityDeathMarkItemIndex) > 0)
-                        {
-                            highestDeathMarkQuality = qualityTier;
-                            break;
-                        }
-                    }
+                    QualityTier highestDeathMarkQuality = deathMark.HighestQuality;
 
                     if (highestDeathMarkQuality > QualityTier.None)
                     {

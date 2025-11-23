@@ -51,7 +51,7 @@ namespace ItemQualities.Items
                 CharacterBody interactorBody = interactor ? interactor.GetComponent<CharacterBody>() : null;
                 Inventory interactorInventory = interactorBody ? interactorBody.inventory : null;
 
-                ItemQualityCounts squid = ItemQualitiesContent.ItemQualityGroups.Squid.GetItemCounts(interactorInventory);
+                ItemQualityCounts squid = ItemQualitiesContent.ItemQualityGroups.Squid.GetItemCountsEffective(interactorInventory);
                 if (squid.TotalQualityCount > 0)
                 {
                     directorSpawnRequest.onSpawnedServer += (SpawnCard.SpawnResult result) =>
@@ -73,21 +73,21 @@ namespace ItemQualities.Items
 
                             if (boostDamageCount > 0)
                             {
-                                spawnedMaster.inventory.GiveItem(RoR2Content.Items.BoostDamage, boostDamageCount);
+                                spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostDamage, boostDamageCount);
                             }
 
                             if (boostHpCount > 0)
                             {
-                                spawnedMaster.inventory.GiveItem(RoR2Content.Items.BoostHp, boostHpCount);
+                                spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostHp, boostHpCount);
 
                                 float hpBoostPercent = boostHpCount * 0.1f;
-                                int healthDecayDuration = spawnedMaster.inventory.GetItemCount(RoR2Content.Items.HealthDecay);
+                                int healthDecayDuration = spawnedMaster.inventory.GetItemCountPermanent(RoR2Content.Items.HealthDecay);
                                 if (healthDecayDuration > 0)
                                 {
                                     int newHealthDecayDuration = Mathf.RoundToInt(healthDecayDuration * (1f + hpBoostPercent));
                                     if (newHealthDecayDuration > healthDecayDuration)
                                     {
-                                        spawnedMaster.inventory.GiveItem(RoR2Content.Items.HealthDecay, newHealthDecayDuration - healthDecayDuration);
+                                        spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, newHealthDecayDuration - healthDecayDuration);
                                     }
                                 }
                             }

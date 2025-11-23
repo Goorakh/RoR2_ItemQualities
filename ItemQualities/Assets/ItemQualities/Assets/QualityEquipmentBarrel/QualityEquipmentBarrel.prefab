@@ -53,6 +53,7 @@ GameObject:
   - component: {fileID: 1966172099153970814}
   - component: {fileID: 3637206046429696879}
   - component: {fileID: 5729462869416170643}
+  - component: {fileID: 6462406773294168020}
   m_Layer: 0
   m_Name: QualityEquipmentBarrel
   m_TagString: Untagged
@@ -157,6 +158,7 @@ MonoBehaviour:
   modelVisibility: {fileID: 0}
   modelBaseTransform: {fileID: 8725080910940658247}
   modelScaleCompensation: 1
+  initialScale: {x: 0, y: 0, z: 0}
   autoUpdateModelTransform: 1
   dontDetatchFromParent: 0
   noCorpse: 0
@@ -166,6 +168,8 @@ MonoBehaviour:
   normalizeToFloor: 0
   normalSmoothdampTime: 0.1
   normalMaxAngleDelta: 90
+  shouldOverrideLogbookModel: 0
+  logbookOverrideBodyName: 
 --- !u!114 &5306516032242715145
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,8 +182,6 @@ MonoBehaviour:
   m_Script: {fileID: 871971028, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupIndex:
-    value: 0
   targetRenderer: {fileID: 3317176645935739434}
   strength: 1
   highlightColor: 0
@@ -260,8 +262,11 @@ MonoBehaviour:
   setUnavailableOnTeleporterActivated: 0
   isShrine: 0
   isGoldShrine: 0
+  isDrone: 0
   shouldProximityHighlight: 1
   saleStarCompatible: 1
+  disableSpawnOnInteraction: 0
+  allowRemoteOpInteraction: 0
   requiredExpansion: {fileID: 0}
   lastActivator: {fileID: 0}
   lockGameObject: {fileID: 0}
@@ -292,6 +297,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDetailedPurchaseServer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &356498908598086031
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -323,6 +331,7 @@ MonoBehaviour:
   deathSound: 
   barkSound: 
   openSound: Play_UI_barrel_open
+  jumpSound: 
   landingSound: 
   fallDamageSound: 
   aliveLoopStart: 
@@ -360,6 +369,86 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InspectInfo: {fileID: 11400000, guid: 2a0fd2120ec964a4a882a268f113ab83, type: 2}
   inspectHintOverrideToken: 
+--- !u!114 &6462406773294168020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2085680338379220146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1231560309, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabbable: 1
+  breakoutState:
+    _typeName: 
+  dodgeState:
+    _typeName: 
+  breakoutStateMachineName: 
+  massOverride: 80
+  damageOverride: -1
+  damageTypeOverride:
+    damageType: 0
+    damageTypeExtended: 0
+    damageSource: 0
+  collisionToDisable:
+  - {fileID: 3138972088746793619}
+  renderersToDisable:
+  - {fileID: 3317176645935739434}
+  behavioursToDisable:
+  - {fileID: 5306516032242715145}
+  - {fileID: 2466267391608249395}
+  - {fileID: 356498908598086031}
+  childObjectsToDisable: []
+  pickupDisplaysToDisable: []
+  lightsToDisable: []
+  objectsToDetach: []
+  soundEventsToStop: []
+  soundEventsToPlay: []
+  childSpecialObjectAttributes: []
+  indicatorOffset: {fileID: 7769952070312303516}
+  hullClassification: 0
+  maxDurability: 0
+  orientToFloor: 1
+  durability: 0
+  useSkillHighlightRenderers: 0
+  skillHighlightRenderers: []
+  isVoid: 0
+  bestName: 
+  portraitIcon: {fileID: 0}
+--- !u!1 &2725420401685469595
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7769952070312303516}
+  m_Layer: 0
+  m_Name: IndicatorTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7769952070312303516
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2725420401685469595}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.75}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6827817425808521031}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4213651288045755320
 GameObject:
   m_ObjectHideFlags: 0
@@ -543,6 +632,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -5791333592053259252, guid: 8a3c32e62ce4ebd4fa2ab408ba6299b4, type: 3}
   m_PrefabInstance: {fileID: 6919851753132788224}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &6827817425808521031 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4524155305068723527, guid: 8a3c32e62ce4ebd4fa2ab408ba6299b4, type: 3}
+  m_PrefabInstance: {fileID: 6919851753132788224}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7458798797186231787 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8a3c32e62ce4ebd4fa2ab408ba6299b4, type: 3}
@@ -587,7 +681,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FieldAssignments:
-  - TargetObject: {fileID: 1031114078203273915}
+  - _targetObject: {fileID: 1031114078203273915}
+    _targetObjectComponent: {fileID: 0}
+    TargetObjectComponentType:
+      assemblyQualifiedName: 
     FieldName: runtimeAnimatorController
     AssetReference:
       m_AssetGUID: 63f079a46ef73d44eb20e48e9eb015b4
@@ -596,7 +693,10 @@ MonoBehaviour:
     AssetTypeOverride:
       assemblyQualifiedName: UnityEngine.RuntimeAnimatorController, UnityEngine.AnimationModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - TargetObject: {fileID: 1031114078203273915}
+  - _targetObject: {fileID: 1031114078203273915}
+    _targetObjectComponent: {fileID: 0}
+    TargetObjectComponentType:
+      assemblyQualifiedName: 
     FieldName: avatar
     AssetReference:
       m_AssetGUID: b26128f1a0be13346b199e611d94275d

@@ -73,20 +73,17 @@ GameObject:
   - component: {fileID: 4330693054718697661}
   - component: {fileID: 6194875223546429692}
   - component: {fileID: 4899206800805918446}
+  - component: {fileID: 4549801397598069159}
   - component: {fileID: 6660952907478977873}
   - component: {fileID: 8683484057273030299}
   - component: {fileID: 5438471676548047910}
   - component: {fileID: 518657700897034338}
   - component: {fileID: 5259819460438029628}
   - component: {fileID: 6709931882197265131}
-  - component: {fileID: 2150107392034109946}
   - component: {fileID: 6364185903759535906}
-  - component: {fileID: 2063700033938985505}
   - component: {fileID: 4518957301940303894}
   - component: {fileID: 3103332498354557964}
-  - component: {fileID: 4549801397598069159}
-  - component: {fileID: 2354393042515934583}
-  - component: {fileID: 1835596561740882802}
+  - component: {fileID: 3808938270848447058}
   m_Layer: 0
   m_Name: QualityChest2
   m_TagString: Untagged
@@ -162,6 +159,20 @@ MonoBehaviour:
   mainStateType:
     _typeName: EntityStates.Idle, RoR2, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   debug: 0
+--- !u!114 &4549801397598069159
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1859642185480883030}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1918207524, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateMachines:
+  - {fileID: 4899206800805918446}
 --- !u!114 &6660952907478977873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,6 +189,7 @@ MonoBehaviour:
   modelVisibility: {fileID: 0}
   modelBaseTransform: {fileID: 1361958111353230263}
   modelScaleCompensation: 1
+  initialScale: {x: 0, y: 0, z: 0}
   autoUpdateModelTransform: 1
   dontDetatchFromParent: 0
   noCorpse: 0
@@ -187,6 +199,8 @@ MonoBehaviour:
   normalizeToFloor: 0
   normalSmoothdampTime: 0.1
   normalMaxAngleDelta: 90
+  shouldOverrideLogbookModel: 0
+  logbookOverrideBodyName: 
 --- !u!114 &8683484057273030299
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,8 +213,6 @@ MonoBehaviour:
   m_Script: {fileID: 871971028, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupIndex:
-    value: 0
   targetRenderer: {fileID: 3838461198303250396}
   strength: 1
   highlightColor: 0
@@ -250,6 +262,7 @@ MonoBehaviour:
   deathSound: 
   barkSound: 
   openSound: Play_UI_chest_unlock
+  jumpSound: 
   landingSound: 
   fallDamageSound: 
   aliveLoopStart: 
@@ -273,19 +286,6 @@ MonoBehaviour:
   bounds: {fileID: 1017058566}
   renderers:
   - {fileID: 3838461198303250396}
---- !u!114 &2150107392034109946
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859642185480883030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1393656223, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delusionChest: {fileID: 0}
 --- !u!114 &6364185903759535906
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,18 +300,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InspectInfo: {fileID: 11400000, guid: 4f3ec96b67fe329459fa2008a30085bd, type: 2}
   inspectHintOverrideToken: 
---- !u!114 &2063700033938985505
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859642185480883030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1977880532, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4518957301940303894
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,8 +325,11 @@ MonoBehaviour:
   setUnavailableOnTeleporterActivated: 0
   isShrine: 0
   isGoldShrine: 0
+  isDrone: 0
   shouldProximityHighlight: 1
   saleStarCompatible: 1
+  disableSpawnOnInteraction: 0
+  allowRemoteOpInteraction: 0
   requiredExpansion: {fileID: 0}
   lastActivator: {fileID: 0}
   lockGameObject: {fileID: 0}
@@ -369,6 +360,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDetailedPurchaseServer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3103332498354557964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,7 +400,7 @@ MonoBehaviour:
   isCommandChest: 0
   isChestReset: 0
   ppc: {fileID: 0}
---- !u!114 &4549801397598069159
+--- !u!114 &3808938270848447058
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -415,96 +409,77 @@ MonoBehaviour:
   m_GameObject: {fileID: 1859642185480883030}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 1918207524, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Script: {fileID: -1231560309, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stateMachines:
-  - {fileID: 4899206800805918446}
---- !u!114 &2354393042515934583
-MonoBehaviour:
+  grabbable: 1
+  breakoutState:
+    _typeName: 
+  dodgeState:
+    _typeName: 
+  breakoutStateMachineName: 
+  massOverride: 500
+  damageOverride: -1
+  damageTypeOverride:
+    damageType: 0
+    damageTypeExtended: 0
+    damageSource: 0
+  collisionToDisable:
+  - {fileID: 4981767511604547305}
+  renderersToDisable:
+  - {fileID: 3838461198303250396}
+  behavioursToDisable:
+  - {fileID: 8683484057273030299}
+  - {fileID: 4518957301940303894}
+  - {fileID: 5438471676548047910}
+  childObjectsToDisable: []
+  pickupDisplaysToDisable: []
+  lightsToDisable: []
+  objectsToDetach: []
+  soundEventsToStop: []
+  soundEventsToPlay: []
+  childSpecialObjectAttributes: []
+  indicatorOffset: {fileID: 1051689121493276506}
+  hullClassification: 1
+  maxDurability: 0
+  orientToFloor: 1
+  durability: 0
+  useSkillHighlightRenderers: 0
+  skillHighlightRenderers: []
+  isVoid: 0
+  bestName: 
+  portraitIcon: {fileID: 0}
+--- !u!1 &5934479677556830714
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859642185480883030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1175172885, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelPrefab: {fileID: 0}
-  onPickupSelected:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2354393042515934583}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnDelusionPickupSelected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 2063700033938985505}
-        m_TargetAssemblyTypeName: RoR2.NetworkUIPromptController, RoR2
-        m_MethodName: ClearParticipant
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onServerInteractionBegin:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 2354393042515934583}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetDelusionOptionsFromInteractor
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  cutoffDistance: 10
-  contextString: DELUSION_MEMORYGAME_PROMPT
-  shouldProximityHighlight: 1
-  synchronizeItemSelectionAcrossNetwork: 0
-  isDelusionChoice: 0
-  isRebirthChoice: 0
-  chestGeneratedFrom: {fileID: 0}
-  multiOptionsAvailable: 0
---- !u!114 &1835596561740882802
-MonoBehaviour:
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1051689121493276506}
+  m_Layer: 0
+  m_Name: IndicatorTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1051689121493276506
+Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1859642185480883030}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 099ecf8d44d7a9644b7beb48d3648467, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FieldAssignments:
-  - TargetObject: {fileID: 2354393042515934583}
-    FieldName: panelPrefab
-    AssetReference:
-      m_AssetGUID: 3cd08790b1abe7c4e8f4390bece3d08d
-      m_SubObjectName: 
-      m_SubObjectType: 
-    AssetTypeOverride:
-      assemblyQualifiedName: 
-  _hasLoaded: 0
+  m_GameObject: {fileID: 5934479677556830714}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3095226388437618234}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6486970756859476729
 GameObject:
   m_ObjectHideFlags: 0
@@ -670,6 +645,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ff5c4d564d66ff94693f8f8acf888aec, type: 3}
+--- !u!4 &3095226388437618234 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7588631236872648395, guid: ff5c4d564d66ff94693f8f8acf888aec, type: 3}
+  m_PrefabInstance: {fileID: 4874108550597015793}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &3838461198303250396 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -657318870092398803, guid: ff5c4d564d66ff94693f8f8acf888aec, type: 3}
@@ -756,7 +736,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FieldAssignments:
-  - TargetObject: {fileID: 333776822}
+  - _targetObject: {fileID: 333776822}
+    _targetObjectComponent: {fileID: 0}
+    TargetObjectComponentType:
+      assemblyQualifiedName: 
     FieldName: runtimeAnimatorController
     AssetReference:
       m_AssetGUID: c10be1f1a1557dd479fedc7b43d6e59c
@@ -765,7 +748,10 @@ MonoBehaviour:
     AssetTypeOverride:
       assemblyQualifiedName: UnityEngine.RuntimeAnimatorController, UnityEngine.AnimationModule,
         Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
-  - TargetObject: {fileID: 333776822}
+  - _targetObject: {fileID: 333776822}
+    _targetObjectComponent: {fileID: 0}
+    TargetObjectComponentType:
+      assemblyQualifiedName: 
     FieldName: avatar
     AssetReference:
       m_AssetGUID: 6efbb9847d46b634f86268bb41acb19d

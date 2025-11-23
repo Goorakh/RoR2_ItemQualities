@@ -16,13 +16,13 @@ namespace ItemQualities.Items
             ItemQualityCounts hoof = default;
             if (sender.inventory)
             {
-                hoof = ItemQualitiesContent.ItemQualityGroups.Hoof.GetItemCounts(sender.inventory);
+                hoof = ItemQualitiesContent.ItemQualityGroups.Hoof.GetItemCountsEffective(sender.inventory);
             }
 
-            args.moveSpeedMultAdd += ((0.28f - 0.14f) * hoof.UncommonCount)
-                                   + ((0.49f - 0.14f) * hoof.RareCount)
-                                   + ((0.70f - 0.14f) * hoof.EpicCount)
-                                   + ((0.98f - 0.14f) * hoof.LegendaryCount);
+            args.moveSpeedMultAdd += ((0.28f - 0.14f) * hoof.UncommonCount) +
+                                     ((0.49f - 0.14f) * hoof.RareCount) +
+                                     ((0.70f - 0.14f) * hoof.EpicCount) +
+                                     ((0.98f - 0.14f) * hoof.LegendaryCount);
         }
     }
 }

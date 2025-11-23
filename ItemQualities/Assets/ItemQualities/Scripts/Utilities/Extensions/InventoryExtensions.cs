@@ -13,9 +13,9 @@ namespace ItemQualities.Utilities.Extensions
             foreach (ItemIndex itemIndex in inventory.itemAcquisitionOrder)
             {
                 ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                if (itemDef && itemDef.canRemove && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
+                if (itemDef && itemDef.canRemove && !itemDef.ContainsTag(ItemTag.ObjectiveRelated) && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
                 {
-                    totalCount += inventory.GetItemCount(itemIndex);
+                    totalCount += inventory.GetItemCountPermanent(itemIndex);
                     if (totalCount >= x)
                         return true;
                 }
@@ -36,9 +36,9 @@ namespace ItemQualities.Utilities.Extensions
                     QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
                 {
                     ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                    if (itemDef && itemDef.canRemove && itemDef.tier == itemTier)
+                    if (itemDef && itemDef.canRemove && !itemDef.ContainsTag(ItemTag.ObjectiveRelated) && itemDef.tier == itemTier)
                     {
-                        totalCount += inventory.GetItemCount(itemIndex);
+                        totalCount += inventory.GetItemCountPermanent(itemIndex);
                         if (totalCount >= x)
                             return true;
                     }

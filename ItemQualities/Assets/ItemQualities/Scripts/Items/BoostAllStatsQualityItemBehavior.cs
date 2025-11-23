@@ -38,7 +38,7 @@ namespace ItemQualities.Items
 
         void onInventoryChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetHighestQualityInInventory(_body.inventory);
+            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCountsEffective(_body.inventory).HighestQuality;
             ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.EnsureBuffQualities(_body, buffQualityTier);
         }
 
@@ -73,7 +73,7 @@ namespace ItemQualities.Items
             {
                 if (active)
                 {
-                    QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetHighestQualityInInventory(_body.inventory);
+                    QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCountsEffective(_body.inventory).HighestQuality;
                     _body.AddBuff(ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.GetBuffIndex(buffQualityTier));
                 }
                 else

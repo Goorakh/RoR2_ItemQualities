@@ -84,11 +84,8 @@ GameObject:
   - component: {fileID: 4517546042884142526}
   - component: {fileID: 4517546042884142525}
   - component: {fileID: 4517546042884142524}
-  - component: {fileID: 4517546042884142513}
-  - component: {fileID: 4517546042884142512}
-  - component: {fileID: 4517546042884142515}
   - component: {fileID: 4517546042884142514}
-  - component: {fileID: 4517546042884142527}
+  - component: {fileID: 6021640010633808376}
   m_Layer: 0
   m_Name: QualityChest1
   m_TagString: Untagged
@@ -193,6 +190,7 @@ MonoBehaviour:
   modelVisibility: {fileID: 0}
   modelBaseTransform: {fileID: 4517546042260280345}
   modelScaleCompensation: 1
+  initialScale: {x: 0, y: 0, z: 0}
   autoUpdateModelTransform: 1
   dontDetatchFromParent: 1
   noCorpse: 0
@@ -202,6 +200,8 @@ MonoBehaviour:
   normalizeToFloor: 0
   normalSmoothdampTime: 0.1
   normalMaxAngleDelta: 90
+  shouldOverrideLogbookModel: 0
+  logbookOverrideBodyName: 
 --- !u!114 &4517546042884142502
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,8 +214,6 @@ MonoBehaviour:
   m_Script: {fileID: 871971028, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupIndex:
-    value: 0
   targetRenderer: {fileID: 1820425132203955333}
   strength: 1
   highlightColor: 0
@@ -283,8 +281,11 @@ MonoBehaviour:
   setUnavailableOnTeleporterActivated: 0
   isShrine: 0
   isGoldShrine: 0
+  isDrone: 0
   shouldProximityHighlight: 1
   saleStarCompatible: 1
+  disableSpawnOnInteraction: 0
+  allowRemoteOpInteraction: 0
   requiredExpansion: {fileID: 0}
   lastActivator: {fileID: 0}
   lockGameObject: {fileID: 0}
@@ -315,6 +316,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onDetailedPurchaseServer:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4517546042884142523
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -359,6 +363,7 @@ MonoBehaviour:
   deathSound: 
   barkSound: 
   openSound: Play_UI_chest_unlock
+  jumpSound: 
   landingSound: 
   fallDamageSound: 
   aliveLoopStart: 
@@ -382,94 +387,6 @@ MonoBehaviour:
   bounds: {fileID: 4517546043069505381}
   renderers:
   - {fileID: 1820425132203955333}
---- !u!114 &4517546042884142513
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4517546042884142498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1977880532, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &4517546042884142512
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4517546042884142498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1175172885, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panelPrefab: {fileID: 0}
-  onPickupSelected:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4517546042884142512}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: OnDelusionPickupSelected
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 4517546042884142513}
-        m_TargetAssemblyTypeName: RoR2.NetworkUIPromptController, RoR2
-        m_MethodName: ClearParticipant
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  onServerInteractionBegin:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4517546042884142512}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: SetDelusionOptionsFromInteractor
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  cutoffDistance: 10
-  contextString: DELUSION_MEMORYGAME_PROMPT
-  shouldProximityHighlight: 1
-  synchronizeItemSelectionAcrossNetwork: 0
-  isDelusionChoice: 0
-  isRebirthChoice: 0
-  chestGeneratedFrom: {fileID: 0}
-  multiOptionsAvailable: 0
---- !u!114 &4517546042884142515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4517546042884142498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 1393656223, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  delusionChest: {fileID: 0}
 --- !u!114 &4517546042884142514
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,7 +401,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InspectInfo: {fileID: 11400000, guid: 2aa0afe55bb2a9c4a8e0ebae831a7e1a, type: 2}
   inspectHintOverrideToken: 
---- !u!114 &4517546042884142527
+--- !u!114 &6021640010633808376
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -493,22 +410,46 @@ MonoBehaviour:
   m_GameObject: {fileID: 4517546042884142498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 099ecf8d44d7a9644b7beb48d3648467, type: 3}
+  m_Script: {fileID: -1231560309, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FieldAssignments:
-  - _targetObject: {fileID: 4517546042884142512}
-    _targetObjectComponent: {fileID: 0}
-    TargetObjectComponentType:
-      assemblyQualifiedName: 
-    FieldName: panelPrefab
-    AssetReference:
-      m_AssetGUID: 3cd08790b1abe7c4e8f4390bece3d08d
-      m_SubObjectName: 
-      m_SubObjectType: 
-    AssetTypeOverride:
-      assemblyQualifiedName: 
-  _hasLoaded: 0
+  grabbable: 1
+  breakoutState:
+    _typeName: 
+  dodgeState:
+    _typeName: 
+  breakoutStateMachineName: 
+  massOverride: 250
+  damageOverride: -1
+  damageTypeOverride:
+    damageType: 0
+    damageTypeExtended: 0
+    damageSource: 0
+  collisionToDisable:
+  - {fileID: 7287798788967962091}
+  renderersToDisable:
+  - {fileID: 1820425132203955333}
+  behavioursToDisable:
+  - {fileID: 4517546042884142502}
+  - {fileID: 4517546042884142500}
+  - {fileID: 4517546042884142523}
+  childObjectsToDisable: []
+  pickupDisplaysToDisable: []
+  lightsToDisable: []
+  objectsToDetach: []
+  soundEventsToStop: []
+  soundEventsToPlay: []
+  childSpecialObjectAttributes: []
+  indicatorOffset: {fileID: 8060790248422138574}
+  hullClassification: 0
+  maxDurability: 0
+  orientToFloor: 0
+  durability: 0
+  useSkillHighlightRenderers: 0
+  skillHighlightRenderers: []
+  isVoid: 0
+  bestName: 
+  portraitIcon: {fileID: 0}
 --- !u!1 &4517546043022023861
 GameObject:
   m_ObjectHideFlags: 0
@@ -538,6 +479,37 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4517546042260280345}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5839213616203671113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8060790248422138574}
+  m_Layer: 0
+  m_Name: IndicatorTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8060790248422138574
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5839213616203671113}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1380850205852540966}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4517546043069505378
@@ -689,6 +661,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7cdff1d9a46f26c42af79aff7167acc1, type: 3}
+--- !u!4 &1380850205852540966 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -5937908410715685052, guid: 7cdff1d9a46f26c42af79aff7167acc1, type: 3}
+  m_PrefabInstance: {fileID: 4517546043069505378}
+  m_PrefabAsset: {fileID: 0}
 --- !u!137 &1820425132203955333 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -6344728327540651033, guid: 7cdff1d9a46f26c42af79aff7167acc1, type: 3}

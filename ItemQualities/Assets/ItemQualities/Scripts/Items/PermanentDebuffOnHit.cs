@@ -14,24 +14,37 @@ namespace ItemQualities.Items
         static void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damageInfo)
         {
             orig(self, damageInfo);
-            if (!NetworkServer.active) return;
-            if (!damageInfo.attacker) return;
-			CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
-            if (!attackerBody) return;
-            if (damageInfo.damage <= 0 || damageInfo.procCoefficient <= 0) return;
+
+            if (!NetworkServer.active)
+                return;
+
+            if (!damageInfo.attacker)
+                return;
+
+            CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
+            if (!attackerBody)
+                return;
+
+            if (damageInfo.damage <= 0 || damageInfo.procCoefficient <= 0)
+                return;
+
             CharacterMaster characterMaster = attackerBody.master;
-            if (!characterMaster || !characterMaster.inventory) return;
+            if (!characterMaster || !characterMaster.inventory)
+                return;
 
-            ItemQualityCounts PermanentDebuffOnHit = ItemQualitiesContent.ItemQualityGroups.PermanentDebuffOnHit.GetItemCounts(characterMaster.inventory);
-            int total = PermanentDebuffOnHit.UncommonCount +
-                        PermanentDebuffOnHit.RareCount * 2 +
-                        PermanentDebuffOnHit.EpicCount * 3 +
-                        PermanentDebuffOnHit.LegendaryCount * 5;
+            ItemQualityCounts permanentDebuffOnHit = ItemQualitiesContent.ItemQualityGroups.PermanentDebuffOnHit.GetItemCountsEffective(characterMaster.inventory);
 
-			total *= (int)(damageInfo.damage / attackerBody.damage / 4);
-            for(int i = 0; i < total; i++) {
+            int extraBuffCount = (permanentDebuffOnHit.UncommonCount * 1) +
+                                 (permanentDebuffOnHit.RareCount * 2) +
+                                 (permanentDebuffOnHit.EpicCount * 3) +
+                                 (permanentDebuffOnHit.LegendaryCount * 5);
+
+            extraBuffCount *= (int)((damageInfo.damage / attackerBody.damage) / 4);
+
+            for (int i = 0; i < extraBuffCount; i++)
+            {
                 self.body.AddBuff(DLC1Content.Buffs.PermanentDebuff);
-			}
+            }
         }
     }
 }

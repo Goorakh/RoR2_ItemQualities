@@ -13,22 +13,15 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            int uncommonCount = 0;
-            int rareCount = 0;
-            int epicCount = 0;
-            int legendaryCount = 0;
-            if (sender.inventory)
-            {
-                uncommonCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Syringe.UncommonItemIndex);
-                rareCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Syringe.RareItemIndex);
-                epicCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Syringe.EpicItemIndex);
-                legendaryCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.Syringe.LegendaryItemIndex);
-            }
+            ItemQualityCounts syringe = ItemQualitiesContent.ItemQualityGroups.Syringe.GetItemCountsEffective(sender.inventory);
 
-            args.attackSpeedMultAdd += ((0.30f - 0.15f) * uncommonCount)
-                                     + ((0.60f - 0.15f) * rareCount)
-                                     + ((1.05f - 0.15f) * epicCount)
-                                     + ((1.50f - 0.15f) * legendaryCount);
+            if (syringe.TotalQualityCount > 0)
+            {
+                args.attackSpeedMultAdd += ((0.30f - 0.15f) * syringe.UncommonCount) +
+                                           ((0.60f - 0.15f) * syringe.RareCount) +
+                                           ((1.05f - 0.15f) * syringe.EpicCount) +
+                                           ((1.50f - 0.15f) * syringe.LegendaryCount);
+            }
         }
     }
 }

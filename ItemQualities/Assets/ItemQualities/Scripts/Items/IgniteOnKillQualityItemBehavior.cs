@@ -75,9 +75,12 @@ namespace ItemQualities.Items
         static void setColor(Transform particles, string childName)
         {
             Transform child = particles.Find(childName);
-            if (!child) return;
+            if (!child)
+                return;
+
             ParticleSystemRenderer particleSystem = child.GetComponent<ParticleSystemRenderer>();
-            if (!particles) return;
+            if (!particles)
+                return;
 
             Color color = new Color(1f, 0.1f, 0f);
             particleSystem.material.SetColor("_TintColor", color);
@@ -126,10 +129,18 @@ namespace ItemQualities.Items
 
         void FixedUpdate()
         {
-            if (!NetworkServer.active) return;
-            if (!_icicleAura) return;
-            if (!_body.master) return;
-            if (_icicleAura.finalIcicleCount <= 0) return;
+            if (!NetworkServer.active)
+                return;
+
+            if (!_icicleAura)
+                return;
+
+            if (!_body.master)
+                return;
+
+            if (_icicleAura.finalIcicleCount <= 0)
+                return;
+
             if (_icicleAura.attackStopwatch >= _icicleAura.baseIcicleAttackInterval ||
                 _icicleAura.attackStopwatch == 0)
             {
@@ -159,9 +170,11 @@ namespace ItemQualities.Items
                         {
                             StrengthenBurnUtils.CheckDotForUpgrade(_body.master.inventory, ref dotInfo);
                         }
+
                         DotController.InflictDot(ref dotInfo);
                     }
                 }
+
                 _fireAuraHurtBoxBuffer.Clear();
             }
         }
@@ -169,10 +182,11 @@ namespace ItemQualities.Items
 
     public class GasHandleStacks : NetworkBehaviour
     {
-        private struct OwnerInfo
+        readonly struct OwnerInfo
         {
             public readonly GameObject gameObject;
             public readonly CharacterBody body;
+
             public OwnerInfo(GameObject gameObject)
             {
                 this.gameObject = gameObject;
@@ -204,15 +218,21 @@ namespace ItemQualities.Items
             {
                 _cachedOwnerInfo = new OwnerInfo(owner);
             }
-            if (!_cachedOwnerInfo.body) return;
-            if (!_icicleAura) return;
-            ItemQualityCounts IgniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCounts(_cachedOwnerInfo.body.master.inventory);
-            _icicleAura.icicleDamageCoefficientPerTick = IgniteOnKill.UncommonCount * 1 +
-                                                        IgniteOnKill.RareCount * 2 +
-                                                        IgniteOnKill.EpicCount * 3 +
-                                                        IgniteOnKill.LegendaryCount * 5;
 
-            switch (ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetHighestQualityInInventory(_cachedOwnerInfo.body.master.inventory))
+            if (!_cachedOwnerInfo.body)
+                return;
+
+            if (!_icicleAura)
+                return;
+
+            ItemQualityCounts igniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCountsEffective(_cachedOwnerInfo.body.inventory);
+
+            _icicleAura.icicleDamageCoefficientPerTick = (igniteOnKill.UncommonCount * 1) +
+                                                         (igniteOnKill.RareCount * 2) +
+                                                         (igniteOnKill.EpicCount * 3) +
+                                                         (igniteOnKill.LegendaryCount * 5);
+
+            switch (igniteOnKill.HighestQuality)
             {
                 case QualityTier.Uncommon:
                     _icicleAura.baseIcicleMax = 4;
@@ -234,5 +254,4 @@ namespace ItemQualities.Items
         }
     }
 }
-
 

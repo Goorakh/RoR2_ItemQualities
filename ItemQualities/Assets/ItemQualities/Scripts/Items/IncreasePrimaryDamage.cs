@@ -16,10 +16,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.EntityStates.Seeker.UnseenHand.FixedUpdate += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.AddIncreasePrimaryDamageStack += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.OnSkillActivated += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
 
             On.RoR2.IncreasePrimaryDamageEffectUpdater.LightUpRings += IncreasePrimaryDamageEffectUpdater_LightUpRings;
@@ -73,12 +69,8 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts increasePrimaryDamage = ItemQualitiesContent.ItemQualityGroups.IncreasePrimaryDamage.GetItemCounts(attackerInventory);
+                ItemQualityCounts increasePrimaryDamage = ItemQualitiesContent.ItemQualityGroups.IncreasePrimaryDamage.GetItemCountsEffective(attackerInventory);
                 if (increasePrimaryDamage.TotalQualityCount <= 0)
-                    return false;
-
-                QualityTier procQuality = ItemQualitiesContent.ItemQualityGroups.IncreasePrimaryDamage.GetHighestQualityInInventory(attackerInventory);
-                if (procQuality == QualityTier.None)
                     return false;
 
                 Vector3 victimPosition = victim.transform.position;
@@ -94,13 +86,13 @@ namespace ItemQualities.Items
 
                 attackerBody.TransmitItemBehavior(new CharacterBody.NetworkItemBehaviorData(DLC2Content.Items.IncreasePrimaryDamage.itemIndex, attackerBody.GetBuffCount(DLC2Content.Buffs.IncreasePrimaryDamageBuff)));
 
-                float blastProcCoefficient = procQuality switch
+                float blastProcCoefficient = increasePrimaryDamage.HighestQuality switch
                 {
                     QualityTier.Uncommon => 1.25f,
                     QualityTier.Rare => 1.5f,
                     QualityTier.Epic => 1.75f,
                     QualityTier.Legendary => 2f,
-                    _ => throw new NotImplementedException($"Quality tier {procQuality} is not implemented")
+                    _ => throw new NotImplementedException($"Quality tier {increasePrimaryDamage.HighestQuality} is not implemented")
                 };
 
                 float blastDamageCoefficient = 2.5f + (0.75f * increasePrimaryDamage.UncommonCount) +

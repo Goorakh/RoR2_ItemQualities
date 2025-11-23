@@ -2,6 +2,7 @@
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
+using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.IO;
@@ -83,76 +84,80 @@ namespace ItemQualities
                 yield break;
             }
 
-            AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AddressableUtil.LoadTempAssetAsync(BaseEquipmentReference);
+            AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AssetAsyncReferenceManager<EquipmentDef>.LoadAsset(BaseEquipmentReference);
             yield return baseEquipmentLoad.AsProgressCoroutine(progressReceiver);
 
-            if (baseEquipmentLoad.Status != AsyncOperationStatus.Succeeded)
+            if (baseEquipmentLoad.IsValid() && baseEquipmentLoad.Status == AsyncOperationStatus.Succeeded)
             {
-                Log.Error($"Failed to load base equipment for quality group '{name}': {baseEquipmentLoad.OperationException}");
+                EquipmentDef baseEquipment = baseEquipmentLoad.Result;
+
+                void populateEquipmentAsset(EquipmentDef equipment, QualityTier qualityTier)
+                {
+                    if (!equipment)
+                    {
+                        Log.Warning($"Missing variant '{qualityTier}' in item group '{name}'");
+                        return;
+                    }
+
+                    if (string.IsNullOrEmpty(equipment.nameToken))
+                        equipment.nameToken = $"ITEM_{baseEquipment.name.ToUpper()}_{qualityTier.ToString().ToUpper()}_NAME";
+
+                    if (string.IsNullOrEmpty(equipment.pickupToken))
+                        equipment.pickupToken = baseEquipment.pickupToken;
+
+                    if (string.IsNullOrEmpty(equipment.descriptionToken))
+                        equipment.descriptionToken = baseEquipment.descriptionToken;
+
+                    if (string.IsNullOrEmpty(equipment.loreToken))
+                        equipment.loreToken = baseEquipment.loreToken;
+
+                    if (!equipment.unlockableDef)
+                        equipment.unlockableDef = baseEquipment.unlockableDef;
+
+#pragma warning disable CS0618 // Type or member is obsolete
+                    if (!equipment.pickupModelPrefab)
+                        equipment.pickupModelPrefab = baseEquipment.pickupModelPrefab;
+#pragma warning restore CS0618 // Type or member is obsolete
+
+                    if (equipment.pickupModelReference == null || !equipment.pickupModelReference.RuntimeKeyIsValid())
+                        equipment.pickupModelReference = baseEquipment.pickupModelReference;
+
+                    if (!equipment.pickupIconSprite)
+                        equipment.pickupIconSprite = baseEquipment.pickupIconSprite;
+
+                    if (equipment.colorIndex == ColorCatalog.ColorIndex.None)
+                        equipment.colorIndex = baseEquipment.colorIndex;
+
+                    if (!equipment.passiveBuffDef)
+                        equipment.passiveBuffDef = baseEquipment.passiveBuffDef;
+
+                    equipment.cooldown *= baseEquipment.cooldown;
+
+                    equipment.isConsumed = baseEquipment.isConsumed;
+                    equipment.isLunar = baseEquipment.isLunar;
+                    equipment.isBoss = baseEquipment.isBoss;
+
+                    equipment.canBeRandomlyTriggered = baseEquipment.canBeRandomlyTriggered;
+                    equipment.enigmaCompatible = baseEquipment.enigmaCompatible;
+
+                    equipment.appearsInSinglePlayer = baseEquipment.appearsInSinglePlayer;
+                    equipment.appearsInMultiPlayer = baseEquipment.appearsInMultiPlayer;
+
+                    equipment.requiredExpansion = baseEquipment.requiredExpansion;
+                }
+
+                populateEquipmentAsset(_uncommonEquipment, QualityTier.Uncommon);
+                populateEquipmentAsset(_rareEquipment, QualityTier.Rare);
+                populateEquipmentAsset(_epicEquipment, QualityTier.Epic);
+                populateEquipmentAsset(_legendaryEquipment, QualityTier.Legendary);
+            }
+            else
+            {
+                Log.Error($"Failed to load base equipment for quality group '{name}': {(baseEquipmentLoad.IsValid() ? baseEquipmentLoad.OperationException : "Invalid handle")}");
                 yield break;
             }
 
-            EquipmentDef baseEquipment = baseEquipmentLoad.Result;
-
-            void populateEquipmentAsset(EquipmentDef equipment, QualityTier qualityTier)
-            {
-                if (!equipment)
-                {
-                    Log.Warning($"Missing variant '{qualityTier}' in item group '{name}'");
-                    return;
-                }
-
-                if (string.IsNullOrEmpty(equipment.nameToken))
-                    equipment.nameToken = $"ITEM_{baseEquipment.name.ToUpper()}_{qualityTier.ToString().ToUpper()}_NAME";
-
-                if (string.IsNullOrEmpty(equipment.pickupToken))
-                    equipment.pickupToken = baseEquipment.pickupToken;
-
-                if (string.IsNullOrEmpty(equipment.descriptionToken))
-                    equipment.descriptionToken = baseEquipment.descriptionToken;
-
-                if (string.IsNullOrEmpty(equipment.loreToken))
-                    equipment.loreToken = baseEquipment.loreToken;
-
-                if (!equipment.unlockableDef)
-                    equipment.unlockableDef = baseEquipment.unlockableDef;
-
-#pragma warning disable CS0618 // Type or member is obsolete
-                if (!equipment.pickupModelPrefab)
-                    equipment.pickupModelPrefab = baseEquipment.pickupModelPrefab;
-#pragma warning restore CS0618 // Type or member is obsolete
-
-                if (equipment.pickupModelReference == null || !equipment.pickupModelReference.RuntimeKeyIsValid())
-                    equipment.pickupModelReference = baseEquipment.pickupModelReference;
-
-                if (!equipment.pickupIconSprite)
-                    equipment.pickupIconSprite = baseEquipment.pickupIconSprite;
-
-                if (equipment.colorIndex == ColorCatalog.ColorIndex.None)
-                    equipment.colorIndex = baseEquipment.colorIndex;
-
-                if (!equipment.passiveBuffDef)
-                    equipment.passiveBuffDef = baseEquipment.passiveBuffDef;
-
-                equipment.cooldown *= baseEquipment.cooldown;
-
-                equipment.isConsumed = baseEquipment.isConsumed;
-                equipment.isLunar = baseEquipment.isLunar;
-                equipment.isBoss = baseEquipment.isBoss;
-
-                equipment.canBeRandomlyTriggered = baseEquipment.canBeRandomlyTriggered;
-                equipment.enigmaCompatible = baseEquipment.enigmaCompatible;
-
-                equipment.appearsInSinglePlayer = baseEquipment.appearsInSinglePlayer;
-                equipment.appearsInMultiPlayer = baseEquipment.appearsInMultiPlayer;
-
-                equipment.requiredExpansion = baseEquipment.requiredExpansion;
-            }
-
-            populateEquipmentAsset(_uncommonEquipment, QualityTier.Uncommon);
-            populateEquipmentAsset(_rareEquipment, QualityTier.Rare);
-            populateEquipmentAsset(_epicEquipment, QualityTier.Epic);
-            populateEquipmentAsset(_legendaryEquipment, QualityTier.Legendary);
+            AssetAsyncReferenceManager<EquipmentDef>.UnloadAsset(BaseEquipmentReference);
         }
 
 #if UNITY_EDITOR

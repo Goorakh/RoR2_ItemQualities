@@ -1,6 +1,5 @@
 ﻿using R2API;
 using RoR2;
-using System;
 
 namespace ItemQualities.Items
 {
@@ -9,9 +8,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.AttackSpeedPerNearbyCollider.ServerUpdateValuesFromInventory += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.AttackSpeedPerNearbyCollider.Start += ItemHooks.CombineGroupedItemCountsPatch;
-
             On.RoR2.AttackSpeedPerNearbyCollider.UpdateValues += AttackSpeedPerNearbyCollider_UpdateValues;
 
             On.RoR2.AttackSpeedPerNearbyCollider.SetIndicatorDiameter += AttackSpeedPerNearbyCollider_SetIndicatorDiameter;
@@ -24,7 +20,7 @@ namespace ItemQualities.Items
             BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(sender);
             if (attackSpeedPerNearbyAllyOrEnemyBuff.TotalQualityCount > 0)
             {
-                ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCounts(sender.inventory);
+                ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCountsEffective(sender.inventory);
                 QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;
 
                 float attackSpeedPerBuff = 0f;
@@ -82,7 +78,7 @@ namespace ItemQualities.Items
             BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(self.body);
             if (attackSpeedPerNearbyAllyOrEnemyBuff.TotalQualityCount > 0)
             {
-                ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCounts(self.body.inventory);
+                ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCountsEffective(self.body.inventory);
                 QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;
 
                 float diameterPerBuff = 0f;

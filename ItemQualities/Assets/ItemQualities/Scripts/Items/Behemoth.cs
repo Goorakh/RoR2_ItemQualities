@@ -18,8 +18,6 @@ namespace ItemQualities.Items
 
         static void GlobalEventManager_OnHitAllProcess(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
-
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
                 Log.Error("Failed to find DamageInfo parameter");
@@ -50,7 +48,7 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = damageInfo.attacker.GetComponent<CharacterBody>();
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts behemoth = ItemQualitiesContent.ItemQualityGroups.Behemoth.GetItemCounts(attackerInventory);
+                ItemQualityCounts behemoth = ItemQualitiesContent.ItemQualityGroups.Behemoth.GetItemCountsEffective(attackerInventory);
                 if (behemoth.TotalQualityCount > 0)
                 {
                     float procCoefficient = (0.1f * behemoth.UncommonCount) +

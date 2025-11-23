@@ -18,7 +18,7 @@ namespace ItemQualities.Items
 
             if (damageReport.damageInfo.procCoefficient > 0 && !damageReport.damageInfo.procChainMask.HasProc(ProcType.HealOnHit))
             {
-                ItemQualityCounts seed = ItemQualitiesContent.ItemQualityGroups.Seed.GetItemCounts(damageReport.attackerBody.inventory);
+                ItemQualityCounts seed = ItemQualitiesContent.ItemQualityGroups.Seed.GetItemCountsEffective(damageReport.attackerBody.inventory);
                 if (seed.TotalQualityCount > 0)
                 {
                     ProcChainMask procChainMask = damageReport.damageInfo.procChainMask;

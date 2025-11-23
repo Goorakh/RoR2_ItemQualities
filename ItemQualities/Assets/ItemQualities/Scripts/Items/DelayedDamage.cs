@@ -13,8 +13,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.CharacterBody.UpdateDelayedDamage += ItemHooks.CombineGroupedItemCountsPatch;
-
             On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
@@ -36,7 +34,7 @@ namespace ItemQualities.Items
                     victimInventory = victimBody.inventory;
                 }
 
-                ItemQualityCounts delayedDamage = ItemQualitiesContent.ItemQualityGroups.DelayedDamage.GetItemCounts(victimInventory);
+                ItemQualityCounts delayedDamage = ItemQualitiesContent.ItemQualityGroups.DelayedDamage.GetItemCountsEffective(victimInventory);
 
                 if (delayedDamage.TotalQualityCount > 0 &&
                     !damageInfo.rejected &&

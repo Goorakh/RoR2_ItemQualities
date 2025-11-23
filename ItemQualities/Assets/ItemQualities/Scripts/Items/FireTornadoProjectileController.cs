@@ -42,7 +42,7 @@ namespace ItemQualities.Items
             ItemQualityCounts fireRing = default;
             if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody))
             {
-                fireRing = ItemQualitiesContent.ItemQualityGroups.FireRing.GetItemCounts(ownerBody.inventory);
+                fireRing = ItemQualitiesContent.ItemQualityGroups.FireRing.GetItemCountsEffective(ownerBody.inventory);
             }
 
             float lifetime = _projectileSimple.lifetime;

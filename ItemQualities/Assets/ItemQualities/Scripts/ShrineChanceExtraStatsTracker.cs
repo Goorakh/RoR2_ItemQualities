@@ -55,7 +55,7 @@ namespace ItemQualities
                 CharacterMaster master = playerMaster ? playerMaster.master : null;
                 if (master && master.inventory)
                 {
-                    totalChanceDollCounts += ItemQualitiesContent.ItemQualityGroups.ExtraShrineItem.GetItemCounts(master.inventory);
+                    totalChanceDollCounts += ItemQualitiesContent.ItemQualityGroups.ExtraShrineItem.GetItemCountsEffective(master.inventory);
                 }
             }
 

@@ -13,24 +13,14 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            int uncommonCount = 0;
-            int rareCount = 0;
-            int epicCount = 0;
-            int legendaryCount = 0;
-            if (sender.inventory)
-            {
-                uncommonCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.SprintBonus.UncommonItemIndex);
-                rareCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.SprintBonus.RareItemIndex);
-                epicCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.SprintBonus.EpicItemIndex);
-                legendaryCount = sender.inventory.GetItemCount(ItemQualitiesContent.ItemQualityGroups.SprintBonus.LegendaryItemIndex);
-            }
+            ItemQualityCounts sprintBonus = ItemQualitiesContent.ItemQualityGroups.SprintBonus.GetItemCountsEffective(sender.inventory);
 
-            if (sender.isSprinting)
+            if (sender.isSprinting && sprintBonus.TotalQualityCount > 0)
             {
-                args.moveSpeedMultAdd += (((0.40f - 0.25f) * uncommonCount)
-                                        + ((0.70f - 0.25f) * rareCount)
-                                        + ((1.00f - 0.25f) * epicCount)
-                                        + ((1.50f - 0.25f) * legendaryCount)) / sender.sprintingSpeedMultiplier;
+                args.moveSpeedMultAdd += (((0.40f - 0.25f) * sprintBonus.UncommonCount) +
+                                          ((0.70f - 0.25f) * sprintBonus.RareCount) +
+                                          ((1.00f - 0.25f) * sprintBonus.EpicCount) +
+                                          ((1.50f - 0.25f) * sprintBonus.LegendaryCount)) / sender.sprintingSpeedMultiplier;
             }
         }
     }

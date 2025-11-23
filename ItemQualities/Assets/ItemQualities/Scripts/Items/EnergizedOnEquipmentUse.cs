@@ -10,7 +10,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += EquipmentSlot_OnEquipmentExecuted;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
         static void EquipmentSlot_OnEquipmentExecuted(ILContext il)
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                 BuffIndex warhornBuffIndex = warhornBuffDef ? warhornBuffDef.buffIndex : BuffIndex.None;
                 if (warhornBuffIndex != BuffIndex.None)
                 {
-                    QualityTier buffQuality = ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetHighestQualityInInventory(inventory);
+                    QualityTier buffQuality = ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCountsEffective(inventory).HighestQuality;
                     BuffIndex qualityWarhornBuffIndex = QualityCatalog.GetBuffIndexOfQuality(warhornBuffIndex, buffQuality);
 
                     if (qualityWarhornBuffIndex != BuffIndex.None && qualityWarhornBuffIndex != warhornBuffIndex)

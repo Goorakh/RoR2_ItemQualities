@@ -92,6 +92,7 @@ namespace ItemQualities
 
         public void OnPickupSelected(int pickupIndexInt)
         {
+            /*
             PickupIndex pickupIndex = new PickupIndex(pickupIndexInt);
             PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
 
@@ -176,6 +177,7 @@ namespace ItemQualities
                 OnPickupsSelectedForPurchase?.Invoke(this, interactor, _selectedPickups.AsReadOnly());
                 OnPurchase?.Invoke(interactor);
             }
+            */
         }
 
         [Server]
@@ -203,6 +205,7 @@ namespace ItemQualities
 
         public void SetQualityScrapOptionsFromInteractor(Interactor interactor)
         {
+            /*
             CharacterBody interactorBody = interactor ? interactor.GetComponent<CharacterBody>() : null;
             Inventory interactorInventory = interactorBody ? interactorBody.inventory : null;
             if (!interactorInventory)
@@ -243,6 +246,7 @@ namespace ItemQualities
             List<PickupPickerController.Option> finalOptions = priorityScrapOptions.Count > 0 ? priorityScrapOptions : scrapOptions;
 
             _pickerController.SetOptionsServer(finalOptions.ToArray());
+            */
         }
 
         bool canBeAffordedByInteractor(Interactor interactor)
@@ -338,6 +342,7 @@ namespace ItemQualities
 
         public void OnInteractionBegin(Interactor activator)
         {
+            /*
             if (hasAmbiguousPayment(activator))
             {
                 _pickerController.enabled = true;
@@ -365,6 +370,7 @@ namespace ItemQualities
 
                 OnPurchase?.Invoke(activator);
             }
+            */
         }
 
         public bool ShouldIgnoreSpherecastForInteractibility(Interactor activator)

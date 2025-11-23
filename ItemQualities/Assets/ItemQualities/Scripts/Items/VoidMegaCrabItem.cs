@@ -10,8 +10,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.VoidMegaCrabItemBehavior.GetMaxProjectiles += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.VoidMegaCrabItemBehavior.FixedUpdate += VoidMegaCrabItemBehavior_FixedUpdate;
             On.RoR2.VoidMegaCrabItemBehavior.OnMasterSpawned += VoidMegaCrabItemBehavior_OnMasterSpawned;
         }
@@ -41,7 +39,7 @@ namespace ItemQualities.Items
 
                 if (inventory)
                 {
-                    ItemQualityCounts voidMegaCrabItem = ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem.GetItemCounts(inventory);
+                    ItemQualityCounts voidMegaCrabItem = ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem.GetItemCountsEffective(inventory);
                     if (voidMegaCrabItem.TotalQualityCount > 0)
                     {
                         spawnRate += (0.1f * voidMegaCrabItem.UncommonCount) +
@@ -62,7 +60,7 @@ namespace ItemQualities.Items
             CharacterBody body = self ? self.body : null;
             Inventory inventory = body ? body.inventory : null;
 
-            ItemQualityCounts voidMegaCrabItem = ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem.GetItemCounts(inventory);
+            ItemQualityCounts voidMegaCrabItem = ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem.GetItemCountsEffective(inventory);
             if (voidMegaCrabItem.TotalQualityCount > 0)
             {
                 int damageBoostAmount = (3 * voidMegaCrabItem.UncommonCount) +
@@ -72,7 +70,7 @@ namespace ItemQualities.Items
 
                 if (spawnResult.spawnedInstance && spawnResult.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster) && spawnedMaster.inventory)
                 {
-                    spawnedMaster.inventory.GiveItem(RoR2Content.Items.BoostDamage, damageBoostAmount);
+                    spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostDamage, damageBoostAmount);
                 }
             }
         }

@@ -19,8 +19,6 @@ namespace ItemQualities.Items
                 Log.Warning("Failed to find limbo scene index");
             }
 
-            IL.EntityStates.TeleporterHealNovaController.TeleporterHealNovaGeneratorMain.CalculatePulseCount += ItemHooks.CombineGroupedItemCountsPatch;
-
             On.EntityStates.Missions.Goldshores.GoldshoresBossfight.SpawnBoss += GoldshoresBossfight_SpawnBoss;
 
             Stage.onServerStageBegin += onServerStageBegin;

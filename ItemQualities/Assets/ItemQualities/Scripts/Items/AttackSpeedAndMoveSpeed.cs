@@ -20,11 +20,7 @@ namespace ItemQualities.Items
         {
             Inventory inventory = sender ? sender.inventory : null;
 
-            ItemQualityCounts attackSpeedAndMoveSpeed = default;
-            if (inventory)
-            {
-                attackSpeedAndMoveSpeed = ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed.GetItemCounts(inventory);
-            }
+            ItemQualityCounts attackSpeedAndMoveSpeed = ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed.GetItemCountsEffective(inventory);
 
             switch (_currentCallBonusType)
             {
@@ -53,10 +49,10 @@ namespace ItemQualities.Items
             ItemQualityCounts attackSpeedAndMoveSpeed = default;
             if (self && self.inventory)
             {
-                attackSpeedAndMoveSpeed = ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed.GetItemCounts(self.inventory);
+                attackSpeedAndMoveSpeed = ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed.GetItemCountsEffective(self.inventory);
             }
 
-            if (attackSpeedAndMoveSpeed.TotalCount > attackSpeedAndMoveSpeed.BaseItemCount)
+            if (attackSpeedAndMoveSpeed.TotalQualityCount > 0)
             {
                 BonusType bonusType = BonusType.None;
 

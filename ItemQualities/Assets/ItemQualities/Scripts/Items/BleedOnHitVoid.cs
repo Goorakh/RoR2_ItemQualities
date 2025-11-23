@@ -1,5 +1,4 @@
-﻿using MonoMod.Cil;
-using RoR2;
+﻿using RoR2;
 using System;
 
 namespace ItemQualities.Items
@@ -21,11 +20,7 @@ namespace ItemQualities.Items
                     CharacterBody attackerBody = inflictDotInfo.attackerObject ? inflictDotInfo.attackerObject.GetComponent<CharacterBody>() : null;
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts bleedOnHitVoid = default;
-                    if (attackerInventory)
-                    {
-                        bleedOnHitVoid = ItemQualitiesContent.ItemQualityGroups.BleedOnHitVoid.GetItemCounts(attackerInventory);
-                    }
+                    ItemQualityCounts bleedOnHitVoid = ItemQualitiesContent.ItemQualityGroups.BleedOnHitVoid.GetItemCountsEffective(attackerInventory);
 
                     if (bleedOnHitVoid.TotalQualityCount > 0)
                     {

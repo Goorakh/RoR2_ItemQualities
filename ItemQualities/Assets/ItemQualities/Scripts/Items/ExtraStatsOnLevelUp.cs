@@ -4,7 +4,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
@@ -15,8 +14,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.CharacterMaster.TrackBeadExperience += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
 
@@ -44,7 +41,7 @@ namespace ItemQualities.Items
             {
                 if (body && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                 {
-                    bodyExtraStats.LastExtraStatsOnLevelUpCounts = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCounts(body.inventory);
+                    bodyExtraStats.LastExtraStatsOnLevelUpCounts = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
                 }
             }
 
@@ -61,7 +58,7 @@ namespace ItemQualities.Items
                 if (!body || !body.isPlayerControlled || !body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     return PackLevelBonuses(0, 0);
 
-                ItemQualityCounts extraStatsOnLevelUp = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCounts(body.inventory);
+                ItemQualityCounts extraStatsOnLevelUp = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
 
                 ItemQualityCounts beadsSpent = bodyExtraStats.LastExtraStatsOnLevelUpCounts - extraStatsOnLevelUp;
 

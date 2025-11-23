@@ -52,11 +52,7 @@ namespace ItemQualities.Items
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
                 TeamIndex attackerTeam = TeamComponent.GetObjectTeam(attacker);
 
-                ItemQualityCounts nearbyDamageBonus = default;
-                if (attackerInventory)
-                {
-                    nearbyDamageBonus = ItemQualitiesContent.ItemQualityGroups.NearbyDamageBonus.GetItemCounts(attackerInventory);
-                }
+                ItemQualityCounts nearbyDamageBonus = ItemQualitiesContent.ItemQualityGroups.NearbyDamageBonus.GetItemCountsEffective(attackerInventory);
 
                 if (nearbyDamageBonus.TotalCount > nearbyDamageBonus.BaseItemCount)
                 {

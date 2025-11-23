@@ -91,7 +91,7 @@ namespace ItemQualities.Items
             if (!self?.characterBody)
                 return prefab;
 
-            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCounts(self.characterBody.inventory);
+            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(self.characterBody.inventory);
             int maxJumps = (feather.UncommonCount * 3) +
                            (feather.RareCount * 5) +
                            (feather.EpicCount * 7) +
@@ -130,7 +130,7 @@ namespace ItemQualities.Items
             if (report.attackerBody == null)
                 return;
 
-            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCounts(report.attackerBody.inventory);
+            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(report.attackerBody.inventory);
 
             int maxJumps = (feather.UncommonCount * 2) +
                            (feather.RareCount * 4) +

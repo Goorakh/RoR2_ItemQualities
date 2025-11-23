@@ -36,7 +36,7 @@ namespace ItemQualities.Items
                 ItemQualityCounts flatHealth = default;
                 if (inventory)
                 {
-                    flatHealth = ItemQualitiesContent.ItemQualityGroups.FlatHealth.GetItemCounts(inventory);
+                    flatHealth = ItemQualitiesContent.ItemQualityGroups.FlatHealth.GetItemCountsEffective(inventory);
                 }
 
                 if (flatHealth.TotalQualityCount > 0)
@@ -69,10 +69,10 @@ namespace ItemQualities.Items
             ItemQualityCounts flatHealth = default;
             if (inventory)
             {
-                flatHealth = ItemQualitiesContent.ItemQualityGroups.FlatHealth.GetItemCounts(inventory);
+                flatHealth = ItemQualitiesContent.ItemQualityGroups.FlatHealth.GetItemCountsEffective(inventory);
             }
 
-            if (flatHealth.TotalCount > flatHealth.BaseItemCount)
+            if (flatHealth.TotalQualityCount > 0)
             {
                 if (master && master.TryGetComponent(out CharacterMasterExtraStatsTracker masterExtraStatsTracker))
                 {

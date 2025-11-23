@@ -2,14 +2,12 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using RoR2;
+using RoR2.UI;
 using System;
 using System.Collections;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
@@ -22,63 +20,162 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.EntityStates.Headstompers.HeadstompersCooldown.OnEnter += CombineGroupedItemCountsPatch;
-            IL.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.AddMultiKill += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.GetMaxIncreasedDamageMultiKillBuffsForCharacter += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.OnClientBuffsChanged += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.OnInventoryChanged += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.OnKilledOtherServer += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.TriggerEnemyDebuffs += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterBody.UpdateMultiKill += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterMaster.GetDeployableSameSlotLimit += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterMaster.OnBodyStart += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterMaster.OnInventoryChanged += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterModel.UpdateItemDisplay += CombineGroupedItemCountsPatch;
-            IL.RoR2.CharacterModel.UpdateOverlays += CombineGroupedItemCountsPatch;
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += CombineGroupedItemCountsPatch;
-            IL.RoR2.FootstepHandler.Footstep_string_GameObject += CombineGroupedItemCountsPatch;
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += CombineGroupedItemCountsPatch;
-            IL.RoR2.GlobalEventManager.OnCharacterHitGroundServer += CombineGroupedItemCountsPatch;
-            IL.RoR2.GlobalEventManager.OnCrit += CombineGroupedItemCountsPatch;
-            IL.RoR2.GlobalEventManager.OnInteractionBegin += CombineGroupedItemCountsPatch;
-            IL.RoR2.GlobalEventManager.ProcDeathMark += CombineGroupedItemCountsPatch;
-            IL.RoR2.GlobalEventManager.ProcessHitEnemy += CombineGroupedItemCountsPatch;
-            IL.RoR2.HealthComponent.TakeDamageProcess += CombineGroupedItemCountsPatch;
-            IL.RoR2.Inventory.CalculateEquipmentCooldownScale += CombineGroupedItemCountsPatch;
-            IL.RoR2.Inventory.GetEquipmentSlotMaxCharges += CombineGroupedItemCountsPatch;
-            IL.RoR2.Inventory.UpdateEquipment += CombineGroupedItemCountsPatch;
-            IL.RoR2.Items.BaseItemBodyBehavior.UpdateBodyItemBehaviorStacks += CombineGroupedItemCountsPatch;
-            IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += CombineGroupedItemCountsPatch;
-            IL.RoR2.PurchaseInteraction.OnInteractionBegin += CombineGroupedItemCountsPatch;
-            IL.RoR2.SceneDirector.PopulateScene += CombineGroupedItemCountsPatch;
-            IL.RoR2.SetStateOnHurt.OnTakeDamageServer += CombineGroupedItemCountsPatch;
-            IL.RoR2.ShrineChanceBehavior.AddShrineStack += CombineGroupedItemCountsPatch;
-            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += CombineGroupedItemCountsPatch;
-            IL.RoR2.Util.GetItemCountForTeam += CombineGroupedItemCountsPatch;
-            IL.RoR2.Util.GetItemCountGlobal += CombineGroupedItemCountsPatch;
+            IL.RoR2.Inventory.UpdateEffectiveItemStacks += Inventory_UpdateEffectiveItemStacks;
 
-            ConstructorInfo itemCountsCtor = typeof(HealthComponent.ItemCounts).GetConstructor(new Type[] { typeof(Inventory) });
-            if (itemCountsCtor != null)
-            {
-                new ILHook(itemCountsCtor, CombineGroupedItemCountsPatch);
-            }
-            else
-            {
-                Log.Error("Failed to find Inventory.ItemCounts..ctor");
-            }
+            IL.RoR2.UI.ItemInventoryDisplay.OnInventoryChanged += ItemInventoryDisplay_OnInventoryChanged;
+            IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
 
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
 
-            On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            On.RoR2.HealthComponent.GetBarrierDecayRate += HealthComponent_GetBarrierDecayRate;
 
             On.RoR2.CharacterBody.AddMultiKill += CharacterBody_AddMultiKill;
 
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+        }
+
+        static void Inventory_UpdateEffectiveItemStacks(ILContext il)
+        {
+            if (!il.Method.TryFindParameter<ItemIndex>(out ParameterDefinition itemIndexParameter))
+            {
+                Log.Error("Failed to find ItemIndex parameter");
+                return;
+            }
+
+            ILCursor c = new ILCursor(il);
+
+            ILCursor[] foundCursors;
+            if (!c.TryFindNext(out foundCursors,
+                               x => x.MatchLdflda<Inventory>(nameof(Inventory.effectiveItemStacks)),
+                               x => x.MatchCallOrCallvirt<ItemCollection>(nameof(ItemCollection.SetStackValue))))
+            {
+                Log.Error("Failed to find effectiveItemStacks.SetStackValue call");
+                return;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After); // call ItemCollection.SetStackValue
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg, itemIndexParameter);
+            c.EmitDelegate<Action<Inventory, ItemIndex>>(onSetEffectiveItemCount);
+
+            static void onSetEffectiveItemCount(Inventory inventory, ItemIndex itemIndex)
+            {
+                if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
+                {
+                    ItemIndex baseQualityItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
+                    if (baseQualityItemIndex != ItemIndex.None && baseQualityItemIndex != itemIndex)
+                    {
+                        inventory.UpdateEffectiveItemStacks(baseQualityItemIndex);
+                    }
+                }
+            }
+
+            int effectiveItemCountVarIndex = -1;
+            if (!c.TryFindPrev(out foundCursors,
+                               x => x.MatchLdloc(typeof(int), il, out effectiveItemCountVarIndex)))
+            {
+                Log.Error("Failed to find effectiveItemCount variable");
+                return;
+            }
+
+            if (!c.TryFindPrev(out foundCursors,
+                               x => x.MatchStloc(effectiveItemCountVarIndex),
+                               x => x.MatchCall(typeof(Math), nameof(Math.Clamp)),
+                               x => x.MatchCallOrCallvirt<Inventory>("get_" + nameof(Inventory.inventoryDisabled))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[0].Next, MoveType.After);
+
+            c.Emit(OpCodes.Ldloc, effectiveItemCountVarIndex);
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg, itemIndexParameter);
+            c.EmitDelegate<Func<Inventory, ItemIndex, int>>(getEffectiveItemCountFromQualities);
+            c.Emit(OpCodes.Add);
+            c.Emit(OpCodes.Stloc, effectiveItemCountVarIndex);
+
+            static int getEffectiveItemCountFromQualities(Inventory inventory, ItemIndex itemIndex)
+            {
+                QualityTier qualityTier = QualityCatalog.GetQualityTier(itemIndex);
+                if (qualityTier > QualityTier.None)
+                    return 0;
+
+                ItemQualityGroup qualityGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
+                if (!qualityGroup)
+                    return 0;
+
+                return qualityGroup.GetItemCountsEffective(inventory).TotalQualityCount;
+            }
+        }
+
+        static void ItemInventoryDisplay_OnInventoryChanged(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.WriteItemStacks))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<ItemInventoryDisplay>>(undoQualityEffectiveStacks);
+
+            static void undoQualityEffectiveStacks(ItemInventoryDisplay itemInventoryDisplay)
+            {
+                if (!itemInventoryDisplay.inventory || itemInventoryDisplay.itemStacks == null || itemInventoryDisplay.itemStacks.Length != ItemCatalog.itemCount)
+                    return;
+
+                for (ItemQualityGroupIndex itemGroupIndex = 0; (int)itemGroupIndex < QualityCatalog.ItemQualityGroupCount; itemGroupIndex++)
+                {
+                    ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(itemGroupIndex);
+                    if (itemGroup.BaseItemIndex != ItemIndex.None)
+                    {
+                        ref int baseItemCount = ref itemInventoryDisplay.itemStacks[(int)itemGroup.BaseItemIndex];
+                        if (baseItemCount > 0)
+                        {
+                            ItemQualityCounts itemCounts = itemGroup.GetItemCountsEffective(itemInventoryDisplay.inventory);
+                            baseItemCount = Math.Max(0, baseItemCount - itemCounts.TotalQualityCount);
+                        }
+                    }
+                }
+            }
+        }
+
+        static void ScrapperInfoPanelHelper_AddQuantityToPickerButton(ILContext il)
+        {
+            if (!il.Method.TryFindParameter<PickupDef>(out ParameterDefinition pickupDefParameter))
+            {
+                Log.Error("Failed to find PickupDef parameter");
+                return;
+            }
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg, pickupDefParameter);
+            c.EmitDelegate<Func<int, ScrapperInfoPanelHelper, PickupDef, int>>(getItemCountPermanent);
+
+            static int getItemCountPermanent(int itemCount, ScrapperInfoPanelHelper scrapperInfoPanelHelper, PickupDef pickupDef)
+            {
+                if (pickupDef != null && pickupDef.itemIndex != ItemIndex.None && scrapperInfoPanelHelper && scrapperInfoPanelHelper.cachedBodyInventory)
+                {
+                    itemCount = scrapperInfoPanelHelper.cachedBodyInventory.GetItemCountPermanent(pickupDef.itemIndex);
+                }
+
+                return itemCount;
+            }
         }
 
         static void HealthComponent_TakeDamageProcess(ILContext il)
@@ -131,107 +228,34 @@ namespace ItemQualities.Items
             orig(self, kills);
         }
 
-        static void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
+        static float HealthComponent_GetBarrierDecayRate(On.RoR2.HealthComponent.orig_GetBarrierDecayRate orig, HealthComponent self)
         {
-            orig(self);
-
+            float barrierDecayRate = orig(self);
+            
             if (self && self.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
             {
-                self.barrierDecayRate *= extraStatsTracker.BarrierDecayRateMultiplier;
+                barrierDecayRate *= extraStatsTracker.BarrierDecayRateMultiplier;
             }
+
+            return barrierDecayRate;
         }
 
         static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)
         {
-            ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
-            if (itemGroup)
-            {
-                itemIndex = itemGroup.BaseItemIndex;
-            }
-
-            return orig(self, itemIndex);
+            return orig(self, QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None));
         }
 
-        public static void CombineGroupedItemCountsPatch(ILContext il)
+        public static bool MatchCallLocalCheckRoll(Instruction instruction)
         {
-            ILCursor c = new ILCursor(il);
-
-            VariableDefinition inventoryTempVar = il.AddVariable<Inventory>();
-            VariableDefinition itemIndexTempVar = il.AddVariable<ItemIndex>();
-            VariableDefinition itemDefTempVar = il.AddVariable<ItemDef>();
-
-            int patchCount = 0;
-
-            while (c.TryGotoNext(MoveType.Before,
-                                 x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount))))
+            if (instruction.MatchCallOrCallvirt(out MethodReference method) && !string.IsNullOrEmpty(method?.Name))
             {
-                EmitSingleCombineGroupedItemCounts(c, inventoryTempVar, itemIndexTempVar, itemDefTempVar);
-
-                patchCount++;
-            }
-
-            if (patchCount == 0)
-            {
-                Log.Error($"Failed to find patch location for {il.Method.FullName}");
-            }
-            else
-            {
-                Log.Debug($"Found {patchCount} patch location(s) for {il.Method.FullName}");
-            }
-        }
-
-        public static void EmitSingleCombineGroupedItemCounts(ILCursor c, VariableDefinition inventoryTempVar = null, VariableDefinition itemIndexTempVar = null, VariableDefinition itemDefTempVar = null)
-        {
-            if (!c.Next.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)))
-            {
-                Log.Error($"Cursor must be placed before a GetItemCount call: {new StackTrace()}");
-                return;
-            }
-
-            inventoryTempVar ??= c.Context.AddVariable<Inventory>();
-
-            bool isItemIndex = ((MethodReference)c.Next.Operand).Parameters[0].ParameterType.Is(typeof(ItemIndex));
-
-            VariableDefinition itemArgTempVar = isItemIndex ? itemIndexTempVar : itemDefTempVar;
-            itemArgTempVar ??= c.Context.AddVariable(isItemIndex ? typeof(ItemIndex) : typeof(ItemDef));
-
-            c.EmitStoreStack(inventoryTempVar, itemArgTempVar);
-
-            c.Index++;
-
-            c.Emit(OpCodes.Ldloc, inventoryTempVar);
-            c.Emit(OpCodes.Ldloc, itemArgTempVar);
-
-            static int tryGetCombinedItemCountShared(int baseItemCount, Inventory inventory, ItemIndex itemIndex)
-            {
-                if (inventory)
+                if (method.Name.Contains(">g__LocalCheckRoll|"))
                 {
-                    ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
-                    if (itemGroup)
-                    {
-                        baseItemCount = itemGroup.GetItemCounts(inventory).TotalCount;
-                    }
-                }
-
-                return baseItemCount;
-            }
-
-            if (isItemIndex)
-            {
-                c.EmitDelegate<Func<int, Inventory, ItemIndex, int>>(tryGetCombinedItemCount);
-                static int tryGetCombinedItemCount(int baseItemCount, Inventory inventory, ItemIndex itemIndex)
-                {
-                    return tryGetCombinedItemCountShared(baseItemCount, inventory, itemIndex);
+                    return true;
                 }
             }
-            else
-            {
-                c.EmitDelegate<Func<int, Inventory, ItemDef, int>>(tryGetCombinedItemCount);
-                static int tryGetCombinedItemCount(int baseItemCount, Inventory inventory, ItemDef itemDef)
-                {
-                    return tryGetCombinedItemCountShared(baseItemCount, inventory, itemDef ? itemDef.itemIndex : ItemIndex.None);
-                }
-            }
+
+            return false;
         }
 
         public static bool TryFindNextItemCountVariable(ILCursor c, Type itemDeclaringType, string itemName, out VariableDefinition itemCountVariable)
@@ -239,7 +263,7 @@ namespace ItemQualities.Items
             int itemCountVariableIndex = -1;
             if (c.TryFindNext(out ILCursor[] foundCursors,
                               x => x.MatchLdsfld(itemDeclaringType, itemName),
-                              x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)),
+                              x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective)),
                               x => x.MatchStloc(out itemCountVariableIndex) && c.Context.Method.Body.Variables[itemCountVariableIndex].VariableType.Is(typeof(int))))
             {
                 itemCountVariable = c.Context.Method.Body.Variables[itemCountVariableIndex];
@@ -249,5 +273,104 @@ namespace ItemQualities.Items
             itemCountVariable = null;
             return false;
         }
+
+        public static bool EmitCombinedQualityItemTransformationPatch(ILCursor c)
+        {
+            return EmitCombinedQualityItemTransformationPatch(c, out _);
+        }
+
+        public static bool EmitCombinedQualityItemTransformationPatch(ILCursor c, out VariableDefinition qualityItemTransformResultVar)
+        {
+            qualityItemTransformResultVar = null;
+
+            if (!c.Prev.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform)))
+            {
+                Log.Error($"Cursor must be located directly after an Inventory.ItemTransformation.TryTransform call. {c.Context.Method.FullName} at {c.Prev.SafeToString()}");
+                return false;
+            }
+
+            c.Index--;
+
+            VariableDefinition itemTransformationVar = c.Context.AddVariable(typeof(Inventory.ItemTransformation).MakeByRefType());
+            VariableDefinition inventoryVar = c.Context.AddVariable<Inventory>();
+            VariableDefinition resultByRefVar = c.Context.AddVariable(typeof(Inventory.ItemTransformation.TryTransformResult).MakeByRefType());
+            qualityItemTransformResultVar = c.Context.AddVariable<QualityItemTransformResult>();
+
+            c.EmitStoreStack(itemTransformationVar, inventoryVar, resultByRefVar);
+
+            c.Index++;
+
+            c.Emit(OpCodes.Ldloc, itemTransformationVar);
+            c.Emit(OpCodes.Ldloc, inventoryVar);
+            c.Emit(OpCodes.Ldloc, resultByRefVar);
+            c.Emit(OpCodes.Ldloca, qualityItemTransformResultVar);
+            c.EmitDelegate<TryTransformCombinedQualitiesDelegate>(tryTransformCombinedQualities);
+
+            static bool tryTransformCombinedQualities(bool result, in Inventory.ItemTransformation itemTransformation, Inventory inventory, ref Inventory.ItemTransformation.TryTransformResult transformResult, out QualityItemTransformResult qualityItemTransformResult)
+            {
+                qualityItemTransformResult = QualityItemTransformResult.Create();
+
+                if (result)
+                {
+                    qualityItemTransformResult.TakenItems.ItemIndex = transformResult.takenItem.itemIndex;
+                    qualityItemTransformResult.GivenItems.ItemIndex = transformResult.givenItem.itemIndex;
+
+                    qualityItemTransformResult.TakenItems.StackValues.AddItemCountsFrom(transformResult.takenItem.stackValues, QualityTier.None);
+                }
+                else
+                {
+                    qualityItemTransformResult.TakenItems.ItemIndex = itemTransformation.originalItemIndex;
+                    qualityItemTransformResult.GivenItems.ItemIndex = itemTransformation.newItemIndex;
+                }
+
+                int totalTransformed = result ? transformResult.totalTransformed : 0;
+
+                if (totalTransformed < itemTransformation.maxToTransform)
+                {
+                    for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                    {
+                        ItemIndex qualityOriginalItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.originalItemIndex, qualityTier);
+                        ItemIndex qualityNewItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.newItemIndex, qualityTier);
+
+                        if (qualityOriginalItemIndex != itemTransformation.originalItemIndex &&
+                            ((itemTransformation.newItemIndex == ItemIndex.None) || qualityNewItemIndex != itemTransformation.newItemIndex))
+                        {
+                            Inventory.ItemTransformation qualityItemTransformation = itemTransformation;
+                            qualityItemTransformation.originalItemIndex = qualityOriginalItemIndex;
+                            qualityItemTransformation.newItemIndex = qualityNewItemIndex;
+                            qualityItemTransformation.maxToTransform = itemTransformation.maxToTransform - totalTransformed;
+
+                            if (qualityItemTransformation.TryTransform(inventory, out Inventory.ItemTransformation.TryTransformResult qualityTransformResult))
+                            {
+                                result |= true;
+
+                                static void addStackValues(ref Inventory.ItemStackValues a, in Inventory.ItemStackValues b)
+                                {
+                                    a.permanentStacks += b.permanentStacks;
+                                    a.temporaryStacksValue += b.temporaryStacksValue;
+                                    a.totalStacks += b.totalStacks;
+                                }
+
+                                addStackValues(ref transformResult.takenItem.stackValues, qualityTransformResult.takenItem.stackValues);
+                                addStackValues(ref transformResult.givenItem.stackValues, qualityTransformResult.givenItem.stackValues);
+
+                                qualityItemTransformResult.TakenItems.StackValues.AddItemCountsFrom(qualityTransformResult.takenItem.stackValues, qualityTier);
+                                qualityItemTransformResult.GivenItems.StackValues.AddItemCountsFrom(qualityTransformResult.givenItem.stackValues, qualityTier);
+
+                                totalTransformed += qualityTransformResult.totalTransformed;
+                                if (totalTransformed >= itemTransformation.maxToTransform)
+                                    break;
+                            }
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            return true;
+        }
+
+        delegate bool TryTransformCombinedQualitiesDelegate(bool result, in Inventory.ItemTransformation itemTransformation, Inventory inventory, ref Inventory.ItemTransformation.TryTransformResult transformResult, out QualityItemTransformResult qualityItemTransformResult);
     }
 }

@@ -53,7 +53,7 @@ namespace ItemQualities
 
         public float LegendaryQualityWeight = 0.02f;
 
-        readonly WeightedSelection<PickupIndex> _selector = new WeightedSelection<PickupIndex>();
+        readonly WeightedSelection<UniquePickup> _selector = new WeightedSelection<UniquePickup>();
 
         readonly WeightedSelection<QualityTier> _qualityTierSelection = new WeightedSelection<QualityTier>();
 
@@ -170,7 +170,7 @@ namespace ItemQualities
                                 PickupIndex qualityPickupIndex = QualityCatalog.GetPickupIndexOfQuality(pickupIndex, qualityTier);
                                 if (qualityPickupIndex != PickupIndex.none && (qualityTier == QualityTier.None || qualityPickupIndex != pickupIndex))
                                 {
-                                    _selector.AddChoice(qualityPickupIndex, weight * qualityWeight);
+                                    _selector.AddChoice(new UniquePickup(qualityPickupIndex), weight * qualityWeight);
                                 }
                             }
                         }
@@ -216,36 +216,51 @@ namespace ItemQualities
             return pickupIndex;
         }
 
-        public override PickupIndex GenerateDropPreReplacement(Xoroshiro128Plus rng)
+        public override UniquePickup GeneratePickupPreReplacement(Xoroshiro128Plus rng)
         {
             rng = new Xoroshiro128Plus(rng.nextUlong);
 
-            PickupIndex pickupIndex = GenerateDropFromWeightedSelection(rng, _selector);
+            UniquePickup pickup = GeneratePickupFromWeightedSelection(rng, _selector);
 
             PickupRollInfo rollInfo = DropTableQualityHandler.GetCurrentPickupRollInfo();
-            pickupIndex = tryRerollQuality(pickupIndex, rng, rollInfo.Luck);
+            pickup = pickup.WithPickupIndex(tryRerollQuality(pickup.pickupIndex, rng, rollInfo.Luck));
 
-            return pickupIndex;
+            return pickup;
+        }
+
+        public override void GenerateDistinctPickupsPreReplacement(List<UniquePickup> dest, int desiredCount, Xoroshiro128Plus rng)
+        {
+            rng = new Xoroshiro128Plus(rng.nextUlong);
+
+            GenerateDistinctFromWeightedSelection(dest, desiredCount, rng, _selector);
+
+            PickupRollInfo rollInfo = DropTableQualityHandler.GetCurrentPickupRollInfo();
+            for (int i = 0; i < dest.Count; i++)
+            {
+                UniquePickup pickup = dest[i];
+
+                bool changed = false;
+
+                if (pickup.isValid)
+                {
+                    PickupIndex qualityPickupIndex = tryRerollQuality(pickup.pickupIndex, rng, rollInfo.Luck);
+                    if (qualityPickupIndex != pickup.pickupIndex)
+                    {
+                        pickup = pickup.WithPickupIndex(qualityPickupIndex);
+                        changed = true;
+                    }
+                }
+
+                if (changed)
+                {
+                    dest[i] = pickup;
+                }
+            }
         }
 
         public override int GetPickupCount()
         {
             return _selector.Count;
-        }
-
-        public override PickupIndex[] GenerateUniqueDropsPreReplacement(int maxDrops, Xoroshiro128Plus rng)
-        {
-            rng = new Xoroshiro128Plus(rng.nextUlong);
-
-            PickupIndex[] pickupIndices = GenerateUniqueDropsFromWeightedSelection(maxDrops, rng, _selector);
-
-            PickupRollInfo rollInfo = DropTableQualityHandler.GetCurrentPickupRollInfo();
-            for (int i = 0; i < pickupIndices.Length; i++)
-            {
-                pickupIndices[i] = tryRerollQuality(pickupIndices[i], rng, rollInfo.Luck);
-            }
-
-            return pickupIndices;
         }
     }
 }

@@ -31,11 +31,11 @@ namespace EntityStates.MushroomShield
             if (!_ownerBody)
                 return;
 
-            ItemQualityCounts mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCounts(_ownerBody.inventory);
+            ItemQualityCounts mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCountsEffective(_ownerBody.inventory);
             _undeployLifetime = (1 * mushroom.UncommonCount) +
-                                  (3 * mushroom.RareCount) +
-                                  (6 * mushroom.EpicCount) +
-                                  (12 * mushroom.LegendaryCount);
+                                (3 * mushroom.RareCount) +
+                                (6 * mushroom.EpicCount) +
+                                (12 * mushroom.LegendaryCount);
 
             float scale = 30f;
             switch (mushroom.HighestQuality)

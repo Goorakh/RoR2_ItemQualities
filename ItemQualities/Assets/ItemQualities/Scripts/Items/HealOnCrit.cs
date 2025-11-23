@@ -19,7 +19,7 @@ namespace ItemQualities.Items
 
             if (sender.HasBuff(ItemQualitiesContent.Buffs.HealCritBoost))
             {
-                QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetHighestQualityInInventory(sender.inventory);
+                QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(sender.inventory).HighestQuality;
 
                 float crit = 0f;
                 switch (qualityTier)

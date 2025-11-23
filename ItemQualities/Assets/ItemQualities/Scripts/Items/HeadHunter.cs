@@ -13,14 +13,13 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts headHunter = ItemQualitiesContent.ItemQualityGroups.HeadHunter.GetItemCounts(sender.inventory);
+            ItemQualityCounts headHunter = ItemQualitiesContent.ItemQualityGroups.HeadHunter.GetItemCountsEffective(sender.inventory);
             if (headHunter.TotalQualityCount > 0)
             {
                 int eliteBuffCount = 0;
-                for (BuffIndex buffIndex = 0; (int)buffIndex < BuffCatalog.buffCount; buffIndex++)
+                foreach (BuffIndex buffIndex in BuffCatalog.eliteBuffIndices)
                 {
-                    BuffDef buffDef = BuffCatalog.GetBuffDef(buffIndex);
-                    if (buffDef && buffDef.isElite && sender.HasBuff(buffDef))
+                    if (sender.HasBuff(buffIndex))
                     {
                         eliteBuffCount++;
                     }

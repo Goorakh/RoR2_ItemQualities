@@ -75,7 +75,7 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCounts(attackerInventory);
+                ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(attackerInventory);
                 return bossDamageBonus.TotalQualityCount > 0 && victim.body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
             }
 
@@ -92,7 +92,7 @@ namespace ItemQualities.Items
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCounts(attackerInventory);
+                    ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(attackerInventory);
 
                     damageMultiplier = (0.05f * bossDamageBonus.UncommonCount) +
                                        (0.10f * bossDamageBonus.RareCount) +

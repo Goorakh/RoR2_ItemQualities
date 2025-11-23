@@ -13,15 +13,11 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.CharacterBody.GetElusiveAntlersCurrentMaxStack += ItemHooks.CombineGroupedItemCountsPatch;
-            IL.RoR2.ElusiveAntlersBehavior.FixedUpdate += ItemHooks.CombineGroupedItemCountsPatch;
             IL.RoR2.ElusiveAntlersPickup.OnTriggerStay += ElusiveAntlersPickup_OnTriggerStay;
         }
 
         static void ElusiveAntlersPickup_OnTriggerStay(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
-
             ILCursor c = new ILCursor(il);
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,
@@ -79,7 +75,7 @@ namespace ItemQualities.Items
                 if (!body)
                     return;
 
-                ItemQualityCounts speedBoostPickup = ItemQualitiesContent.ItemQualityGroups.SpeedBoostPickup.GetItemCounts(body.inventory);
+                ItemQualityCounts speedBoostPickup = ItemQualitiesContent.ItemQualityGroups.SpeedBoostPickup.GetItemCountsEffective(body.inventory);
                 if (speedBoostPickup.TotalQualityCount > 0 &&
                     body.GetBuffCount(DLC2Content.Buffs.ElusiveAntlersBuff) >= Mathf.Min(6, body.GetElusiveAntlersCurrentMaxStack()))
                 {

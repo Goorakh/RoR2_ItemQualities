@@ -31,7 +31,7 @@ namespace ItemQualities.Items
                 static float getMaxDistance(float maxDistance, HeadstompersFall self)
                 {
                     Inventory inventory = self?.body ? self.body.inventory : null;
-                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCounts(inventory);
+                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCountsEffective(inventory);
                     if (fallBoots.TotalQualityCount > 0)
                     {
                         float distanceMultiplier = Mathf.Pow(1f - 0.1f, fallBoots.UncommonCount) *
@@ -69,7 +69,7 @@ namespace ItemQualities.Items
                 static float getMinimumDamageCoefficient(float minimumDamageCoefficient, HeadstompersFall self)
                 {
                     Inventory inventory = self?.body ? self.body.inventory : null;
-                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCounts(inventory);
+                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCountsEffective(inventory);
                     if (fallBoots.TotalQualityCount > 0)
                     {
                         float damageCoefficientBonus = (1f * fallBoots.UncommonCount) +
@@ -107,7 +107,7 @@ namespace ItemQualities.Items
                 static float getMaximumDamageCoefficient(float maximumDamageCoefficient, HeadstompersFall self)
                 {
                     Inventory inventory = self?.body ? self.body.inventory : null;
-                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCounts(inventory);
+                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCountsEffective(inventory);
                     if (fallBoots.TotalQualityCount > 0)
                     {
                         float damageCoefficientBonus = (10f * fallBoots.UncommonCount) +

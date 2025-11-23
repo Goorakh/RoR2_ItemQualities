@@ -2,6 +2,7 @@
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
+using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -93,41 +94,60 @@ namespace ItemQualities
             }
         }
 
-        public ItemQualityCounts GetItemCounts(Inventory inventory)
+        public ItemQualityCounts GetItemCountsEffective(Inventory inventory)
         {
             if (!inventory)
                 return default;
 
-            int baseItemCount = inventory.GetItemCount(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCount(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCount(RareItemIndex);
-            int epicItemCount = inventory.GetItemCount(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCount(LegendaryItemIndex);
+            int baseItemCount = inventory.CalculateEffectiveItemStacks(BaseItemIndex);
+            int uncommonItemCount = inventory.GetItemCountEffective(UncommonItemIndex);
+            int rareItemCount = inventory.GetItemCountEffective(RareItemIndex);
+            int epicItemCount = inventory.GetItemCountEffective(EpicItemIndex);
+            int legendaryItemCount = inventory.GetItemCountEffective(LegendaryItemIndex);
 
             return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
 
-        public QualityTier GetHighestQualityInInventory(Inventory inventory)
+        public ItemQualityCounts GetItemCountsPermanent(Inventory inventory)
         {
-            return GetHighestQualityInInventory(inventory, out _);
+            if (!inventory)
+                return default;
+
+            int baseItemCount = inventory.GetItemCountPermanent(BaseItemIndex);
+            int uncommonItemCount = inventory.GetItemCountPermanent(UncommonItemIndex);
+            int rareItemCount = inventory.GetItemCountPermanent(RareItemIndex);
+            int epicItemCount = inventory.GetItemCountPermanent(EpicItemIndex);
+            int legendaryItemCount = inventory.GetItemCountPermanent(LegendaryItemIndex);
+
+            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
 
-        public QualityTier GetHighestQualityInInventory(Inventory inventory, out int itemCount)
+        public ItemQualityCounts GetItemCountsTemp(Inventory inventory)
         {
-            if (inventory)
-            {
-                for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= QualityTier.None; qualityTier--)
-                {
-                    itemCount = inventory.GetItemCount(GetItemIndex(qualityTier));
-                    if (itemCount > 0)
-                    {
-                        return qualityTier;
-                    }
-                }
-            }
+            if (!inventory)
+                return default;
 
-            itemCount = 0;
-            return QualityTier.None;
+            int baseItemCount = inventory.GetItemCountTemp(BaseItemIndex);
+            int uncommonItemCount = inventory.GetItemCountTemp(UncommonItemIndex);
+            int rareItemCount = inventory.GetItemCountTemp(RareItemIndex);
+            int epicItemCount = inventory.GetItemCountTemp(EpicItemIndex);
+            int legendaryItemCount = inventory.GetItemCountTemp(LegendaryItemIndex);
+
+            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+        }
+
+        public ItemQualityCounts GetItemCountsChanneled(Inventory inventory)
+        {
+            if (!inventory)
+                return default;
+
+            int baseItemCount = inventory.GetItemCountChanneled(BaseItemIndex);
+            int uncommonItemCount = inventory.GetItemCountChanneled(UncommonItemIndex);
+            int rareItemCount = inventory.GetItemCountChanneled(RareItemIndex);
+            int epicItemCount = inventory.GetItemCountChanneled(EpicItemIndex);
+            int legendaryItemCount = inventory.GetItemCountChanneled(LegendaryItemIndex);
+
+            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
 
         public ItemQualityCounts GetTeamItemCounts(TeamIndex teamIndex, bool requireAlive, bool requireConnected = true)
@@ -149,7 +169,7 @@ namespace ItemQualities
                 if (requireConnected && (!master.playerCharacterMasterController || !master.playerCharacterMasterController.isConnected))
                     continue;
 
-                itemCounts += GetItemCounts(master.inventory);
+                itemCounts += GetItemCountsEffective(master.inventory);
             }
 
             return itemCounts;
@@ -172,72 +192,76 @@ namespace ItemQualities
                 yield break;
             }
 
-            AsyncOperationHandle<ItemDef> baseItemLoad = AddressableUtil.LoadTempAssetAsync(BaseItemReference);
+            AsyncOperationHandle<ItemDef> baseItemLoad = AssetAsyncReferenceManager<ItemDef>.LoadAsset(BaseItemReference);
             yield return baseItemLoad.AsProgressCoroutine(progressReceiver);
 
-            if (baseItemLoad.Status != AsyncOperationStatus.Succeeded)
+            if (baseItemLoad.IsValid() && baseItemLoad.Status == AsyncOperationStatus.Succeeded)
             {
-                Log.Error($"Failed to load base item for quality group '{name}': {baseItemLoad.OperationException}");
+                ItemDef baseItem = baseItemLoad.Result;
+
+                void populateItemAsset(ItemDef item, QualityTier qualityTier)
+                {
+                    if (!item)
+                    {
+                        Log.Warning($"Missing variant '{qualityTier}' in item group '{name}'");
+                        return;
+                    }
+
+#pragma warning disable CS0618 // Type or member is obsolete
+                    item.deprecatedTier = baseItem.deprecatedTier;
+#pragma warning restore CS0618 // Type or member is obsolete
+                    item._itemTierDef = baseItem._itemTierDef;
+
+                    if (string.IsNullOrEmpty(item.nameToken))
+                        item.nameToken = $"ITEM_{baseItem.name.ToUpper()}_{qualityTier.ToString().ToUpper()}_NAME";
+
+                    if (string.IsNullOrEmpty(item.pickupToken))
+                        item.pickupToken = baseItem.pickupToken;
+
+                    if (string.IsNullOrEmpty(item.descriptionToken))
+                        item.descriptionToken = baseItem.descriptionToken;
+
+                    if (string.IsNullOrEmpty(item.loreToken))
+                        item.loreToken = baseItem.loreToken;
+
+                    if (!item.unlockableDef)
+                        item.unlockableDef = baseItem.unlockableDef;
+
+#pragma warning disable CS0618 // Type or member is obsolete
+                    if (!item.pickupModelPrefab)
+                        item.pickupModelPrefab = baseItem.pickupModelPrefab;
+#pragma warning restore CS0618 // Type or member is obsolete
+
+                    if (item.pickupModelReference == null || !item.pickupModelReference.RuntimeKeyIsValid())
+                        item.pickupModelReference = baseItem.pickupModelReference;
+
+                    if (!item.pickupIconSprite)
+                        item.pickupIconSprite = baseItem.pickupIconSprite;
+
+                    item.isConsumed = baseItem.isConsumed;
+                    item.hidden = baseItem.hidden;
+                    item.canRemove = baseItem.canRemove;
+
+                    HashSet<ItemTag> tags = new HashSet<ItemTag>(item.tags);
+                    tags.UnionWith(baseItem.tags);
+                    tags.Add(ItemTag.WorldUnique);
+                    item.tags = tags.ToArray();
+
+                    item.requiredExpansion = baseItem.requiredExpansion;
+                }
+
+                populateItemAsset(_uncommonItem, QualityTier.Uncommon);
+                populateItemAsset(_rareItem, QualityTier.Rare);
+                populateItemAsset(_epicItem, QualityTier.Epic);
+                populateItemAsset(_legendaryItem, QualityTier.Legendary);
+            }
+            else
+            {
+                Log.Error($"Failed to load base item for quality group '{name}': {(baseItemLoad.IsValid() ? baseItemLoad.OperationException : "Invalid handle")}");
                 yield break;
             }
 
-            ItemDef baseItem = baseItemLoad.Result;
-
-            void populateItemAsset(ItemDef item, QualityTier qualityTier)
-            {
-                if (!item)
-                {
-                    Log.Warning($"Missing variant '{qualityTier}' in item group '{name}'");
-                    return;
-                }
-
-#pragma warning disable CS0618 // Type or member is obsolete
-                item.deprecatedTier = baseItem.deprecatedTier;
-#pragma warning restore CS0618 // Type or member is obsolete
-                item._itemTierDef = baseItem._itemTierDef;
-
-                if (string.IsNullOrEmpty(item.nameToken))
-                    item.nameToken = $"ITEM_{baseItem.name.ToUpper()}_{qualityTier.ToString().ToUpper()}_NAME";
-
-                if (string.IsNullOrEmpty(item.pickupToken))
-                    item.pickupToken = baseItem.pickupToken;
-
-                if (string.IsNullOrEmpty(item.descriptionToken))
-                    item.descriptionToken = baseItem.descriptionToken;
-
-                if (string.IsNullOrEmpty(item.loreToken))
-                    item.loreToken = baseItem.loreToken;
-
-                if (!item.unlockableDef)
-                    item.unlockableDef = baseItem.unlockableDef;
-
-#pragma warning disable CS0618 // Type or member is obsolete
-                if (!item.pickupModelPrefab)
-                    item.pickupModelPrefab = baseItem.pickupModelPrefab;
-#pragma warning restore CS0618 // Type or member is obsolete
-
-                if (item.pickupModelReference == null || !item.pickupModelReference.RuntimeKeyIsValid())
-                    item.pickupModelReference = baseItem.pickupModelReference;
-
-                if (!item.pickupIconSprite)
-                    item.pickupIconSprite = baseItem.pickupIconSprite;
-
-                item.isConsumed = baseItem.isConsumed;
-                item.hidden = baseItem.hidden;
-                item.canRemove = baseItem.canRemove;
-
-                HashSet<ItemTag> tags = new HashSet<ItemTag>(item.tags);
-                tags.UnionWith(baseItem.tags);
-                tags.Add(ItemTag.WorldUnique);
-                item.tags = tags.ToArray();
-
-                item.requiredExpansion = baseItem.requiredExpansion;
-            }
-
-            populateItemAsset(_uncommonItem, QualityTier.Uncommon);
-            populateItemAsset(_rareItem, QualityTier.Rare);
-            populateItemAsset(_epicItem, QualityTier.Epic);
-            populateItemAsset(_legendaryItem, QualityTier.Legendary);
+            AssetAsyncReferenceManager<ItemDef>.UnloadAsset(BaseItemReference);
         }
 
 #if UNITY_EDITOR

@@ -39,15 +39,17 @@ namespace ItemQualities.Items
             CharacterBody ownerBody = _ownerBody.Get(_auraController ? _auraController.owner : null);
             Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
 
-            ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCounts(ownerInventory);
+            ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(ownerInventory);
+            if (teleportOnLowHealth.TotalQualityCount > 0)
+            {
+                float auraScaleMult = 1f;
+                auraScaleMult += 0.2f * teleportOnLowHealth.UncommonCount;
+                auraScaleMult += 0.4f * teleportOnLowHealth.RareCount;
+                auraScaleMult += 0.7f * teleportOnLowHealth.EpicCount;
+                auraScaleMult += 1.0f * teleportOnLowHealth.LegendaryCount;
 
-            float auraScaleMult = 1f;
-            auraScaleMult += 0.2f * teleportOnLowHealth.UncommonCount;
-            auraScaleMult += 0.4f * teleportOnLowHealth.RareCount;
-            auraScaleMult += 0.7f * teleportOnLowHealth.EpicCount;
-            auraScaleMult += 1.0f * teleportOnLowHealth.LegendaryCount;
-
-            transform.localScale = _baseScale * Mathf.Max(1f, auraScaleMult);
+                transform.localScale = _baseScale * Mathf.Max(1f, auraScaleMult);
+            }
         }
     }
 }

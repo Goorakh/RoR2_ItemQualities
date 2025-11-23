@@ -19,7 +19,7 @@ namespace ItemQualities.Items
             if (!sender)
                 return;
 
-            ItemQualityCounts attackSpeedOnCrit = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCounts(sender.inventory);
+            ItemQualityCounts attackSpeedOnCrit = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(sender.inventory);
             BuffQualityCounts attackSpeedOnCritBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.GetBuffCounts(sender);
 
             float attackSpeedPerBuff = (0.05f * attackSpeedOnCrit.UncommonCount) +
@@ -37,11 +37,11 @@ namespace ItemQualities.Items
 
             if (damageReport.damageInfo.crit && damageReport.attackerMaster && damageReport.attackerBody)
             {
-                QualityTier highestAttackSpeedOnCritQuality = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetHighestQualityInInventory(damageReport.attackerMaster.inventory);
+                ItemQualityCounts attackSpeedOnCrit = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(damageReport.attackerMaster.inventory);
+
+                QualityTier highestAttackSpeedOnCritQuality = attackSpeedOnCrit.HighestQuality;
 
                 BuffIndex qualityAttackSpeedOnCritBuffIndex = ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.GetBuffIndex(highestAttackSpeedOnCritQuality);
-
-                ItemQualityCounts attackSpeedOnCrit = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCounts(damageReport.attackerMaster.inventory);
 
                 int maxStacks = (6 * attackSpeedOnCrit.UncommonCount) +
                                 (9 * attackSpeedOnCrit.RareCount) +

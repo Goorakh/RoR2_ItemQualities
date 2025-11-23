@@ -3,6 +3,7 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
+using RoR2.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,11 @@ namespace ItemQualities.Items
 {
     static class Scrap
     {
+        static ItemIndex[] _qualityScrapItemIndices = Array.Empty<ItemIndex>();
+
         static SceneIndex[] _convertScrapOnEntrySceneIndices = Array.Empty<SceneIndex>();
 
-        [SystemInitializer(typeof(SceneCatalog))]
+        [SystemInitializer(typeof(SceneCatalog), typeof(ItemCatalog), typeof(QualityCatalog))]
         static void Init()
         {
             HashSet<SceneIndex> convertScrapOnEntrySceneIncides = new HashSet<SceneIndex>();
@@ -37,10 +40,29 @@ namespace ItemQualities.Items
             _convertScrapOnEntrySceneIndices = convertScrapOnEntrySceneIncides.ToArray();
             Array.Sort(_convertScrapOnEntrySceneIndices);
 
-            IL.EntityStates.Scrapper.ScrappingToIdle.OnEnter += ScrappingToIdle_OnEnter;
-            IL.RoR2.UI.ScrapperInfoPanelHelper.ShowInfo += ScrapperInfoPanelHelper_ShowInfo;
+            HashSet<ItemIndex> qualityScrapItemIndices = new HashSet<ItemIndex>();
+
+            for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
+            {
+                if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
+                {
+                    ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+                    if (itemDef && itemDef.ContainsTag(ItemTag.Scrap))
+                    {
+                        qualityScrapItemIndices.Add(itemIndex);
+                    }
+                }
+            }
+
+            _qualityScrapItemIndices = qualityScrapItemIndices.ToArray();
+            Array.Sort(_qualityScrapItemIndices);
 
             Stage.onServerStageBegin += onServerStageBegin;
+
+            IL.RoR2.ScrapperController.BeginScrapping_UniquePickup += ReplaceScrapPickupFromItemDefTierQualityPatch;
+
+            On.RoR2.UI.ScrapperInfoPanelHelper.ShowInfo += ScrapperInfoPanelHelper_ShowInfo;
+            IL.RoR2.UI.ScrapperInfoPanelHelper.ShowTierInfoInternal_MPButton_ItemTier_int += ScrapperInfoPanelHelper_ShowTierInfoInternal_MPButton_ItemTier_int;
         }
 
         static void onServerStageBegin(Stage stage)
@@ -61,118 +83,58 @@ namespace ItemQualities.Items
 
         static void convertQualityScrap(Inventory inventory)
         {
-            CharacterMaster master = inventory.GetComponent<CharacterMaster>();
-
-            for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
+            foreach (ItemIndex itemIndex in _qualityScrapItemIndices)
             {
-                ItemIndex baseItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
-                if (baseItemIndex != ItemIndex.None && baseItemIndex != itemIndex)
+                Inventory.ItemTransformation scrapTransformation = new Inventory.ItemTransformation
                 {
-                    int itemCount = inventory.GetItemCount(itemIndex);
-                    if (itemCount > 0)
-                    {
-                        ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                        if (itemDef && itemDef.ContainsTag(ItemTag.Scrap))
-                        {
-                            inventory.RemoveItem(itemIndex, itemCount);
-                            inventory.GiveItem(baseItemIndex, itemCount);
+                    originalItemIndex = itemIndex,
+                    newItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None),
+                    minToTransform = 1,
+                    maxToTransform = int.MaxValue,
+                    allowWhenDisabled = true,
+                    transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
+                };
 
-                            if (master && master.playerCharacterMasterController)
-                            {
-                                CharacterMasterNotificationQueue.SendTransformNotification(master, itemIndex, baseItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-                            }
-                        }
-                    }
-                }
+                scrapTransformation.TryTransform(inventory, out _);
             }
         }
 
-        static void ScrappingToIdle_OnEnter(ILContext il)
+        static PickupIndex _scrapperPanelShowingPickupIndexContext = PickupIndex.none;
+
+        static void ScrapperInfoPanelHelper_ShowInfo(On.RoR2.UI.ScrapperInfoPanelHelper.orig_ShowInfo orig, ScrapperInfoPanelHelper self, MPButton button, PickupDef pickupDef)
         {
-            ILCursor c = new ILCursor(il);
-
-            int patchCount = 0;
-
-            VariableDefinition scrappingItemDefVar = il.AddVariable<ItemDef>();
-
-            while (c.TryGotoNext(MoveType.Before,
-                                 x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.FindScrapIndexForItemTier))))
+            if (pickupDef != null)
             {
-                Instruction findScrapCallInstruction = c.Next;
-
-                if (c.TryGotoPrev(MoveType.After,
-                                  x => x.MatchCallOrCallvirt(typeof(ItemCatalog), nameof(ItemCatalog.GetItemDef))))
-                {
-                    c.MoveAfterLabels();
-                    c.EmitStoreStack(scrappingItemDefVar);
-
-                    c.Goto(findScrapCallInstruction, MoveType.After);
-                    c.MoveAfterLabels();
-
-                    c.Emit(OpCodes.Ldloc, scrappingItemDefVar);
-                    c.EmitDelegate<Func<PickupIndex, ItemDef, PickupIndex>>(tryGetQualityScrapPickupIndex);
-
-                    static PickupIndex tryGetQualityScrapPickupIndex(PickupIndex scrapPickupIndex, ItemDef scrappingItemDef)
-                    {
-                        ItemIndex scrappingItemIndex = scrappingItemDef ? scrappingItemDef.itemIndex : ItemIndex.None;
-                        if (scrappingItemIndex != ItemIndex.None)
-                        {
-                            PickupIndex qualityScrapPickupIndex = QualityCatalog.GetScrapIndexForPickup(PickupCatalog.FindPickupIndex(scrappingItemIndex));
-                            if (qualityScrapPickupIndex != PickupIndex.none)
-                            {
-                                scrapPickupIndex = qualityScrapPickupIndex;
-                            }
-                        }
-
-                        return scrapPickupIndex;
-                    }
-                }
-                else
-                {
-                    c.Goto(findScrapCallInstruction, MoveType.After);
-                }
-
-                patchCount++;
+                _scrapperPanelShowingPickupIndexContext = pickupDef.pickupIndex;
             }
 
-            if (patchCount == 0)
+            try
             {
-                Log.Error("Failed to find patch location");
+                orig(self, button, pickupDef);
             }
-            else
+            finally
             {
-                Log.Debug($"Found {patchCount} patch location(s)");
+                _scrapperPanelShowingPickupIndexContext = PickupIndex.none;
             }
         }
 
-        static void ScrapperInfoPanelHelper_ShowInfo(ILContext il)
+        static void ScrapperInfoPanelHelper_ShowTierInfoInternal_MPButton_ItemTier_int(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-
-            if (!il.Method.TryFindParameter<PickupDef>(out ParameterDefinition pickupDefParameter))
-            {
-                Log.Error("Failed to find PickupDef parameter");
-                return;
-            }
 
             int patchCount = 0;
 
             while (c.TryGotoNext(MoveType.After,
                                  x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.FindScrapIndexForItemTier))))
             {
-                c.Emit(OpCodes.Ldarg, pickupDefParameter);
-                c.EmitDelegate<Func<PickupIndex, PickupDef, PickupIndex>>(tryGetQualityScrapPickupIndex);
+                c.EmitDelegate<Func<PickupIndex, PickupIndex>>(getScrapPickupIndex);
 
-                static PickupIndex tryGetQualityScrapPickupIndex(PickupIndex scrapPickupIndex, PickupDef scrappingPickupDef)
+                static PickupIndex getScrapPickupIndex(PickupIndex scrapPickupIndex)
                 {
-                    PickupIndex scrappingPickupIndex = scrappingPickupDef != null ? scrappingPickupDef.pickupIndex : PickupIndex.none;
-                    if (scrappingPickupIndex != PickupIndex.none)
+                    QualityTier showingPickupQualityTier = QualityCatalog.GetQualityTier(_scrapperPanelShowingPickupIndexContext);
+                    if (showingPickupQualityTier > QualityCatalog.GetQualityTier(scrapPickupIndex))
                     {
-                        PickupIndex qualityScrapPickupIndex = QualityCatalog.GetScrapIndexForPickup(scrappingPickupIndex);
-                        if (qualityScrapPickupIndex != PickupIndex.none)
-                        {
-                            scrapPickupIndex = qualityScrapPickupIndex;
-                        }
+                        scrapPickupIndex = QualityCatalog.GetPickupIndexOfQuality(scrapPickupIndex, showingPickupQualityTier);
                     }
 
                     return scrapPickupIndex;
@@ -188,6 +150,63 @@ namespace ItemQualities.Items
             else
             {
                 Log.Debug($"Found {patchCount} patch location(s)");
+            }
+        }
+
+        public static void ReplaceScrapPickupFromItemDefTierQualityPatch(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            VariableDefinition itemDefTempVar = null;
+
+            Instruction lastMatchInstruction = null;
+
+            int matchCount = 0;
+            int patchCount = 0;
+
+            while (c.TryGotoNext(MoveType.After,
+                                 x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.FindScrapIndexForItemTier))))
+            {
+                matchCount++;
+
+                ILCursor itemDefCursor = c.Clone();
+                if (itemDefCursor.TryGotoPrev(MoveType.Before,
+                                              x => x.MatchCallOrCallvirt<ItemDef>("get_" + nameof(ItemDef.tier))))
+                {
+                    if (lastMatchInstruction == null || itemDefCursor.IsAfter(lastMatchInstruction))
+                    {
+                        itemDefTempVar ??= il.AddVariable<ItemDef>();
+                        itemDefCursor.EmitStoreStack(itemDefTempVar);
+
+                        c.Emit(OpCodes.Ldloc, itemDefTempVar);
+                        c.EmitDelegate<Func<PickupIndex, ItemDef, PickupIndex>>(getScrapPickupIndex);
+
+                        static PickupIndex getScrapPickupIndex(PickupIndex scrapPickupIndex, ItemDef scrappingItem)
+                        {
+                            ItemIndex scrappingItemIndex = scrappingItem ? scrappingItem.itemIndex : ItemIndex.None;
+
+                            PickupIndex qualityScrapPickupIndex = QualityCatalog.GetScrapIndexForPickup(PickupCatalog.FindPickupIndex(scrappingItemIndex));
+                            return qualityScrapPickupIndex.isValid ? qualityScrapPickupIndex : scrapPickupIndex;
+                        }
+
+                        patchCount++;
+                    }
+                }
+
+                lastMatchInstruction = c.Prev;
+            }
+
+            if (patchCount == 0)
+            {
+                Log.Error($"Failed to find patch location for {il.Method.FullName}");
+            }
+            else if (patchCount < matchCount)
+            {
+                Log.Debug($"Found {patchCount} patch location(s) (of {matchCount} possible) for {il.Method.FullName}");
+            }
+            else
+            {
+                Log.Debug($"Found all {patchCount} patch location(s) for {il.Method.FullName}");
             }
         }
     }

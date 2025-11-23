@@ -454,10 +454,10 @@ namespace ItemQualities
             ItemIndex qualityItemIndex = itemQualityGroup ? itemQualityGroup.GetItemIndex(qualityTier) : ItemIndex.None;
             if (qualityItemIndex == ItemIndex.None)
             {
-                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None)
+                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None && itemIndex != ItemIndex.None)
                 {
                     ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                    Log.Warning($"Item {(itemDef ? itemDef.name : "None")} is missing quality variant {qualityTier}");
+                    Log.Warning($"Item {itemDef.name} is missing quality variant {qualityTier}");
                 }
 
                 return itemIndex;
@@ -472,10 +472,10 @@ namespace ItemQualities
             EquipmentIndex qualityEquipmentIndex = equipmentQualityGroup ? equipmentQualityGroup.GetEquipmentIndex(qualityTier) : EquipmentIndex.None;
             if (qualityEquipmentIndex == EquipmentIndex.None)
             {
-                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None)
+                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None && equipmentIndex != EquipmentIndex.None)
                 {
                     EquipmentDef equipmentDef = EquipmentCatalog.GetEquipmentDef(equipmentIndex);
-                    Log.Warning($"Equipment {(equipmentDef ? equipmentDef.name : "None")} is missing quality variant {qualityTier}");
+                    Log.Warning($"Equipment {equipmentDef.name} is missing quality variant {qualityTier}");
                 }
 
                 return equipmentIndex;
@@ -490,10 +490,10 @@ namespace ItemQualities
             BuffIndex qualityBuffIndex = buffQualityGroup ? buffQualityGroup.GetBuffIndex(qualityTier) : BuffIndex.None;
             if (qualityBuffIndex == BuffIndex.None)
             {
-                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None)
+                if (Configs.Debug.LogItemQualities && qualityTier != QualityTier.None && buffIndex != BuffIndex.None)
                 {
                     BuffDef buffDef = BuffCatalog.GetBuffDef(buffIndex);
-                    Log.Warning($"Buff {(buffDef ? buffDef.name : "None")} is missing quality variant {qualityTier}");
+                    Log.Warning($"Buff {buffDef.name} is missing quality variant {qualityTier}");
                 }
 
                 return buffIndex;
@@ -505,23 +505,23 @@ namespace ItemQualities
         public static PickupIndex GetPickupIndexOfQuality(PickupIndex pickupIndex, QualityTier qualityTier)
         {
             PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
-            if (pickupDef == null)
-                return pickupIndex;
-
-            if (pickupDef.itemIndex != ItemIndex.None)
+            if (pickupDef != null)
             {
-                PickupIndex qualityPickupIndex = PickupCatalog.FindPickupIndex(GetItemIndexOfQuality(pickupDef.itemIndex, qualityTier));
-                if (qualityPickupIndex != PickupIndex.none)
+                if (pickupDef.itemIndex != ItemIndex.None)
                 {
-                    pickupIndex = qualityPickupIndex;
+                    PickupIndex qualityPickupIndex = PickupCatalog.FindPickupIndex(GetItemIndexOfQuality(pickupDef.itemIndex, qualityTier));
+                    if (qualityPickupIndex != PickupIndex.none)
+                    {
+                        return qualityPickupIndex;
+                    }
                 }
-            }
-            else if (pickupDef.equipmentIndex != EquipmentIndex.None)
-            {
-                PickupIndex qualityPickupIndex = PickupCatalog.FindPickupIndex(GetEquipmentIndexOfQuality(pickupDef.equipmentIndex, qualityTier));
-                if (qualityPickupIndex != PickupIndex.none)
+                else if (pickupDef.equipmentIndex != EquipmentIndex.None)
                 {
-                    pickupIndex = qualityPickupIndex;
+                    PickupIndex qualityPickupIndex = PickupCatalog.FindPickupIndex(GetEquipmentIndexOfQuality(pickupDef.equipmentIndex, qualityTier));
+                    if (qualityPickupIndex != PickupIndex.none)
+                    {
+                        return qualityPickupIndex;
+                    }
                 }
             }
 
@@ -592,10 +592,10 @@ namespace ItemQualities
                 int height = iconTexture.height;
                 int qualityIconWidth = (int)(width * QualityIconRelativeSize);
                 int qualityIconHeight = (int)(height * QualityIconRelativeSize);
-                float qualityUVLeft = qualityIconSprite.rect.x / (qualityIconSprite.texture.width);
-                float qualityUVRight = (qualityIconSprite.rect.x + qualityIconSprite.rect.width) / (qualityIconSprite.texture.width);
-                float qualityUVBottom = qualityIconSprite.rect.y / (qualityIconSprite.texture.height);
-                float qualityUVTop = (qualityIconSprite.rect.y + qualityIconSprite.rect.height) / (qualityIconSprite.texture.height);
+                float qualityUVLeft = qualityIconSprite.rect.x / qualityIconSprite.texture.width;
+                float qualityUVRight = (qualityIconSprite.rect.x + qualityIconSprite.rect.width) / qualityIconSprite.texture.width;
+                float qualityUVBottom = qualityIconSprite.rect.y / qualityIconSprite.texture.height;
+                float qualityUVTop = (qualityIconSprite.rect.y + qualityIconSprite.rect.height) / qualityIconSprite.texture.height;
 
                 for (int x = 0; x < width; x++)
                 {

@@ -43,7 +43,7 @@ namespace ItemQualities.Items
             if (!sender)
                 return;
 
-            ItemQualityCounts sprintArmor = ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCounts(sender.inventory);
+            ItemQualityCounts sprintArmor = ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCountsEffective(sender.inventory);
 
             if (sender.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong) && sprintArmor.TotalQualityCount > 0)
             {

@@ -18,7 +18,7 @@ namespace ItemQualities.Items
             if (!sender)
                 return;
 
-            ItemQualityCounts killEliteFrenzy = ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCounts(sender.inventory);
+            ItemQualityCounts killEliteFrenzy = ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCountsEffective(sender.inventory);
             BuffQualityCounts killEliteFrenzyBuff = ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffCounts(sender);
             if (killEliteFrenzy.TotalQualityCount > 0 && killEliteFrenzyBuff.TotalQualityCount > 0)
             {
@@ -41,7 +41,7 @@ namespace ItemQualities.Items
 
             if (deathReport.attackerBody && deathReport.victimIsElite)
             {
-                ItemQualityCounts killEliteFrenzy = ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCounts(deathReport.attackerBody.inventory);
+                ItemQualityCounts killEliteFrenzy = ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCountsEffective(deathReport.attackerBody.inventory);
                 if (killEliteFrenzy.TotalQualityCount > 0 && deathReport.attackerBody.HasBuff(RoR2Content.Buffs.NoCooldowns))
                 {
                     deathReport.attackerBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffIndex(killEliteFrenzy.HighestQuality));

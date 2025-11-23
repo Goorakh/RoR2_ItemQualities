@@ -1,10 +1,8 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
 using R2API;
 using RoR2;
 using System;
-using System.Reflection;
 
 namespace ItemQualities.Items
 {
@@ -13,16 +11,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            PropertyInfo maxIcicleCountProperty = typeof(IcicleAuraController).GetProperty(nameof(IcicleAuraController.maxIcicleCount), ~(BindingFlags)0);
-            if (maxIcicleCountProperty?.GetMethod != null)
-            {
-                new ILHook(maxIcicleCountProperty.GetMethod, ItemHooks.CombineGroupedItemCountsPatch);
-            }
-            else
-            {
-                Log.Error("Failed to find IcicleAuraController.maxIcicleCount property getter");
-            }
-
             IL.RoR2.IcicleAuraController.FixedUpdate += IcicleAuraController_FixedUpdate;
             On.RoR2.IcicleAuraController.UpdateRadius += IcicleAuraController_UpdateRadius;
         }
@@ -48,7 +36,7 @@ namespace ItemQualities.Items
                 {
                     Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
 
-                    ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCounts(ownerInventory);
+                    ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCountsEffective(ownerInventory);
                     if (icicle.TotalQualityCount > 0)
                     {
                         float frostChance = (5f * icicle.UncommonCount) +
@@ -74,12 +62,12 @@ namespace ItemQualities.Items
             CharacterBody ownerBody = self ? self.cachedOwnerInfo.characterBody : null;
             Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
 
-            ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCounts(ownerInventory);
+            ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCountsEffective(ownerInventory);
             if (icicle.TotalQualityCount > 0)
             {
                 float radiusIncrease = (0.05f * icicle.UncommonCount) +
-                                       (0.1f * icicle.RareCount) +
-                                       (0.2f * icicle.EpicCount) +
+                                       (0.10f * icicle.RareCount) +
+                                       (0.20f * icicle.EpicCount) +
                                        (0.25f * icicle.LegendaryCount);
 
                 if (radiusIncrease > 0)

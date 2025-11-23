@@ -2,6 +2,7 @@
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
+using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.IO;
@@ -146,36 +147,40 @@ namespace ItemQualities
                 yield break;
             }
 
-            AsyncOperationHandle<BuffDef> baseBuffLoad = AddressableUtil.LoadTempAssetAsync(BaseBuffReference);
+            AsyncOperationHandle<BuffDef> baseBuffLoad = AssetAsyncReferenceManager<BuffDef>.LoadAsset(BaseBuffReference);
             yield return baseBuffLoad.AsProgressCoroutine(progressReceiver);
 
-            if (baseBuffLoad.Status != AsyncOperationStatus.Succeeded)
+            if (baseBuffLoad.IsValid() && baseBuffLoad.Status == AsyncOperationStatus.Succeeded)
             {
-                Log.Error($"Failed to load base buff for quality group '{name}': {baseBuffLoad.OperationException}");
+                BuffDef baseBuff = baseBuffLoad.Result;
+
+                void populateBuffAsset(BuffDef buff, QualityTier qualityTier)
+                {
+                    if (!buff)
+                    {
+                        Log.Warning($"Missing variant '{qualityTier}' in buff group '{name}'");
+                        return;
+                    }
+
+                    if (!buff.eliteDef)
+                        buff.eliteDef = baseBuff.eliteDef;
+
+                    if (!buff.startSfx)
+                        buff.startSfx = baseBuff.startSfx;
+                }
+
+                populateBuffAsset(_uncommonBuff, QualityTier.Uncommon);
+                populateBuffAsset(_rareBuff, QualityTier.Rare);
+                populateBuffAsset(_epicBuff, QualityTier.Epic);
+                populateBuffAsset(_legendaryBuff, QualityTier.Legendary);
+            }
+            else
+            {
+                Log.Error($"Failed to load base buff for quality group '{name}': {(baseBuffLoad.IsValid() ? baseBuffLoad.OperationException : "Invalid handle")}");
                 yield break;
             }
 
-            BuffDef baseBuff = baseBuffLoad.Result;
-
-            void populateBuffAsset(BuffDef buff, QualityTier qualityTier)
-            {
-                if (!buff)
-                {
-                    Log.Warning($"Missing variant '{qualityTier}' in buff group '{name}'");
-                    return;
-                }
-
-                if (!buff.eliteDef)
-                    buff.eliteDef = baseBuff.eliteDef;
-
-                if (!buff.startSfx)
-                    buff.startSfx = baseBuff.startSfx;
-            }
-
-            populateBuffAsset(_uncommonBuff, QualityTier.Uncommon);
-            populateBuffAsset(_rareBuff, QualityTier.Rare);
-            populateBuffAsset(_epicBuff, QualityTier.Epic);
-            populateBuffAsset(_legendaryBuff, QualityTier.Legendary);
+            AssetAsyncReferenceManager<BuffDef>.UnloadAsset(BaseBuffReference);
         }
 
 #if UNITY_EDITOR

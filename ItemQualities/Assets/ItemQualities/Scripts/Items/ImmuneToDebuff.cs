@@ -43,7 +43,7 @@ namespace ItemQualities.Items
             if (!buffDef || (buffDef.flags & BuffDef.Flags.ExcludeFromNoxiousThorns) != 0)
                 return;
 
-            ItemQualityCounts immuneToDebuff = ItemQualitiesContent.ItemQualityGroups.ImmuneToDebuff.GetItemCounts(victimBody.inventory);
+            ItemQualityCounts immuneToDebuff = ItemQualitiesContent.ItemQualityGroups.ImmuneToDebuff.GetItemCountsEffective(victimBody.inventory);
             if (immuneToDebuff.TotalQualityCount == 0)
                 return;
 
@@ -61,39 +61,32 @@ namespace ItemQualities.Items
                 queryTriggerInteraction = QueryTriggerInteraction.Ignore
             };
 
-            List<HurtBox> targetHurtBoxes = ListPool<HurtBox>.RentCollection();
+            using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> targetHurtBoxes);
 
-            try
+            targetSearch.RefreshCandidates()
+                        .FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(victimBody.teamComponent.teamIndex))
+                        .FilterCandidatesByDistinctHurtBoxEntities()
+                        .OrderCandidatesByDistance()
+                        .GetHurtBoxes(targetHurtBoxes);
+
+            foreach (HurtBox targetHurtBox in targetHurtBoxes)
             {
-                targetSearch.RefreshCandidates()
-                            .FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(victimBody.teamComponent.teamIndex))
-                            .FilterCandidatesByDistinctHurtBoxEntities()
-                            .OrderCandidatesByDistance()
-                            .GetHurtBoxes(targetHurtBoxes);
-
-                foreach (HurtBox targetHurtBox in targetHurtBoxes)
+                HealthComponent targetHealthComponent = targetHurtBox ? targetHurtBox.healthComponent : null;
+                CharacterBody targetBody = targetHealthComponent ? targetHealthComponent.body : null;
+                if (targetBody && targetBody != victimBody)
                 {
-                    HealthComponent targetHealthComponent = targetHurtBox ? targetHurtBox.healthComponent : null;
-                    CharacterBody targetBody = targetHealthComponent ? targetHealthComponent.body : null;
-                    if (targetBody && targetBody != victimBody)
+                    ImmuneToDebuffOrb orb = new ImmuneToDebuffOrb
                     {
-                        ImmuneToDebuffOrb orb = new ImmuneToDebuffOrb
-                        {
-                            origin = victimBody.corePosition,
-                            target = targetHurtBox,
-                            BuffDuration = duration,
-                            BuffIndex = buffIndex,
-                            BuffStackCount = 1,
-                            Attacker = victimBody.gameObject,
-                        };
+                        origin = victimBody.corePosition,
+                        target = targetHurtBox,
+                        BuffDuration = duration,
+                        BuffIndex = buffIndex,
+                        BuffStackCount = 1,
+                        Attacker = victimBody.gameObject,
+                    };
 
-                        OrbManager.instance.AddOrb(orb);
-                    }
+                    OrbManager.instance.AddOrb(orb);
                 }
-            }
-            finally
-            {
-                ListPool<HurtBox>.ReturnCollection(targetHurtBoxes);
             }
         }
 

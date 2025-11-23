@@ -11,7 +11,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += EquipmentSlot_OnEquipmentExecuted;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
         static void EquipmentSlot_OnEquipmentExecuted(ILContext il)
@@ -40,10 +40,10 @@ namespace ItemQualities.Items
 
                 QualityTier[] equipmentQualityTiers = Array.Empty<QualityTier>();
 
-                ItemQualityCounts randomEquipmentTrigger = ItemQualitiesContent.ItemQualityGroups.RandomEquipmentTrigger.GetItemCounts(inventory);
+                ItemQualityCounts randomEquipmentTrigger = ItemQualitiesContent.ItemQualityGroups.RandomEquipmentTrigger.GetItemCountsEffective(inventory);
                 if (randomEquipmentTrigger.TotalQualityCount > 0)
                 {
-                    equipmentQualityTiers = new QualityTier[randomEquipmentTrigger.TotalCount];
+                    Span<QualityTier> equipmentQualityTiersSpan = stackalloc QualityTier[randomEquipmentTrigger.TotalCount];
 
                     int equipmentQualityTierIndex = 0;
                     for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
@@ -51,10 +51,12 @@ namespace ItemQualities.Items
                         int tierCount = randomEquipmentTrigger[qualityTier];
                         if (tierCount > 0)
                         {
-                            Array.Fill(equipmentQualityTiers, qualityTier, equipmentQualityTierIndex, tierCount);
+                            equipmentQualityTiersSpan.Slice(equipmentQualityTierIndex, tierCount).Fill(qualityTier);
                             equipmentQualityTierIndex += tierCount;
                         }
                     }
+
+                    equipmentQualityTiers = equipmentQualityTiersSpan.ToArray();
                 }
 
                 return equipmentQualityTiers;

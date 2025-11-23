@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using RoR2.Items;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ namespace ItemQualities.Items
     {
         static EffectIndex _reviveEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(ItemCatalog), typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(QualityCatalog), typeof(EffectCatalogUtils))]
         static void Init()
         {
             _reviveEffectIndex = EffectCatalogUtils.FindEffectIndex("VoidRezEffect");
@@ -29,107 +28,111 @@ namespace ItemQualities.Items
                 ReviveAPI.ReviveAPI.AddCustomRevive(new ReviveAPI.ReviveAPI.CustomRevive
                 {
                     priority = -(int)(qualityTier + 1),
-                    canRevive = canExtraLifeVoidQualityRevive,
-                    onRevive = onRevive,
-                    pendingOnRevives = new ReviveAPI.ReviveAPI.PendingOnRevive[]
-                    {
-                        new ReviveAPI.ReviveAPI.PendingOnRevive
-                        {
-                            onReviveDelegate = reviveSoundVoid,
-                            timer = 1f
-                        },
-                        new ReviveAPI.ReviveAPI.PendingOnRevive
-                        {
-                            onReviveDelegate = respawnQualityExtraLifeVoid,
-                            timer = 2f
-                        }
-                    }
+                    canRevive = canRevive,
+                    onRevive = onRevive
                 });
 
-                bool canExtraLifeVoidQualityRevive(CharacterMaster master)
+                Inventory.ItemTransformation getConsumeExtraLifeItemTransformation()
                 {
-                    return master && master.inventory && master.inventory.GetItemCount(extraLifeVoidItemIndex) > 0;
+                    return new Inventory.ItemTransformation
+                    {
+                        originalItemIndex = extraLifeVoidItemIndex,
+                        newItemIndex = extraLifeVoidConsumedItemIndex,
+                        transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
+                    };
+                }
+
+                bool canRevive(CharacterMaster master)
+                {
+                    Inventory.ItemTransformation itemTransformation = getConsumeExtraLifeItemTransformation();
+
+                    return itemTransformation.CanTake(master.inventory, out _);
                 }
 
                 void onRevive(CharacterMaster master)
                 {
-                    if (master && master.inventory)
+                    Inventory.ItemTransformation itemTransformation = getConsumeExtraLifeItemTransformation();
+
+                    if (itemTransformation.TryTake(master.inventory, out Inventory.ItemTransformation.TakeResult takeResult))
                     {
-                        master.inventory.RemoveItem(extraLifeVoidItemIndex);
-                    }
-                }
-
-                void reviveSoundVoid(CharacterMaster master)
-                {
-                    master.PlayExtraLifeVoidSFX();
-                }
-
-                void respawnQualityExtraLifeVoid(CharacterMaster master)
-                {
-                    if (!master)
-                        return;
-
-                    if (master.inventory)
-                    {
-                        master.inventory.GiveItem(extraLifeVoidConsumedItemIndex);
-                        CharacterMasterNotificationQueue.SendTransformNotification(master, extraLifeVoidItemIndex, extraLifeVoidConsumedItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
+                        CharacterMaster.ExtraLifeServerBehavior extraLifeBehavior = master.gameObject.AddComponent<CharacterMaster.ExtraLifeServerBehavior>();
+                        extraLifeBehavior.pendingTransformation = takeResult;
+                        extraLifeBehavior.consumedItemIndex = itemTransformation.newItemIndex;
+                        extraLifeBehavior.completionTime = Run.FixedTimeStamp.now + 2f;
+                        extraLifeBehavior.soundCallback += reviveSoundVoid;
+                        extraLifeBehavior.completionCallback += respawnQualityExtraLifeVoid;
                     }
 
-                    Vector3 reviveFootPosition = master.deathFootPosition;
-                    if (master.killedByUnsafeArea)
+                    void reviveSoundVoid()
                     {
-                        reviveFootPosition = TeleportHelper.FindSafeTeleportDestination(master.deathFootPosition, master.bodyPrefab.GetComponent<CharacterBody>(), RoR2Application.rng) ?? master.deathFootPosition;
+                        master.PlayExtraLifeVoidSFX();
                     }
 
-                    CharacterBody body = master.Respawn(reviveFootPosition, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f), true);
-                    body.AddTimedBuff(RoR2Content.Buffs.Immune, 3f);
-
-                    foreach (EntityStateMachine entityStateMachine in body.GetComponents<EntityStateMachine>())
+                    void respawnQualityExtraLifeVoid()
                     {
-                        entityStateMachine.initialStateType = entityStateMachine.mainStateType;
-                    }
+                        if (!master)
+                            return;
 
-                    if (_reviveEffectIndex != EffectIndex.Invalid)
-                    {
-                        EffectManager.SpawnEffect(_reviveEffectIndex, new EffectData
+                        Vector3 reviveFootPosition = master.deathFootPosition;
+                        if (master.killedByUnsafeArea)
                         {
-                            origin = reviveFootPosition,
-                            rotation = body.transform.rotation
-                        }, true);
-                    }
-
-                    master.StartCoroutine(waitThenCorruptItems(master, extraLifeVoidQualityTier));
-                }
-
-                IEnumerator waitThenCorruptItems(CharacterMaster master, QualityTier targetQualityTier)
-                {
-                    yield return new WaitForSeconds(ContagiousItemManager.transformDelay);
-
-                    foreach (ContagiousItemManager.TransformationInfo transformationInfo in ContagiousItemManager.transformationInfos)
-                    {
-                        int originalItemCount = master.inventory.GetItemCount(transformationInfo.originalItem);
-                        if (originalItemCount > 0)
-                        {
-                            QualityTier qualityTier = QualityCatalog.Max(QualityCatalog.GetQualityTier(transformationInfo.originalItem), targetQualityTier);
-                            ItemIndex qualityTransformedItemIndex = QualityCatalog.GetItemIndexOfQuality(transformationInfo.transformedItem, qualityTier);
-
-                            master.inventory.RemoveItem(transformationInfo.originalItem, originalItemCount);
-                            master.inventory.GiveItem(qualityTransformedItemIndex, originalItemCount);
-
-                            CharacterMasterNotificationQueue.SendTransformNotification(master, transformationInfo.originalItem, qualityTransformedItemIndex, CharacterMasterNotificationQueue.TransformationType.ContagiousVoid);
+                            reviveFootPosition = TeleportHelper.FindSafeTeleportDestination(master.deathFootPosition, master.bodyPrefab.GetComponent<CharacterBody>(), RoR2Application.rng) ?? master.deathFootPosition;
                         }
 
-                        if (QualityCatalog.GetQualityTier(transformationInfo.transformedItem) < targetQualityTier)
+                        CharacterBody body = master.Respawn(reviveFootPosition, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f), true);
+                        body.AddTimedBuff(RoR2Content.Buffs.Immune, 3f);
+
+                        foreach (EntityStateMachine entityStateMachine in body.GetComponents<EntityStateMachine>())
                         {
-                            int transformedItemCount = master.inventory.GetItemCount(transformationInfo.transformedItem);
-                            if (transformedItemCount > 0)
+                            entityStateMachine.initialStateType = entityStateMachine.mainStateType;
+                        }
+
+                        if (_reviveEffectIndex != EffectIndex.Invalid)
+                        {
+                            EffectManager.SpawnEffect(_reviveEffectIndex, new EffectData
                             {
-                                ItemIndex qualityTransformedItemIndex = QualityCatalog.GetItemIndexOfQuality(transformationInfo.transformedItem, targetQualityTier);
+                                origin = reviveFootPosition,
+                                rotation = body.transform.rotation
+                            }, true);
+                        }
 
-                                master.inventory.RemoveItem(transformationInfo.transformedItem, transformedItemCount);
-                                master.inventory.GiveItem(qualityTransformedItemIndex, transformedItemCount);
+                        master.StartCoroutine(waitThenCorruptItems(master, extraLifeVoidQualityTier));
+                    }
 
-                                CharacterMasterNotificationQueue.SendTransformNotification(master, transformationInfo.transformedItem, qualityTransformedItemIndex, CharacterMasterNotificationQueue.TransformationType.ContagiousVoid);
+                    static IEnumerator waitThenCorruptItems(CharacterMaster master, QualityTier targetQualityTier)
+                    {
+                        yield return new WaitForSeconds(ContagiousItemManager.transformDelay);
+
+                        foreach (ContagiousItemManager.TransformationInfo transformationInfo in ContagiousItemManager.transformationInfos)
+                        {
+                            QualityTier corruptedQualityTier = QualityCatalog.Max(QualityCatalog.GetQualityTier(transformationInfo.originalItem), targetQualityTier);
+                            ItemIndex qualityTransformedItemIndex = QualityCatalog.GetItemIndexOfQuality(transformationInfo.transformedItem, corruptedQualityTier);
+
+                            Inventory.ItemTransformation corruptItemTransformation = new Inventory.ItemTransformation
+                            {
+                                originalItemIndex = transformationInfo.originalItem,
+                                newItemIndex = qualityTransformedItemIndex,
+                                maxToTransform = int.MaxValue,
+                                transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.ContagiousVoid
+                            };
+
+                            corruptItemTransformation.TryTransform(master.inventory, out _);
+
+                            if (QualityCatalog.GetQualityTier(transformationInfo.transformedItem) < targetQualityTier)
+                            {
+                                ItemIndex upgradedTransformedItemIndex = QualityCatalog.GetItemIndexOfQuality(transformationInfo.transformedItem, targetQualityTier);
+                                if (upgradedTransformedItemIndex != transformationInfo.transformedItem)
+                                {
+                                    Inventory.ItemTransformation transformedItemUpgrade = new Inventory.ItemTransformation
+                                    {
+                                        originalItemIndex = transformationInfo.transformedItem,
+                                        newItemIndex = upgradedTransformedItemIndex,
+                                        maxToTransform = int.MaxValue,
+                                        transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.ContagiousVoid
+                                    };
+
+                                    transformedItemUpgrade.TryTransform(master.inventory, out _);
+                                }
                             }
                         }
                     }
@@ -148,14 +151,16 @@ namespace ItemQualities.Items
                     ItemIndex extraLifeVoidItemIndex = ItemQualitiesContent.ItemQualityGroups.ExtraLifeVoid.GetItemIndex(qualityTier);
                     ItemIndex extraLifeVoidConsumedItemIndex = ItemQualitiesContent.ItemQualityGroups.ExtraLifeVoidConsumed.GetItemIndex(qualityTier);
 
-                    int extraLifeVoidCount = self.inventory.GetItemCount(extraLifeVoidItemIndex);
-                    if (extraLifeVoidCount > 0)
+                    Inventory.ItemTransformation consumeItemTransformation = new Inventory.ItemTransformation
                     {
-                        self.inventory.RemoveItem(extraLifeVoidItemIndex, extraLifeVoidCount);
-                        self.inventory.GiveItem(extraLifeVoidConsumedItemIndex, extraLifeVoidCount);
+                        originalItemIndex = extraLifeVoidItemIndex,
+                        newItemIndex = extraLifeVoidConsumedItemIndex,
+                        allowWhenDisabled = true,
+                        maxToTransform = int.MaxValue,
+                        transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
+                    };
 
-                        CharacterMasterNotificationQueue.SendTransformNotification(self, extraLifeVoidItemIndex, extraLifeVoidConsumedItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-                    }
+                    consumeItemTransformation.TryTransform(self.inventory, out _);
                 }
             }
 

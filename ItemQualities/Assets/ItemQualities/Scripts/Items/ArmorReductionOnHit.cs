@@ -46,7 +46,7 @@ namespace ItemQualities.Items
             if (attackerInventory == null)
                 return;
 
-            ItemQualityCounts armorReductionOnHit = ItemQualitiesContent.ItemQualityGroups.ArmorReductionOnHit.GetItemCounts(attacker.inventory);
+            ItemQualityCounts armorReductionOnHit = ItemQualitiesContent.ItemQualityGroups.ArmorReductionOnHit.GetItemCountsEffective(attacker.inventory);
 
             if (armorReductionOnHit.TotalQualityCount < 1)
                 return;

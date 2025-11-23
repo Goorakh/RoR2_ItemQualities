@@ -1,7 +1,7 @@
-﻿using ItemQualities.Items;
-using MonoMod.Cil;
+﻿using MonoMod.Cil;
 using RoR2;
 using RoR2.Items;
+using System;
 
 namespace ItemQualities
 {
@@ -14,20 +14,25 @@ namespace ItemQualities
             IL.RoR2.Items.ContagiousItemManager.StepInventoryInfection += ContagiousItemManager_StepInventoryInfection;
         }
 
+        static ItemIndex getItemForTransformation(ItemIndex itemIndex)
+        {
+            return QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
+        }
+
         static void ContagiousItemManager_OnInventoryChangedGlobal(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(ContagiousItemManager), nameof(ContagiousItemManager._transformationInfos)),
-                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount))))
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
             {
                 Log.Error("Failed to find patch location");
                 return;
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.Before); // call Inventory.GetItemCount
-            ItemHooks.EmitSingleCombineGroupedItemCounts(c);
+            c.Goto(foundCursors[1].Next, MoveType.Before); // call Inventory.GetItemCountEffective
+            c.EmitDelegate<Func<ItemIndex, ItemIndex>>(getItemForTransformation);
         }
 
         static void ContagiousItemManager_StepInventoryInfection(ILContext il)
@@ -36,14 +41,14 @@ namespace ItemQualities
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(ContagiousItemManager), nameof(ContagiousItemManager.originalToTransformed)),
-                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount))))
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
             {
                 Log.Error("Failed to find patch location");
                 return;
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.Before); // call Inventory.GetItemCount
-            ItemHooks.EmitSingleCombineGroupedItemCounts(c);
+            c.Goto(foundCursors[1].Next, MoveType.Before); // call Inventory.GetItemCountEffective
+            c.EmitDelegate<Func<ItemIndex, ItemIndex>>(getItemForTransformation);
         }
     }
 }

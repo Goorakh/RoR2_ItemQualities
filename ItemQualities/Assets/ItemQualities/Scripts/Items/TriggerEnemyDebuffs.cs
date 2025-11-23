@@ -38,23 +38,22 @@ namespace ItemQualities.Items
             static VineOrb.SplitDebuffInformation modifySplitDebuffInfo(VineOrb.SplitDebuffInformation splitDebuffInfo, CharacterBody body)
             {
                 const float MaxDebuffDuration = 30f;
-                if (splitDebuffInfo.duration < MaxDebuffDuration) // Allow already >max durations
+                if (splitDebuffInfo.duration < MaxDebuffDuration)
                 {
                     Inventory inventory = body ? body.inventory : null;
 
-                    ItemQualityCounts triggerEnemyDebuffs = default;
-                    if (inventory)
+                    ItemQualityCounts triggerEnemyDebuffs = ItemQualitiesContent.ItemQualityGroups.TriggerEnemyDebuffs.GetItemCountsEffective(inventory);
+
+                    if (triggerEnemyDebuffs.TotalQualityCount > 0)
                     {
-                        triggerEnemyDebuffs = ItemQualitiesContent.ItemQualityGroups.TriggerEnemyDebuffs.GetItemCounts(inventory);
+                        float durationMultiplier = 1f;
+                        durationMultiplier += 0.20f * triggerEnemyDebuffs.UncommonCount;
+                        durationMultiplier += 0.50f * triggerEnemyDebuffs.RareCount;
+                        durationMultiplier += 0.75f * triggerEnemyDebuffs.EpicCount;
+                        durationMultiplier += 1.50f * triggerEnemyDebuffs.LegendaryCount;
+
+                        splitDebuffInfo.duration = Mathf.Min(MaxDebuffDuration, splitDebuffInfo.duration * durationMultiplier);
                     }
-
-                    float durationMultiplier = 1f;
-                    durationMultiplier += 0.20f * triggerEnemyDebuffs.UncommonCount;
-                    durationMultiplier += 0.50f * triggerEnemyDebuffs.RareCount;
-                    durationMultiplier += 0.75f * triggerEnemyDebuffs.EpicCount;
-                    durationMultiplier += 1.50f * triggerEnemyDebuffs.LegendaryCount;
-
-                    splitDebuffInfo.duration = Mathf.Min(MaxDebuffDuration, splitDebuffInfo.duration * durationMultiplier);
                 }
 
                 return splitDebuffInfo;

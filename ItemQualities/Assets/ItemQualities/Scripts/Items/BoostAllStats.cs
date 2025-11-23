@@ -1,7 +1,5 @@
-﻿using R2API;
-using RoR2;
+﻿using RoR2;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -22,7 +20,7 @@ namespace ItemQualities.Items
 
             try
             {
-                ItemQualityCounts boostAllStats = ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCounts(self.inventory);
+                ItemQualityCounts boostAllStats = ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCountsEffective(self.inventory);
                 if (boostAllStats.TotalQualityCount > 0 && ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.HasQualityBuff(self))
                 {
                     float cooldownMultiplier = Mathf.Pow(1f - 0.10f, boostAllStats.UncommonCount) *

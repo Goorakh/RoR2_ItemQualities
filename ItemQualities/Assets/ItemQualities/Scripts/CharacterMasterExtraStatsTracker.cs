@@ -1,10 +1,11 @@
 ﻿using HG;
 using RoR2;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class CharacterMasterExtraStatsTracker : NetworkBehaviour
+    public sealed class CharacterMasterExtraStatsTracker : NetworkBehaviour
     {
         [SystemInitializer(typeof(MasterCatalog))]
         static void Init()
@@ -20,6 +21,8 @@ namespace ItemQualities
 
         CharacterMaster _master;
 
+        CharacterBodyExtraStatsTracker _bodyExtraStatsComponent;
+
         [SyncVar(hook = nameof(hookSetSteakBonus))]
         public float SteakBonus;
 
@@ -33,12 +36,26 @@ namespace ItemQualities
 
         void OnEnable()
         {
+            _master.onBodyStart += onBodyStart;
+            refreshBodyStatsComponentReference(_master.GetBodyObject());
+
             Stage.onServerStageBegin += onServerStageBegin;
         }
 
         void OnDisable()
         {
+            _master.onBodyStart -= onBodyStart;
             Stage.onServerStageBegin -= onServerStageBegin;
+        }
+
+        void onBodyStart(CharacterBody body)
+        {
+            refreshBodyStatsComponentReference(body ? body.gameObject : null);
+        }
+
+        void refreshBodyStatsComponentReference(GameObject bodyObject)
+        {
+            _bodyExtraStatsComponent = bodyObject ? bodyObject.GetComponent<CharacterBodyExtraStatsTracker>() : null;
         }
 
         void onServerStageBegin(Stage stage)
@@ -52,11 +69,11 @@ namespace ItemQualities
             if (body)
             {
                 body.MarkAllStatsDirty();
+            }
 
-                if (body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStatsTracker))
-                {
-                    bodyExtraStatsTracker.MarkAllStatsDirty();
-                }
+            if (_bodyExtraStatsComponent)
+            {
+                _bodyExtraStatsComponent.MarkAllStatsDirty();
             }
         }
 

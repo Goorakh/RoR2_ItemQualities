@@ -33,7 +33,7 @@ namespace ItemQualities.Items
 
         void onInventoryChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetHighestQualityInInventory(_body.inventory);
+            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCountsEffective(_body.inventory).HighestQuality;
             ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(_body, buffQualityTier);
 
             if (buffQualityTier > QualityTier.None)

@@ -69,7 +69,7 @@ namespace ItemQualities.Items
             if (!attackerBody)
                 return;
 
-            ItemQualityCounts attackerChainLightning = ItemQualitiesContent.ItemQualityGroups.ChainLightning.GetItemCounts(attackerBody.inventory);
+            ItemQualityCounts attackerChainLightning = ItemQualitiesContent.ItemQualityGroups.ChainLightning.GetItemCountsEffective(attackerBody.inventory);
 
             float damageCoefficient = 1.5f * attackerChainLightning.TotalQualityCount;
             float maxRange = 20f + (2f * attackerChainLightning.TotalCount);

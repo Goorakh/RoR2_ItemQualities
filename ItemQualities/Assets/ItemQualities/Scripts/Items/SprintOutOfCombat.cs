@@ -16,7 +16,7 @@ namespace ItemQualities.Items
             if (!sender)
                 return;
 
-            ItemQualityCounts sprintOutOfCombat = ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCounts(sender.inventory);
+            ItemQualityCounts sprintOutOfCombat = ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCountsEffective(sender.inventory);
             BuffQualityCounts whipBoostBuff = ItemQualitiesContent.BuffQualityGroups.WhipBoost.GetBuffCounts(sender);
 
             if (whipBoostBuff.TotalQualityCount > 0)

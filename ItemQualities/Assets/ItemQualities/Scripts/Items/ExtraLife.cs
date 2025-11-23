@@ -8,7 +8,7 @@ namespace ItemQualities.Items
     {
         static EffectIndex _reviveEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(ItemCatalog), typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(QualityCatalog), typeof(EffectCatalogUtils))]
         static void Init()
         {
             _reviveEffectIndex = EffectCatalogUtils.FindEffectIndex("HippoRezEffect");
@@ -36,84 +36,84 @@ namespace ItemQualities.Items
                 ReviveAPI.ReviveAPI.AddCustomRevive(new ReviveAPI.ReviveAPI.CustomRevive
                 {
                     priority = -(int)(qualityTier + 1),
-                    canRevive = canExtraLifeQualityRevive,
-                    onRevive = onRevive,
-                    pendingOnRevives = new ReviveAPI.ReviveAPI.PendingOnRevive[]
-                    {
-                        new ReviveAPI.ReviveAPI.PendingOnRevive
-                        {
-                            onReviveDelegate = reviveSound,
-                            timer = 1f
-                        },
-                        new ReviveAPI.ReviveAPI.PendingOnRevive
-                        {
-                            onReviveDelegate = respawnQualityExtraLife,
-                            timer = 2f
-                        }
-                    }
+                    canRevive = canRevive,
+                    onRevive = onRevive
                 });
 
-                bool canExtraLifeQualityRevive(CharacterMaster master)
+                Inventory.ItemTransformation getConsumeExtraLifeItemTransformation()
                 {
-                    return master && master.inventory && master.inventory.GetItemCount(extraLifeItemIndex) > 0;
+                    return new Inventory.ItemTransformation
+                    {
+                        originalItemIndex = extraLifeItemIndex,
+                        newItemIndex = extraLifeConsumedItemIndex,
+                        transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
+                    };
+                }
+
+                bool canRevive(CharacterMaster master)
+                {
+                    Inventory.ItemTransformation itemTransformation = getConsumeExtraLifeItemTransformation();
+
+                    return itemTransformation.CanTake(master.inventory, out _);
                 }
 
                 void onRevive(CharacterMaster master)
                 {
-                    if (master && master.inventory)
+                    Inventory.ItemTransformation itemTransformation = getConsumeExtraLifeItemTransformation();
+
+                    if (itemTransformation.TryTake(master.inventory, out Inventory.ItemTransformation.TakeResult takeResult))
                     {
-                        master.inventory.RemoveItem(extraLifeItemIndex);
-                    }
-                }
-
-                void reviveSound(CharacterMaster master)
-                {
-                    master.PlayExtraLifeSFX();
-                }
-
-                void respawnQualityExtraLife(CharacterMaster master)
-                {
-                    if (!master)
-                        return;
-
-                    if (master.inventory)
-                    {
-                        master.inventory.GiveItem(extraLifeConsumedItemIndex);
-                        CharacterMasterNotificationQueue.SendTransformNotification(master, extraLifeItemIndex, extraLifeConsumedItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
+                        CharacterMaster.ExtraLifeServerBehavior extraLifeBehavior = master.gameObject.AddComponent<CharacterMaster.ExtraLifeServerBehavior>();
+                        extraLifeBehavior.pendingTransformation = takeResult;
+                        extraLifeBehavior.consumedItemIndex = itemTransformation.newItemIndex;
+                        extraLifeBehavior.completionTime = Run.FixedTimeStamp.now + 2f;
+                        extraLifeBehavior.soundCallback += reviveSound;
+                        extraLifeBehavior.completionCallback += respawnQualityExtraLife;
                     }
 
-                    Vector3 reviveFootPosition = master.deathFootPosition;
-                    if (master.killedByUnsafeArea)
+                    void reviveSound()
                     {
-                        reviveFootPosition = TeleportHelper.FindSafeTeleportDestination(master.deathFootPosition, master.bodyPrefab.GetComponent<CharacterBody>(), RoR2Application.rng) ?? master.deathFootPosition;
+                        master.PlayExtraLifeSFX();
                     }
 
-                    CharacterBody body = master.Respawn(reviveFootPosition, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f), true);
-                    body.AddTimedBuff(RoR2Content.Buffs.Immune, 3f);
-
-                    foreach (EntityStateMachine entityStateMachine in body.GetComponents<EntityStateMachine>())
+                    void respawnQualityExtraLife()
                     {
-                        entityStateMachine.initialStateType = entityStateMachine.mainStateType;
-                    }
+                        if (!master)
+                            return;
 
-                    if (_reviveEffectIndex != EffectIndex.Invalid)
-                    {
-                        EffectManager.SpawnEffect(_reviveEffectIndex, new EffectData
+                        Vector3 reviveFootPosition = master.deathFootPosition;
+                        if (master.killedByUnsafeArea)
                         {
-                            origin = reviveFootPosition,
-                            rotation = body.transform.rotation
-                        }, true);
-                    }
+                            reviveFootPosition = TeleportHelper.FindSafeTeleportDestination(master.deathFootPosition, master.bodyPrefab.GetComponent<CharacterBody>(), RoR2Application.rng) ?? master.deathFootPosition;
+                        }
 
-                    if (deathEventCount > 0)
-                    {
-                        GameObject reviveAttachmentObj = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.ExtraLifeReviveAttachment);
+                        CharacterBody body = master.Respawn(reviveFootPosition, Quaternion.Euler(0f, UnityEngine.Random.Range(0f, 360f), 0f), true);
+                        body.AddTimedBuff(RoR2Content.Buffs.Immune, 3f);
 
-                        RepeatDeathEvent repeatDeathEvent = reviveAttachmentObj.GetComponent<RepeatDeathEvent>();
-                        repeatDeathEvent.RemainingDeathEvents = deathEventCount;
+                        foreach (EntityStateMachine entityStateMachine in body.GetComponents<EntityStateMachine>())
+                        {
+                            entityStateMachine.initialStateType = entityStateMachine.mainStateType;
+                        }
 
-                        NetworkedBodyAttachment reviveAttachment = reviveAttachmentObj.GetComponent<NetworkedBodyAttachment>();
-                        reviveAttachment.AttachToGameObjectAndSpawn(body.gameObject);
+                        if (_reviveEffectIndex != EffectIndex.Invalid)
+                        {
+                            EffectManager.SpawnEffect(_reviveEffectIndex, new EffectData
+                            {
+                                origin = reviveFootPosition,
+                                rotation = body.transform.rotation
+                            }, true);
+                        }
+
+                        if (deathEventCount > 0)
+                        {
+                            GameObject reviveAttachmentObj = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.ExtraLifeReviveAttachment);
+
+                            RepeatDeathEvent repeatDeathEvent = reviveAttachmentObj.GetComponent<RepeatDeathEvent>();
+                            repeatDeathEvent.RemainingDeathEvents = deathEventCount;
+
+                            NetworkedBodyAttachment reviveAttachment = reviveAttachmentObj.GetComponent<NetworkedBodyAttachment>();
+                            reviveAttachment.AttachToGameObjectAndSpawn(body.gameObject);
+                        }
                     }
                 }
             }
@@ -130,14 +130,16 @@ namespace ItemQualities.Items
                     ItemIndex extraLifeItemIndex = ItemQualitiesContent.ItemQualityGroups.ExtraLife.GetItemIndex(qualityTier);
                     ItemIndex extraLifeConsumedItemIndex = ItemQualitiesContent.ItemQualityGroups.ExtraLifeConsumed.GetItemIndex(qualityTier);
 
-                    int extraLifeCount = self.inventory.GetItemCount(extraLifeItemIndex);
-                    if (extraLifeCount > 0)
+                    Inventory.ItemTransformation consumeItemTransformation = new Inventory.ItemTransformation
                     {
-                        self.inventory.RemoveItem(extraLifeItemIndex, extraLifeCount);
-                        self.inventory.GiveItem(extraLifeConsumedItemIndex, extraLifeCount);
+                        originalItemIndex = extraLifeItemIndex,
+                        newItemIndex = extraLifeConsumedItemIndex,
+                        allowWhenDisabled = true,
+                        maxToTransform = int.MaxValue,
+                        transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
+                    };
 
-                        CharacterMasterNotificationQueue.SendTransformNotification(self, extraLifeItemIndex, extraLifeConsumedItemIndex, CharacterMasterNotificationQueue.TransformationType.Default);
-                    }
+                    consumeItemTransformation.TryTransform(self.inventory, out _);
                 }
             }
 

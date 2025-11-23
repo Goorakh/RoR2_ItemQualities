@@ -80,7 +80,7 @@ namespace ItemQualities.Items
                     CharacterBody ownerObject = owner ? owner.GetComponent<CharacterBody>() : null;
                     Inventory ownerInventory = ownerObject ? ownerObject.inventory : null;
 
-                    ItemQualityCounts plant = ItemQualitiesContent.ItemQualityGroups.Plant.GetItemCounts(ownerInventory);
+                    ItemQualityCounts plant = ItemQualitiesContent.ItemQualityGroups.Plant.GetItemCountsEffective(ownerInventory);
                     if (plant.TotalQualityCount > 0)
                     {
                         float healingRateIncrease = (0.15f * plant.UncommonCount) +

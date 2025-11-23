@@ -20,7 +20,7 @@ namespace ItemQualities.Items
             if (!deathReport?.attackerBody)
                 return;
 
-            ItemQualityCounts alienHead = ItemQualitiesContent.ItemQualityGroups.AlienHead.GetItemCounts(deathReport.attackerBody.inventory);
+            ItemQualityCounts alienHead = ItemQualitiesContent.ItemQualityGroups.AlienHead.GetItemCountsEffective(deathReport.attackerBody.inventory);
             if (alienHead.TotalQualityCount > 0)
             {
                 float cooldownReductionChance = (15f * alienHead.UncommonCount) +

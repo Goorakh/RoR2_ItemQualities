@@ -1,4 +1,5 @@
 ﻿using HG;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    public class ObjectPurchaseContext : MonoBehaviour
+    public sealed class ObjectPurchaseContext : MonoBehaviour
     {
         [SystemInitializer]
         static void Init()
@@ -15,21 +16,21 @@ namespace ItemQualities
             QualityDuplicatorBehavior.OnPickupsSelectedForPurchase += QualityDuplicatorBehavior_OnPickupsSelectedForPurchase;
         }
 
-        static CostTypeDef.PayCostResults CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost orig, CostTypeDef self, int cost, Interactor activator, GameObject purchasedObject, Xoroshiro128Plus rng, ItemIndex avoidedItemIndex)
+        static void CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost orig, CostTypeDef self, CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
         {
-            CostTypeDef.PayCostResults payCostResults = orig(self, cost, activator, purchasedObject, rng, avoidedItemIndex);
+            orig(self, context, result);
 
-            ObjectPurchaseContext purchaseContext = purchasedObject.EnsureComponent<ObjectPurchaseContext>();
-            purchaseContext.CostTypeIndex = (CostTypeIndex)Mathf.Max(0, Array.IndexOf(CostTypeCatalog.costTypeDefs, self));
-            purchaseContext.FirstInteractionResults ??= payCostResults;
-            purchaseContext.Results = payCostResults;
+            PurchaseResults purchaseResult = new PurchaseResults(result);
 
-            return payCostResults;
+            ObjectPurchaseContext purchaseContext = context.purchasedObject.EnsureComponent<ObjectPurchaseContext>();
+            purchaseContext.CostTypeIndex = (CostTypeIndex)Math.Max(0, Array.IndexOf(CostTypeCatalog.costTypeDefs, context.costTypeDef));
+            purchaseContext.FirstInteractionResults ??= purchaseResult;
+            purchaseContext.Results = purchaseResult;
         }
 
         static void QualityDuplicatorBehavior_OnPickupsSelectedForPurchase(QualityDuplicatorBehavior qualityDuplicatorBehavior, Interactor activator, IReadOnlyList<PickupIndex> pickupsSpent)
         {
-            CostTypeDef.PayCostResults results = new CostTypeDef.PayCostResults();
+            CostTypeDef.PayCostResults payCostResult = new CostTypeDef.PayCostResults();
             foreach (PickupIndex pickupIndex in pickupsSpent)
             {
                 PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
@@ -37,25 +38,48 @@ namespace ItemQualities
                 {
                     if (pickupDef.itemIndex != ItemIndex.None)
                     {
-                        results.itemsTaken.Add(pickupDef.itemIndex);
+                        payCostResult.AddTakenItems(new Inventory.ItemAndStackValues
+                        {
+                            itemIndex = pickupDef.itemIndex,
+                            stackValues = new Inventory.ItemStackValues { permanentStacks = 1 }
+                        });
                     }
                     else if (pickupDef.equipmentIndex != EquipmentIndex.None)
                     {
-                        results.equipmentTaken.Add(pickupDef.equipmentIndex);
+                        payCostResult.equipmentTaken.Add(pickupDef.equipmentIndex);
                     }
                 }
             }
 
+            PurchaseResults result = new PurchaseResults(payCostResult);
+
             ObjectPurchaseContext purchaseContext = qualityDuplicatorBehavior.gameObject.EnsureComponent<ObjectPurchaseContext>();
             purchaseContext.CostTypeIndex = qualityDuplicatorBehavior.CostTypeIndex;
-            purchaseContext.FirstInteractionResults ??= results;
-            purchaseContext.Results = results;
+            purchaseContext.FirstInteractionResults ??= result;
+            purchaseContext.Results = result;
         }
 
         public CostTypeIndex CostTypeIndex { get; private set; } = CostTypeIndex.None;
 
-        public CostTypeDef.PayCostResults FirstInteractionResults { get; private set; }
+        public PurchaseResults FirstInteractionResults { get; private set; }
 
-        public CostTypeDef.PayCostResults Results { get; private set; }
+        public PurchaseResults Results { get; private set; }
+
+        // Because CostTypeDef.PayCostResults is pooled, we cannot store an instance of it since it may be retreived and used for other purposes
+        public sealed class PurchaseResults
+        {
+            public readonly Inventory.ItemAndStackValues[] ItemStacksTaken;
+
+            public readonly EquipmentIndex[] EquipmentTaken;
+
+            public readonly ItemQualityCounts UsedSaleStarCounts;
+
+            public PurchaseResults(CostTypeDef.PayCostResults payCostResults)
+            {
+                ItemStacksTaken = payCostResults.itemStacksTaken ? payCostResults.itemStacksTaken.ToArray() : Array.Empty<Inventory.ItemAndStackValues>();
+                EquipmentTaken = payCostResults.equipmentTaken?.ToArray() ?? Array.Empty<EquipmentIndex>();
+                UsedSaleStarCounts = payCostResults.GetUsedSaleStars();
+            }
+        }
     }
 }

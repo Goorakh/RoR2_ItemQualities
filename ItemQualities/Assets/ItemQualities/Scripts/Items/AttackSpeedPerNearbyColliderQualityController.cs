@@ -113,7 +113,7 @@ namespace ItemQualities.Items
             if (!body || damageReport.attackerBody != body)
                 return;
 
-            ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCounts(body.inventory);
+            ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCountsEffective(body.inventory);
             if (attackSpeedPerNearbyAllyOrEnemy.TotalQualityCount > 0)
             {
                 QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;

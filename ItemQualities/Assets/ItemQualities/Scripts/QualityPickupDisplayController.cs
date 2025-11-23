@@ -1,15 +1,16 @@
 ﻿using RoR2;
+using System;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ItemQualities
 {
-    public class QualityPickupDisplayController : MonoBehaviour
+    public sealed class QualityPickupDisplayController : MonoBehaviour
     {
         [SystemInitializer]
         static void Init()
         {
             On.RoR2.PickupDisplay.Start += PickupDisplay_Start;
+            On.RoR2.PickupDisplay.RebuildModel += PickupDisplay_RebuildModel;
         }
 
         static void PickupDisplay_Start(On.RoR2.PickupDisplay.orig_Start orig, PickupDisplay self)
@@ -20,9 +21,22 @@ namespace ItemQualities
             qualityDisplayController._pickupDisplay = self;
         }
 
-        public Image QualityIcon;
+        static void PickupDisplay_RebuildModel(On.RoR2.PickupDisplay.orig_RebuildModel orig, PickupDisplay self, GameObject modelObjectOverride)
+        {
+            orig(self, modelObjectOverride);
+
+            QualityPickupDisplayController qualityDisplayController = self.GetComponentInChildren<QualityPickupDisplayController>();
+            if (qualityDisplayController)
+            {
+                self.modelRenderers.AddRange(qualityDisplayController.Renderers);
+            }
+        }
+
+        public SpriteRenderer QualityIconRenderer;
 
         public GameObject QualityItemEffect;
+
+        public Renderer[] Renderers = Array.Empty<Renderer>();
 
         PickupDisplay _pickupDisplay;
 
@@ -38,12 +52,19 @@ namespace ItemQualities
 
         void OnEnable()
         {
+            _pickupDisplay.modelRenderers?.AddRange(Renderers);
+
             refreshQualityIcon();
+        }
+
+        void OnDisable()
+        {
+            _pickupDisplay.modelRenderers?.RemoveAll(r => Array.IndexOf(Renderers, r) != -1);
         }
 
         void FixedUpdate()
         {
-            PickupIndex currentPickupIndex = _pickupDisplay ? _pickupDisplay.pickupIndex : PickupIndex.none;
+            PickupIndex currentPickupIndex = _pickupDisplay ? _pickupDisplay.pickupState.pickupIndex : PickupIndex.none;
             if (_lastPickupIndex != currentPickupIndex)
             {
                 refreshQualityIcon();
@@ -52,7 +73,7 @@ namespace ItemQualities
 
         void refreshQualityIcon()
         {
-            PickupIndex currentPickupIndex = _pickupDisplay ? _pickupDisplay.pickupIndex : PickupIndex.none;
+            PickupIndex currentPickupIndex = _pickupDisplay ? _pickupDisplay.pickupState.pickupIndex : PickupIndex.none;
             PickupDef currentPickup = PickupCatalog.GetPickupDef(currentPickupIndex);
 
             QualityTier qualityTier = QualityCatalog.GetQualityTier(currentPickupIndex);
@@ -81,7 +102,7 @@ namespace ItemQualities
                 }
             }
 
-            QualityIcon.sprite = qualityIcon;
+            QualityIconRenderer.sprite = qualityIcon;
 
             if (QualityItemEffect)
             {

@@ -1,9 +1,9 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
-using RoR2.Skills;
 using RoR2.UI;
 using System;
 using UnityEngine;
@@ -57,7 +57,7 @@ namespace ItemQualities.Items
                 ItemQualityCounts bandolier = default;
                 if (attackerInventory)
                 {
-                    bandolier = ItemQualitiesContent.ItemQualityGroups.Bandolier.GetItemCounts(attackerInventory);
+                    bandolier = ItemQualitiesContent.ItemQualityGroups.Bandolier.GetItemCountsEffective(attackerInventory);
                 }
 
                 float extraSkillRestockChance = (10f * bandolier.UncommonCount) +
@@ -65,12 +65,7 @@ namespace ItemQualities.Items
                                                 (50f * bandolier.EpicCount) +
                                                 (100f * bandolier.LegendaryCount);
 
-                int extraSkillRestocks = (int)(extraSkillRestockChance / 100f);
-
-                if (Util.CheckRoll(extraSkillRestockChance % 100f, attackerMaster))
-                {
-                    extraSkillRestocks++;
-                }
+                int extraSkillRestocks = RollUtil.GetOverflowRoll(extraSkillRestockChance, attackerMaster);
 
                 if (extraSkillRestocks > 0 && bandolierObj.TryGetComponent(out BandolierQualityInfo bandolierQualityInfo))
                 {

@@ -24,7 +24,9 @@ namespace ItemQualities.Items
             if (!attackerBody)
                 return 0;
 
-            ItemQualityCounts moreMissile = ItemQualitiesContent.ItemQualityGroups.MoreMissile.GetItemCounts(attackerBody.inventory);
+            ItemQualityCounts moreMissile = ItemQualitiesContent.ItemQualityGroups.MoreMissile.GetItemCountsEffective(attackerBody.inventory);
+            if (moreMissile.TotalQualityCount <= 0)
+                return 0;
 
             float moreMissileChance = (10f * moreMissile.UncommonCount) +
                                       (20f * moreMissile.RareCount) +
@@ -36,8 +38,6 @@ namespace ItemQualities.Items
 
         static void MissileUtils_FireMissile(ILContext il)
         {
-            ItemHooks.CombineGroupedItemCountsPatch(il);
-
             if (!il.Method.TryFindParameter<CharacterBody>("attackerBody", out ParameterDefinition attackerBodyParameter))
             {
                 Log.Warning("Failed to find attackerBody parameter");
@@ -72,29 +72,25 @@ namespace ItemQualities.Items
 
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts moreMissile = ItemQualitiesContent.ItemQualityGroups.MoreMissile.GetItemCounts(attackerInventory);
-                if (moreMissile.TotalQualityCount > 0)
+                int additionalMissileCount = rollAdditionalMissileCount(attackerBody);
+                if (additionalMissileCount > 0)
                 {
-                    int additionalMissileCount = rollAdditionalMissileCount(attackerBody);
-                    if (additionalMissileCount > 0)
+                    Vector3 initialDirection = missileProjectileInfo.rotation * Vector3.forward;
+
+                    // Intentionally using position as a fallback axis instead of forward to match vanilla behavior
+                    Vector3 missileRotationAxis = attackerBody.inputBank ? attackerBody.inputBank.aimDirection : attackerBody.transform.position;
+
+                    int middleMissileCount = additionalMissileCount + 1;
+                    int totalMissileCount = middleMissileCount + 2;
+                    for (int i = 0; i < middleMissileCount; i++)
                     {
-                        Vector3 initialDirection = missileProjectileInfo.rotation * Vector3.forward;
+                        float missileAngle = Util.Remap(i + 1, 0, totalMissileCount - 1, -45f, 45f);
+                        missileProjectileInfo.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(missileAngle, missileRotationAxis) * initialDirection);
 
-                        // Intentionally using position as a fallback axis instead of forward to match vanilla behavior
-                        Vector3 missileRotationAxis = attackerBody.inputBank ? attackerBody.inputBank.aimDirection : attackerBody.transform.position;
-
-                        int middleMissileCount = additionalMissileCount + 1;
-                        int totalMissileCount = middleMissileCount + 2;
-                        for (int i = 0; i < middleMissileCount; i++)
+                        // Last missile is the one vanilla code will spawn, so just set the rotation and pass it on
+                        if (i < additionalMissileCount)
                         {
-                            float missileAngle = Util.Remap(i + 1, 0, totalMissileCount - 1, -45f, 45f);
-                            missileProjectileInfo.rotation = Util.QuaternionSafeLookRotation(Quaternion.AngleAxis(missileAngle, missileRotationAxis) * initialDirection);
-
-                            // Last missile is the one vanilla code will spawn, so just set the rotation and pass it on
-                            if (i < additionalMissileCount)
-                            {
-                                ProjectileManager.instance.FireProjectile(missileProjectileInfo);
-                            }
+                            ProjectileManager.instance.FireProjectile(missileProjectileInfo);
                         }
                     }
                 }

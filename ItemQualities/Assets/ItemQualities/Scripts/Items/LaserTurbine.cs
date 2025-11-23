@@ -11,8 +11,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.EntityStates.LaserTurbine.LaserTurbineBaseState.GetDamage += ItemHooks.CombineGroupedItemCountsPatch;
-
             IL.RoR2.LaserTurbineController.OnOwnerKilledOtherServer += LaserTurbineController_OnOwnerKilledOtherServer;
         }
 
@@ -23,7 +21,7 @@ namespace ItemQualities.Items
             Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
             if (attackerInventory)
             {
-                ItemQualityCounts laserTurbine = ItemQualitiesContent.ItemQualityGroups.LaserTurbine.GetItemCounts(attackerInventory);
+                ItemQualityCounts laserTurbine = ItemQualitiesContent.ItemQualityGroups.LaserTurbine.GetItemCountsEffective(attackerInventory);
                 if (laserTurbine.TotalQualityCount > 0)
                 {
                     explosionRadius += (4f * laserTurbine.UncommonCount) +
@@ -57,7 +55,7 @@ namespace ItemQualities.Items
             {
                 if (laserTurbineController && laserTurbineController.cachedOwnerBody)
                 {
-                    ItemQualityCounts laserTurbine = ItemQualitiesContent.ItemQualityGroups.LaserTurbine.GetItemCounts(laserTurbineController.cachedOwnerBody.inventory);
+                    ItemQualityCounts laserTurbine = ItemQualitiesContent.ItemQualityGroups.LaserTurbine.GetItemCountsEffective(laserTurbineController.cachedOwnerBody.inventory);
                     if (laserTurbine.TotalQualityCount > 0)
                     {
                         killChargeDuration += (1f * laserTurbine.UncommonCount) +

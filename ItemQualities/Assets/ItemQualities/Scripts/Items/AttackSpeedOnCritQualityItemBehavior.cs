@@ -33,7 +33,7 @@ namespace ItemQualities.Items
 
         void onInventoryChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetHighestQualityInInventory(_body.inventory);
+            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(_body.inventory).HighestQuality;
             ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.EnsureBuffQualities(_body, buffQualityTier);
         }
     }

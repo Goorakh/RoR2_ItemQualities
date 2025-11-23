@@ -92,7 +92,7 @@ namespace ItemQualities.Items
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.Missile)),
-                               x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.CheckRoll)),
+                               x => ItemHooks.MatchCallLocalCheckRoll(x),
                                x => x.MatchBrfalse(out _),
                                x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.OnHitProcDamage)),
                                x => x.MatchLdsfld(typeof(GlobalEventManager.CommonAssets), nameof(GlobalEventManager.CommonAssets.missilePrefab))))
@@ -116,11 +116,9 @@ namespace ItemQualities.Items
                 CharacterMaster attackerMaster = attackerBody ? attackerBody.master : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts missile = default;
-                if (attackerInventory)
-                {
-                    missile = ItemQualitiesContent.ItemQualityGroups.Missile.GetItemCounts(attackerInventory);
-                }
+                ItemQualityCounts missile = ItemQualitiesContent.ItemQualityGroups.Missile.GetItemCountsEffective(attackerInventory);
+                if (missile.TotalQualityCount <= 0)
+                    return false;
 
                 float bigMissileChance = (10f * missile.UncommonCount) +
                                          (15f * missile.RareCount) +
@@ -142,11 +140,7 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                ItemQualityCounts missile = default;
-                if (attackerInventory)
-                {
-                    missile = ItemQualitiesContent.ItemQualityGroups.Missile.GetItemCounts(attackerInventory);
-                }
+                ItemQualityCounts missile = ItemQualitiesContent.ItemQualityGroups.Missile.GetItemCountsEffective(attackerInventory);
 
                 if (shouldFireBigMissile)
                 {
