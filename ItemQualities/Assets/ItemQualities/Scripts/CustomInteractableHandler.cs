@@ -68,7 +68,11 @@ namespace ItemQualities
         static void ClassicStageInfo_RebuildCards(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)
         {
             orig(self, forcedMonsterCategory, forcedInteractableCategory);
-            tryAddCustomInteractables(self.interactableCategories);
+
+            if (self.interactableCategories)
+            {
+                tryAddCustomInteractables(self.interactableCategories);
+            }
         }
 
         static void tryAddCustomInteractables(DirectorCardCategorySelection dccs)
