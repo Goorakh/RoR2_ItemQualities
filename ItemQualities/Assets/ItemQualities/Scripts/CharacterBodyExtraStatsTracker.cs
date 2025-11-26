@@ -56,16 +56,6 @@ namespace ItemQualities
             }
         }
 
-        float _barrierDecayRateMultiplier = 1f;
-        public float BarrierDecayRateMultiplier
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _barrierDecayRateMultiplier;
-            }
-        }
-
         public int WarCryOnMultiKill_MultiKillCount { get; private set; }
         float _warCryOnMultiKill_MultiKillTimer = 0;
         float _warCryOnMultiKill_MultiKillDuration = CharacterBody.multiKillMaxInterval;
@@ -352,7 +342,6 @@ namespace ItemQualities
         {
             ItemQualityCounts slug = default;
             ItemQualityCounts crowbar = default;
-            ItemQualityCounts barrierOnKill = default;
             ItemQualityCounts warCryOnMultiKill = default;
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
@@ -361,7 +350,6 @@ namespace ItemQualities
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCountsEffective(_body.inventory);
                 crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(_body.inventory);
-                barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCountsEffective(_body.inventory);
                 warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(_body.inventory);
                 executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCountsEffective(_body.inventory);
                 phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(_body.inventory);
@@ -383,14 +371,6 @@ namespace ItemQualities
                 (3.00f * crowbar.LegendaryCount));
 
             _crowbarMinHealthFraction = Mathf.Lerp(BaseCrowbarMinHealthFraction, BaseCrowbarMinHealthFraction * 0.5f, crowbarMinHealthFractionReduction);
-
-            float barrierDecayRateReduction = 1f;
-            barrierDecayRateReduction += 0.10f * barrierOnKill.UncommonCount;
-            barrierDecayRateReduction += 0.25f * barrierOnKill.RareCount;
-            barrierDecayRateReduction += 1.00f * barrierOnKill.EpicCount;
-            barrierDecayRateReduction += 3.00f * barrierOnKill.LegendaryCount;
-
-            _barrierDecayRateMultiplier = 1f / barrierDecayRateReduction;
 
             float warCryOnMultiKill_MultiKillDurationMult = 1f;
             warCryOnMultiKill_MultiKillDurationMult += 0.3f * warCryOnMultiKill.UncommonCount;
