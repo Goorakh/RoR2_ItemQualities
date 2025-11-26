@@ -35,6 +35,7 @@
         "R2API.DamageType.dll",
         "R2API.ProcType.dll",
         "R2API.Deployable.dll",
+        "R2API.Execute.dll",
         "MMHOOK_RoR2.dll",
         "Newtonsoft.Json.dll",
         "AK.Wwise.Unity.MonoBehaviour.dll",

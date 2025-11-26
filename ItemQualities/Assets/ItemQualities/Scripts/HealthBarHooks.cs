@@ -1,5 +1,4 @@
-﻿using ItemQualities.Items;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -67,8 +66,6 @@ namespace ItemQualities
         {
             IL.RoR2.UI.HealthBar.CheckInventory += HealthBar_CheckInventory;
 
-            IL.RoR2.UI.HealthBar.UpdateBarInfos += HealthBar_UpdateBarInfos;
-
             IL.RoR2.UI.HealthBar.ApplyBars += HealthBar_ApplyBars;
         }
 
@@ -134,47 +131,6 @@ namespace ItemQualities
             static int getItemCount(int itemCount, ItemIndex itemIndex, HashSet<ItemIndex> ignoreLowHealthItemIndices)
             {
                 return ignoreLowHealthItemIndices.Contains(itemIndex) ? 0 : itemCount;
-            }
-        }
-
-        static void HealthBar_UpdateBarInfos(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (c.TryGotoNext(MoveType.After,
-                              x => x.MatchLdfld<HealthComponent.HealthBarValues>(nameof(HealthComponent.HealthBarValues.cullFraction))))
-            {
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, HealthBar, float>>(getCullFraction);
-
-                static float getCullFraction(float cullFraction, HealthBar healthBar)
-                {
-                    if (healthBar &&
-                        healthBar.source &&
-                        healthBar.source.body &&
-                        (healthBar.source.body.bodyFlags & CharacterBody.BodyFlags.ImmuneToExecutes) == 0 &&
-                        healthBar.viewerBody)
-                    {
-                        if (healthBar.source.body.isBoss || healthBar.source.body.isChampion)
-                        {
-                            if (healthBar.viewerBody.TryGetComponent(out CharacterBodyExtraStatsTracker viewerBodyExtraStats))
-                            {
-                                cullFraction = Mathf.Max(cullFraction, viewerBodyExtraStats.ExecuteBossHealthFraction / healthBar.source.body.cursePenalty);
-                            }
-                        }
-
-                        if (healthBar.source.isInFrozenState)
-                        {
-                            cullFraction = Mathf.Max(cullFraction, IceRing.GetFreezeExecuteThreshold(healthBar.viewerBody) / healthBar.source.body.cursePenalty);
-                        }
-                    }
-
-                    return cullFraction;
-                }
-            }
-            else
-            {
-                Log.Error("Failed to find cullFraction patch location");
             }
         }
 

@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
 using System;
 using UnityEngine;
@@ -13,9 +14,20 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
+            ExecuteAPI.CalculateExecuteThresholdForViewer += calculateExecuteThreshold;
 
-            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
+        }
+
+        static void calculateExecuteThreshold(CharacterBody victimBody, CharacterBody viewerBody, ref float highestExecuteThreshold)
+        {
+            if (!victimBody || !victimBody.healthComponent || !viewerBody)
+                return;
+
+            if (victimBody.healthComponent.isInFrozenState)
+            {
+                highestExecuteThreshold = Mathf.Max(highestExecuteThreshold, GetFreezeExecuteThreshold(viewerBody));
+            }
         }
 
         public static float GetFreezeExecuteThreshold(CharacterBody attackerBody)
@@ -88,53 +100,6 @@ namespace ItemQualities.Items
                 }
 
                 return iceBandDamageInfo;
-            }
-        }
-
-        static void HealthComponent_TakeDamageProcess(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
-            {
-                Log.Error("Failed to find DamageInfo parameter");
-                return;
-            }
-
-            if (!c.TryGotoNext(x => x.MatchCallOrCallvirt<HealthComponent>("get_" + nameof(HealthComponent.isInFrozenState))))
-            {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
-            int patchCount = 0;
-
-            while (c.TryGotoNext(MoveType.After,
-                                 x => x.MatchLdcR4(HealthComponent.frozenExecuteThreshold)))
-            {
-                c.Emit(OpCodes.Ldarg, damageInfoParameter);
-                c.EmitDelegate<Func<float, DamageInfo, float>>(getAttackerFrozenExecuteThreshold);
-
-                static float getAttackerFrozenExecuteThreshold(float executeThreshold, DamageInfo attackerDamageInfo)
-                {
-                    CharacterBody attackerBody = attackerDamageInfo?.attacker ? attackerDamageInfo.attacker.GetComponent<CharacterBody>() : null;
-                    return getFreezeExecuteThreshold(executeThreshold, attackerBody);
-                }
-
-                patchCount++;
-            }
-
-            if (patchCount == 0)
-            {
-                Log.Error("Failed to find freeze execute threshold patch location");
-            }
-            else if (patchCount != 2)
-            {
-                Log.Warning($"Unexpected freeze execute threshold patch count: {patchCount}, investigate/adjust expected value");
-            }
-            else
-            {
-                Log.Debug($"Found {patchCount} freeze execute threshold patch location(s)");
             }
         }
     }

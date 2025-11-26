@@ -27,8 +27,6 @@ namespace ItemQualities.Items
 
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
 
-            On.RoR2.HealthComponent.GetBarrierDecayRate += HealthComponent_GetBarrierDecayRate;
-
             On.RoR2.CharacterBody.AddMultiKill += CharacterBody_AddMultiKill;
 
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
@@ -226,18 +224,6 @@ namespace ItemQualities.Items
             }
 
             orig(self, kills);
-        }
-
-        static float HealthComponent_GetBarrierDecayRate(On.RoR2.HealthComponent.orig_GetBarrierDecayRate orig, HealthComponent self)
-        {
-            float barrierDecayRate = orig(self);
-            
-            if (self && self.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
-            {
-                barrierDecayRate *= extraStatsTracker.BarrierDecayRateMultiplier;
-            }
-
-            return barrierDecayRate;
         }
 
         static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)
