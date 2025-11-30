@@ -278,7 +278,9 @@ namespace ItemQualities
                 setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-			}
+            }
+
+            setItemBehavior<SecondarySkillMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
         }
 
         void refreshModelReference(Transform modelTransform)
@@ -433,21 +435,7 @@ namespace ItemQualities
             if (!_body.skillLocator || !skill)
                 return;
 
-            if (_body.skillLocator.secondary == skill)
-            {
-                ItemQualityCounts secondarySkillMagazine = ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCountsEffective(_body.inventory);
-
-                float freeRestockChance = (10f * secondarySkillMagazine.UncommonCount) +
-                                          (20f * secondarySkillMagazine.RareCount) +
-                                          (35f * secondarySkillMagazine.EpicCount) +
-                                          (60f * secondarySkillMagazine.LegendaryCount);
-
-                if (Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master))
-                {
-                    skill.AddOneStock();
-                }
-            }
-            else if (_body.skillLocator.utility == skill)
+            if (_body.skillLocator.utility == skill)
             {
                 ItemQualityCounts utilitySkillMagazine = ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCountsEffective(_body.inventory);
 
