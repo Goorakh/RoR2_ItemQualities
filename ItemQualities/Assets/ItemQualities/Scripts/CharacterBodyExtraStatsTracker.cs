@@ -31,8 +31,6 @@ namespace ItemQualities
 
         TemporaryOverlayInstance _healCritBoostOverlay;
 
-        float _timeSinceLastUtilitySkillRechargeAuthority = float.PositiveInfinity;
-
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
 
         float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
@@ -152,7 +150,6 @@ namespace ItemQualities
         {
             recalculateExtraStats();
             _body.onInventoryChanged += onBodyInventoryChanged;
-            _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
 
             if (_body.characterMotor)
             {
@@ -165,15 +162,11 @@ namespace ItemQualities
             }
 
             refreshModelReference(_body.modelLocator ? _body.modelLocator.modelTransform : null);
-
-            EquipmentSlot.onServerEquipmentActivated += onServerEquipmentActivated;
-            GenericSkillHooks.OnSkillRechargeAuthority += onSkillRechargeAuthority;
         }
 
         void OnDisable()
         {
             _body.onInventoryChanged -= onBodyInventoryChanged;
-            _body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
 
             if (_body.characterMotor)
             {
@@ -184,9 +177,6 @@ namespace ItemQualities
             {
                 _body.modelLocator.onModelChanged -= refreshModelReference;
             }
-
-            EquipmentSlot.onServerEquipmentActivated -= onServerEquipmentActivated;
-            GenericSkillHooks.OnSkillRechargeAuthority -= onSkillRechargeAuthority;
         }
 
         void FixedUpdate()
@@ -205,8 +195,6 @@ namespace ItemQualities
 
             if (HasEffectiveAuthority)
             {
-                _timeSinceLastUtilitySkillRechargeAuthority += Time.fixedDeltaTime;
-
                 if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.1f)
                 {
                     QuailJumpComboAuthority = 0;
@@ -278,9 +266,14 @@ namespace ItemQualities
                 setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<EquipmentMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
             }
 
-            setItemBehavior<SecondarySkillMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+            if (HasEffectiveAuthority)
+            {
+                setItemBehavior<SecondarySkillMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<UtilitySkillMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+            }
         }
 
         void refreshModelReference(Transform modelTransform)
@@ -428,67 +421,6 @@ namespace ItemQualities
             }
 
             OnIncomingDamageServer?.Invoke(damageInfo);
-        }
-
-        void onSkillActivatedAuthority(GenericSkill skill)
-        {
-            if (!_body.skillLocator || !skill)
-                return;
-
-            if (_body.skillLocator.utility == skill)
-            {
-                ItemQualityCounts utilitySkillMagazine = ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCountsEffective(_body.inventory);
-
-                if (utilitySkillMagazine.TotalQualityCount > 0)
-                {
-                    float cooldownRefundWindow = 0.1f;
-
-                    float cooldownReductionWindow = cooldownRefundWindow + 0.2f;
-
-                    float remainingCooldownMultiplier = Mathf.Pow(1f - 0.1f, utilitySkillMagazine.UncommonCount) *
-                                                        Mathf.Pow(1f - 0.2f, utilitySkillMagazine.RareCount) *
-                                                        Mathf.Pow(1f - 0.3f, utilitySkillMagazine.EpicCount) *
-                                                        Mathf.Pow(1f - 0.5f, utilitySkillMagazine.LegendaryCount);
-
-                    if (_timeSinceLastUtilitySkillRechargeAuthority <= cooldownRefundWindow)
-                    {
-                        skill.AddOneStock();
-                    }
-                    else if (_timeSinceLastUtilitySkillRechargeAuthority <= cooldownReductionWindow)
-                    {
-                        skill.rechargeStopwatch += skill.cooldownRemaining * (1f - remainingCooldownMultiplier);
-                    }
-                }
-            }
-        }
-
-        void onSkillRechargeAuthority(GenericSkill skill)
-        {
-            if (!_body.skillLocator || !skill)
-                return;
-
-            if (_body.skillLocator.utility == skill)
-            {
-                _timeSinceLastUtilitySkillRechargeAuthority = 0f;
-            }
-        }
-
-        void onServerEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
-        {
-            if (!_body || !_body.inventory || _body.equipmentSlot != equipmentSlot || equipmentIndex == EquipmentIndex.None)
-                return;
-
-            ItemQualityCounts equipmentMagazine = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCountsEffective(_body.inventory);
-
-            float freeRestockChance = (10f * equipmentMagazine.UncommonCount) +
-                                      (20f * equipmentMagazine.RareCount) +
-                                      (35f * equipmentMagazine.EpicCount) +
-                                      (60f * equipmentMagazine.LegendaryCount);
-
-            if (Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master))
-            {
-                _body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, equipmentSlot.activeEquipmentSet[equipmentSlot.activeEquipmentSlot], 1);
-            }
         }
 
         void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)
