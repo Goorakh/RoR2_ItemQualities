@@ -650,6 +650,8 @@ namespace ItemQualities
             public static ItemQualityGroup ScrapRed;
 
             public static ItemQualityGroup ScrapYellow;
+
+            public static ItemQualityGroup BarrierOnCooldown;
         }
 
         public static class EquipmentQualityGroups
