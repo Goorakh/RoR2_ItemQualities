@@ -1422,5 +1422,25 @@
 
         "ITEM_BARRIERONCOOLDOWN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
         "ITEM_BARRIERONCOOLDOWN_LEGENDARY_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        
+        "ITEM_SPEEDONPICKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> A golden barrel granting permanent increase to all stats will appear on each stage.",
+        "ITEM_SPEEDONPICKUP_UNCOMMON_DESC": "{0}\nA <style=cIsDamage>golden barrel</style> will appear on each stage, containing a pickup that increases <style=cIsUtility>all stats</style> by <sprite name=\"Quality\"> <style=cIsUtility>3% <style=cStack>(+3% per stack)</style></style> <style=cIsUtility>permanently</style>.",
+        
+        "ITEM_SPEEDONPICKUP_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> A golden barrel granting permanent increase to all stats will appear on each stage.",
+        "ITEM_SPEEDONPICKUP_RARE_DESC": "{0}\nA <style=cIsDamage>golden barrel</style> will appear on each stage, containing a pickup that increases <style=cIsUtility>all stats</style> by <sprite name=\"Quality\"> <style=cIsUtility>5% <style=cStack>(+5% per stack)</style></style> <style=cIsUtility>permanently</style>.",
+        
+        "ITEM_SPEEDONPICKUP_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> A golden barrel granting permanent increase to all stats will appear on each stage.",
+        "ITEM_SPEEDONPICKUP_EPIC_DESC": "{0}\nA <style=cIsDamage>golden barrel</style> will appear on each stage, containing a pickup that increases <style=cIsUtility>all stats</style> by <sprite name=\"Quality\"> <style=cIsUtility>7% <style=cStack>(+7% per stack)</style></style> <style=cIsUtility>permanently</style>.",
+        
+        "ITEM_SPEEDONPICKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> A golden barrel granting permanent increase to all stats will appear on each stage.",
+        "ITEM_SPEEDONPICKUP_LEGENDARY_DESC": "{0}\nA <style=cIsDamage>golden barrel</style> will appear on each stage, containing a pickup that increases <style=cIsUtility>all stats</style> by <sprite name=\"Quality\"> <style=cIsUtility>10% <style=cStack>(+10% per stack)</style></style> <style=cIsUtility>permanently</style>.",
+
+        "SPEEDONPICKUP_STATBUFF_ARMOR": "+ ARMOR",
+        "SPEEDONPICKUP_STATBUFF_ATTACKSPEED": "+ ATTACK SPEED",
+        "SPEEDONPICKUP_STATBUFF_CRIT": "+ CRIT",
+        "SPEEDONPICKUP_STATBUFF_DAMAGE": "+ DAMAGE",
+        "SPEEDONPICKUP_STATBUFF_HEALTH": "+ MAXIMUM HEALTH",
+        "SPEEDONPICKUP_STATBUFF_MOVESPEED": "+ MOVE SPEED",
+        "SPEEDONPICKUP_STATBUFF_REGENERATION": "+ HEALTH REGENERATION",
     }
 }

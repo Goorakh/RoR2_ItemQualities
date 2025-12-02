@@ -26,6 +26,9 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetSteakBonus))]
         public float SteakBonus;
 
+        [SyncVar(hook = nameof(hookSetSpeedOnPickupBonus))]
+        public int SpeedOnPickupBonus;
+
         int _stageIncomingDamageInstanceCountServer;
         public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
 
@@ -89,6 +92,17 @@ namespace ItemQualities
         {
             bool changed = SteakBonus != steakBonus;
             SteakBonus = steakBonus;
+
+            if (changed)
+            {
+                markBodyStatsDirty();
+            }
+        }
+
+        void hookSetSpeedOnPickupBonus(int speedOnPickupBonus)
+        {
+            bool changed = SpeedOnPickupBonus != speedOnPickupBonus;
+            SpeedOnPickupBonus = speedOnPickupBonus;
 
             if (changed)
             {

@@ -184,6 +184,8 @@ namespace ItemQualities
 
             List<SpawnCard> spawnCardsList = new List<SpawnCard>();
 
+            List<Texture> texturesList = new List<Texture>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -256,6 +258,9 @@ namespace ItemQualities
                     case SpawnCard spawnCard:
                         spawnCardsList.Add(spawnCard);
                         break;
+                    case Texture texture:
+                        texturesList.Add(texture);
+                        break;
                 }
             }
 
@@ -291,6 +296,8 @@ namespace ItemQualities
             _contentPack.materials.Add(materialsList.ToArray());
 
             _contentPack.spawnCards.Add(spawnCardsList.ToArray());
+
+            _contentPack.textures.Add(texturesList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -652,6 +659,8 @@ namespace ItemQualities
             public static ItemQualityGroup ScrapYellow;
 
             public static ItemQualityGroup BarrierOnCooldown;
+
+            public static ItemQualityGroup SpeedOnPickup;
         }
 
         public static class EquipmentQualityGroups

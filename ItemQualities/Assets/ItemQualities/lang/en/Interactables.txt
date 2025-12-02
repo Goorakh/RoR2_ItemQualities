@@ -25,6 +25,10 @@
 		"DUPLICATOR_WILD_QUALITY_CONTEXT": "Use Overgrown 3D Printer - Quality",
 		"DUPLICATOR_WILD_QUALITY_DESCRIPTION": "",
 
+        "BARREL_SPEEDONPICKUP_NAME": "Collector's Barrel",
+		"BARREL_SPEEDONPICKUP_CONTEXT": "Open collector's barrel",
+		"BARREL_SPEEDONPICKUP_DESCRIPTION": "Contains a pickup that slightly increases all stats.",
+
         "COST_QUALITY_ITEM_FORMAT": "{0} Quality Item(s)",
     }
 }
