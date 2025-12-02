@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igSpeedOnPickup
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: abdba50c6305d664e93598e3420bf9a8
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: fa0726809706d984884b900112855391, type: 2}
+  _rareItem: {fileID: 11400000, guid: b3188ef2c8d6f6b4db476c1a0c37748a, type: 2}
+  _epicItem: {fileID: 11400000, guid: 50fb2286c75f2e842b3c5674493433dd, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 485ba47016765cd4db48c400bb67dee8, type: 2}

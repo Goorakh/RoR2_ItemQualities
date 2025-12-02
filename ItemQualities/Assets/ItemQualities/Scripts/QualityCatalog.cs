@@ -557,24 +557,7 @@ namespace ItemQualities
 
         public static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTier qualityTier, Color baseIconTint, bool useConsumedIcon = false)
         {
-            //https://forum.unity.com/threads/easy-way-to-make-texture-isreadable-true-by-script.1141915/
-            RenderTexture renderTex = RenderTexture.GetTemporary(
-                baseIconTexture.width,
-                baseIconTexture.height,
-                0,
-                RenderTextureFormat.ARGB32,
-                baseIconTexture.isDataSRGB ? RenderTextureReadWrite.sRGB : RenderTextureReadWrite.Linear);
-
-            Graphics.Blit(baseIconTexture, renderTex);
-
-            RenderTexture previous = RenderTexture.active;
-            RenderTexture.active = renderTex;
-            
-            Texture2D iconTexture = new Texture2D(renderTex.width, renderTex.height, TextureFormat.ARGB32, true);
-            iconTexture.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
-
-            RenderTexture.active = previous;
-            RenderTexture.ReleaseTemporary(renderTex);
+            Texture2D iconTexture = TextureUtils.CreateAccessibleCopy(baseIconTexture);
 
             QualityTierDef qualityTierDef = GetQualityTierDef(qualityTier);
 
