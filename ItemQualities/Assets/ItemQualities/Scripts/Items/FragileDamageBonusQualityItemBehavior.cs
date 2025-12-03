@@ -43,6 +43,11 @@ namespace ItemQualities.Items
             }
         }
 
+        void Start()
+        {
+            refreshBuffCounts();
+        }
+
         void OnDisable()
         {
             _body.onInventoryChanged -= onInventoryChanged;
@@ -106,7 +111,7 @@ namespace ItemQualities.Items
 
         void refreshBuffCounts()
         {
-            int hitsTaken = _bodyExtraStats.MasterExtraStatsTracker.StageDamageInstancesTakenCount;
+            int hitsTaken = _bodyExtraStats.MasterExtraStatsTracker ? _bodyExtraStats.MasterExtraStatsTracker.StageDamageInstancesTakenCount : 0;
 
             int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.GetBuffCounts(_body).TotalQualityCount;
             int targetBuffCount = Mathf.Max(0, _maxHits - hitsTaken);
