@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igDuplicator
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 48ff67976036c3b4a820c2a26b66d973
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: cb421ce3867a4e74593a3c823e0036fe, type: 2}
+  _rareItem: {fileID: 11400000, guid: b47e3f221386f3749bb82dc162b78369, type: 2}
+  _epicItem: {fileID: 11400000, guid: fbd918096407b6e47afe98760cdb03d1, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: e3fb4559bed1dbc40b824a1ff49bc3f6, type: 2}
