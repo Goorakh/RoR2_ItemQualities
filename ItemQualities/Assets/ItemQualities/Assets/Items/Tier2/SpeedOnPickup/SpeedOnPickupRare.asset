@@ -28,5 +28,5 @@ MonoBehaviour:
   isConsumed: 0
   hidden: 0
   canRemove: 1
-  tags: 09000000
+  tags: 0900000014000000
   requiredExpansion: {fileID: 0}
