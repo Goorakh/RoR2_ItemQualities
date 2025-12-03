@@ -1442,5 +1442,17 @@
         "SPEEDONPICKUP_STATBUFF_HEALTH": "+ MAXIMUM HEALTH",
         "SPEEDONPICKUP_STATBUFF_MOVESPEED": "+ MOVE SPEED",
         "SPEEDONPICKUP_STATBUFF_REGENERATION": "+ HEALTH REGENERATION",
+
+        "ITEM_DUPLICATOR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Temporary items are shared with your allies.",
+        "ITEM_DUPLICATOR_UNCOMMON_DESC": "{0}\nAll <style=cIsTemporary>temporary items</style> are shared with your allies for <sprite name=\"Quality\"> <style=cIsUtility>50% <style=cStack>(+50% per stack)</style></style> of the <style=cIsTemporary>temporary item duration</style>.",
+
+        "ITEM_DUPLICATOR_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Temporary items are shared with your allies.",
+        "ITEM_DUPLICATOR_RARE_DESC": "{0}\nAll <style=cIsTemporary>temporary items</style> are shared with your allies for <sprite name=\"Quality\"> <style=cIsUtility>75% <style=cStack>(+75% per stack)</style></style> of the <style=cIsTemporary>temporary item duration</style>.",
+
+        "ITEM_DUPLICATOR_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Temporary items are shared with your allies.",
+        "ITEM_DUPLICATOR_EPIC_DESC": "{0}\nAll <style=cIsTemporary>temporary items</style> are shared with your allies for <sprite name=\"Quality\"> <style=cIsUtility>100% <style=cStack>(+100% per stack)</style></style> of the <style=cIsTemporary>temporary item duration</style>.",
+
+        "ITEM_DUPLICATOR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Temporary items are shared with your allies.",
+        "ITEM_DUPLICATOR_LEGENDARY_DESC": "{0}\nAll <style=cIsTemporary>temporary items</style> are shared with your allies for <sprite name=\"Quality\"> <style=cIsUtility>150% <style=cStack>(+150% per stack)</style></style> of the <style=cIsTemporary>temporary item duration</style>.",
     }
 }

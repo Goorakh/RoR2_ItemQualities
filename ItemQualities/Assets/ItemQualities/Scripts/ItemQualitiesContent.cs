@@ -661,6 +661,8 @@ namespace ItemQualities
             public static ItemQualityGroup BarrierOnCooldown;
 
             public static ItemQualityGroup SpeedOnPickup;
+
+            public static ItemQualityGroup Duplicator;
         }
 
         public static class EquipmentQualityGroups
@@ -754,6 +756,8 @@ namespace ItemQualities
             public static GameObject HealOrbUtility;
 
             public static GameObject HealOrbSpecial;
+
+            public static GameObject DuplicatorQualityAttachment;
         }
 
         public static class ProjectilePrefabs
