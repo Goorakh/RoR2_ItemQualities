@@ -43,6 +43,8 @@ namespace ItemQualities.Items
         void updateAccumulatedHealing()
         {
             ItemQualityCounts healOnCrit = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(_body.inventory);
+            if (healOnCrit.TotalQualityCount == 0)
+                return;
 
             float healingThreshold = 0f;
             switch (healOnCrit.HighestQuality)
