@@ -905,16 +905,16 @@
         "ITEM_KILLELITEFRENZY_LEGENDARY_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>60%</style> <style=cStack>(+60% per stack)</style>.",
 
         "ITEM_EXTRALIFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
-        "ITEM_EXTRALIFE_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>2</style> times on death.",
+        "ITEM_EXTRALIFE_UNCOMMON_DESC": "{0}\nUpon reviving, <style=cIsDamage>triggers</style> your <style=cIsDamage>On-Kill</style> effects <sprite name=\"Quality\"> <style=cIsUtility>12</style> times.",
 
         "ITEM_EXTRALIFE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
-        "ITEM_EXTRALIFE_RARE_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>4</style> times on death.",
+        "ITEM_EXTRALIFE_RARE_DESC": "{0}\nUpon reviving, <style=cIsDamage>triggers</style> your <style=cIsDamage>On-Kill</style> effects <sprite name=\"Quality\"> <style=cIsUtility>18</style> times.",
 
         "ITEM_EXTRALIFE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
-        "ITEM_EXTRALIFE_EPIC_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>6</style> times on death.",
+        "ITEM_EXTRALIFE_EPIC_DESC": "{0}\nUpon reviving, <style=cIsDamage>triggers</style> your <style=cIsDamage>On-Kill</style> effects <sprite name=\"Quality\"> <style=cIsUtility>25</style> times.",
 
         "ITEM_EXTRALIFE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Dying repeatedly triggers your 'On Kill' effects.",
-        "ITEM_EXTRALIFE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Triggers</style> any <style=cIsDamage>On-Kill</style> effects you have <sprite name=\"Quality\"> <style=cIsUtility>10</style> times on death.",
+        "ITEM_EXTRALIFE_LEGENDARY_DESC": "{0}\nUpon reviving, <style=cIsDamage>triggers</style> your <style=cIsDamage>On-Kill</style> effects <sprite name=\"Quality\"> <style=cIsUtility>30</style> times.",
 
         "ITEM_ARMORPLATE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase armor after being hit 15 times.",
         "ITEM_ARMORPLATE_UNCOMMON_DESC": "{0}\nEvery <style=cIsDamage>15</style> hits taken, <style=cIsHealing>increase armor</style> by <style=cIsHealing>75</style> for <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds.",

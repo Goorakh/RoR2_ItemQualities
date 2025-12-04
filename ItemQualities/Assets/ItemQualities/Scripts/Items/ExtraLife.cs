@@ -26,10 +26,10 @@ namespace ItemQualities.Items
 
                 int deathEventCount = extraLifeQualityTier switch
                 {
-                    QualityTier.Uncommon => 2,
-                    QualityTier.Rare => 4,
-                    QualityTier.Epic => 6,
-                    QualityTier.Legendary => 10,
+                    QualityTier.Uncommon => 12,
+                    QualityTier.Rare => 18,
+                    QualityTier.Epic => 25,
+                    QualityTier.Legendary => 30,
                     _ => throw new NotImplementedException($"Quality tier {extraLifeQualityTier} is not implemented"),
                 };
 
