@@ -1,6 +1,5 @@
 ﻿using R2API;
 using RoR2;
-using System;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -21,7 +20,10 @@ namespace ItemQualities.Items
             if (!victim)
                 return;
 
-            victim.SetBuffCount(ItemQualitiesContent.Buffs.PersonalShield.buffIndex, (int)(victim.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) - report.damageDealt));
+            if (victim.HasBuff(ItemQualitiesContent.Buffs.PersonalShield))
+            {
+                victim.SetBuffCount(ItemQualitiesContent.Buffs.PersonalShield.buffIndex, Mathf.Max(0, (int)(victim.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) - report.damageDealt)));
+            }
         }
 
         private static void OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject @object)
@@ -37,32 +39,38 @@ namespace ItemQualities.Items
             if (personalShield.TotalQualityCount <= 0)
                 return;
 
-            float shieldPerInteract;
+            float shieldFractionPerInteract;
             switch (personalShield.HighestQuality)
             {
                 case QualityTier.Uncommon:
-                    shieldPerInteract = 0.02f;
+                    shieldFractionPerInteract = 0.02f;
                     break;
                 case QualityTier.Rare:
-                    shieldPerInteract = 0.05f;
+                    shieldFractionPerInteract = 0.05f;
                     break;
                 case QualityTier.Epic:
-                    shieldPerInteract = 0.07f;
+                    shieldFractionPerInteract = 0.07f;
                     break;
                 case QualityTier.Legendary:
-                    shieldPerInteract = 0.10f;
+                    shieldFractionPerInteract = 0.10f;
                     break;
                 default:
                     Log.Error($"Quality tier {personalShield.HighestQuality} is not implemented");
                     return;
             }
 
-            float maxShield = (personalShield.UncommonCount * 0.2f) +
-                              (personalShield.RareCount * 0.5f) +
-                              (personalShield.EpicCount * 0.9f) +
-                              (personalShield.LegendaryCount * 2f);
+            float maxShieldFraction = (personalShield.UncommonCount * 0.2f) +
+                                      (personalShield.RareCount * 0.5f) +
+                                      (personalShield.EpicCount * 0.9f) +
+                                      (personalShield.LegendaryCount * 2f);
 
-            body.SetBuffCount(ItemQualitiesContent.Buffs.PersonalShield.buffIndex, (int)Math.Min(body.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) + (shieldPerInteract * body.maxHealth), maxShield * body.maxHealth));
+            int currentBuffCount = body.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield);
+            int targetBuffCount = Mathf.CeilToInt(currentBuffCount + (shieldFractionPerInteract * body.maxHealth));
+            int maxBuffCount = Mathf.CeilToInt(maxShieldFraction * body.maxHealth);
+            if (currentBuffCount < targetBuffCount && currentBuffCount < maxBuffCount)
+            {
+                body.SetBuffCount(ItemQualitiesContent.Buffs.PersonalShield.buffIndex, Mathf.Min(targetBuffCount, maxBuffCount));
+            }
         }
 
         private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
