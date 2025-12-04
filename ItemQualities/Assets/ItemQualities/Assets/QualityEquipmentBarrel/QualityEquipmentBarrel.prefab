@@ -313,7 +313,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayDistance: 15
-  hologramPivot: {fileID: 2657582400786215523}
+  hologramPivot: {fileID: 7700074148690730226}
   disableHologramRotation: 0
   hologramContentInstance: {fileID: 0}
 --- !u!114 &1966172099153970814
@@ -449,37 +449,6 @@ Transform:
   m_Father: {fileID: 6827817425808521031}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &4213651288045755320
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2657582400786215523}
-  m_Layer: 0
-  m_Name: HologramPivot
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2657582400786215523
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4213651288045755320}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 5740203078862827020}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4357230446920823064
 GameObject:
   m_ObjectHideFlags: 0
@@ -510,6 +479,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7458798797186231787}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4952983354363459602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7700074148690730226}
+  m_Layer: 0
+  m_Name: HologramPivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7700074148690730226
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4952983354363459602}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.07, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7458798797186231787}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6919851753132788224
 PrefabInstance:
@@ -625,11 +625,6 @@ MonoBehaviour:
 --- !u!137 &3317176645935739434 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -3602675105796147158, guid: 8a3c32e62ce4ebd4fa2ab408ba6299b4, type: 3}
-  m_PrefabInstance: {fileID: 6919851753132788224}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &5740203078862827020 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -5791333592053259252, guid: 8a3c32e62ce4ebd4fa2ab408ba6299b4, type: 3}
   m_PrefabInstance: {fileID: 6919851753132788224}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &6827817425808521031 stripped
