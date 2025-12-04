@@ -24,8 +24,6 @@ namespace ItemQualities.Items
         static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
-            On.RoR2.CharacterMotor.OnLeaveStableGround += CharacterMotor_OnLeaveStableGround;
             IL.EntityStates.GenericCharacterMain.ProcessJump_bool += FeatherEffect;
         }
 
@@ -114,31 +112,6 @@ namespace ItemQualities.Items
             {
                 return prefab;
             }
-        }
-
-        private static void CharacterMotor_OnLeaveStableGround(On.RoR2.CharacterMotor.orig_OnLeaveStableGround orig, CharacterMotor self)
-        {
-            orig(self);
-            self.body.SetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps.buffIndex, 0);
-        }
-
-        private static void onCharacterDeathGlobal(DamageReport report)
-        {
-            if (report == null)
-                return;
-
-            if (report.attackerBody == null)
-                return;
-
-            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(report.attackerBody.inventory);
-
-            int maxJumps = (feather.UncommonCount * 2) +
-                           (feather.RareCount * 4) +
-                           (feather.EpicCount * 6) +
-                           (feather.LegendaryCount * 8);
-
-            int currentBuffs = report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps);
-            report.attackerBody.SetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps.buffIndex, Math.Min(currentBuffs + 1, maxJumps));
         }
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

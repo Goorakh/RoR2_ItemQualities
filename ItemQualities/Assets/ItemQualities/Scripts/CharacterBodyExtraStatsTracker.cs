@@ -132,6 +132,10 @@ namespace ItemQualities
 
         public event Action<DamageInfo> OnIncomingDamageServer;
 
+        public event CharacterMotor.HitGroundDelegate OnHitGroundAuthority;
+
+        public event Action<CharacterMotor.HitGroundInfo> OnHitGroundServer;
+
         void Awake()
         {
             _netIdentity = GetComponent<NetworkIdentity>();
@@ -268,6 +272,7 @@ namespace ItemQualities
                 setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<EquipmentMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<DuplicatorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Duplicator.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<FeatherQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
             }
 
             if (HasEffectiveAuthority)
@@ -431,6 +436,22 @@ namespace ItemQualities
                 LastQuailLandTimeAuthority = Run.FixedTimeStamp.now;
                 IsPerformingQuailJump = false;
             }
+
+            OnHitGroundAuthority?.Invoke(ref hitGroundInfo);
+
+            CmdOnHitGround(hitGroundInfo.velocity, hitGroundInfo.position, hitGroundInfo.isValidForEffect);
+        }
+
+        [Command]
+        void CmdOnHitGround(Vector3 velocity, Vector3 position, bool isValidForEffect)
+        {
+            OnHitGroundServer?.Invoke(new CharacterMotor.HitGroundInfo
+            {
+                velocity = velocity,
+                position = position,
+                isValidForEffect = isValidForEffect,
+                ownerBodyObject = gameObject
+            });
         }
 
         public void UpdateAllTemporaryVisualEffects()
