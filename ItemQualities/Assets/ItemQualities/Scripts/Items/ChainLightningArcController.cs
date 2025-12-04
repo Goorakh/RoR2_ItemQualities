@@ -1,5 +1,4 @@
-﻿using HG;
-using RoR2;
+﻿using RoR2;
 using RoR2.Orbs;
 using System;
 using System.Collections.Generic;
@@ -36,6 +35,16 @@ namespace ItemQualities.Items
         void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
+        }
+
+        void OnEnable()
+        {
+            InstanceTracker.Add(this);
+        }
+
+        void OnDisable()
+        {
+            InstanceTracker.Remove(this);
         }
 
         void FixedUpdate()
@@ -117,13 +126,10 @@ namespace ItemQualities.Items
             if (!bodyObject)
                 return;
 
-            List<NetworkedBodyAttachment> bodyAttachments = new List<NetworkedBodyAttachment>();
-            NetworkedBodyAttachment.FindBodyAttachments(bodyObject.GetComponent<CharacterBody>(), bodyAttachments);
-
             ChainLightningArcController lightningArcController = null;
-            foreach (NetworkedBodyAttachment bodyAttachment in bodyAttachments)
+            foreach (ChainLightningArcController chainLightningArcController in InstanceTracker.GetInstancesList<ChainLightningArcController>())
             {
-                if (bodyAttachment.TryGetComponent(out ChainLightningArcController chainLightningArcController) && chainLightningArcController.Attacker == attacker)
+                if (chainLightningArcController.Attacker == attacker)
                 {
                     lightningArcController = chainLightningArcController;
                     break;
