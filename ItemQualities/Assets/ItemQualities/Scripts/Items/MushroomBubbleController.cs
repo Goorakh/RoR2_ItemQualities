@@ -14,7 +14,7 @@ namespace ItemQualities.Items
 
             if (TryGetComponent(out Deployable deployable))
             {
-                deployable.onUndeploy.AddListener(undeploy);
+                deployable.onUndeploy.AddListener(UndeployImmediate);
             }
             else
             {
@@ -22,11 +22,21 @@ namespace ItemQualities.Items
             }
         }
 
-        void undeploy()
+        public void Undeploy()
         {
-            if (_stateMachine && _stateMachine.state is not MushroomBubbleFlashOut)
+            invokeStateUndeploy(false);
+        }
+
+        public void UndeployImmediate()
+        {
+            invokeStateUndeploy(true);
+        }
+
+        void invokeStateUndeploy(bool immediate)
+        {
+            if (_stateMachine && _stateMachine.state is MushroomBubbleBaseState mushroomBubbleState)
             {
-                _stateMachine.SetNextState(new MushroomBubbleFlashOut());
+                mushroomBubbleState.Undeploy(immediate);
             }
         }
     }

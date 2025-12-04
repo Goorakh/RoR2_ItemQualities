@@ -25,9 +25,6 @@ namespace ItemQualities.Items
 
         static GameObject _bubbleShieldPrefab;
 
-        CharacterBody _body;
-        GameObject _currentShield;
-
         static int getMushroomBubbleLimit(CharacterMaster master, int deployableCountMultiplier)
         {
             return 1;
@@ -125,6 +122,10 @@ namespace ItemQualities.Items
             args.ContentPack.networkedObjectPrefabs.Add(_bubbleShieldPrefab);
         }
 
+        CharacterBody _body;
+
+        MushroomBubbleController _shieldInstance;
+
         void Awake()
         {
             _body = GetComponent<CharacterBody>();
@@ -137,23 +138,35 @@ namespace ItemQualities.Items
 
             if (_body && _body.notMovingStopwatch >= 0.25f && _body.healthComponent && _body.healthComponent.alive)
             {
-                if (!_currentShield)
+                if (!_shieldInstance)
                 {
-                    _currentShield = Instantiate(_bubbleShieldPrefab, transform.position, Quaternion.identity);
-                    _currentShield.GetComponent<GenericOwnership>().ownerObject = gameObject;
-                    
+                    GameObject shieldObj = Instantiate(_bubbleShieldPrefab, transform.position, Quaternion.identity);
+                    shieldObj.GetComponent<GenericOwnership>().ownerObject = gameObject;
+
                     if (_body.master)
                     {
-                        Deployable deployable = _currentShield.GetComponent<Deployable>();
+                        Deployable deployable = shieldObj.GetComponent<Deployable>();
                         _body.master.AddDeployable(deployable, _mushroomBubbleDeployableSlot);
                     }
 
-                    NetworkServer.Spawn(_currentShield);
+                    _shieldInstance = shieldObj.GetComponent<MushroomBubbleController>();
+
+                    NetworkServer.Spawn(shieldObj);
                 }
             }
-            else
+            else if (_shieldInstance)
             {
-                _currentShield = null;
+                _shieldInstance.Undeploy();
+                _shieldInstance = null;
+            }
+        }
+
+        void OnDisable()
+        {
+            if (_shieldInstance)
+            {
+                _shieldInstance.UndeployImmediate();
+                _shieldInstance = null;
             }
         }
     }

@@ -29,5 +29,7 @@ namespace EntityStates.MushroomShield
                 bubbleState.EffectRadius = EffectRadius;
             }
         }
+
+        public abstract void Undeploy(bool immediate);
     }
 }

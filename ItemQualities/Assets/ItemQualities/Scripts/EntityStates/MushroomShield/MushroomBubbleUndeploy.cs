@@ -24,7 +24,18 @@ namespace EntityStates.MushroomShield
         {
             base.FixedUpdate();
 
-            if (fixedAge >= Duration - MushroomBubbleFlashOut.Duration && isAuthority)
+            if (isAuthority && fixedAge >= Duration - MushroomBubbleFlashOut.Duration)
+            {
+                Undeploy(true);
+            }
+        }
+
+        public override void Undeploy(bool immediate)
+        {
+            if (!isAuthority)
+                return;
+
+            if (immediate)
             {
                 outer.SetNextState(new MushroomBubbleFlashOut());
             }

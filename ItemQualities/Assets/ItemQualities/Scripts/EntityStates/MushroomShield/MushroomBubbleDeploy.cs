@@ -69,11 +69,26 @@ namespace EntityStates.MushroomShield
             {
                 if (!_ownerBody || !_ownerBody.healthComponent || !_ownerBody.healthComponent.alive || _ownerBody.notMovingStopwatch < _startMoveStopwatchValue)
                 {
-                    outer.SetNextState(new MushroomBubbleUndeploy
-                    {
-                        Duration = _undeployLifetime
-                    });
+                    Undeploy(false);
                 }
+            }
+        }
+
+        public override void Undeploy(bool immediate)
+        {
+            if (!isAuthority)
+                return;
+            
+            if (immediate)
+            {
+                outer.SetNextState(new MushroomBubbleFlashOut());
+            }
+            else
+            {
+                outer.SetNextState(new MushroomBubbleUndeploy
+                {
+                    Duration = _undeployLifetime
+                });
             }
         }
     }

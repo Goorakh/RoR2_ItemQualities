@@ -63,5 +63,10 @@ namespace EntityStates.MushroomShield
                 _blinkController.enabled = false;
             }
         }
+
+        public override void Undeploy(bool immediate)
+        {
+            // Already undeploying, nothing to do
+        }
     }
 }
