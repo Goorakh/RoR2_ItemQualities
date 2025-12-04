@@ -307,17 +307,21 @@ namespace ItemQualities
             HealthBar.BarInfo temporaryShieldBarInfo = shieldBarInfoTemplate;
             temporaryShieldBarInfo.enabled = false;
 
-            float temporaryShieldFraction = body.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) / body.maxShield;
-            if (temporaryShieldFraction > 0f && healthComponent.shield > 0f)
+            if (healthBarValues.shieldFraction > 0f)
             {
-                float shieldBarSize = shieldBarInfoTemplate.normalizedXMax - shieldBarInfoTemplate.normalizedXMin;
+                float temporaryShieldFraction = body.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) / body.maxShield;
+                if (temporaryShieldFraction > 0f)
+                {
+                    float shieldFillFraction = healthComponent.shield / body.maxShield;
+                    float fullShieldBarSize = healthBarValues.shieldFraction / shieldFillFraction;
 
-                temporaryShieldBarInfo.enabled = true;
-                temporaryShieldBarInfo.normalizedXMax = shieldBarInfoTemplate.normalizedXMax;
-                temporaryShieldBarInfo.normalizedXMin = shieldBarInfoTemplate.normalizedXMax - (shieldBarSize * temporaryShieldFraction);
+                    temporaryShieldBarInfo.enabled = true;
+                    temporaryShieldBarInfo.normalizedXMax = shieldBarInfoTemplate.normalizedXMax;
+                    temporaryShieldBarInfo.normalizedXMin = shieldBarInfoTemplate.normalizedXMax - Mathf.Min(healthBarValues.shieldFraction, fullShieldBarSize * temporaryShieldFraction);
 
-                Color.RGBToHSV(shieldBarInfoTemplate.color, out float h, out float s, out float v);
-                temporaryShieldBarInfo.color = Color.HSVToRGB(h, s, v * 1.5f);
+                    Color.RGBToHSV(shieldBarInfoTemplate.color, out float h, out float s, out float v);
+                    temporaryShieldBarInfo.color = Color.HSVToRGB(h, s, v * 1.5f);
+                }
             }
 
             return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo, temporaryShieldBarInfo);
