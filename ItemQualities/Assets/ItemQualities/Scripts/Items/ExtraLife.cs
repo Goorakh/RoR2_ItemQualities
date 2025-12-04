@@ -36,40 +36,39 @@ namespace ItemQualities.Items
                 ReviveAPI.ReviveAPI.AddCustomRevive(new ReviveAPI.ReviveAPI.CustomRevive
                 {
                     priority = -(int)(qualityTier + 1),
-                    canRevive = canRevive,
-                    onRevive = onRevive
+                    canReviveNew = canRevive,
+                    onReviveNew = onRevive
                 });
 
-                Inventory.ItemTransformation getConsumeExtraLifeItemTransformation()
+                bool canRevive(CharacterMaster master, out ReviveAPI.ReviveAPI.CanReviveInfo info)
                 {
-                    return new Inventory.ItemTransformation
+                    Inventory.ItemTransformation itemTransformation = new Inventory.ItemTransformation
                     {
                         originalItemIndex = extraLifeItemIndex,
                         newItemIndex = extraLifeConsumedItemIndex,
                         transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
                     };
-                }
 
-                bool canRevive(CharacterMaster master)
-                {
-                    Inventory.ItemTransformation itemTransformation = getConsumeExtraLifeItemTransformation();
-
-                    return itemTransformation.CanTake(master.inventory, out _);
-                }
-
-                void onRevive(CharacterMaster master)
-                {
-                    Inventory.ItemTransformation itemTransformation = getConsumeExtraLifeItemTransformation();
-
-                    if (itemTransformation.TryTake(master.inventory, out Inventory.ItemTransformation.TakeResult takeResult))
+                    if (itemTransformation.CanTake(master.inventory, out Inventory.ItemTransformation.CanTakeResult canTakeResult))
                     {
-                        CharacterMaster.ExtraLifeServerBehavior extraLifeBehavior = master.gameObject.AddComponent<CharacterMaster.ExtraLifeServerBehavior>();
-                        extraLifeBehavior.pendingTransformation = takeResult;
-                        extraLifeBehavior.consumedItemIndex = itemTransformation.newItemIndex;
-                        extraLifeBehavior.completionTime = Run.FixedTimeStamp.now + 2f;
-                        extraLifeBehavior.soundCallback += reviveSound;
-                        extraLifeBehavior.completionCallback += respawnQualityExtraLife;
+                        info = new ReviveAPI.ReviveAPI.CanReviveInfo { canTakeResult = canTakeResult };
+                        return true;
                     }
+
+                    info = null;
+                    return false;
+                }
+
+                void onRevive(CharacterMaster master, ReviveAPI.ReviveAPI.CanReviveInfo info)
+                {
+                    Inventory.ItemTransformation.TakeResult takeResult = info.canTakeResult.PerformTake();
+                    CharacterMaster.ExtraLifeServerBehavior extraLifeBehavior = master.gameObject.AddComponent<CharacterMaster.ExtraLifeServerBehavior>();
+                    extraLifeBehavior.pendingTransformation = takeResult;
+                    extraLifeBehavior.consumedItemIndex = extraLifeConsumedItemIndex;
+                    extraLifeBehavior.completionTime = Run.FixedTimeStamp.now + 2f;
+                    extraLifeBehavior.completionCallback += respawnQualityExtraLife;
+                    extraLifeBehavior.soundTime = extraLifeBehavior.completionTime - 1f;
+                    extraLifeBehavior.soundCallback += reviveSound;
 
                     void reviveSound()
                     {
