@@ -6,17 +6,6 @@ namespace ItemQualities.Utilities.Extensions
 {
     static class EntityStateExtensions
     {
-        public static bool TryGetComponent<T>(this EntityState entityState, out T component)
-        {
-            if (!entityState?.outer)
-            {
-                component = default;
-                return false;
-            }
-
-            return entityState.outer.TryGetComponent(out component);
-        }
-
         public static bool TryGetComponent(this EntityState entityState, Type componentType, out Component component)
         {
             if (!entityState?.outer)

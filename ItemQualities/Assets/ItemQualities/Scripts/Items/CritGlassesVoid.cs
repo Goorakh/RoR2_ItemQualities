@@ -45,7 +45,7 @@ namespace ItemQualities.Items
                 SphereSearch sphereSearch = new SphereSearch
                 {
                     origin = damageReport.damageInfo.position,
-                    radius = searchRadius,
+                    radius = ExplodeOnDeath.GetExplosionRadius(searchRadius, damageReport.attackerBody),
                     mask = LayerIndex.entityPrecise.mask,
                     queryTriggerInteraction = QueryTriggerInteraction.Ignore,
                 };

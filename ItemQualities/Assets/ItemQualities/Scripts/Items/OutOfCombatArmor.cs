@@ -1,4 +1,5 @@
-﻿using HG.Coroutines;
+﻿using HG;
+using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
@@ -19,7 +20,7 @@ namespace ItemQualities.Items
     static class OutOfCombatArmor
     {
         static readonly SphereSearch _opalSphereSearch = new SphereSearch();
-        static readonly List<HurtBox> _opalHurtBoxBuffer = new List<HurtBox>();
+
         static GameObject _explosionVFX;
 
         [SystemInitializer]
@@ -71,16 +72,12 @@ namespace ItemQualities.Items
             c.Emit(OpCodes.Ldarg, damageReportParameter);
             c.EmitDelegate<Action<CharacterBody, DamageReport>>(onEnterDanger);
 
-            static void onEnterDanger(CharacterBody victim, DamageReport damageReport)
+            static void onEnterDanger(CharacterBody victimBody, DamageReport damageReport)
             {
-                if (!victim || damageReport?.damageInfo == null)
+                if (!victimBody || damageReport?.damageInfo == null)
                     return;
 
-                CharacterBody body = victim.GetBody();
-                if (!body)
-                    return;
-
-                ItemQualityCounts outOfCombatArmor = ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor.GetItemCountsEffective(body.inventory);
+                ItemQualityCounts outOfCombatArmor = ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor.GetItemCountsEffective(victimBody.inventory);
                 if (outOfCombatArmor.TotalQualityCount <= 0)
                     return;
 
@@ -106,21 +103,22 @@ namespace ItemQualities.Items
                                      (outOfCombatArmor.EpicCount * 6) +
                                      (outOfCombatArmor.LegendaryCount * 8);
 
-                if (victim.HasBuff(DLC1Content.Buffs.OutOfCombatArmorBuff))
+                if (victimBody.HasBuff(DLC1Content.Buffs.OutOfCombatArmorBuff))
                 {
-                    _opalSphereSearch.origin = body.corePosition;
+                    using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> hurtBoxes);
+
+                    _opalSphereSearch.origin = victimBody.corePosition;
                     _opalSphereSearch.mask = LayerIndex.entityPrecise.mask;
-                    _opalSphereSearch.radius = radius;
+                    _opalSphereSearch.radius = ExplodeOnDeath.GetExplosionRadius(radius, victimBody);
                     _opalSphereSearch.RefreshCandidates();
-                    _opalSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(body.teamComponent.teamIndex));
+                    _opalSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(victimBody.teamComponent.teamIndex));
                     _opalSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
-                    _opalSphereSearch.GetHurtBoxes(_opalHurtBoxBuffer);
+                    _opalSphereSearch.GetHurtBoxes(hurtBoxes);
                     _opalSphereSearch.ClearCandidates();
 
-                    for (int i = 0; i < _opalHurtBoxBuffer.Count; i++)
+                    foreach (HurtBox hurtBox in hurtBoxes)
                     {
-                        HurtBox hurtBox = _opalHurtBoxBuffer[i];
-                        if (hurtBox.healthComponent && hurtBox.healthComponent.body != body)
+                        if (hurtBox.healthComponent && hurtBox.healthComponent.body != victimBody)
                         {
                             if (hurtBox.healthComponent.TryGetComponent(out SetStateOnHurt attackerSetStateOnHurt) && attackerSetStateOnHurt.canBeStunned)
                             {
@@ -129,12 +127,10 @@ namespace ItemQualities.Items
                         }
                     }
 
-                    _opalHurtBoxBuffer.Clear();
-
                     EffectManager.SpawnEffect(_explosionVFX, new EffectData
                     {
-                        origin = victim.corePosition,
-                        scale = radius,
+                        origin = _opalSphereSearch.origin,
+                        scale = _opalSphereSearch.radius,
                         rotation = Util.QuaternionSafeLookRotation(damageReport.damageInfo.force)
                     }, true);
                 }
