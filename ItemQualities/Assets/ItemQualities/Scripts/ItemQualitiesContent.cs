@@ -29,6 +29,7 @@ namespace ItemQualities
         public string identifier => ItemQualitiesPlugin.PluginGUID;
 
         QualityContagiousItemHelper _qualityContagiousItemHelper;
+        ProjectileExplosionEffectScaleFixHelper _projectileExplosionEffectScaleFixHelper;
 
         internal static NamedAssetCollection<TMP_SpriteAsset> TMP_SpriteAssets = new NamedAssetCollection<TMP_SpriteAsset>(ContentPack.getScriptableObjectName);
 
@@ -344,11 +345,10 @@ namespace ItemQualities
             ContentPack.Copy(_contentPack, args.output);
 
             _qualityContagiousItemHelper ??= new QualityContagiousItemHelper();
-
             yield return _qualityContagiousItemHelper.Step(_contentPack, args, args.progressReceiver);
 
-            args.ReportProgress(1f);
-            yield break;
+            _projectileExplosionEffectScaleFixHelper ??= new ProjectileExplosionEffectScaleFixHelper();
+            _projectileExplosionEffectScaleFixHelper.Step(_contentPack, args);
         }
 
         public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
@@ -357,6 +357,8 @@ namespace ItemQualities
 
             _qualityContagiousItemHelper?.Dispose();
             _qualityContagiousItemHelper = null;
+
+            _projectileExplosionEffectScaleFixHelper = null;
 
             args.ReportProgress(1f);
             yield break;
@@ -663,6 +665,8 @@ namespace ItemQualities
             public static ItemQualityGroup SpeedOnPickup;
 
             public static ItemQualityGroup Duplicator;
+
+            public static ItemQualityGroup ExplodeOnDeath;
         }
 
         public static class EquipmentQualityGroups

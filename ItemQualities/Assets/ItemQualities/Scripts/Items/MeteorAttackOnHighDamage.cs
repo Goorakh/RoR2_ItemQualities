@@ -73,6 +73,8 @@ namespace ItemQualities.Items
                         radius *= 1f + radiusIncrease;
                     }
                 }
+
+                radius = ExplodeOnDeath.GetExplosionRadius(radius, attackerBody);
             }
 
             return radius;
@@ -96,20 +98,7 @@ namespace ItemQualities.Items
 
             static float getMeteorBlastRadius(float radius, MeteorAttackOnHighDamageBodyBehavior meteorItemBehavior)
             {
-                if (meteorItemBehavior && meteorItemBehavior.body)
-                {
-                    ItemQualityCounts meteorAttackOnHighDamage = ItemQualitiesContent.ItemQualityGroups.MeteorAttackOnHighDamage.GetItemCountsEffective(meteorItemBehavior.body.inventory);
-
-                    if (meteorAttackOnHighDamage.TotalQualityCount > 0)
-                    {
-                        radius += (1f * meteorAttackOnHighDamage.UncommonCount) +
-                                  (3f * meteorAttackOnHighDamage.RareCount) +
-                                  (5f * meteorAttackOnHighDamage.EpicCount) +
-                                  (10f * meteorAttackOnHighDamage.LegendaryCount);
-                    }
-                }
-
-                return radius;
+                return getMeteorRadius(radius, meteorItemBehavior ? meteorItemBehavior.body : null);
             }
         }
 
