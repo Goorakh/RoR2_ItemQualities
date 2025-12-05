@@ -78,6 +78,8 @@ namespace ItemQualities
             populateTypeFields(typeof(ItemQualityGroups), _contentPack.itemQualityGroups, fieldName => "ig" + fieldName);
             ItemQualityGroups.AllGroups = new ReadOnlyCollection<ItemQualityGroup>(_contentPack.itemQualityGroups.ToArray());
 
+            populateTypeFields(typeof(Items), _contentPack.itemDefs);
+
             populateTypeFields(typeof(EquipmentQualityGroups), _contentPack.equipmentQualityGroups, fieldName => "eg" + fieldName);
             EquipmentQualityGroups.AllGroups = new ReadOnlyCollection<EquipmentQualityGroup>(_contentPack.equipmentQualityGroups.ToArray());
 
@@ -667,6 +669,13 @@ namespace ItemQualities
             public static ItemQualityGroup Duplicator;
 
             public static ItemQualityGroup ExplodeOnDeath;
+
+            public static ItemQualityGroup DronesDropDynamite;
+        }
+
+        public static class Items
+        {
+            public static ItemDef DronesDropDynamiteQualityDroneItem;
         }
 
         public static class EquipmentQualityGroups
@@ -762,6 +771,8 @@ namespace ItemQualities
             public static GameObject HealOrbSpecial;
 
             public static GameObject DuplicatorQualityAttachment;
+
+            public static GameObject DroneShootableAttachment;
         }
 
         public static class ProjectilePrefabs

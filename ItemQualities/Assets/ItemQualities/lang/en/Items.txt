@@ -1466,5 +1466,17 @@
 
         "ITEM_EXPLODEONDEATH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
         "ITEM_EXPLODEONDEATH_LEGENDARY_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>75% <style=cStack>(+75% per stack)</style></style>.",
+
+        "ITEM_DRONESDROPDYNAMITE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> All your drones explode by absorbing damage.",
+        "ITEM_DRONESDROPDYNAMITE_UNCOMMON_DESC": "{0}\nAll drones absorb <sprite name=\"Quality\"> <style=cIsDamage>50%</style> of damage when hit, up to a maximum of <sprite name=\"Quality\"> <style=cIsDamage>500% <style=cStack>(+100% per stack)</style></style> base damage. After a short delay, the drone explodes for all absorbed damage in a radius of up to <sprite name=\"Quality\"> <style=cIsDamage>20m <style=cStack>(+5m per stack)</style></style>.",
+
+        "ITEM_DRONESDROPDYNAMITE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> All your drones explode by absorbing damage.",
+        "ITEM_DRONESDROPDYNAMITE_RARE_DESC": "{0}\nAll drones absorb <sprite name=\"Quality\"> <style=cIsDamage>100%</style> of damage when hit, up to a maximum of <sprite name=\"Quality\"> <style=cIsDamage>600% <style=cStack>(+200% per stack)</style></style> base damage. After a short delay, the drone explodes for all absorbed damage in a radius of up to <sprite name=\"Quality\"> <style=cIsDamage>25m <style=cStack>(+10m per stack)</style></style>.",
+
+        "ITEM_DRONESDROPDYNAMITE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> All your drones explode by absorbing damage.",
+        "ITEM_DRONESDROPDYNAMITE_EPIC_DESC": "{0}\nAll drones absorb <sprite name=\"Quality\"> <style=cIsDamage>125%</style> of damage when hit, up to a maximum of <sprite name=\"Quality\"> <style=cIsDamage>800% <style=cStack>(+400% per stack)</style></style> base damage. After a short delay, the drone explodes for all absorbed damage in a radius of up to <sprite name=\"Quality\"> <style=cIsDamage>30m <style=cStack>(+15m per stack)</style></style>.",
+
+        "ITEM_DRONESDROPDYNAMITE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> All your drones explode by absorbing damage.",
+        "ITEM_DRONESDROPDYNAMITE_LEGENDARY_DESC": "{0}\nAll drones absorb <sprite name=\"Quality\"> <style=cIsDamage>150%</style> of damage when hit, up to a maximum of <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+600% per stack)</style></style> base damage. After a short delay, the drone explodes for all absorbed damage in a radius of up to <sprite name=\"Quality\"> <style=cIsDamage>35m <style=cStack>(+20m per stack)</style></style>.",
     }
 }
