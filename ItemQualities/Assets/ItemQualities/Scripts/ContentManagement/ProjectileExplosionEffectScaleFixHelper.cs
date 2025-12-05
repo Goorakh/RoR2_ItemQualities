@@ -20,15 +20,15 @@ namespace ItemQualities.ContentManagement
                 {
                     if (projectilePrefab.TryGetComponent(out ProjectileExplosion projectileExplosion))
                     {
-                        tryFixProjectileEffectPrefab(ref projectileExplosion.explosionEffect);
+                        tryFixProjectileEffectPrefab(ref projectileExplosion.explosionEffect, projectileExplosion.blastRadius);
                     }
 
                     if (projectilePrefab.TryGetComponent(out ProjectileImpactExplosion projectileImpactExplosion))
                     {
-                        tryFixProjectileEffectPrefab(ref projectileImpactExplosion.impactEffect);
+                        tryFixProjectileEffectPrefab(ref projectileImpactExplosion.impactEffect, projectileImpactExplosion.blastRadius);
                     }
 
-                    void tryFixProjectileEffectPrefab(ref GameObject effectPrefab)
+                    void tryFixProjectileEffectPrefab(ref GameObject effectPrefab, float defaultRadius)
                     {
                         if (!effectPrefab || !effectPrefab.TryGetComponent(out EffectComponent effectComponent) || effectComponent.applyScale)
                             return;
@@ -46,7 +46,7 @@ namespace ItemQualities.ContentManagement
                                     GameObject scalerObj = new GameObject("Scaler");
                                     scalerObj.transform.SetParent(effectComponent.transform);
                                     scalerObj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                                    scalerObj.transform.localScale = scaleFixExplosionEffectPrefab.transform.localScale * (1f / projectileExplosion.blastRadius);
+                                    scalerObj.transform.localScale = scaleFixExplosionEffectPrefab.transform.localScale * (1f / defaultRadius);
 
                                     for (int i = scaleFixExplosionEffectPrefab.transform.childCount - 1; i >= 0; i--)
                                     {
