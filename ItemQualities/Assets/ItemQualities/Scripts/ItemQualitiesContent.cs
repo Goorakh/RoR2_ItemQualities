@@ -671,6 +671,8 @@ namespace ItemQualities
             public static ItemQualityGroup ExplodeOnDeath;
 
             public static ItemQualityGroup DronesDropDynamite;
+
+            public static ItemQualityGroup CritAtLowerElevation;
         }
 
         public static class Items
