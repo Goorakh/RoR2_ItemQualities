@@ -11,7 +11,7 @@ namespace ItemQualities
 
         public float ArenaRadius = 100f;
 
-        readonly GameObject[] _healNovaSpawnersByTeam = new GameObject[TeamsAPICompat.TeamsCount];
+        public readonly GameObject[] healNovaSpawnersByTeam = new GameObject[TeamsAPICompat.TeamsCount];
 
         void Awake()
         {
@@ -23,7 +23,7 @@ namespace ItemQualities
 
         void OnDisable()
         {
-            foreach (GameObject healNovaSpawner in _healNovaSpawnersByTeam)
+            foreach (GameObject healNovaSpawner in healNovaSpawnersByTeam)
             {
                 if (healNovaSpawner)
                 {
@@ -55,7 +55,7 @@ namespace ItemQualities
 
                     bool novaSpawnerActive = tpHealingNova.TotalQualityCount > 0;
 
-                    ref GameObject teamHealNovaSpawnerObj = ref _healNovaSpawnersByTeam[(int)teamIndex];
+                    ref GameObject teamHealNovaSpawnerObj = ref healNovaSpawnersByTeam[(int)teamIndex];
                     if (teamHealNovaSpawnerObj != novaSpawnerActive)
                     {
                         if (novaSpawnerActive)
