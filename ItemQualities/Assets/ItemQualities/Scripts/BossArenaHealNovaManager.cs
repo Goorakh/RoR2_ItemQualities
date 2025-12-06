@@ -11,7 +11,7 @@ namespace ItemQualities
 
         public float ArenaRadius = 100f;
 
-        public readonly GameObject[] healNovaSpawnersByTeam = new GameObject[TeamsAPICompat.TeamsCount];
+        readonly GameObject[] _healNovaSpawnersByTeam = new GameObject[TeamsAPICompat.TeamsCount];
 
         void Awake()
         {
@@ -19,11 +19,12 @@ namespace ItemQualities
             {
                 BossGroup.onBossGroupDefeatedServer += onBossGroupDefeatedServer;
             }
+            On.RoR2.SolusWingGrid.GridManager.OnTierSet += GridManager_OnTierSet;
         }
 
         void OnDisable()
         {
-            foreach (GameObject healNovaSpawner in healNovaSpawnersByTeam)
+            foreach (GameObject healNovaSpawner in _healNovaSpawnersByTeam)
             {
                 if (healNovaSpawner)
                 {
@@ -35,6 +36,24 @@ namespace ItemQualities
         void OnDestroy()
         {
             BossGroup.onBossGroupDefeatedServer -= onBossGroupDefeatedServer;
+            On.RoR2.SolusWingGrid.GridManager.OnTierSet -= GridManager_OnTierSet;
+        }
+
+        private void GridManager_OnTierSet(On.RoR2.SolusWingGrid.GridManager.orig_OnTierSet orig, RoR2.SolusWingGrid.GridManager self, int tier)
+        {
+            orig(self, tier);
+            Vector3 arenacenter = transform.position;
+            arenacenter.y = self.GetLavaPosition(tier).y;
+            transform.position = arenacenter;
+
+            for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
+            {
+                GameObject teamHealNovaSpawnerObj = _healNovaSpawnersByTeam[(int)teamIndex];
+                if (teamHealNovaSpawnerObj)
+                {
+                    teamHealNovaSpawnerObj.transform.position = transform.position;
+                }
+            }
         }
 
         void onBossGroupDefeatedServer(BossGroup bossGroup)
@@ -55,7 +74,7 @@ namespace ItemQualities
 
                     bool novaSpawnerActive = tpHealingNova.TotalQualityCount > 0;
 
-                    ref GameObject teamHealNovaSpawnerObj = ref healNovaSpawnersByTeam[(int)teamIndex];
+                    ref GameObject teamHealNovaSpawnerObj = ref _healNovaSpawnersByTeam[(int)teamIndex];
                     if (teamHealNovaSpawnerObj != novaSpawnerActive)
                     {
                         if (novaSpawnerActive)

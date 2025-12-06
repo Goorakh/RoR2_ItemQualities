@@ -1,5 +1,4 @@
-﻿using ItemQualities.ModCompatibility;
-using RoR2;
+﻿using RoR2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,33 +10,27 @@ namespace ItemQualities.Items
 {
     static class TPHealingNova
     {
-        static GameObject _healNovaManager;
+        static SceneIndex _limboSceneIndex = SceneIndex.Invalid;
 
-        [SystemInitializer]
-        static void Init()
+        [SystemInitializer(typeof(SceneCatalog))]
+        static void Init2()
         {
+            _limboSceneIndex = SceneCatalog.FindSceneIndex("limbo");
+            if (_limboSceneIndex == SceneIndex.Invalid)
+            {
+                Log.Warning("Failed to find limbo scene index");
+            }
+
+            On.EntityStates.Missions.Goldshores.GoldshoresBossfight.SpawnBoss += GoldshoresBossfight_SpawnBoss;
             On.RoR2.HoldoutZoneController.Start += HoldoutZoneController_Start;
-            On.RoR2.SolusWingGrid.GridManager.OnTierSet += GridManager_OnTierSet;
+
+            Stage.onServerStageBegin += onServerStageBegin;
         }
 
         private static void HoldoutZoneController_Start(On.RoR2.HoldoutZoneController.orig_Start orig, HoldoutZoneController self)
         {
+            orig(self);
             self.gameObject.AddComponent<LeptonController>();
-        }
-
-        static int CountLivingPlayers(TeamIndex teamIndex)
-        {
-            int num = 0;
-            ReadOnlyCollection<TeamComponent> teamMembers = TeamComponent.GetTeamMembers(teamIndex);
-            for (int i = 0; i < teamMembers.Count; i++)
-            {
-                TeamComponent teamComponent = teamMembers[i];
-                if ((bool)teamComponent.body && teamComponent.body.isPlayerControlled && !teamComponent.body.isRemoteOp)
-                {
-                    num++;
-                }
-            }
-            return num;
         }
 
         public class LeptonController : MonoBehaviour {
@@ -77,42 +70,7 @@ namespace ItemQualities.Items
                                         TPHealingNova.LegendaryCount * 1.6f;
                     }
                 }
-                rate *= 1 + leptonMul / CountLivingPlayers(_holdoutZoneController.chargingTeam);
-            }
-        }
-
-        static SceneIndex _limboSceneIndex = SceneIndex.Invalid;
-
-        [SystemInitializer(typeof(SceneCatalog))]
-        static void Init2()
-        {
-            _limboSceneIndex = SceneCatalog.FindSceneIndex("limbo");
-            if (_limboSceneIndex == SceneIndex.Invalid)
-            {
-                Log.Warning("Failed to find limbo scene index");
-            }
-
-            On.EntityStates.Missions.Goldshores.GoldshoresBossfight.SpawnBoss += GoldshoresBossfight_SpawnBoss;
-
-            Stage.onServerStageBegin += onServerStageBegin;
-        }
-
-        private static void GridManager_OnTierSet(On.RoR2.SolusWingGrid.GridManager.orig_OnTierSet orig, RoR2.SolusWingGrid.GridManager self, int tier)
-        {
-            orig(self, tier);
-            if (!_healNovaManager) return;
-            Vector3 arenacenter = _healNovaManager.transform.position;
-            arenacenter.y = self.GetLavaPosition(tier).y;
-            _healNovaManager.transform.position = arenacenter;
-
-            BossArenaHealNovaManager bossArenaHealNovaManager = _healNovaManager?.GetComponent<BossArenaHealNovaManager>();
-            if (!bossArenaHealNovaManager) return;
-            for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
-            {
-                GameObject teamHealNovaSpawnerObj = bossArenaHealNovaManager.healNovaSpawnersByTeam[(int)teamIndex];
-                if(teamHealNovaSpawnerObj) {
-                    teamHealNovaSpawnerObj.transform.position = _healNovaManager.transform.position;
-                }
+                rate *= 1 + leptonMul / HoldoutZoneController.CountLivingPlayers(_holdoutZoneController.chargingTeam);
             }
         }
 
@@ -130,14 +88,14 @@ namespace ItemQualities.Items
         }
 
         static GameObject CreateHealNovaManager(BossGroup bossGroup, Transform parent, Vector3 position, float radius) {
-            _healNovaManager = new GameObject("HealNovaManager");
-            _healNovaManager.transform.SetParent(parent);
-            _healNovaManager.transform.position = position;
+            GameObject healNovaManager = new GameObject("HealNovaManager");
+            healNovaManager.transform.SetParent(parent);
+            healNovaManager.transform.position = position;
 
-            BossArenaHealNovaManager phaseHealNovaManager = _healNovaManager.AddComponent<BossArenaHealNovaManager>();
+            BossArenaHealNovaManager phaseHealNovaManager = healNovaManager.AddComponent<BossArenaHealNovaManager>();
             phaseHealNovaManager.WatchingBossGroup = bossGroup;
             phaseHealNovaManager.ArenaRadius = radius;
-            return _healNovaManager;
+            return healNovaManager;
         }
 
         static IEnumerator tryInitializeStageNovaManagers(SceneIndex sceneIndex)
@@ -175,8 +133,7 @@ namespace ItemQualities.Items
             BossGroup bossGroup = solusWebMissionController.GetComponent<BossGroup>();
             if (!bossGroup) return;
 
-            CreateHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 150f);
-        }
+            CreateHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 150f);        }
 
         static void tryInitializeHauntNovaManagers()
         {
