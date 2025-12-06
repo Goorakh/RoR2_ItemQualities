@@ -1046,8 +1046,6 @@ MonoBehaviour:
   m_Script: {fileID: 871971028, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pickupIndex:
-    value: 0
   targetRenderer: {fileID: 0}
   strength: 1
   highlightColor: 2
@@ -1078,7 +1076,9 @@ MonoBehaviour:
   lunarParticleEffect: {fileID: 0}
   bossParticleEffect: {fileID: 0}
   voidParticleEffect: {fileID: 0}
+  foodParticleEffect: {fileID: 0}
   coloredParticleSystems: []
+  temporaryItemIndicator: {fileID: 0}
   highlight: {fileID: 2020832005}
 --- !u!4 &2020832007
 Transform:
