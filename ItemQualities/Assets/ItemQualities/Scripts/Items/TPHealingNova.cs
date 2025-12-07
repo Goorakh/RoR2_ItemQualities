@@ -13,7 +13,7 @@ namespace ItemQualities.Items
         static SceneIndex _limboSceneIndex = SceneIndex.Invalid;
 
         [SystemInitializer(typeof(SceneCatalog))]
-        static void Init2()
+        static void Init()
         {
             _limboSceneIndex = SceneCatalog.FindSceneIndex("limbo");
             if (_limboSceneIndex == SceneIndex.Invalid)
@@ -33,7 +33,8 @@ namespace ItemQualities.Items
             self.gameObject.AddComponent<LeptonController>();
         }
 
-        public class LeptonController : MonoBehaviour {
+        public class LeptonController : MonoBehaviour 
+        {
             HoldoutZoneController _holdoutZoneController;
 
             private void Awake()
@@ -82,7 +83,8 @@ namespace ItemQualities.Items
 
         static void onServerStageBegin(Stage stage)
         {
-            if (!NetworkServer.active || !stage) return;
+            if (!NetworkServer.active || !stage) 
+                return;
             SceneIndex sceneIndex = stage.sceneDef ? stage.sceneDef.sceneDefIndex : SceneIndex.Invalid;
             stage.StartCoroutine(tryInitializeStageNovaManagers(sceneIndex));
         }
@@ -133,7 +135,8 @@ namespace ItemQualities.Items
             BossGroup bossGroup = solusWebMissionController.GetComponent<BossGroup>();
             if (!bossGroup) return;
 
-            CreateHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 150f);        }
+            CreateHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 150f);        
+        }
 
         static void tryInitializeHauntNovaManagers()
         {
