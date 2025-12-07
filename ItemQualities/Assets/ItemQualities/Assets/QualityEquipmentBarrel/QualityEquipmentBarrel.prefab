@@ -694,12 +694,11 @@ MonoBehaviour:
       assemblyQualifiedName: 
     FieldName: avatar
     AssetReference:
-      m_AssetGUID: b26128f1a0be13346b199e611d94275d
+      m_AssetGUID: b26128f1a0be13346b199e611d94275d[mdlEquipmentBarrelAvatar]
       m_SubObjectName: 
       m_SubObjectType: 
     AssetTypeOverride:
-      assemblyQualifiedName: UnityEngine.Avatar, UnityEngine.AnimationModule, Version=0.0.0.0,
-        Culture=neutral, PublicKeyToken=null
+      assemblyQualifiedName: 
   _hasLoaded: 0
 --- !u!114 &4795461439503507078
 MonoBehaviour:
