@@ -35,7 +35,7 @@ namespace ItemQualities.ContentManagement
 
                         if (!_fixedExplosionEffectCache.TryGetValue(effectPrefab, out EffectDef scaleFixExplosionEffectDef))
                         {
-                            GameObject scaleFixExplosionEffectPrefab = effectPrefab.InstantiateClone($"{effectPrefab.name}_ScaleFix");
+                            GameObject scaleFixExplosionEffectPrefab = effectPrefab.InstantiateClone($"{effectPrefab.name}_ScaleFix", false);
                             effectComponent = scaleFixExplosionEffectPrefab.GetComponent<EffectComponent>();
                             effectComponent.applyScale = true;
 
