@@ -103,8 +103,6 @@ namespace ItemQualities.Items
 
             IL.RoR2.GlobalEventManager.ProcIgniteOnKill += groupManipulators(getVisualBlastAttackRadiusManipulator(emitGetMethodParameterDamageReportAttackerBody), getSimpleSphereSearchRadiusManipulator(emitGetMethodParameterDamageReportAttackerBody));
 
-            IL.RoR2.HealthComponent.TakeDamageProcess += getVisualBlastAttackRadiusManipulator(emitGetBodyComponentBody, false);
-
             On.RoR2.Items.JumpDamageStrikeBodyBehavior.GetRadius += JumpDamageStrikeBodyBehavior_GetRadius_ReplaceRadius;
 
             IL.RoR2.Projectile.ProjectileExplosion.DetonateServer += getVisualBlastAttackRadiusManipulator(emitGetProjectileOwner);
