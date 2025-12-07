@@ -1490,5 +1490,17 @@
 
         "ITEM_CRITATLOWERELEVATION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to pull airborne enemies to the ground.",
         "ITEM_CRITATLOWERELEVATION_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50% <style=cStack>(+50% per stack)</style></style> chance on hit to pull airborne enemies down at <sprite name=\"Quality\"> <style=cIsUtility>20m/s</style>.",
+
+        "ITEM_SHIELDBOOSTER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase shield break pulse damage and radius when taking damage.",
+        "ITEM_SHIELDBOOSTER_UNCOMMON_DESC": "{0}\nTaking damage increases damage for the next pulse by up to <sprite name=\"Quality\"> <style=cIsDamage>200% <style=cStack>(+200% per stack)</style></style> and radius by up to <sprite name=\"Quality\"> <style=cIsUtility>5m <style=cStack>(+5m per stack)</style></style>.",
+
+        "ITEM_SHIELDBOOSTER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase shield break pulse damage and radius when taking damage.",
+        "ITEM_SHIELDBOOSTER_RARE_DESC": "{0}\nTaking damage increases damage for the next pulse by up to <sprite name=\"Quality\"> <style=cIsDamage>500% <style=cStack>(+500% per stack)</style></style> and radius by up to <sprite name=\"Quality\"> <style=cIsUtility>12m <style=cStack>(+12m per stack)</style></style>.",
+
+        "ITEM_SHIELDBOOSTER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase shield break pulse damage and radius when taking damage.",
+        "ITEM_SHIELDBOOSTER_EPIC_DESC": "{0}\nTaking damage increases damage for the next pulse by up to <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+1000% per stack)</style></style> and radius by up to <sprite name=\"Quality\"> <style=cIsUtility>18m <style=cStack>(+18m per stack)</style></style>.",
+
+        "ITEM_SHIELDBOOSTER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase shield break pulse damage and radius when taking damage.",
+        "ITEM_SHIELDBOOSTER_LEGENDARY_DESC": "{0}\nTaking damage increases damage for the next pulse by up to <sprite name=\"Quality\"> <style=cIsDamage>1500% <style=cStack>(+1500% per stack)</style></style> and radius by up to <sprite name=\"Quality\"> <style=cIsUtility>25m <style=cStack>(+25m per stack)</style></style>.",
     }
 }

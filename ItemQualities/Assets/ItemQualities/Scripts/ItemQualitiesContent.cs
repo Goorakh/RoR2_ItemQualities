@@ -673,6 +673,8 @@ namespace ItemQualities
             public static ItemQualityGroup DronesDropDynamite;
 
             public static ItemQualityGroup CritAtLowerElevation;
+
+            public static ItemQualityGroup ShieldBooster;
         }
 
         public static class Items
@@ -720,6 +722,8 @@ namespace ItemQualities
             public static BuffQualityGroup ToothPrimaryBuff;
 
             public static BuffQualityGroup ToothSecondaryBuff;
+
+            public static BuffQualityGroup ShieldBoosterBuff;
         }
 
         public static class Buffs

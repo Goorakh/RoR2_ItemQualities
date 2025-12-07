@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver
+    public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver
     {
         [SystemInitializer(typeof(BodyCatalog))]
         static void Init()
@@ -131,6 +131,8 @@ namespace ItemQualities
         public CharacterMasterExtraStatsTracker MasterExtraStatsTracker { get; private set; }
 
         public event Action<DamageInfo> OnIncomingDamageServer;
+
+        public event Action<DamageReport> OnTakeDamageServer;
 
         public event CharacterMotor.HitGroundDelegate OnHitGroundAuthority;
 
@@ -275,6 +277,7 @@ namespace ItemQualities
                 setItemBehavior<FeatherQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<DronesDropDynamiteQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<DronesDropDynamiteDroneItemQualityItemBehavior>(_body.inventory.GetItemCountEffective(ItemQualitiesContent.Items.DronesDropDynamiteQualityDroneItem) > 0);
+                setItemBehavior<ShieldBoosterQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ShieldBooster.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
             }
 
             if (HasEffectiveAuthority)
@@ -429,6 +432,11 @@ namespace ItemQualities
             }
 
             OnIncomingDamageServer?.Invoke(damageInfo);
+        }
+
+        void IOnTakeDamageServerReceiver.OnTakeDamageServer(DamageReport damageReport)
+        {
+            OnTakeDamageServer?.Invoke(damageReport);
         }
 
         void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)
