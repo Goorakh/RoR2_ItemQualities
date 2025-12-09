@@ -675,6 +675,8 @@ namespace ItemQualities
             public static ItemQualityGroup CritAtLowerElevation;
 
             public static ItemQualityGroup ShieldBooster;
+
+            public static ItemQualityGroup SharedSuffering;
         }
 
         public static class Items

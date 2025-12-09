@@ -1,0 +1,6 @@
+﻿{
+    strings:
+    {
+        "QUALITY_SHARED_SUFFERING_ORB_BODY_NAME": "Network Crystal",
+    }
+}
