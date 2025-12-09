@@ -30,5 +30,7 @@
 		"BARREL_SPEEDONPICKUP_DESCRIPTION": "Contains a pickup that slightly increases all stats.",
 
         "COST_QUALITY_ITEM_FORMAT": "{0} Quality Item(s)",
+
+        "FRIENDUNIT_QUALITY_PET_CONTEXT": "Punt",
     }
 }

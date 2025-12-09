@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 89795172, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: EntityStates.FriendUnit.FriendUnitPunt
+  m_EditorClassIdentifier: 
+  targetType:
+    assemblyQualifiedName: EntityStates.FriendUnit.FriendUnitPunt, ItemQualities,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  serializedFieldsCollection:
+    serializedFields:
+    - fieldName: MaxLockOnAngle
+      fieldValue:
+        stringValue: 30
+        objectValue: {fileID: 0}
+    - fieldName: MaxDistance
+      fieldValue:
+        stringValue: 100
+        objectValue: {fileID: 0}
+    - fieldName: LaunchHorizontalSpeedMultiplier
+      fieldValue:
+        stringValue: 1
+        objectValue: {fileID: 0}
+    - fieldName: BaseVelocity
+      fieldValue:
+        stringValue: 20
+        objectValue: {fileID: 0}
+    - fieldName: PuntSound
+      fieldValue:
+        stringValue: Play_Item_FriendUnit_Hit_TooLarge
+        objectValue: {fileID: 0}
