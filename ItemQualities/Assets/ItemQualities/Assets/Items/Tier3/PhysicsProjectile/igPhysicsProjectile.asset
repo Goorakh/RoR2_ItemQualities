@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igPhysicsProjectile
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 0cfef4e9834568e41aa914a30fec3550
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonItem: {fileID: 11400000, guid: 313e7549c7afb3443a317e72f2c7c00f, type: 2}
+  _rareItem: {fileID: 11400000, guid: dc069e7281c75d7478012cb18497110b, type: 2}
+  _epicItem: {fileID: 11400000, guid: debeadd7492297f438385e182eff750f, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 6b06fd09a28804847aa0015afc825798, type: 2}

@@ -1514,5 +1514,17 @@
 
         "ITEM_SHAREDSUFFERING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance on kill to spawn a crystal that adds all nearby enemies to the network.",
         "ITEM_SHAREDSUFFERING_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance on kill to spawn a <color=#45F7CA>Network Crystal</color> that explodes for <style=cIsDamage>100% damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>35m <style=cStack>(+35m per stack)</style></style> radius when damaged by any skill, adding <style=cIsUtility>all</style> enemies hit by the explosion to the <color=#45F7CA>network</color>, regardless of maximum capacity.",
+
+        "ITEM_PHYSICSPROJECTILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Interact with the Buddy to launch it at enemies.",
+        "ITEM_PHYSICSPROJECTILE_UNCOMMON_DESC": "{0}\nInteracting with the unit also launches it towards enemies, dealing <sprite name=\"Quality\"> <style=cIsDamage>400% <style=cStack>(+400% per stack)</style> damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>10m <style=cStack>(+10m per stack)</style></style> radius on impact.",
+
+        "ITEM_PHYSICSPROJECTILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Interact with the Buddy to launch it at enemies.",
+        "ITEM_PHYSICSPROJECTILE_RARE_DESC": "{0}\nInteracting with the unit also launches it towards enemies, dealing <sprite name=\"Quality\"> <style=cIsDamage>600% <style=cStack>(+600% per stack)</style> damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>15m <style=cStack>(+15m per stack)</style></style> radius on impact.",
+
+        "ITEM_PHYSICSPROJECTILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Interact with the Buddy to launch it at enemies.",
+        "ITEM_PHYSICSPROJECTILE_EPIC_DESC": "{0}\nInteracting with the unit also launches it towards enemies, dealing <sprite name=\"Quality\"> <style=cIsDamage>800% <style=cStack>(+800% per stack)</style> damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>25m <style=cStack>(+25m per stack)</style></style> radius on impact.",
+
+        "ITEM_PHYSICSPROJECTILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Interact with the Buddy to launch it at enemies.",
+        "ITEM_PHYSICSPROJECTILE_LEGENDARY_DESC": "{0}\nInteracting with the unit also launches it towards enemies, dealing <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+1000% per stack)</style> damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>35m <style=cStack>(+35m per stack)</style></style> radius on impact.",
     }
 }
