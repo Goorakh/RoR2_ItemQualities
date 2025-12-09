@@ -102,22 +102,22 @@ namespace ItemQualities.Utilities.Extensions
             parallelProgressCoroutine.Add(asyncOperation.AsProgressCoroutine(progressReceiver), progressReceiver);
         }
 
-        public static bool AssertLoaded(this AsyncOperationHandle asyncOperation, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        public static bool AssertLoaded(this AsyncOperationHandle asyncOperation, string assetName = null, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             if (!asyncOperation.IsValid() || asyncOperation.Status != AsyncOperationStatus.Succeeded || asyncOperation.Result == null)
             {
-                Log.Error($"Failed to load asset {asyncOperation.DebugName}: {(asyncOperation.IsValid() ? asyncOperation.OperationException : "Invalid Handle")}", callerPath, callerMemberName, callerLineNumber);
+                Log.Error($"Failed to load asset {assetName ?? asyncOperation.DebugName}: {(asyncOperation.IsValid() ? asyncOperation.OperationException : "Invalid Handle")}", callerPath, callerMemberName, callerLineNumber);
                 return false;
             }
 
             return true;
         }
 
-        public static bool AssertLoaded<T>(this AsyncOperationHandle<T> asyncOperation, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        public static bool AssertLoaded<T>(this AsyncOperationHandle<T> asyncOperation, string assetName = null, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             if (!asyncOperation.IsValid() || asyncOperation.Status != AsyncOperationStatus.Succeeded || asyncOperation.Result == null)
             {
-                Log.Error($"Failed to load asset {asyncOperation.DebugName}: {(asyncOperation.IsValid() ? asyncOperation.OperationException : "Invalid Handle")}", callerPath, callerMemberName, callerLineNumber);
+                Log.Error($"Failed to load asset {assetName ?? asyncOperation.DebugName}: {(asyncOperation.IsValid() ? asyncOperation.OperationException : "Invalid Handle")}", callerPath, callerMemberName, callerLineNumber);
                 return false;
             }
 

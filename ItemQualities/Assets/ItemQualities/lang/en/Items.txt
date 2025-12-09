@@ -1502,5 +1502,17 @@
 
         "ITEM_SHIELDBOOSTER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase shield break pulse damage and radius when taking damage.",
         "ITEM_SHIELDBOOSTER_LEGENDARY_DESC": "{0}\nTaking damage increases damage for the next pulse by up to <sprite name=\"Quality\"> <style=cIsDamage>1500% <style=cStack>(+1500% per stack)</style></style> and radius by up to <sprite name=\"Quality\"> <style=cIsUtility>25m <style=cStack>(+25m per stack)</style></style>.",
+
+        "ITEM_SHAREDSUFFERING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance on kill to spawn a crystal that adds all nearby enemies to the network.",
+        "ITEM_SHAREDSUFFERING_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> chance on kill to spawn a <color=#45F7CA>Network Crystal</color> that explodes for <style=cIsDamage>100% damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>15m <style=cStack>(+15m per stack)</style></style> radius when damaged by any skill, adding <style=cIsUtility>all</style> enemies hit by the explosion to the <color=#45F7CA>network</color>, regardless of maximum capacity.",
+
+        "ITEM_SHAREDSUFFERING_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance on kill to spawn a crystal that adds all nearby enemies to the network.",
+        "ITEM_SHAREDSUFFERING_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>12%</style> chance on kill to spawn a <color=#45F7CA>Network Crystal</color> that explodes for <style=cIsDamage>100% damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>20m <style=cStack>(+20m per stack)</style></style> radius when damaged by any skill, adding <style=cIsUtility>all</style> enemies hit by the explosion to the <color=#45F7CA>network</color>, regardless of maximum capacity.",
+
+        "ITEM_SHAREDSUFFERING_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance on kill to spawn a crystal that adds all nearby enemies to the network.",
+        "ITEM_SHAREDSUFFERING_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>15%</style> chance on kill to spawn a <color=#45F7CA>Network Crystal</color> that explodes for <style=cIsDamage>100% damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>25m <style=cStack>(+25m per stack)</style></style> radius when damaged by any skill, adding <style=cIsUtility>all</style> enemies hit by the explosion to the <color=#45F7CA>network</color>, regardless of maximum capacity.",
+
+        "ITEM_SHAREDSUFFERING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance on kill to spawn a crystal that adds all nearby enemies to the network.",
+        "ITEM_SHAREDSUFFERING_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance on kill to spawn a <color=#45F7CA>Network Crystal</color> that explodes for <style=cIsDamage>100% damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>35m <style=cStack>(+35m per stack)</style></style> radius when damaged by any skill, adding <style=cIsUtility>all</style> enemies hit by the explosion to the <color=#45F7CA>network</color>, regardless of maximum capacity.",
     }
 }

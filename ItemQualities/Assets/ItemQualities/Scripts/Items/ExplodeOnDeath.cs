@@ -141,6 +141,9 @@ namespace ItemQualities.Items
                 {
                     try
                     {
+                        if (stateType.Assembly == Assembly.GetExecutingAssembly())
+                            continue;
+
                         foreach (MethodInfo method in stateType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
                         {
                             ILHook hook = null;
