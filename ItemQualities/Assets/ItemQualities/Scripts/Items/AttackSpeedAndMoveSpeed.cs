@@ -60,8 +60,8 @@ namespace ItemQualities.Items
                 if (self.isSprinting)
                     nonSprintSpeed /= self.sprintingSpeedMultiplier;
 
-                float moveSpeedPercent = nonSprintSpeed / (self.baseMoveSpeed + (self.levelMoveSpeed * (self.level - 1)));
-                float attackSpeedPercent = self.attackSpeed / (self.baseAttackSpeed + (self.levelAttackSpeed * (self.level - 1)));
+                float moveSpeedPercent = self.baseMoveSpeed > 0 ? nonSprintSpeed / self.baseMoveSpeed : 1f;
+                float attackSpeedPercent = self.baseAttackSpeed > 0 ? self.attackSpeed / self.baseAttackSpeed : 1f;
 
                 if (attackSpeedPercent < moveSpeedPercent)
                 {
