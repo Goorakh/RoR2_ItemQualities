@@ -23,7 +23,8 @@ namespace ItemQualities.Items
             IL.RoR2.Inventory.UpdateEffectiveItemStacks += Inventory_UpdateEffectiveItemStacks;
 
             IL.RoR2.UI.ItemInventoryDisplay.OnInventoryChanged += ItemInventoryDisplay_OnInventoryChanged;
-            IL.RoR2.UI.ScrapperInfoPanelHelper.AddQuantityToPickerButton += ScrapperInfoPanelHelper_AddQuantityToPickerButton;
+
+            IL.RoR2.CharacterModel.UpdateItemDisplay += CharacterModel_UpdateItemDisplay;
 
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
 
@@ -144,32 +145,39 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ScrapperInfoPanelHelper_AddQuantityToPickerButton(ILContext il)
+        static void CharacterModel_UpdateItemDisplay(ILContext il)
         {
-            if (!il.Method.TryFindParameter<PickupDef>(out ParameterDefinition pickupDefParameter))
+            if (!il.Method.TryFindParameter<Inventory>(out ParameterDefinition inventoryParameter))
             {
-                Log.Error("Failed to find PickupDef parameter");
+                Log.Error("Failed to find inventory parameter");
                 return;
             }
 
             ILCursor c = new ILCursor(il);
 
+            int itemIndexVarIndex = -1;
             if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
+                               x => x.MatchLdarg(inventoryParameter.Sequence),
+                               x => x.MatchLdloc(typeof(ItemIndex), il, out itemIndexVarIndex),
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.CalculateEffectiveItemStacks))))
             {
                 Log.Error("Failed to find patch location");
                 return;
             }
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldarg, pickupDefParameter);
-            c.EmitDelegate<Func<int, ScrapperInfoPanelHelper, PickupDef, int>>(getItemCountPermanent);
+            c.Emit(OpCodes.Ldarg, inventoryParameter);
+            c.Emit(OpCodes.Ldloc, itemIndexVarIndex);
+            c.EmitDelegate<Func<int, Inventory, ItemIndex, int>>(getItemCountWithQualities);
 
-            static int getItemCountPermanent(int itemCount, ScrapperInfoPanelHelper scrapperInfoPanelHelper, PickupDef pickupDef)
+            static int getItemCountWithQualities(int itemCount, Inventory inventory, ItemIndex itemIndex)
             {
-                if (pickupDef != null && pickupDef.itemIndex != ItemIndex.None && scrapperInfoPanelHelper && scrapperInfoPanelHelper.cachedBodyInventory)
+                if (QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None)
                 {
-                    itemCount = scrapperInfoPanelHelper.cachedBodyInventory.GetItemCountPermanent(pickupDef.itemIndex);
+                    ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
+                    if (itemGroup)
+                    {
+                        itemCount += itemGroup.GetItemCountsEffective(inventory).TotalQualityCount;
+                    }
                 }
 
                 return itemCount;

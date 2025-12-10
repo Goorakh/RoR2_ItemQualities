@@ -1,11 +1,18 @@
 ﻿using RoR2;
+using System;
 
 namespace ItemQualities.Utilities.Extensions
 {
     public static class InventoryExtensions
     {
-        public static bool HasAtLeastXTotalRemovableQualityItemsOfTier(this Inventory inventory, ItemTier itemTier, int x)
+        public static bool HasAtLeastXTotalQualityItemsOfTierForPurchase(this Inventory inventory, ItemTier itemTier, int x)
         {
+            if (!inventory)
+                throw new ArgumentNullException(nameof(inventory));
+
+            if (inventory.inventoryDisabled)
+                return false;
+
             if (x <= 0)
                 return true;
 
@@ -26,6 +33,12 @@ namespace ItemQualities.Utilities.Extensions
 
         public static bool HasAtLeastXTotalNonQualityItemsOfTierForPurchase(this Inventory inventory, ItemTier itemTier, int x)
         {
+            if (!inventory)
+                throw new ArgumentNullException(nameof(inventory));
+
+            if (inventory.inventoryDisabled)
+                return false;
+
             if (x <= 0)
                 return true;
 

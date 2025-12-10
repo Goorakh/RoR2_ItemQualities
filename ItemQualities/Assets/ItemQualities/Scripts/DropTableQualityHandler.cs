@@ -389,7 +389,7 @@ namespace ItemQualities
             ILCursor c = new ILCursor(il);
 
             if (!c.TryGotoNext(MoveType.Before,
-                               x => x.MatchCallOrCallvirt<ShopTerminalBehavior>(nameof(ShopTerminalBehavior.SetPickupIndex))))
+                               x => x.MatchCallOrCallvirt<ShopTerminalBehavior>(nameof(ShopTerminalBehavior.SetPickup))))
             {
                 Log.Error("Failed to find patch location");
                 return;
@@ -400,11 +400,16 @@ namespace ItemQualities
             c.Emit(OpCodes.Stloc, isHiddenTempVar);
 
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<PickupIndex, MultiShopController, PickupIndex>>(pickQuality);
+            c.EmitDelegate<Func<UniquePickup, MultiShopController, UniquePickup>>(pickQuality);
 
-            static PickupIndex pickQuality(PickupIndex originalPickupIndex, MultiShopController multiShopController)
+            static UniquePickup pickQuality(UniquePickup originalPickup, MultiShopController multiShopController)
             {
-                return tryUpgradeQuality(originalPickupIndex, multiShopController.rng);
+                if (originalPickup.isValid)
+                {
+                    return originalPickup.WithPickupIndex(tryUpgradeQuality(originalPickup.pickupIndex, multiShopController.rng));
+                }
+
+                return originalPickup;
             }
 
             c.Emit(OpCodes.Ldloc, isHiddenTempVar);
