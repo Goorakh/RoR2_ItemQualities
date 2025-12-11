@@ -1,5 +1,6 @@
 ﻿using EntityStates;
 using EntityStates.SharedSufferingOrb;
+using HG;
 using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
@@ -9,6 +10,7 @@ using RoR2;
 using RoR2.Projectile;
 using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
@@ -66,25 +68,29 @@ namespace ItemQualities.Items
             sharedSufferingOrbBody.baseNameToken = "QUALITY_SHARED_SUFFERING_ORB_BODY_NAME";
             sharedSufferingOrbBody.baseMaxHealth = 1f;
             sharedSufferingOrbBody.levelMaxHealth = 0f;
+            sharedSufferingOrbBody.bodyFlags &= ~CharacterBody.BodyFlags.Ungrabbable;
 
             TeamComponent teamComponent = sharedSufferingOrbBodyPrefab.GetComponent<TeamComponent>();
             teamComponent.teamIndex = TeamIndex.Monster;
 
-            NonSkillDamageModifier nonSkillDamageModifier = sharedSufferingOrbBodyPrefab.AddComponent<NonSkillDamageModifier>();
+            NonSkillDamageModifier nonSkillDamageModifier = sharedSufferingOrbBodyPrefab.EnsureComponent<NonSkillDamageModifier>();
             nonSkillDamageModifier._damageCoeficient = 0f;
 
             CharacterDeathBehavior deathBehavior = sharedSufferingOrbBodyPrefab.GetComponent<CharacterDeathBehavior>();
             deathBehavior.deathState = new SerializableEntityStateType(typeof(SharedSufferingOrbDeath));
 
-            sharedSufferingOrbBodyPrefab.AddComponent<Deployable>();
-            sharedSufferingOrbBodyPrefab.AddComponent<GenericOwnership>();
+            sharedSufferingOrbBodyPrefab.EnsureComponent<Deployable>();
+            sharedSufferingOrbBodyPrefab.EnsureComponent<GenericOwnership>();
 
-            SharedSufferingOrbController orbController = sharedSufferingOrbBodyPrefab.AddComponent<SharedSufferingOrbController>();
+            SpecialObjectAttributes specialObjectAttributes = sharedSufferingOrbBodyPrefab.EnsureComponent<SpecialObjectAttributes>();
+            specialObjectAttributes.renderersToDisable ??= new List<Renderer>();
+            specialObjectAttributes.lightsToDisable ??= new List<Light>();
+
+            SharedSufferingOrbController orbController = sharedSufferingOrbBodyPrefab.EnsureComponent<SharedSufferingOrbController>();
 
             ModelLocator modelLocator = sharedSufferingOrbBodyPrefab.GetComponent<ModelLocator>();
             Transform modelTransform = modelLocator ? modelLocator.modelTransform : null;
-            if (modelTransform &&
-                modelTransform.TryGetComponent(out ModelSkinController modelSkinController))
+            if (modelTransform && modelTransform.TryGetComponent(out ModelSkinController modelSkinController))
             {
                 SkinDef skinDef = ScriptableObject.CreateInstance<SkinDef>();
                 skinDef.name = "skinSharedSufferingOrbDefault";
@@ -118,6 +124,10 @@ namespace ItemQualities.Items
                             meshAddress = new AssetReferenceT<Mesh>(RoR2_Base_crystalworld.crystalworld_props_fbx + "[CrystalMeshLarge]")
                         }
                     };
+
+                    specialObjectAttributes.useSkillHighlightRenderers = true;
+                    specialObjectAttributes.skillHighlightRenderers ??= new List<Renderer>();
+                    specialObjectAttributes.skillHighlightRenderers.Add(renderer);
                 }
                 else
                 {
@@ -127,6 +137,8 @@ namespace ItemQualities.Items
                 Light light = modelLocator.modelTransform.GetComponentInChildren<Light>();
                 if (light)
                 {
+                    specialObjectAttributes.lightsToDisable.Add(light);
+
                     skinDef.skinDefParams.lightReplacements = new CharacterModel.LightInfo[]
                     {
                         new CharacterModel.LightInfo
@@ -161,8 +173,15 @@ namespace ItemQualities.Items
             Transform radiusIndicator = sharedSufferingOrbBodyPrefab.transform.Find("ModelBase/WarningRadius");
             if (radiusIndicator)
             {
+                if (radiusIndicator.TryGetComponent(out MeshFilter meshFilter))
+                {
+                    meshFilter.sharedMesh = MeshUtil.GetPrimitive(PrimitiveType.Sphere);
+                }
+
                 if (radiusIndicator.TryGetComponent(out Renderer radiusIndicatorRenderer))
                 {
+                    specialObjectAttributes.renderersToDisable.Add(radiusIndicatorRenderer);
+
                     Material indicatorMaterial = args.ContentPack.materials.Find("matSharedSufferingOrbAreaIndicator");
                     if (indicatorMaterial)
                     {
@@ -175,6 +194,16 @@ namespace ItemQualities.Items
             else
             {
                 Log.Error("Failed to find radius indicator");
+            }
+
+            Transform particlesTransform = sharedSufferingOrbBodyPrefab.transform.Find("ModelBase/Swirls");
+            if (particlesTransform && particlesTransform.TryGetComponent(out Renderer particlesRenderer))
+            {
+                specialObjectAttributes.renderersToDisable.Add(particlesRenderer);
+            }
+            else
+            {
+                Log.Warning("Failed to find particles");
             }
 
             _sharedSufferingOrbProjectilePrefab = minorConstructOnKillProjectileLoad.Result.InstantiateClone("QualitySharedSufferingOrbOnKillProjectile");

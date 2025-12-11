@@ -107,10 +107,8 @@ namespace ItemQualities.Items
         {
             if (RadiusIndicator)
             {
-                const float IndicatorMeshWidth = 3.888f;
-
                 float diameter = BlastRadius * 2f;
-                RadiusIndicator.localScale = new Vector3(diameter / IndicatorMeshWidth, diameter / IndicatorMeshWidth, RadiusIndicator.localScale.z);
+                RadiusIndicator.localScale = new Vector3(diameter, diameter, diameter);
             }
         }
 
