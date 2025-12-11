@@ -53,26 +53,27 @@ namespace ItemQualities.Items
 
             static float getCritMultiplier(float critMultiplier, DamageInfo damageInfo)
             {
-                CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
-                if (attackerBody)
+                if (damageInfo != null && damageInfo.crit)
                 {
-                    Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                    ItemQualityCounts critDamage = ItemQualitiesContent.ItemQualityGroups.CritDamage.GetItemCountsEffective(attackerInventory);
-                    if (critDamage.TotalQualityCount > 0)
+                    CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
+                    if (attackerBody)
                     {
-                        float maxCritStackChance = (5f * critDamage.UncommonCount) +
-                                                   (10f * critDamage.RareCount) +
-                                                   (25f * critDamage.EpicCount) +
-                                                   (50f * critDamage.LegendaryCount);
+                        Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                        float critStackChance = Mathf.Min(attackerBody.crit - 100f, maxCritStackChance);
-
-                        int critStacks = RollUtil.GetOverflowRoll(critStackChance, attackerBody.master);
-                        if (critStacks > 0)
+                        ItemQualityCounts critDamage = ItemQualitiesContent.ItemQualityGroups.CritDamage.GetItemCountsEffective(attackerInventory);
+                        if (critDamage.TotalQualityCount > 0)
                         {
-                            critMultiplier *= Mathf.Pow(critMultiplier, critStacks);
-                            damageInfo.damageColorIndex = _critDamageColors[Mathf.Min(critStacks, _critDamageColors.Length - 1)];
+                            float critStackChance = (20f * critDamage.UncommonCount) +
+                                                    (35f * critDamage.RareCount) +
+                                                    (50f * critDamage.EpicCount) +
+                                                    (75f * critDamage.LegendaryCount);
+
+                            int critStacks = RollUtil.GetOverflowRoll(critStackChance, attackerBody.master);
+                            if (critStacks > 0)
+                            {
+                                critMultiplier = Mathf.Pow(critMultiplier, critStacks + 1);
+                                damageInfo.damageColorIndex = _critDamageColors[Mathf.Min(critStacks, _critDamageColors.Length - 1)];
+                            }
                         }
                     }
                 }
