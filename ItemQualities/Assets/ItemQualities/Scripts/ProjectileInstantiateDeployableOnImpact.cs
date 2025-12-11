@@ -32,7 +32,14 @@ namespace ItemQualities
                 return;
 
             Vector3 spawnPosition = transform.position;
-            Quaternion spawnRotation = Quaternion.LookRotation(new Vector3(0f, UnityEngine.Random.Range(-180f, 180f), 0f), impactInfo.estimatedImpactNormal);
+
+            Vector3 forward = Vector3.ProjectOnPlane(Random.onUnitSphere, impactInfo.estimatedImpactNormal).normalized;
+            if (forward.sqrMagnitude < 0.01f)
+            {
+                forward = Vector3.ProjectOnPlane(Vector3.right, impactInfo.estimatedImpactNormal).normalized;
+            }
+
+            Quaternion spawnRotation = Quaternion.LookRotation(forward, impactInfo.estimatedImpactNormal);
 
             GameObject deployableObj = Instantiate(DeployablePrefab, spawnPosition, spawnRotation);
 

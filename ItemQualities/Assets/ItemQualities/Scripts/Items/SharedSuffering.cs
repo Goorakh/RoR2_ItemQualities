@@ -73,9 +73,6 @@ namespace ItemQualities.Items
             NonSkillDamageModifier nonSkillDamageModifier = sharedSufferingOrbBodyPrefab.AddComponent<NonSkillDamageModifier>();
             nonSkillDamageModifier._damageCoeficient = 0f;
 
-            EntityStateMachine entityStateMachine = sharedSufferingOrbBodyPrefab.GetComponent<EntityStateMachine>();
-            entityStateMachine.initialStateType = new SerializableEntityStateType(typeof(SharedSufferingOrbSpawn));
-
             CharacterDeathBehavior deathBehavior = sharedSufferingOrbBodyPrefab.GetComponent<CharacterDeathBehavior>();
             deathBehavior.deathState = new SerializableEntityStateType(typeof(SharedSufferingOrbDeath));
 
