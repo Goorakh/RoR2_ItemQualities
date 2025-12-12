@@ -730,6 +730,8 @@ namespace ItemQualities
             public static BuffQualityGroup ToothSecondaryBuff;
 
             public static BuffQualityGroup ShieldBoosterBuff;
+
+            public static BuffQualityGroup MultikillWarCryBuff;
         }
 
         public static class Buffs

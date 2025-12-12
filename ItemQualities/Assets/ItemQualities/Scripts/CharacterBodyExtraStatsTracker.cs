@@ -16,6 +16,16 @@ namespace ItemQualities
             {
                 bodyPrefab.EnsureComponent<CharacterBodyExtraStatsTracker>();
             }
+
+            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+        }
+
+        static void onCharacterDeathGlobal(DamageReport damageReport)
+        {
+            if (damageReport.attacker && damageReport.attacker.TryGetComponent(out CharacterBodyExtraStatsTracker attackerBodyExtraStats))
+            {
+                attackerBodyExtraStats.onKilledOther(damageReport);
+            }
         }
 
         NetworkIdentity _netIdentity;
@@ -51,18 +61,6 @@ namespace ItemQualities
             {
                 recalculateStatsIfNeeded();
                 return _crowbarMinHealthFraction;
-            }
-        }
-
-        public int WarCryOnMultiKill_MultiKillCount { get; private set; }
-        float _warCryOnMultiKill_MultiKillTimer = 0;
-        float _warCryOnMultiKill_MultiKillDuration = CharacterBody.multiKillMaxInterval;
-        public float WarCryOnMultiKill_MultiKillDuration
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _warCryOnMultiKill_MultiKillDuration;
             }
         }
 
@@ -128,6 +126,8 @@ namespace ItemQualities
 
         public float CurrentMedkitProcTimeSinceLastHit { get; set; } = 0f;
 
+        public int EliteKillCount { get; private set; } = 0;
+
         public CharacterMasterExtraStatsTracker MasterExtraStatsTracker { get; private set; }
 
         public event Action<DamageInfo> OnIncomingDamageServer;
@@ -137,6 +137,8 @@ namespace ItemQualities
         public event CharacterMotor.HitGroundDelegate OnHitGroundAuthority;
 
         public event Action<CharacterMotor.HitGroundInfo> OnHitGroundServer;
+
+        public event Action<DamageReport> OnKilledOther;
 
         void Awake()
         {
@@ -210,29 +212,6 @@ namespace ItemQualities
             updateOverlays();
         }
 
-        void Update()
-        {
-            if (NetworkServer.active)
-            {
-                if (WarCryOnMultiKill_MultiKillCount > 0)
-                {
-                    _warCryOnMultiKill_MultiKillTimer += Time.deltaTime;
-                    if (_warCryOnMultiKill_MultiKillTimer >= _warCryOnMultiKill_MultiKillDuration)
-                    {
-                        _warCryOnMultiKill_MultiKillTimer = 0f;
-                        WarCryOnMultiKill_MultiKillCount = 0;
-                    }
-                }
-            }
-        }
-
-        [Server]
-        public void AddMultiKill(int kills)
-        {
-            _warCryOnMultiKill_MultiKillTimer = 0f;
-            WarCryOnMultiKill_MultiKillCount += kills;
-        }
-
         void onBodyInventoryChanged()
         {
             MarkAllStatsDirty();
@@ -278,6 +257,7 @@ namespace ItemQualities
                 setItemBehavior<DronesDropDynamiteQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<DronesDropDynamiteDroneItemQualityItemBehavior>(_body.inventory.GetItemCountEffective(ItemQualitiesContent.Items.DronesDropDynamiteQualityDroneItem) > 0);
                 setItemBehavior<ShieldBoosterQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ShieldBooster.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<WarCryOnMultiKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
             }
 
             if (HasEffectiveAuthority)
@@ -348,7 +328,6 @@ namespace ItemQualities
         {
             ItemQualityCounts slug = default;
             ItemQualityCounts crowbar = default;
-            ItemQualityCounts warCryOnMultiKill = default;
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
             ItemQualityCounts jumpBoost = default;
@@ -356,7 +335,6 @@ namespace ItemQualities
             {
                 slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCountsEffective(_body.inventory);
                 crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(_body.inventory);
-                warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(_body.inventory);
                 executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCountsEffective(_body.inventory);
                 phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(_body.inventory);
                 jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCountsEffective(_body.inventory);
@@ -377,15 +355,7 @@ namespace ItemQualities
                 (3.00f * crowbar.LegendaryCount));
 
             _crowbarMinHealthFraction = Mathf.Lerp(BaseCrowbarMinHealthFraction, BaseCrowbarMinHealthFraction * 0.5f, crowbarMinHealthFractionReduction);
-
-            float warCryOnMultiKill_MultiKillDurationMult = 1f;
-            warCryOnMultiKill_MultiKillDurationMult += 0.3f * warCryOnMultiKill.UncommonCount;
-            warCryOnMultiKill_MultiKillDurationMult += 0.7f * warCryOnMultiKill.RareCount;
-            warCryOnMultiKill_MultiKillDurationMult += 1.5f * warCryOnMultiKill.EpicCount;
-            warCryOnMultiKill_MultiKillDurationMult += 2.5f * warCryOnMultiKill.LegendaryCount;
-
-            _warCryOnMultiKill_MultiKillDuration = CharacterBody.multiKillMaxInterval * warCryOnMultiKill_MultiKillDurationMult;
-
+            
             _executeBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
                 (0.10f * executeLowHealthElite.UncommonCount) +
                 (0.15f * executeLowHealthElite.RareCount) +
@@ -437,6 +407,16 @@ namespace ItemQualities
         void IOnTakeDamageServerReceiver.OnTakeDamageServer(DamageReport damageReport)
         {
             OnTakeDamageServer?.Invoke(damageReport);
+        }
+
+        void onKilledOther(DamageReport damageReport)
+        {
+            if (damageReport.victimIsElite)
+            {
+                EliteKillCount++;
+            }
+
+            OnKilledOther?.Invoke(damageReport);
         }
 
         void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)

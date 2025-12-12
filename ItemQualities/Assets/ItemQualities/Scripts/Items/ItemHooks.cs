@@ -8,7 +8,6 @@ using RoR2.UI;
 using System;
 using System.Collections;
 using System.Linq;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -27,8 +26,6 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterModel.UpdateItemDisplay += CharacterModel_UpdateItemDisplay;
 
             On.RoR2.CharacterMaster.HighlightNewItem += CharacterMaster_HighlightNewItem;
-
-            On.RoR2.CharacterBody.AddMultiKill += CharacterBody_AddMultiKill;
 
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
@@ -222,16 +219,6 @@ namespace ItemQualities.Items
                     }
                 }
             }
-        }
-
-        static void CharacterBody_AddMultiKill(On.RoR2.CharacterBody.orig_AddMultiKill orig, CharacterBody self, int kills)
-        {
-            if (NetworkServer.active && self && self.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStatsTracker))
-            {
-                bodyExtraStatsTracker.AddMultiKill(kills);
-            }
-
-            orig(self, kills);
         }
 
         static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)

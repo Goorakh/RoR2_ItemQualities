@@ -1,5 +1,6 @@
 ﻿using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
 using System;
 
@@ -10,34 +11,24 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.CharacterBody.AddMultiKill += CharacterBody_AddMultiKill;
+            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void CharacterBody_AddMultiKill(ILContext il)
+        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ILCursor c = new ILCursor(il);
-
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.WarCryOnMultiKill)),
-                               x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.multiKillCount))))
+            if (sender.HasBuff(RoR2Content.Buffs.WarCryBuff) || sender.HasBuff(RoR2Content.Buffs.TeamWarCry))
             {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
-            c.Goto(foundCursors[1].Next, MoveType.After);
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<int, CharacterBody, int>>(getMultiKillCount);
-            
-            static int getMultiKillCount(int multiKillCount, CharacterBody body)
-            {
-                if (body && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStatsTracker))
+                ItemQualityCounts warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(sender.inventory);
+                BuffQualityCounts multikillWarCryBuff = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffCounts(sender);
+                if (warCryOnMultiKill.TotalQualityCount > 0 && multikillWarCryBuff.TotalQualityCount > 0)
                 {
-                    multiKillCount = bodyExtraStatsTracker.WarCryOnMultiKill_MultiKillCount;
-                }
+                    float damageIncreasePerBuff = (0.01f * warCryOnMultiKill.UncommonCount) +
+                                                  (0.02f * warCryOnMultiKill.RareCount) +
+                                                  (0.03f * warCryOnMultiKill.EpicCount) +
+                                                  (0.05f * warCryOnMultiKill.LegendaryCount);
 
-                return multiKillCount;
+                    args.damageMultAdd += damageIncreasePerBuff * multikillWarCryBuff.TotalQualityCount;
+                }
             }
         }
     }
