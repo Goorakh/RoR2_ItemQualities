@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgMultikillWarCryBuff
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: b4aef4330658f144394b5e48c9232e03
+    m_SubObjectName: 
+    m_SubObjectType: 
+  _uncommonBuff: {fileID: 11400000, guid: 537a3c2748ba6554293f1baa4eb36375, type: 2}
+  _rareBuff: {fileID: 11400000, guid: 072f11cf5d093bf47a7c7f11a72b5d31, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 9f006c5dd06cf2a44bf082641c696962, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: 6a3bd39d93a11c44cb05ec0b1f125ac3, type: 2}
