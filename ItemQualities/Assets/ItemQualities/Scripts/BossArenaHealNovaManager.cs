@@ -13,6 +13,12 @@ namespace ItemQualities
 
         readonly GameObject[] _healNovaSpawnersByTeam = new GameObject[TeamsAPICompat.TeamsCount];
 
+        [SystemInitializer()]
+        static void Init()
+        {
+            On.RoR2.SolusWingGrid.GridManager.OnTierSet += GridManager_OnTierSet;
+        }
+
         void Awake()
         {
             InstanceTracker.Add(this);
@@ -20,7 +26,6 @@ namespace ItemQualities
             {
                 BossGroup.onBossGroupDefeatedServer += onBossGroupDefeatedServer;
             }
-            On.RoR2.SolusWingGrid.GridManager.OnTierSet += GridManager_OnTierSet;
         }
 
         void OnDisable()
@@ -37,13 +42,13 @@ namespace ItemQualities
         void OnDestroy()
         {
             BossGroup.onBossGroupDefeatedServer -= onBossGroupDefeatedServer;
-            On.RoR2.SolusWingGrid.GridManager.OnTierSet -= GridManager_OnTierSet;
         }
 
         private static void GridManager_OnTierSet(On.RoR2.SolusWingGrid.GridManager.orig_OnTierSet orig, RoR2.SolusWingGrid.GridManager self, int tier)
         {
             orig(self, tier);
-            foreach(BossArenaHealNovaManager novaManager in InstanceTracker.GetInstancesList<BossArenaHealNovaManager>()) {
+            foreach (BossArenaHealNovaManager novaManager in InstanceTracker.GetInstancesList<BossArenaHealNovaManager>())
+            {
                 Vector3 arenacenter = novaManager.transform.position;
                 arenacenter.y = self.GetLavaPosition(tier).y;
                 novaManager.transform.position = arenacenter;
