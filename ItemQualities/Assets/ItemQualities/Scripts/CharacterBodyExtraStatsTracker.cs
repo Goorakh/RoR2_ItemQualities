@@ -250,7 +250,6 @@ namespace ItemQualities
                 setItemBehavior<MushroomVoidQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<GoldOnHurtQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<EquipmentMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<DuplicatorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Duplicator.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<FeatherQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
