@@ -791,6 +791,7 @@ namespace ItemQualities
 
         public static class ProjectilePrefabs
         {
+            public static GameObject IncreasePrimaryDamageQualityDotZone;
         }
 
         public static class Materials

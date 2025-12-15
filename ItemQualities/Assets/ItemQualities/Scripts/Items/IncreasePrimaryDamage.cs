@@ -1,8 +1,11 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using HG;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
+using RoR2.Projectile;
 using System;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -11,7 +14,7 @@ namespace ItemQualities.Items
 {
     static class IncreasePrimaryDamage
     {
-        const int QualityLuminousBuffActivationThreshold = 5;
+        static readonly int _qualityBuffActivationThreshold = 5;
 
         [SystemInitializer]
         static void Init()
@@ -60,10 +63,13 @@ namespace ItemQualities.Items
 
             static bool tryQualityLuminousProc(DamageInfo damageInfo, GameObject victim, int attackerLuminousBuffCount)
             {
-                if (!NetworkServer.active || damageInfo == null || !victim)
+                if (!NetworkServer.active || damageInfo == null || !victim || !ItemQualitiesContent.ProjectilePrefabs.IncreasePrimaryDamageQualityDotZone)
                     return false;
 
-                if (attackerLuminousBuffCount < QualityLuminousBuffActivationThreshold)
+                if (damageInfo.procChainMask.HasModdedProc(ProcTypes.IncreasePrimaryDamage))
+                    return false;
+
+                if (attackerLuminousBuffCount < _qualityBuffActivationThreshold)
                     return false;
 
                 CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
@@ -73,53 +79,38 @@ namespace ItemQualities.Items
                 if (increasePrimaryDamage.TotalQualityCount <= 0)
                     return false;
 
-                Vector3 victimPosition = victim.transform.position;
-                if (victim.TryGetComponent(out CharacterBody victimBody))
-                {
-                    victimPosition = victimBody.corePosition;
-                }
-
-                for (int i = 0; i < QualityLuminousBuffActivationThreshold; i++)
+                for (int i = 0; i < _qualityBuffActivationThreshold; i++)
                 {
                     attackerBody.RemoveBuff(DLC2Content.Buffs.IncreasePrimaryDamageBuff);
                 }
 
                 attackerBody.TransmitItemBehavior(new CharacterBody.NetworkItemBehaviorData(DLC2Content.Items.IncreasePrimaryDamage.itemIndex, attackerBody.GetBuffCount(DLC2Content.Buffs.IncreasePrimaryDamageBuff)));
 
-                float blastProcCoefficient = increasePrimaryDamage.HighestQuality switch
+                Vector3 spawnPosition = damageInfo.position;
+                if (Physics.SphereCast(spawnPosition, 1f, Vector3.down, out RaycastHit hit, 4.5f, LayerIndex.world.mask, QueryTriggerInteraction.Ignore))
                 {
-                    QualityTier.Uncommon => 1.25f,
-                    QualityTier.Rare => 1.5f,
-                    QualityTier.Epic => 1.75f,
-                    QualityTier.Legendary => 2f,
-                    _ => throw new NotImplementedException($"Quality tier {increasePrimaryDamage.HighestQuality} is not implemented")
-                };
-
-                float blastDamageCoefficient = 2.5f + (0.75f * increasePrimaryDamage.UncommonCount) +
-                                                      (1.00f * increasePrimaryDamage.RareCount) +
-                                                      (1.50f * increasePrimaryDamage.EpicCount) +
-                                                      (2.00f * increasePrimaryDamage.LegendaryCount);
-
-                GameObject delayBlastObj = GameObject.Instantiate(GlobalEventManager.CommonAssets.increasePrimaryDamageDelayBlastPrefab, victimPosition, Quaternion.identity);
-
-                DelayBlast delayBlast = delayBlastObj.GetComponent<DelayBlast>();
-                delayBlast.position = victimPosition;
-                delayBlast.attacker = damageInfo.attacker;
-                delayBlast.baseDamage = damageInfo.damage * blastDamageCoefficient;
-                delayBlast.crit = damageInfo.crit;
-                delayBlast.procCoefficient = blastProcCoefficient;
-                delayBlast.radius = 7f;
-                delayBlast.maxTimer = 0.2f;
-                delayBlast.falloffModel = BlastAttack.FalloffModel.None;
-                delayBlast.explosionEffect = GlobalEventManager.CommonAssets.increasePrimaryDamageImpactPrefab;
-                delayBlast.damageColorIndex = DamageColorIndex.Luminous;
-
-                if (delayBlastObj.TryGetComponent(out TeamFilter delayBlastTeamFilter))
-                {
-                    delayBlastTeamFilter.teamIndex = TeamComponent.GetObjectTeam(damageInfo.attacker);
+                    spawnPosition = hit.point;
                 }
 
-                NetworkServer.Spawn(delayBlastObj);
+                float damageCoefficient = 6f + (4f * increasePrimaryDamage.UncommonCount) +
+                                               (6f * increasePrimaryDamage.RareCount) +
+                                               (8f * increasePrimaryDamage.EpicCount) +
+                                               (10f * increasePrimaryDamage.LegendaryCount);
+
+                ProcChainMask procChainMask = damageInfo.procChainMask;
+                procChainMask.AddModdedProc(ProcTypes.IncreasePrimaryDamage);
+
+                ProjectileManager.instance.FireProjectile(new FireProjectileInfo
+                {
+                    projectilePrefab = ItemQualitiesContent.ProjectilePrefabs.IncreasePrimaryDamageQualityDotZone,
+                    owner = damageInfo.attacker,
+                    position = spawnPosition,
+                    rotation = Quaternion.identity,
+                    damage = damageInfo.damage * damageCoefficient,
+                    crit = damageInfo.crit,
+                    damageColorIndex = DamageColorIndex.Luminous,
+                    procChainMask = procChainMask
+                });
 
                 return true;
             }
@@ -127,21 +118,24 @@ namespace ItemQualities.Items
 
         static void IncreasePrimaryDamageEffectUpdater_LightUpRings(On.RoR2.IncreasePrimaryDamageEffectUpdater.orig_LightUpRings orig, IncreasePrimaryDamageEffectUpdater self, int ringsToLight)
         {
-            // Default behavior assumes buffs will never to down to anything but 0, so decreasing the value doesn't properly disable lights
+            // Default behavior assumes buffs will never go down to anything but 0, so decreasing the value doesn't properly disable lights
 
-            if (self.itemDisplay)
+            if (self && self.itemDisplay)
             {
                 CharacterModel.RendererInfo[] rendererInfos = self.itemDisplay.rendererInfos;
                 if (rendererInfos != null)
                 {
-                    if (self.itemDisplay_ShotRingTopIndex < rendererInfos.Length)
-                        rendererInfos[self.itemDisplay_ShotRingTopIndex].defaultMaterial = self.unlitEnergyMaterial;
+                    void resetMaterial(int rendererIndex)
+                    {
+                        if (ArrayUtils.IsInBounds(rendererInfos, rendererIndex))
+                        {
+                            rendererInfos[rendererIndex].defaultMaterial = self.unlitEnergyMaterial;
+                        }
+                    }
 
-                    if (self.itemDisplay_ShotRingMiddleIndex < rendererInfos.Length)
-                        rendererInfos[self.itemDisplay_ShotRingMiddleIndex].defaultMaterial = self.unlitEnergyMaterial;
-
-                    if (self.itemDisplay_ShotRingBottomIndex < rendererInfos.Length)
-                        rendererInfos[self.itemDisplay_ShotRingBottomIndex].defaultMaterial = self.unlitEnergyMaterial;
+                    resetMaterial(self.itemDisplay_ShotRingBottomIndex);
+                    resetMaterial(self.itemDisplay_ShotRingMiddleIndex);
+                    resetMaterial(self.itemDisplay_ShotRingTopIndex);
                 }
             }
 
