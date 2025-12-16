@@ -1,11 +1,9 @@
-﻿using HG;
-using ItemQualities.Items;
+﻿using ItemQualities.Items;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.UI;
 using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItemQualities
@@ -110,6 +108,10 @@ namespace ItemQualities
             if (_currentTargetBody && duplicatorAttachment.AttachedBody == _currentTargetBody)
             {
                 setCurrentBodyDuplicatorAttachment(duplicatorAttachment);
+            }
+            else if (duplicatorAttachment == _currentBodyDuplicatorAttachment)
+            {
+                setCurrentBodyDuplicatorAttachment(null);
             }
         }
 
