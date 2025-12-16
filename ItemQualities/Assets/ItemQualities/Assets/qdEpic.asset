@@ -16,3 +16,4 @@ MonoBehaviour:
   color: {r: 0.76470596, g: 0, b: 1, a: 1}
   icon: {fileID: 932333613, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   consumedIcon: {fileID: 931077086, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
+  ChestOpenEffectPrefab: {fileID: 8670616684926929642, guid: e09426e535cd96e42952d005e3c7e22e, type: 3}

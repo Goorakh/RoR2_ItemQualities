@@ -3,7 +3,10 @@ guid: 0ab942a5ccd264c44b55ab2036864dff
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - icon: {instanceID: 0}
+  - consumedIcon: {instanceID: 0}
+  - ChestOpenEffectPrefab: {fileID: 9098918324715251240, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
