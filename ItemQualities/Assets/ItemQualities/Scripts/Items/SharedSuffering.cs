@@ -7,6 +7,7 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
+using RoR2.Items;
 using RoR2.Projectile;
 using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
 using System.Collections;
@@ -221,7 +222,20 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
+            On.RoR2.Items.SharedSufferingItemBehaviour.TryAdd += SharedSufferingItemBehaviour_TryAdd;
+
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+        }
+
+        static bool SharedSufferingItemBehaviour_TryAdd(On.RoR2.Items.SharedSufferingItemBehaviour.orig_TryAdd orig, SharedSufferingItemBehaviour self, CharacterBody newTarget)
+        {
+            // Fix IndexOutOfRangeException in SharedSufferingManager if trying to add a body not on any team
+            if (newTarget && newTarget.teamComponent && newTarget.teamComponent.teamIndex != TeamIndex.None)
+            {
+                return orig(self, newTarget);
+            }
+
+            return false;
         }
 
         static void onCharacterDeathGlobal(DamageReport damageReport)
