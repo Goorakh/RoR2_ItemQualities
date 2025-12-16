@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class ElementalRingVoidBlackHoleProjectileController : NetworkBehaviour
+    public sealed class ElementalRingVoidBlackHoleProjectileController : NetworkBehaviour
     {
         [SyncVar]
         float _scaleMultiplier = 1f;
@@ -15,7 +15,11 @@ namespace ItemQualities.Items
 
         void Awake()
         {
-            if (!TryGetComponent(out _radialForce))
+            if (TryGetComponent(out RadialForce radialForce))
+            {
+                _radialForce = radialForce;
+            }
+            else
             {
                 Log.Error($"{Util.GetGameObjectHierarchyName(gameObject)} is missing RadialForce component");
                 enabled = false;
@@ -44,14 +48,28 @@ namespace ItemQualities.Items
                 elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCountsEffective(ownerBody.inventory);
             }
 
-            float scaleMultiplier = 1f;
-
-            if (elementalRingVoid.TotalQualityCount > 0)
+            float scaleMultiplier;
+            switch (elementalRingVoid.HighestQuality)
             {
-                scaleMultiplier += (0.20f * elementalRingVoid.UncommonCount) +
-                                   (0.40f * elementalRingVoid.RareCount) +
-                                   (0.60f * elementalRingVoid.EpicCount) +
-                                   (1.00f * elementalRingVoid.LegendaryCount);
+                case QualityTier.None:
+                    scaleMultiplier = 1f;
+                    break;
+                case QualityTier.Uncommon:
+                    scaleMultiplier = 1.33f;
+                    break;
+                case QualityTier.Rare:
+                    scaleMultiplier = 1.66f;
+                    break;
+                case QualityTier.Epic:
+                    scaleMultiplier = 2.33f;
+                    break;
+                case QualityTier.Legendary:
+                    scaleMultiplier = 3f;
+                    break;
+                default:
+                    scaleMultiplier = 1f;
+                    Log.Error($"Quality tier {elementalRingVoid.HighestQuality} is not implemented");
+                    break;
             }
 
             _scaleMultiplier = scaleMultiplier;
