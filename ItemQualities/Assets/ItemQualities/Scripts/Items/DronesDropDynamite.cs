@@ -1,4 +1,5 @@
-﻿using HG.Coroutines;
+﻿using AK.Wwise;
+using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
@@ -7,6 +8,7 @@ using RoR2;
 using RoR2.Projectile;
 using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -19,9 +21,11 @@ namespace ItemQualities.Items
         static IEnumerator LoadContent(ContentIntializerArgs args)
         {
             AsyncOperationHandle<GameObject> droneBallDotZoneLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_Drone_Tech.DroneBallDotZone_prefab);
+            AsyncOperationHandle<GameObject> droneTechBodyLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_Drone_Tech.DroneTechBody_prefab);
 
             ParallelProgressCoroutine loadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
             loadCoroutine.Add(droneBallDotZoneLoad);
+            loadCoroutine.Add(droneTechBodyLoad);
 
             yield return loadCoroutine;
 
@@ -90,6 +94,27 @@ namespace ItemQualities.Items
             GameObject.Destroy(droneShootableAttachmentPrefab.GetComponent<AssignTeamFilterToTeamComponent>());
             GameObject.Destroy(droneShootableAttachmentPrefab.GetComponent<TeamFilter>());
             droneShootableAttachmentPrefab.layer = LayerIndex.defaultLayer.intVal;
+
+            Bank operatorBank = null;
+            if (droneTechBodyLoad.Status == AsyncOperationStatus.Succeeded && droneTechBodyLoad.Result)
+            {
+                if (droneTechBodyLoad.Result.TryGetComponent(out AkBank operatorBodyBank))
+                {
+                    operatorBank = operatorBodyBank.data;
+                }
+            }
+
+            if (operatorBank != null)
+            {
+                AkBank shieldBank = droneShootableAttachmentPrefab.AddComponent<AkBank>();
+                shieldBank.data = operatorBank;
+                shieldBank.triggerList = new List<int> { AkTriggerHandler.ON_ENABLE_TRIGGER_ID };
+                shieldBank.unloadTriggerList = new List<int> { AkTriggerHandler.ON_DISABLE_TRIGGER_ID };
+            }
+            else
+            {
+                Log.Warning("Failed to load operator sound bank");
+            }
 
             args.ContentPack.networkedObjectPrefabs.Add(droneShootableAttachmentPrefab);
         }
