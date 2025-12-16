@@ -104,10 +104,10 @@ namespace ItemQualities.Items
                 ItemQualityCounts elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCountsEffective(attackerInventory);
                 if (elementalRingVoid.TotalQualityCount > 0)
                 {
-                    damageCoefficient += (0.50f * elementalRingVoid.UncommonCount) +
-                                         (0.75f * elementalRingVoid.RareCount) +
-                                         (1.00f * elementalRingVoid.EpicCount) +
-                                         (2.00f * elementalRingVoid.LegendaryCount);
+                    damageCoefficient += 2f + (3f * elementalRingVoid.UncommonCount) +
+                                              (4f * elementalRingVoid.RareCount) +
+                                              (5f * elementalRingVoid.EpicCount) +
+                                              (6f * elementalRingVoid.LegendaryCount);
                 }
 
                 return damageCoefficient;
