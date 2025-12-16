@@ -4,7 +4,7 @@ namespace ItemQualities.Equipments
 {
     static class EquipmentHooks
     {
-        public static QualityTier CurrentEquipmentQualityTier { get; set; } = QualityTier.None;
+        public static QualityTier CurrentEquipmentQualityTier { get; private set; } = QualityTier.None;
 
         [SystemInitializer]
         static void Init()
