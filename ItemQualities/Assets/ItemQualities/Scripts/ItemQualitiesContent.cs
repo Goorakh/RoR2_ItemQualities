@@ -681,6 +681,8 @@ namespace ItemQualities
             public static ItemQualityGroup PhysicsProjectile;
 
             public static ItemQualityGroup JumpDamageStrike;
+
+            public static ItemQualityGroup ShockNearby;
         }
 
         public static class Items

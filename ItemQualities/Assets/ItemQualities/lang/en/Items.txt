@@ -1538,5 +1538,17 @@
         
         "ITEM_JUMPDAMAGESTRIKE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and increase charge speed.",
         "ITEM_JUMPDAMAGESTRIKE_LEGENDARY_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>500% <style=cStack>(+500% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area. Increases <style=cIsUtility>charge speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>.",
+
+        "ITEM_SHOCKNEARBY_UNCOMMON_PICKUP": "Shock all nearby enemies every <sprite name=\"Quality\"> 9 seconds.",
+		"ITEM_SHOCKNEARBY_UNCOMMON_DESC": "Fire out <style=cIsDamage>lightning</style> that hits <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>200%</style> base damage every <sprite name=\"Quality\"> <style=cIsDamage>0.45s <style=cStack>(-10% per stack)</style></style>. The Tesla Coil switches off every <sprite name=\"Quality\"> <style=cIsDamage>9 <style=cStack>(-10% per stack)</style> seconds</style>.",
+
+        "ITEM_SHOCKNEARBY_RARE_PICKUP": "Shock all nearby enemies every <sprite name=\"Quality\"> 8 seconds.",
+		"ITEM_SHOCKNEARBY_RARE_DESC": "Fire out <style=cIsDamage>lightning</style> that hits <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>200%</style> base damage every <sprite name=\"Quality\"> <style=cIsDamage>0.4s <style=cStack>(-20% per stack)</style></style>. The Tesla Coil switches off every <sprite name=\"Quality\"> <style=cIsDamage>8 <style=cStack>(-20% per stack)</style> seconds</style>.",
+
+        "ITEM_SHOCKNEARBY_EPIC_PICKUP": "Shock all nearby enemies every <sprite name=\"Quality\"> 7 seconds.",
+		"ITEM_SHOCKNEARBY_EPIC_DESC": "Fire out <style=cIsDamage>lightning</style> that hits <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>200%</style> base damage every <sprite name=\"Quality\"> <style=cIsDamage>0.35s <style=cStack>(-30% per stack)</style></style>. The Tesla Coil switches off every <sprite name=\"Quality\"> <style=cIsDamage>7 <style=cStack>(-30% per stack)</style> seconds</style>.",
+
+        "ITEM_SHOCKNEARBY_LEGENDARY_PICKUP": "Shock all nearby enemies every <sprite name=\"Quality\"> 5 seconds.",
+		"ITEM_SHOCKNEARBY_LEGENDARY_DESC": "Fire out <style=cIsDamage>lightning</style> that hits <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>200%</style> base damage every <sprite name=\"Quality\"> <style=cIsDamage>0.25s <style=cStack>(-50% per stack)</style></style>. The Tesla Coil switches off every <sprite name=\"Quality\"> <style=cIsDamage>5 <style=cStack>(-50% per stack)</style> seconds</style>.",
     }
 }
