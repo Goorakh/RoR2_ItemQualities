@@ -84,6 +84,8 @@ namespace ItemQualities.Items
             {
                 c.Emit(OpCodes.Ldloc, intervalMultiplierVar);
                 c.Emit(OpCodes.Mul);
+
+                patchCount++;
             }
 
             if (patchCount == 0)
