@@ -12,5 +12,7 @@ namespace ItemQualities
         public Sprite icon;
 
         public Sprite consumedIcon;
+
+        public GameObject ChestOpenEffectPrefab;
     }
 }
