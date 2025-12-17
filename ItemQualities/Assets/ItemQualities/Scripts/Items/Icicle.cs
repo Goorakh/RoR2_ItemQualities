@@ -39,10 +39,10 @@ namespace ItemQualities.Items
                     ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCountsEffective(ownerInventory);
                     if (icicle.TotalQualityCount > 0)
                     {
-                        float frostChance = (5f * icicle.UncommonCount) +
-                                            (15f * icicle.RareCount) +
-                                            (30f * icicle.EpicCount) +
-                                            (50f * icicle.LegendaryCount);
+                        float frostChance = (20f * icicle.UncommonCount) +
+                                            (30f * icicle.RareCount) +
+                                            (50f * icicle.EpicCount) +
+                                            (75f * icicle.LegendaryCount);
 
                         if (Util.CheckRoll(frostChance, ownerBody.master))
                         {
@@ -65,10 +65,10 @@ namespace ItemQualities.Items
             ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCountsEffective(ownerInventory);
             if (icicle.TotalQualityCount > 0)
             {
-                float radiusIncrease = (0.05f * icicle.UncommonCount) +
-                                       (0.10f * icicle.RareCount) +
-                                       (0.20f * icicle.EpicCount) +
-                                       (0.25f * icicle.LegendaryCount);
+                float radiusIncrease = (0.30f * icicle.UncommonCount) +
+                                       (0.50f * icicle.RareCount) +
+                                       (0.80f * icicle.EpicCount) +
+                                       (1.00f * icicle.LegendaryCount);
 
                 if (radiusIncrease > 0)
                 {
