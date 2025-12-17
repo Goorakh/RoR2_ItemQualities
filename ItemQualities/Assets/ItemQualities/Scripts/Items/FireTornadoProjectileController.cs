@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using RoR2.Projectile;
-using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
@@ -45,29 +44,32 @@ namespace ItemQualities.Items
                 fireRing = ItemQualitiesContent.ItemQualityGroups.FireRing.GetItemCountsEffective(ownerBody.inventory);
             }
 
-            float lifetime = _projectileSimple.lifetime;
-            Vector3 scale = transform.localScale;
+            float lifetimeMult = 1f;
+            float scaleMult = 1f;
 
             if (fireRing.TotalQualityCount > 0)
             {
-                float lifetimeMultAdd = (0.05f * fireRing.UncommonCount) +
-                                        (0.15f * fireRing.RareCount) +
-                                        (0.30f * fireRing.EpicCount) +
-                                        (0.50f * fireRing.LegendaryCount);
+                lifetimeMult += (0.05f * fireRing.UncommonCount) +
+                                (0.15f * fireRing.RareCount) +
+                                (0.30f * fireRing.EpicCount) +
+                                (0.50f * fireRing.LegendaryCount);
 
-                lifetime *= 1f + lifetimeMultAdd;
-
-                float scaleMultAdd = (0.20f * fireRing.UncommonCount) +
-                                     (0.40f * fireRing.RareCount) +
-                                     (0.60f * fireRing.EpicCount) +
-                                     (1.00f * fireRing.LegendaryCount);
-
-                scale *= 1f + scaleMultAdd;
+                scaleMult += (0.50f * fireRing.UncommonCount) +
+                             (0.75f * fireRing.RareCount) +
+                             (1.00f * fireRing.EpicCount) +
+                             (2.00f * fireRing.LegendaryCount);
             }
 
-            _overrideLifetime = lifetime;
-            transform.localScale = scale;
-            applyLifetimeOverride();
+            if (scaleMult != 1f)
+            {
+                transform.localScale *= scaleMult;
+            }
+
+            if (lifetimeMult != 1f)
+            {
+                _overrideLifetime = _projectileSimple.lifetime * lifetimeMult;
+                applyLifetimeOverride();
+            }
         }
 
         public override void OnStartClient()

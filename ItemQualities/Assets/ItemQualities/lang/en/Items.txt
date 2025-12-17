@@ -530,16 +530,16 @@
         "ITEM_INFUSION_LEGENDARY_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style>.",
 
         "ITEM_FIRERING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
-        "ITEM_FIRERING_UNCOMMON_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>.",
+        "ITEM_FIRERING_UNCOMMON_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>.",
 
         "ITEM_FIRERING_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
-        "ITEM_FIRERING_RARE_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>40%</style> <style=cStack>(+40% per stack)</style>.",
+        "ITEM_FIRERING_RARE_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>.",
 
         "ITEM_FIRERING_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
-        "ITEM_FIRERING_EPIC_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style>.",
+        "ITEM_FIRERING_EPIC_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style>.",
 
         "ITEM_FIRERING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
-        "ITEM_FIRERING_LEGENDARY_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style>.",
+        "ITEM_FIRERING_LEGENDARY_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>200%</style> <style=cStack>(+200% per stack)</style>.",
 
         "ITEM_SEED_UNCOMMON_PICKUP": "Dealing damage <sprite name=\"Quality\"> heals you.",
         "ITEM_SEED_UNCOMMON_DESC": "Dealing damage <style=cIsHealing>heals</style> you for <style=cIsHealing>1 <style=cStack>(+1 per stack)</style> health</style>, plus an additional <sprite name=\"Quality\"> <style=cIsHealing>1%</style> <style=cStack>(+1% per stack)</style> of damage dealt.",
