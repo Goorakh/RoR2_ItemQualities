@@ -160,6 +160,7 @@ namespace ItemQualities
                     }
                 }
 
+#if DEBUG
                 if (equipmentBarrelCard != null && !addedQualityEquipmentBarrel)
                 {
                     DirectorCard qualityEquipmentBarrelCard = new DirectorCard
@@ -175,6 +176,7 @@ namespace ItemQualities
 
                     addedQualityEquipmentBarrel = true;
                 }
+#endif
 
                 if (categoryChest1Card != null && !addedQualityChest1)
                 {
@@ -256,6 +258,7 @@ namespace ItemQualities
                     addedQualityDuplicatorMilitary = true;
                 }
 
+#if DEBUG
                 if (duplicatorWildCard != null && !addedQualityDuplicatorWild)
                 {
                     DirectorCard qualityDuplicatorWildCard = new DirectorCard
@@ -271,6 +274,7 @@ namespace ItemQualities
 
                     addedQualityDuplicatorWild = true;
                 }
+#endif
             }
         }
 
