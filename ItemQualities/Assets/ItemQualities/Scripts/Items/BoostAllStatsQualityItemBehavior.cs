@@ -1,12 +1,33 @@
 ﻿using RoR2;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class BoostAllStatsQualityItemBehavior : MonoBehaviour
+    public sealed class BoostAllStatsQualityItemBehavior : MonoBehaviour
     {
+        static BuffIndex[] _validBuffIndices = Array.Empty<BuffIndex>();
+
+        [SystemInitializer(typeof(BuffCatalog))]
+        static void Init()
+        {
+            List<BuffIndex> validBuffIncides = new List<BuffIndex>(BuffCatalog.buffCount);
+
+            for (BuffIndex buffIndex = 0; (int)buffIndex < BuffCatalog.buffCount; buffIndex++)
+            {
+                if (buffIndex != DLC2Content.Buffs.BoostAllStatsBuff.buffIndex && !BuffCatalog.ignoreGrowthNectarIndices.Contains(buffIndex))
+                {
+                    validBuffIncides.Add(buffIndex);
+                }
+            }
+
+            _validBuffIndices = validBuffIncides.ToArray();
+            Array.Sort(_validBuffIndices);
+        }
+
         CharacterBody _body;
 
         float _buffCheckTimer = 0f;
@@ -53,11 +74,9 @@ namespace ItemQualities.Items
                 _buffCheckTimer = 0.2f;
 
                 int growthNectarBuffCount = 0;
-                foreach (BuffIndex buffIndex in BuffCatalog.nonHiddenBuffIndices)
+                foreach (BuffIndex buffIndex in _validBuffIndices)
                 {
-                    if (_body.HasBuff(buffIndex) &&
-                        buffIndex != DLC2Content.Buffs.BoostAllStatsBuff.buffIndex &&
-                        !BuffCatalog.ignoreGrowthNectarIndices.Contains(buffIndex))
+                    if (_body.HasBuff(buffIndex))
                     {
                         growthNectarBuffCount++;
                     }
