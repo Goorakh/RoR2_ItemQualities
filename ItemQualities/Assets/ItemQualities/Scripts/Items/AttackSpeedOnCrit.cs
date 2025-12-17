@@ -22,10 +22,10 @@ namespace ItemQualities.Items
             ItemQualityCounts attackSpeedOnCrit = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(sender.inventory);
             BuffQualityCounts attackSpeedOnCritBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.GetBuffCounts(sender);
 
-            float attackSpeedPerBuff = (0.05f * attackSpeedOnCrit.UncommonCount) +
-                                       (0.10f * attackSpeedOnCrit.RareCount) +
-                                       (0.15f * attackSpeedOnCrit.EpicCount) +
-                                       (0.25f * attackSpeedOnCrit.LegendaryCount);
+            float attackSpeedPerBuff = (0.01f * attackSpeedOnCrit.UncommonCount) +
+                                       (0.02f * attackSpeedOnCrit.RareCount) +
+                                       (0.03f * attackSpeedOnCrit.EpicCount) +
+                                       (0.05f * attackSpeedOnCrit.LegendaryCount);
 
             args.attackSpeedMultAdd += attackSpeedPerBuff * attackSpeedOnCritBuff.TotalQualityCount;
         }
@@ -43,10 +43,10 @@ namespace ItemQualities.Items
 
                 BuffIndex qualityAttackSpeedOnCritBuffIndex = ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.GetBuffIndex(highestAttackSpeedOnCritQuality);
 
-                int maxStacks = (6 * attackSpeedOnCrit.UncommonCount) +
-                                (9 * attackSpeedOnCrit.RareCount) +
-                                (12 * attackSpeedOnCrit.EpicCount) +
-                                (15 * attackSpeedOnCrit.LegendaryCount);
+                int maxStacks = (40 * attackSpeedOnCrit.UncommonCount) +
+                                (45 * attackSpeedOnCrit.RareCount) +
+                                (60 * attackSpeedOnCrit.EpicCount) +
+                                (75 * attackSpeedOnCrit.LegendaryCount);
 
                 if (damageReport.attackerBody.GetBuffCount(qualityAttackSpeedOnCritBuffIndex) < maxStacks)
                 {
