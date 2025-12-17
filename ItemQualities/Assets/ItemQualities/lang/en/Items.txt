@@ -518,16 +518,16 @@
         "ITEM_STRENGTHENBURN_LEGENDARY_DESC": "{0}\nGain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style> base damage.",
 
         "ITEM_INFUSION_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_UNCOMMON_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>10</style> <style=cStack>(+10 per stack)</style>.",
+        "ITEM_INFUSION_UNCOMMON_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>5</style> <style=cStack>(+5 per stack)</style>.",
 
         "ITEM_INFUSION_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_RARE_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>30</style> <style=cStack>(+30 per stack)</style>.",
+        "ITEM_INFUSION_RARE_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>15</style> <style=cStack>(+15 per stack)</style>.",
 
         "ITEM_INFUSION_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_EPIC_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style>.",
+        "ITEM_INFUSION_EPIC_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>30</style> <style=cStack>(+30 per stack)</style>.",
 
         "ITEM_INFUSION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_LEGENDARY_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>100</style> <style=cStack>(+100 per stack)</style>.",
+        "ITEM_INFUSION_LEGENDARY_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style>.",
 
         "ITEM_FIRERING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
         "ITEM_FIRERING_UNCOMMON_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>.",

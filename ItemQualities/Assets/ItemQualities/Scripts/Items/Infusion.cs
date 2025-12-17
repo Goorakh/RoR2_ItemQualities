@@ -21,39 +21,34 @@ namespace ItemQualities.Items
             if (damageReport?.damageInfo == null)
                 return;
 
-            if (!damageReport.victimIsBoss && !damageReport.victimIsChampion)
-                return;
-
-            Vector3 victimPosition = damageReport.damageInfo.position;
-            if (damageReport.victim)
-            {
-                victimPosition = damageReport.victim.transform.position;
-            }
-
-            if (damageReport.victimBody)
-            {
-                victimPosition = damageReport.victimBody.corePosition;
-            }
-
             if (damageReport.attackerBody && damageReport.attackerMaster)
             {
-                ItemQualityCounts infusion = ItemQualitiesContent.ItemQualityGroups.Infusion.GetItemCountsEffective(damageReport.attackerMaster.inventory);
-
-                if (infusion.TotalQualityCount > 0)
+                if (damageReport.victimIsBoss || damageReport.victimIsChampion)
                 {
-                    int infusionBonus = (10 * infusion.UncommonCount) +
-                                        (30 * infusion.RareCount) +
-                                        (50 * infusion.EpicCount) +
-                                        (100 * infusion.LegendaryCount);
-
-                    InfusionOrb infusionOrb = new InfusionOrb
+                    Vector3 victimPosition = damageReport.damageInfo.position;
+                    if (damageReport.victimBody)
                     {
-                        origin = victimPosition,
-                        target = Util.FindBodyMainHurtBox(damageReport.attackerBody),
-                        maxHpValue = infusionBonus
-                    };
+                        victimPosition = damageReport.victimBody.corePosition;
+                    }
 
-                    OrbManager.instance.AddOrb(infusionOrb);
+                    ItemQualityCounts infusion = ItemQualitiesContent.ItemQualityGroups.Infusion.GetItemCountsEffective(damageReport.attackerMaster.inventory);
+
+                    if (infusion.TotalQualityCount > 0)
+                    {
+                        int infusionBonus = (5 * infusion.UncommonCount) +
+                                            (15 * infusion.RareCount) +
+                                            (30 * infusion.EpicCount) +
+                                            (50 * infusion.LegendaryCount);
+
+                        InfusionOrb infusionOrb = new InfusionOrb
+                        {
+                            origin = victimPosition,
+                            target = Util.FindBodyMainHurtBox(damageReport.attackerBody),
+                            maxHpValue = infusionBonus
+                        };
+
+                        OrbManager.instance.AddOrb(infusionOrb);
+                    }
                 }
             }
         }
