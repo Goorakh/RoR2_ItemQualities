@@ -127,6 +127,7 @@ namespace ItemQualities.ContentManagement
                     if (!_contagiousQualityItemProvider)
                     {
                         _contagiousQualityItemProvider = ScriptableObject.CreateInstance<ItemRelationshipProvider>();
+                        _contagiousQualityItemProvider.name = "QualityContagiousItemProvider";
                         _contagiousQualityItemProvider.relationshipType = _contagiousItemRelationshipType;
                     }
 
