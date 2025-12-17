@@ -56,7 +56,7 @@ namespace ItemQualities.Items
             static uint tryProcQualityBeads(CharacterBody body)
             {
                 if (!body || !body.isPlayerControlled || !body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
-                    return PackLevelBonuses(0, 0);
+                    return 0;
 
                 ItemQualityCounts extraStatsOnLevelUp = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
 
@@ -73,10 +73,10 @@ namespace ItemQualities.Items
                                        (3 * beadsSpent.EpicCount) +
                                        (5 * beadsSpent.LegendaryCount);
 
-                    ambientLevelPenalty = (1 * beadsSpent.UncommonCount) +
-                                          (2 * beadsSpent.RareCount) +
-                                          (3 * beadsSpent.EpicCount) +
-                                          (5 * beadsSpent.LegendaryCount);
+                    ambientLevelPenalty = (5 * beadsSpent.UncommonCount) +
+                                          (7 * beadsSpent.RareCount) +
+                                          (10 * beadsSpent.EpicCount) +
+                                          (15 * beadsSpent.LegendaryCount);
                 }
 
                 if (NetworkServer.active)
