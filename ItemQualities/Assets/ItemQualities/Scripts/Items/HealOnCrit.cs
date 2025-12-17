@@ -17,14 +17,12 @@ namespace ItemQualities.Items
             if (!sender)
                 return;
 
-            if (sender.HasBuff(ItemQualitiesContent.Buffs.HealCritBoost))
+            ItemQualityCounts healOnCrit = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(sender.inventory);
+            if (healOnCrit.TotalQualityCount > 0 && sender.HasBuff(ItemQualitiesContent.Buffs.HealCritBoost))
             {
-                QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(sender.inventory).HighestQuality;
-
-                float crit = 0f;
-                switch (qualityTier)
+                float crit;
+                switch (healOnCrit.HighestQuality)
                 {
-                    case QualityTier.None:
                     case QualityTier.Uncommon:
                         crit = 20f;
                         break;
@@ -38,7 +36,8 @@ namespace ItemQualities.Items
                         crit = 50f;
                         break;
                     default:
-                        Log.Error($"Quality tier {qualityTier} is not implemented");
+                        Log.Error($"Quality tier {healOnCrit.HighestQuality} is not implemented");
+                        crit = 0f;
                         break;
                 }
 

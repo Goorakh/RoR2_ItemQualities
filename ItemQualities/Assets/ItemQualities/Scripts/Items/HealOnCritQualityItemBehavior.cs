@@ -46,33 +46,36 @@ namespace ItemQualities.Items
             if (healOnCrit.TotalQualityCount == 0)
                 return;
 
-            float healingThreshold = 0f;
+            float healingThresholdFraction;
             switch (healOnCrit.HighestQuality)
             {
                 case QualityTier.Uncommon:
-                    healingThreshold = 2000f;
+                    healingThresholdFraction = 2f;
                     break;
                 case QualityTier.Rare:
-                    healingThreshold = 1500f;
+                    healingThresholdFraction = 1f;
                     break;
                 case QualityTier.Epic:
-                    healingThreshold = 700f;
+                    healingThresholdFraction = 0.5f;
                     break;
                 case QualityTier.Legendary:
-                    healingThreshold = 400f;
+                    healingThresholdFraction = 0.2f;
                     break;
                 default:
                     Log.Error($"Quality tier {healOnCrit.HighestQuality} is not implemented");
+                    healingThresholdFraction = 0f;
                     break;
             }
 
-            float buffDuration = (4f * healOnCrit.UncommonCount) +
-                                 (6f * healOnCrit.RareCount) +
-                                 (8f * healOnCrit.EpicCount) +
-                                 (10f * healOnCrit.LegendaryCount);
+            float healingThreshold = healingThresholdFraction * _body.healthComponent.fullHealth;
 
             if (healingThreshold > 0 && _accumulatedHealing >= healingThreshold)
             {
+                float buffDuration = (4f * healOnCrit.UncommonCount) +
+                                     (6f * healOnCrit.RareCount) +
+                                     (8f * healOnCrit.EpicCount) +
+                                     (10f * healOnCrit.LegendaryCount);
+
                 _accumulatedHealing %= healingThreshold;
                 _body.AddTimedBuff(ItemQualitiesContent.Buffs.HealCritBoost, buffDuration);
             }

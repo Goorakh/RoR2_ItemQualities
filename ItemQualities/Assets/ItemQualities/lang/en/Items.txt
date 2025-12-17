@@ -701,16 +701,16 @@
         "ITEM_LOWERPRICEDCHESTSCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Sale Star <sprite name=\"QualityLegendary\">.",
 
         "ITEM_HEALONCRIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain critical strike chance by healing.",
-        "ITEM_HEALONCRIT_UNCOMMON_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for a total of <sprite name=\"Quality\"> <style=cIsHealing>2000 health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>20% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>4</style> <style=cStack>(+4 per stack)</style> seconds.",
+        "ITEM_HEALONCRIT_UNCOMMON_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for <sprite name=\"Quality\"> <style=cIsHealing>200% of maximum health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>20% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>4</style> <style=cStack>(+4 per stack)</style> seconds.",
 
         "ITEM_HEALONCRIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain critical strike chance by healing.",
-        "ITEM_HEALONCRIT_RARE_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for a total of <sprite name=\"Quality\"> <style=cIsHealing>1500 health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>30% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>6</style> <style=cStack>(+6 per stack)</style> seconds.",
+        "ITEM_HEALONCRIT_RARE_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for <sprite name=\"Quality\"> <style=cIsHealing>100% of maximum health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>30% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>6</style> <style=cStack>(+6 per stack)</style> seconds.",
 
         "ITEM_HEALONCRIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain critical strike chance by healing.",
-        "ITEM_HEALONCRIT_EPIC_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for a total of <sprite name=\"Quality\"> <style=cIsHealing>700 health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>40% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>8</style> <style=cStack>(+8 per stack)</style> seconds.",
+        "ITEM_HEALONCRIT_EPIC_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for <sprite name=\"Quality\"> <style=cIsHealing>50% of maximum health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>40% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>8</style> <style=cStack>(+8 per stack)</style> seconds.",
 
         "ITEM_HEALONCRIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain critical strike chance by healing.",
-        "ITEM_HEALONCRIT_LEGENDARY_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for a total of <sprite name=\"Quality\"> <style=cIsHealing>400 health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>50% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>10</style> <style=cStack>(+10 per stack)</style> seconds.",
+        "ITEM_HEALONCRIT_LEGENDARY_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for <sprite name=\"Quality\"> <style=cIsHealing>20% of maximum health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>50% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>10</style> <style=cStack>(+10 per stack)</style> seconds.",
 
         "ITEM_FREECHEST_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for an additional delivery.",
         "ITEM_FREECHEST_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> chance to receive an additional <style=cIsUtility>delivery</style>. Guarantee an extra <style=cIsUtility>delivery</style> for every <style=cIsUtility>100%</style> chance reached.",
