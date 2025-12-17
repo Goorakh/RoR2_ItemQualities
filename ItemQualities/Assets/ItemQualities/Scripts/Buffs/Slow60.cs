@@ -15,10 +15,10 @@ namespace ItemQualities.Buffs
         {
             BuffQualityCounts slow60 = ItemQualitiesContent.BuffQualityGroups.Slow60.GetBuffCounts(sender);
 
-            args.moveSpeedReductionMultAdd += (0.9f * slow60.UncommonCount) +
-                                              (1.2f * slow60.RareCount) +
-                                              (1.5f * slow60.EpicCount) +
-                                              (2.0f * slow60.LegendaryCount);
+            args.moveSpeedReductionMultAdd += (1 * slow60.UncommonCount) +
+                                              (2 * slow60.RareCount) +
+                                              (3 * slow60.EpicCount) +
+                                              (5 * slow60.LegendaryCount);
         }
     }
 }
