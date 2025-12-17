@@ -57,8 +57,8 @@ namespace ItemQualities.Items
                 ItemQualityCounts ghostOnKill = ItemQualitiesContent.ItemQualityGroups.GhostOnKill.GetItemCountsEffective(attackerInventory);
                 if (ghostOnKill.TotalQualityCount > 0)
                 {
-                    spawnChance += (5f * ghostOnKill.UncommonCount) +
-                                   (10f * ghostOnKill.RareCount) +
+                    spawnChance += (10f * ghostOnKill.UncommonCount) +
+                                   (20f * ghostOnKill.RareCount) +
                                    (30f * ghostOnKill.EpicCount) +
                                    (40f * ghostOnKill.LegendaryCount);
                 }

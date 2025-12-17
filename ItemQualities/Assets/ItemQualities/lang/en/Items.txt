@@ -976,16 +976,16 @@
         "ITEM_BOOSTALLSTATS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce skill cooldowns while you have 8 or more buffs.",
         "ITEM_BOOSTALLSTATS_LEGENDARY_DESC": "{0}\nWhile you have 8 or more buffs, reduce all skill cooldowns by <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style>.",
 
-        "ITEM_GHOSTONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Raise ghost spawn chance.",
-        "ITEM_GHOSTONKILL_UNCOMMON_DESC": "Killing enemies has a <sprite name=\"Quality\"> <style=cIsDamage>12%</style> <style=cStack>(+5% per stack)</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.\nEvery interval of <style=cIsUtility>100%</style> spawn chance reached <style=cIsUtility>guarantees</style> an additional <style=cIsDamage>ghost</style> spawn per kill.",
+        "ITEM_GHOSTONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase ghost spawn chance.",
+        "ITEM_GHOSTONKILL_UNCOMMON_DESC": "Killing enemies has a <sprite name=\"Quality\"> <style=cIsDamage>17%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.\nEvery interval of <style=cIsUtility>100%</style> spawn chance reached <style=cIsUtility>guarantees</style> an additional <style=cIsDamage>ghost</style> spawn per kill.",
 
-        "ITEM_GHOSTONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Raise ghost spawn chance.",
-        "ITEM_GHOSTONKILL_RARE_DESC": "Killing enemies has a <sprite name=\"Quality\"> <style=cIsDamage>17%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.\nEvery interval of <style=cIsUtility>100%</style> spawn chance reached <style=cIsUtility>guarantees</style> an additional <style=cIsDamage>ghost</style> spawn per kill.",
+        "ITEM_GHOSTONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase ghost spawn chance.",
+        "ITEM_GHOSTONKILL_RARE_DESC": "Killing enemies has a <sprite name=\"Quality\"> <style=cIsDamage>27%</style> <style=cStack>(+20% per stack)</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.\nEvery interval of <style=cIsUtility>100%</style> spawn chance reached <style=cIsUtility>guarantees</style> an additional <style=cIsDamage>ghost</style> spawn per kill.",
 
-        "ITEM_GHOSTONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Raise ghost spawn chance.",
+        "ITEM_GHOSTONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase ghost spawn chance.",
         "ITEM_GHOSTONKILL_EPIC_DESC": "Killing enemies has a <sprite name=\"Quality\"> <style=cIsDamage>37%</style> <style=cStack>(+30% per stack)</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.\nEvery interval of <style=cIsUtility>100%</style> spawn chance reached <style=cIsUtility>guarantees</style> an additional <style=cIsDamage>ghost</style> spawn per kill.",
 
-        "ITEM_GHOSTONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Raise ghost spawn chance.",
+        "ITEM_GHOSTONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase ghost spawn chance.",
         "ITEM_GHOSTONKILL_LEGENDARY_DESC": "Killing enemies has a <sprite name=\"Quality\"> <style=cIsDamage>47%</style> <style=cStack>(+40% per stack)</style> chance to <style=cIsDamage>spawn a ghost</style> of the killed enemy with <style=cIsDamage>1500%</style> damage. Lasts <style=cIsDamage>30s</style> <style=cStack>(+30s per stack)</style>.\nEvery interval of <style=cIsUtility>100%</style> spawn chance reached <style=cIsUtility>guarantees</style> an additional <style=cIsDamage>ghost</style> spawn per kill.",
 
         "ITEM_UTILITYSKILLMAGAZINE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Using your Utility skill shortly after recharging reduces next cooldown.",
