@@ -482,16 +482,16 @@
         "ITEM_EXECUTELOWHEALTHELITE_LEGENDARY_DESC": "{0}\nInstantly kill Boss monsters below <sprite name=\"Quality\"> <style=cIsHealth>40% <style=cStack>(+40% per stack)</style> health</style>.",
 
         "ITEM_MOVESPEEDONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
-        "ITEM_MOVESPEEDONKILL_UNCOMMON_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>2%</style> <style=cStack>(+2% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>7</style> <style=cStack>(+7 per stack)</style> times. Resets on stage exit or death.",
+        "ITEM_MOVESPEEDONKILL_UNCOMMON_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.5%</style> <style=cStack>(+0.5% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>. Resets on stage exit or death.",
 
         "ITEM_MOVESPEEDONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
-        "ITEM_MOVESPEEDONKILL_RARE_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>3%</style> <style=cStack>(+3% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>15</style> <style=cStack>(+15 per stack)</style> times. Resets on stage exit or death.",
+        "ITEM_MOVESPEEDONKILL_RARE_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.6%</style> <style=cStack>(+0.6% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>90%</style> <style=cStack>(+90% per stack)</style>. Resets on stage exit or death.",
 
         "ITEM_MOVESPEEDONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
-        "ITEM_MOVESPEEDONKILL_EPIC_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>4%</style> <style=cStack>(+4% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>20</style> <style=cStack>(+20 per stack)</style> times. Resets on stage exit or death.",
+        "ITEM_MOVESPEEDONKILL_EPIC_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.7%</style> <style=cStack>(+0.7% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>140%</style> <style=cStack>(+140% per stack)</style>. Resets on stage exit or death.",
 
         "ITEM_MOVESPEEDONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
-        "ITEM_MOVESPEEDONKILL_LEGENDARY_DESC": "{0}\nKilling an enemy increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>25</style> <style=cStack>(+25 per stack)</style> times. Resets on stage exit or death.",
+        "ITEM_MOVESPEEDONKILL_LEGENDARY_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>1%</style> <style=cStack>(+1% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>250%</style> <style=cStack>(+250% per stack)</style>. Resets on stage exit or death.",
 
         "ITEM_FEATHER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while airborne grant additional jumps.",
         "ITEM_FEATHER_UNCOMMON_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>2 <style=cStack>(+2 per stack)</style> extra jumps</style>",

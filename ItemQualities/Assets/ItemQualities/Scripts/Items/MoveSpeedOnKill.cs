@@ -22,10 +22,10 @@ namespace ItemQualities.Items
             ItemQualityCounts moveSpeedOnKill = ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCountsEffective(sender.inventory);
             BuffQualityCounts killMoveSpeedBuff = ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.GetBuffCounts(sender);
 
-            float moveSpeedPerBuff = (0.02f * moveSpeedOnKill.UncommonCount) +
-                                     (0.03f * moveSpeedOnKill.RareCount) +
-                                     (0.04f * moveSpeedOnKill.EpicCount) +
-                                     (0.05f * moveSpeedOnKill.LegendaryCount);
+            float moveSpeedPerBuff = (0.005f * moveSpeedOnKill.UncommonCount) +
+                                     (0.006f * moveSpeedOnKill.RareCount) +
+                                     (0.007f * moveSpeedOnKill.EpicCount) +
+                                     (0.010f * moveSpeedOnKill.LegendaryCount);
 
             args.moveSpeedMultAdd += moveSpeedPerBuff * killMoveSpeedBuff.TotalQualityCount;
         }
@@ -43,10 +43,10 @@ namespace ItemQualities.Items
                 {
                     BuffIndex qualityKillMoveSpeedBuffIndex = ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.GetBuffIndex(moveSpeedOnKill.HighestQuality);
 
-                    int maxStacks = (7 * moveSpeedOnKill.UncommonCount) +
-                                    (15 * moveSpeedOnKill.RareCount) +
-                                    (20 * moveSpeedOnKill.EpicCount) +
-                                    (25 * moveSpeedOnKill.LegendaryCount);
+                    int maxStacks = (100 * moveSpeedOnKill.UncommonCount) +
+                                    (150 * moveSpeedOnKill.RareCount) +
+                                    (200 * moveSpeedOnKill.EpicCount) +
+                                    (250 * moveSpeedOnKill.LegendaryCount);
 
                     if (damageReport.attackerBody.GetBuffCount(qualityKillMoveSpeedBuffIndex) < maxStacks)
                     {
