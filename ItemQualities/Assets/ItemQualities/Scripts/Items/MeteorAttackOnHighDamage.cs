@@ -63,10 +63,10 @@ namespace ItemQualities.Items
 
                 if (meteorAttackOnHighDamage.TotalQualityCount > 0)
                 {
-                    float radiusIncrease = (0.15f * meteorAttackOnHighDamage.UncommonCount) +
-                                           (0.30f * meteorAttackOnHighDamage.RareCount) +
-                                           (0.50f * meteorAttackOnHighDamage.EpicCount) +
-                                           (1.00f * meteorAttackOnHighDamage.LegendaryCount);
+                    float radiusIncrease = (0.75f * meteorAttackOnHighDamage.UncommonCount) +
+                                           (1.00f * meteorAttackOnHighDamage.RareCount) +
+                                           (1.50f * meteorAttackOnHighDamage.EpicCount) +
+                                           (2.00f * meteorAttackOnHighDamage.LegendaryCount);
 
                     if (radiusIncrease > 0)
                     {

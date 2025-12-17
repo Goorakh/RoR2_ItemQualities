@@ -1072,17 +1072,17 @@
         "ITEM_LASERTURBINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase explosion radius and time window.",
         "ITEM_LASERTURBINE_LEGENDARY_DESC": "Killing <style=cIsDamage>4</style> enemies in <sprite name=\"Quality\"> <style=cIsUtility>14 <style=cStack>(+7 per stack)</style> seconds</style> charges the Resonance Disc. The disc launches itself toward a target for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>, piercing all enemies it doesn't kill, and then explodes in a <sprite name=\"Quality\"> <style=cIsDamage>28m</style> <style=cStack>(+14m per stack)</style> radius for <style=cIsDamage>1000%</style> base damage <style=cStack>(+1000% per stack)</style>. Returns to the user, striking all enemies along the way for <style=cIsDamage>300%</style> base damage <style=cStack>(+300% per stack)</style>.",
 
-        "ITEM_METEORATTACKONHIGHDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
-        "ITEM_METEORATTACKONHIGHDAMAGE_UNCOMMON_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+15% per stack)</style>",
+        "ITEM_METEORATTACKONHIGHDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike radius.",
+        "ITEM_METEORATTACKONHIGHDAMAGE_UNCOMMON_DESC": "{0}\nIncreases meteor strike radius by <sprite name=\"Quality\"> <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style>.",
 
-        "ITEM_METEORATTACKONHIGHDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
-        "ITEM_METEORATTACKONHIGHDAMAGE_RARE_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style>",
+        "ITEM_METEORATTACKONHIGHDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike radius.",
+        "ITEM_METEORATTACKONHIGHDAMAGE_RARE_DESC": "{0}\nIncreases meteor strike radius by <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>.",
 
-        "ITEM_METEORATTACKONHIGHDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
-        "ITEM_METEORATTACKONHIGHDAMAGE_EPIC_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style>",
+        "ITEM_METEORATTACKONHIGHDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike radius.",
+        "ITEM_METEORATTACKONHIGHDAMAGE_EPIC_DESC": "{0}\nIncreases meteor strike radius by <sprite name=\"Quality\"> <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style>.",
 
-        "ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike blast radius",
-        "ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_DESC": "{0}\nIncreases meteor strike blast radius by <sprite name=\"Quality\"> <style=cIsDamage>100%</style> <style=cStack>(+100% per stack)</style>",
+        "ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase meteor strike radius.",
+        "ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_DESC": "{0}\nIncreases meteor strike radius by <sprite name=\"Quality\"> <style=cIsDamage>200%</style> <style=cStack>(+200% per stack)</style>.",
 
         "ITEM_BOSSDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> After defeating the Teleporter Boss, the largest remaining monster is selected as the miniboss. Deal extra damage to minibosses.",
         "ITEM_BOSSDAMAGEBONUS_UNCOMMON_DESC": "{0}\nAfter defeating the <style=cIsHealth>Teleporter Boss</style>, the monster with the highest <style=cIsHealing>maximum health</style> within the charging radius is selected as the <style=cIsUtility>miniboss</style>. Deal an additional <sprite name=\"Quality\"> <style=cIsDamage>5%</style> damage <style=cStack>(+5% per stack)</style> to minibosses.",
