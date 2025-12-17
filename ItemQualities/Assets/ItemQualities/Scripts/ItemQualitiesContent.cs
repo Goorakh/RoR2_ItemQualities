@@ -98,6 +98,8 @@ namespace ItemQualities
 
             populateTypeFields(typeof(SpawnCards), _contentPack.spawnCards);
 
+            populateTypeFields(typeof(Sprites), _contentPack.sprites);
+
             TMP_SpriteAssets = _contentPack.spriteAssets;
 
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
@@ -189,6 +191,8 @@ namespace ItemQualities
 
             List<Texture> texturesList = new List<Texture>();
 
+            List<Sprite> spritesList = new List<Sprite>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -264,6 +268,9 @@ namespace ItemQualities
                     case Texture texture:
                         texturesList.Add(texture);
                         break;
+                    case Sprite sprite:
+                        spritesList.Add(sprite);
+                        break;
                 }
             }
 
@@ -301,6 +308,8 @@ namespace ItemQualities
             _contentPack.spawnCards.Add(spawnCardsList.ToArray());
 
             _contentPack.textures.Add(texturesList.ToArray());
+
+            _contentPack.sprites.Add(spritesList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -823,6 +832,12 @@ namespace ItemQualities
 
             [TargetAssetName("iscQualityDuplicatorWild")]
             public static InteractableSpawnCard QualityDuplicatorWild;
+        }
+
+        public static class Sprites
+        {
+            [TargetAssetName("icon")]
+            public static Sprite ModIcon;
         }
     }
 }

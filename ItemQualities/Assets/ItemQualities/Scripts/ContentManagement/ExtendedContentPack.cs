@@ -125,6 +125,8 @@ namespace ItemQualities.ContentManagement
 
         public NamedAssetCollection<Texture> textures { get; } = new NamedAssetCollection<Texture>(getUnityObjectName);
 
+        public NamedAssetCollection<Sprite> sprites { get; } = new NamedAssetCollection<Sprite>(getUnityObjectName);
+
         public IEnumerable<UnityEngine.Object> allAssets
         {
             get
