@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -68,21 +69,12 @@ namespace ItemQualities.Items
 
                 if (freeChest.TotalQualityCount > 0)
                 {
-                    float extraSpawnChance = (20f * freeChest.UncommonCount) +
-                                             (50f * freeChest.RareCount) +
-                                             (70f * freeChest.EpicCount) +
-                                             (100f * freeChest.LegendaryCount);
+                    float extraSpawnChance = (50f * freeChest.UncommonCount) +
+                                             (75f * freeChest.RareCount) +
+                                             (100f * freeChest.EpicCount) +
+                                             (150f * freeChest.LegendaryCount);
 
-                    if (extraSpawnChance >= 100f)
-                    {
-                        extraSpawnCount += (int)(extraSpawnChance / 100f);
-                        extraSpawnChance %= 100f;
-                    }
-
-                    if (Util.CheckRoll(extraSpawnChance, master))
-                    {
-                        extraSpawnCount++;
-                    }
+                    extraSpawnCount += RollUtil.GetOverflowRoll(extraSpawnChance, master);
 
                     Log.Debug($"Extra spawn count from {Util.GetBestMasterName(master)}: {extraSpawnCount}");
                 }

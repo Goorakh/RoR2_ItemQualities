@@ -713,16 +713,16 @@
         "ITEM_HEALONCRIT_LEGENDARY_DESC": "{0}\nAfter <style=cIsHealing>healing</style> for <sprite name=\"Quality\"> <style=cIsHealing>20% of maximum health</style>, gain <sprite name=\"Quality\"> <style=cIsDamage>50% critical strike chance</style> for <sprite name=\"Quality\"> <style=cIsDamage>10</style> <style=cStack>(+10 per stack)</style> seconds.",
 
         "ITEM_FREECHEST_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for an additional delivery.",
-        "ITEM_FREECHEST_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> chance to receive an additional <style=cIsUtility>delivery</style>. Guarantee an extra <style=cIsUtility>delivery</style> for every <style=cIsUtility>100%</style> chance reached.",
+        "ITEM_FREECHEST_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to receive an additional <style=cIsUtility>delivery</style>. An extra <style=cIsUtility>delivery</style> is guaranteed for every <style=cIsUtility>100%</style> chance reached.",
 
         "ITEM_FREECHEST_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for an additional delivery.",
-        "ITEM_FREECHEST_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to receive an additional <style=cIsUtility>delivery</style>. Guarantee an extra <style=cIsUtility>delivery</style> for every <style=cIsUtility>100%</style> chance reached.",
+        "ITEM_FREECHEST_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style> chance to receive an additional <style=cIsUtility>delivery</style>. An extra <style=cIsUtility>delivery</style> is guaranteed for every <style=cIsUtility>100%</style> chance reached.",
 
         "ITEM_FREECHEST_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for an additional delivery.",
-        "ITEM_FREECHEST_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style> chance to receive an additional <style=cIsUtility>delivery</style>. Guarantee an extra <style=cIsUtility>delivery</style> for every <style=cIsUtility>100%</style> chance reached.",
+        "ITEM_FREECHEST_EPIC_DESC": "{0}\nReceive <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional <style=cIsUtility>deliveries</style> per stage.",
 
         "ITEM_FREECHEST_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance for an additional delivery.",
-        "ITEM_FREECHEST_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> Receive <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional <style=cIsUtility>deliveries</style> per stage.",
+        "ITEM_FREECHEST_LEGENDARY_DESC": "{0}\nReceive <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional <style=cIsUtility>deliveries</style> per stage, plus a <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to receive an additional <style=cIsUtility>delivery</style>. An extra <style=cIsUtility>delivery</style> is guaranteed for every <style=cIsUtility>100%</style> chance reached.",
 
         "ITEM_PRIMARYSKILLSHURIKEN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces recharge duration and increases shuriken size.",
         "ITEM_PRIMARYSKILLSHURIKEN_UNCOMMON_DESC": "Activating your <style=cIsUtility>Primary skill</style> also throws a <style=cIsDamage>shuriken</style> that deals <style=cIsDamage>400%</style> <style=cStack>(+100% per stack)</style> base damage. You can hold up to <style=cIsUtility>3</style> <style=cStack>(+1 per stack)</style> <style=cIsDamage>shurikens</style> which all reload over <sprite name=\"Quality\"> <style=cIsUtility>9</style> <style=cStack>(-10% per stack)</style> seconds. Increase shuriken size by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style>.",
