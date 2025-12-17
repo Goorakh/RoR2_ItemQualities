@@ -195,10 +195,10 @@ namespace ItemQualities.Items
 
                         if (qualityDeathMarkDebuffIndex > BuffIndex.None)
                         {
-                            float qualityDeathMarkDuration = (2f * deathMark.UncommonCount) +
-                                                             (4f * deathMark.RareCount) +
-                                                             (5f * deathMark.EpicCount) +
-                                                             (7f * deathMark.LegendaryCount);
+                            float qualityDeathMarkDuration = (5f * deathMark.UncommonCount) +
+                                                             (7f * deathMark.RareCount) +
+                                                             (9f * deathMark.EpicCount) +
+                                                             (12f * deathMark.LegendaryCount);
 
                             victimBody.AddTimedBuff(qualityDeathMarkDebuffIndex, qualityDeathMarkDuration);
                         }
