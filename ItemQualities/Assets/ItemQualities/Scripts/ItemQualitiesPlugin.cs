@@ -23,7 +23,7 @@ namespace ItemQualities
     [BepInDependency(ReviveAPI.ReviveAPI.ModGuid)]
     [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
-    public class ItemQualitiesPlugin : BaseUnityPlugin
+    public sealed class ItemQualitiesPlugin : BaseUnityPlugin
     {
         public const string PluginName = "ItemQualities";
         public const string PluginAuthor = "Gorakh";
