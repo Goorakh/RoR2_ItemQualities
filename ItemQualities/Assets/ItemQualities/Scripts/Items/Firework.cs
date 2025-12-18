@@ -49,7 +49,7 @@ namespace ItemQualities.Items
             Transform fireworkBigGhostModelRoot = fireworkBigGhost.transform.Find("mdlFireworkProjectile");
             if (fireworkBigGhostModelRoot)
             {
-                fireworkBigGhostModelRoot.localScale *= 2f;
+                fireworkBigGhostModelRoot.localScale *= 3f;
             }
             else
             {

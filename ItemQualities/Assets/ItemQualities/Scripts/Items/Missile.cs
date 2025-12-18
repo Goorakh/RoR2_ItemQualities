@@ -50,7 +50,7 @@ namespace ItemQualities.Items
             Transform missileBigGhostModelRoot = missileBigGhost.transform.Find("missile VFX");
             if (missileBigGhostModelRoot)
             {
-                missileBigGhostModelRoot.localScale *= 2f;
+                missileBigGhostModelRoot.localScale *= 3f;
             }
             else
             {
