@@ -284,11 +284,11 @@ namespace ItemQualities
             {
                 bool isBelowThreshold = healthComponent.IsHealthBelowThreshold(healthThreshold);
 
-                underBarInfo.enabled = isBelowThreshold;
+                underBarInfo.enabled = isBelowThreshold && healthBar.style.lowHealthUnderStyle.enabled;
                 underBarInfo.normalizedXMin = 0f;
                 underBarInfo.normalizedXMax = healthThreshold * (1f - healthBarValues.curseFraction);
 
-                overBarInfo.enabled = !isBelowThreshold;
+                overBarInfo.enabled = !isBelowThreshold && healthBar.style.lowHealthOverStyle.enabled;
                 overBarInfo.normalizedXMin = healthThreshold * (1f - healthBarValues.curseFraction);
                 overBarInfo.normalizedXMax = overBarInfo.normalizedXMin + 0.005f;
             }
@@ -315,7 +315,7 @@ namespace ItemQualities
                     float shieldFillFraction = healthComponent.shield / body.maxShield;
                     float fullShieldBarSize = healthBarValues.shieldFraction / shieldFillFraction;
 
-                    temporaryShieldBarInfo.enabled = true;
+                    temporaryShieldBarInfo.enabled = healthBar.style.shieldBarStyle.enabled;
                     temporaryShieldBarInfo.normalizedXMax = shieldBarInfoTemplate.normalizedXMax;
                     temporaryShieldBarInfo.normalizedXMin = shieldBarInfoTemplate.normalizedXMax - Mathf.Min(healthBarValues.shieldFraction, fullShieldBarSize * temporaryShieldFraction);
 
