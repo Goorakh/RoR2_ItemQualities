@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using HG;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -85,18 +86,30 @@ namespace ItemQualities
                 CharacterBody body = healthComponent ? healthComponent.body : null;
                 Inventory inventory = body ? body.inventory : null;
 
-                HashSet<ItemIndex> ignoreLowHealthItemIndices = new HashSet<ItemIndex>();
+                HashSet<ItemIndex> ignoreLowHealthItemIndices = SetPool<ItemIndex>.RentCollection();
 
                 void handleCustomQualityLowHealthThreshold(ItemQualityGroup itemGroup)
                 {
+                    if (!itemGroup)
+                        return;
+
                     ItemQualityCounts itemCounts = itemGroup.GetItemCountsEffective(inventory);
                     if (itemCounts.TotalQualityCount > 0)
                     {
-                        for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                        if (itemGroup.BaseItemIndex != ItemIndex.None)
+                        {
+                            ignoreLowHealthItemIndices.Add(itemGroup.BaseItemIndex);
+                        }
+
+                        for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                         {
                             if (itemCounts[qualityTier] > 0)
                             {
-                                ignoreLowHealthItemIndices.Add(itemGroup.GetItemIndex(qualityTier));
+                                ItemIndex qualityItemIndex = itemGroup.GetItemIndex(qualityTier);
+                                if (qualityItemIndex != ItemIndex.None)
+                                {
+                                    ignoreLowHealthItemIndices.Add(qualityItemIndex);
+                                }
                             }
                         }
                     }
@@ -132,7 +145,39 @@ namespace ItemQualities
             {
                 return ignoreLowHealthItemIndices.Contains(itemIndex) ? 0 : itemCount;
             }
+
+            int retPatchCount = 0;
+
+            c.Index = 0;
+            while (c.TryGotoNext(MoveType.Before,
+                                 x => x.MatchRet()))
+            {
+                c.Emit(OpCodes.Ldloca, ignoreLowHealthItemIndicesVar);
+                c.EmitDelegate<CheckInventoryCleanupDelegate>(cleanup);
+                
+                static void cleanup(ref HashSet<ItemIndex> ignoreLowHealthItemIndices)
+                {
+                    if (ignoreLowHealthItemIndices != null)
+                    {
+                        ignoreLowHealthItemIndices = SetPool<ItemIndex>.ReturnCollection(ignoreLowHealthItemIndices);
+                    }
+                }
+
+                c.SearchTarget = SearchTarget.Next;
+                retPatchCount++;
+            }
+
+            if (retPatchCount == 0)
+            {
+                Log.Error("Failed to find ret patch location");
+            }
+            else
+            {
+                Log.Debug($"Found {retPatchCount} ret patch location(s)");
+            }
         }
+
+        delegate void CheckInventoryCleanupDelegate(ref HashSet<ItemIndex> ignoreLowHealthItemIndices);
 
         static void HealthBar_ApplyBars(ILContext il)
         {
