@@ -277,17 +277,17 @@
         "ITEM_TOOTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Healing orbs gain an additional buff depending on the skill used.",
         "ITEM_TOOTH_LEGENDARY_DESC": "{0}\nHealing orbs gain an additional buff depending on the skill used to kill the enemy. Killing with your <style=cIsUtility>primary skill</style> grants <sprite name=\"Quality\"> <style=cIsDamage>120%</style> attack speed for <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> seconds. Killing with your <style=cIsUtility>secondary skill</style> grants <sprite name=\"Quality\"> <style=cIsDamage>20%</style> secondary skill damage for <sprite name=\"Quality\"> <style=cIsUtility>10</style> <style=cStack>(+10 per stack)</style> seconds. Killing with your <style=cIsUtility>utility skill</style> grants <style=cIsHealing>barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>50 health</style> <style=cStack>(+50 per stack)</style>. Killing with your <style=cIsUtility>special skill</style> reduces all non-special skill cooldowns by <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> seconds.",
 
-        "ITEM_GOLDONHURT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase money gained from barrels.",
-        "ITEM_GOLDONHURT_UNCOMMON_DESC": "{0}\nIncreases gold gained from all <style=cIsUtility>barrels</style> by <sprite name=\"Quality\"> <style=cIsUtility>50% <style=cStack>(+50% per stack)</style></style>.",
+        "ITEM_GOLDONHURT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Receive bonus money from barrels.",
+        "ITEM_GOLDONHURT_UNCOMMON_DESC": "{0}\nReceive an additional <sprite name=\"Quality\"> <style=cIsUtility>25 <style=cStack>(+25 per stack)</style> gold</style> from all <style=cIsUtility>barrels</style>. <style=cIsUtility>Amount scales over time</style>.",
 
-        "ITEM_GOLDONHURT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase money gained from barrels.",
-        "ITEM_GOLDONHURT_RARE_DESC": "{0}\nIncreases gold gained from all <style=cIsUtility>barrels</style> by <sprite name=\"Quality\"> <style=cIsUtility>150% <style=cStack>(+150% per stack)</style></style>.",
+        "ITEM_GOLDONHURT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Receive bonus money from barrels.",
+        "ITEM_GOLDONHURT_RARE_DESC": "{0}\nReceive an additional <sprite name=\"Quality\"> <style=cIsUtility>50 <style=cStack>(+50 per stack)</style> gold</style> from all <style=cIsUtility>barrels</style>. <style=cIsUtility>Amount scales over time</style>.",
 
-        "ITEM_GOLDONHURT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase money gained from barrels.",
-        "ITEM_GOLDONHURT_EPIC_DESC": "{0}\nIncreases gold gained from all <style=cIsUtility>barrels</style> by <sprite name=\"Quality\"> <style=cIsUtility>300% <style=cStack>(+300% per stack)</style></style>.",
+        "ITEM_GOLDONHURT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Receive bonus money from barrels.",
+        "ITEM_GOLDONHURT_EPIC_DESC": "{0}\nReceive an additional <sprite name=\"Quality\"> <style=cIsUtility>75 <style=cStack>(+75 per stack)</style> gold</style> from all <style=cIsUtility>barrels</style>. <style=cIsUtility>Amount scales over time</style>.",
 
-        "ITEM_GOLDONHURT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase money gained from barrels.",
-        "ITEM_GOLDONHURT_LEGENDARY_DESC": "{0}\nIncreases gold gained from all <style=cIsUtility>barrels</style> by <sprite name=\"Quality\"> <style=cIsUtility>500% <style=cStack>(+500% per stack)</style></style>.",
+        "ITEM_GOLDONHURT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Receive bonus money from barrels.",
+        "ITEM_GOLDONHURT_LEGENDARY_DESC": "{0}\nReceive an additional <sprite name=\"Quality\"> <style=cIsUtility>100 <style=cStack>(+100 per stack)</style> gold</style> from all <style=cIsUtility>barrels</style>. <style=cIsUtility>Amount scales over time</style>.",
 
         "ITEM_TREASURECACHE_UNCOMMON_PICKUP": "Gain access to a Rusty Lockbox that contains an <sprite name=\"QualityUncommon\"> uncommon quality item.",
         "ITEM_TREASURECACHE_UNCOMMON_DESC": "A <style=cIsUtility>hidden cache</style> containing an <sprite name=\"QualityUncommon\"> uncommon quality item (<style=cIsHealing>80%</style>/<style=cIsHealth>20%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.",

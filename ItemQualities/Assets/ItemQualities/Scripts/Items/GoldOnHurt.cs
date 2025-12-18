@@ -56,15 +56,12 @@ namespace ItemQualities.Items
                         MoneyPickup moneyPickup = moneyPackObj.GetComponentInChildren<MoneyPickup>();
                         if (moneyPickup)
                         {
-                            float bonusMoneyCoefficient = (0.5f * goldOnHurt.UncommonCount) +
-                                                          (1.5f * goldOnHurt.RareCount) +
-                                                          (3.0f * goldOnHurt.EpicCount) +
-                                                          (5.0f * goldOnHurt.LegendaryCount);
+                            int bonusMoney = (25 * goldOnHurt.UncommonCount) +
+                                             (50 * goldOnHurt.RareCount) +
+                                             (75 * goldOnHurt.EpicCount) +
+                                             (100 * goldOnHurt.LegendaryCount);
 
-                            moneyPickup.baseGoldReward = Mathf.CeilToInt(barrelInteraction.goldReward * bonusMoneyCoefficient);
-
-                            // BarrelInteraction.goldReward is already scaled
-                            moneyPickup.shouldScale = false;
+                            moneyPickup.baseGoldReward = bonusMoney;
                         }
 
                         if (interactorBody)
