@@ -30,7 +30,20 @@ namespace ItemQualities
                 string argString = args.TryGetArgString(i);
                 if (!string.IsNullOrEmpty(argString))
                 {
-                    interactableNames.Add(argString);
+                    if (string.Equals(argString, "allquality", StringComparison.OrdinalIgnoreCase))
+                    {
+                        interactableNames.Add("QualityChest1");
+                        interactableNames.Add("QualityChest2");
+                        interactableNames.Add("QualityEquipmentBarrel");
+                        interactableNames.Add("QualityDuplicator");
+                        interactableNames.Add("QualityDuplicatorLarge");
+                        interactableNames.Add("QualityDuplicatorMilitary");
+                        interactableNames.Add("QualityDuplicatorWild");
+                    }
+                    else
+                    {
+                        interactableNames.Add(argString);
+                    }
                 }
             }
 
@@ -38,7 +51,7 @@ namespace ItemQualities
             appearenceTester.TestInteractableNames = interactableNames.ToArray();
         }
 
-        class InteractableAppearenceTester : MonoBehaviour
+        sealed class InteractableAppearenceTester : MonoBehaviour
         {
             public string[] TestInteractableNames = Array.Empty<string>();
 
@@ -144,7 +157,7 @@ namespace ItemQualities
                             SceneDef sceneDef = SceneCatalog.GetSceneDef(sceneIndex);
                             if (sceneDef)
                             {
-                                sb.Append(' ', 4 + 4).AppendLine($"{Language.GetString(sceneDef.nameToken)} ({sceneDef.cachedName})");
+                                sb.Append(' ', 4 * 2).AppendLine($"{Language.GetString(sceneDef.nameToken)} ({sceneDef.cachedName})");
                             }
                         }
                     }
@@ -210,7 +223,7 @@ namespace ItemQualities
                 Destroy(this);
             }
 
-            class InteractableAppearenceInfo
+            sealed class InteractableAppearenceInfo
             {
                 public string InteractableName;
                 public int InteractableCount;
