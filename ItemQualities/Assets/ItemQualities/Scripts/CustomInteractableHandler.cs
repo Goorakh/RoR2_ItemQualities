@@ -105,9 +105,9 @@ namespace ItemQualities
 
                 DirectorCard equipmentBarrelCard = null;
 
-                DirectorCard categoryChest1Card = null;
+                DirectorCard chest1Card = null;
 
-                DirectorCard categoryChest2Card = null;
+                DirectorCard chest2Card = null;
 
                 DirectorCard duplicatorCard = null;
 
@@ -124,43 +124,39 @@ namespace ItemQualities
                     {
                         equipmentBarrelCard = card;
                     }
-                    else if (categoryChest1Card == null &&
-                        (matchDirectorCard(card, "iscCategoryChestDamage", RoR2_Base_CategoryChest.iscCategoryChestDamage_asset) ||
-                         matchDirectorCard(card, "iscCategoryChestUtility", RoR2_Base_CategoryChest.iscCategoryChestUtility_asset) ||
-                         matchDirectorCard(card, "iscCategoryChestHealing", RoR2_Base_CategoryChest.iscCategoryChestHealing_asset)))
+                    else if (chest1Card == null &&
+                             matchDirectorCard(card, "iscChest1", RoR2_Base_Chest1.iscChest1_asset))
                     {
-                        categoryChest1Card = card;
+                        chest1Card = card;
                     }
-                    else if (categoryChest2Card == null &&
-                        (matchDirectorCard(card, "iscCategoryChest2Damage", RoR2_DLC1_CategoryChest2.iscCategoryChest2Damage_asset) ||
-                         matchDirectorCard(card, "iscCategoryChest2Utility", RoR2_DLC1_CategoryChest2.iscCategoryChest2Utility_asset) ||
-                         matchDirectorCard(card, "iscCategoryChest2Healing", RoR2_DLC1_CategoryChest2.iscCategoryChest2Healing_asset)))
+                    else if (chest2Card == null &&
+                             matchDirectorCard(card, "iscChest2", RoR2_Base_Chest2.iscChest2_asset))
                     {
-                        categoryChest2Card = card;
+                        chest2Card = card;
                     }
                     else if (duplicatorCard == null &&
-                        matchDirectorCard(card, "iscDuplicator", RoR2_Base_Duplicator.iscDuplicator_asset))
+                             matchDirectorCard(card, "iscDuplicator", RoR2_Base_Duplicator.iscDuplicator_asset))
                     {
                         duplicatorCard = card;
                     }
                     else if (duplicatorLargeCard == null &&
-                        matchDirectorCard(card, "iscDuplicatorLarge", RoR2_Base_DuplicatorLarge.iscDuplicatorLarge_asset))
+                             matchDirectorCard(card, "iscDuplicatorLarge", RoR2_Base_DuplicatorLarge.iscDuplicatorLarge_asset))
                     {
                         duplicatorLargeCard = card;
                     }
                     else if (duplicatorMilitaryCard == null &&
-                        matchDirectorCard(card, "iscDuplicatorMilitary", RoR2_Base_DuplicatorMilitary.iscDuplicatorMilitary_asset))
+                             matchDirectorCard(card, "iscDuplicatorMilitary", RoR2_Base_DuplicatorMilitary.iscDuplicatorMilitary_asset))
                     {
                         duplicatorMilitaryCard = card;
                     }
                     else if (duplicatorWildCard == null &&
-                        matchDirectorCard(card, "iscDuplicatorWild", RoR2_Base_DuplicatorWild.iscDuplicatorWild_asset))
+                             matchDirectorCard(card, "iscDuplicatorWild", RoR2_Base_DuplicatorWild.iscDuplicatorWild_asset))
                     {
                         duplicatorWildCard = card;
                     }
                 }
 
-#if DEBUG
+                /*
                 if (equipmentBarrelCard != null && !addedQualityEquipmentBarrel)
                 {
                     DirectorCard qualityEquipmentBarrelCard = new DirectorCard
@@ -176,15 +172,15 @@ namespace ItemQualities
 
                     addedQualityEquipmentBarrel = true;
                 }
-#endif
+                */
 
-                if (categoryChest1Card != null && !addedQualityChest1)
+                if (chest1Card != null && !addedQualityChest1)
                 {
                     DirectorCard qualityChest1Card = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityChest1,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest1Card.selectionWeight * 2f)),
-                        minimumStageCompletions = categoryChest1Card.minimumStageCompletions
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(chest1Card.selectionWeight * 0.3f)),
+                        minimumStageCompletions = chest1Card.minimumStageCompletions
                     };
 
                     ArrayUtils.ArrayAppend(ref category.cards, qualityChest1Card);
@@ -194,13 +190,13 @@ namespace ItemQualities
                     addedQualityChest1 = true;
                 }
 
-                if (categoryChest2Card != null && !addedQualityChest2)
+                if (chest2Card != null && !addedQualityChest2)
                 {
                     DirectorCard qualityChest2Card = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityChest2,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(categoryChest2Card.selectionWeight * 1.5f)),
-                        minimumStageCompletions = categoryChest2Card.minimumStageCompletions
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(chest2Card.selectionWeight * 0.35f)),
+                        minimumStageCompletions = chest2Card.minimumStageCompletions
                     };
 
                     ArrayUtils.ArrayAppend(ref category.cards, qualityChest2Card);
@@ -258,7 +254,7 @@ namespace ItemQualities
                     addedQualityDuplicatorMilitary = true;
                 }
 
-#if DEBUG
+                /*
                 if (duplicatorWildCard != null && !addedQualityDuplicatorWild)
                 {
                     DirectorCard qualityDuplicatorWildCard = new DirectorCard
@@ -274,7 +270,7 @@ namespace ItemQualities
 
                     addedQualityDuplicatorWild = true;
                 }
-#endif
+                */
             }
         }
 
