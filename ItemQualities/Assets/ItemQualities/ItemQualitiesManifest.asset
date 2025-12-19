@@ -63,7 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StagingPaths:
   - <ManifestPluginStaging>
-  url: 
+  url: https://github.com/Goorakh/RoR2_ItemQualities
 --- !u!114 &-7981261560201051757
 MonoBehaviour:
   m_ObjectHideFlags: 0
