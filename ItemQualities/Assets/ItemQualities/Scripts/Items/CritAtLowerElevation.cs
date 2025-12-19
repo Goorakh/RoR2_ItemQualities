@@ -77,7 +77,7 @@ namespace ItemQualities.Items
                                     (35f * critAtLowerElevation.EpicCount) +
                                     (50f * critAtLowerElevation.LegendaryCount);
 
-            int forceDownCount = RollUtil.GetOverflowRoll(forceDownChance * damageReport.damageInfo.procCoefficient, damageReport.attackerMaster);
+            int forceDownCount = RollUtil.GetOverflowRoll(forceDownChance * damageReport.damageInfo.procCoefficient, damageReport.attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc));
             if (forceDownCount <= 0)
                 return;
 

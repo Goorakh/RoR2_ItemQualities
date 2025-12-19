@@ -46,7 +46,7 @@ namespace ItemQualities.Items
                                               (50f * delayedDamage.EpicCount) +
                                               (100f * delayedDamage.LegendaryCount);
 
-                    repeatProcsCount = RollUtil.GetOverflowRoll(repeatProcsChance, victimBody ? victimBody.master : null);
+                    repeatProcsCount = RollUtil.GetOverflowRoll(repeatProcsChance, victimBody ? victimBody.master : null, false);
                 }
 
                 DamageInfo[] repeatDamageInfos = Array.Empty<DamageInfo>();

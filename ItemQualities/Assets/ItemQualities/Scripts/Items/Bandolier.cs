@@ -48,7 +48,7 @@ namespace ItemQualities.Items
 
             static void beforeBandolierSpawn(GameObject bandolierObj, DamageReport damageReport)
             {
-                if (!bandolierObj || damageReport == null)
+                if (!bandolierObj || damageReport?.damageInfo == null)
                     return;
 
                 CharacterMaster attackerMaster = damageReport.attackerMaster;
@@ -65,7 +65,7 @@ namespace ItemQualities.Items
                                                 (50f * bandolier.EpicCount) +
                                                 (100f * bandolier.LegendaryCount);
 
-                int extraSkillRestocks = RollUtil.GetOverflowRoll(extraSkillRestockChance, attackerMaster);
+                int extraSkillRestocks = RollUtil.GetOverflowRoll(extraSkillRestockChance, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc));
 
                 if (extraSkillRestocks > 0 && bandolierObj.TryGetComponent(out BandolierQualityInfo bandolierQualityInfo))
                 {

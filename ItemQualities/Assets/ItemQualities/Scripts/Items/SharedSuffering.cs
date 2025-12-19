@@ -270,7 +270,7 @@ namespace ItemQualities.Items
                         break;
                 }
 
-                if (Util.CheckRoll(spawnChance, damageReport.attackerMaster))
+                if (RollUtil.CheckRoll(spawnChance, damageReport.attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
                 {
                     ProjectileManager.instance.FireProjectile(new FireProjectileInfo
                     {

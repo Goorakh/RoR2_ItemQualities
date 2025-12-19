@@ -19,7 +19,7 @@ namespace ItemQualities.Items
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        static int rollAdditionalMissileCount(CharacterBody attackerBody)
+        static int rollAdditionalMissileCount(CharacterBody attackerBody, bool sureProc)
         {
             if (!attackerBody)
                 return 0;
@@ -33,14 +33,19 @@ namespace ItemQualities.Items
                                       (30f * moreMissile.EpicCount) +
                                       (40f * moreMissile.LegendaryCount);
 
-            return RollUtil.GetOverflowRoll(moreMissileChance, attackerBody.master);
+            return RollUtil.GetOverflowRoll(moreMissileChance, attackerBody.master, sureProc);
         }
 
         static void MissileUtils_FireMissile(ILContext il)
         {
             if (!il.Method.TryFindParameter<CharacterBody>("attackerBody", out ParameterDefinition attackerBodyParameter))
             {
-                Log.Warning("Failed to find attackerBody parameter");
+                Log.Error("Failed to find attackerBody parameter");
+            }
+
+            if (!il.Method.TryFindParameter<ProcChainMask>(out ParameterDefinition procChainMaskParameter))
+            {
+                Log.Error("Failed to find ProcChainMaskParameter");
             }
 
             ILCursor c = new ILCursor(il);
@@ -61,9 +66,18 @@ namespace ItemQualities.Items
                 c.Emit(OpCodes.Ldnull);
             }
 
-            c.EmitDelegate<Func<FireProjectileInfo, CharacterBody, FireProjectileInfo>>(tryFireExtraMissiles);
+            if (procChainMaskParameter != null)
+            {
+                c.Emit(OpCodes.Ldarg, procChainMaskParameter);
+            }
+            else
+            {
+                c.EmitDefaultValue<ProcChainMask>();
+            }
 
-            static FireProjectileInfo tryFireExtraMissiles(FireProjectileInfo missileProjectileInfo, CharacterBody attackerBody)
+            c.EmitDelegate<Func<FireProjectileInfo, CharacterBody, ProcChainMask, FireProjectileInfo>>(tryFireExtraMissiles);
+
+            static FireProjectileInfo tryFireExtraMissiles(FireProjectileInfo missileProjectileInfo, CharacterBody attackerBody, ProcChainMask procChainMask)
             {
                 if (!attackerBody && missileProjectileInfo.owner)
                 {
@@ -72,7 +86,7 @@ namespace ItemQualities.Items
 
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                int additionalMissileCount = rollAdditionalMissileCount(attackerBody);
+                int additionalMissileCount = rollAdditionalMissileCount(attackerBody, procChainMask.HasProc(ProcType.SureProc));
                 if (additionalMissileCount > 0)
                 {
                     Vector3 initialDirection = missileProjectileInfo.rotation * Vector3.forward;
@@ -127,7 +141,7 @@ namespace ItemQualities.Items
             {
                 if (damageInfo?.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody attackerBody))
                 {
-                    missileCount += rollAdditionalMissileCount(attackerBody);
+                    missileCount += rollAdditionalMissileCount(attackerBody, damageInfo.procChainMask.HasProc(ProcType.SureProc));
                 }
 
                 return missileCount;

@@ -28,7 +28,7 @@ namespace ItemQualities.Items
                                                 (75f * alienHead.EpicCount) +
                                                 (100f * alienHead.LegendaryCount);
 
-                float cooldownReduction = 1f * RollUtil.GetOverflowRoll(cooldownReductionChance, deathReport.attackerMaster);
+                float cooldownReduction = 1f * RollUtil.GetOverflowRoll(cooldownReductionChance, deathReport.attackerMaster, deathReport.damageInfo.procChainMask.HasProc(ProcType.SureProc));
                 if (cooldownReduction > 0f)
                 {
                     deathReport.attackerBody.skillLocator.DeductCooldownFromAllSkillsServer(cooldownReduction);

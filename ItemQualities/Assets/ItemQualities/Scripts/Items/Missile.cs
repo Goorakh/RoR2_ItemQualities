@@ -125,7 +125,7 @@ namespace ItemQualities.Items
                                          (25f * missile.EpicCount) +
                                          (40f * missile.LegendaryCount);
 
-                return Util.CheckRoll(bigMissileChance, attackerMaster);
+                return RollUtil.CheckRoll(bigMissileChance, attackerMaster, damageInfo.procChainMask.HasProc(ProcType.SureProc));
             }
 
             c.Goto(foundCursors[3].Next, MoveType.Before); // call Util.OnHitProcDamage

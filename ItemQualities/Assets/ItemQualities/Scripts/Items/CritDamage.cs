@@ -68,7 +68,7 @@ namespace ItemQualities.Items
                                                     (50f * critDamage.EpicCount) +
                                                     (75f * critDamage.LegendaryCount);
 
-                            int critStacks = RollUtil.GetOverflowRoll(critStackChance, attackerBody.master);
+                            int critStacks = RollUtil.GetOverflowRoll(critStackChance, attackerBody.master, damageInfo.procChainMask.HasProc(ProcType.SureProc));
                             if (critStacks > 0)
                             {
                                 critMultiplier = Mathf.Pow(critMultiplier, critStacks + 1);

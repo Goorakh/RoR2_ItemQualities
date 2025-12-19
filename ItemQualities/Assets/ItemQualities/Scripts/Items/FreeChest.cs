@@ -74,7 +74,7 @@ namespace ItemQualities.Items
                                              (100f * freeChest.EpicCount) +
                                              (150f * freeChest.LegendaryCount);
 
-                    extraSpawnCount += RollUtil.GetOverflowRoll(extraSpawnChance, master);
+                    extraSpawnCount += RollUtil.GetOverflowRoll(extraSpawnChance, master, false);
 
                     Log.Debug($"Extra spawn count from {Util.GetBestMasterName(master)}: {extraSpawnCount}");
                 }

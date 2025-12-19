@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -52,7 +53,7 @@ namespace ItemQualities.Items
                 return;
 
             float stunChance = Util.ConvertAmplificationPercentageIntoReductionPercentage(SetStateOnHurt.stunChanceOnHitBaseChancePercent * stunChanceOnHit.TotalCount * damageReport.damageInfo.procCoefficient);
-            if (Util.CheckRoll(stunChance, attackerMaster))
+            if (RollUtil.CheckRoll(stunChance, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
                 int bossStunCount = (1 * stunChanceOnHit.UncommonCount) +
                                     (2 * stunChanceOnHit.RareCount) +

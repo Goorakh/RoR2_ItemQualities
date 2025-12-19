@@ -82,7 +82,7 @@ namespace ItemQualities.Items
 
                 if (spawnChance > 100f)
                 {
-                    spawnCount += RollUtil.GetOverflowRoll(spawnChance - 100f, damageReport?.attackerMaster);
+                    spawnCount += RollUtil.GetOverflowRoll(spawnChance - 100f, damageReport?.attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc));
                 }
 
                 return spawnCount;

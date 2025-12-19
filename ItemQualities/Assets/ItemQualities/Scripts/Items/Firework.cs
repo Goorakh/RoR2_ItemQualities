@@ -114,7 +114,7 @@ namespace ItemQualities.Items
                                           (60f * firework.LegendaryCount);
                 }
 
-                return Util.CheckRoll(largeFireworkChance, ownerBody ? ownerBody.master : null);
+                return RollUtil.CheckRoll(largeFireworkChance, ownerBody ? ownerBody.master : null, false);
             }
 
             int patchCount = 0;

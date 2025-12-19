@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -54,7 +55,7 @@ namespace ItemQualities.Items
                                             (100f * elixir.EpicCount) +     // 50%
                                             (300f * elixir.LegendaryCount); // 75%
 
-                return Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(elixirProtectChance), master);
+                return RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(elixirProtectChance), master, false);
             }
         }
     }

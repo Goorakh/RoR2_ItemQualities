@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -42,7 +43,7 @@ namespace ItemQualities.Items
                                               (30f * phasing.EpicCount) +
                                               (60f * phasing.LegendaryCount);
 
-                    if (Util.CheckRoll(stealthProcChance, damageReport.victimMaster) && !damageReport.victimBody.hasCloakBuff)
+                    if (RollUtil.CheckRoll(stealthProcChance, damageReport.victimMaster, false) && !damageReport.victimBody.hasCloakBuff)
                     {
                         damageReport.victimBody.AddTimedBuff(RoR2Content.Buffs.Cloak, 5f);
                         damageReport.victimBody.AddTimedBuff(RoR2Content.Buffs.CloakSpeed, 5f);

@@ -69,7 +69,7 @@ namespace ItemQualities.Items
                                              (80f * stunAndPierce.EpicCount) +
                                              (100f * stunAndPierce.LegendaryCount);
 
-                        _bouncesRemaining = RollUtil.GetOverflowRoll(bounceChance, ownerBody.master);
+                        _bouncesRemaining = RollUtil.GetOverflowRoll(bounceChance, ownerBody.master, projectileController.procChainMask.HasProc(ProcType.SureProc));
                     }
                 }
             }

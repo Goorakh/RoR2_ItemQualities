@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -69,7 +70,7 @@ namespace ItemQualities.Items
                                                (35f * slowOnHit.EpicCount) +
                                                (60f * slowOnHit.LegendaryCount);
 
-                isQualityProc = Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(qualitySlowOnHitChance) * damageInfo.procCoefficient, attackerMaster);
+                isQualityProc = RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(qualitySlowOnHitChance) * damageInfo.procCoefficient, attackerMaster, damageInfo.procChainMask.HasProc(ProcType.SureProc));
 
                 if (isQualityProc)
                     return false;

@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
 using RoR2;
@@ -44,7 +45,7 @@ namespace ItemQualities.Items
                                             (50f * icicle.EpicCount) +
                                             (75f * icicle.LegendaryCount);
 
-                        if (Util.CheckRoll(frostChance, ownerBody.master))
+                        if (RollUtil.CheckRoll(frostChance, ownerBody.master, false))
                         {
                             damageType.AddModdedDamageType(DamageTypes.Frost6s);
                         }

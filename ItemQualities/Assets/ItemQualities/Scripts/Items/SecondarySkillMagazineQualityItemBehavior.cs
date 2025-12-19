@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities;
+using RoR2;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -45,7 +46,7 @@ namespace ItemQualities.Items
                                           (35f * secondarySkillMagazine.EpicCount) +
                                           (60f * secondarySkillMagazine.LegendaryCount);
 
-                if (Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master))
+                if (RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master, false))
                 {
                     skill.AddOneStock();
 

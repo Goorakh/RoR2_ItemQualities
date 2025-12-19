@@ -7,12 +7,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace ItemQualities.Utilities.Extensions
 {
     public static class PatchExtensions
     {
+        static FieldInfo _cachedDecimalZeroFieldInfo;
+
         /// <summary>
         /// Emits instructions to unconditionally skip the method call directly ahead of the cursor and moves after it.
         /// </summary>
@@ -81,15 +84,18 @@ namespace ItemQualities.Utilities.Extensions
                 return;
             }
 
-            int parameterCount = method.Parameters.Count + (!method.IsStatic ? 1 : 0);
+            int parameterCount = method.Parameters.Count;
+            int stackPopCount = parameterCount + (!method.IsStatic ? 1 : 0);
             bool isVoidReturn = method.ReturnType.Is(typeof(void));
 
             ILLabel skipCallLabel = c.DefineLabel();
 
+            // For some ungodly reason, unconditional branching to skip a method call results in "Invalid IL",
+            // but emitting the *exact same* instructions with a conditional branch instead is somehow valid.
             if (branchOpCode.FlowControl == FlowControl.Branch)
             {
                 c.Emit(OpCodes.Ldc_I4_0);
-                c.Emit(OpCodes.Brfalse, skipCallLabel);
+                c.Emit(branchOpCode.OperandType == OperandType.ShortInlineBrTarget ? OpCodes.Brfalse_S : OpCodes.Brfalse, skipCallLabel);
             }
             else
             {
@@ -98,7 +104,7 @@ namespace ItemQualities.Utilities.Extensions
 
             c.Index++;
 
-            if (parameterCount == 0 && isVoidReturn)
+            if (stackPopCount == 0 && isVoidReturn)
             {
                 c.MarkLabel(skipCallLabel);
                 return;
@@ -109,7 +115,7 @@ namespace ItemQualities.Utilities.Extensions
 
             c.MarkLabel(skipCallLabel);
 
-            for (int i = 0; i < parameterCount; i++)
+            for (int i = 0; i < stackPopCount; i++)
             {
                 c.Emit(OpCodes.Pop);
             }
@@ -122,22 +128,125 @@ namespace ItemQualities.Utilities.Extensions
             {
                 Log.Warning($"Skipped method ({method.FullName}) is not void, emitting default value: {c.Context.Method.FullName} at instruction {c.Next.SafeToString()} ({c.Index})");
 
-                if (method.ReturnType.IsValueType)
-                {
-                    VariableDefinition tmpVar = c.Context.AddVariable(method.ReturnType);
-
-                    c.Emit(OpCodes.Ldloca, tmpVar);
-                    c.Emit(OpCodes.Initobj, method.ReturnType);
-
-                    c.Emit(OpCodes.Ldloc, tmpVar);
-                }
-                else
-                {
-                    c.Emit(OpCodes.Ldnull);
-                }
+                c.EmitDefaultValue(method.ReturnType);
             }
 
             c.MarkLabel(afterPatchLabel);
+        }
+
+        public static void EmitDefaultValue<T>(this ILCursor cursor)
+        {
+            cursor.EmitDefaultValue(cursor.IL.Import(typeof(T)));
+        }
+
+        public static void EmitDefaultValue(this ILCursor cursor, Type type)
+        {
+            cursor.EmitDefaultValue(cursor.IL.Import(type));
+        }
+
+        /// <summary>
+        /// Emits instructions to place the default value of <paramref name="type"/> on the stack
+        /// </summary>
+        /// <param name="cursor"></param>
+        /// <param name="type"></param>
+        public static void EmitDefaultValue(this ILCursor cursor, TypeReference type)
+        {
+            if (type == null || type.Is(typeof(void)))
+                return;
+
+            if (!type.IsValueType)
+            {
+                cursor.Emit(OpCodes.Ldnull);
+                return;
+            }
+
+            switch (type.GetTypeCode())
+            {
+                case TypeCode.Boolean:
+                case TypeCode.Char:
+                case TypeCode.SByte:
+                case TypeCode.Byte:
+                case TypeCode.Int16:
+                case TypeCode.UInt16:
+                case TypeCode.Int32:
+                case TypeCode.UInt32:
+                    cursor.Emit(OpCodes.Ldc_I4_0);
+                    return;
+                case TypeCode.Int64:
+                case TypeCode.UInt64:
+                    cursor.Emit(OpCodes.Ldc_I4_0);
+                    cursor.Emit(OpCodes.Conv_I8);
+                    return;
+                case TypeCode.Single:
+                    cursor.Emit(OpCodes.Ldc_R4, 0f);
+                    return;
+                case TypeCode.Double:
+                    cursor.Emit(OpCodes.Ldc_R8, 0d);
+                    return;
+                case TypeCode.Decimal:
+                    _cachedDecimalZeroFieldInfo ??= typeof(Decimal).GetField(nameof(Decimal.Zero), BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
+
+                    // Feels incredibly strange to emit a const field, but thats what a decomp shows is happening so *shrug*
+                    cursor.Emit(OpCodes.Ldsfld, _cachedDecimalZeroFieldInfo);
+                    return;
+            }
+
+            // Fallback for non-primitive value types
+
+            VariableDefinition tmpVar = cursor.Context.AddVariable(type);
+
+            cursor.Emit(OpCodes.Ldloca, tmpVar);
+            cursor.Emit(OpCodes.Initobj, type);
+
+            cursor.Emit(OpCodes.Ldloc, tmpVar);
+        }
+
+        /// <summary>
+        /// Returns the <see cref="TypeCode"/> for the type referenced
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static TypeCode GetTypeCode(this TypeReference type)
+        {
+            if (type == null)
+                return TypeCode.Empty;
+
+            TypeReference underlyingType = null;
+
+            TypeDefinition resolvedType = type.SafeResolve();
+            if (resolvedType != null && resolvedType.IsEnum)
+            {
+                // Get underlying type from hidden enum field
+                foreach (FieldDefinition field in resolvedType.Fields)
+                {
+                    if (!field.IsStatic)
+                    {
+                        underlyingType = field.FieldType;
+                        break;
+                    }
+                }
+            }
+
+            return (underlyingType ?? type).FullName switch
+            {
+                "System." + nameof(DBNull) => TypeCode.DBNull,
+                "System." + nameof(Boolean) => TypeCode.Boolean,
+                "System." + nameof(Char) => TypeCode.Char,
+                "System." + nameof(SByte) => TypeCode.SByte,
+                "System." + nameof(Byte) => TypeCode.Byte,
+                "System." + nameof(Int16) => TypeCode.Int16,
+                "System." + nameof(UInt16) => TypeCode.UInt16,
+                "System." + nameof(Int32) => TypeCode.Int32,
+                "System." + nameof(UInt32) => TypeCode.UInt32,
+                "System." + nameof(Int64) => TypeCode.Int64,
+                "System." + nameof(UInt64) => TypeCode.UInt64,
+                "System." + nameof(Single) => TypeCode.Single,
+                "System." + nameof(Double) => TypeCode.Double,
+                "System." + nameof(Decimal) => TypeCode.Decimal,
+                "System." + nameof(DateTime) => TypeCode.DateTime,
+                "System." + nameof(String) => TypeCode.String,
+                _ => TypeCode.Object,
+            };
         }
 
         /// <summary>
@@ -411,7 +520,7 @@ namespace ItemQualities.Utilities.Extensions
         }
 
         /// <summary>
-        /// Stores all values on the stack in the variables represented by the <paramref name="variables"/> parameter
+        /// Stores all values on the stack in the variables represented by the <paramref name="variables"/> parameter, original stack order is restored after emitted instructions.
         /// </summary>
         /// <param name="cursor"></param>
         /// <param name="variables">The variables to store the stack's values in, defined in the order the values should be pushed back onto the stack</param>

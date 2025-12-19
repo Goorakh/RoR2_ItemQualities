@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities;
+using RoR2;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -34,7 +35,7 @@ namespace ItemQualities.Items
                                       (35f * equipmentMagazine.EpicCount) +
                                       (60f * equipmentMagazine.LegendaryCount);
 
-            if (Util.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master))
+            if (RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master, false))
             {
                 _body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, equipmentSlot.activeEquipmentSet[equipmentSlot.activeEquipmentSlot], 1);
             }
