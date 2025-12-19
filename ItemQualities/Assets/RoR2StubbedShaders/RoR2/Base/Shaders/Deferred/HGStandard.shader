@@ -16,6 +16,8 @@ Shader "StubbedRoR2/Base/Shaders/HGStandard" {
 		_SpecularStrength ("Specular Strength", Range(0, 1)) = 0
 		_SpecularExponent ("Specular Exponent", Range(0.1, 20)) = 1
 		[MaterialEnum(Off,0,Front,1,Back,2)] _Cull ("Cull", Float) = 2
+		[Header(Screenspace Dithering)] [Toggle(DITHER)] _DitherOn ("Enable Dither", Float) = 0
+		_FadeBias ("Fade Bias", Range(0, 1)) = 0
 		[Header(Fresnel Emission)] [Toggle(FRESNEL_EMISSION)] _FEON ("Enable Fresnel Emission", Float) = 0
 		[Toggle(USE_VERTEX_COLORS_FOR_FRESNEL_EMISSION_AND_FLOWMAP)] _DoubleColorsOn ("Use Vertex Colors as mask for Fresnel mask and flowmap", Float) = 0
 		[NoScaleOffset] _FresnelRamp ("Fresnel Ramp", 2D) = "white" {}
