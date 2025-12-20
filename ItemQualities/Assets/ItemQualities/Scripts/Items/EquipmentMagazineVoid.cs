@@ -1,8 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using R2API;
 using RoR2;
-using System;
 
 namespace ItemQualities.Items
 {
@@ -13,7 +10,7 @@ namespace ItemQualities.Items
         {
             ItemHooks.TakeDamageModifier += modifyTakeDamage;
 
-            IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
+            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
         static void modifyTakeDamage(ref float damageValue, DamageInfo damageInfo)
@@ -42,51 +39,36 @@ namespace ItemQualities.Items
             }
         }
 
-        static void CharacterBody_RecalculateStats(ILContext il)
+        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ILCursor c = new ILCursor(il);
-
-            if (!ItemHooks.TryFindNextItemCountVariable(c, typeof(DLC1Content.Items), nameof(DLC1Content.Items.EquipmentMagazineVoid), out VariableDefinition equipmentMagazineVoidItemCountVar))
-            {
-                Log.Error("Failed to find itemCount variable");
+            if (!sender || !sender.inventory)
                 return;
-            }
 
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchCallOrCallvirt<SkillLocator>("get_" + nameof(SkillLocator.specialBonusStockSkill)),
-                               x => x.MatchLdloc(equipmentMagazineVoidItemCountVar.Index),
-                               x => x.MatchMul()))
+            ItemQualityCounts equipmentMagazineVoid = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCountsEffective(sender.inventory);
+            if (equipmentMagazineVoid.TotalQualityCount > 0)
             {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
-            c.Goto(foundCursors[2].Next, MoveType.Before); // mul
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<float, CharacterBody, float>>(getCooldownScale);
-
-            static float getCooldownScale(float cooldownScale, CharacterBody body)
-            {
-                Inventory inventory = body ? body.inventory : null;
-                QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCountsEffective(inventory).HighestQuality;
-                switch (qualityTier)
+                float specialSkillCooldownScale;
+                switch (equipmentMagazineVoid.HighestQuality)
                 {
                     case QualityTier.Uncommon:
-                        cooldownScale *= 1f - 0.1f;
+                        specialSkillCooldownScale = 1f - 0.1f;
                         break;
                     case QualityTier.Rare:
-                        cooldownScale *= 1f - 0.2f;
+                        specialSkillCooldownScale = 1f - 0.2f;
                         break;
                     case QualityTier.Epic:
-                        cooldownScale *= 1f - 0.4f;
+                        specialSkillCooldownScale = 1f - 0.4f;
                         break;
                     case QualityTier.Legendary:
-                        cooldownScale *= 1f - 0.55f;
+                        specialSkillCooldownScale = 1f - 0.55f;
+                        break;
+                    default:
+                        specialSkillCooldownScale = 1f;
+                        Log.Error($"Quality tier {equipmentMagazineVoid.HighestQuality} is not implemented");
                         break;
                 }
 
-                return cooldownScale;
+                args.specialSkill.cooldownMultiplier *= specialSkillCooldownScale;
             }
         }
     }
