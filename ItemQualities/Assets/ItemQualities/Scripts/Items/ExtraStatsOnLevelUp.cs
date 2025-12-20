@@ -21,6 +21,31 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
+            int extraStatsOnLevelUpItemCountVar = -1;
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdsfld(typeof(DLC2Content.Items), nameof(DLC2Content.Items.ExtraStatsOnLevelUp)),
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountPermanent)),
+                               x => x.MatchStloc(typeof(int), il, out extraStatsOnLevelUpItemCountVar)))
+            {
+                Log.Error("Failed to find Prayer Beads item count variable");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldloc, extraStatsOnLevelUpItemCountVar);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<CharacterBody, int>>(getQualityItemCount);
+            c.Emit(OpCodes.Add);
+            c.Emit(OpCodes.Stloc, extraStatsOnLevelUpItemCountVar);
+
+            static int getQualityItemCount(CharacterBody body)
+            {
+                if (!body || !body.inventory)
+                    return 0;
+
+                ItemQualityCounts extraStatsOnLevelUp = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
+                return extraStatsOnLevelUp.TotalQualityCount;
+            }
+
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdfld<CharacterBody>(nameof(CharacterBody.extraStatsOnLevelUpCount_CachedLastApplied)),
                                x => x.MatchStfld<CharacterBody>(nameof(CharacterBody.extraStatsOnLevelUpCount_CachedLastApplied)),
@@ -31,7 +56,7 @@ namespace ItemQualities.Items
                 return;
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.After);
+            c.Goto(foundCursors[1].Next, MoveType.After); // stfld CharacterBody.extraStatsOnLevelUpCount_CachedLastApplied
             c.MoveBeforeLabels();
 
             c.Emit(OpCodes.Ldarg_0);
