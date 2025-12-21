@@ -27,7 +27,7 @@ namespace ItemQualities.Items
                                                (0.15f * fragileDamageBonus.EpicCount) +
                                                (0.20f * fragileDamageBonus.LegendaryCount);
 
-                    args.damageMultAdd += damageBonusPerBuff * fragileDamageBonusBuff.TotalQualityCount;
+                    args.damageMultAdd += damageBonusPerBuff;
                 }
             }
         }
