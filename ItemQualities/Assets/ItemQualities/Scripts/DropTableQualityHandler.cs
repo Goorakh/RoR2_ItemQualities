@@ -39,6 +39,8 @@ namespace ItemQualities
             On.RoR2.Artifacts.MonsterTeamGainsItemsArtifactManager.GrantMonsterTeamItem += MonsterTeamGainsItemsArtifactManager_GrantMonsterTeamItem;
             On.RoR2.InfiniteTowerRun.AdvanceWave += InfiniteTowerRun_AdvanceWave;
             On.RoR2.ScavengerItemGranter.Start += ScavengerItemGranter_Start;
+            On.EntityStates.Drifter.Salvage.DropTempItemServer += Salvage_DropTempItemServer;
+            On.RoR2.EquipmentSlot.FireBossHunter += EquipmentSlot_FireBossHunter;
 
             // All the things that are too old to use a droptable...
             IL.RoR2.ChestBehavior.PickFromList += ChestBehavior_PickFromList;
@@ -215,6 +217,36 @@ namespace ItemQualities
             {
                 _currentDropGenerationOwnerMaster = self ? self.GetComponent<CharacterMaster>() : null;
                 orig(self);
+            }
+            finally
+            {
+                _currentDropGenerationOwnerMaster = null;
+            }
+        }
+
+        static void Salvage_DropTempItemServer(On.EntityStates.Drifter.Salvage.orig_DropTempItemServer orig, EntityStates.Drifter.Salvage self)
+        {
+            try
+            {
+                CharacterBody body = self?.characterBody;
+                _currentDropGenerationOwnerMaster = body ? body.master : null;
+
+                orig(self);
+            }
+            finally
+            {
+                _currentDropGenerationOwnerMaster = null;
+            }
+        }
+
+        static bool EquipmentSlot_FireBossHunter(On.RoR2.EquipmentSlot.orig_FireBossHunter orig, EquipmentSlot self)
+        {
+            try
+            {
+                CharacterBody body = self ? self.characterBody : null;
+                _currentDropGenerationOwnerMaster = body ? body.master : null;
+
+                return orig(self);
             }
             finally
             {
