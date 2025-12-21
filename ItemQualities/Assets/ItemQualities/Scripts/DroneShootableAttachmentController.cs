@@ -45,6 +45,8 @@ namespace ItemQualities
         Run.FixedTimeStamp _lastDamageTimeStamp = Run.FixedTimeStamp.positiveInfinity;
         Run.FixedTimeStamp _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.positiveInfinity;
 
+        Run.FixedTimeStamp _lastExplosionTimeStamp = Run.FixedTimeStamp.negativeInfinity;
+
         bool _limitsDirty = false;
 
         bool _wasHurtBoxesDisabled;
@@ -175,6 +177,8 @@ namespace ItemQualities
 
                     EffectManager.SpawnEffect(ExplosionEffect, effectData, true);
                 }
+
+                _lastExplosionTimeStamp = Run.FixedTimeStamp.now;
             }
 
             _storedDamage = 0f;
@@ -184,43 +188,47 @@ namespace ItemQualities
 
         void IOnTakeDamageServerReceiver.OnTakeDamageServer(DamageReport damageReport)
         {
-            if (damageReport.damageInfo.inflictor && damageReport.damageInfo.inflictor.GetComponent<DroneShootableAttachmentController>())
+            if (!_bodyAttachment.attachedBody)
                 return;
 
-            float damageToStore = Mathf.Min(_maxStoredDamage - _storedDamage, damageReport.damageDealt * _storedDamageMultiplier);
-            if (damageToStore > 0f)
+            if (_lastExplosionTimeStamp.timeSince > 10f &&
+                damageReport.damageInfo.damageType.IsDamageSourceSkillBased &&
+                damageReport.attackerTeamIndex == _bodyAttachment.attachedBody.teamComponent.teamIndex)
             {
-                _storedDamage += damageToStore;
-
-                float damageFraction = Mathf.Clamp01(_storedDamage / _maxStoredDamage);
-                float radius = Mathf.Lerp(_minRadius, _maxRadius, damageFraction);
-
-                if (HitEffectPrefab)
+                float damageToStore = Mathf.Min(_maxStoredDamage - _storedDamage, damageReport.damageDealt * _storedDamageMultiplier);
+                if (damageToStore > 0f)
                 {
-                    EffectData effectData = new EffectData();
-                    effectData.origin = _bodyAttachment.attachedBody ? _bodyAttachment.attachedBody.corePosition : transform.position;
-                    effectData.color = DamageColorGradient.Evaluate(damageFraction);
-                    effectData.scale = radius;
-                    EffectManager.SpawnEffect(HitEffectPrefab, effectData, true);
+                    _storedDamage += damageToStore;
+
+                    float damageFraction = Mathf.Clamp01(_storedDamage / _maxStoredDamage);
+                    float radius = Mathf.Lerp(_minRadius, _maxRadius, damageFraction);
+
+                    if (HitEffectPrefab)
+                    {
+                        EffectData effectData = new EffectData();
+                        effectData.origin = _bodyAttachment.attachedBody.corePosition;
+                        effectData.color = DamageColorGradient.Evaluate(damageFraction);
+                        effectData.scale = radius;
+                        EffectManager.SpawnEffect(HitEffectPrefab, effectData, true);
+                    }
+
+                    if (damageFraction >= 1f)
+                    {
+                        _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.now;
+                    }
                 }
 
-                if (damageFraction >= 1f)
-                {
-                    _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.now;
-                }
+                _lastDamageTimeStamp = Run.FixedTimeStamp.now;
             }
 
-            _lastDamageTimeStamp = Run.FixedTimeStamp.now;
-
-            if (_bodyAttachment.attachedBody)
+            if ((damageReport.damageInfo.damageType & DamageType.AOE) == 0 &&
+                FriendlyFireManager.ShouldDirectHitProceed(_bodyAttachment.attachedBody.healthComponent, damageReport.attackerTeamIndex))
             {
-                if ((damageReport.damageInfo.damageType & DamageType.AOE) == 0 &&
-                    FriendlyFireManager.ShouldDirectHitProceed(_bodyAttachment.attachedBody.healthComponent, damageReport.attackerTeamIndex))
-                {
-                    // HACK: Because the attachment hurtbox is covering the drone's hurtboxes, damage might not reach it, so pass on any damage inflicted to the drone and pretend this is not a problem :)
-                    damageReport.damageInfo.damage *= 0.5f;
-                    _bodyAttachment.attachedBody.healthComponent.TakeDamage(damageReport.damageInfo);
-                }
+                // HACK: Because the attachment hurtbox is covering the drone's hurtboxes, damage might not reach it, so pass on any damage inflicted to the drone and pretend this is not a problem :)
+                float originalDamage = damageReport.damageInfo.damage;
+                damageReport.damageInfo.damage *= 0.5f;
+                _bodyAttachment.attachedBody.healthComponent.TakeDamage(damageReport.damageInfo);
+                damageReport.damageInfo.damage = originalDamage;
             }
         }
 
