@@ -43,16 +43,6 @@ namespace ItemQualities
 
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
 
-        float _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay;
-        public float SlugOutOfDangerDelay
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _slugOutOfDangerDelay;
-            }
-        }
-
         const float BaseCrowbarMinHealthFraction = 0.9f;
         float _crowbarMinHealthFraction = BaseCrowbarMinHealthFraction;
         public float CrowbarMinHealthFraction
@@ -95,10 +85,6 @@ namespace ItemQualities
         }
 
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
-
-        [SyncVar(hook = nameof(hookSetSlugOutOfDanger))]
-        bool _slugOutOfDanger;
-        public bool SlugOutOfDanger => _slugOutOfDanger;
 
         [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
         bool _isPerformingQuailJump;
@@ -193,8 +179,6 @@ namespace ItemQualities
 
             if (NetworkServer.active)
             {
-                _slugOutOfDanger = _body && _body.outOfDangerStopwatch >= _slugOutOfDangerDelay;
-
                 if (!HasHadAnyQualityDeathMarkDebuffServer && DeathMark.HasAnyQualityDeathMarkDebuff(_body))
                 {
                     HasHadAnyQualityDeathMarkDebuffServer = true;
@@ -325,27 +309,17 @@ namespace ItemQualities
 
         void recalculateExtraStats()
         {
-            ItemQualityCounts slug = default;
             ItemQualityCounts crowbar = default;
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
             ItemQualityCounts jumpBoost = default;
             if (_body && _body.inventory)
             {
-                slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCountsEffective(_body.inventory);
                 crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(_body.inventory);
                 executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCountsEffective(_body.inventory);
                 phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(_body.inventory);
                 jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCountsEffective(_body.inventory);
             }
-
-            float slugOutOfDangerDelayReduction = 1f;
-            slugOutOfDangerDelayReduction += 0.18f * slug.UncommonCount;
-            slugOutOfDangerDelayReduction += 0.33f * slug.RareCount;
-            slugOutOfDangerDelayReduction += 1.00f * slug.EpicCount;
-            slugOutOfDangerDelayReduction += 3.00f * slug.LegendaryCount;
-
-            _slugOutOfDangerDelay = CharacterBody.outOfDangerDelay / slugOutOfDangerDelayReduction;
 
             float crowbarMinHealthFractionReduction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
                 (0.25f * crowbar.UncommonCount) +
@@ -499,17 +473,6 @@ namespace ItemQualities
         void CmdSetPerformingQuailJump(bool performing)
         {
             IsPerformingQuailJump = performing;
-        }
-
-        void hookSetSlugOutOfDanger(bool slugOutOfDanger)
-        {
-            bool changed = _slugOutOfDanger != slugOutOfDanger;
-            _slugOutOfDanger = slugOutOfDanger;
-
-            if (changed)
-            {
-                _body.MarkAllStatsDirty();
-            }
         }
 
         void hookSetIsPerformingQuailJump(bool performingQuailJump)

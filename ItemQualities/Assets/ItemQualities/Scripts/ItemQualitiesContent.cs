@@ -760,6 +760,8 @@ namespace ItemQualities
             public static BuffDef PersonalShield;
 
             public static BuffDef FeatherExtraJumps;
+
+            public static BuffDef SlugHealth;
         }
 
         public static class Prefabs

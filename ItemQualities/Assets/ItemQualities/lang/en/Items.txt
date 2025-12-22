@@ -49,17 +49,17 @@
         "ITEM_SYRINGE_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
         "ITEM_SYRINGE_LEGENDARY_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style></style>.",
         
-        "ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
-        "ITEM_HEALWHILESAFE_UNCOMMON_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style>",
+        "ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while outside of danger increase health temporarily.",
+        "ITEM_HEALWHILESAFE_UNCOMMON_DESC": "{0}\nKills while outside of danger gives <sprite name=\"Quality\"> <style=cIsHealing>+2 <style=cStack>(+2 per stack)</style> non-regenerating maximum health</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsHealing>100 <style=cStack>(+100 per stack)</style> maximum health</style>.",
         
-        "ITEM_HEALWHILESAFE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
-        "ITEM_HEALWHILESAFE_RARE_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>25%</style> <style=cStack>(+25% per stack)</style>",
+        "ITEM_HEALWHILESAFE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while outside of danger increase health temporarily.",
+        "ITEM_HEALWHILESAFE_RARE_DESC": "{0}\nKills while outside of danger gives <sprite name=\"Quality\"> <style=cIsHealing>+6 <style=cStack>(+6 per stack)</style> non-regenerating maximum health</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsHealing>300 <style=cStack>(+300 per stack)</style> maximum health</style>.",
         
-        "ITEM_HEALWHILESAFE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
-        "ITEM_HEALWHILESAFE_EPIC_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>",
+        "ITEM_HEALWHILESAFE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while outside of danger increase health temporarily.",
+        "ITEM_HEALWHILESAFE_EPIC_DESC": "{0}\nKills while outside of danger gives <sprite name=\"Quality\"> <style=cIsHealing>+12 <style=cStack>(+12 per stack)</style> non-regenerating maximum health</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsHealing>600 <style=cStack>(+600 per stack)</style> maximum health</style>.",
         
-        "ITEM_HEALWHILESAFE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduces healing delay.",
-        "ITEM_HEALWHILESAFE_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>healing delay</style> by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
+        "ITEM_HEALWHILESAFE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while outside of danger increase health temporarily.",
+        "ITEM_HEALWHILESAFE_LEGENDARY_DESC": "{0}\nKills while outside of danger gives <sprite name=\"Quality\"> <style=cIsHealing>+20 <style=cStack>(+20 per stack)</style> non-regenerating maximum health</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsHealing>1000 <style=cStack>(+1000 per stack)</style> maximum health</style>.",
 
         "ITEM_CROWBAR_UNCOMMON_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 85% health.",
         "ITEM_CROWBAR_UNCOMMON_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>85% health</style> <style=cStack>(-10% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>).",

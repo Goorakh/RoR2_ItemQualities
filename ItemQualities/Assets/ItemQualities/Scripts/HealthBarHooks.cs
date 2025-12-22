@@ -33,6 +33,11 @@ namespace ItemQualities
                 typeof(AdditionalBarInfos).GetField(nameof(TemporaryShieldBarInfo)),
             };
 
+            public static readonly FieldInfo[] HealthOverlayBarInfoFields = new FieldInfo[]
+            {
+                typeof(AdditionalBarInfos).GetField(nameof(TemporaryHealthBarInfo)),
+            };
+
             public static readonly FieldInfo[] EndBarInfoFields = Array.Empty<FieldInfo>();
 
             public readonly HealthBar.BarInfo StealthKitLowHealthUnderBarInfo;
@@ -40,13 +45,15 @@ namespace ItemQualities
 
             public readonly HealthBar.BarInfo TemporaryShieldBarInfo;
 
+            public readonly HealthBar.BarInfo TemporaryHealthBarInfo;
+
             public readonly int EnabledBarCount;
 
-            public AdditionalBarInfos(HealthBar.BarInfo stealthKitLowHealthUnderBarInfo, HealthBar.BarInfo stealthKitLowHealthOverBarInfo, HealthBar.BarInfo temporaryShieldBarInfo)
+            public AdditionalBarInfos(in HealthBar.BarInfo stealthKitLowHealthUnderBarInfo, in HealthBar.BarInfo stealthKitLowHealthOverBarInfo, in HealthBar.BarInfo temporaryShieldBarInfo, in HealthBar.BarInfo temporaryHealthBarInfo)
             {
                 int enabledBarCount = 0;
 
-                void setBarInfo(out HealthBar.BarInfo barInfoField, HealthBar.BarInfo barInfo)
+                void setBarInfo(out HealthBar.BarInfo barInfoField, in HealthBar.BarInfo barInfo)
                 {
                     barInfoField = barInfo;
                     enabledBarCount += barInfoField.enabled ? 1 : 0;
@@ -57,6 +64,8 @@ namespace ItemQualities
                 setBarInfo(out StealthKitLowHealthOverBarInfo, stealthKitLowHealthOverBarInfo);
 
                 setBarInfo(out TemporaryShieldBarInfo, temporaryShieldBarInfo);
+
+                setBarInfo(out TemporaryHealthBarInfo, temporaryHealthBarInfo);
 
                 EnabledBarCount = enabledBarCount;
             }
@@ -296,6 +305,23 @@ namespace ItemQualities
                 Log.Error("Failed to find shield bars patch location");
             }
 
+            if (c.TryFindNext(out foundCursors,
+                              x => x.MatchLdflda<HealthBar.BarInfoCollection>(nameof(HealthBar.BarInfoCollection.trailingOverHealthbarInfo)),
+                              x => x.MatchCallOrCallvirt(handleBarMethod)))
+            {
+                ILCursor overBarsCursor = new ILCursor(il);
+                overBarsCursor.Goto(foundCursors[1].Next, MoveType.After);
+
+                foreach (FieldInfo barInfoField in AdditionalBarInfos.HealthOverlayBarInfoFields)
+                {
+                    emitHandleBarInfoField(overBarsCursor, barInfoField);
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find health bar patch location");
+            }
+
             c.Index = -1;
             if (c.TryGotoPrev(MoveType.After,
                               x => x.MatchCallOrCallvirt(handleBarMethod)))
@@ -324,6 +350,7 @@ namespace ItemQualities
             HealthBar.BarInfo lowHealthUnderBarInfoTemplate = healthBar.barInfoCollection.lowHealthUnderBarInfo;
             HealthBar.BarInfo lowHealthOverBarInfoTemplate = healthBar.barInfoCollection.lowHealthOverBarInfo;
             HealthBar.BarInfo shieldBarInfoTemplate = healthBar.barInfoCollection.shieldBarInfo;
+            HealthBar.BarInfo trailingOverHealthBarInfoTemplate = healthBar.barInfoCollection.trailingOverHealthbarInfo;
 
             void setupHealthThresholdBarInfos(ref HealthBar.BarInfo underBarInfo, ref HealthBar.BarInfo overBarInfo, float healthThreshold)
             {
@@ -369,7 +396,27 @@ namespace ItemQualities
                 }
             }
 
-            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo, temporaryShieldBarInfo);
+            HealthBar.BarInfo temporaryHealthBarInfo = trailingOverHealthBarInfoTemplate;
+            temporaryHealthBarInfo.enabled = false;
+
+            if (healthBarValues.healthFraction > 0f && healthBar.style.trailingOverHealthBarStyle.enabled)
+            {
+                float temporaryHealthFraction = body.GetBuffCount(ItemQualitiesContent.Buffs.SlugHealth) / body.maxHealth;
+                if (temporaryHealthFraction > 0f)
+                {
+                    float healthFillFraction = healthComponent.health / body.maxHealth;
+                    float fullHealthBarSize = healthBarValues.healthFraction / healthFillFraction;
+
+                    temporaryHealthBarInfo.enabled = true;
+                    temporaryHealthBarInfo.normalizedXMax = trailingOverHealthBarInfoTemplate.normalizedXMax;
+                    temporaryHealthBarInfo.normalizedXMin = trailingOverHealthBarInfoTemplate.normalizedXMax - Mathf.Min(healthBarValues.healthFraction, fullHealthBarSize * temporaryHealthFraction);
+
+                    Color.RGBToHSV(trailingOverHealthBarInfoTemplate.color, out float h, out float s, out float v);
+                    temporaryHealthBarInfo.color = Color.HSVToRGB(h, s, v * 1.5f);
+                }
+            }
+
+            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo, temporaryShieldBarInfo, temporaryHealthBarInfo);
         }
     }
 }
