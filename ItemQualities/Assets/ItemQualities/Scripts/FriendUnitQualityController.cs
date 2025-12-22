@@ -16,6 +16,7 @@ namespace ItemQualities
             if (DLC3Content.BodyPrefabs.FriendUnitBody)
             {
                 DLC3Content.BodyPrefabs.FriendUnitBody.gameObject.EnsureComponent<FriendUnitQualityController>();
+                DLC3Content.BodyPrefabs.FriendUnitBody.gameObject.EnsureComponent<InteractionProcFilter>();
             }
             else
             {
@@ -39,11 +40,14 @@ namespace ItemQualities
 
         public bool IsQualityBehaviorActive => _qualityBehaviorActive;
 
+        public InteractionProcFilter InteractionProcFilter { get; private set; }
+
         void Awake()
         {
             _body = GetComponent<CharacterBody>();
             _genericInteraction = GetComponent<GenericInteraction>();
             _friendUnitController = GetComponent<FriendUnitController>();
+            InteractionProcFilter = GetComponent<InteractionProcFilter>();
 
             _bodyStateMachine = EntityStateMachine.FindByCustomName(gameObject, "Body");
         }

@@ -14,9 +14,19 @@ namespace ItemQualities.Items
         {
             orig(self);
 
-            if (self.TryGetComponent(out FriendUnitQualityController friendUnitQualityController) && friendUnitQualityController.IsQualityBehaviorActive)
+            if (self.TryGetComponent(out FriendUnitQualityController friendUnitQualityController))
             {
-                self.SetInteractibility(true);
+                bool baseIsInteractable = self.genericInteraction && self.genericInteraction.interactability == Interactability.Available;
+
+                if (friendUnitQualityController.IsQualityBehaviorActive)
+                {
+                    self.SetInteractibility(true);
+                }
+
+                if (friendUnitQualityController.InteractionProcFilter)
+                {
+                    friendUnitQualityController.InteractionProcFilter.shouldAllowOnInteractionBeginProc = baseIsInteractable;
+                }
             }
         }
     }
