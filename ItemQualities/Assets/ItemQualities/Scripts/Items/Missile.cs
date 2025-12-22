@@ -62,13 +62,20 @@ namespace ItemQualities.Items
             ProjectileController missileBigProjectileController = missileBigPrefab.GetComponent<ProjectileController>();
             missileBigProjectileController.ghostPrefab = missileBigGhost;
 
-            if (explodeEffectLoad.Status == AsyncOperationStatus.Succeeded && explodeEffectLoad.Result)
-            {
-                if (missileBigPrefab.TryGetComponent(out ProjectileSingleTargetImpact missileBigSingleTargetImpact))
-                {
-                    missileBigSingleTargetImpact.impactEffect = explodeEffectLoad.Result;
-                }
-            }
+            ProjectileSingleTargetImpact projectileSingleTargetImpact = missileBigPrefab.GetComponent<ProjectileSingleTargetImpact>();
+            ProjectileImpactExplosion projectileImpactExplosion = missileBigPrefab.AddComponent<ProjectileImpactExplosion>();
+
+            projectileImpactExplosion.destroyOnWorld = projectileSingleTargetImpact.destroyOnWorld;
+            projectileImpactExplosion.blastDamageCoefficient = 1f;
+            projectileImpactExplosion.blastProcCoefficient = 1f;
+            projectileImpactExplosion.blastRadius = 3f;
+            projectileImpactExplosion.lifetime = float.PositiveInfinity;
+#pragma warning disable CS0618 // Type or member is obsolete
+            projectileImpactExplosion.explosionSoundString = projectileSingleTargetImpact.hitSoundString;
+#pragma warning restore CS0618 // Type or member is obsolete
+            projectileImpactExplosion.explosionEffect = explodeEffectLoad.Result;
+
+            GameObject.Destroy(projectileSingleTargetImpact);
 
             _missileBigProjectilePrefab = missileBigPrefab;
             args.ContentPack.projectilePrefabs.Add(missileBigPrefab);
