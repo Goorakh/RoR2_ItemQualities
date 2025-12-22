@@ -1,5 +1,9 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
+using R2API;
 using RoR2;
+using System;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -10,23 +14,48 @@ namespace ItemQualities.Items
         static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
-            GlobalEventManager.OnInteractionsGlobal += OnInteractionsGlobal;
-            GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
+
+            GlobalEventManager.OnInteractionsGlobal += onInteractGlobal;
+
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        private static void onServerDamageDealt(DamageReport report)
+        static void HealthComponent_TakeDamageProcess(ILContext il)
         {
-            CharacterBody victim = report.victimBody;
-            if (!victim)
-                return;
+            ILCursor c = new ILCursor(il);
 
-            if (victim.HasBuff(ItemQualitiesContent.Buffs.PersonalShield))
+            int pendingDamageLocalIndex = -1;
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchLdloc(typeof(float), il, out pendingDamageLocalIndex),
+                               x => x.MatchLdarg(0),
+                               x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.shield)),
+                               x => x.MatchBgtUn(out _)))
             {
-                victim.SetBuffCount(ItemQualitiesContent.Buffs.PersonalShield.buffIndex, Mathf.Max(0, (int)(victim.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) - report.damageDealt)));
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldloc, pendingDamageLocalIndex);
+            c.EmitDelegate<Action<HealthComponent, float>>(onShieldDamaged);
+
+            static void onShieldDamaged(HealthComponent healthComponent, float pendingDamage)
+            {
+                if (!healthComponent || !healthComponent.body)
+                    return;
+
+                float shieldDamage = Mathf.Min(pendingDamage, healthComponent.shield);
+                if (shieldDamage > 0f)
+                {
+                    if (healthComponent.body.HasBuff(ItemQualitiesContent.Buffs.PersonalShield))
+                    {
+                        healthComponent.body.SetBuffCount(ItemQualitiesContent.Buffs.PersonalShield.buffIndex, Mathf.Max(0, (int)(healthComponent.body.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) - shieldDamage)));
+                    }
+                }
             }
         }
 
-        private static void OnInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject @object)
+        static void onInteractGlobal(Interactor interactor, IInteractable interactable, GameObject @object)
         {
             if (!SharedItemUtils.InteractableIsPermittedForSpawn(interactable))
                 return;
@@ -73,7 +102,7 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender)
                 return;

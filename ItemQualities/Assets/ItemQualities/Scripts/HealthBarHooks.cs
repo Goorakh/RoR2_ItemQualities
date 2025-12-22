@@ -352,7 +352,7 @@ namespace ItemQualities
             HealthBar.BarInfo temporaryShieldBarInfo = shieldBarInfoTemplate;
             temporaryShieldBarInfo.enabled = false;
 
-            if (healthBarValues.shieldFraction > 0f)
+            if (healthBarValues.shieldFraction > 0f && healthBar.style.shieldBarStyle.enabled)
             {
                 float temporaryShieldFraction = body.GetBuffCount(ItemQualitiesContent.Buffs.PersonalShield) / body.maxShield;
                 if (temporaryShieldFraction > 0f)
@@ -360,7 +360,7 @@ namespace ItemQualities
                     float shieldFillFraction = healthComponent.shield / body.maxShield;
                     float fullShieldBarSize = healthBarValues.shieldFraction / shieldFillFraction;
 
-                    temporaryShieldBarInfo.enabled = healthBar.style.shieldBarStyle.enabled;
+                    temporaryShieldBarInfo.enabled = true;
                     temporaryShieldBarInfo.normalizedXMax = shieldBarInfoTemplate.normalizedXMax;
                     temporaryShieldBarInfo.normalizedXMin = shieldBarInfoTemplate.normalizedXMax - Mathf.Min(healthBarValues.shieldFraction, fullShieldBarSize * temporaryShieldFraction);
 
