@@ -95,10 +95,10 @@ namespace ItemQualities.Items
             switch (critAtLowerElevation.HighestQuality)
             {
                 case QualityTier.Uncommon:
-                    pushDownForce = 20f;
+                    pushDownForce = 30f;
                     break;
                 case QualityTier.Rare:
-                    pushDownForce = 30f;
+                    pushDownForce = 35f;
                     break;
                 case QualityTier.Epic:
                     pushDownForce = 40f;
@@ -113,9 +113,22 @@ namespace ItemQualities.Items
 
             pushDownForce *= forceDownCount;
 
+            switch (damageReport.victimBody.hullClassification)
+            {
+                case HullClassification.Human:
+                    pushDownForce *= 1f;
+                    break;
+                case HullClassification.Golem:
+                    pushDownForce *= 0.75f;
+                    break;
+                case HullClassification.BeetleQueen:
+                    pushDownForce *= 0.5f;
+                    break;
+            }
+
             if (damageReport.victimIsChampion || damageReport.victimIsBoss)
             {
-                pushDownForce *= 0.4f;
+                pushDownForce *= 0.5f;
             }
 
             PhysForceInfo forceInfo = new PhysForceInfo

@@ -1480,10 +1480,10 @@
         "ITEM_DRONESDROPDYNAMITE_LEGENDARY_DESC": "{0}\nAll drones absorb <sprite name=\"Quality\"> <style=cIsDamage>150%</style> of damage when hit, up to a maximum of <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+600% per stack)</style></style> base damage. After a short delay, the drone explodes for all absorbed damage in a radius of up to <sprite name=\"Quality\"> <style=cIsDamage>35m <style=cStack>(+20m per stack)</style></style>.",
 
         "ITEM_CRITATLOWERELEVATION_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to pull airborne enemies to the ground.",
-        "ITEM_CRITATLOWERELEVATION_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10% <style=cStack>(+10% per stack)</style></style> chance on hit to pull airborne enemies down at <sprite name=\"Quality\"> <style=cIsUtility>20m/s</style>.",
+        "ITEM_CRITATLOWERELEVATION_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10% <style=cStack>(+10% per stack)</style></style> chance on hit to pull airborne enemies down at <sprite name=\"Quality\"> <style=cIsUtility>30m/s</style>.",
 
         "ITEM_CRITATLOWERELEVATION_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to pull airborne enemies to the ground.",
-        "ITEM_CRITATLOWERELEVATION_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20% <style=cStack>(+20% per stack)</style></style> chance on hit to pull airborne enemies down at <sprite name=\"Quality\"> <style=cIsUtility>30m/s</style>.",
+        "ITEM_CRITATLOWERELEVATION_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20% <style=cStack>(+20% per stack)</style></style> chance on hit to pull airborne enemies down at <sprite name=\"Quality\"> <style=cIsUtility>35m/s</style>.",
 
         "ITEM_CRITATLOWERELEVATION_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to pull airborne enemies to the ground.",
         "ITEM_CRITATLOWERELEVATION_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>35% <style=cStack>(+35% per stack)</style></style> chance on hit to pull airborne enemies down at <sprite name=\"Quality\"> <style=cIsUtility>40m/s</style>.",
