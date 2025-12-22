@@ -95,16 +95,16 @@ namespace ItemQualities.Items
             switch (critAtLowerElevation.HighestQuality)
             {
                 case QualityTier.Uncommon:
-                    pushDownForce = 10f;
+                    pushDownForce = 20f;
                     break;
                 case QualityTier.Rare:
-                    pushDownForce = 12f;
+                    pushDownForce = 30f;
                     break;
                 case QualityTier.Epic:
-                    pushDownForce = 15f;
+                    pushDownForce = 40f;
                     break;
                 case QualityTier.Legendary:
-                    pushDownForce = 20f;
+                    pushDownForce = 50f;
                     break;
                 default:
                     Log.Error($"Quality tier {critAtLowerElevation.HighestQuality} is not implemented");
