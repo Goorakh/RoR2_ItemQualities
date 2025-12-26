@@ -1,3 +1,4 @@
+using HG;
 using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
@@ -13,20 +14,11 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    public class IgniteOnKillQualityItemBehavior : MonoBehaviour
+    public sealed class IgniteOnKillQualityItemBehavior : MonoBehaviour
     {
         static GameObject _fireAuraPrefab;
-        private static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
-        private static readonly List<HurtBox> _fireAuraHurtBoxBuffer = new List<HurtBox>();
 
-        IcicleAuraController _icicleAura;
-        CharacterBody _body;
-        GameObject _fireAuraObj;
-
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
+        static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
 
         [ContentInitializer]
         static IEnumerator LoadContent(ContentIntializerArgs args)
@@ -67,58 +59,73 @@ namespace ItemQualities.Items
                 Log.Error($"Failed to find Particles in icicle Aura prefab");
             }
 
-            _fireAuraPrefab.AddComponent<GasHandleStacks>();
-
             args.ContentPack.networkedObjectPrefabs.Add(_fireAuraPrefab);
         }
 
         static void setColor(Transform particles, string childName)
         {
             Transform child = particles.Find(childName);
-            if (!child)
-                return;
+            if (child && child.TryGetComponent(out ParticleSystemRenderer particleSystemRenderer))
+            {
+                Material material = particleSystemRenderer.sharedMaterial;
+                if (material)
+                {
+                    Material redMaterial = new Material(material);
+                    redMaterial.name = $"{material.name}_Red";
 
-            ParticleSystemRenderer particleSystem = child.GetComponent<ParticleSystemRenderer>();
-            if (!particles)
-                return;
+                    redMaterial.SetColor(ShaderProperties._TintColor, new Color(1f, 0.1f, 0f));
+                    redMaterial.SetColor(ShaderProperties._Color, new Color(1f, 0.1f, 0f));
 
-            Color color = new Color(1f, 0.1f, 0f);
-            particleSystem.material.SetColor("_TintColor", color);
-            particleSystem.material.SetColor("_Color", color);
+                    particleSystemRenderer.sharedMaterial = redMaterial;
+                }
+            }
+        }
+
+        CharacterBody _body;
+        IcicleAuraController _icicleAura;
+        GameObject _fireAuraObj;
+
+        void Awake()
+        {
+            _body = GetComponent<CharacterBody>();
         }
 
         void OnEnable()
         {
-            GlobalEventManager.onCharacterDeathGlobal += OnCharacterDeathGlobal;
-            _fireAuraObj = Object.Instantiate(_fireAuraPrefab, base.transform.position, Quaternion.identity);
+            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+
+            _fireAuraObj = Instantiate(_fireAuraPrefab, transform.position, Quaternion.identity);
+
             _icicleAura = _fireAuraObj.GetComponent<IcicleAuraController>();
-            _icicleAura.Networkowner = base.gameObject;
-            GasHandleStacks gasStacks = _fireAuraObj.GetComponent<GasHandleStacks>();
-            gasStacks.owner = base.gameObject;
-            _body.onInventoryChanged += gasStacks.OnInventoryChanged;
-            gasStacks.OnInventoryChanged();
+            _icicleAura.Networkowner = gameObject;
 
             NetworkServer.Spawn(_fireAuraObj);
+
+            _body.onInventoryChanged += onInventoryChanged;
+            onInventoryChanged();
         }
 
         void OnDisable()
         {
-            GlobalEventManager.onCharacterDeathGlobal -= OnCharacterDeathGlobal;
+            GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
+
+            _body.onInventoryChanged -= onInventoryChanged;
+
             if (_icicleAura)
             {
-                Object.Destroy(_icicleAura);
+                Destroy(_icicleAura);
                 _icicleAura = null;
             }
         }
 
-        void OnCharacterDeathGlobal(DamageReport damageReport)
+        void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (damageReport == null || damageReport.attackerBody != _body || !_icicleAura)
                 return;
 
             DotController victimDotController = DotController.FindDotController(damageReport.victimBody.gameObject);
 
-            //gas also ignites the enemy you killed, so needs to check for greater 1 instead
+            // Gas also ignites the enemy you killed, so needs to check for greater 1 instead
             if (damageReport.victimBody.GetBuffCount(RoR2Content.Buffs.OnFire) > 1 ||
                 damageReport.victimBody.GetBuffCount(DLC1Content.Buffs.StrongerBurn) > 1 ||
                 (victimDotController && victimDotController.HasDotActive(DotController.DotIndex.Helfire)))
@@ -127,110 +134,14 @@ namespace ItemQualities.Items
             }
         }
 
-        void FixedUpdate()
+        void onInventoryChanged()
         {
-            if (!NetworkServer.active)
-                return;
+            ItemQualityCounts igniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCountsEffective(_body.inventory);
 
-            if (!_icicleAura)
-                return;
-
-            if (!_body.master)
-                return;
-
-            if (_icicleAura.finalIcicleCount <= 0)
-                return;
-
-            if (_icicleAura.attackStopwatch >= _icicleAura.baseIcicleAttackInterval ||
-                _icicleAura.attackStopwatch == 0)
-            {
-                _igniteOnKillSphereSearch.origin = _body.corePosition;
-                _igniteOnKillSphereSearch.mask = LayerIndex.entityPrecise.mask;
-                _igniteOnKillSphereSearch.radius = _icicleAura.actualRadius;
-                _igniteOnKillSphereSearch.RefreshCandidates();
-                _igniteOnKillSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(_body.master.teamIndex));
-                _igniteOnKillSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
-                _igniteOnKillSphereSearch.GetHurtBoxes(_fireAuraHurtBoxBuffer);
-                _igniteOnKillSphereSearch.ClearCandidates();
-                for (int i = 0; i < _fireAuraHurtBoxBuffer.Count; i++)
-                {
-                    HurtBox hurtBox = _fireAuraHurtBoxBuffer[i];
-                    if (hurtBox.healthComponent && hurtBox.healthComponent.body != _body)
-                    {
-                        InflictDotInfo dotInfo = new InflictDotInfo
-                        {
-                            victimObject = hurtBox.healthComponent.gameObject,
-                            attackerObject = gameObject,
-                            totalDamage = _body.damage * 1f,
-                            dotIndex = DotController.DotIndex.Burn,
-                            damageMultiplier = 1f
-                        };
-
-                        if (_body.master.inventory)
-                        {
-                            StrengthenBurnUtils.CheckDotForUpgrade(_body.master.inventory, ref dotInfo);
-                        }
-
-                        DotController.InflictDot(ref dotInfo);
-                    }
-                }
-
-                _fireAuraHurtBoxBuffer.Clear();
-            }
-        }
-    }
-
-    public class GasHandleStacks : NetworkBehaviour
-    {
-        readonly struct OwnerInfo
-        {
-            public readonly GameObject gameObject;
-            public readonly CharacterBody body;
-
-            public OwnerInfo(GameObject gameObject)
-            {
-                this.gameObject = gameObject;
-                if ((bool)gameObject)
-                {
-                    body = gameObject.GetComponent<CharacterBody>();
-                }
-                else
-                {
-                    body = null;
-                }
-            }
-        }
-
-        private OwnerInfo _cachedOwnerInfo;
-        private IcicleAuraController _icicleAura;
-
-        [SyncVar]
-        public GameObject owner;
-
-        private void Awake()
-        {
-            _icicleAura = GetComponent<IcicleAuraController>();
-        }
-
-        public void OnInventoryChanged()
-        {
-            if (_cachedOwnerInfo.gameObject != owner)
-            {
-                _cachedOwnerInfo = new OwnerInfo(owner);
-            }
-
-            if (!_cachedOwnerInfo.body)
-                return;
-
-            if (!_icicleAura)
-                return;
-
-            ItemQualityCounts igniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCountsEffective(_cachedOwnerInfo.body.inventory);
-
-            _icicleAura.icicleDamageCoefficientPerTick = (igniteOnKill.UncommonCount * 1) +
-                                                         (igniteOnKill.RareCount * 2) +
-                                                         (igniteOnKill.EpicCount * 3) +
-                                                         (igniteOnKill.LegendaryCount * 5);
+            _icicleAura.icicleDamageCoefficientPerTick = (1 * igniteOnKill.UncommonCount) +
+                                                         (2 * igniteOnKill.RareCount) +
+                                                         (3 * igniteOnKill.EpicCount) +
+                                                         (5 * igniteOnKill.LegendaryCount);
 
             switch (igniteOnKill.HighestQuality)
             {
@@ -252,6 +163,54 @@ namespace ItemQualities.Items
                     break;
             }
         }
+
+        void FixedUpdate()
+        {
+            if (!NetworkServer.active)
+                return;
+
+            if (!_icicleAura)
+                return;
+
+            if (_icicleAura.finalIcicleCount <= 0)
+                return;
+
+            if (_icicleAura.attackStopwatch >= _icicleAura.baseIcicleAttackInterval ||
+                _icicleAura.attackStopwatch == 0)
+            {
+                using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> hurtBoxes);
+
+                _igniteOnKillSphereSearch.origin = _body.corePosition;
+                _igniteOnKillSphereSearch.mask = LayerIndex.entityPrecise.mask;
+                _igniteOnKillSphereSearch.radius = _icicleAura.actualRadius;
+                _igniteOnKillSphereSearch.RefreshCandidates();
+                _igniteOnKillSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(_body.teamComponent.teamIndex));
+                _igniteOnKillSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
+                _igniteOnKillSphereSearch.GetHurtBoxes(hurtBoxes);
+                _igniteOnKillSphereSearch.ClearCandidates();
+
+                foreach (HurtBox hurtBox in hurtBoxes)
+                {
+                    if (hurtBox.healthComponent && hurtBox.healthComponent.body != _body)
+                    {
+                        InflictDotInfo dotInfo = new InflictDotInfo
+                        {
+                            victimObject = hurtBox.healthComponent.gameObject,
+                            attackerObject = _body.gameObject,
+                            totalDamage = _body.damage * 1f,
+                            dotIndex = DotController.DotIndex.Burn,
+                            damageMultiplier = 1f
+                        };
+
+                        if (_body.inventory)
+                        {
+                            StrengthenBurnUtils.CheckDotForUpgrade(_body.inventory, ref dotInfo);
+                        }
+
+                        DotController.InflictDot(ref dotInfo);
+                    }
+                }
+            }
+        }
     }
 }
-
