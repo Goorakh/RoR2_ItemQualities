@@ -494,16 +494,16 @@
         "ITEM_MOVESPEEDONKILL_LEGENDARY_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>1%</style> <style=cStack>(+1% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>250%</style> <style=cStack>(+250% per stack)</style>. Resets on stage exit or death.",
 
         "ITEM_FEATHER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while airborne grant additional jumps.",
-        "ITEM_FEATHER_UNCOMMON_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>2 <style=cStack>(+2 per stack)</style> extra jumps</style>",
+        "ITEM_FEATHER_UNCOMMON_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>2 <style=cStack>(+2 per stack)</style> extra jumps</style>.",
 
         "ITEM_FEATHER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while airborne grant additional jumps.",
-        "ITEM_FEATHER_RARE_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>4 <style=cStack>(+4 per stack)</style> extra jumps</style>",
+        "ITEM_FEATHER_RARE_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>4 <style=cStack>(+4 per stack)</style> extra jumps</style>.",
 
         "ITEM_FEATHER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while airborne grant additional jumps.",
-        "ITEM_FEATHER_EPIC_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>6 <style=cStack>(+6 per stack)</style> extra jumps</style>",
+        "ITEM_FEATHER_EPIC_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>6 <style=cStack>(+6 per stack)</style> extra jumps</style>.",
 
         "ITEM_FEATHER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while airborne grant additional jumps.",
-        "ITEM_FEATHER_LEGENDARY_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>8 <style=cStack>(+8 per stack)</style> extra jumps</style>",
+        "ITEM_FEATHER_LEGENDARY_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>8 <style=cStack>(+8 per stack)</style> extra jumps</style>.",
 
         "ITEM_STRENGTHENBURN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
         "ITEM_STRENGTHENBURN_UNCOMMON_DESC": "{0}\nGain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> base damage.",
