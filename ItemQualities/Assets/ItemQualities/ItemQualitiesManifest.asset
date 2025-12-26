@@ -35,7 +35,7 @@ MonoBehaviour:
   - <ManifestPluginStaging>
   Author: Gorakh
   Name: Quality
-  Description: Introduces quality variants of most items. Beta Release.
+  Description: Adds quality variants of most items. Beta Release.
   Version: 0.5.3
   Dependencies:
   - {fileID: 11400000, guid: 184f0fdf3edcd6bad171410f4e0fd947, type: 2}
