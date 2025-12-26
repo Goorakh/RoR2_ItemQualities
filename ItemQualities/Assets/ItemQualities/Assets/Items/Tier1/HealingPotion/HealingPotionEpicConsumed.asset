@@ -15,8 +15,8 @@ MonoBehaviour:
   deprecatedTier: 5
   _itemTierDef: {fileID: 0}
   nameToken: 
-  pickupToken: 
-  descriptionToken: 
+  pickupToken: ITEM_HEALINGPOTIONCONSUMED_EPIC_PICKUP
+  descriptionToken: ITEM_HEALINGPOTIONCONSUMED_EPIC_DESC
   loreToken: 
   unlockableDef: {fileID: 0}
   pickupModelPrefab: {fileID: 0}
