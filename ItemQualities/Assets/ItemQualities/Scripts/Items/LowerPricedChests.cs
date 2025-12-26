@@ -64,38 +64,83 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(DLC2Content.Items), nameof(DLC2Content.Items.LowerPricedChests)),
-                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform)),
-                               x => x.MatchCallOrCallvirt<CostTypeDef>(nameof(CostTypeDef.PayCost))))
-            {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
             VariableDefinition saleStarStateVar = il.AddVariable<QualitySaleStarState>();
             c.Emit(OpCodes.Newobj, typeof(QualitySaleStarState).GetConstructor(Array.Empty<Type>()));
             c.Emit(OpCodes.Stloc, saleStarStateVar);
 
-            c.Goto(foundCursors[1].Next, MoveType.After); // call Inventory.ItemTransformation.TryTransform
-
-            if (!ItemHooks.EmitCombinedQualityItemTransformationPatch(c, out VariableDefinition transformedQualityStacksVar))
-                return;
-
-            c.Emit(OpCodes.Dup);
-            c.Emit(OpCodes.Ldloc, transformedQualityStacksVar);
-            c.Emit(OpCodes.Ldloc, saleStarStateVar);
-            c.EmitDelegate<Action<bool, QualityItemTransformResult, QualitySaleStarState>>(onSaleStarProc);
-
-            static void onSaleStarProc(bool success, QualityItemTransformResult transformResult, QualitySaleStarState saleStarState)
+            int saleStarItemTransformationVarIndex = -1;
+            int saleStarItemTransformationResultVarIndex = -1;
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdfld<PurchaseInteraction>(nameof(PurchaseInteraction.saleStarCompatible))) ||
+                !c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out saleStarItemTransformationVarIndex),
+                               x => x.MatchLdloc(typeof(CharacterBody), il, out _),
+                               x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory)),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation.TryTransformResult), il, out saleStarItemTransformationResultVarIndex),
+                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
-                if (success)
-                {
-                    saleStarState.SaleStarsSpent = transformResult.TakenItems.StackValues.TotalStacks;
-                }
+                Log.Error("Failed to find sale star proc patch location");
+                return;
             }
 
-            c.Goto(foundCursors[2].Next, MoveType.Before); // call CostTypeDef.PayCost
+            c.Emit(OpCodes.Ldarg, interactorParameter);
+            c.Emit(OpCodes.Ldloca, saleStarItemTransformationVarIndex);
+            c.Emit(OpCodes.Ldloca, saleStarItemTransformationResultVarIndex);
+            c.Emit(OpCodes.Ldloc, saleStarStateVar);
+            c.EmitDelegate<ConsumeQualitySaleStarsDelegate>(consumeQualitySaleStars);
+
+            static bool consumeQualitySaleStars(bool result, Interactor activator, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult, QualitySaleStarState saleStarState)
+            {
+                CharacterBody body = activator ? activator.GetComponent<CharacterBody>() : null;
+                Inventory inventory = body ? body.inventory : null;
+
+                if (result)
+                {
+                    if (saleStarState != null)
+                    {
+                        saleStarState.SaleStarsSpent.BaseItemCount = consumeTransformResult.takenItem.stackValues.permanentStacks;
+                    }
+                }
+
+                if (inventory)
+                {
+                    for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                    {
+                        Inventory.ItemTransformation qualityItemTransformation = itemTransformation;
+                        qualityItemTransformation.originalItemIndex = ItemQualitiesContent.ItemQualityGroups.LowerPricedChests.GetItemIndex(qualityTier);
+                        qualityItemTransformation.newItemIndex = ItemQualitiesContent.ItemQualityGroups.LowerPricedChestsConsumed.GetItemIndex(qualityTier);
+
+                        if (qualityItemTransformation.TryTransform(inventory, out Inventory.ItemTransformation.TryTransformResult qualityConsumeTransformResult))
+                        {
+                            result = true;
+
+                            static void addStackValues(ref Inventory.ItemStackValues a, in Inventory.ItemStackValues b)
+                            {
+                                a.permanentStacks += b.permanentStacks;
+                                a.temporaryStacksValue += b.temporaryStacksValue;
+                                a.totalStacks += b.totalStacks;
+                            }
+
+                            addStackValues(ref consumeTransformResult.takenItem.stackValues, qualityConsumeTransformResult.takenItem.stackValues);
+                            addStackValues(ref consumeTransformResult.givenItem.stackValues, qualityConsumeTransformResult.givenItem.stackValues);
+
+                            if (saleStarState != null)
+                            {
+                                saleStarState.SaleStarsSpent[qualityTier] += qualityConsumeTransformResult.takenItem.stackValues.totalStacks;
+                            }
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchCallOrCallvirt<CostTypeDef>(nameof(CostTypeDef.PayCost))))
+            {
+                Log.Error("Failed to find PayCost patch location");
+                return;
+            }
 
             c.Emit(OpCodes.Dup);
             c.Emit(OpCodes.Ldloc, saleStarStateVar);
@@ -109,6 +154,8 @@ namespace ItemQualities.Items
                 }
             }
         }
+
+        delegate bool ConsumeQualitySaleStarsDelegate(bool result, Interactor activator, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult, QualitySaleStarState saleStarState);
 
         static QualityTier[] generateQualityDropTiersFromSaleStars(GameObject purchasedObject, int dropCount, bool useFirstInteractionCost, Xoroshiro128Plus rng)
         {

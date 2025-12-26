@@ -19,26 +19,55 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.healingPotion)),
-                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
+            int potionItemTransformationVarIndex = -1;
+            Instruction skipPotionTransformationTargetInstruction = null;
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.healingPotion))) ||
+                !c.TryGotoNext(MoveType.Before,
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out potionItemTransformationVarIndex),
+                               x => x.MatchLdarg(0),
+                               x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.body)),
+                               x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory)),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation.TryTransformResult), il, out _),
+                               x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform)),
+                               x => x.MatchBrfalse(out _),
+                               x => x.MatchAny(out skipPotionTransformationTargetInstruction)))
             {
-                Log.Error("Failed to find healing potion break location");
+                Log.Error("Failed to find patch location");
                 return;
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.After); // call Inventory.ItemTransformation.TryTransform
-
-            ItemHooks.EmitCombinedQualityItemTransformationPatch(c);
-
-            c.Goto(foundCursors[1].Next, MoveType.Before); // call Inventory.ItemTransformation.TryTransform
+            ILLabel skipPotionTransformationLabel = c.DefineLabel();
+            skipPotionTransformationLabel.Target = skipPotionTransformationTargetInstruction;
 
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<HealthComponent, bool>>(tryProtectElixirs);
-            c.EmitSkipMethodCall(OpCodes.Brtrue, c =>
+            c.Emit(OpCodes.Brtrue, skipPotionTransformationLabel);
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldloca, potionItemTransformationVarIndex);
+            c.EmitDelegate<TryConsumeQualityElixirsDelegate>(tryConsumeQualityElixirs);
+
+            static void tryConsumeQualityElixirs(HealthComponent healthComponent, ref Inventory.ItemTransformation itemTransformation)
             {
-                c.Emit(OpCodes.Ldc_I4_0); // false
-            });
+                CharacterBody body = healthComponent ? healthComponent.body : null;
+                Inventory inventory = body ? body.inventory : null;
+
+                ItemQualityCounts elixir = ItemQualitiesContent.ItemQualityGroups.HealingPotion.GetItemCountsEffective(inventory);
+
+                if (elixir.BaseItemCount == 0 && elixir.TotalQualityCount > 0)
+                {
+                    for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                    {
+                        if (elixir[qualityTier] > 0)
+                        {
+                            itemTransformation.originalItemIndex = ItemQualitiesContent.ItemQualityGroups.HealingPotion.GetItemIndex(qualityTier);
+                            itemTransformation.newItemIndex = ItemQualitiesContent.ItemQualityGroups.HealingPotionConsumed.GetItemIndex(qualityTier);
+                            break;
+                        }
+                    }
+                }
+            }
 
             static bool tryProtectElixirs(HealthComponent healthComponent)
             {
@@ -47,16 +76,43 @@ namespace ItemQualities.Items
                 Inventory inventory = body ? body.inventory : null;
 
                 ItemQualityCounts elixir = ItemQualitiesContent.ItemQualityGroups.HealingPotion.GetItemCountsEffective(inventory);
-                if (elixir.TotalQualityCount <= 0)
-                    return false;
 
-                float elixirProtectChance = (25f * elixir.UncommonCount) +  // 20%
-                                            (55f * elixir.RareCount) +      // 35%
-                                            (100f * elixir.EpicCount) +     // 50%
-                                            (300f * elixir.LegendaryCount); // 75%
+                for (int i = 0; i < elixir.UncommonCount; i++)
+                {
+                    if (RollUtil.CheckRoll(20f, master, false))
+                    {
+                        return true;
+                    }
+                }
 
-                return RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(elixirProtectChance), master, false);
+                for (int i = 0; i < elixir.RareCount; i++)
+                {
+                    if (RollUtil.CheckRoll(35f, master, false))
+                    {
+                        return true;
+                    }
+                }
+
+                for (int i = 0; i < elixir.EpicCount; i++)
+                {
+                    if (RollUtil.CheckRoll(50f, master, false))
+                    {
+                        return true;
+                    }
+                }
+
+                for (int i = 0; i < elixir.LegendaryCount; i++)
+                {
+                    if (RollUtil.CheckRoll(75f, master, false))
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
             }
         }
+
+        delegate void TryConsumeQualityElixirsDelegate(HealthComponent healthComponent, ref Inventory.ItemTransformation itemTransformation);
     }
 }

@@ -588,5 +588,11 @@ namespace ItemQualities.Utilities.Extensions
 
             return instruction.MatchStloc(out localIndex) && matchLocalIndex(localIndex, variableType, ilContext);
         }
+
+        public static bool MatchAny(this Instruction instr, out Instruction instruction)
+        {
+            instruction = instr;
+            return true;
+        }
     }
 }
