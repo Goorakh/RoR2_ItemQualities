@@ -1,10 +1,9 @@
 ﻿using ItemQualities.Utilities;
 using RoR2;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public sealed class SecondarySkillMagazineQualityItemBehavior : MonoBehaviour
+    public sealed class SecondarySkillMagazineQualityItemBehavior : QualityItemBodyBehavior
     {
         static EffectIndex _restockEffectIndex = EffectIndex.Invalid;
 
@@ -18,35 +17,34 @@ namespace ItemQualities.Items
             }
         }
 
-        CharacterBody _body;
-
-        void Awake()
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Authority)]
+        static ItemQualityGroup GetItemGroup()
         {
-            _body = GetComponent<CharacterBody>();
+            return ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine;
         }
 
         void OnEnable()
         {
-            _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
+            Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
         }
 
         void OnDisable()
         {
-            _body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
+            Body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)
         {
-            if (_body.skillLocator && skill && skill == _body.skillLocator.secondary)
+            if (Body.skillLocator && skill && skill == Body.skillLocator.secondary)
             {
-                ItemQualityCounts secondarySkillMagazine = ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCountsEffective(_body.inventory);
+                ItemQualityCounts secondarySkillMagazine = Stacks;
 
                 float freeRestockChance = (10f * secondarySkillMagazine.UncommonCount) +
                                           (20f * secondarySkillMagazine.RareCount) +
                                           (35f * secondarySkillMagazine.EpicCount) +
                                           (60f * secondarySkillMagazine.LegendaryCount);
 
-                if (RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master, false))
+                if (RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), Body.master, false))
                 {
                     skill.AddOneStock();
 
@@ -54,7 +52,7 @@ namespace ItemQualities.Items
                     {
                         EffectManager.SpawnEffect(_restockEffectIndex, new EffectData
                         {
-                            origin = _body.corePosition
+                            origin = Body.corePosition
                         }, true);
                     }
                 }

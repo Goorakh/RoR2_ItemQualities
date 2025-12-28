@@ -1,33 +1,27 @@
-﻿using RoR2;
-using UnityEngine;
-
-namespace ItemQualities.Items
+﻿namespace ItemQualities.Items
 {
-    public class BarrierOnOverHealQualityItemBehavior : MonoBehaviour
+    public sealed class BarrierOnOverHealQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
-        HealthComponent _healthComponent;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal;
+        }
 
         bool _hadBarrier = false;
 
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-            _healthComponent = _body.healthComponent;
-        }
-
         void OnEnable()
         {
-            _hadBarrier = _body.healthComponent.barrier > 0f;
+            _hadBarrier = Body.healthComponent.barrier > 0f;
         }
 
         void FixedUpdate()
         {
-            bool hasBarrier = _body.healthComponent.barrier > 0f;
+            bool hasBarrier = Body.healthComponent.barrier > 0f;
             if (hasBarrier != _hadBarrier)
             {
                 _hadBarrier = hasBarrier;
-                _body.MarkAllStatsDirty();
+                Body.MarkAllStatsDirty();
             }
         }
     }

@@ -1,16 +1,14 @@
 ﻿using ItemQualities.Utilities;
 using RoR2;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public sealed class EquipmentMagazineQualityItemBehavior : MonoBehaviour
+    public sealed class EquipmentMagazineQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
-
-        void Awake()
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
         {
-            _body = GetComponent<CharacterBody>();
+            return ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine;
         }
 
         void OnEnable()
@@ -25,19 +23,19 @@ namespace ItemQualities.Items
 
         void onEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
         {
-            if (_body.equipmentSlot != equipmentSlot || equipmentIndex == EquipmentIndex.None)
+            if (Body.equipmentSlot != equipmentSlot || equipmentIndex == EquipmentIndex.None)
                 return;
 
-            ItemQualityCounts equipmentMagazine = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCountsEffective(_body.inventory);
+            ItemQualityCounts equipmentMagazine = Stacks;
 
             float freeRestockChance = (10f * equipmentMagazine.UncommonCount) +
                                       (20f * equipmentMagazine.RareCount) +
                                       (35f * equipmentMagazine.EpicCount) +
                                       (60f * equipmentMagazine.LegendaryCount);
 
-            if (RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), _body.master, false))
+            if (RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), Body.master, false))
             {
-                _body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, equipmentSlot.activeEquipmentSet[equipmentSlot.activeEquipmentSlot], 1);
+                Body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, equipmentSlot.activeEquipmentSet[equipmentSlot.activeEquipmentSlot], 1);
             }
         }
     }

@@ -1,40 +1,29 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class MoveSpeedOnKillQualityItemBehavior : MonoBehaviour
+    public sealed class MoveSpeedOnKillQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
-
-        void Awake()
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
         {
-            _body = GetComponent<CharacterBody>();
-        }
-
-        void OnEnable()
-        {
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-            }
+            return ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill;
         }
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.EnsureBuffQualities(_body, QualityTier.None);
+                ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.EnsureBuffQualities(Body, QualityTier.None);
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.EnsureBuffQualities(_body, buffQualityTier);
+            base.OnStacksChanged();
+
+            QualityTier buffQualityTier = Stacks.HighestQuality;
+            ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.EnsureBuffQualities(Body, buffQualityTier);
         }
     }
 }

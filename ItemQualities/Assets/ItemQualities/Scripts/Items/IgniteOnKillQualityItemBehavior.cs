@@ -14,7 +14,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    public sealed class IgniteOnKillQualityItemBehavior : MonoBehaviour
+    public sealed class IgniteOnKillQualityItemBehavior : QualityItemBodyBehavior
     {
         static GameObject _fireAuraPrefab;
 
@@ -81,14 +81,14 @@ namespace ItemQualities.Items
             }
         }
 
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.IgniteOnKill;
+        }
+
         IcicleAuraController _icicleAura;
         GameObject _fireAuraObj;
-
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
 
         void OnEnable()
         {
@@ -100,16 +100,11 @@ namespace ItemQualities.Items
             _icicleAura.Networkowner = gameObject;
 
             NetworkServer.Spawn(_fireAuraObj);
-
-            _body.onInventoryChanged += onInventoryChanged;
-            onInventoryChanged();
         }
 
         void OnDisable()
         {
             GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
-
-            _body.onInventoryChanged -= onInventoryChanged;
 
             if (_icicleAura)
             {
@@ -120,7 +115,7 @@ namespace ItemQualities.Items
 
         void onCharacterDeathGlobal(DamageReport damageReport)
         {
-            if (damageReport == null || damageReport.attackerBody != _body || !_icicleAura)
+            if (damageReport == null || damageReport.attackerBody != Body || !_icicleAura)
                 return;
 
             DotController victimDotController = DotController.FindDotController(damageReport.victimBody.gameObject);
@@ -134,9 +129,11 @@ namespace ItemQualities.Items
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            ItemQualityCounts igniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCountsEffective(_body.inventory);
+            base.OnStacksChanged();
+
+            ItemQualityCounts igniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCountsEffective(Body.inventory);
 
             _icicleAura.icicleDamageCoefficientPerTick = (1 * igniteOnKill.UncommonCount) +
                                                          (2 * igniteOnKill.RareCount) +
@@ -180,31 +177,31 @@ namespace ItemQualities.Items
             {
                 using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> hurtBoxes);
 
-                _igniteOnKillSphereSearch.origin = _body.corePosition;
+                _igniteOnKillSphereSearch.origin = Body.corePosition;
                 _igniteOnKillSphereSearch.mask = LayerIndex.entityPrecise.mask;
                 _igniteOnKillSphereSearch.radius = _icicleAura.actualRadius;
                 _igniteOnKillSphereSearch.RefreshCandidates();
-                _igniteOnKillSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(_body.teamComponent.teamIndex));
+                _igniteOnKillSphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetUnprotectedTeams(Body.teamComponent.teamIndex));
                 _igniteOnKillSphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
                 _igniteOnKillSphereSearch.GetHurtBoxes(hurtBoxes);
                 _igniteOnKillSphereSearch.ClearCandidates();
 
                 foreach (HurtBox hurtBox in hurtBoxes)
                 {
-                    if (hurtBox.healthComponent && hurtBox.healthComponent.body != _body)
+                    if (hurtBox.healthComponent && hurtBox.healthComponent.body != Body)
                     {
                         InflictDotInfo dotInfo = new InflictDotInfo
                         {
                             victimObject = hurtBox.healthComponent.gameObject,
-                            attackerObject = _body.gameObject,
-                            totalDamage = _body.damage * 1f,
+                            attackerObject = Body.gameObject,
+                            totalDamage = Body.damage * 1f,
                             dotIndex = DotController.DotIndex.Burn,
                             damageMultiplier = 1f
                         };
 
-                        if (_body.inventory)
+                        if (Body.inventory)
                         {
-                            StrengthenBurnUtils.CheckDotForUpgrade(_body.inventory, ref dotInfo);
+                            StrengthenBurnUtils.CheckDotForUpgrade(Body.inventory, ref dotInfo);
                         }
 
                         DotController.InflictDot(ref dotInfo);

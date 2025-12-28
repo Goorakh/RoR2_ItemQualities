@@ -4,22 +4,21 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class SprintArmorQualityItemBehavior : MonoBehaviour
+    public sealed class SprintArmorQualityItemBehavior : QualityItemBodyBehavior
     {
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.SprintArmor;
+        }
+
         public const float MaxSprintDeviationDistance = 0.3f;
         public const float RequiredSprintDuration = 1f;
-
-        CharacterBody _body;
 
         bool _wasSprinting = false;
 
         float _sprintingStopwatch = 0f;
         Plane _sprintPlane = default;
-
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
 
         void OnDisable()
         {
@@ -32,18 +31,18 @@ namespace ItemQualities.Items
             if (!NetworkServer.active)
                 return;
 
-            updateSprinting(_body.isSprinting);
+            updateSprinting(Body.isSprinting);
 
-            if (_body.isSprinting)
+            if (Body.isSprinting)
             {
                 _sprintingStopwatch += Time.fixedDeltaTime;
-                if (Mathf.Abs(_sprintPlane.GetDistanceToPoint(_body.footPosition)) >= MaxSprintDeviationDistance)
+                if (Mathf.Abs(_sprintPlane.GetDistanceToPoint(Body.footPosition)) >= MaxSprintDeviationDistance)
                 {
                     restartSprintTracking();
                 }
             }
 
-            setProvidingBuff(_body.isSprinting && _sprintingStopwatch >= RequiredSprintDuration);
+            setProvidingBuff(Body.isSprinting && _sprintingStopwatch >= RequiredSprintDuration);
         }
 
         void updateSprinting(bool isSprinting)
@@ -63,11 +62,11 @@ namespace ItemQualities.Items
         {
             _sprintingStopwatch = 0f;
 
-            Vector3 startPosition = _body.footPosition;
+            Vector3 startPosition = Body.footPosition;
 
-            Vector3 sprintDirection = _body.transform.forward;
+            Vector3 sprintDirection = Body.transform.forward;
 
-            CharacterDirection characterDirection = _body.characterDirection;
+            CharacterDirection characterDirection = Body.characterDirection;
             if (characterDirection)
             {
                 if (characterDirection.moveVector.sqrMagnitude > Mathf.Epsilon)
@@ -85,15 +84,15 @@ namespace ItemQualities.Items
 
         void setProvidingBuff(bool providingBuff)
         {
-            if (providingBuff != _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong))
+            if (providingBuff != Body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong))
             {
                 if (providingBuff)
                 {
-                    _body.AddBuff(ItemQualitiesContent.Buffs.SprintArmorStrong);
+                    Body.AddBuff(ItemQualitiesContent.Buffs.SprintArmorStrong);
                 }
                 else
                 {
-                    _body.RemoveBuff(ItemQualitiesContent.Buffs.SprintArmorStrong);
+                    Body.RemoveBuff(ItemQualitiesContent.Buffs.SprintArmorStrong);
                 }
             }
         }

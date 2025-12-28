@@ -3,22 +3,27 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public sealed class ShieldBoosterQualityItemBehavior : MonoBehaviour
+    public sealed class ShieldBoosterQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.ShieldBooster;
+        }
+
         CharacterBodyExtraStatsTracker _bodyExtraStats;
 
         float _boosterFraction;
 
-        void Awake()
+        protected override void Awake()
         {
-            _body = GetComponent<CharacterBody>();
+            base.Awake();
+
             _bodyExtraStats = GetComponent<CharacterBodyExtraStatsTracker>();
         }
 
         void OnEnable()
         {
-            _body.onInventoryChanged += onInventoryChanged;
             _bodyExtraStats.OnTakeDamageServer += onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal += onShieldBoosterBreakServerGlobal;
 
@@ -28,24 +33,25 @@ namespace ItemQualities.Items
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
             _bodyExtraStats.OnTakeDamageServer -= onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal -= onShieldBoosterBreakServerGlobal;
 
-            ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.EnsureBuffQualities(_body, QualityTier.None);
+            ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.EnsureBuffQualities(Body, QualityTier.None);
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
+            base.OnStacksChanged();
+
             updateBuffCount();
         }
 
         void onTakeDamageServer(DamageReport damageReport)
         {
-            if (damageReport.damageDealt > 0f && _body.healthComponent.shield > 0f)
+            if (damageReport.damageDealt > 0f && Body.healthComponent.shield > 0f)
             {
                 float damageFractionMultiplier;
-                switch (ItemQualitiesContent.ItemQualityGroups.ShieldBooster.GetItemCountsEffective(_body.inventory).HighestQuality)
+                switch (Stacks.HighestQuality)
                 {
                     default:
                     case QualityTier.Uncommon:
@@ -62,7 +68,7 @@ namespace ItemQualities.Items
                         break;
                 }
 
-                float boosterFractionIncrease = Mathf.Min(1f - _boosterFraction, damageFractionMultiplier * (damageReport.damageDealt / _body.healthComponent.fullCombinedHealth));
+                float boosterFractionIncrease = Mathf.Min(1f - _boosterFraction, damageFractionMultiplier * (damageReport.damageDealt / Body.healthComponent.fullCombinedHealth));
                 if (boosterFractionIncrease > 0f)
                 {
                     _boosterFraction += boosterFractionIncrease;
@@ -73,7 +79,7 @@ namespace ItemQualities.Items
 
         void onShieldBoosterBreakServerGlobal(CharacterBody body)
         {
-            if (body == _body)
+            if (body == Body)
             {
                 _boosterFraction = 0f;
                 updateBuffCount();
@@ -82,9 +88,9 @@ namespace ItemQualities.Items
 
         void updateBuffCount()
         {
-            ItemQualityCounts shieldBooster = ItemQualitiesContent.ItemQualityGroups.ShieldBooster.GetItemCountsEffective(_body.inventory);
+            ItemQualityCounts shieldBooster = Stacks;
 
-            int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.GetBuffCounts(_body).TotalQualityCount;
+            int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.GetBuffCounts(Body).TotalQualityCount;
             int targetBuffCount = Mathf.CeilToInt(_boosterFraction * 100f);
 
             if (targetBuffCount != currentBuffCount)
@@ -94,19 +100,19 @@ namespace ItemQualities.Items
                 {
                     for (int i = currentBuffCount; i > targetBuffCount; i--)
                     {
-                        _body.RemoveBuff(shieldBoosterBuffIndex);
+                        Body.RemoveBuff(shieldBoosterBuffIndex);
                     }
                 }
                 else
                 {
                     for (int i = currentBuffCount; i < targetBuffCount; i++)
                     {
-                        _body.AddBuff(shieldBoosterBuffIndex);
+                        Body.AddBuff(shieldBoosterBuffIndex);
                     }
                 }
             }
 
-            ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.EnsureBuffQualities(_body, shieldBooster.HighestQuality);
+            ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.EnsureBuffQualities(Body, shieldBooster.HighestQuality);
         }
     }
 }

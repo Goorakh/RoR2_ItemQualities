@@ -199,55 +199,6 @@ namespace ItemQualities
         void onBodyInventoryChanged()
         {
             MarkAllStatsDirty();
-
-            void setItemBehavior<T>(bool enabled) where T : Behaviour
-            {
-                T itemBehavior = GetComponent<T>();
-                bool alreadyEnabled = itemBehavior && itemBehavior.enabled;
-
-                if (alreadyEnabled != enabled)
-                {
-                    if (itemBehavior)
-                    {
-                        itemBehavior.enabled = enabled;
-                    }
-                    else if (enabled)
-                    {
-                        gameObject.AddComponent<T>();
-                    }
-                }
-            }
-
-            if (NetworkServer.active)
-            {
-                setItemBehavior<MoveSpeedOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<AttackSpeedOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<SprintOutOfCombatQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<SprintArmorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<HealOnCritQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<EnergizedOnEquipmentUseItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<BarrierOnOverHealQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<KillEliteFrenzyQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<ArmorPlateQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<BoostAllStatsQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<IgniteOnKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<MushroomVoidQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<FragileDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<MushroomQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<EquipmentMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<DuplicatorQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Duplicator.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<FeatherQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<DronesDropDynamiteQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<DronesDropDynamiteDroneItemQualityItemBehavior>(_body.inventory.GetItemCountEffective(ItemQualitiesContent.Items.DronesDropDynamiteQualityDroneItem) > 0);
-                setItemBehavior<ShieldBoosterQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ShieldBooster.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<WarCryOnMultiKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-            }
-
-            if (HasEffectiveAuthority)
-            {
-                setItemBehavior<SecondarySkillMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-                setItemBehavior<UtilitySkillMagazineQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
-            }
         }
 
         void refreshModelReference(Transform modelTransform)

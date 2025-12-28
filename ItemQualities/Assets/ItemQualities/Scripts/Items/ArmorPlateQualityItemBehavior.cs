@@ -1,44 +1,33 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class ArmorPlateQualityItemBehavior : MonoBehaviour
+    public sealed class ArmorPlateQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
-
-        void Awake()
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
         {
-            _body = GetComponent<CharacterBody>();
-        }
-
-        void OnEnable()
-        {
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-            }
+            return ItemQualitiesContent.ItemQualityGroups.ArmorPlate;
         }
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(_body, QualityTier.None);
+                ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(Body, QualityTier.None);
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(_body, buffQualityTier);
+            base.OnStacksChanged();
+
+            QualityTier buffQualityTier = Stacks.HighestQuality;
+            ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(Body, buffQualityTier);
 
             if (buffQualityTier > QualityTier.None)
             {
-                ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff.EnsureBuffQualities(_body, buffQualityTier);
+                ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff.EnsureBuffQualities(Body, buffQualityTier);
             }
         }
     }

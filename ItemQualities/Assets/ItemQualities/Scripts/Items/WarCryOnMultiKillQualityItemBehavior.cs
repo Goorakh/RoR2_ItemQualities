@@ -1,27 +1,30 @@
 ﻿using RoR2;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public sealed class WarCryOnMultiKillQualityItemBehavior : MonoBehaviour
+    public sealed class WarCryOnMultiKillQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill;
+        }
+
         CharacterBodyExtraStatsTracker _bodyExtraStats;
 
         bool _hadWarCryBuff;
 
-        bool hasWarCryBuff => _body.HasBuff(RoR2Content.Buffs.WarCryBuff) || _body.HasBuff(RoR2Content.Buffs.TeamWarCry);
+        bool hasWarCryBuff => Body.HasBuff(RoR2Content.Buffs.WarCryBuff) || Body.HasBuff(RoR2Content.Buffs.TeamWarCry);
 
-        void Awake()
+        protected override void Awake()
         {
-            _body = GetComponent<CharacterBody>();
+            base.Awake();
+
             _bodyExtraStats = GetComponent<CharacterBodyExtraStatsTracker>();
         }
 
         void OnEnable()
         {
-            _body.onInventoryChanged += onInventoryChanged;
-
             _bodyExtraStats.OnKilledOther += onKilledOther;
 
             _hadWarCryBuff = false;
@@ -29,8 +32,6 @@ namespace ItemQualities.Items
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-
             _bodyExtraStats.OnKilledOther -= onKilledOther;
 
             setWarCryBuffCount(0);
@@ -57,31 +58,32 @@ namespace ItemQualities.Items
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
+            base.OnStacksChanged();
+
             setWarCryBuffCount(hasWarCryBuff ? _bodyExtraStats.EliteKillCount : 0);
         }
 
         void setWarCryBuffCount(int count)
         {
-            int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffCounts(_body).TotalQualityCount;
+            int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffCounts(Body).TotalQualityCount;
             if (currentBuffCount != count)
             {
-                QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(_body.inventory).HighestQuality;
-                BuffIndex qualityBuffIndex = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffIndex(qualityTier);
+                BuffIndex qualityBuffIndex = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffIndex(Stacks.HighestQuality);
 
                 if (currentBuffCount < count)
                 {
                     for (int i = currentBuffCount; i < count; i++)
                     {
-                        _body.AddBuff(qualityBuffIndex);
+                        Body.AddBuff(qualityBuffIndex);
                     }
                 }
                 else
                 {
                     for (int i = currentBuffCount; i > count; i--)
                     {
-                        _body.RemoveBuff(qualityBuffIndex);
+                        Body.RemoveBuff(qualityBuffIndex);
                     }
                 }
 
@@ -91,8 +93,7 @@ namespace ItemQualities.Items
 
         void updateBuffQualities()
         {
-            QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.EnsureBuffQualities(_body, qualityTier);
+            ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.EnsureBuffQualities(Body, Stacks.HighestQuality);
         }
     }
 }

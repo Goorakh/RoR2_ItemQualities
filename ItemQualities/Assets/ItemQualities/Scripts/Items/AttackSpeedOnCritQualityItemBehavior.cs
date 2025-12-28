@@ -1,40 +1,28 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.Networking;
+﻿using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class AttackSpeedOnCritQualityItemBehavior : MonoBehaviour
+    public sealed class AttackSpeedOnCritQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
-
-        void Awake()
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
         {
-            _body = GetComponent<CharacterBody>();
-        }
-
-        void OnEnable()
-        {
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-            }
+            return ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit;
         }
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.EnsureBuffQualities(_body, QualityTier.None);
+                ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.EnsureBuffQualities(Body, QualityTier.None);
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.EnsureBuffQualities(_body, buffQualityTier);
+            base.OnStacksChanged();
+
+            ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.EnsureBuffQualities(Body, Stacks.HighestQuality);
         }
     }
 }

@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public sealed class BoostAllStatsQualityItemBehavior : MonoBehaviour
+    public sealed class BoostAllStatsQualityItemBehavior : QualityItemBodyBehavior
     {
         static BuffIndex[] _validBuffIndices = Array.Empty<BuffIndex>();
 
@@ -28,39 +28,27 @@ namespace ItemQualities.Items
             Array.Sort(_validBuffIndices);
         }
 
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.BoostAllStats;
+        }
 
         float _buffCheckTimer = 0f;
 
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
-
-        void OnEnable()
-        {
-            _buffCheckTimer = 0f;
-
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-            }
-        }
-
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-
             if (NetworkServer.active)
             {
                 setBuffActive(false);
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.EnsureBuffQualities(_body, buffQualityTier);
+            base.OnStacksChanged();
+
+            ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.EnsureBuffQualities(Body, Stacks.HighestQuality);
         }
 
         void FixedUpdate()
@@ -76,7 +64,7 @@ namespace ItemQualities.Items
                 int growthNectarBuffCount = 0;
                 foreach (BuffIndex buffIndex in _validBuffIndices)
                 {
-                    if (_body.HasBuff(buffIndex))
+                    if (Body.HasBuff(buffIndex))
                     {
                         growthNectarBuffCount++;
                     }
@@ -88,16 +76,16 @@ namespace ItemQualities.Items
 
         void setBuffActive(bool active)
         {
-            if (active != ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.HasQualityBuff(_body))
+            if (active != ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.HasQualityBuff(Body))
             {
                 if (active)
                 {
-                    QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.BoostAllStats.GetItemCountsEffective(_body.inventory).HighestQuality;
-                    _body.AddBuff(ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.GetBuffIndex(buffQualityTier));
+                    BuffIndex buffIndex = ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.GetBuffIndex(Stacks.HighestQuality);
+                    Body.AddBuff(buffIndex);
                 }
                 else
                 {
-                    ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.EnsureBuffQualities(_body, QualityTier.None);
+                    ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.EnsureBuffQualities(Body, QualityTier.None);
                 }
             }
         }
