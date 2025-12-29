@@ -95,12 +95,12 @@ namespace ItemQualities
                 {
                     if (!equipment)
                     {
-                        Log.Warning($"Missing variant '{qualityTier}' in item group '{name}'");
+                        Log.Warning($"Missing variant '{qualityTier}' in equipment group '{name}'");
                         return;
                     }
 
                     if (string.IsNullOrEmpty(equipment.nameToken))
-                        equipment.nameToken = $"ITEM_{baseEquipment.name.ToUpper()}_{qualityTier.ToString().ToUpper()}_NAME";
+                        equipment.nameToken = $"EQUIPMENT_{baseEquipment.name.ToUpper()}_{qualityTier.ToString().ToUpper()}_NAME";
 
                     if (string.IsNullOrEmpty(equipment.pickupToken))
                         equipment.pickupToken = baseEquipment.pickupToken;
