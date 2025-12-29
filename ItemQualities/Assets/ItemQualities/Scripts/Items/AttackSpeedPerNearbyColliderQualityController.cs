@@ -80,7 +80,7 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = _bodyAttachment ? _bodyAttachment.attachedBody : null;
 
-                BuffQualityCounts lanternBuffCounts = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(body);
+                BuffQualityCounts lanternBuffCounts = body ? body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff) : default;
                 if (lanternBuffCounts != _lastLanternBuffCounts)
                 {
                     updateBuffCounts();
@@ -158,7 +158,13 @@ namespace ItemQualities.Items
                 _lanternCollider.ServerUpdateValuesFromInventory();
             }
 
-            _lastLanternBuffCounts = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(_bodyAttachment.attachedBody);
+            BuffQualityCounts lanternBuffCounts = default;
+            if (_bodyAttachment.attachedBody)
+            {
+                lanternBuffCounts = _bodyAttachment.attachedBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff);
+            }
+
+            _lastLanternBuffCounts = lanternBuffCounts;
         }
 
         public bool HandleSetDiameter(float diameter)

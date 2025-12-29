@@ -19,7 +19,7 @@ namespace ItemQualities.Items
                 return;
 
             ItemQualityCounts boostAllStats = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BoostAllStats);
-            if (boostAllStats.TotalQualityCount > 0 && ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.HasQualityBuff(sender))
+            if (boostAllStats.TotalQualityCount > 0 && sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff).TotalQualityCount > 0)
             {
                 float cooldownMultiplier = Mathf.Pow(1f - 0.30f, boostAllStats.UncommonCount) *
                                            Mathf.Pow(1f - 0.40f, boostAllStats.RareCount) *

@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
@@ -15,7 +16,7 @@ namespace ItemQualities.Items
         {
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.EnsureBuffQualities(Body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff);
             }
         }
 
@@ -24,9 +25,9 @@ namespace ItemQualities.Items
             if (NetworkServer.active)
             {
                 if (!Body.HasBuff(RoR2Content.Buffs.NoCooldowns) &&
-                    ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffCounts(Body).TotalQualityCount > 0)
+                    Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff).TotalQualityCount > 0)
                 {
-                    ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.EnsureBuffQualities(Body, QualityTier.None);
+                    Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff);
                 }
             }
         }
@@ -35,7 +36,7 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.EnsureBuffQualities(Body, Stacks.HighestQuality);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff, Stacks.HighestQuality);
         }
     }
 }

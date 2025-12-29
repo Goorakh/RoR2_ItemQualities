@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -46,8 +47,7 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            QualityTier buffQualityTier = Stacks.HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.WhipBoost.EnsureBuffQualities(Body, buffQualityTier);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.WhipBoost, Stacks.HighestQuality);
         }
 
         void setProvidingBuff(bool providingBuff)
@@ -94,7 +94,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                ItemQualitiesContent.BuffQualityGroups.WhipBoost.EnsureBuffQualities(Body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.WhipBoost);
             }
         }
     }

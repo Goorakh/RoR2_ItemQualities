@@ -20,7 +20,7 @@ namespace ItemQualities.Items
             if (sender.HasBuff(RoR2Content.Buffs.WarCryBuff) || sender.HasBuff(RoR2Content.Buffs.TeamWarCry))
             {
                 ItemQualityCounts warCryOnMultiKill = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill);
-                BuffQualityCounts multikillWarCryBuff = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffCounts(sender);
+                BuffQualityCounts multikillWarCryBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff);
                 if (warCryOnMultiKill.TotalQualityCount > 0 && multikillWarCryBuff.TotalQualityCount > 0)
                 {
                     float damageIncreasePerBuff = (0.01f * warCryOnMultiKill.UncommonCount) +

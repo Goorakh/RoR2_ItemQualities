@@ -23,7 +23,7 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            BuffQualityCounts toothPrimaryBoost = ItemQualitiesContent.BuffQualityGroups.ToothPrimaryBuff.GetBuffCounts(sender);
+            BuffQualityCounts toothPrimaryBoost = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ToothPrimaryBuff);
             if (toothPrimaryBoost.TotalQualityCount > 0)
             {
                 switch (toothPrimaryBoost.HighestQuality)
@@ -55,7 +55,7 @@ namespace ItemQualities.Items
             CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
             if (attackerBody)
             {
-                BuffQualityCounts toothSecondaryBoost = ItemQualitiesContent.BuffQualityGroups.ToothSecondaryBuff.GetBuffCounts(attackerBody);
+                BuffQualityCounts toothSecondaryBoost = attackerBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ToothSecondaryBuff);
                 if (toothSecondaryBoost.TotalQualityCount > 0)
                 {
                     float damageMultiplier = 1f;

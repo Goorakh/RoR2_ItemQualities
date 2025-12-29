@@ -1,4 +1,5 @@
-﻿using UnityEngine.Networking;
+﻿using ItemQualities.Utilities.Extensions;
+using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -14,7 +15,7 @@ namespace ItemQualities.Items
         {
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(Body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup);
             }
         }
 
@@ -22,13 +23,8 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            QualityTier buffQualityTier = Stacks.HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(Body, buffQualityTier);
-
-            if (buffQualityTier > QualityTier.None)
-            {
-                ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff.EnsureBuffQualities(Body, buffQualityTier);
-            }
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup, Stacks.HighestQuality);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff, Stacks.HighestQuality);
         }
     }
 }

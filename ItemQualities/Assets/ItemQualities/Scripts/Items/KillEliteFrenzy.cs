@@ -20,7 +20,7 @@ namespace ItemQualities.Items
                 return;
 
             ItemQualityCounts killEliteFrenzy = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy);
-            BuffQualityCounts killEliteFrenzyBuff = ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffCounts(sender);
+            BuffQualityCounts killEliteFrenzyBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff);
             if (killEliteFrenzy.TotalQualityCount > 0 && killEliteFrenzyBuff.TotalQualityCount > 0)
             {
                 float damagePerBuff = (0.10f * killEliteFrenzy.UncommonCount) +

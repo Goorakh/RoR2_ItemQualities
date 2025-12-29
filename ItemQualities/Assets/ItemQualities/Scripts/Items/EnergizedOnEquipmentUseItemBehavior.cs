@@ -1,4 +1,7 @@
-﻿namespace ItemQualities.Items
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
+
+namespace ItemQualities.Items
 {
     public sealed class EnergizedOnEquipmentUseItemBehavior : QualityItemBodyBehavior
     {
@@ -10,14 +13,21 @@
 
         void OnDisable()
         {
-            ItemQualitiesContent.BuffQualityGroups.Energized.EnsureBuffQualities(Body, QualityTier.None, true);
+            if (Body.inventory && Body.inventory.GetItemCountEffective(RoR2Content.Items.EnergizedOnEquipmentUse) > 0)
+            {
+                Body.ConvertAllBuffsToQualityTier(ItemQualitiesContent.BuffQualityGroups.Energized, QualityTier.None);
+            }
+            else
+            {
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.Energized);
+            }
         }
 
         protected override void OnStacksChanged()
         {
             base.OnStacksChanged();
 
-            ItemQualitiesContent.BuffQualityGroups.Energized.EnsureBuffQualities(Body, Stacks.HighestQuality, true);
+            Body.ConvertAllBuffsToQualityTier(ItemQualitiesContent.BuffQualityGroups.Energized, Stacks.HighestQuality);
         }
     }
 }

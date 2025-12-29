@@ -19,7 +19,7 @@ namespace ItemQualities.Items
 
         public static bool HasAnyQualityDeathMarkDebuff(CharacterBody body)
         {
-            return ItemQualitiesContent.BuffQualityGroups.DeathMark.GetBuffCounts(body).TotalQualityCount > 0;
+            return body && body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.DeathMark).TotalQualityCount > 0;
         }
 
         static void HealthComponent_TakeDamageProcess(ILContext il)
@@ -64,7 +64,7 @@ namespace ItemQualities.Items
 
                 float deathMarkDamageMultiplier = 1f;
 
-                BuffQualityCounts deathMarkBuff = ItemQualitiesContent.BuffQualityGroups.DeathMark.GetBuffCounts(body);
+                BuffQualityCounts deathMarkBuff = body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.DeathMark);
 
                 if (deathMarkBuff.BaseCount > 0)
                 {

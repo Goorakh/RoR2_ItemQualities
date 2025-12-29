@@ -20,7 +20,7 @@ namespace ItemQualities.Items
             if (!sender)
                 return;
 
-            if (ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff.GetBuffCounts(sender).TotalCount > 0)
+            if (sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff).TotalCount > 0)
             {
                 args.armorAdd += 75f;
             }
@@ -45,9 +45,9 @@ namespace ItemQualities.Items
 
                 victimBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.GetBuffIndex(armorPlateQuality));
 
-                if (ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.GetBuffCounts(victimBody).TotalCount >= 15)
+                if (victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup).TotalCount >= 15)
                 {
-                    ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(victimBody, QualityTier.None);
+                    victimBody.RemoveAllBuffs(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup);
 
                     float buffDuration = (3f * armorPlate.UncommonCount) +
                                          (6f * armorPlate.RareCount) +

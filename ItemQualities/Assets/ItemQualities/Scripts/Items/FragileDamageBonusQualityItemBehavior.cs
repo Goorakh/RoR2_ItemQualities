@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -54,7 +55,7 @@ namespace ItemQualities.Items
 
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.EnsureBuffQualities(Body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff);
             }
         }
 
@@ -105,14 +106,14 @@ namespace ItemQualities.Items
 
         void ensureBuffQualities()
         {
-            ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.EnsureBuffQualities(Body, Stacks.HighestQuality);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff, Stacks.HighestQuality);
         }
 
         void refreshBuffCounts()
         {
             int hitsTaken = _bodyExtraStats.MasterExtraStatsTracker ? _bodyExtraStats.MasterExtraStatsTracker.StageDamageInstancesTakenCount : 0;
 
-            int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.GetBuffCounts(Body).TotalQualityCount;
+            int currentBuffCount = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff).TotalQualityCount;
             int targetBuffCount = Mathf.Max(0, _maxHits - hitsTaken);
 
             int buffCountDiff = targetBuffCount - currentBuffCount;

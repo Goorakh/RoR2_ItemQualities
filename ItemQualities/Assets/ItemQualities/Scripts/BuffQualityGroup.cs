@@ -6,10 +6,10 @@ using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.IO;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 using Path = System.IO.Path;
@@ -68,25 +68,39 @@ namespace ItemQualities
             }
         }
 
-        public BuffQualityCounts GetBuffCounts(CharacterBody body)
+        public BuffDef GetBuffDef(QualityTier qualityTier)
         {
-            if (!body)
-                return default;
-
-            int baseCount = BaseBuffIndex != BuffIndex.None ? body.GetBuffCount(BaseBuffIndex) : 0;
-            int uncommonCount = UncommonBuffIndex != BuffIndex.None ? body.GetBuffCount(UncommonBuffIndex) : 0;
-            int rareCount = RareBuffIndex != BuffIndex.None ? body.GetBuffCount(RareBuffIndex) : 0;
-            int epicCount = EpicBuffIndex != BuffIndex.None ? body.GetBuffCount(EpicBuffIndex) : 0;
-            int legendaryCount = LegendaryBuffIndex != BuffIndex.None ? body.GetBuffCount(LegendaryBuffIndex) : 0;
-
-            return new BuffQualityCounts(baseCount, uncommonCount, rareCount, epicCount, legendaryCount);
+            switch (qualityTier)
+            {
+                case QualityTier.None:
+                    return BuffCatalog.GetBuffDef(BaseBuffIndex);
+                case QualityTier.Uncommon:
+                    return _uncommonBuff;
+                case QualityTier.Rare:
+                    return _rareBuff;
+                case QualityTier.Epic:
+                    return _epicBuff;
+                case QualityTier.Legendary:
+                    return _legendaryBuff;
+                default:
+                    throw new NotImplementedException($"Quality tier '{qualityTier}' is not implemented");
+            }
         }
 
+        [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public BuffQualityCounts GetBuffCounts(CharacterBody body)
+        {
+            return body ? body.GetBuffCounts(this) : default;
+        }
+
+        [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
         public bool HasBuff(CharacterBody body)
         {
             return HasBuff(body, out _);
         }
 
+        [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
         public bool HasBuff(CharacterBody body, out QualityTier buffQualityTier)
         {
             BuffQualityCounts buffCounts = GetBuffCounts(body);
@@ -94,47 +108,44 @@ namespace ItemQualities
             return buffCounts.TotalCount > 0;
         }
 
+        [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
         public bool HasQualityBuff(CharacterBody body)
         {
             return HasQualityBuff(body, out _);
         }
 
+        [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
         public bool HasQualityBuff(CharacterBody body, out QualityTier buffQualityTier)
         {
             return HasBuff(body, out buffQualityTier) && buffQualityTier > QualityTier.None;
         }
 
+        [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.RemoveAllBuffs) + "/" + nameof(CharacterBodyExtensions.RemoveAllQualityBuffs) + "/" + nameof(CharacterBodyExtensions.ConvertQualityBuffsToTier) + "/" + nameof(CharacterBodyExtensions.ConvertAllBuffsToQualityTier) + "() instead")]
         public void EnsureBuffQualities(CharacterBody body, QualityTier buffQualityTier, bool includeBaseBuff = false)
         {
-            if (!NetworkServer.active)
-            {
-                Log.Warning("Called on client");
+            if (!body)
                 return;
-            }
 
-            BuffIndex desiredBuffIndex = GetBuffIndex(buffQualityTier);
-            if (!includeBaseBuff && buffQualityTier == QualityTier.None)
-                desiredBuffIndex = BuffIndex.None;
-
-            BuffDef desiredBuffDef = BuffCatalog.GetBuffDef(desiredBuffIndex);
-
-            for (QualityTier qualityTier = includeBaseBuff ? QualityTier.None : 0; qualityTier < QualityTier.Count; qualityTier++)
+            if (buffQualityTier == QualityTier.None)
             {
-                if (qualityTier != buffQualityTier)
+                if (includeBaseBuff)
                 {
-                    BuffIndex qualityBuffIndex = GetBuffIndex(qualityTier);
-                    if (qualityBuffIndex != BuffIndex.None)
-                    {
-                        for (int i = body.GetBuffCount(qualityBuffIndex); i > 0; i--)
-                        {
-                            body.RemoveBuff(qualityBuffIndex);
-
-                            if (desiredBuffIndex != BuffIndex.None && desiredBuffDef && (desiredBuffDef.canStack || !body.HasBuff(desiredBuffIndex)))
-                            {
-                                body.AddBuff(desiredBuffIndex);
-                            }
-                        }
-                    }
+                    body.RemoveAllBuffs(this);
+                }
+                else
+                {
+                    body.RemoveAllQualityBuffs(this);
+                }
+            }
+            else
+            {
+                if (includeBaseBuff)
+                {
+                    body.ConvertAllBuffsToQualityTier(this, buffQualityTier);
+                }
+                else
+                {
+                    body.ConvertQualityBuffsToTier(this, buffQualityTier);
                 }
             }
         }

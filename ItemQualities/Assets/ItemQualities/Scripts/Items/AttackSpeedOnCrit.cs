@@ -21,7 +21,7 @@ namespace ItemQualities.Items
                 return;
 
             ItemQualityCounts attackSpeedOnCrit = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit);
-            BuffQualityCounts attackSpeedOnCritBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.GetBuffCounts(sender);
+            BuffQualityCounts attackSpeedOnCritBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit);
 
             float attackSpeedPerBuff = (0.01f * attackSpeedOnCrit.UncommonCount) +
                                        (0.02f * attackSpeedOnCrit.RareCount) +

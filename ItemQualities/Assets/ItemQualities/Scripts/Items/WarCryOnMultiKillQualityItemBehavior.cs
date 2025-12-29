@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities.Items
 {
@@ -67,7 +68,7 @@ namespace ItemQualities.Items
 
         void setWarCryBuffCount(int count)
         {
-            int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffCounts(Body).TotalQualityCount;
+            int currentBuffCount = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff).TotalQualityCount;
             if (currentBuffCount != count)
             {
                 BuffIndex qualityBuffIndex = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffIndex(Stacks.HighestQuality);
@@ -87,13 +88,8 @@ namespace ItemQualities.Items
                     }
                 }
 
-                updateBuffQualities();
+                Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff, Stacks.HighestQuality);
             }
-        }
-
-        void updateBuffQualities()
-        {
-            ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.EnsureBuffQualities(Body, Stacks.HighestQuality);
         }
     }
 }

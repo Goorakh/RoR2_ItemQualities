@@ -81,7 +81,7 @@ namespace ItemQualities.Items
                     return false;
 
                 CharacterBody victimBody = victim ? victim.GetComponent<CharacterBody>() : null;
-                return ItemQualitiesContent.BuffQualityGroups.Slow60.GetBuffCounts(victimBody).TotalQualityCount == 0;
+                return victimBody && victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.Slow60).TotalQualityCount == 0;
             }
 
             c.Emit(OpCodes.Ldloc, isQualityProcVar);

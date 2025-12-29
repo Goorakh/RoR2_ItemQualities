@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +49,7 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.EnsureBuffQualities(Body, Stacks.HighestQuality);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff, Stacks.HighestQuality);
         }
 
         void FixedUpdate()
@@ -76,7 +77,8 @@ namespace ItemQualities.Items
 
         void setBuffActive(bool active)
         {
-            if (active != ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.HasQualityBuff(Body))
+            bool isActive = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff).TotalQualityCount > 0;
+            if (active != isActive)
             {
                 if (active)
                 {
@@ -85,7 +87,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff.EnsureBuffQualities(Body, QualityTier.None);
+                    Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff);
                 }
             }
         }

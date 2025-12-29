@@ -21,7 +21,7 @@ namespace ItemQualities.Items
                 return;
 
             ItemQualityCounts moveSpeedOnKill = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill);
-            BuffQualityCounts killMoveSpeedBuff = ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.GetBuffCounts(sender);
+            BuffQualityCounts killMoveSpeedBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed);
 
             float moveSpeedPerBuff = (0.005f * moveSpeedOnKill.UncommonCount) +
                                      (0.006f * moveSpeedOnKill.RareCount) +

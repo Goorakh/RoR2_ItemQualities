@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -36,7 +37,7 @@ namespace ItemQualities.Items
             _bodyExtraStats.OnTakeDamageServer -= onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal -= onShieldBoosterBreakServerGlobal;
 
-            ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.EnsureBuffQualities(Body, QualityTier.None);
+            Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff);
         }
 
         protected override void OnStacksChanged()
@@ -90,7 +91,7 @@ namespace ItemQualities.Items
         {
             ItemQualityCounts shieldBooster = Stacks;
 
-            int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.GetBuffCounts(Body).TotalQualityCount;
+            int currentBuffCount = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff).TotalQualityCount;
             int targetBuffCount = Mathf.CeilToInt(_boosterFraction * 100f);
 
             if (targetBuffCount != currentBuffCount)
@@ -112,7 +113,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.EnsureBuffQualities(Body, shieldBooster.HighestQuality);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff, shieldBooster.HighestQuality);
         }
     }
 }

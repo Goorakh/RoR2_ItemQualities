@@ -1,4 +1,5 @@
-﻿using UnityEngine.Networking;
+﻿using ItemQualities.Utilities.Extensions;
+using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -14,7 +15,7 @@ namespace ItemQualities.Items
         {
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.EnsureBuffQualities(Body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed);
             }
         }
 
@@ -22,8 +23,7 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            QualityTier buffQualityTier = Stacks.HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.EnsureBuffQualities(Body, buffQualityTier);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed, Stacks.HighestQuality);
         }
     }
 }

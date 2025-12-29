@@ -21,7 +21,7 @@ namespace ItemQualities.Items
             if (!sender.inventory)
                 return;
 
-            BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(sender);
+            BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff);
             if (attackSpeedPerNearbyAllyOrEnemyBuff.TotalQualityCount > 0)
             {
                 ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy);
@@ -78,7 +78,7 @@ namespace ItemQualities.Items
             if (!self.body || !self.body.inventory)
                 return;
 
-            BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(self.body);
+            BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = self.body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff);
             if (attackSpeedPerNearbyAllyOrEnemyBuff.TotalQualityCount > 0)
             {
                 ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = self.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy);
