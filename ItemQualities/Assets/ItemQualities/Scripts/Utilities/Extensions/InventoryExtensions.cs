@@ -1,10 +1,12 @@
 ﻿using RoR2;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace ItemQualities.Utilities.Extensions
 {
     public static class InventoryExtensions
     {
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ItemQualityCounts GetItemCountsEffective(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             return inventory.GetItemCountsEffective(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
@@ -27,6 +29,7 @@ namespace ItemQualities.Utilities.Extensions
             return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ItemQualityCounts GetItemCountsPermanent(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             return inventory.GetItemCountsPermanent(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
@@ -49,6 +52,7 @@ namespace ItemQualities.Utilities.Extensions
             return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ItemQualityCounts GetItemCountsTemp(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             return inventory.GetItemCountsTemp(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
@@ -71,6 +75,7 @@ namespace ItemQualities.Utilities.Extensions
             return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TempItemQualityCounts GetTempItemsDecayValue(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             return inventory.GetTempItemsDecayValue(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
@@ -93,6 +98,7 @@ namespace ItemQualities.Utilities.Extensions
             return new TempItemQualityCounts(baseDecayValue, uncommonDecayValue, rareDecayValue, epicDecayValue, legendaryDecayValue);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static TempItemQualityCounts GetTempItemsRawValue(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             return inventory.GetTempItemsRawValue(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
@@ -115,6 +121,7 @@ namespace ItemQualities.Utilities.Extensions
             return new TempItemQualityCounts(baseRawValue, uncommonRawValue, rareRawValue, epicRawValue, legendaryRawValue);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ItemQualityCounts GetItemCountsChanneled(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             return inventory.GetItemCountsChanneled(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
