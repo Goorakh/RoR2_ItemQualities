@@ -17,7 +17,7 @@ using Path = System.IO.Path;
 namespace ItemQualities
 {
     [CreateAssetMenu(menuName = "ItemQualities/Buffs/BuffQualityGroup")]
-    public class BuffQualityGroup : ScriptableObject, IAsyncContentLoadCallback
+    public sealed class BuffQualityGroup : ScriptableObject, IAsyncContentLoadCallback
     {
         [HideInInspector]
         [NonSerialized]
