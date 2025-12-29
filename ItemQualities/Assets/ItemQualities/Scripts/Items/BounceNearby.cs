@@ -55,23 +55,26 @@ namespace ItemQualities.Items
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts bounceNearby = ItemQualitiesContent.ItemQualityGroups.BounceNearby.GetItemCountsEffective(attackerInventory);
-                    if (bounceNearby.TotalQualityCount > 0)
+                    if (attackerInventory)
                     {
-                        float forceDuration = (1f * bounceNearby.UncommonCount) +
-                                              (2f * bounceNearby.RareCount) +
-                                              (4f * bounceNearby.EpicCount) +
-                                              (6f * bounceNearby.LegendaryCount);
+                        ItemQualityCounts bounceNearby = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BounceNearby);
+                        if (bounceNearby.TotalQualityCount > 0)
+                        {
+                            float forceDuration = (1f * bounceNearby.UncommonCount) +
+                                                  (2f * bounceNearby.RareCount) +
+                                                  (4f * bounceNearby.EpicCount) +
+                                                  (6f * bounceNearby.LegendaryCount);
 
-                        GameObject delayedForceObj = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.MeatHookDelayedForce, damageInfo.position, Quaternion.identity);
+                            GameObject delayedForceObj = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.MeatHookDelayedForce, damageInfo.position, Quaternion.identity);
 
-                        TeamFilter teamFilter = delayedForceObj.GetComponent<TeamFilter>();
-                        teamFilter.teamIndex = attackerBody.teamComponent.teamIndex;
+                            TeamFilter teamFilter = delayedForceObj.GetComponent<TeamFilter>();
+                            teamFilter.teamIndex = attackerBody.teamComponent.teamIndex;
 
-                        DestroyOnTimer destroyOnTimer = delayedForceObj.GetComponent<DestroyOnTimer>();
-                        destroyOnTimer.duration = forceDuration;
+                            DestroyOnTimer destroyOnTimer = delayedForceObj.GetComponent<DestroyOnTimer>();
+                            destroyOnTimer.duration = forceDuration;
 
-                        NetworkServer.Spawn(delayedForceObj);
+                            NetworkServer.Spawn(delayedForceObj);
+                        }
                     }
                 }
             }

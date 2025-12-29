@@ -86,18 +86,19 @@ namespace ItemQualities.Items
 
         static GameObject changeFeatherEffect(GameObject prefab, GenericCharacterMain self)
         {
-            if (!self?.characterBody)
+            CharacterBody body = self?.characterBody;
+            if (body || !body.inventory)
                 return prefab;
 
-            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(self.characterBody.inventory);
+            ItemQualityCounts feather = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Feather);
             int maxJumps = (feather.UncommonCount * 3) +
                            (feather.RareCount * 5) +
                            (feather.EpicCount * 7) +
                            (feather.LegendaryCount * 9) +
                            feather.BaseItemCount +
-                           self.characterBody.baseJumpCount - 1;
+                           body.baseJumpCount - 1;
 
-            if (self.characterMotor.jumpCount == self.characterBody.maxJumpCount - 1)
+            if (self.characterMotor.jumpCount == body.maxJumpCount - 1)
             {
                 if (self.characterMotor.jumpCount == maxJumps)
                 {

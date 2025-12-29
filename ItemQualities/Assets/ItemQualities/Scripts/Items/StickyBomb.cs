@@ -30,8 +30,10 @@ namespace ItemQualities.Items
         public static float GetStickyBombScaleMultiplier(CharacterBody ownerBody)
         {
             Inventory inventory = ownerBody ? ownerBody.inventory : null;
+            if (!inventory)
+                return 1f;
 
-            ItemQualityCounts stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCountsEffective(inventory);
+            ItemQualityCounts stickyBomb = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.StickyBomb);
             if (stickyBomb.TotalQualityCount <= 0)
                 return 1f;
 
@@ -72,15 +74,17 @@ namespace ItemQualities.Items
                 GameObject attacker = damageInfo?.attacker;
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                ItemQualityCounts stickyBomb = ItemQualitiesContent.ItemQualityGroups.StickyBomb.GetItemCountsEffective(attackerInventory);
-
-                if (stickyBomb.TotalQualityCount > 0)
+                if (attackerInventory)
                 {
-                    damageCoefficient += (0.5f * stickyBomb.UncommonCount) +
-                                         (0.8f * stickyBomb.RareCount) +
-                                         (1.2f * stickyBomb.EpicCount) +
-                                         (2.0f * stickyBomb.LegendaryCount);
+                    ItemQualityCounts stickyBomb = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.StickyBomb);
+
+                    if (stickyBomb.TotalQualityCount > 0)
+                    {
+                        damageCoefficient += (0.5f * stickyBomb.UncommonCount) +
+                                             (0.8f * stickyBomb.RareCount) +
+                                             (1.2f * stickyBomb.EpicCount) +
+                                             (2.0f * stickyBomb.LegendaryCount);
+                    }
                 }
 
                 return damageCoefficient;

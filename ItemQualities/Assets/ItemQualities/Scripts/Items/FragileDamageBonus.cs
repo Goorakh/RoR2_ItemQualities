@@ -18,7 +18,10 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts fragileDamageBonus = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(sender.inventory);
+            if (!sender.inventory)
+                return;
+
+            ItemQualityCounts fragileDamageBonus = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus);
             if (fragileDamageBonus.TotalQualityCount > 0)
             {
                 BuffQualityCounts fragileDamageBonusBuff = ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.GetBuffCounts(sender);

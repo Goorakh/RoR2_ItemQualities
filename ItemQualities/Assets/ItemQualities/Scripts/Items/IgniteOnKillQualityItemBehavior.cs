@@ -133,7 +133,7 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            ItemQualityCounts igniteOnKill = ItemQualitiesContent.ItemQualityGroups.IgniteOnKill.GetItemCountsEffective(Body.inventory);
+            ItemQualityCounts igniteOnKill = Stacks;
 
             _icicleAura.icicleDamageCoefficientPerTick = (1 * igniteOnKill.UncommonCount) +
                                                          (2 * igniteOnKill.RareCount) +

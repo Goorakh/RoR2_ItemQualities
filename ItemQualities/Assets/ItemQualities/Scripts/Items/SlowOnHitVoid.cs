@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -34,7 +35,7 @@ namespace ItemQualities.Items
             if (!attackerInventory)
                 return;
 
-            ItemQualityCounts slowOnHitVoid = ItemQualitiesContent.ItemQualityGroups.SlowOnHitVoid.GetItemCountsEffective(attackerInventory);
+            ItemQualityCounts slowOnHitVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SlowOnHitVoid);
 
             if (slowOnHitVoid.TotalQualityCount > 0 && deathReport.victimBody && deathReport.victimBody.HasBuff(RoR2Content.Buffs.Nullified))
             {

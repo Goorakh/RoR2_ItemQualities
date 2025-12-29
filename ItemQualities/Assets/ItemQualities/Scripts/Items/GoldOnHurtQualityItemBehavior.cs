@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
+    /*
     public sealed class GoldOnHurtQualityItemBehavior : MonoBehaviour
     {
         const int BaseMaxMoneyValue = 100;
@@ -76,4 +77,5 @@ namespace ItemQualities.Items
             }
         }
     }
+    */
 }

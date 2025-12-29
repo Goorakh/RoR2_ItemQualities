@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -33,17 +34,19 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = equipmentSlot ? equipmentSlot.characterBody : null;
                 Inventory inventory = body ? body.inventory : null;
-
-                BuffIndex warhornBuffIndex = warhornBuffDef ? warhornBuffDef.buffIndex : BuffIndex.None;
-                if (warhornBuffIndex != BuffIndex.None)
+                if (inventory)
                 {
-                    QualityTier buffQuality = ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCountsEffective(inventory).HighestQuality;
-                    BuffIndex qualityWarhornBuffIndex = QualityCatalog.GetBuffIndexOfQuality(warhornBuffIndex, buffQuality);
-
-                    if (qualityWarhornBuffIndex != BuffIndex.None && qualityWarhornBuffIndex != warhornBuffIndex)
+                    BuffIndex warhornBuffIndex = warhornBuffDef ? warhornBuffDef.buffIndex : BuffIndex.None;
+                    if (warhornBuffIndex != BuffIndex.None)
                     {
-                        warhornBuffDef = BuffCatalog.GetBuffDef(qualityWarhornBuffIndex);
-                        warhornBuffIndex = qualityWarhornBuffIndex;
+                        QualityTier buffQuality = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse).HighestQuality;
+                        BuffIndex qualityWarhornBuffIndex = QualityCatalog.GetBuffIndexOfQuality(warhornBuffIndex, buffQuality);
+
+                        if (qualityWarhornBuffIndex != BuffIndex.None && qualityWarhornBuffIndex != warhornBuffIndex)
+                        {
+                            warhornBuffDef = BuffCatalog.GetBuffDef(qualityWarhornBuffIndex);
+                            warhornBuffIndex = qualityWarhornBuffIndex;
+                        }
                     }
                 }
 

@@ -40,10 +40,10 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender)
+            if (!sender.inventory)
                 return;
 
-            ItemQualityCounts sprintArmor = ItemQualitiesContent.ItemQualityGroups.SprintArmor.GetItemCountsEffective(sender.inventory);
+            ItemQualityCounts sprintArmor = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintArmor);
 
             if (sender.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong) && sprintArmor.TotalQualityCount > 0)
             {

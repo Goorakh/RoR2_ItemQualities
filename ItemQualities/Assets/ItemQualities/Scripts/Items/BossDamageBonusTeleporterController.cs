@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities;
+using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -43,7 +44,7 @@ namespace ItemQualities.Items
                 chargingTeam = _teleporterInteraction.holdoutZoneController.chargingTeam;
             }
 
-            ItemQualityCounts teamBossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetTeamItemCounts(chargingTeam, true, false);
+            ItemQualityCounts teamBossDamageBonus = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus, chargingTeam, true, false);
             if (teamBossDamageBonus.TotalQualityCount == 0)
                 return;
 

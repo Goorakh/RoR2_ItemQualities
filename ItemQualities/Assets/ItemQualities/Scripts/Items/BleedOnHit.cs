@@ -1,4 +1,6 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
+using System;
 
 namespace ItemQualities.Items
 {
@@ -12,19 +14,28 @@ namespace ItemQualities.Items
 
         static void DotController_InflictDot_refInflictDotInfo(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo inflictDotInfo)
         {
-            if (inflictDotInfo.dotIndex == DotController.DotIndex.Bleed)
+            try
             {
-                CharacterBody attackerBody = inflictDotInfo.attackerObject ? inflictDotInfo.attackerObject.GetComponent<CharacterBody>() : null;
-                Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (inflictDotInfo.dotIndex == DotController.DotIndex.Bleed)
+                {
+                    CharacterBody attackerBody = inflictDotInfo.attackerObject ? inflictDotInfo.attackerObject.GetComponent<CharacterBody>() : null;
+                    Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                    if (attackerInventory)
+                    {
+                        ItemQualityCounts bleedOnHit = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BleedOnHit);
 
-                ItemQualityCounts bleedOnHit = ItemQualitiesContent.ItemQualityGroups.BleedOnHit.GetItemCountsEffective(attackerInventory);
+                        float damageMultAdd = (0.10f * bleedOnHit.UncommonCount) +
+                                              (0.20f * bleedOnHit.RareCount) +
+                                              (0.30f * bleedOnHit.EpicCount) +
+                                              (0.50f * bleedOnHit.LegendaryCount);
 
-                float damageMultAdd = (0.10f * bleedOnHit.UncommonCount) +
-                                      (0.20f * bleedOnHit.RareCount) +
-                                      (0.30f * bleedOnHit.EpicCount) +
-                                      (0.50f * bleedOnHit.LegendaryCount);
-
-                inflictDotInfo.damageMultiplier += damageMultAdd;
+                        inflictDotInfo.damageMultiplier += damageMultAdd;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error_NoCallerPrefix(e);
             }
 
             orig(ref inflictDotInfo);

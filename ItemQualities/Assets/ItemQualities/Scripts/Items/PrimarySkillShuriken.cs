@@ -1,5 +1,6 @@
 ﻿using HG.Coroutines;
 using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -56,19 +57,21 @@ namespace ItemQualities.Items
         static float getTotalReloadTime(float totalReloadTime, CharacterBody body)
         {
             Inventory inventory = body ? body.inventory : null;
-
-            ItemQualityCounts primarySkillShuriken = ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken.GetItemCountsEffective(inventory);
-
-            if (primarySkillShuriken.TotalQualityCount > 0)
+            if (inventory)
             {
-                float reloadTimeReduction = (0.1f * primarySkillShuriken.UncommonCount) +
-                                            (0.3f * primarySkillShuriken.RareCount) +
-                                            (0.5f * primarySkillShuriken.EpicCount) +
-                                            (1.0f * primarySkillShuriken.LegendaryCount);
+                ItemQualityCounts primarySkillShuriken = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken);
 
-                if (reloadTimeReduction > 0f)
+                if (primarySkillShuriken.TotalQualityCount > 0)
                 {
-                    totalReloadTime /= 1f + reloadTimeReduction;
+                    float reloadTimeReduction = (0.1f * primarySkillShuriken.UncommonCount) +
+                                                (0.3f * primarySkillShuriken.RareCount) +
+                                                (0.5f * primarySkillShuriken.EpicCount) +
+                                                (1.0f * primarySkillShuriken.LegendaryCount);
+
+                    if (reloadTimeReduction > 0f)
+                    {
+                        totalReloadTime /= 1f + reloadTimeReduction;
+                    }
                 }
             }
 

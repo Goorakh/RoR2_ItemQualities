@@ -96,35 +96,39 @@ namespace ItemQualities
                 Inventory inventory = body ? body.inventory : null;
 
                 HashSet<ItemIndex> ignoreLowHealthItemIndices = SetPool<ItemIndex>.RentCollection();
-
-                void handleCustomQualityLowHealthThreshold(ItemQualityGroup itemGroup)
+                if (inventory)
                 {
-                    if (!itemGroup)
-                        return;
-
-                    ItemQualityCounts itemCounts = itemGroup.GetItemCountsEffective(inventory);
-                    if (itemCounts.TotalQualityCount > 0)
+                    void handleCustomQualityLowHealthThreshold(ItemQualityGroup itemGroup)
                     {
-                        if (itemGroup.BaseItemIndex != ItemIndex.None)
+                        ItemQualityCounts itemCounts = inventory.GetItemCountsEffective(itemGroup);
+                        if (itemCounts.TotalQualityCount > 0)
                         {
-                            ignoreLowHealthItemIndices.Add(itemGroup.BaseItemIndex);
-                        }
-
-                        for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-                        {
-                            if (itemCounts[qualityTier] > 0)
+                            if (itemGroup.BaseItemIndex != ItemIndex.None)
                             {
-                                ItemIndex qualityItemIndex = itemGroup.GetItemIndex(qualityTier);
-                                if (qualityItemIndex != ItemIndex.None)
+                                ignoreLowHealthItemIndices.Add(itemGroup.BaseItemIndex);
+                            }
+
+                            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                            {
+                                if (itemCounts[qualityTier] > 0)
                                 {
-                                    ignoreLowHealthItemIndices.Add(qualityItemIndex);
+                                    ItemIndex qualityItemIndex = itemGroup.GetItemIndex(qualityTier);
+                                    if (qualityItemIndex != ItemIndex.None)
+                                    {
+                                        ignoreLowHealthItemIndices.Add(qualityItemIndex);
+                                    }
                                 }
                             }
                         }
                     }
+
+                    handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.Phasing);
                 }
 
-                handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.Phasing);
+                if (ignoreLowHealthItemIndices.Count == 0)
+                {
+                    ignoreLowHealthItemIndices = SetPool<ItemIndex>.ReturnCollection(ignoreLowHealthItemIndices);
+                }
 
                 return ignoreLowHealthItemIndices;
             }
@@ -152,7 +156,7 @@ namespace ItemQualities
 
             static int getItemCount(int itemCount, ItemIndex itemIndex, HashSet<ItemIndex> ignoreLowHealthItemIndices)
             {
-                return ignoreLowHealthItemIndices.Contains(itemIndex) ? 0 : itemCount;
+                return ignoreLowHealthItemIndices != null && ignoreLowHealthItemIndices.Contains(itemIndex) ? 0 : itemCount;
             }
 
             int retPatchCount = 0;
@@ -370,7 +374,7 @@ namespace ItemQualities
             stealthKitLowHealthUnderBarInfo.enabled = false;
             stealthKitLowHealthOverBarInfo.enabled = false;
 
-            ItemQualityCounts phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(inventory);
+            ItemQualityCounts phasing = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
             if (phasing.TotalQualityCount > 0)
             {
                 setupHealthThresholdBarInfos(ref stealthKitLowHealthUnderBarInfo, ref stealthKitLowHealthOverBarInfo, extraStatsTracker.StealthKitActivationThreshold);

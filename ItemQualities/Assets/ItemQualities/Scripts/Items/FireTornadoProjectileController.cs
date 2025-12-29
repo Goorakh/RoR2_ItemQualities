@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using RoR2.Projectile;
 using UnityEngine.Networking;
 
@@ -39,9 +40,9 @@ namespace ItemQualities.Items
         void onInitializedServer(ProjectileController projectileController)
         {
             ItemQualityCounts fireRing = default;
-            if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody))
+            if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
             {
-                fireRing = ItemQualitiesContent.ItemQualityGroups.FireRing.GetItemCountsEffective(ownerBody.inventory);
+                fireRing = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FireRing);
             }
 
             float lifetimeMult = 1f;

@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -13,7 +14,10 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts sprintBonus = ItemQualitiesContent.ItemQualityGroups.SprintBonus.GetItemCountsEffective(sender.inventory);
+            if (!sender.inventory)
+                return;
+
+            ItemQualityCounts sprintBonus = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintBonus);
 
             if (sender.isSprinting && sprintBonus.TotalQualityCount > 0)
             {

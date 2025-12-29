@@ -1,5 +1,4 @@
 ﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -38,14 +37,16 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = healthComponent ? healthComponent.body : null;
                 Inventory inventory = body ? body.inventory : null;
-
-                ItemQualityCounts bearVoid = ItemQualitiesContent.ItemQualityGroups.BearVoid.GetItemCountsEffective(inventory);
-                if (bearVoid.TotalQualityCount > 0)
+                if (inventory)
                 {
-                    cooldown *= Mathf.Pow(1f - 0.05f, bearVoid.UncommonCount) *
-                                Mathf.Pow(1f - 0.10f, bearVoid.RareCount) *
-                                Mathf.Pow(1f - 0.20f, bearVoid.EpicCount) *
-                                Mathf.Pow(1f - 0.30f, bearVoid.LegendaryCount);
+                    ItemQualityCounts bearVoid = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BearVoid);
+                    if (bearVoid.TotalQualityCount > 0)
+                    {
+                        cooldown *= Mathf.Pow(1f - 0.05f, bearVoid.UncommonCount) *
+                                    Mathf.Pow(1f - 0.10f, bearVoid.RareCount) *
+                                    Mathf.Pow(1f - 0.20f, bearVoid.EpicCount) *
+                                    Mathf.Pow(1f - 0.30f, bearVoid.LegendaryCount);
+                    }
                 }
 
                 return cooldown;

@@ -1,5 +1,6 @@
 ﻿using HG;
 using ItemQualities.Items;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
 using UnityEngine;
@@ -266,10 +267,10 @@ namespace ItemQualities
             ItemQualityCounts jumpBoost = default;
             if (_body && _body.inventory)
             {
-                crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(_body.inventory);
-                executeLowHealthElite = ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite.GetItemCountsEffective(_body.inventory);
-                phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(_body.inventory);
-                jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCountsEffective(_body.inventory);
+                crowbar = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Crowbar);
+                executeLowHealthElite = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite);
+                phasing = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
+                jumpBoost = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
             }
 
             float crowbarMinHealthFractionReduction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:

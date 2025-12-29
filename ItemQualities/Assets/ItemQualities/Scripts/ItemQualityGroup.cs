@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -94,85 +95,39 @@ namespace ItemQualities
             }
         }
 
+        [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsEffective) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsEffective(Inventory inventory)
         {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.CalculateEffectiveItemStacks(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCountEffective(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCountEffective(RareItemIndex);
-            int epicItemCount = inventory.GetItemCountEffective(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCountEffective(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+            return inventory ? inventory.GetItemCountsEffective(this) : default;
         }
 
+        [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsPermanent) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsPermanent(Inventory inventory)
         {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.GetItemCountPermanent(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCountPermanent(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCountPermanent(RareItemIndex);
-            int epicItemCount = inventory.GetItemCountPermanent(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCountPermanent(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+            return inventory ? inventory.GetItemCountsPermanent(this) : default;
         }
 
+        [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsTemp) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsTemp(Inventory inventory)
         {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.GetItemCountTemp(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCountTemp(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCountTemp(RareItemIndex);
-            int epicItemCount = inventory.GetItemCountTemp(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCountTemp(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+            return inventory ? inventory.GetItemCountsTemp(this) : default;
         }
 
+        [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsChanneled) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsChanneled(Inventory inventory)
         {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.GetItemCountChanneled(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCountChanneled(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCountChanneled(RareItemIndex);
-            int epicItemCount = inventory.GetItemCountChanneled(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCountChanneled(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+            return inventory ? inventory.GetItemCountsChanneled(this) : default;
         }
 
+        [Obsolete("Use " + nameof(ItemQualityUtils) + "." + nameof(ItemQualityUtils.GetTeamItemCounts) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetTeamItemCounts(TeamIndex teamIndex, bool requireAlive, bool requireConnected = true)
         {
-            ItemQualityCounts itemCounts = default;
-
-            foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
-            {
-                if (!master)
-                    continue;
-
-                if (master.teamIndex != teamIndex)
-                    continue;
-
-                CharacterBody body = master.GetBody();
-                if (requireAlive && (!body || !body.healthComponent || !body.healthComponent.alive))
-                    continue;
-
-                if (requireConnected && (!master.playerCharacterMasterController || !master.playerCharacterMasterController.isConnected))
-                    continue;
-
-                itemCounts += GetItemCountsEffective(master.inventory);
-            }
-
-            return itemCounts;
+            return ItemQualityUtils.GetTeamItemCounts(this, teamIndex, requireAlive, requireConnected);
         }
 
         void OnValidate()

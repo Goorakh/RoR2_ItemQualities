@@ -1,6 +1,6 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
-using System;
 
 namespace ItemQualities.Items
 {
@@ -14,10 +14,10 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender)
+            if (!sender.inventory)
                 return;
 
-            ItemQualityCounts healOnCrit = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(sender.inventory);
+            ItemQualityCounts healOnCrit = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.HealOnCrit);
             if (healOnCrit.TotalQualityCount > 0 && sender.HasBuff(ItemQualitiesContent.Buffs.HealCritBoost))
             {
                 float crit;

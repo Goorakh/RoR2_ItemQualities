@@ -1,3 +1,4 @@
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine;
 
@@ -21,7 +22,13 @@ namespace ItemQualities.Items
             if (!self.body)
                 return;
 
-            if (ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCountsEffective(self.body.inventory).TotalQualityCount > 0)
+            ItemQualityCounts droneWeapons = default;
+            if (self.body.inventory)
+            {
+                droneWeapons = self.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DroneWeapons);
+            }
+
+            if (droneWeapons.TotalQualityCount > 0)
             {
                 self.hasSpawnedDrone = false;
             }
@@ -49,9 +56,10 @@ namespace ItemQualities.Items
         {
             orig(self);
 
-            if (self.body)
+            if (self.body && self.body.inventory)
             {
-                switch (ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCountsEffective(self.body.inventory).HighestQuality)
+                ItemQualityCounts droneWeapons = self.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DroneWeapons);
+                switch (droneWeapons.HighestQuality)
                 {
                     case QualityTier.Uncommon:
                         self.spawnDelay = 120f;
@@ -73,9 +81,9 @@ namespace ItemQualities.Items
         {
             int result = orig(self, slot);
 
-            if (slot == DeployableSlot.DroneWeaponsDrone)
+            if (slot == DeployableSlot.DroneWeaponsDrone && self.inventory)
             {
-                ItemQualityCounts droneWeapons = ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCountsEffective(self.inventory);
+                ItemQualityCounts droneWeapons = self.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DroneWeapons);
 
                 if (droneWeapons.TotalQualityCount > 0)
                 {
@@ -93,9 +101,10 @@ namespace ItemQualities.Items
         {
             orig(self);
 
-            if (self.body && self.body.master && self.body.master.IsDeployableLimited(DeployableSlot.DroneWeaponsDrone))
+            if (self.body && self.body.inventory && self.body.master && self.body.master.IsDeployableLimited(DeployableSlot.DroneWeaponsDrone))
             {
-                switch (ItemQualitiesContent.ItemQualityGroups.DroneWeapons.GetItemCountsEffective(self.body.inventory).HighestQuality)
+                ItemQualityCounts droneWeapons = self.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DroneWeapons);
+                switch (droneWeapons.HighestQuality)
                 {
                     case QualityTier.Uncommon:
                         self.spawnDelay = 120f;

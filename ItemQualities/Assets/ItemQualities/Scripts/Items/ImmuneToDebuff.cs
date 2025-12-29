@@ -36,14 +36,14 @@ namespace ItemQualities.Items
                 return;
             }
 
-            if (!victimBody || buffIndex == BuffIndex.None || duration <= 0f)
+            if (!victimBody || !victimBody.inventory || buffIndex == BuffIndex.None || duration <= 0f)
                 return;
 
             BuffDef buffDef = BuffCatalog.GetBuffDef(buffIndex);
             if (!buffDef || (buffDef.flags & BuffDef.Flags.ExcludeFromNoxiousThorns) != 0)
                 return;
 
-            ItemQualityCounts immuneToDebuff = ItemQualitiesContent.ItemQualityGroups.ImmuneToDebuff.GetItemCountsEffective(victimBody.inventory);
+            ItemQualityCounts immuneToDebuff = victimBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ImmuneToDebuff);
             if (immuneToDebuff.TotalQualityCount == 0)
                 return;
 

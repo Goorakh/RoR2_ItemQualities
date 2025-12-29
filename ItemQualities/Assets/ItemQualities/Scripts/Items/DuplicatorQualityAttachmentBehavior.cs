@@ -159,7 +159,12 @@ namespace ItemQualities.Items
             if (baseDecayDuration <= 0)
                 baseDecayDuration = Inventory.baseItemDecayDuration;
 
-            ItemQualityCounts duplicator = ItemQualitiesContent.ItemQualityGroups.Duplicator.GetItemCountsEffective(_attachedBodyInventory);
+            ItemQualityCounts duplicator = default;
+            if (_attachedBodyInventory)
+            {
+                duplicator = _attachedBodyInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Duplicator);
+            }
+
             if (duplicator.TotalQualityCount == 0)
                 duplicator.UncommonCount = 1;
 

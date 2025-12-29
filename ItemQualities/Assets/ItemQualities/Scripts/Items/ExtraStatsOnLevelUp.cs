@@ -42,7 +42,7 @@ namespace ItemQualities.Items
                 if (!body || !body.inventory)
                     return 0;
 
-                ItemQualityCounts extraStatsOnLevelUp = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
+                ItemQualityCounts extraStatsOnLevelUp = body.inventory.GetItemCountsPermanent(ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp);
                 return extraStatsOnLevelUp.TotalQualityCount;
             }
 
@@ -64,9 +64,9 @@ namespace ItemQualities.Items
 
             static void recordBeadCount(CharacterBody body)
             {
-                if (body && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                if (body && body.inventory && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                 {
-                    bodyExtraStats.LastExtraStatsOnLevelUpCounts = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
+                    bodyExtraStats.LastExtraStatsOnLevelUpCounts = body.inventory.GetItemCountsPermanent(ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp);
                 }
             }
 
@@ -80,10 +80,10 @@ namespace ItemQualities.Items
 
             static uint tryProcQualityBeads(CharacterBody body)
             {
-                if (!body || !body.isPlayerControlled || !body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                if (!body || !body.isPlayerControlled || !body.inventory || !body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     return 0;
 
-                ItemQualityCounts extraStatsOnLevelUp = ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GetItemCountsPermanent(body.inventory);
+                ItemQualityCounts extraStatsOnLevelUp = body.inventory.GetItemCountsPermanent(ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp);
 
                 ItemQualityCounts beadsSpent = bodyExtraStats.LastExtraStatsOnLevelUpCounts - extraStatsOnLevelUp;
 

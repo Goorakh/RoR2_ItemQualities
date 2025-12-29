@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 using UnityEngine.Networking;
 
@@ -34,10 +35,10 @@ namespace ItemQualities.Items
                 return;
 
             CharacterBody victimBody = damageReport.victimBody;
-            if (!victimBody)
+            if (!victimBody || !victimBody.inventory)
                 return;
 
-            ItemQualityCounts armorPlate = ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCountsEffective(victimBody.inventory);
+            ItemQualityCounts armorPlate = victimBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ArmorPlate);
             if (armorPlate.TotalQualityCount > 0)
             {
                 QualityTier armorPlateQuality = armorPlate.HighestQuality;

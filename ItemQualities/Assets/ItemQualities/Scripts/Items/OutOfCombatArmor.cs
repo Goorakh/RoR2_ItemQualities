@@ -74,10 +74,10 @@ namespace ItemQualities.Items
 
             static void onEnterDanger(CharacterBody victimBody, DamageReport damageReport)
             {
-                if (!victimBody || damageReport?.damageInfo == null)
+                if (!victimBody || !victimBody.inventory || damageReport?.damageInfo == null)
                     return;
 
-                ItemQualityCounts outOfCombatArmor = ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor.GetItemCountsEffective(victimBody.inventory);
+                ItemQualityCounts outOfCombatArmor = victimBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.OutOfCombatArmor);
                 if (outOfCombatArmor.TotalQualityCount <= 0)
                     return;
 

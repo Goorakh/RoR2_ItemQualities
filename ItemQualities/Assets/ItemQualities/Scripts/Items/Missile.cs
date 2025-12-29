@@ -122,8 +122,10 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 CharacterMaster attackerMaster = attackerBody ? attackerBody.master : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return false;
 
-                ItemQualityCounts missile = ItemQualitiesContent.ItemQualityGroups.Missile.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts missile = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Missile);
                 if (missile.TotalQualityCount <= 0)
                     return false;
 
@@ -146,15 +148,17 @@ namespace ItemQualities.Items
                 GameObject attacker = damageInfo?.attacker;
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                ItemQualityCounts missile = ItemQualitiesContent.ItemQualityGroups.Missile.GetItemCountsEffective(attackerInventory);
-
-                if (shouldFireBigMissile)
+                if (attackerInventory)
                 {
-                    damageCoefficient += (1.50f * missile.UncommonCount) +
-                                         (3.00f * missile.RareCount) +
-                                         (6.00f * missile.EpicCount) +
-                                         (8.00f * missile.LegendaryCount);
+                    ItemQualityCounts missile = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Missile);
+
+                    if (shouldFireBigMissile)
+                    {
+                        damageCoefficient += (1.50f * missile.UncommonCount) +
+                                             (3.00f * missile.RareCount) +
+                                             (6.00f * missile.EpicCount) +
+                                             (8.00f * missile.LegendaryCount);
+                    }
                 }
 
                 return damageCoefficient;

@@ -39,24 +39,26 @@ namespace ItemQualities.Items
                 Inventory inventory = body ? body.inventory : null;
 
                 QualityTier[] equipmentQualityTiers = Array.Empty<QualityTier>();
-
-                ItemQualityCounts randomEquipmentTrigger = ItemQualitiesContent.ItemQualityGroups.RandomEquipmentTrigger.GetItemCountsEffective(inventory);
-                if (randomEquipmentTrigger.TotalQualityCount > 0)
+                if (inventory)
                 {
-                    Span<QualityTier> equipmentQualityTiersSpan = stackalloc QualityTier[randomEquipmentTrigger.TotalCount];
-
-                    int equipmentQualityTierIndex = 0;
-                    for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                    ItemQualityCounts randomEquipmentTrigger = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.RandomEquipmentTrigger);
+                    if (randomEquipmentTrigger.TotalQualityCount > 0)
                     {
-                        int tierCount = randomEquipmentTrigger[qualityTier];
-                        if (tierCount > 0)
-                        {
-                            equipmentQualityTiersSpan.Slice(equipmentQualityTierIndex, tierCount).Fill(qualityTier);
-                            equipmentQualityTierIndex += tierCount;
-                        }
-                    }
+                        Span<QualityTier> equipmentQualityTiersSpan = stackalloc QualityTier[randomEquipmentTrigger.TotalCount];
 
-                    equipmentQualityTiers = equipmentQualityTiersSpan.ToArray();
+                        int equipmentQualityTierIndex = 0;
+                        for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                        {
+                            int tierCount = randomEquipmentTrigger[qualityTier];
+                            if (tierCount > 0)
+                            {
+                                equipmentQualityTiersSpan.Slice(equipmentQualityTierIndex, tierCount).Fill(qualityTier);
+                                equipmentQualityTierIndex += tierCount;
+                            }
+                        }
+
+                        equipmentQualityTiers = equipmentQualityTiersSpan.ToArray();
+                    }
                 }
 
                 return equipmentQualityTiers;

@@ -74,8 +74,10 @@ namespace ItemQualities.Items
 
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return false;
 
-                ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts bossDamageBonus = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
                 return bossDamageBonus.TotalQualityCount > 0 && victim.body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
             }
 
@@ -91,13 +93,15 @@ namespace ItemQualities.Items
                 {
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                    if (attackerInventory)
+                    {
+                        ItemQualityCounts bossDamageBonus = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
 
-                    ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(attackerInventory);
-
-                    damageMultiplier = (0.05f * bossDamageBonus.UncommonCount) +
-                                       (0.10f * bossDamageBonus.RareCount) +
-                                       (0.15f * bossDamageBonus.EpicCount) +
-                                       (0.20f * bossDamageBonus.LegendaryCount);
+                        damageMultiplier = (0.05f * bossDamageBonus.UncommonCount) +
+                                           (0.10f * bossDamageBonus.RareCount) +
+                                           (0.15f * bossDamageBonus.EpicCount) +
+                                           (0.20f * bossDamageBonus.LegendaryCount);
+                    }
                 }
 
                 return damageMultiplier;

@@ -47,7 +47,7 @@ namespace ItemQualities.Items
 
                 if (attackerInventory)
                 {
-                    ItemQualityCounts itemCounts = ItemQualitiesContent.ItemQualityGroups.Dagger.GetItemCountsEffective(attackerInventory);
+                    ItemQualityCounts itemCounts = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Dagger);
                     daggerSpawnCount += (1 * itemCounts.UncommonCount) +
                                         (2 * itemCounts.RareCount) +
                                         (5 * itemCounts.EpicCount) +

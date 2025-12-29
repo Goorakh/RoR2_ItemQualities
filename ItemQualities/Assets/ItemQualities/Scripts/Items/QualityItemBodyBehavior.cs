@@ -1,5 +1,6 @@
 ﻿using HG;
 using HG.Reflection;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
 using System.Collections.Generic;
@@ -230,15 +231,7 @@ namespace ItemQualities.Items
                     {
                         ref readonly QualityGroupBehaviorInfo behaviorInfo = ref behaviorCollection.Behaviors[i];
 
-                        ItemQualityCounts itemCounts = default;
-
-                        ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(behaviorInfo.ItemGroupIndex);
-                        if (itemGroup)
-                        {
-                            itemCounts = itemGroup.GetItemCountsEffective(body.inventory);
-                        }
-
-                        updateItemStacks(body, ref qualityItemBehaviors[i], behaviorInfo.BehaviorType, itemCounts);
+                        updateItemStacks(body, ref qualityItemBehaviors[i], behaviorInfo.BehaviorType, body.inventory.GetItemCountsEffective(behaviorInfo.ItemGroupIndex));
                     }
                 }
             }

@@ -57,8 +57,13 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 CharacterMaster attackerMaster = attackerBody ? attackerBody.master : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                {
+                    isQualityProc = false;
+                    return true;
+                }
 
-                ItemQualityCounts slowOnHit = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts slowOnHit = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SlowOnHit);
                 if (slowOnHit.TotalQualityCount <= 0)
                 {
                     isQualityProc = false;
@@ -97,8 +102,10 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 CharacterMaster attackerMaster = attackerBody ? attackerBody.master : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return;
 
-                ItemQualityCounts slowOnHit = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts slowOnHit = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SlowOnHit);
 
                 QualityTier slowOnHitQuality = slowOnHit.HighestQuality;
                 if (slowOnHitQuality == QualityTier.None)

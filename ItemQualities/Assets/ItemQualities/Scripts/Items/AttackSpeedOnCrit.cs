@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 using UnityEngine.Networking;
 
@@ -16,10 +17,10 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender)
+            if (!sender || !sender.inventory)
                 return;
 
-            ItemQualityCounts attackSpeedOnCrit = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(sender.inventory);
+            ItemQualityCounts attackSpeedOnCrit = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit);
             BuffQualityCounts attackSpeedOnCritBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.GetBuffCounts(sender);
 
             float attackSpeedPerBuff = (0.01f * attackSpeedOnCrit.UncommonCount) +
@@ -35,9 +36,9 @@ namespace ItemQualities.Items
             if (!NetworkServer.active || damageReport?.damageInfo == null)
                 return;
 
-            if (damageReport.damageInfo.crit && damageReport.attackerMaster && damageReport.attackerBody)
+            if (damageReport.damageInfo.crit && damageReport.attackerBody && damageReport.attackerBody.inventory)
             {
-                ItemQualityCounts attackSpeedOnCrit = ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit.GetItemCountsEffective(damageReport.attackerMaster.inventory);
+                ItemQualityCounts attackSpeedOnCrit = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit);
 
                 QualityTier highestAttackSpeedOnCritQuality = attackSpeedOnCrit.HighestQuality;
 

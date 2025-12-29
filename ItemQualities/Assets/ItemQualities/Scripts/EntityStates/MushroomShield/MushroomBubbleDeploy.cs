@@ -1,4 +1,5 @@
 using ItemQualities;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine;
 
@@ -28,10 +29,11 @@ namespace EntityStates.MushroomShield
                 return;
 
             _ownerBody = ownership.ownerObject.GetComponent<CharacterBody>();
-            if (!_ownerBody)
+            if (!_ownerBody || !_ownerBody.inventory)
                 return;
 
-            ItemQualityCounts mushroom = ItemQualitiesContent.ItemQualityGroups.Mushroom.GetItemCountsEffective(_ownerBody.inventory);
+            ItemQualityCounts mushroom = _ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Mushroom);
+
             _undeployLifetime = (1 * mushroom.UncommonCount) +
                                 (3 * mushroom.RareCount) +
                                 (6 * mushroom.EpicCount) +

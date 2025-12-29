@@ -83,7 +83,7 @@ namespace ItemQualities
             }
             else
             {
-                ItemQualityCounts tpHealingNova = ItemQualitiesContent.ItemQualityGroups.TPHealingNova.GetTeamItemCounts(_teamFilter.teamIndex, true);
+                ItemQualityCounts tpHealingNova = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.TPHealingNova, _teamFilter.teamIndex, true);
 
                 int pulseCount = (1 * tpHealingNova.UncommonCount) +
                                  (2 * tpHealingNova.RareCount) +

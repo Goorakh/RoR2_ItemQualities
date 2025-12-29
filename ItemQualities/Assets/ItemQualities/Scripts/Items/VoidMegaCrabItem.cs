@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -39,7 +40,7 @@ namespace ItemQualities.Items
 
                 if (inventory)
                 {
-                    ItemQualityCounts voidMegaCrabItem = ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem.GetItemCountsEffective(inventory);
+                    ItemQualityCounts voidMegaCrabItem = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem);
                     if (voidMegaCrabItem.TotalQualityCount > 0)
                     {
                         spawnRate += (0.1f * voidMegaCrabItem.UncommonCount) +
@@ -59,8 +60,10 @@ namespace ItemQualities.Items
 
             CharacterBody body = self ? self.body : null;
             Inventory inventory = body ? body.inventory : null;
+            if (!inventory)
+                return;
 
-            ItemQualityCounts voidMegaCrabItem = ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem.GetItemCountsEffective(inventory);
+            ItemQualityCounts voidMegaCrabItem = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem);
             if (voidMegaCrabItem.TotalQualityCount > 0)
             {
                 int damageBoostAmount = (3 * voidMegaCrabItem.UncommonCount) +

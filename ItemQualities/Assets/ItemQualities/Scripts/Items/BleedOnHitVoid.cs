@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using System;
 
 namespace ItemQualities.Items
@@ -19,17 +20,19 @@ namespace ItemQualities.Items
                 {
                     CharacterBody attackerBody = inflictDotInfo.attackerObject ? inflictDotInfo.attackerObject.GetComponent<CharacterBody>() : null;
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                    ItemQualityCounts bleedOnHitVoid = ItemQualitiesContent.ItemQualityGroups.BleedOnHitVoid.GetItemCountsEffective(attackerInventory);
-
-                    if (bleedOnHitVoid.TotalQualityCount > 0)
+                    if (attackerInventory)
                     {
-                        float damageMultAdd = (0.10f * bleedOnHitVoid.UncommonCount) +
-                                              (0.20f * bleedOnHitVoid.RareCount) +
-                                              (0.30f * bleedOnHitVoid.EpicCount) +
-                                              (0.50f * bleedOnHitVoid.LegendaryCount);
+                        ItemQualityCounts bleedOnHitVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BleedOnHitVoid);
 
-                        inflictDotInfo.damageMultiplier += damageMultAdd;
+                        if (bleedOnHitVoid.TotalQualityCount > 0)
+                        {
+                            float damageMultAdd = (0.10f * bleedOnHitVoid.UncommonCount) +
+                                                  (0.20f * bleedOnHitVoid.RareCount) +
+                                                  (0.30f * bleedOnHitVoid.EpicCount) +
+                                                  (0.50f * bleedOnHitVoid.LegendaryCount);
+
+                            inflictDotInfo.damageMultiplier += damageMultAdd;
+                        }
                     }
                 }
             }

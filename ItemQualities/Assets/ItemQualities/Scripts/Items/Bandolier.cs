@@ -57,7 +57,7 @@ namespace ItemQualities.Items
                 ItemQualityCounts bandolier = default;
                 if (attackerInventory)
                 {
-                    bandolier = ItemQualitiesContent.ItemQualityGroups.Bandolier.GetItemCountsEffective(attackerInventory);
+                    bandolier = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Bandolier);
                 }
 
                 float extraSkillRestockChance = (10f * bandolier.UncommonCount) +

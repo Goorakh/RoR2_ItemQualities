@@ -1,4 +1,5 @@
 using EntityStates.Headstompers;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -31,15 +32,18 @@ namespace ItemQualities.Items
                 static float getMaxDistance(float maxDistance, HeadstompersFall self)
                 {
                     Inventory inventory = self?.body ? self.body.inventory : null;
-                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCountsEffective(inventory);
-                    if (fallBoots.TotalQualityCount > 0)
+                    if (inventory)
                     {
-                        float distanceMultiplier = Mathf.Pow(1f - 0.1f, fallBoots.UncommonCount) *
-                                                   Mathf.Pow(1f - 0.2f, fallBoots.RareCount) *
-                                                   Mathf.Pow(1f - 0.3f, fallBoots.EpicCount) *
-                                                   Mathf.Pow(1f - 0.4f, fallBoots.LegendaryCount);
+                        ItemQualityCounts fallBoots = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FallBoots);
+                        if (fallBoots.TotalQualityCount > 0)
+                        {
+                            float distanceMultiplier = Mathf.Pow(1f - 0.1f, fallBoots.UncommonCount) *
+                                                       Mathf.Pow(1f - 0.2f, fallBoots.RareCount) *
+                                                       Mathf.Pow(1f - 0.3f, fallBoots.EpicCount) *
+                                                       Mathf.Pow(1f - 0.4f, fallBoots.LegendaryCount);
 
-                        maxDistance *= distanceMultiplier;
+                            maxDistance *= distanceMultiplier;
+                        }
                     }
 
                     return maxDistance;
@@ -69,15 +73,18 @@ namespace ItemQualities.Items
                 static float getMinimumDamageCoefficient(float minimumDamageCoefficient, HeadstompersFall self)
                 {
                     Inventory inventory = self?.body ? self.body.inventory : null;
-                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCountsEffective(inventory);
-                    if (fallBoots.TotalQualityCount > 0)
+                    if (inventory)
                     {
-                        float damageCoefficientBonus = (1f * fallBoots.UncommonCount) +
-                                                       (2f * fallBoots.RareCount) +
-                                                       (3f * fallBoots.EpicCount) +
-                                                       (5f * fallBoots.LegendaryCount);
+                        ItemQualityCounts fallBoots = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FallBoots);
+                        if (fallBoots.TotalQualityCount > 0)
+                        {
+                            float damageCoefficientBonus = (1f * fallBoots.UncommonCount) +
+                                                           (2f * fallBoots.RareCount) +
+                                                           (3f * fallBoots.EpicCount) +
+                                                           (5f * fallBoots.LegendaryCount);
 
-                        minimumDamageCoefficient += damageCoefficientBonus;
+                            minimumDamageCoefficient += damageCoefficientBonus;
+                        }
                     }
 
                     return minimumDamageCoefficient;
@@ -107,15 +114,18 @@ namespace ItemQualities.Items
                 static float getMaximumDamageCoefficient(float maximumDamageCoefficient, HeadstompersFall self)
                 {
                     Inventory inventory = self?.body ? self.body.inventory : null;
-                    ItemQualityCounts fallBoots = ItemQualitiesContent.ItemQualityGroups.FallBoots.GetItemCountsEffective(inventory);
-                    if (fallBoots.TotalQualityCount > 0)
+                    if (inventory)
                     {
-                        float damageCoefficientBonus = (10f * fallBoots.UncommonCount) +
-                                                       (20f * fallBoots.RareCount) +
-                                                       (30f * fallBoots.EpicCount) +
-                                                       (50f * fallBoots.LegendaryCount);
+                        ItemQualityCounts fallBoots = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FallBoots);
+                        if (fallBoots.TotalQualityCount > 0)
+                        {
+                            float damageCoefficientBonus = (10f * fallBoots.UncommonCount) +
+                                                           (20f * fallBoots.RareCount) +
+                                                           (30f * fallBoots.EpicCount) +
+                                                           (50f * fallBoots.LegendaryCount);
 
-                        maximumDamageCoefficient += damageCoefficientBonus;
+                            maximumDamageCoefficient += damageCoefficientBonus;
+                        }
                     }
 
                     return maximumDamageCoefficient;

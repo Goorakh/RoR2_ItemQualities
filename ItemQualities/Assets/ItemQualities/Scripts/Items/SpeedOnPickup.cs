@@ -217,13 +217,16 @@ namespace ItemQualities.Items
 
                 foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
                 {
-                    ItemQualityCounts speedOnPickup = ItemQualitiesContent.ItemQualityGroups.SpeedOnPickup.GetItemCountsEffective(master.inventory);
-                    if (speedOnPickup.TotalQualityCount > 0)
+                    if (master.inventory)
                     {
-                        DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(_iscSpeedOnPickupBarrel, new DirectorPlacementRule
+                        ItemQualityCounts speedOnPickup = master.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SpeedOnPickup);
+                        if (speedOnPickup.TotalQualityCount > 0)
                         {
-                            placementMode = SceneInfo.instance.approximateMapBoundMesh ? DirectorPlacementRule.PlacementMode.RandomNormalized : DirectorPlacementRule.PlacementMode.Random,
-                        }, rng));
+                            DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(_iscSpeedOnPickupBarrel, new DirectorPlacementRule
+                            {
+                                placementMode = SceneInfo.instance.approximateMapBoundMesh ? DirectorPlacementRule.PlacementMode.RandomNormalized : DirectorPlacementRule.PlacementMode.Random,
+                            }, rng));
+                        }
                     }
                 }
             }

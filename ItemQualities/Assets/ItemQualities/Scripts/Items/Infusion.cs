@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using RoR2.Orbs;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -21,7 +22,7 @@ namespace ItemQualities.Items
             if (damageReport?.damageInfo == null)
                 return;
 
-            if (damageReport.attackerBody && damageReport.attackerMaster)
+            if (damageReport.attackerBody && damageReport.attackerMaster && damageReport.attackerMaster.inventory)
             {
                 if (damageReport.victimIsBoss || damageReport.victimIsChampion)
                 {
@@ -31,7 +32,7 @@ namespace ItemQualities.Items
                         victimPosition = damageReport.victimBody.corePosition;
                     }
 
-                    ItemQualityCounts infusion = ItemQualitiesContent.ItemQualityGroups.Infusion.GetItemCountsEffective(damageReport.attackerMaster.inventory);
+                    ItemQualityCounts infusion = damageReport.attackerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Infusion);
 
                     if (infusion.TotalQualityCount > 0)
                     {

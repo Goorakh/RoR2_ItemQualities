@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 using UnityEngine;
 
@@ -14,7 +15,10 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts barrierOnKill = ItemQualitiesContent.ItemQualityGroups.BarrierOnKill.GetItemCountsEffective(sender.inventory);
+            if (!sender.inventory)
+                return;
+
+            ItemQualityCounts barrierOnKill = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BarrierOnKill);
             if (barrierOnKill.TotalQualityCount > 0)
             {
                 args.barrierDecayMult *= Mathf.Pow(1f - 0.10f, barrierOnKill.UncommonCount) *

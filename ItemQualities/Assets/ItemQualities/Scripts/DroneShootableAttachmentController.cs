@@ -1,5 +1,5 @@
-﻿using HG;
-using ItemQualities.Items;
+﻿using ItemQualities.Items;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
 using UnityEngine;
@@ -260,7 +260,12 @@ namespace ItemQualities
                     damageStat = ownerBody.damage;
                 }
 
-                ItemQualityCounts dronesDropDynamite = ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite.GetItemCountsEffective(_cachedOwnerMaster.inventory);
+                ItemQualityCounts dronesDropDynamite = default;
+
+                if (_cachedOwnerMaster.inventory)
+                {
+                    dronesDropDynamite = _cachedOwnerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite);
+                }
 
                 switch (dronesDropDynamite.HighestQuality)
                 {

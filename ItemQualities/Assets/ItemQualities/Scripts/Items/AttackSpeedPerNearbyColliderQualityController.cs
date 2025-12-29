@@ -110,10 +110,10 @@ namespace ItemQualities.Items
         void onCharacterDeathGlobal(DamageReport damageReport)
         {
             CharacterBody body = _bodyAttachment ? _bodyAttachment.attachedBody : null;
-            if (!body || damageReport.attackerBody != body)
+            if (!body || damageReport.attackerBody != body || !body.inventory)
                 return;
 
-            ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCountsEffective(body.inventory);
+            ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy);
             if (attackSpeedPerNearbyAllyOrEnemy.TotalQualityCount > 0)
             {
                 QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;

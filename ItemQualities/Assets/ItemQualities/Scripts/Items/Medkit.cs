@@ -60,7 +60,7 @@ namespace ItemQualities.Items
             {
                 if (body && body.inventory)
                 {
-                    ItemQualityCounts medkit = ItemQualitiesContent.ItemQualityGroups.Medkit.GetItemCountsEffective(body.inventory);
+                    ItemQualityCounts medkit = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Medkit);
                     if (medkit.TotalQualityCount > 0 && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     {
                         float timeSinceLastHit = bodyExtraStats.CurrentMedkitProcTimeSinceLastHit;

@@ -124,65 +124,67 @@ namespace ItemQualities.Items
                 {
                     CharacterMaster attackerMaster = damageReport.attackerMaster;
                     Inventory attackerInventory = attackerMaster ? attackerMaster.inventory : null;
-
-                    ItemQualityCounts tooth = ItemQualitiesContent.ItemQualityGroups.Tooth.GetItemCountsEffective(attackerInventory);
-                    if (tooth.TotalQualityCount > 0)
+                    if (attackerInventory)
                     {
-                        GameObject overrideHealOrbPrefab = null;
-
-                        DamageSource damageSource = damageReport.damageInfo.damageType.damageSource;
-                        if ((damageSource & DamageSource.Primary) != 0)
+                        ItemQualityCounts tooth = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Tooth);
+                        if (tooth.TotalQualityCount > 0)
                         {
-                            overrideHealOrbPrefab = ItemQualitiesContent.NetworkedPrefabs.HealOrbPrimary;
+                            GameObject overrideHealOrbPrefab = null;
 
-                            float buffDuration = (1f * tooth.UncommonCount) +
-                                                 (2f * tooth.RareCount) +
-                                                 (3f * tooth.EpicCount) +
-                                                 (5f * tooth.LegendaryCount);
+                            DamageSource damageSource = damageReport.damageInfo.damageType.damageSource;
+                            if ((damageSource & DamageSource.Primary) != 0)
+                            {
+                                overrideHealOrbPrefab = ItemQualitiesContent.NetworkedPrefabs.HealOrbPrimary;
 
-                            flatOrbValue = buffDuration;
+                                float buffDuration = (1f * tooth.UncommonCount) +
+                                                     (2f * tooth.RareCount) +
+                                                     (3f * tooth.EpicCount) +
+                                                     (5f * tooth.LegendaryCount);
 
-                            orbBuff = BuffCatalog.GetBuffDef(ItemQualitiesContent.BuffQualityGroups.ToothPrimaryBuff.GetBuffIndex(tooth.HighestQuality));
-                        }
-                        else if ((damageSource & DamageSource.Secondary) != 0)
-                        {
-                            overrideHealOrbPrefab = ItemQualitiesContent.NetworkedPrefabs.HealOrbSecondary;
+                                flatOrbValue = buffDuration;
 
-                            float buffDuration = (2f * tooth.UncommonCount) +
-                                                 (4f * tooth.RareCount) +
-                                                 (6f * tooth.EpicCount) +
-                                                 (10f * tooth.LegendaryCount);
+                                orbBuff = BuffCatalog.GetBuffDef(ItemQualitiesContent.BuffQualityGroups.ToothPrimaryBuff.GetBuffIndex(tooth.HighestQuality));
+                            }
+                            else if ((damageSource & DamageSource.Secondary) != 0)
+                            {
+                                overrideHealOrbPrefab = ItemQualitiesContent.NetworkedPrefabs.HealOrbSecondary;
 
-                            flatOrbValue = buffDuration;
+                                float buffDuration = (2f * tooth.UncommonCount) +
+                                                     (4f * tooth.RareCount) +
+                                                     (6f * tooth.EpicCount) +
+                                                     (10f * tooth.LegendaryCount);
 
-                            orbBuff = BuffCatalog.GetBuffDef(ItemQualitiesContent.BuffQualityGroups.ToothSecondaryBuff.GetBuffIndex(tooth.HighestQuality));
-                        }
-                        else if ((damageSource & DamageSource.Utility) != 0)
-                        {
-                            overrideHealOrbPrefab = ItemQualitiesContent.NetworkedPrefabs.HealOrbUtility;
+                                flatOrbValue = buffDuration;
 
-                            float flatBarrier = (15f * tooth.UncommonCount) +
-                                                (25f * tooth.RareCount) +
-                                                (35f * tooth.EpicCount) +
-                                                (50f * tooth.LegendaryCount);
+                                orbBuff = BuffCatalog.GetBuffDef(ItemQualitiesContent.BuffQualityGroups.ToothSecondaryBuff.GetBuffIndex(tooth.HighestQuality));
+                            }
+                            else if ((damageSource & DamageSource.Utility) != 0)
+                            {
+                                overrideHealOrbPrefab = ItemQualitiesContent.NetworkedPrefabs.HealOrbUtility;
 
-                            flatOrbValue = flatBarrier;
-                        }
-                        else if ((damageSource & DamageSource.Special) != 0)
-                        {
-                            overrideHealOrbPrefab = ItemQualitiesContent.NetworkedPrefabs.HealOrbSpecial;
+                                float flatBarrier = (15f * tooth.UncommonCount) +
+                                                    (25f * tooth.RareCount) +
+                                                    (35f * tooth.EpicCount) +
+                                                    (50f * tooth.LegendaryCount);
 
-                            float flatCooldownReduction = (1f * tooth.UncommonCount) +
-                                                          (2f * tooth.RareCount) +
-                                                          (3f * tooth.EpicCount) +
-                                                          (5f * tooth.LegendaryCount);
+                                flatOrbValue = flatBarrier;
+                            }
+                            else if ((damageSource & DamageSource.Special) != 0)
+                            {
+                                overrideHealOrbPrefab = ItemQualitiesContent.NetworkedPrefabs.HealOrbSpecial;
 
-                            flatOrbValue = flatCooldownReduction;
-                        }
+                                float flatCooldownReduction = (1f * tooth.UncommonCount) +
+                                                              (2f * tooth.RareCount) +
+                                                              (3f * tooth.EpicCount) +
+                                                              (5f * tooth.LegendaryCount);
 
-                        if (overrideHealOrbPrefab)
-                        {
-                            healingOrbPrefab = overrideHealOrbPrefab;
+                                flatOrbValue = flatCooldownReduction;
+                            }
+
+                            if (overrideHealOrbPrefab)
+                            {
+                                healingOrbPrefab = overrideHealOrbPrefab;
+                            }
                         }
                     }
                 }
