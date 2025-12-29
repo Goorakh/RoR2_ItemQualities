@@ -64,7 +64,7 @@ namespace ItemQualities.Items
                     ItemQualityCounts jumpBoost = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
 
                     if (jumpBoost.TotalQualityCount > 0 &&
-                        genericCharacterMain.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats) &&
+                        genericCharacterMain.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats) &&
                         bodyExtraStats.QuailJumpComboAuthority > 0)
                     {
                         float velocityBoostPerJump = (0.20f * jumpBoost.UncommonCount) +
@@ -103,7 +103,7 @@ namespace ItemQualities.Items
 
             static void onJump(GenericCharacterMain genericCharacterMain, bool isQuailJump)
             {
-                if (isQuailJump && genericCharacterMain.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                if (isQuailJump && genericCharacterMain.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
                 {
                     bodyExtraStats.OnQuailJumpAuthority();
                 }
@@ -127,7 +127,7 @@ namespace ItemQualities.Items
 
                 static float getAirControl(CharacterMotor characterMotor, float airControl)
                 {
-                    if (characterMotor && characterMotor.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                    if (characterMotor && characterMotor.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     {
                         airControl += bodyExtraStats.AirControlBonus;
                     }

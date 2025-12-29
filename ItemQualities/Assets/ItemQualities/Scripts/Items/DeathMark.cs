@@ -148,7 +148,7 @@ namespace ItemQualities.Items
                 ItemQualityCounts deathMark = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DeathMark);
                 if (deathMark.TotalQualityCount > 0)
                 {
-                    if (victimBody.TryGetComponent(out CharacterBodyExtraStatsTracker victimBodyExtraStats) &&
+                    if (victimBody.TryGetComponentCached(out CharacterBodyExtraStatsTracker victimBodyExtraStats) &&
                         !victimBodyExtraStats.HasHadAnyQualityDeathMarkDebuffServer)
                     {
                         return true;

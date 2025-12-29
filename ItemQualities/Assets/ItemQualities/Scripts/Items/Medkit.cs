@@ -61,7 +61,7 @@ namespace ItemQualities.Items
                 if (body && body.inventory)
                 {
                     ItemQualityCounts medkit = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Medkit);
-                    if (medkit.TotalQualityCount > 0 && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                    if (medkit.TotalQualityCount > 0 && body.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     {
                         float timeSinceLastHit = bodyExtraStats.CurrentMedkitProcTimeSinceLastHit;
                         bodyExtraStats.CurrentMedkitProcTimeSinceLastHit = 0f;
@@ -115,7 +115,7 @@ namespace ItemQualities.Items
 
             static void onMedkitProc(HealthComponent healthComponent)
             {
-                if (healthComponent.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                if (healthComponent && healthComponent.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
                 {
                     Run.FixedTimeStamp lastHitTime = healthComponent.lastHitTime;
                     if (lastHitTime.isInfinity && healthComponent.body)

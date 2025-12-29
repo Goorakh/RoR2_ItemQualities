@@ -78,7 +78,7 @@ namespace ItemQualities.Items
 
                 static bool isUnderStealthKitThreshold(HealthComponent healthComponent, bool isHealthLow)
                 {
-                    if (healthComponent && healthComponent.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
+                    if (healthComponent && healthComponent.TryGetComponentCached(out CharacterBodyExtraStatsTracker extraStatsTracker))
                     {
                         isHealthLow = healthComponent.IsHealthBelowThreshold(extraStatsTracker.StealthKitActivationThreshold);
                     }

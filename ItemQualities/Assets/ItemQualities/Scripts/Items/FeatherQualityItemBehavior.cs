@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities.Items
 {
@@ -16,7 +17,7 @@ namespace ItemQualities.Items
         {
             base.Awake();
 
-            _bodyStats = GetComponent<CharacterBodyExtraStatsTracker>();
+            _bodyStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
         void OnEnable()

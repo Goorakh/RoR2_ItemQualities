@@ -234,7 +234,9 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (sender.master && sender.master.TryGetComponent(out CharacterMasterExtraStatsTracker masterExtraStats) && masterExtraStats.SpeedOnPickupBonus > 0)
+            if (sender.master &&
+                sender.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats) &&
+                masterExtraStats.SpeedOnPickupBonus > 0)
             {
                 float multiplier = 1f + (0.01f * masterExtraStats.SpeedOnPickupBonus);
                 if (multiplier > 0)

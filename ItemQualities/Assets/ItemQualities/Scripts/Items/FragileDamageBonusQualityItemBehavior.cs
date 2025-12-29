@@ -34,7 +34,7 @@ namespace ItemQualities.Items
         protected override void Awake()
         {
             base.Awake();
-            _bodyExtraStats = GetComponent<CharacterBodyExtraStatsTracker>();
+            _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
         void Start()

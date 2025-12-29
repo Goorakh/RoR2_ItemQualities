@@ -3,11 +3,29 @@ using ItemQualities.Items;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities
 {
+    public interface IVanillaSurvivorContentPiece : IAsyncInitializer
+    {
+        SurvivorDef survivorDef { get; }
+
+        new IEnumerator InitializeAsync();
+
+        IEnumerator IAsyncInitializer.InitializeAsync()
+        {
+            return InitializeAsync();
+        }
+    }
+
+    public interface IAsyncInitializer
+    {
+        IEnumerator InitializeAsync();
+    }
+
     public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver
     {
         [SystemInitializer(typeof(BodyCatalog))]
@@ -23,7 +41,7 @@ namespace ItemQualities
 
         static void onCharacterDeathGlobal(DamageReport damageReport)
         {
-            if (damageReport.attacker && damageReport.attacker.TryGetComponent(out CharacterBodyExtraStatsTracker attackerBodyExtraStats))
+            if (damageReport.attacker && damageReport.attacker.TryGetComponentCached(out CharacterBodyExtraStatsTracker attackerBodyExtraStats))
             {
                 attackerBodyExtraStats.onKilledOther(damageReport);
             }
@@ -131,14 +149,21 @@ namespace ItemQualities
         {
             _netIdentity = GetComponent<NetworkIdentity>();
             _body = GetComponent<CharacterBody>();
+
+            ComponentCache.Add(gameObject, this);
         }
 
         void Start()
         {
             if (_body.master)
             {
-                MasterExtraStatsTracker = _body.master.GetComponent<CharacterMasterExtraStatsTracker>();
+                MasterExtraStatsTracker = _body.master.GetComponentCached<CharacterMasterExtraStatsTracker>();
             }
+        }
+
+        void OnDestroy()
+        {
+            ComponentCache.Remove(gameObject, this);
         }
 
         void OnEnable()

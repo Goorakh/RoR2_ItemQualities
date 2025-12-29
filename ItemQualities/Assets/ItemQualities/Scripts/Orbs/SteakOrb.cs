@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using RoR2.Orbs;
 using UnityEngine;
 
@@ -44,7 +45,7 @@ namespace ItemQualities.Orbs
             CharacterMaster targetMaster = targetBody ? targetBody.master : null;
             if (targetMaster)
             {
-                _targetMasterStats = targetMaster.GetComponent<CharacterMasterExtraStatsTracker>();
+                _targetMasterStats = targetMaster.GetComponentCached<CharacterMasterExtraStatsTracker>();
             }
         }
 

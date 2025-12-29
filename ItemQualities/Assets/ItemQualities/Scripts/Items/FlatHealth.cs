@@ -75,7 +75,7 @@ namespace ItemQualities.Items
 
             if (flatHealth.TotalQualityCount > 0)
             {
-                if (master && master.TryGetComponent(out CharacterMasterExtraStatsTracker masterExtraStatsTracker))
+                if (master && master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStatsTracker))
                 {
                     args.baseHealthAdd += masterExtraStatsTracker.SteakBonus;
                 }

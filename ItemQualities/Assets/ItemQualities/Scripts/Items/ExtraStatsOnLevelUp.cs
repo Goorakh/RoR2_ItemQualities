@@ -64,7 +64,7 @@ namespace ItemQualities.Items
 
             static void recordBeadCount(CharacterBody body)
             {
-                if (body && body.inventory && body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                if (body && body.inventory && body.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
                 {
                     bodyExtraStats.LastExtraStatsOnLevelUpCounts = body.inventory.GetItemCountsPermanent(ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp);
                 }
@@ -80,7 +80,7 @@ namespace ItemQualities.Items
 
             static uint tryProcQualityBeads(CharacterBody body)
             {
-                if (!body || !body.isPlayerControlled || !body.inventory || !body.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                if (!body || !body.isPlayerControlled || !body.inventory || !body.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     return 0;
 
                 ItemQualityCounts extraStatsOnLevelUp = body.inventory.GetItemCountsPermanent(ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp);

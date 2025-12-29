@@ -346,7 +346,7 @@ namespace ItemQualities
             HealthComponent healthComponent = healthBar ? healthBar.source : null;
             CharacterBody body = healthComponent ? healthComponent.body : null;
             Inventory inventory = body ? body.inventory : null;
-            if (!inventory || !body.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
+            if (!inventory || !body || !body.TryGetComponentCached(out CharacterBodyExtraStatsTracker extraStatsTracker))
                 return default;
 
             HealthComponent.HealthBarValues healthBarValues = healthComponent.GetHealthBarValues();

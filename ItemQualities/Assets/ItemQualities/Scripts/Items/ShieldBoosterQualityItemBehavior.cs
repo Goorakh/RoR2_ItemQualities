@@ -20,7 +20,7 @@ namespace ItemQualities.Items
         {
             base.Awake();
 
-            _bodyExtraStats = GetComponent<CharacterBodyExtraStatsTracker>();
+            _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
         void OnEnable()
