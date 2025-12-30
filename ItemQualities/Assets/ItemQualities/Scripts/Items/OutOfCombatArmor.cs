@@ -123,6 +123,7 @@ namespace ItemQualities.Items
                             if (hurtBox.healthComponent.TryGetComponent(out SetStateOnHurt attackerSetStateOnHurt) && attackerSetStateOnHurt.canBeStunned)
                             {
                                 attackerSetStateOnHurt.SetStun(stunDuration);
+                                Crowbar.handleDelayedHit(victimBody.gameObject, hurtBox.gameObject);
                             }
                         }
                     }
