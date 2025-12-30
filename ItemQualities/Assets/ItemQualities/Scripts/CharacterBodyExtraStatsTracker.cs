@@ -3,29 +3,11 @@ using ItemQualities.Items;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public interface IVanillaSurvivorContentPiece : IAsyncInitializer
-    {
-        SurvivorDef survivorDef { get; }
-
-        new IEnumerator InitializeAsync();
-
-        IEnumerator IAsyncInitializer.InitializeAsync()
-        {
-            return InitializeAsync();
-        }
-    }
-
-    public interface IAsyncInitializer
-    {
-        IEnumerator InitializeAsync();
-    }
-
     public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver
     {
         [SystemInitializer(typeof(BodyCatalog))]
