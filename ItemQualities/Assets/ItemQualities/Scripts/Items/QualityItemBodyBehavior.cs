@@ -21,7 +21,7 @@ namespace ItemQualities.Items
 
         readonly static QualityGroupBehaviorCollection[] _behaviorCollectionsLookup = new QualityGroupBehaviorCollection[(int)QualityItemBehaviorUsageFlags.All];
 
-        static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, QualityItemBodyBehavior[]> _bodyQualityBehaviorsLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, QualityItemBodyBehavior[]>();
+        static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
 
         protected virtual void Awake()
         {
@@ -182,16 +182,17 @@ namespace ItemQualities.Items
 
         static void onBodyStartGlobal(CharacterBody body)
         {
-            if (body.inventory && !_bodyQualityBehaviorsLookup.ContainsKey(body))
+            if (body.inventory && !_bodyQualityBehaviorInfoLookup.ContainsKey(body))
             {
                 int behaviorCollectionIndex = getBehaviorCollectionIndex(body);
                 if (ArrayUtils.IsInBounds(_behaviorCollectionsLookup, behaviorCollectionIndex))
                 {
-                    QualityGroupBehaviorCollection behaviorCollection = _behaviorCollectionsLookup[behaviorCollectionIndex];
+                    ref readonly QualityGroupBehaviorCollection behaviorCollection = ref _behaviorCollectionsLookup[behaviorCollectionIndex];
                     if (behaviorCollection.BehaviorsArrayPool != null)
                     {
                         QualityItemBodyBehavior[] qualityItemBehaviors = behaviorCollection.BehaviorsArrayPool.Request();
-                        _bodyQualityBehaviorsLookup.Add(body, qualityItemBehaviors);
+
+                        _bodyQualityBehaviorInfoLookup.Add(body, new BodyBehaviorInfo(qualityItemBehaviors, behaviorCollectionIndex));
                         refreshBodyQualityBehaviors(body, qualityItemBehaviors);
                     }
                 }
@@ -200,21 +201,17 @@ namespace ItemQualities.Items
 
         static void onBodyDestroyGlobal(CharacterBody body)
         {
-            if (_bodyQualityBehaviorsLookup.Remove(body, out QualityItemBodyBehavior[] behaviors))
+            if (_bodyQualityBehaviorInfoLookup.Remove(body, out BodyBehaviorInfo behaviorInfo))
             {
-                int behaviorCollectionIndex = getBehaviorCollectionIndex(body);
-                if (ArrayUtils.IsInBounds(_behaviorCollectionsLookup, behaviorCollectionIndex))
-                {
-                    _behaviorCollectionsLookup[behaviorCollectionIndex].BehaviorsArrayPool?.Return(behaviors);
-                }
+                _behaviorCollectionsLookup[behaviorInfo.CollectionIndex].BehaviorsArrayPool?.Return(behaviorInfo.BehaviorComponents);
             }
         }
 
         static void onBodyInventoryChangedGlobal(CharacterBody body)
         {
-            if (_bodyQualityBehaviorsLookup.TryGetValue(body, out QualityItemBodyBehavior[] qualityItemBehaviors))
+            if (_bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
             {
-                refreshBodyQualityBehaviors(body, qualityItemBehaviors);
+                refreshBodyQualityBehaviors(body, behaviorInfo.BehaviorComponents);
             }
         }
 
@@ -275,6 +272,19 @@ namespace ItemQualities.Items
             {
                 itemBehavior._stacks = itemCounts;
                 itemBehavior.OnStacksChanged();
+            }
+        }
+
+        sealed class BodyBehaviorInfo
+        {
+            public readonly QualityItemBodyBehavior[] BehaviorComponents;
+
+            public readonly int CollectionIndex;
+
+            public BodyBehaviorInfo(QualityItemBodyBehavior[] behaviors, int collectionIndex)
+            {
+                BehaviorComponents = behaviors;
+                CollectionIndex = collectionIndex;
             }
         }
 
