@@ -266,7 +266,8 @@ namespace ItemQualities.Items
                     crit = damageInfo.crit,
                     procCoefficient = 1,
                     position = damageInfo.position,
-                    inflictedHurtbox = damageInfo.inflictedHurtbox
+                    inflictedHurtbox = damageInfo.inflictedHurtbox,
+                    damageColorIndex = DamageColorIndex.DelayedDamage,
                 };
                 healthComponent.TakeDamage(damageInfo);
                 GlobalEventManager.instance.OnHitEnemy(damageInfo, healthComponent.gameObject);
