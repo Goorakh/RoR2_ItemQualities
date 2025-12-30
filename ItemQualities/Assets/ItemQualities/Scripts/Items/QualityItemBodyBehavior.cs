@@ -14,14 +14,14 @@ namespace ItemQualities.Items
 {
     public abstract class QualityItemBodyBehavior : MonoBehaviour
     {
+        readonly static QualityGroupBehaviorCollection[] _behaviorCollectionsLookup = new QualityGroupBehaviorCollection[(int)QualityItemBehaviorUsageFlags.All];
+
+        static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
+
         public CharacterBody Body { get; private set; }
 
         ItemQualityCounts _stacks;
         public ItemQualityCounts Stacks => _stacks;
-
-        readonly static QualityGroupBehaviorCollection[] _behaviorCollectionsLookup = new QualityGroupBehaviorCollection[(int)QualityItemBehaviorUsageFlags.All];
-
-        static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
 
         protected virtual void Awake()
         {
@@ -191,9 +191,10 @@ namespace ItemQualities.Items
                     if (behaviorCollection.BehaviorsArrayPool != null)
                     {
                         QualityItemBodyBehavior[] qualityItemBehaviors = behaviorCollection.BehaviorsArrayPool.Request();
+                        BodyBehaviorInfo bodyBehaviorInfo = new BodyBehaviorInfo(qualityItemBehaviors, behaviorCollectionIndex);
 
-                        _bodyQualityBehaviorInfoLookup.Add(body, new BodyBehaviorInfo(qualityItemBehaviors, behaviorCollectionIndex));
-                        refreshBodyQualityBehaviors(body, qualityItemBehaviors);
+                        _bodyQualityBehaviorInfoLookup.Add(body, bodyBehaviorInfo);
+                        refreshBodyQualityBehaviors(body, bodyBehaviorInfo);
                     }
                 }
             }
@@ -211,32 +212,28 @@ namespace ItemQualities.Items
         {
             if (_bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
             {
-                refreshBodyQualityBehaviors(body, behaviorInfo.BehaviorComponents);
+                refreshBodyQualityBehaviors(body, behaviorInfo);
             }
         }
 
-        static void refreshBodyQualityBehaviors(CharacterBody body, QualityItemBodyBehavior[] qualityItemBehaviors)
+        static void refreshBodyQualityBehaviors(CharacterBody body, BodyBehaviorInfo bodyBehaviorInfo)
         {
             if (body.inventory)
             {
-                int behaviorCollectionIndex = getBehaviorCollectionIndex(body);
-                if (ArrayUtils.IsInBounds(_behaviorCollectionsLookup, behaviorCollectionIndex))
+                ref readonly QualityGroupBehaviorCollection behaviorCollection = ref _behaviorCollectionsLookup[bodyBehaviorInfo.CollectionIndex];
+
+                for (int i = 0; i < behaviorCollection.Behaviors.Length; i++)
                 {
-                    ref readonly QualityGroupBehaviorCollection behaviorCollection = ref _behaviorCollectionsLookup[behaviorCollectionIndex];
+                    ref readonly QualityGroupBehaviorInfo behaviorInfo = ref behaviorCollection.Behaviors[i];
 
-                    for (int i = 0; i < behaviorCollection.Behaviors.Length; i++)
-                    {
-                        ref readonly QualityGroupBehaviorInfo behaviorInfo = ref behaviorCollection.Behaviors[i];
-
-                        updateItemStacks(body, ref qualityItemBehaviors[i], behaviorInfo.BehaviorType, body.inventory.GetItemCountsEffective(behaviorInfo.ItemGroupIndex));
-                    }
+                    updateItemStacks(body, ref bodyBehaviorInfo.BehaviorComponents[i], behaviorInfo.BehaviorType, body.inventory.GetItemCountsEffective(behaviorInfo.ItemGroupIndex));
                 }
             }
             else
             {
-                for (int i = 0; i < qualityItemBehaviors.Length; i++)
+                for (int i = 0; i < bodyBehaviorInfo.BehaviorComponents.Length; i++)
                 {
-                    ref QualityItemBodyBehavior behavior = ref qualityItemBehaviors[i];
+                    ref QualityItemBodyBehavior behavior = ref bodyBehaviorInfo.BehaviorComponents[i];
                     if (!ReferenceEquals(behavior, null))
                     {
                         Destroy(behavior);
