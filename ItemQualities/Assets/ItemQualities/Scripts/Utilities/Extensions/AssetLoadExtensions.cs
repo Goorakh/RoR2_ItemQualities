@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    public static class AssetLoadExtensions
+    internal static class AssetLoadExtensions
     {
         public static void OnSuccess<T>(this AsyncOperationHandle<T> handle, Action<T> onSuccess)
         {
