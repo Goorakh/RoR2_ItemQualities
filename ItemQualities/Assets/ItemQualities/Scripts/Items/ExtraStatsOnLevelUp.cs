@@ -119,12 +119,9 @@ namespace ItemQualities.Items
                         }
                     }
 
-                    if (ambientLevelPenalty > 0)
+                    if (ambientLevelPenalty > 0 && RunExtraStatsTracker.Instance)
                     {
-                        if (Run.instance.TryGetComponent(out RunExtraStatsTracker runExtraStats))
-                        {
-                            runExtraStats.AmbientLevelPenalty += ambientLevelPenalty;
-                        }
+                        RunExtraStatsTracker.Instance.AmbientLevelPenalty += ambientLevelPenalty;
                     }
                 }
 
