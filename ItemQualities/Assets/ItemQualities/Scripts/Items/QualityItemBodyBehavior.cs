@@ -18,6 +18,7 @@ namespace ItemQualities.Items
 
         static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
 
+        static CharacterBody _earlyAssignmentBody;
         public CharacterBody Body { get; private set; }
 
         ItemQualityCounts _stacks;
@@ -25,7 +26,8 @@ namespace ItemQualities.Items
 
         protected virtual void Awake()
         {
-            Body = GetComponent<CharacterBody>();
+            Body = _earlyAssignmentBody;
+            _earlyAssignmentBody = null;
         }
 
         protected virtual void OnStacksChanged()
@@ -252,7 +254,15 @@ namespace ItemQualities.Items
             {
                 if (shouldHaveBehavior)
                 {
-                    itemBehavior = (QualityItemBodyBehavior)body.gameObject.AddComponent(qualityBehaviorType);
+                    _earlyAssignmentBody = body;
+                    try
+                    {
+                        itemBehavior = (QualityItemBodyBehavior)body.gameObject.AddComponent(qualityBehaviorType);
+                    }
+                    finally
+                    {
+                        _earlyAssignmentBody = null;
+                    }
 
                     hasBehavior = true;
                 }
