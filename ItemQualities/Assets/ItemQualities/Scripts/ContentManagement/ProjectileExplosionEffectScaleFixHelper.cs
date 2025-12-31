@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ItemQualities.ContentManagement
 {
-    public sealed class ProjectileExplosionEffectScaleFixHelper
+    internal sealed class ProjectileExplosionEffectScaleFixHelper
     {
         readonly Dictionary<GameObject, EffectDef> _fixedExplosionEffectCache = new Dictionary<GameObject, EffectDef>();
 

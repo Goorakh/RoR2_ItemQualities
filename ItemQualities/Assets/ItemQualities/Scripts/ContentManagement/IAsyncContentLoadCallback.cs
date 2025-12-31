@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace ItemQualities.ContentManagement
 {
-    public interface IAsyncContentLoadCallback
+    internal interface IAsyncContentLoadCallback
     {
         IEnumerator OnContentLoad(IProgress<float> progressReceiver = null);
     }

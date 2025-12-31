@@ -2,7 +2,7 @@
 
 namespace ItemQualities.ContentManagement
 {
-    public class ContentIntializerArgs
+    internal sealed class ContentIntializerArgs
     {
         public ExtendedContentPack ContentPack { get; }
 

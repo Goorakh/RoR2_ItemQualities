@@ -13,7 +13,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.ContentManagement
 {
-    public class QualityContagiousItemHelper : IDisposable
+    internal sealed class QualityContagiousItemHelper : IDisposable
     {
         int _completedSteps;
 
