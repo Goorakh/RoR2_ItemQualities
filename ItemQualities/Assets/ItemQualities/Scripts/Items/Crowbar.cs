@@ -20,28 +20,15 @@ namespace ItemQualities.Items
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        public static DelayedHitHandler handleDelayedHit(DamageInfo damageInfo, GameObject victim)
+        public static DelayedHitHandler handleDelayedHit(GameObject attacker, GameObject victim)
         {
             DelayedHitHandler delayedHitHandler = victim.GetComponent<DelayedHitHandler>();
             if (!delayedHitHandler)
             {
-                damageInfo.procChainMask.AddModdedProc(ProcTypes.Immobilize);
                 delayedHitHandler = victim.AddComponent<DelayedHitHandler>();
-                delayedHitHandler.damageInfo = damageInfo;
+                delayedHitHandler.attacker = attacker;
             }
             return delayedHitHandler;
-        }
-
-        public static DelayedHitHandler handleDelayedHit(GameObject attacker, GameObject victim)
-        {
-            DamageInfo damageInfo = new DamageInfo
-            {
-                attacker = attacker,
-                inflictor = attacker,
-                procChainMask = new ProcChainMask()
-            };
-
-            return handleDelayedHit(damageInfo, victim);
         }
 
         public static bool is_immobile(EntityState state, CharacterBody body)
@@ -71,7 +58,7 @@ namespace ItemQualities.Items
                 if (report.victimBody.TryGetComponent<EntityStateMachine>(out EntityStateMachine entityStateMachine) &&
                 is_immobile(entityStateMachine.state, report.victimBody))
                 {
-                    delayedHitHandler = handleDelayedHit(report.damageInfo, report.victimBody.gameObject);
+                    delayedHitHandler = handleDelayedHit(report.attacker, report.victimBody.gameObject);
                 }
                 else
                 {
@@ -118,7 +105,7 @@ namespace ItemQualities.Items
         {
             if (!damageInfo.procChainMask.HasModdedProc(ProcTypes.Immobilize))
             {
-                handleDelayedHit(damageInfo, victim);
+                handleDelayedHit(damageInfo.attacker, victim);
                 return true;
             }
             return false;
@@ -220,7 +207,7 @@ namespace ItemQualities.Items
         {
             if (!damageReport.damageInfo.procChainMask.HasModdedProc(ProcTypes.Immobilize))
             {
-                handleDelayedHit(damageReport.damageInfo, damageReport.victimBody.gameObject);
+                handleDelayedHit(damageReport.attacker, damageReport.victimBody.gameObject);
                 return true;
             }
             return false;
@@ -229,7 +216,7 @@ namespace ItemQualities.Items
         public class DelayedHitHandler : MonoBehaviour
         {
             public float damage = 0;
-            public DamageInfo damageInfo;
+            public GameObject attacker;
 
             EntityStateMachine _entityStateMachine;
             CharacterBody _characterBody;
@@ -256,18 +243,20 @@ namespace ItemQualities.Items
                     Destroy(this);
                     return;
                 }
-                
-                damageInfo = new DamageInfo
+
+                ProcChainMask procChainMask = default(ProcChainMask);
+                procChainMask.AddModdedProc(ProcTypes.Immobilize);
+
+                DamageInfo damageInfo = new DamageInfo
                 {
                     damage = damage,
-                    inflictor = damageInfo.inflictor,
-                    attacker = damageInfo.attacker,
-                    procChainMask = damageInfo.procChainMask,
-                    crit = damageInfo.crit,
+                    inflictor = attacker,
+                    attacker = attacker,
+                    procChainMask = procChainMask,
                     procCoefficient = 1,
-                    position = damageInfo.position,
-                    inflictedHurtbox = damageInfo.inflictedHurtbox,
                     damageColorIndex = DamageColorIndex.DelayedDamage,
+                    damageType = DamageTypeExtended.BypassDamageCalculations,
+                    position = _characterBody.corePosition,
                 };
                 healthComponent.TakeDamage(damageInfo);
                 GlobalEventManager.instance.OnHitEnemy(damageInfo, healthComponent.gameObject);
