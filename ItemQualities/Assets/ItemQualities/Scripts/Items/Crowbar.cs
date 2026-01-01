@@ -1,6 +1,5 @@
 ﻿using EntityStates;
 using EntityStates.Vehicles;
-using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
@@ -34,6 +33,10 @@ namespace ItemQualities.Items
         public static bool IsImmobile(EntityStateMachine entityStateMachine)
         {
             CharacterBody body = entityStateMachine.commonComponents.characterBody;
+            if (!body)
+            {
+                return false;
+            }
             if (entityStateMachine.state is StunState ||
                 entityStateMachine.state is FrozenState ||
                 entityStateMachine.state is ShockState ||
@@ -84,25 +87,23 @@ namespace ItemQualities.Items
             ILLabel label = null;
             ILCursor c = new ILCursor(il);
             //tentabauble
-            if (!c.TryGotoNext(MoveType.Before,
-                    x => x.MatchBrfalse(out label),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.Nullified)),
-                    x => x.MatchLdcR4(1),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchConvR4(),
-                    x => x.MatchMul(),
-                    x => x.MatchCallOrCallvirt(typeof(CharacterBody), nameof(CharacterBody.AddTimedBuff))
+            if (c.TryGotoNext(
+                    x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.Nullified))
+                ) &&
+                c.TryGotoPrev(MoveType.After,
+                    x => x.MatchBrfalse(out label)
                 ))
+            {
+                c.Emit(OpCodes.Ldarg_1);
+                c.Emit(OpCodes.Ldarg_2);
+                c.EmitDelegate<Func<DamageInfo, GameObject, bool>>(checkImmobileProcChainMask);
+                c.Emit(OpCodes.Brfalse_S, label);
+            }
+            else
             {
                 Log.Error(il.Method.Name + " IL Hook failed!");
                 return;
             }
-            c.Index++;
-            c.Emit(OpCodes.Ldarg_1);
-            c.Emit(OpCodes.Ldarg_2);
-            c.EmitDelegate<Func<DamageInfo, GameObject, bool>>(checkImmobileProcChainMask);
-            c.Emit(OpCodes.Brfalse_S, label);
         }
 
         private static bool checkImmobileProcChainMask(DamageInfo damageInfo, GameObject victim)
@@ -120,23 +121,13 @@ namespace ItemQualities.Items
             ILLabel label = null;
             ILCursor c = new ILCursor(il);
             //stungrenade
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchBrfalse(out label),
-                    x => x.MatchLdstr("Prefabs/Effects/ImpactEffects/ImpactStunGrenade"),
-                    x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load)),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdfld(typeof(DamageInfo), nameof(DamageInfo.position)),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdfld(typeof(DamageInfo), nameof(DamageInfo.force)),
-                    x => x.MatchCallOrCallvirt(typeof(Vector3), "op_UnaryNegation"),
-                    x => x.MatchLdcI4(1),
-                    x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SimpleImpactEffect)),
-                    x => x.MatchLdarg(0),
-                    x => x.MatchLdcR4(2),
+            if (c.TryGotoNext(
                     x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetStun))
+                ) &&
+                c.TryGotoPrev(MoveType.After,
+                    x => x.MatchBrfalse(out label)
                 ))
             {
-                c.Index++;
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
@@ -146,17 +137,13 @@ namespace ItemQualities.Items
 
             //freezeonhit
             c.Index = 0;
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchBrfalse(out label),
-                    x => x.MatchLdarg(0),
-                    x => x.MatchLdcR4(2),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdfld(typeof(DamageInfo), nameof(DamageInfo.procCoefficient)),
-                    x => x.MatchMul(),
+            if (c.TryGotoNext(
                     x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetFrozen))
+                ) &&
+                c.TryGotoPrev(MoveType.After,
+                    x => x.MatchBrfalse(out label)
                 ))
             {
-                c.Index++;
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
@@ -166,18 +153,13 @@ namespace ItemQualities.Items
 
             //shockonhit
             c.Index = 0;
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchBrfalse(out label),
-                    x => x.MatchLdarg(0),
-                    x => x.MatchLdcR4(5),
-                    x => x.MatchLdarg(1),
-                    x => x.MatchLdfld(typeof(DamageReport), nameof(DamageReport.damageInfo)),
-                    x => x.MatchLdfld(typeof(DamageInfo), nameof(DamageInfo.procCoefficient)),
-                    x => x.MatchMul(),
+            if (c.TryGotoNext(
                     x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetShock))
+                ) &&
+                c.TryGotoPrev(MoveType.After,
+                    x => x.MatchBrfalse(out label)
                 ))
             {
-                c.Index++;
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
@@ -204,24 +186,21 @@ namespace ItemQualities.Items
 
             //immobilizestate
             c.Index = 0;
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchBrfalse(out label),
-                    x => x.MatchLdarg(0),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdfld(typeof(DamageInfo), nameof(DamageInfo.attacker)),
-                    x => x.MatchLdloc(out _),
-                    x => x.MatchLdfld(typeof(DamageInfo), nameof(DamageInfo.inflictor)),
+            if (c.TryGotoNext(
                     x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetImmobilize))
+                ) &&
+                c.TryGotoPrev(MoveType.After,
+                    x => x.MatchBrfalse(out label)
                 ))
             {
-                c.Index++;
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
             } else {
                 Log.Error("immobilizestate IL Hook failed!");
             }
-            
+
+            Debug.Log(il);
         }
 
         private static bool checkImmobileProcChainMask(DamageReport damageReport)
@@ -272,11 +251,8 @@ namespace ItemQualities.Items
             void dealDelayedDamage() {
                 ProcChainMask procChainMask = default(ProcChainMask);
                 procChainMask.AddModdedProc(ProcTypes.Immobilize);
-
-                if (wasInFrozenState)
-                {
-                    _body.healthComponent.isInFrozenState = true;
-                }
+                bool restorefrozen = _body.healthComponent.isInFrozenState;
+                _body.healthComponent.isInFrozenState = wasInFrozenState;
 
                 DamageInfo damageInfo = new DamageInfo
                 {
@@ -292,7 +268,7 @@ namespace ItemQualities.Items
                 _body.healthComponent.TakeDamage(damageInfo);
                 GlobalEventManager.instance.OnHitEnemy(damageInfo, _body.healthComponent.gameObject);
                 GlobalEventManager.instance.OnHitAll(damageInfo, _body.healthComponent.gameObject);
-                _body.healthComponent.isInFrozenState = false;
+                _body.healthComponent.isInFrozenState = restorefrozen;
             }
         }
     }
