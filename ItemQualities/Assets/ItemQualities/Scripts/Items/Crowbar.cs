@@ -36,7 +36,6 @@ namespace ItemQualities.Items
             if (state.GetType() == typeof(StunState) ||
                 state.GetType() == typeof(FrozenState) ||
                 state.GetType() == typeof(ShockState) ||
-                state.GetType() == typeof(HurtState) ||
                 state.GetType() == typeof(ImmobilizeState) ||
                 state.GetType() == typeof(GenericCharacterVehicleSeated) ||
                 state.GetType() == typeof(ThrownObjectIdle) ||
@@ -71,11 +70,11 @@ namespace ItemQualities.Items
             }
 
             ItemQualityCounts crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(attckerbody.inventory);
-            float multiplier =  crowbar.UncommonCount * 0.1f +
-                                crowbar.RareCount * 0.2f +
-                                crowbar.EpicCount * 0.3f +
-                                crowbar.LegendaryCount * 0.4f;
-
+            float multiplier =  crowbar.UncommonCount * 0.15f +
+                                crowbar.RareCount * 0.3f +
+                                crowbar.EpicCount * 0.45f +
+                                crowbar.LegendaryCount * 0.6f;
+   
             delayedHitHandler.damage += report.damageDealt * multiplier;
         }
 
@@ -147,22 +146,6 @@ namespace ItemQualities.Items
             //shockonhit
             if (!c.TryGotoNext(MoveType.After,
                     x => x.MatchLdcI4(16777216),
-                    x => x.MatchCall(typeof(DamageTypeCombo), "op_Implicit"),
-                    x => x.MatchCall(typeof(DamageTypeCombo), "op_BitwiseAnd"),
-                    x => x.MatchCall(typeof(DamageTypeCombo), "op_Implicit"),
-                    x => x.MatchBrfalse(out label)
-                ))
-            {
-                Log.Error(il.Method.Name + " IL Hook failed!");
-                return;
-            }
-            c.Emit(OpCodes.Ldarg_1);
-            c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
-            c.Emit(OpCodes.Brfalse_S, label);
-
-            //stagger
-            if (!c.TryGotoNext(MoveType.After,
-                    x => x.MatchLdcI4(32),
                     x => x.MatchCall(typeof(DamageTypeCombo), "op_Implicit"),
                     x => x.MatchCall(typeof(DamageTypeCombo), "op_BitwiseAnd"),
                     x => x.MatchCall(typeof(DamageTypeCombo), "op_Implicit"),
