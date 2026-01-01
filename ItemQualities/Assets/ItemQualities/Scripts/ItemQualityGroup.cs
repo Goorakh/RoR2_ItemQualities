@@ -306,6 +306,12 @@ namespace ItemQualities
 
                 ItemDef createItem(QualityTier qualityTier)
                 {
+                    QualityTierDef qualityTierDef = contentPack.qualityTierDefs.FirstOrDefault(qd => qd.qualityTier == qualityTier);
+                    if (!qualityTierDef)
+                    {
+                        Log.Error($"Failed to find quality tier def {qualityTier}");
+                    }
+
                     ItemDef itemDef = ScriptableObject.CreateInstance<ItemDef>();
                     itemDef.name = baseItemName + qualityTier;
                     itemDef.descriptionToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
@@ -315,9 +321,9 @@ namespace ItemQualities
                     itemDef.hidden = baseItem.hidden;
                     itemDef.canRemove = baseItem.canRemove;
 
-                    if (baseIconTexture)
+                    if (baseIconTexture && qualityTierDef)
                     {
-                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier, baseItem.isConsumed);
+                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTierDef, baseItem.isConsumed);
                         qualityIconTexture.name = $"tex{itemDef.name}";
 
                         Sprite qualityIconSprite = Sprite.Create(qualityIconTexture, new Rect(0f, 0f, qualityIconTexture.width, qualityIconTexture.height), new Vector2(0.5f, 0.5f), qualityIconTexture.width / 5.12f);

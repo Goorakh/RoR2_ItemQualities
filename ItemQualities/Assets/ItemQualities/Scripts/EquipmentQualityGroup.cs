@@ -6,6 +6,7 @@ using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -265,6 +266,12 @@ namespace ItemQualities
 
                 EquipmentDef createEquipment(QualityTier qualityTier)
                 {
+                    QualityTierDef qualityTierDef = contentPack.qualityTierDefs.FirstOrDefault(qd => qd.qualityTier == qualityTier);
+                    if (!qualityTierDef)
+                    {
+                        Log.Error($"Failed to find quality tier def {qualityTier}");
+                    }
+
                     EquipmentDef equipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
                     equipmentDef.name = baseEquipmentName + qualityTier;
                     equipmentDef.descriptionToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
@@ -274,9 +281,9 @@ namespace ItemQualities
                     equipmentDef.canDrop = false;
                     equipmentDef.dropOnDeathChance = 0f;
 
-                    if (baseIconTexture)
+                    if (baseIconTexture && qualityTierDef)
                     {
-                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier);
+                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTierDef);
                         qualityIconTexture.name = $"tex{equipmentDef.name}";
 
                         Sprite qualityIconSprite = Sprite.Create(qualityIconTexture, new Rect(0f, 0f, qualityIconTexture.width, qualityIconTexture.height), new Vector2(0.5f, 0.5f), qualityIconTexture.width / 5.12f);

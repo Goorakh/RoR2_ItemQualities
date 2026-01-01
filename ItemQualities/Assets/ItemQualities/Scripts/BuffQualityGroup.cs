@@ -7,6 +7,7 @@ using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
@@ -289,6 +290,12 @@ namespace ItemQualities
 
                 BuffDef createBuffDef(QualityTier qualityTier)
                 {
+                    QualityTierDef qualityTierDef = contentPack.qualityTierDefs.FirstOrDefault(qd => qd.qualityTier == qualityTier);
+                    if (!qualityTierDef)
+                    {
+                        Log.Error($"Failed to find quality tier def {qualityTier}");
+                    }
+
                     string buffName = baseBuffName + qualityTier;
 
                     BuffDef buffDef = ScriptableObject.CreateInstance<BuffDef>();
@@ -308,7 +315,7 @@ namespace ItemQualities
 
                     if (baseIconTexture)
                     {
-                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier, baseBuff ? baseBuff.buffColor : Color.white);
+                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTierDef, baseBuff ? baseBuff.buffColor : Color.white);
                         qualityIconTexture.name = $"tex{buffName}";
 
                         Sprite qualityIconSprite = Sprite.Create(qualityIconTexture, new Rect(0f, 0f, qualityIconTexture.width, qualityIconTexture.height), new Vector2(0.5f, 0.5f), qualityIconTexture.width / 10.24f);

@@ -648,9 +648,17 @@ namespace ItemQualities
 
         public static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTier qualityTier, Color baseIconTint, bool useConsumedIcon = false)
         {
-            Texture2D iconTexture = TextureUtils.CreateAccessibleCopy(baseIconTexture);
+            return CreateQualityIconTexture(baseIconTexture, GetQualityTierDef(qualityTier), baseIconTint, useConsumedIcon);
+        }
 
-            QualityTierDef qualityTierDef = GetQualityTierDef(qualityTier);
+        internal static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTierDef qualityTierDef, bool useConsumedIcon = false)
+        {
+            return CreateQualityIconTexture(baseIconTexture, qualityTierDef, Color.white, useConsumedIcon);
+        }
+
+        internal static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTierDef qualityTierDef, Color baseIconTint, bool useConsumedIcon = false)
+        {
+            Texture2D iconTexture = TextureUtils.CreateAccessibleCopy(baseIconTexture);
 
             Sprite qualityIconSprite = qualityTierDef.icon;
             if (useConsumedIcon && qualityTierDef.consumedIcon)
