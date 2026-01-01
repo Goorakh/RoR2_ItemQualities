@@ -20,7 +20,7 @@ namespace ItemQualities.Items
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        public static DelayedHitHandler handleDelayedHit(GameObject attacker, GameObject victim)
+        public static DelayedHitHandler HandleDelayedHit(GameObject attacker, GameObject victim)
         {
             DelayedHitHandler delayedHitHandler = victim.GetComponent<DelayedHitHandler>();
             if (!delayedHitHandler)
@@ -31,14 +31,15 @@ namespace ItemQualities.Items
             return delayedHitHandler;
         }
 
-        public static bool is_immobile(EntityState state, CharacterBody body)
+        public static bool IsImmobile(EntityStateMachine entityStateMachine)
         {
-            if (state.GetType() == typeof(StunState) ||
-                state.GetType() == typeof(FrozenState) ||
-                state.GetType() == typeof(ShockState) ||
-                state.GetType() == typeof(ImmobilizeState) ||
-                state.GetType() == typeof(GenericCharacterVehicleSeated) ||
-                state.GetType() == typeof(ThrownObjectIdle) ||
+            CharacterBody body = entityStateMachine.commonComponents.characterBody;
+            if (entityStateMachine.state is StunState ||
+                entityStateMachine.state is FrozenState ||
+                entityStateMachine.state is ShockState ||
+                entityStateMachine.state is ImmobilizeState ||
+                entityStateMachine.state is GenericCharacterVehicleSeated ||
+                entityStateMachine.state is ThrownObjectIdle ||
                 body.HasBuff(RoR2Content.Buffs.Nullified) ||
                 body.HasBuff(RoR2Content.Buffs.Entangle))
             {
@@ -50,26 +51,26 @@ namespace ItemQualities.Items
         private static void onServerDamageDealt(DamageReport report)
         {
             DelayedHitHandler delayedHitHandler = report.victimBody.GetComponent<DelayedHitHandler>();
-            CharacterBody attckerbody = report.attackerBody;
-            if(!delayedHitHandler) {
-                //fallback if something stuns directly, set the proc owner to the first person attacking after that instead, this should handle stunning attack automatically
+            CharacterBody attackerbody = report.attackerBody;
+            if (!attackerbody)
+            {
+                return;
+            }
+            if (!delayedHitHandler) {
+                //fallback if something immobilizes directly, set the proc owner to the first person attacking after that instead, this should handle immobilizing attack automatically
                 //things that are procced or don't deal damage still need to be handled manually, like quality opal
                 if (report.victimBody.TryGetComponent<EntityStateMachine>(out EntityStateMachine entityStateMachine) &&
-                is_immobile(entityStateMachine.state, report.victimBody))
+                IsImmobile(entityStateMachine))
                 {
-                    delayedHitHandler = handleDelayedHit(report.attacker, report.victimBody.gameObject);
+                    delayedHitHandler = HandleDelayedHit(report.attacker, report.victimBody.gameObject);
                 }
                 else
                 {
                     return;
                 }
             }
-            if (!attckerbody) 
-            {
-                return;
-            }
 
-            ItemQualityCounts crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(attckerbody.inventory);
+            ItemQualityCounts crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(attackerbody.inventory);
             float multiplier =  crowbar.UncommonCount * 0.15f +
                                 crowbar.RareCount * 0.3f +
                                 crowbar.EpicCount * 0.45f +
@@ -104,7 +105,7 @@ namespace ItemQualities.Items
         {
             if (!damageInfo.procChainMask.HasModdedProc(ProcTypes.Immobilize))
             {
-                handleDelayedHit(damageInfo.attacker, victim);
+                HandleDelayedHit(damageInfo.attacker, victim);
                 return true;
             }
             return false;
@@ -190,7 +191,7 @@ namespace ItemQualities.Items
         {
             if (!damageReport.damageInfo.procChainMask.HasModdedProc(ProcTypes.Immobilize))
             {
-                handleDelayedHit(damageReport.attacker, damageReport.victimBody.gameObject);
+                HandleDelayedHit(damageReport.attacker, damageReport.victimBody.gameObject);
                 return true;
             }
             return false;
@@ -216,10 +217,6 @@ namespace ItemQualities.Items
 
             private void FixedUpdate()
             {
-                if(is_immobile(_entityStateMachine.state, _characterBody)) {
-                    return;
-                }
-
                 HealthComponent healthComponent = GetComponent<HealthComponent>();
                 if(!healthComponent || damage == 0)
                 {
@@ -227,6 +224,14 @@ namespace ItemQualities.Items
                     return;
                 }
 
+                if (!IsImmobile(_entityStateMachine))
+                {
+                    dealDelayedDamage(healthComponent);
+                    Destroy(this);
+                }
+            }
+
+            void dealDelayedDamage(HealthComponent healthComponent) {
                 ProcChainMask procChainMask = default(ProcChainMask);
                 procChainMask.AddModdedProc(ProcTypes.Immobilize);
 
@@ -244,7 +249,6 @@ namespace ItemQualities.Items
                 healthComponent.TakeDamage(damageInfo);
                 GlobalEventManager.instance.OnHitEnemy(damageInfo, healthComponent.gameObject);
                 GlobalEventManager.instance.OnHitAll(damageInfo, healthComponent.gameObject);
-                Destroy(this);
             }
         }
     }
