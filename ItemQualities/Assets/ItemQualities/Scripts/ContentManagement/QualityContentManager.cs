@@ -9,13 +9,33 @@ namespace ItemQualities.ContentManagement
 {
     public static class QualityContentManager
     {
-        public delegate IEnumerator LoadContentDelegate(QualityContentLoadArgs args);
-        public static event LoadContentDelegate LoadContentCallback;
+        public delegate IEnumerator LoadContentAsyncDelegate(QualityContentLoadArgs args);
+
+        static event LoadContentAsyncDelegate loadContentInternal;
+        public static event LoadContentAsyncDelegate LoadContentAsync
+        {
+            add
+            {
+                if (_hasCollectedLoadCoroutines)
+                {
+                    Log.Error("Cannot add content load callback after content initialization has already started.");
+                    return;
+                }
+
+                loadContentInternal += value;
+            }
+            remove
+            {
+                loadContentInternal -= value;
+            }
+        }
+
+        static bool _hasCollectedLoadCoroutines = false;
 
         [ContentInitializer]
         static IEnumerator LoadContent(ContentIntializerArgs args)
         {
-            if (LoadContentCallback == null)
+            if (loadContentInternal == null)
             {
                 args.ProgressReceiver.Report(1f);
                 yield break;
@@ -31,8 +51,8 @@ namespace ItemQualities.ContentManagement
             List<EquipmentQualityGroup> equipmentQualityGroups = new List<EquipmentQualityGroup>();
             List<BuffQualityGroup> buffQualityGroups = new List<BuffQualityGroup>();
 
-            foreach (LoadContentDelegate loadContentDelegate in LoadContentCallback.GetInvocationList()
-                                                                                   .OfType<LoadContentDelegate>())
+            foreach (LoadContentAsyncDelegate loadContentDelegate in loadContentInternal.GetInvocationList()
+                                                                                           .OfType<LoadContentAsyncDelegate>())
             {
                 if (loadContentDelegate != null)
                 {
@@ -42,6 +62,8 @@ namespace ItemQualities.ContentManagement
                     loadContentCoroutine.Add(safeCoroutineWrapper(loadContentDelegate, loadArgs), progressReceiver);
                 }
             }
+
+            _hasCollectedLoadCoroutines = true;
 
             yield return loadContentCoroutine;
 
@@ -104,7 +126,7 @@ namespace ItemQualities.ContentManagement
             return false;
         }
 
-        static IEnumerator safeCoroutineWrapper(LoadContentDelegate loadContentDelegate, QualityContentLoadArgs args)
+        static IEnumerator safeCoroutineWrapper(LoadContentAsyncDelegate loadContentDelegate, QualityContentLoadArgs args)
         {
             IEnumerator coroutine;
             try
@@ -114,16 +136,18 @@ namespace ItemQualities.ContentManagement
             catch (Exception e)
             {
                 Log.Error_NoCallerPrefix(e);
-                yield break;
+                coroutine = null;
             }
 
-            if (coroutine == null)
-                yield break;
-
-            while (safeMoveNext(coroutine, out object current))
+            if (coroutine != null)
             {
-                yield return current;
+                while (safeMoveNext(coroutine, out object current))
+                {
+                    yield return current;
+                }
             }
+
+            args.ProgressReceiver.Report(1f);
         }
     }
 }
