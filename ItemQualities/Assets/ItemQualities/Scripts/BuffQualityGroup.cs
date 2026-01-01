@@ -1,4 +1,5 @@
-﻿using ItemQualities.ContentManagement;
+﻿using HG;
+using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -23,7 +24,11 @@ namespace ItemQualities
         [NonSerialized]
         public BuffQualityGroupIndex GroupIndex = BuffQualityGroupIndex.Invalid;
 
-        public AssetReferenceT<BuffDef> BaseBuffReference = new AssetReferenceT<BuffDef>(string.Empty);
+        [SerializeField]
+        internal AssetReferenceT<BuffDef> BaseBuffReference = new AssetReferenceT<BuffDef>(string.Empty);
+
+        [SerializeField]
+        internal BuffDef BaseBuff;
 
         [SerializeField]
         BuffDef _uncommonBuff;
@@ -48,6 +53,17 @@ namespace ItemQualities
         public BuffIndex EpicBuffIndex => _epicBuff ? _epicBuff.buffIndex : BuffIndex.None;
 
         public BuffIndex LegendaryBuffIndex => _legendaryBuff ? _legendaryBuff.buffIndex : BuffIndex.None;
+
+        bool checkCanModify()
+        {
+            if (QualityCatalog.Availability.available)
+            {
+                Log.Error("Cannot modify BuffQualityGroup buffs after QualityCatalog is initialized");
+                return false;
+            }
+
+            return true;
+        }
 
         public BuffIndex GetBuffIndex(QualityTier qualityTier)
         {
@@ -82,6 +98,33 @@ namespace ItemQualities
                     return _epicBuff;
                 case QualityTier.Legendary:
                     return _legendaryBuff;
+                default:
+                    throw new NotImplementedException($"Quality tier '{qualityTier}' is not implemented");
+            }
+        }
+
+        public void SetBuffDef(BuffDef buffDef, QualityTier qualityTier)
+        {
+            if (!checkCanModify())
+                return;
+
+            switch (qualityTier)
+            {
+                case QualityTier.None:
+                    Log.Warning($"Cannot change base buff (group: '{name}')");
+                    break;
+                case QualityTier.Uncommon:
+                    _uncommonBuff = buffDef;
+                    break;
+                case QualityTier.Rare:
+                    _rareBuff = buffDef;
+                    break;
+                case QualityTier.Epic:
+                    _epicBuff = buffDef;
+                    break;
+                case QualityTier.Legendary:
+                    _legendaryBuff = buffDef;
+                    break;
                 default:
                     throw new NotImplementedException($"Quality tier '{qualityTier}' is not implemented");
             }
@@ -152,19 +195,31 @@ namespace ItemQualities
 
         IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
         {
-            if (BaseBuffReference == null || !BaseBuffReference.RuntimeKeyIsValid())
+            if (BaseBuff)
             {
-                progressReceiver.Report(1f);
-                yield break;
+                populateBuffs(BaseBuff);
+            }
+            else if (BaseBuffReference != null && BaseBuffReference.RuntimeKeyIsValid())
+            {
+                AsyncOperationHandle<BuffDef> baseBuffLoad = AssetAsyncReferenceManager<BuffDef>.LoadAsset(BaseBuffReference);
+                yield return baseBuffLoad.AsProgressCoroutine(progressReceiver);
+
+                if (baseBuffLoad.IsValid() && baseBuffLoad.Status == AsyncOperationStatus.Succeeded)
+                {
+                    populateBuffs(baseBuffLoad.Result);
+                }
+                else
+                {
+                    Log.Error($"Failed to load base buff for quality group '{name}': {(baseBuffLoad.IsValid() ? baseBuffLoad.OperationException : "Invalid handle")}");
+                }
+
+                AssetAsyncReferenceManager<BuffDef>.UnloadAsset(BaseBuffReference);
             }
 
-            AsyncOperationHandle<BuffDef> baseBuffLoad = AssetAsyncReferenceManager<BuffDef>.LoadAsset(BaseBuffReference);
-            yield return baseBuffLoad.AsProgressCoroutine(progressReceiver);
+            progressReceiver.Report(1f);
 
-            if (baseBuffLoad.IsValid() && baseBuffLoad.Status == AsyncOperationStatus.Succeeded)
+            void populateBuffs(BuffDef baseBuff)
             {
-                BuffDef baseBuff = baseBuffLoad.Result;
-
                 void populateBuffAsset(BuffDef buff, QualityTier qualityTier)
                 {
                     if (!buff)
@@ -185,13 +240,112 @@ namespace ItemQualities
                 populateBuffAsset(_epicBuff, QualityTier.Epic);
                 populateBuffAsset(_legendaryBuff, QualityTier.Legendary);
             }
+        }
+
+        internal IEnumerator GenerateRuntimeAssetsAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver = null)
+        {
+            if (BaseBuff)
+            {
+                generateRuntimeAssets(BaseBuff);
+            }
+            else if (BaseBuffReference != null && BaseBuffReference.RuntimeKeyIsValid())
+            {
+                AsyncOperationHandle<BuffDef> baseBuffLoad = AssetAsyncReferenceManager<BuffDef>.LoadAsset(BaseBuffReference);
+                yield return progressReceiver != null ? baseBuffLoad.AsProgressCoroutine(progressReceiver) : baseBuffLoad;
+
+                if (baseBuffLoad.IsValid() && baseBuffLoad.Status == AsyncOperationStatus.Succeeded)
+                {
+                    generateRuntimeAssets(baseBuffLoad.Result);
+                }
+                else
+                {
+                    Log.Error($"Failed to load base buff for quality group '{name}': {(baseBuffLoad.IsValid() ? baseBuffLoad.OperationException : "Invalid handle")}");
+                }
+
+                AssetAsyncReferenceManager<BuffDef>.UnloadAsset(BaseBuffReference);
+            }
             else
             {
-                Log.Error($"Failed to load base buff for quality group '{name}': {(baseBuffLoad.IsValid() ? baseBuffLoad.OperationException : "Invalid handle")}");
-                yield break;
+                generateRuntimeAssets(null);
             }
 
-            AssetAsyncReferenceManager<BuffDef>.UnloadAsset(BaseBuffReference);
+            progressReceiver?.Report(1f);
+
+            void generateRuntimeAssets(BuffDef baseBuff)
+            {
+                string baseBuffName;
+                if (baseBuff)
+                {
+                    baseBuffName = baseBuff.name;
+                }
+                else
+                {
+                    baseBuffName = name;
+                    if (baseBuffName.StartsWith("bg") && baseBuffName.Length > 2)
+                        baseBuffName = baseBuffName.Substring(2);
+                }
+
+                Texture2D baseIconTexture = baseBuff && baseBuff.iconSprite ? baseBuff.iconSprite.texture : null;
+
+                BuffDef createBuffDef(QualityTier qualityTier)
+                {
+                    string buffName = baseBuffName + qualityTier;
+
+                    BuffDef buffDef = ScriptableObject.CreateInstance<BuffDef>();
+                    buffDef.name = $"bd{buffName}";
+                    buffDef.buffColor = Color.white;
+
+                    if (baseBuff)
+                    {
+                        buffDef.canStack = baseBuff.canStack;
+                        buffDef.isDebuff = baseBuff.isDebuff;
+                        buffDef.isDOT = baseBuff.isDOT;
+                        buffDef.ignoreGrowthNectar = baseBuff.ignoreGrowthNectar;
+                        buffDef.isCooldown = baseBuff.isCooldown;
+                        buffDef.isHidden = baseBuff.isHidden;
+                        buffDef.flags = baseBuff.flags;
+                    }
+
+                    if (baseIconTexture)
+                    {
+                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier, baseBuff ? baseBuff.buffColor : Color.white);
+                        qualityIconTexture.name = $"tex{buffName}";
+
+                        Sprite qualityIconSprite = Sprite.Create(qualityIconTexture, new Rect(0f, 0f, qualityIconTexture.width, qualityIconTexture.height), new Vector2(0.5f, 0.5f), qualityIconTexture.width / 10.24f);
+                        qualityIconSprite.name = $"tex{buffName}";
+
+                        buffDef.iconSprite = qualityIconSprite;
+                    }
+                    else if (baseBuff)
+                    {
+                        buffDef.iconSprite = baseBuff.iconSprite;
+                    }
+
+                    contentPack.buffDefs.Add(buffDef);
+
+                    return buffDef;
+                }
+
+                if (!_uncommonBuff)
+                {
+                    _uncommonBuff = createBuffDef(QualityTier.Uncommon);
+                }
+
+                if (!_rareBuff)
+                {
+                    _rareBuff = createBuffDef(QualityTier.Rare);
+                }
+
+                if (!_epicBuff)
+                {
+                    _epicBuff = createBuffDef(QualityTier.Epic);
+                }
+
+                if (!_legendaryBuff)
+                {
+                    _legendaryBuff = createBuffDef(QualityTier.Legendary);
+                }
+            }
         }
 
 #if UNITY_EDITOR

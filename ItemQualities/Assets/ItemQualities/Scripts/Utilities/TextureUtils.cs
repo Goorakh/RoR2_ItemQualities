@@ -20,6 +20,7 @@ namespace ItemQualities.Utilities
             RenderTexture.active = renderTex;
 
             Texture2D copyTexture = new Texture2D(renderTex.width, renderTex.height, TextureFormat.ARGB32, true);
+            copyTexture.name = texture.name;
             copyTexture.ReadPixels(new Rect(0, 0, renderTex.width, renderTex.height), 0, 0);
             copyTexture.Apply();
 

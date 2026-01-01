@@ -125,32 +125,64 @@ namespace ItemQualities
                     if (itemIndex == ItemIndex.None)
                         return;
                     
+                    if (_itemIndexToQualityGroupIndex[(int)itemIndex] != ItemQualityGroupIndex.Invalid)
+                    {
+                        Log.Error($"Item {ItemCatalog.GetItemDef(itemIndex)} is registered in several quality groups, ({GetItemQualityGroup(_itemIndexToQualityGroupIndex[(int)itemIndex])} & {GetItemQualityGroup(itemQualityGroupIndex)})");
+                        return;
+                    }
+
                     _itemIndexToQuality[(int)itemIndex] = qualityTier;
                     _itemIndexToQualityGroupIndex[(int)itemIndex] = itemQualityGroupIndex;
                 }
 
                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
-                    recordItemInGroup(itemQualityGroup.GetItemIndex(qualityTier), qualityTier);
-                }
-
-                if (itemQualityGroup.BaseItemReference != null && itemQualityGroup.BaseItemReference.RuntimeKeyIsValid())
-                {
-                    AsyncOperationHandle<ItemDef> baseItemLoad = AddressableUtil.LoadTempAssetAsync(itemQualityGroup.BaseItemReference);
-                    baseItemLoad.OnSuccess(baseItem =>
+                    ItemIndex qualityItemIndex = itemQualityGroup.GetItemIndex(qualityTier);
+                    if (qualityItemIndex == ItemIndex.None)
                     {
-                        if (baseItem.itemIndex != ItemIndex.None)
+                        ItemDef qualityItemDef = itemQualityGroup.GetItemDef(qualityTier);
+                        if (qualityItemDef)
                         {
-                            itemQualityGroup.BaseItemIndex = baseItem.itemIndex;
-                            recordItemInGroup(baseItem.itemIndex, QualityTier.None);
+                            Log.Error($"Item '{qualityItemDef.name}' ({qualityTier} variant in group '{itemQualityGroup.name}') is not registered to the catalog.");
                         }
                         else
                         {
-                            Log.Warning($"Unable to find item index for {baseItem} in group {itemQualityGroup}");
+                            Log.Warning($"No item registered as {qualityTier} variant in group '{itemQualityGroup.name}'");
                         }
-                    });
+                    }
+                    else
+                    {
+                        recordItemInGroup(qualityItemIndex, qualityTier);
+                    }
+                }
+
+                void recordBaseItem(ItemDef baseItem)
+                {
+                    if (baseItem.itemIndex != ItemIndex.None)
+                    {
+                        itemQualityGroup.BaseItemIndex = baseItem.itemIndex;
+                        recordItemInGroup(baseItem.itemIndex, QualityTier.None);
+                    }
+                    else
+                    {
+                        Log.Error($"Base item ({baseItem}) in group {itemQualityGroup} is not registered in the catalog.");
+                    }
+                }
+
+                if (itemQualityGroup.BaseItem)
+                {
+                    recordBaseItem(itemQualityGroup.BaseItem);
+                }
+                else if (itemQualityGroup.BaseItemReference != null && itemQualityGroup.BaseItemReference.RuntimeKeyIsValid())
+                {
+                    AsyncOperationHandle<ItemDef> baseItemLoad = AddressableUtil.LoadTempAssetAsync(itemQualityGroup.BaseItemReference);
+                    baseItemLoad.OnSuccess(recordBaseItem);
 
                     baseAssetsParallelLoadCoroutine.Add(baseItemLoad);
+                }
+                else
+                {
+                    Log.Error($"No base item defined for quality group '{itemQualityGroup.name}'");
                 }
             }
 
@@ -165,32 +197,64 @@ namespace ItemQualities
                     if (equipmentIndex == EquipmentIndex.None)
                         return;
 
+                    if (_equipmentIndexToQualityGroupIndex[(int)equipmentIndex] != EquipmentQualityGroupIndex.Invalid)
+                    {
+                        Log.Error($"Equipment '{EquipmentCatalog.GetEquipmentDef(equipmentIndex).name}' is registered in several quality groups, ('{GetEquipmentQualityGroup(_equipmentIndexToQualityGroupIndex[(int)equipmentIndex]).name}' and '{GetEquipmentQualityGroup(equipmentQualityGroupIndex).name}')");
+                        return;
+                    }
+
                     _equipmentIndexToQuality[(int)equipmentIndex] = qualityTier;
                     _equipmentIndexToQualityGroupIndex[(int)equipmentIndex] = equipmentQualityGroupIndex;
                 }
 
                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
-                    recordEquipmentInGroup(equipmentQualityGroup.GetEquipmentIndex(qualityTier), qualityTier);
-                }
-
-                if (equipmentQualityGroup.BaseEquipmentReference != null && equipmentQualityGroup.BaseEquipmentReference.RuntimeKeyIsValid())
-                {
-                    AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AddressableUtil.LoadTempAssetAsync(equipmentQualityGroup.BaseEquipmentReference);
-                    baseEquipmentLoad.OnSuccess(baseEquipment =>
+                    EquipmentIndex qualityEquipmentIndex = equipmentQualityGroup.GetEquipmentIndex(qualityTier);
+                    if (qualityEquipmentIndex == EquipmentIndex.None)
                     {
-                        if (baseEquipment.equipmentIndex != EquipmentIndex.None)
+                        EquipmentDef qualityEquipmentDef = equipmentQualityGroup.GetEquipmentDef(qualityTier);
+                        if (qualityEquipmentDef)
                         {
-                            equipmentQualityGroup.BaseEquipmentIndex = baseEquipment.equipmentIndex;
-                            recordEquipmentInGroup(baseEquipment.equipmentIndex, QualityTier.None);
+                            Log.Error($"Equipment {qualityEquipmentDef.name} ({qualityTier} variant in group '{equipmentQualityGroup.name}') is not registered to the catalog.");
                         }
                         else
                         {
-                            Log.Warning($"Unable to find equipment index for {baseEquipment} in group {equipmentQualityGroup}");
+                            Log.Warning($"No equipment registered as {qualityTier} variant in group '{equipmentQualityGroup.name}'");
                         }
-                    });
+                    }
+                    else
+                    {
+                        recordEquipmentInGroup(qualityEquipmentIndex, qualityTier);
+                    }
+                }
+
+                void recordBaseEquipment(EquipmentDef baseEquipment)
+                {
+                    if (baseEquipment.equipmentIndex != EquipmentIndex.None)
+                    {
+                        equipmentQualityGroup.BaseEquipmentIndex = baseEquipment.equipmentIndex;
+                        recordEquipmentInGroup(baseEquipment.equipmentIndex, QualityTier.None);
+                    }
+                    else
+                    {
+                        Log.Error($"Base equipment ({baseEquipment.name}) in group '{equipmentQualityGroup.name}' is not registered in the catalog.");
+                    }
+                }
+
+                if (equipmentQualityGroup.BaseEquipment)
+                {
+                    recordBaseEquipment(equipmentQualityGroup.BaseEquipment);
+                }
+                else if (equipmentQualityGroup.BaseEquipmentReference != null && equipmentQualityGroup.BaseEquipmentReference.RuntimeKeyIsValid())
+                {
+                    AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AddressableUtil.LoadTempAssetAsync(equipmentQualityGroup.BaseEquipmentReference);
+                    baseEquipmentLoad.OnSuccess(recordBaseEquipment);
 
                     baseAssetsParallelLoadCoroutine.Add(baseEquipmentLoad);
+                }
+                else
+                {
+                    Log.Error($"No base equipment defined for quality group '{equipmentQualityGroup.name}'");
                 }
             }
 
@@ -205,30 +269,58 @@ namespace ItemQualities
                     if (buffIndex == BuffIndex.None)
                         return;
 
+                    if (_buffIndexToQualityGroupIndex[(int)buffIndex] != BuffQualityGroupIndex.Invalid)
+                    {
+                        Log.Error($"Buff {BuffCatalog.GetBuffDef(buffIndex)} is registered in several quality groups, ({GetBuffQualityGroup(_buffIndexToQualityGroupIndex[(int)buffIndex])} & {GetBuffQualityGroup(buffQualityGroupIndex)})");
+                        return;
+                    }
+
                     _buffIndexToQuality[(int)buffIndex] = qualityTier;
                     _buffIndexToQualityGroupIndex[(int)buffIndex] = buffQualityGroupIndex;
                 }
 
                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
-                    recordBuffInGroup(buffQualityGroup.GetBuffIndex(qualityTier), qualityTier);
-                }
-
-                if (buffQualityGroup.BaseBuffReference != null && buffQualityGroup.BaseBuffReference.RuntimeKeyIsValid())
-                {
-                    AsyncOperationHandle<BuffDef> baseBuffLoad = AddressableUtil.LoadTempAssetAsync(buffQualityGroup.BaseBuffReference);
-                    baseBuffLoad.OnSuccess(baseBuff =>
+                    BuffIndex qualityBuffIndex = buffQualityGroup.GetBuffIndex(qualityTier);
+                    if (qualityBuffIndex == BuffIndex.None)
                     {
-                        if (baseBuff.buffIndex != BuffIndex.None)
+                        BuffDef qualityBuffDef = buffQualityGroup.GetBuffDef(qualityTier);
+                        if (qualityBuffDef)
                         {
-                            buffQualityGroup.BaseBuffIndex = baseBuff.buffIndex;
-                            recordBuffInGroup(baseBuff.buffIndex, QualityTier.None);
+                            Log.Error($"Buff {qualityBuffDef.name} ({qualityTier} variant in group '{buffQualityGroup.name}') is not registered to the catalog.");
                         }
                         else
                         {
-                            Log.Warning($"Unable to find buff index for {baseBuff} in group {buffQualityGroup}");
+                            Log.Warning($"No buff registered as {qualityTier} variant in group '{buffQualityGroup.name}'");
                         }
-                    });
+                    }
+                    else
+                    {
+                        recordBuffInGroup(qualityBuffIndex, qualityTier);
+                    }
+                }
+
+                void recordBaseBuff(BuffDef baseBuff)
+                {
+                    if (baseBuff.buffIndex != BuffIndex.None)
+                    {
+                        buffQualityGroup.BaseBuffIndex = baseBuff.buffIndex;
+                        recordBuffInGroup(baseBuff.buffIndex, QualityTier.None);
+                    }
+                    else
+                    {
+                        Log.Error($"Base buff ({baseBuff.name}) in group '{buffQualityGroup.name}' is not registered in the catalog.");
+                    }
+                }
+
+                if (buffQualityGroup.BaseBuff)
+                {
+                    recordBaseBuff(buffQualityGroup.BaseBuff);
+                }
+                else if (buffQualityGroup.BaseBuffReference != null && buffQualityGroup.BaseBuffReference.RuntimeKeyIsValid())
+                {
+                    AsyncOperationHandle<BuffDef> baseBuffLoad = AddressableUtil.LoadTempAssetAsync(buffQualityGroup.BaseBuffReference);
+                    baseBuffLoad.OnSuccess(recordBaseBuff);
 
                     baseAssetsParallelLoadCoroutine.Add(baseBuffLoad);
                 }
@@ -549,7 +641,6 @@ namespace ItemQualities
             return a < b ? a : b;
         }
 
-#if UNITY_EDITOR
         public static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTier qualityTier, bool useConsumedIcon = false)
         {
             return CreateQualityIconTexture(baseIconTexture, qualityTier, Color.white, useConsumedIcon);
@@ -606,6 +697,5 @@ namespace ItemQualities
             
             return iconTexture;
         }
-#endif
     }
 }

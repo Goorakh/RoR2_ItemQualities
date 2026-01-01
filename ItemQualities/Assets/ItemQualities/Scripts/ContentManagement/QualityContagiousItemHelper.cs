@@ -40,7 +40,11 @@ namespace ItemQualities.ContentManagement
 
             foreach (ItemQualityGroup itemQualityGroup in contentPack.itemQualityGroups)
             {
-                if (itemQualityGroup.BaseItemReference != null && itemQualityGroup.BaseItemReference.RuntimeKeyIsValid())
+                if (itemQualityGroup.BaseItem)
+                {
+                    _baseItemToGroupLookup[itemQualityGroup.BaseItem] = itemQualityGroup;
+                }
+                else if (itemQualityGroup.BaseItemReference != null && itemQualityGroup.BaseItemReference.RuntimeKeyIsValid())
                 {
                     AsyncOperationHandle<ItemDef> baseItemLoad = AssetAsyncReferenceManager<ItemDef>.LoadAsset(itemQualityGroup.BaseItemReference);
 

@@ -22,7 +22,11 @@ namespace ItemQualities
         [NonSerialized]
         public EquipmentQualityGroupIndex GroupIndex = EquipmentQualityGroupIndex.Invalid;
 
-        public AssetReferenceT<EquipmentDef> BaseEquipmentReference = new AssetReferenceT<EquipmentDef>(string.Empty);
+        [SerializeField]
+        internal AssetReferenceT<EquipmentDef> BaseEquipmentReference = new AssetReferenceT<EquipmentDef>(string.Empty);
+
+        [SerializeField]
+        internal EquipmentDef BaseEquipment;
 
         [SerializeField]
         EquipmentDef _uncommonEquipment;
@@ -48,6 +52,17 @@ namespace ItemQualities
 
         public EquipmentIndex LegendaryEquipmentIndex => _legendaryEquipment ? _legendaryEquipment.equipmentIndex : EquipmentIndex.None;
 
+        bool checkCanModify()
+        {
+            if (QualityCatalog.Availability.available)
+            {
+                Log.Error("Cannot modify EquipmentQualityGroup equipments after QualityCatalog is initialized");
+                return false;
+            }
+
+            return true;
+        }
+
         public EquipmentIndex GetEquipmentIndex(QualityTier qualityTier)
         {
             switch (qualityTier)
@@ -67,30 +82,91 @@ namespace ItemQualities
             }
         }
 
+        public EquipmentDef GetEquipmentDef(QualityTier qualityTier)
+        {
+            switch (qualityTier)
+            {
+                case QualityTier.None:
+                    return BaseEquipment ? BaseEquipment : EquipmentCatalog.GetEquipmentDef(BaseEquipmentIndex);
+                case QualityTier.Uncommon:
+                    return _uncommonEquipment;
+                case QualityTier.Rare:
+                    return _rareEquipment;
+                case QualityTier.Epic:
+                    return _epicEquipment;
+                case QualityTier.Legendary:
+                    return _legendaryEquipment;
+                default:
+                    throw new NotImplementedException($"Quality tier '{qualityTier}' is not implemented");
+            }
+        }
+
+        public void SetEquipmentDef(EquipmentDef equipmentDef, QualityTier qualityTier)
+        {
+            if (!checkCanModify())
+                return;
+
+            switch (qualityTier)
+            {
+                case QualityTier.None:
+                    Log.Warning($"Cannot change base equipment (group: '{name}')");
+                    break;
+                case QualityTier.Uncommon:
+                    _uncommonEquipment = equipmentDef;
+                    break;
+                case QualityTier.Rare:
+                    _rareEquipment = equipmentDef;
+                    break;
+                case QualityTier.Epic:
+                    _epicEquipment = equipmentDef;
+                    break;
+                case QualityTier.Legendary:
+                    _legendaryEquipment = equipmentDef;
+                    break;
+                default:
+                    throw new NotImplementedException($"Quality tier '{qualityTier}' is not implemented");
+            }
+        }
+
         void OnValidate()
         {
-            if (BaseEquipmentReference == null || !BaseEquipmentReference.RuntimeKeyIsValid())
+            if (!BaseEquipment && (BaseEquipmentReference == null || !BaseEquipmentReference.RuntimeKeyIsValid()))
             {
-                Debug.LogError($"Invalid equipment address in group '{name}'");
+                Debug.LogError($"Invalid equipment reference in group '{name}'");
             }
         }
 
         IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
         {
-            if (BaseEquipmentReference == null || !BaseEquipmentReference.RuntimeKeyIsValid())
+            if (BaseEquipment)
             {
-                Log.Error($"Invalid equipment address in group '{name}'");
-                progressReceiver.Report(1f);
-                yield break;
+                populateEquipments(BaseEquipment);
+            }
+            else if (BaseEquipmentReference != null && BaseEquipmentReference.RuntimeKeyIsValid())
+            {
+                AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AssetAsyncReferenceManager<EquipmentDef>.LoadAsset(BaseEquipmentReference);
+                yield return baseEquipmentLoad.AsProgressCoroutine(progressReceiver);
+
+                if (baseEquipmentLoad.IsValid() && baseEquipmentLoad.Status == AsyncOperationStatus.Succeeded)
+                {
+                    populateEquipments(baseEquipmentLoad.Result);
+                }
+                else
+                {
+                    Log.Error($"Failed to load base equipment for quality group '{name}': {(baseEquipmentLoad.IsValid() ? baseEquipmentLoad.OperationException : "Invalid handle")}");
+                }
+
+                AssetAsyncReferenceManager<EquipmentDef>.UnloadAsset(BaseEquipmentReference);
+            }
+            else
+            {
+                Log.Error($"Invalid equipment reference in group '{name}'");
             }
 
-            AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AssetAsyncReferenceManager<EquipmentDef>.LoadAsset(BaseEquipmentReference);
-            yield return baseEquipmentLoad.AsProgressCoroutine(progressReceiver);
+            progressReceiver.Report(1f);
 
-            if (baseEquipmentLoad.IsValid() && baseEquipmentLoad.Status == AsyncOperationStatus.Succeeded)
+            void populateEquipments(EquipmentDef baseEquipment)
             {
-                EquipmentDef baseEquipment = baseEquipmentLoad.Result;
-
                 void populateEquipmentAsset(EquipmentDef equipment, QualityTier qualityTier)
                 {
                     if (!equipment)
@@ -151,13 +227,93 @@ namespace ItemQualities
                 populateEquipmentAsset(_epicEquipment, QualityTier.Epic);
                 populateEquipmentAsset(_legendaryEquipment, QualityTier.Legendary);
             }
+        }
+
+        internal IEnumerator GenerateRuntimeAssetsAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver = null)
+        {
+            if (BaseEquipment)
+            {
+                generateRuntimeAssets(BaseEquipment);
+            }
+            else if (BaseEquipmentReference != null && BaseEquipmentReference.RuntimeKeyIsValid())
+            {
+                AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AssetAsyncReferenceManager<EquipmentDef>.LoadAsset(BaseEquipmentReference);
+                yield return progressReceiver != null ? baseEquipmentLoad.AsProgressCoroutine(progressReceiver) : baseEquipmentLoad;
+
+                if (baseEquipmentLoad.IsValid() && baseEquipmentLoad.Status == AsyncOperationStatus.Succeeded)
+                {
+                    generateRuntimeAssets(baseEquipmentLoad.Result);
+                }
+                else
+                {
+                    Log.Error($"Failed to load base equipment for quality group '{name}': {(baseEquipmentLoad.IsValid() ? baseEquipmentLoad.OperationException : "Invalid handle")}");
+                }
+
+                AssetAsyncReferenceManager<EquipmentDef>.UnloadAsset(BaseEquipmentReference);
+            }
             else
             {
-                Log.Error($"Failed to load base equipment for quality group '{name}': {(baseEquipmentLoad.IsValid() ? baseEquipmentLoad.OperationException : "Invalid handle")}");
-                yield break;
+                Log.Error($"Invalid equipment reference in group '{name}'");
             }
 
-            AssetAsyncReferenceManager<EquipmentDef>.UnloadAsset(BaseEquipmentReference);
+            progressReceiver?.Report(1f);
+
+            void generateRuntimeAssets(EquipmentDef baseEquipment)
+            {
+                string baseEquipmentName = baseEquipment.name;
+                Texture2D baseIconTexture = baseEquipment.pickupIconTexture as Texture2D;
+
+                EquipmentDef createEquipment(QualityTier qualityTier)
+                {
+                    EquipmentDef equipmentDef = ScriptableObject.CreateInstance<EquipmentDef>();
+                    equipmentDef.name = baseEquipmentName + qualityTier;
+                    equipmentDef.descriptionToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
+                    equipmentDef.pickupToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
+                    equipmentDef.cooldown = 1f;
+                    equipmentDef.colorIndex = ColorCatalog.ColorIndex.None;
+                    equipmentDef.canDrop = false;
+                    equipmentDef.dropOnDeathChance = 0f;
+
+                    if (baseIconTexture)
+                    {
+                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier);
+                        qualityIconTexture.name = $"tex{equipmentDef.name}";
+
+                        Sprite qualityIconSprite = Sprite.Create(qualityIconTexture, new Rect(0f, 0f, qualityIconTexture.width, qualityIconTexture.height), new Vector2(0.5f, 0.5f), qualityIconTexture.width / 5.12f);
+                        qualityIconSprite.name = $"tex{equipmentDef.name}";
+
+                        equipmentDef.pickupIconSprite = qualityIconSprite;
+                    }
+                    else
+                    {
+                        equipmentDef.pickupIconSprite = baseEquipment.pickupIconSprite;
+                    }
+
+                    contentPack.equipmentDefs.Add(equipmentDef);
+
+                    return equipmentDef;
+                }
+
+                if (!_uncommonEquipment)
+                {
+                    _uncommonEquipment = createEquipment(QualityTier.Uncommon);
+                }
+
+                if (!_rareEquipment)
+                {
+                    _rareEquipment = createEquipment(QualityTier.Rare);
+                }
+
+                if (!_epicEquipment)
+                {
+                    _epicEquipment = createEquipment(QualityTier.Epic);
+                }
+
+                if (!_legendaryEquipment)
+                {
+                    _legendaryEquipment = createEquipment(QualityTier.Legendary);
+                }
+            }
         }
 
 #if UNITY_EDITOR
