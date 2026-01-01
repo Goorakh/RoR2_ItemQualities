@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Items;
@@ -34,9 +35,9 @@ namespace ItemQualities.Items
             static float getBlastDamage(float blastDamage, JumpDamageStrikeBodyBehavior jumpDamageStrikeBodyBehavior)
             {
                 CharacterBody body = jumpDamageStrikeBodyBehavior ? jumpDamageStrikeBodyBehavior.body : null;
-                if (body)
+                if (body && body.inventory)
                 {
-                    ItemQualityCounts jumpDamageStrike = ItemQualitiesContent.ItemQualityGroups.JumpDamageStrike.GetItemCountsEffective(body.inventory);
+                    ItemQualityCounts jumpDamageStrike = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpDamageStrike);
                     if (jumpDamageStrike.TotalQualityCount > 0)
                     {
                         float damageCoefficientPerMoveSpeedIncreaseCoefficient = (1.5f * jumpDamageStrike.UncommonCount) +
@@ -77,9 +78,9 @@ namespace ItemQualities.Items
             {
                 float distancePerCharge = baseDistancePerCharge;
 
-                if (jumpDamageStrikeBodyBehavior && jumpDamageStrikeBodyBehavior.body)
+                if (jumpDamageStrikeBodyBehavior && jumpDamageStrikeBodyBehavior.body && jumpDamageStrikeBodyBehavior.body.inventory)
                 {
-                    ItemQualityCounts jumpDamageStrike = ItemQualitiesContent.ItemQualityGroups.JumpDamageStrike.GetItemCountsEffective(jumpDamageStrikeBodyBehavior.body.inventory);
+                    ItemQualityCounts jumpDamageStrike = jumpDamageStrikeBodyBehavior.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpDamageStrike);
 
                     float chargeSpeed;
                     switch (jumpDamageStrike.HighestQuality)

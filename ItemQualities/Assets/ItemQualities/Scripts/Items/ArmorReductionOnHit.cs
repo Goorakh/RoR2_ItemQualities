@@ -1,3 +1,4 @@
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -32,42 +33,41 @@ namespace ItemQualities.Items
             c.EmitDelegate<Action<HealthComponent, DamageInfo>>(doExtraDamage);
         }
 
-        static void doExtraDamage(HealthComponent hc, DamageInfo di)
+        static void doExtraDamage(HealthComponent victim, DamageInfo damageInfo)
         {
-            CharacterBody body = hc.body;
-            if (!body)
+            CharacterBody victimBody = victim.body;
+            if (!victimBody)
                 return;
-            
-            CharacterBody attacker = di?.attacker ? di.attacker.GetComponent<CharacterBody>() : null;
-            if (attacker == null)
+
+            CharacterBody attacker = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
+            if (!attacker)
                 return;
 
             Inventory attackerInventory = attacker.inventory;
-            if (attackerInventory == null)
+            if (!attackerInventory)
                 return;
 
-            ItemQualityCounts armorReductionOnHit = ItemQualitiesContent.ItemQualityGroups.ArmorReductionOnHit.GetItemCountsEffective(attacker.inventory);
-
-            if (armorReductionOnHit.TotalQualityCount < 1)
-                return;
-            
-            float damageMultiplyer = 1.0f + (0.20f * armorReductionOnHit.UncommonCount) +
-                                            (0.40f * armorReductionOnHit.RareCount) +
-                                            (0.60f * armorReductionOnHit.EpicCount) +
-                                            (1.00f * armorReductionOnHit.LegendaryCount);
-
-            DamageInfo newDamage = new DamageInfo
+            ItemQualityCounts armorReductionOnHit = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ArmorReductionOnHit);
+            if (armorReductionOnHit.TotalQualityCount > 0)
             {
-                attacker = attacker ? attacker.gameObject : null,
-                damage = attacker.damage * damageMultiplyer,
-                crit = di.crit,
-                procCoefficient = 0f,
-                procChainMask = di.procChainMask,
-                position = di.position,
-                damageColorIndex = DamageColorIndex.Item
-            };
+                float damageMultiplyer = 1.0f + (0.20f * armorReductionOnHit.UncommonCount) +
+                                                (0.40f * armorReductionOnHit.RareCount) +
+                                                (0.60f * armorReductionOnHit.EpicCount) +
+                                                (1.00f * armorReductionOnHit.LegendaryCount);
 
-            hc.TakeDamage(newDamage);
+                DamageInfo newDamage = new DamageInfo
+                {
+                    attacker = damageInfo.attacker,
+                    damage = attacker.damage * damageMultiplyer,
+                    crit = damageInfo.crit,
+                    procCoefficient = 0f,
+                    procChainMask = damageInfo.procChainMask,
+                    position = damageInfo.position,
+                    damageColorIndex = DamageColorIndex.Item
+                };
+
+                victim.TakeDamage(newDamage);
+            }
         }
     }
 }

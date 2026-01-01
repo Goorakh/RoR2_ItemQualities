@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Buffs
@@ -16,7 +17,7 @@ namespace ItemQualities.Buffs
             if (!sender)
                 return;
 
-            BuffQualityCounts energized = ItemQualitiesContent.BuffQualityGroups.Energized.GetBuffCounts(sender);
+            BuffQualityCounts energized = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.Energized);
             if (energized.TotalQualityCount > 0)
             {
                 float bonusAttackSpeed = (0.1f * energized.UncommonCount) +

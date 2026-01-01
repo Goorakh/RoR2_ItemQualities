@@ -1,12 +1,7 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using RoR2.Projectile;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -28,9 +23,9 @@ namespace ItemQualities.Items
         void onInitialized(ProjectileController projectileController)
         {
             ItemQualityCounts primarySkillShuriken = default;
-            if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody))
+            if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
             {
-                primarySkillShuriken = ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken.GetItemCountsEffective(ownerBody.inventory);
+                primarySkillShuriken = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken);
             }
 
             Vector3 scale = transform.localScale;

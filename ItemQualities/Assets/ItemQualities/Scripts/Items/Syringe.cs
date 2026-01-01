@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -13,7 +14,10 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts syringe = ItemQualitiesContent.ItemQualityGroups.Syringe.GetItemCountsEffective(sender.inventory);
+            if (!sender.inventory)
+                return;
+
+            ItemQualityCounts syringe = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Syringe);
 
             if (syringe.TotalQualityCount > 0)
             {

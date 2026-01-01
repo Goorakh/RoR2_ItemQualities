@@ -1,3 +1,4 @@
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine.Networking;
 
@@ -28,11 +29,11 @@ namespace ItemQualities.Items
             if (damageInfo.damage <= 0 || damageInfo.procCoefficient <= 0)
                 return;
 
-            CharacterMaster characterMaster = attackerBody.master;
-            if (!characterMaster || !characterMaster.inventory)
+            CharacterMaster attackerMaster = attackerBody.master;
+            if (!attackerMaster || !attackerMaster.inventory)
                 return;
 
-            ItemQualityCounts permanentDebuffOnHit = ItemQualitiesContent.ItemQualityGroups.PermanentDebuffOnHit.GetItemCountsEffective(characterMaster.inventory);
+            ItemQualityCounts permanentDebuffOnHit = attackerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PermanentDebuffOnHit);
 
             int extraBuffCount = (permanentDebuffOnHit.UncommonCount * 1) +
                                  (permanentDebuffOnHit.RareCount * 2) +

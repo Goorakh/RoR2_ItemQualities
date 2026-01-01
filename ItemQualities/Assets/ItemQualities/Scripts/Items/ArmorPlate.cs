@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 using UnityEngine.Networking;
 
@@ -19,7 +20,7 @@ namespace ItemQualities.Items
             if (!sender)
                 return;
 
-            if (ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff.GetBuffCounts(sender).TotalCount > 0)
+            if (sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff).TotalCount > 0)
             {
                 args.armorAdd += 75f;
             }
@@ -34,19 +35,19 @@ namespace ItemQualities.Items
                 return;
 
             CharacterBody victimBody = damageReport.victimBody;
-            if (!victimBody)
+            if (!victimBody || !victimBody.inventory)
                 return;
 
-            ItemQualityCounts armorPlate = ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCountsEffective(victimBody.inventory);
+            ItemQualityCounts armorPlate = victimBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ArmorPlate);
             if (armorPlate.TotalQualityCount > 0)
             {
                 QualityTier armorPlateQuality = armorPlate.HighestQuality;
 
                 victimBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.GetBuffIndex(armorPlateQuality));
 
-                if (ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.GetBuffCounts(victimBody).TotalCount >= 15)
+                if (victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup).TotalCount >= 15)
                 {
-                    ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(victimBody, QualityTier.None);
+                    victimBody.RemoveAllBuffs(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup);
 
                     float buffDuration = (3f * armorPlate.UncommonCount) +
                                          (6f * armorPlate.RareCount) +

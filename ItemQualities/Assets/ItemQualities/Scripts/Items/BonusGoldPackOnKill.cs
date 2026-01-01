@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 using System;
 
@@ -18,10 +19,10 @@ namespace ItemQualities.Items
             orig(self);
 
             CharacterBody body = self.GetBody();
-            if (!body)
+            if (!body || !self.inventory)
                 return;
 
-            ItemQualityCounts bonusGoldPackOnKill = ItemQualitiesContent.ItemQualityGroups.BonusGoldPackOnKill.GetItemCountsEffective(body.master.inventory);
+            ItemQualityCounts bonusGoldPackOnKill = self.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BonusGoldPackOnKill);
             if (bonusGoldPackOnKill.TotalQualityCount > 0)
             {
                 float multiplier = 0;

@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Orbs;
@@ -41,18 +42,20 @@ namespace ItemQualities.Items
                 if (splitDebuffInfo.duration < MaxDebuffDuration)
                 {
                     Inventory inventory = body ? body.inventory : null;
-
-                    ItemQualityCounts triggerEnemyDebuffs = ItemQualitiesContent.ItemQualityGroups.TriggerEnemyDebuffs.GetItemCountsEffective(inventory);
-
-                    if (triggerEnemyDebuffs.TotalQualityCount > 0)
+                    if (inventory)
                     {
-                        float durationMultiplier = 1f;
-                        durationMultiplier += 0.20f * triggerEnemyDebuffs.UncommonCount;
-                        durationMultiplier += 0.50f * triggerEnemyDebuffs.RareCount;
-                        durationMultiplier += 0.75f * triggerEnemyDebuffs.EpicCount;
-                        durationMultiplier += 1.50f * triggerEnemyDebuffs.LegendaryCount;
+                        ItemQualityCounts triggerEnemyDebuffs = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TriggerEnemyDebuffs);
 
-                        splitDebuffInfo.duration = Mathf.Min(MaxDebuffDuration, splitDebuffInfo.duration * durationMultiplier);
+                        if (triggerEnemyDebuffs.TotalQualityCount > 0)
+                        {
+                            float durationMultiplier = 1f;
+                            durationMultiplier += 0.20f * triggerEnemyDebuffs.UncommonCount;
+                            durationMultiplier += 0.50f * triggerEnemyDebuffs.RareCount;
+                            durationMultiplier += 0.75f * triggerEnemyDebuffs.EpicCount;
+                            durationMultiplier += 1.50f * triggerEnemyDebuffs.LegendaryCount;
+
+                            splitDebuffInfo.duration = Mathf.Min(MaxDebuffDuration, splitDebuffInfo.duration * durationMultiplier);
+                        }
                     }
                 }
 

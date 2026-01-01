@@ -1,6 +1,7 @@
 ﻿using EntityStates;
 using EntityStates.FriendUnit;
 using HG;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine;
 
@@ -95,7 +96,12 @@ namespace ItemQualities
 
         void onOwnerInventoryChanged()
         {
-            ItemQualityCounts physicsProjectile = ItemQualitiesContent.ItemQualityGroups.PhysicsProjectile.GetItemCountsEffective(_ownerMaster ? _ownerMaster.inventory : null);
+            ItemQualityCounts physicsProjectile = default;
+            if (_ownerMaster && _ownerMaster.inventory)
+            {
+                physicsProjectile = _ownerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PhysicsProjectile);
+            }
+
             setQualityBehaviorActive(physicsProjectile.TotalQualityCount > 0);
         }
 

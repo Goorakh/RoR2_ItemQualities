@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -13,12 +14,10 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender || !sender.healthComponent)
+            if (!sender.healthComponent || !sender.inventory)
                 return;
 
-            Inventory inventory = sender.inventory;
-
-            ItemQualityCounts barrierOnOverHeal = ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal.GetItemCountsEffective(inventory);
+            ItemQualityCounts barrierOnOverHeal = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BarrierOnOverHeal);
             if (barrierOnOverHeal.TotalQualityCount > 0 && sender.healthComponent.barrier > 0f)
             {
                 args.armorAdd += (20 * barrierOnOverHeal.UncommonCount) +

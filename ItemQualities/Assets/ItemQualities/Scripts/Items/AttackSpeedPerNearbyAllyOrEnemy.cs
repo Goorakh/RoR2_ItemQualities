@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -17,14 +18,16 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(sender);
+            if (!sender.inventory)
+                return;
+
+            BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff);
             if (attackSpeedPerNearbyAllyOrEnemyBuff.TotalQualityCount > 0)
             {
-                ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCountsEffective(sender.inventory);
-                QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;
+                ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy);
 
                 float attackSpeedPerBuff = 0f;
-                switch (qualityTier)
+                switch (attackSpeedPerNearbyAllyOrEnemy.HighestQuality)
                 {
                     case QualityTier.None:
                     case QualityTier.Uncommon:
@@ -40,7 +43,7 @@ namespace ItemQualities.Items
                         attackSpeedPerBuff = 0.35f;
                         break;
                     default:
-                        Log.Error($"Quality tier {qualityTier} is not implemented");
+                        Log.Error($"Quality tier {attackSpeedPerNearbyAllyOrEnemy.HighestQuality} is not implemented");
                         break;
                 }
 
@@ -72,13 +75,13 @@ namespace ItemQualities.Items
         {
             orig(self, itemCount, out diameter);
 
-            if (!self.body)
+            if (!self.body || !self.body.inventory)
                 return;
 
-            BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(self.body);
+            BuffQualityCounts attackSpeedPerNearbyAllyOrEnemyBuff = self.body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff);
             if (attackSpeedPerNearbyAllyOrEnemyBuff.TotalQualityCount > 0)
             {
-                ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCountsEffective(self.body.inventory);
+                ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = self.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy);
                 QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;
 
                 float diameterPerBuff = 0f;

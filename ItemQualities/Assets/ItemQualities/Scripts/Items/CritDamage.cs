@@ -56,11 +56,9 @@ namespace ItemQualities.Items
                 if (damageInfo != null && damageInfo.crit)
                 {
                     CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
-                    if (attackerBody)
+                    if (attackerBody && attackerBody.inventory)
                     {
-                        Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                        ItemQualityCounts critDamage = ItemQualitiesContent.ItemQualityGroups.CritDamage.GetItemCountsEffective(attackerInventory);
+                        ItemQualityCounts critDamage = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.CritDamage);
                         if (critDamage.TotalQualityCount > 0)
                         {
                             float critStackChance = (20f * critDamage.UncommonCount) +

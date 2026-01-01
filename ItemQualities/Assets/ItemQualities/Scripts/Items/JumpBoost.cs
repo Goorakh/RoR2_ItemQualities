@@ -59,26 +59,29 @@ namespace ItemQualities.Items
             static float getHorizontalJumpVelocityScale(float horizontalJumpVelocityScale, GenericCharacterMain genericCharacterMain)
             {
                 Inventory inventory = genericCharacterMain?.characterBody ? genericCharacterMain.characterBody.inventory : null;
-
-                ItemQualityCounts jumpBoost = ItemQualitiesContent.ItemQualityGroups.JumpBoost.GetItemCountsEffective(inventory);
-                if (jumpBoost.TotalQualityCount > 0 &&
-                    genericCharacterMain.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats) &&
-                    bodyExtraStats.QuailJumpComboAuthority > 0)
+                if (inventory)
                 {
-                    float velocityBoostPerJump = (0.20f * jumpBoost.UncommonCount) +
-                                                 (0.40f * jumpBoost.RareCount) +
-                                                 (0.70f * jumpBoost.EpicCount) +
-                                                 (1.00f * jumpBoost.LegendaryCount);
+                    ItemQualityCounts jumpBoost = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
 
-                    int maxJumpCombo = 5 * jumpBoost.TotalQualityCount;
-
-                    if (velocityBoostPerJump > 0f)
+                    if (jumpBoost.TotalQualityCount > 0 &&
+                        genericCharacterMain.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats) &&
+                        bodyExtraStats.QuailJumpComboAuthority > 0)
                     {
-                        float velocityBoost = Mathf.Min(maxJumpCombo, bodyExtraStats.QuailJumpComboAuthority) * velocityBoostPerJump;
+                        float velocityBoostPerJump = (0.20f * jumpBoost.UncommonCount) +
+                                                     (0.40f * jumpBoost.RareCount) +
+                                                     (0.70f * jumpBoost.EpicCount) +
+                                                     (1.00f * jumpBoost.LegendaryCount);
 
-                        Log.Debug($"Quail velocity boost for {Util.GetBestBodyName(genericCharacterMain.gameObject)}: {velocityBoost}");
+                        int maxJumpCombo = 5 * jumpBoost.TotalQualityCount;
 
-                        horizontalJumpVelocityScale += velocityBoost;
+                        if (velocityBoostPerJump > 0f)
+                        {
+                            float velocityBoost = Mathf.Min(maxJumpCombo, bodyExtraStats.QuailJumpComboAuthority) * velocityBoostPerJump;
+
+                            Log.Debug($"Quail velocity boost for {Util.GetBestBodyName(genericCharacterMain.gameObject)}: {velocityBoost}");
+
+                            horizontalJumpVelocityScale += velocityBoost;
+                        }
                     }
                 }
 
@@ -100,7 +103,7 @@ namespace ItemQualities.Items
 
             static void onJump(GenericCharacterMain genericCharacterMain, bool isQuailJump)
             {
-                if (isQuailJump && genericCharacterMain.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                if (isQuailJump && genericCharacterMain.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
                 {
                     bodyExtraStats.OnQuailJumpAuthority();
                 }
@@ -124,7 +127,7 @@ namespace ItemQualities.Items
 
                 static float getAirControl(CharacterMotor characterMotor, float airControl)
                 {
-                    if (characterMotor && characterMotor.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                    if (characterMotor && characterMotor.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
                     {
                         airControl += bodyExtraStats.AirControlBonus;
                     }

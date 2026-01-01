@@ -12,7 +12,7 @@ using System.Text;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    public static class PatchExtensions
+    internal static class PatchExtensions
     {
         static FieldInfo _cachedDecimalZeroFieldInfo;
 

@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities.Items
 {
@@ -20,7 +21,7 @@ namespace ItemQualities.Items
             if (!activatorInventory)
                 return;
 
-            ItemQualityCounts treasureCache = ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid.GetItemCountsPermanent(activatorInventory);
+            ItemQualityCounts treasureCache = activatorInventory.GetItemCountsPermanent(ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid);
             for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier > QualityTier.None; qualityTier--)
             {
                 if (treasureCache[qualityTier] >= cost)

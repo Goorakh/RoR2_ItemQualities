@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities.Items
 {
@@ -12,13 +13,12 @@ namespace ItemQualities.Items
 
         static void onServerDamageDealt(DamageReport damageReport)
         {
-            HealthComponent attackerHealthComponent = damageReport.attackerBody ? damageReport.attackerBody.healthComponent : null;
-            if (!attackerHealthComponent)
+            if (!damageReport.attackerBody || !damageReport.attackerBody.inventory)
                 return;
 
             if (damageReport.damageInfo.procCoefficient > 0 && !damageReport.damageInfo.procChainMask.HasProc(ProcType.HealOnHit))
             {
-                ItemQualityCounts seed = ItemQualitiesContent.ItemQualityGroups.Seed.GetItemCountsEffective(damageReport.attackerBody.inventory);
+                ItemQualityCounts seed = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Seed);
                 if (seed.TotalQualityCount > 0)
                 {
                     ProcChainMask procChainMask = damageReport.damageInfo.procChainMask;
@@ -29,7 +29,7 @@ namespace ItemQualities.Items
                                                       (0.06f * seed.EpicCount) +
                                                       (0.10f * seed.LegendaryCount);
 
-                    attackerHealthComponent.Heal(healthCoefficientOfDamage * damageReport.damageDealt * damageReport.damageInfo.procCoefficient, procChainMask);
+                    damageReport.attackerBody.healthComponent.Heal(healthCoefficientOfDamage * damageReport.damageDealt * damageReport.damageInfo.procCoefficient, procChainMask);
                 }
             }
         }

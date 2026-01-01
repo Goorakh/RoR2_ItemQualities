@@ -28,10 +28,10 @@ namespace ItemQualities.Items
             if (!NetworkServer.active || damageReport?.damageInfo == null)
                 return;
 
-            if (!damageReport.attackerBody || !damageReport.attackerBody.outOfDanger)
+            if (!damageReport.attackerBody || !damageReport.attackerBody.outOfDanger || !damageReport.attackerBody.inventory)
                 return;
 
-            ItemQualityCounts slug = ItemQualitiesContent.ItemQualityGroups.HealWhileSafe.GetItemCountsEffective(damageReport.attackerBody.inventory);
+            ItemQualityCounts slug = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.HealWhileSafe);
             if (slug.TotalQualityCount == 0)
                 return;
 

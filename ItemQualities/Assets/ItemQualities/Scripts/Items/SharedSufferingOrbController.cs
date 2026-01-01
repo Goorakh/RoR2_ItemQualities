@@ -1,4 +1,4 @@
-﻿using HG;
+﻿using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Events;
@@ -85,8 +85,10 @@ namespace ItemQualities.Items
         void recalculateRadius()
         {
             Inventory ownerInventory = _ownerBody ? _ownerBody.inventory : null;
+            if (!ownerInventory)
+                return;
 
-            ItemQualityCounts sharedSuffering = ItemQualitiesContent.ItemQualityGroups.SharedSuffering.GetItemCountsEffective(ownerInventory);
+            ItemQualityCounts sharedSuffering = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SharedSuffering);
             if (sharedSuffering.TotalQualityCount == 0)
                 sharedSuffering.UncommonCount = 1;
 

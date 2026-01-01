@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -13,7 +14,10 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts critGlasses = ItemQualitiesContent.ItemQualityGroups.CritGlasses.GetItemCountsEffective(sender.inventory);
+            if (!sender.inventory)
+                return;
+
+            ItemQualityCounts critGlasses = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.CritGlasses);
             if (critGlasses.TotalQualityCount > 0)
             {
                 args.critDamageMultAdd += (0.2f * critGlasses.UncommonCount) +

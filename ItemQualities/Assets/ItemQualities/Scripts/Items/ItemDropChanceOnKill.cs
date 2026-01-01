@@ -47,8 +47,10 @@ namespace ItemQualities.Items
             static PickupDropTable tryGetQualityDropTable(DamageReport damageReport)
             {
                 Inventory attackerInventory = damageReport?.attackerBody ? damageReport.attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return null;
 
-                ItemQualityCounts itemDropChanceOnKill = ItemQualitiesContent.ItemQualityGroups.ItemDropChanceOnKill.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts itemDropChanceOnKill = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ItemDropChanceOnKill);
                 if (itemDropChanceOnKill.TotalQualityCount <= 0)
                     return null;
 

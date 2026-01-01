@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 using UnityEngine.Networking;
 
@@ -15,11 +16,11 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender)
+            if (!sender.inventory)
                 return;
 
-            ItemQualityCounts killEliteFrenzy = ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCountsEffective(sender.inventory);
-            BuffQualityCounts killEliteFrenzyBuff = ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffCounts(sender);
+            ItemQualityCounts killEliteFrenzy = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy);
+            BuffQualityCounts killEliteFrenzyBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff);
             if (killEliteFrenzy.TotalQualityCount > 0 && killEliteFrenzyBuff.TotalQualityCount > 0)
             {
                 float damagePerBuff = (0.10f * killEliteFrenzy.UncommonCount) +
@@ -39,9 +40,9 @@ namespace ItemQualities.Items
             if (!NetworkServer.active || deathReport == null)
                 return;
 
-            if (deathReport.attackerBody && deathReport.victimIsElite)
+            if (deathReport.victimIsElite && deathReport.attackerBody && deathReport.attackerBody.inventory)
             {
-                ItemQualityCounts killEliteFrenzy = ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCountsEffective(deathReport.attackerBody.inventory);
+                ItemQualityCounts killEliteFrenzy = deathReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy);
                 if (killEliteFrenzy.TotalQualityCount > 0 && deathReport.attackerBody.HasBuff(RoR2Content.Buffs.NoCooldowns))
                 {
                     deathReport.attackerBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffIndex(killEliteFrenzy.HighestQuality));

@@ -30,14 +30,16 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = shockNearbyBodyBehavior ? shockNearbyBodyBehavior.body : null;
                 Inventory inventory = body ? body.inventory : null;
-
-                ItemQualityCounts shockNearby = ItemQualitiesContent.ItemQualityGroups.ShockNearby.GetItemCountsEffective(inventory);
-                if (shockNearby.TotalQualityCount > 0)
+                if (inventory)
                 {
-                    return Mathf.Pow(1f - 0.1f, shockNearby.UncommonCount) *
-                           Mathf.Pow(1f - 0.2f, shockNearby.RareCount) *
-                           Mathf.Pow(1f - 0.3f, shockNearby.EpicCount) *
-                           Mathf.Pow(1f - 0.5f, shockNearby.LegendaryCount);
+                    ItemQualityCounts shockNearby = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ShockNearby);
+                    if (shockNearby.TotalQualityCount > 0)
+                    {
+                        return Mathf.Pow(1f - 0.1f, shockNearby.UncommonCount) *
+                               Mathf.Pow(1f - 0.2f, shockNearby.RareCount) *
+                               Mathf.Pow(1f - 0.3f, shockNearby.EpicCount) *
+                               Mathf.Pow(1f - 0.5f, shockNearby.LegendaryCount);
+                    }
                 }
 
                 return 1f;

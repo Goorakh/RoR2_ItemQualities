@@ -49,7 +49,7 @@ namespace ItemQualities.Items
                     {
                         float currentEquipmentCooldown = currentEquipmentDef.cooldown * attackerInventory.CalculateEquipmentCooldownScale();
 
-                        ItemQualityCounts talisman = ItemQualitiesContent.ItemQualityGroups.Talisman.GetItemCountsEffective(attackerInventory);
+                        ItemQualityCounts talisman = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Talisman);
                         if (talisman.TotalQualityCount > 0)
                         {
                             float cooldownReductionFraction = 0f;

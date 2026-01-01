@@ -46,7 +46,7 @@ namespace ItemQualities.Items
 
             static float getCrowbarThreshold(float origCrowbarThreshold, DamageInfo damageInfo)
             {
-                if (damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
+                if (damageInfo != null && damageInfo.attacker && damageInfo.attacker.TryGetComponentCached(out CharacterBodyExtraStatsTracker extraStatsTracker))
                     return extraStatsTracker.CrowbarMinHealthFraction;
 
                 return origCrowbarThreshold;

@@ -1,4 +1,5 @@
 ﻿using EntityStates.LaserTurbine;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -21,7 +22,7 @@ namespace ItemQualities.Items
             Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
             if (attackerInventory)
             {
-                ItemQualityCounts laserTurbine = ItemQualitiesContent.ItemQualityGroups.LaserTurbine.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts laserTurbine = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.LaserTurbine);
                 if (laserTurbine.TotalQualityCount > 0)
                 {
                     explosionRadius += (4f * laserTurbine.UncommonCount) +
@@ -53,9 +54,9 @@ namespace ItemQualities.Items
 
             static float getKillChargeDuration(float killChargeDuration, LaserTurbineController laserTurbineController)
             {
-                if (laserTurbineController && laserTurbineController.cachedOwnerBody)
+                if (laserTurbineController && laserTurbineController.cachedOwnerBody && laserTurbineController.cachedOwnerBody.inventory)
                 {
-                    ItemQualityCounts laserTurbine = ItemQualitiesContent.ItemQualityGroups.LaserTurbine.GetItemCountsEffective(laserTurbineController.cachedOwnerBody.inventory);
+                    ItemQualityCounts laserTurbine = laserTurbineController.cachedOwnerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.LaserTurbine);
                     if (laserTurbine.TotalQualityCount > 0)
                     {
                         killChargeDuration += (1f * laserTurbine.UncommonCount) +

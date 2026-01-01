@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -39,9 +40,9 @@ namespace ItemQualities.Items
 
             static float getHealingIncrease(float healingIncrease, HealthComponent healthComponent)
             {
-                if (healthComponent && healthComponent.body)
+                if (healthComponent && healthComponent.body && healthComponent.body.inventory)
                 {
-                    ItemQualityCounts increaseHealing = ItemQualitiesContent.ItemQualityGroups.IncreaseHealing.GetItemCountsEffective(healthComponent.body.inventory);
+                    ItemQualityCounts increaseHealing = healthComponent.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.IncreaseHealing);
                     if (increaseHealing.TotalQualityCount > 0)
                     {
                         healingIncrease += ((1.5f - 1f) * increaseHealing.UncommonCount) +

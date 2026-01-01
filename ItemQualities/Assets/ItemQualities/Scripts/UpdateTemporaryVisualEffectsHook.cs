@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities
 {
@@ -14,7 +15,7 @@ namespace ItemQualities
         {
             orig(self);
 
-            if (self.TryGetComponent(out CharacterBodyExtraStatsTracker bodyExtraStats))
+            if (self.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
             {
                 bodyExtraStats.UpdateAllTemporaryVisualEffects();
             }

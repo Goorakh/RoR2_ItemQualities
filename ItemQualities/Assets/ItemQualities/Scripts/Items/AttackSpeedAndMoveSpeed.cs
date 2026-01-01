@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -19,8 +20,10 @@ namespace ItemQualities.Items
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             Inventory inventory = sender ? sender.inventory : null;
+            if (!inventory)
+                return;
 
-            ItemQualityCounts attackSpeedAndMoveSpeed = ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed.GetItemCountsEffective(inventory);
+            ItemQualityCounts attackSpeedAndMoveSpeed = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed);
 
             switch (_currentCallBonusType)
             {
@@ -49,7 +52,7 @@ namespace ItemQualities.Items
             ItemQualityCounts attackSpeedAndMoveSpeed = default;
             if (self && self.inventory)
             {
-                attackSpeedAndMoveSpeed = ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed.GetItemCountsEffective(self.inventory);
+                attackSpeedAndMoveSpeed = self.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed);
             }
 
             if (attackSpeedAndMoveSpeed.TotalQualityCount > 0)

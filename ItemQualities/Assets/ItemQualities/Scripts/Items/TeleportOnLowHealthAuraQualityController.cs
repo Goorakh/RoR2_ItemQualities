@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -38,8 +39,10 @@ namespace ItemQualities.Items
         {
             CharacterBody ownerBody = _ownerBody.Get(_auraController ? _auraController.owner : null);
             Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
+            if (!ownerInventory)
+                return;
 
-            ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(ownerInventory);
+            ItemQualityCounts teleportOnLowHealth = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth);
             if (teleportOnLowHealth.TotalQualityCount > 0)
             {
                 float auraScaleMult = 1f;

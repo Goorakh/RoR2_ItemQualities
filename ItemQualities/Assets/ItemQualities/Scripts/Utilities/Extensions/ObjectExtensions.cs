@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    public static class ObjectExtensions
+    internal static class ObjectExtensions
     {
         static readonly Dictionary<Type, ConstructorInfo> _cloneConstructorCache = new Dictionary<Type, ConstructorInfo>();
 

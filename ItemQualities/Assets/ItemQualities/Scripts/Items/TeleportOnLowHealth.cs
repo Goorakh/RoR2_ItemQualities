@@ -127,27 +127,29 @@ namespace ItemQualities.Items
                 {
                     CharacterBody body = teleportOnLowHealthBehavior ? teleportOnLowHealthBehavior.body : null;
                     Inventory inventory = body ? body.inventory : null;
-
-                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(inventory);
-
-                    if (teleportOnLowHealth.UncommonCount > 0)
+                    if (inventory)
                     {
-                        extensionDuration += 0.5f;
-                    }
+                        ItemQualityCounts teleportOnLowHealth = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth);
 
-                    if (teleportOnLowHealth.RareCount > 0)
-                    {
-                        extensionDuration += 1.5f;
-                    }
+                        if (teleportOnLowHealth.UncommonCount > 0)
+                        {
+                            extensionDuration += 0.5f;
+                        }
 
-                    if (teleportOnLowHealth.EpicCount > 0)
-                    {
-                        extensionDuration += 3f;
-                    }
+                        if (teleportOnLowHealth.RareCount > 0)
+                        {
+                            extensionDuration += 1.5f;
+                        }
 
-                    if (teleportOnLowHealth.LegendaryCount > 0)
-                    {
-                        extensionDuration += 5f;
+                        if (teleportOnLowHealth.EpicCount > 0)
+                        {
+                            extensionDuration += 3f;
+                        }
+
+                        if (teleportOnLowHealth.LegendaryCount > 0)
+                        {
+                            extensionDuration += 5f;
+                        }
                     }
 
                     return extensionDuration;
@@ -181,14 +183,17 @@ namespace ItemQualities.Items
                 {
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                    ItemQualityCounts teleportOnLowHealth = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemCountsEffective(attackerInventory);
-
-                    if (teleportOnLowHealth.TotalQualityCount > 0)
+                    if (attackerInventory)
                     {
-                        bleedDuration += (1.0f * teleportOnLowHealth.UncommonCount) +
-                                         (2.0f * teleportOnLowHealth.RareCount) +
-                                         (3.5f * teleportOnLowHealth.EpicCount) +
-                                         (5.0f * teleportOnLowHealth.LegendaryCount);
+                        ItemQualityCounts teleportOnLowHealth = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth);
+
+                        if (teleportOnLowHealth.TotalQualityCount > 0)
+                        {
+                            bleedDuration += (1.0f * teleportOnLowHealth.UncommonCount) +
+                                             (2.0f * teleportOnLowHealth.RareCount) +
+                                             (3.5f * teleportOnLowHealth.EpicCount) +
+                                             (5.0f * teleportOnLowHealth.LegendaryCount);
+                        }
                     }
 
                     return bleedDuration;

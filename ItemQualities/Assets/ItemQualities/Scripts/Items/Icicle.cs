@@ -1,4 +1,5 @@
 ﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
@@ -36,18 +37,20 @@ namespace ItemQualities.Items
                 if (ownerBody)
                 {
                     Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
-
-                    ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCountsEffective(ownerInventory);
-                    if (icicle.TotalQualityCount > 0)
+                    if (ownerInventory)
                     {
-                        float frostChance = (20f * icicle.UncommonCount) +
-                                            (30f * icicle.RareCount) +
-                                            (50f * icicle.EpicCount) +
-                                            (75f * icicle.LegendaryCount);
-
-                        if (RollUtil.CheckRoll(frostChance, ownerBody.master, false))
+                        ItemQualityCounts icicle = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Icicle);
+                        if (icicle.TotalQualityCount > 0)
                         {
-                            damageType.AddModdedDamageType(DamageTypes.Frost6s);
+                            float frostChance = (20f * icicle.UncommonCount) +
+                                                (30f * icicle.RareCount) +
+                                                (50f * icicle.EpicCount) +
+                                                (75f * icicle.LegendaryCount);
+
+                            if (RollUtil.CheckRoll(frostChance, ownerBody.master, false))
+                            {
+                                damageType.AddModdedDamageType(DamageTypes.Frost6s);
+                            }
                         }
                     }
                 }
@@ -62,8 +65,10 @@ namespace ItemQualities.Items
 
             CharacterBody ownerBody = self ? self.cachedOwnerInfo.characterBody : null;
             Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
+            if (!ownerInventory)
+                return;
 
-            ItemQualityCounts icicle = ItemQualitiesContent.ItemQualityGroups.Icicle.GetItemCountsEffective(ownerInventory);
+            ItemQualityCounts icicle = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Icicle);
             if (icicle.TotalQualityCount > 0)
             {
                 float radiusIncrease = (0.30f * icicle.UncommonCount) +

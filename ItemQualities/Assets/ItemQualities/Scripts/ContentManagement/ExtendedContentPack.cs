@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace ItemQualities.ContentManagement
 {
-    public class ExtendedContentPack
+    internal sealed class ExtendedContentPack
     {
         readonly ContentPack _innerContentPack;
 

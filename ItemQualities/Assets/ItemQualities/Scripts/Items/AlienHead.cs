@@ -1,4 +1,5 @@
 ﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine.Networking;
 
@@ -17,10 +18,11 @@ namespace ItemQualities.Items
             if (!NetworkServer.active)
                 return;
 
-            if (!deathReport?.attackerBody)
+            CharacterBody attackerBody = deathReport?.attackerBody;
+            if (!attackerBody || !attackerBody.inventory)
                 return;
 
-            ItemQualityCounts alienHead = ItemQualitiesContent.ItemQualityGroups.AlienHead.GetItemCountsEffective(deathReport.attackerBody.inventory);
+            ItemQualityCounts alienHead = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AlienHead);
             if (alienHead.TotalQualityCount > 0)
             {
                 float cooldownReductionChance = (15f * alienHead.UncommonCount) +
@@ -31,7 +33,7 @@ namespace ItemQualities.Items
                 float cooldownReduction = 1f * RollUtil.GetOverflowRoll(cooldownReductionChance, deathReport.attackerMaster, deathReport.damageInfo.procChainMask.HasProc(ProcType.SureProc));
                 if (cooldownReduction > 0f)
                 {
-                    deathReport.attackerBody.skillLocator.DeductCooldownFromAllSkillsServer(cooldownReduction);
+                    attackerBody.skillLocator.DeductCooldownFromAllSkillsServer(cooldownReduction);
                 }
             }
         }

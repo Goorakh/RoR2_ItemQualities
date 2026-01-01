@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using RoR2.Orbs;
 using System;
 using System.Collections.Generic;
@@ -75,10 +76,10 @@ namespace ItemQualities.Items
         void fireArc()
         {
             CharacterBody attackerBody = _attackerBody.Get(Attacker);
-            if (!attackerBody)
+            if (!attackerBody || !attackerBody.inventory)
                 return;
 
-            ItemQualityCounts attackerChainLightning = ItemQualitiesContent.ItemQualityGroups.ChainLightning.GetItemCountsEffective(attackerBody.inventory);
+            ItemQualityCounts attackerChainLightning = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ChainLightning);
 
             float damageCoefficient = 1.5f * attackerChainLightning.TotalQualityCount;
             float maxRange = 20f + (2f * attackerChainLightning.TotalCount);

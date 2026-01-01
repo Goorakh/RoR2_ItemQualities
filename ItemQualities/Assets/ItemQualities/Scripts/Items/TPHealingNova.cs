@@ -1,8 +1,8 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -54,24 +54,27 @@ namespace ItemQualities.Items
 
             private void ApplyRate(ref float rate)
             {
-                if (!_holdoutZoneController) return;
-                float leptonMul = 0;
-                ReadOnlyCollection<TeamComponent> teamMembers = TeamComponent.GetTeamMembers(_holdoutZoneController.chargingTeam);
-                for (int i = 0; i < teamMembers.Count; i++)
+                if (!_holdoutZoneController)
+                    return;
+
+                float rateMultiplier = 0;
+                foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(_holdoutZoneController.chargingTeam))
                 {
-                    TeamComponent teamMember = teamMembers[i];
-                    if (teamMember.body && 
-                    teamMember.body.isPlayerControlled && !teamMember.body.isRemoteOp && 
-                    HoldoutZoneController.IsBodyInChargingRadius(_holdoutZoneController, base.transform.position, MathF.Pow(_holdoutZoneController.currentRadius, 2) , teamMember.body))
+                    if (!teamComponent.body || !teamComponent.body.isPlayerControlled || teamComponent.body.isRemoteOp || !teamComponent.body.inventory)
+                        continue;
+
+                    if (HoldoutZoneController.IsBodyInChargingRadius(_holdoutZoneController, transform.position, MathF.Pow(_holdoutZoneController.currentRadius, 2), teamComponent.body))
                     {
-                        ItemQualityCounts TPHealingNova = ItemQualitiesContent.ItemQualityGroups.TPHealingNova.GetItemCountsEffective(teamMember.body.inventory);
-                        leptonMul +=    TPHealingNova.UncommonCount * 0.4f +
-                                        TPHealingNova.RareCount * 0.8f +
-                                        TPHealingNova.EpicCount * 1.2f +
-                                        TPHealingNova.LegendaryCount * 1.6f;
+                        ItemQualityCounts tpHealingNova = teamComponent.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TPHealingNova);
+
+                        rateMultiplier += (tpHealingNova.UncommonCount * 0.4f) +
+                                          (tpHealingNova.RareCount * 0.8f) +
+                                          (tpHealingNova.EpicCount * 1.2f) +
+                                          (tpHealingNova.LegendaryCount * 1.6f);
                     }
                 }
-                rate *= 1 + leptonMul / HoldoutZoneController.CountLivingPlayers(_holdoutZoneController.chargingTeam);
+
+                rate *= 1f + (rateMultiplier / HoldoutZoneController.CountLivingPlayers(_holdoutZoneController.chargingTeam));
             }
         }
 

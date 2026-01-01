@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using RoR2.Projectile;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -30,8 +31,10 @@ namespace ItemQualities.Items
             GameObject owner = projectileController ? projectileController.owner : null;
             CharacterBody ownerBody = owner ? owner.GetComponent<CharacterBody>() : null;
             Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
+            if (!ownerInventory)
+                return;
 
-            ItemQualityCounts increasePrimaryDamage = ItemQualitiesContent.ItemQualityGroups.IncreasePrimaryDamage.GetItemCountsEffective(ownerInventory);
+            ItemQualityCounts increasePrimaryDamage = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.IncreasePrimaryDamage);
             if (increasePrimaryDamage.TotalQualityCount == 0)
                 increasePrimaryDamage.UncommonCount = 1;
 

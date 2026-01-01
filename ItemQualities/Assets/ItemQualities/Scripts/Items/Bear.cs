@@ -43,8 +43,10 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = healthComponent ? healthComponent.body : null;
                 Inventory inventory = body ? body.inventory : null;
+                if (!inventory)
+                    return;
 
-                ItemQualityCounts bear = ItemQualitiesContent.ItemQualityGroups.Bear.GetItemCountsEffective(inventory);
+                ItemQualityCounts bear = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Bear);
                 if (bear.TotalQualityCount > 0)
                 {
                     float damageFraction = damageInfo.damage / healthComponent.fullCombinedHealth;

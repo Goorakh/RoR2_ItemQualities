@@ -38,15 +38,17 @@ namespace ItemQualities.Items
             static float getDamageCoefficientPerBounce(float damageCoefficient, CharacterBody attackerBody)
             {
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                ItemQualityCounts knockBackHitEnemies = ItemQualitiesContent.ItemQualityGroups.KnockBackHitEnemies.GetItemCountsEffective(attackerInventory);
-
-                if (knockBackHitEnemies.TotalQualityCount > 0)
+                if (attackerInventory)
                 {
-                    damageCoefficient += (0.05f * knockBackHitEnemies.UncommonCount) +
-                                         (0.10f * knockBackHitEnemies.RareCount) +
-                                         (0.20f * knockBackHitEnemies.EpicCount) +
-                                         (0.35f * knockBackHitEnemies.LegendaryCount);
+                    ItemQualityCounts knockBackHitEnemies = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.KnockBackHitEnemies);
+
+                    if (knockBackHitEnemies.TotalQualityCount > 0)
+                    {
+                        damageCoefficient += (0.05f * knockBackHitEnemies.UncommonCount) +
+                                             (0.10f * knockBackHitEnemies.RareCount) +
+                                             (0.20f * knockBackHitEnemies.EpicCount) +
+                                             (0.35f * knockBackHitEnemies.LegendaryCount);
+                    }
                 }
 
                 return damageCoefficient;
