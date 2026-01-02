@@ -1,11 +1,9 @@
-﻿using HG;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -14,16 +12,25 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            TeleporterInteraction.onTeleporterBeginChargingGlobal += onTeleporterBeginChargingGlobal;
-
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static void onTeleporterBeginChargingGlobal(TeleporterInteraction teleporterInteraction)
+        private static void onCharacterDeathGlobal(DamageReport report)
         {
-            if (NetworkServer.active)
+            if(report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker)) 
             {
-                teleporterInteraction.gameObject.EnsureComponent<BossDamageBonusTeleporterController>();
+                ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(report.attackerBody.inventory);
+
+                int maxHitlistBonus = bossDamageBonus.UncommonCount * 15 +
+                                    bossDamageBonus.RareCount * 30 +
+                                    bossDamageBonus.EpicCount * 45 +
+                                    bossDamageBonus.LegendaryCount * 60;
+                
+                if(report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.HitlistDamage) < maxHitlistBonus) 
+                {
+                    report.attackerBody.AddBuff(ItemQualitiesContent.Buffs.HitlistDamage);
+                }
             }
         }
 
@@ -90,14 +97,7 @@ namespace ItemQualities.Items
                 if (isMiniBoss)
                 {
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
-                    Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                    ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(attackerInventory);
-
-                    damageMultiplier = (0.05f * bossDamageBonus.UncommonCount) +
-                                       (0.10f * bossDamageBonus.RareCount) +
-                                       (0.15f * bossDamageBonus.EpicCount) +
-                                       (0.20f * bossDamageBonus.LegendaryCount);
+                    damageMultiplier = attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.HitlistDamage) * 0.01f;
                 }
 
                 return damageMultiplier;

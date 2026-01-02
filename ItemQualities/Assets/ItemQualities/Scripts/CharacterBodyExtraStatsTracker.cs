@@ -241,6 +241,7 @@ namespace ItemQualities
                 setItemBehavior<DronesDropDynamiteDroneItemQualityItemBehavior>(_body.inventory.GetItemCountEffective(ItemQualitiesContent.Items.DronesDropDynamiteQualityDroneItem) > 0);
                 setItemBehavior<ShieldBoosterQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.ShieldBooster.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
                 setItemBehavior<WarCryOnMultiKillQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
+                setItemBehavior<BossDamageBonusQualityItemBehavior>(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(_body.inventory).TotalQualityCount > 0);
             }
 
             if (HasEffectiveAuthority)
