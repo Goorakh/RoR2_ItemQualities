@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -13,11 +14,10 @@ namespace ItemQualities.Items
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts hoof = default;
-            if (sender.inventory)
-            {
-                hoof = ItemQualitiesContent.ItemQualityGroups.Hoof.GetItemCountsEffective(sender.inventory);
-            }
+            if (!sender.inventory)
+                return;
+
+            ItemQualityCounts hoof = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Hoof);
 
             args.moveSpeedMultAdd += ((0.28f - 0.14f) * hoof.UncommonCount) +
                                      ((0.49f - 0.14f) * hoof.RareCount) +

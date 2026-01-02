@@ -1,36 +1,33 @@
-﻿using RoR2;
-using UnityEngine;
-using UnityEngine.Networking;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities.Items
 {
-    public class EnergizedOnEquipmentUseItemBehavior : MonoBehaviour
+    public sealed class EnergizedOnEquipmentUseItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
-
-        void Awake()
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
         {
-            _body = GetComponent<CharacterBody>();
-        }
-
-        void OnEnable()
-        {
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-            }
+            return ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse;
         }
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-            ItemQualitiesContent.BuffQualityGroups.Energized.EnsureBuffQualities(_body, QualityTier.None, true);
+            if (Body.inventory && Body.inventory.GetItemCountEffective(RoR2Content.Items.EnergizedOnEquipmentUse) > 0)
+            {
+                Body.ConvertAllBuffsToQualityTier(ItemQualitiesContent.BuffQualityGroups.Energized, QualityTier.None);
+            }
+            else
+            {
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.Energized);
+            }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.Energized.EnsureBuffQualities(_body, buffQualityTier, true);
+            base.OnStacksChanged();
+
+            Body.ConvertAllBuffsToQualityTier(ItemQualitiesContent.BuffQualityGroups.Energized, Stacks.HighestQuality);
         }
     }
 }

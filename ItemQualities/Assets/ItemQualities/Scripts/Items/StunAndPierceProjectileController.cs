@@ -58,9 +58,9 @@ namespace ItemQualities.Items
             {
                 _bounceTargetSearch.teamMaskFilter = TeamMask.GetEnemyTeams(TeamComponent.GetObjectTeam(projectileController.owner));
 
-                if (projectileController.owner.TryGetComponent(out CharacterBody ownerBody))
+                if (projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
                 {
-                    ItemQualityCounts stunAndPierce = ItemQualitiesContent.ItemQualityGroups.StunAndPierce.GetItemCountsEffective(ownerBody.inventory);
+                    ItemQualityCounts stunAndPierce = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.StunAndPierce);
 
                     if (stunAndPierce.TotalQualityCount > 0)
                     {

@@ -95,15 +95,14 @@ namespace ItemQualities.Items
 
             static int getEffectiveItemCountFromQualities(Inventory inventory, ItemIndex itemIndex)
             {
+                if (!inventory)
+                    return 0;
+
                 QualityTier qualityTier = QualityCatalog.GetQualityTier(itemIndex);
                 if (qualityTier > QualityTier.None)
                     return 0;
 
-                ItemQualityGroup qualityGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
-                if (!qualityGroup)
-                    return 0;
-
-                return qualityGroup.GetItemCountsEffective(inventory).TotalQualityCount;
+                return inventory.GetItemCountsEffective(QualityCatalog.FindItemQualityGroupIndex(itemIndex)).TotalQualityCount;
             }
         }
 
@@ -134,7 +133,7 @@ namespace ItemQualities.Items
                         ref int baseItemCount = ref itemInventoryDisplay.itemStacks[(int)itemGroup.BaseItemIndex];
                         if (baseItemCount > 0)
                         {
-                            ItemQualityCounts itemCounts = itemGroup.GetItemCountsEffective(itemInventoryDisplay.inventory);
+                            ItemQualityCounts itemCounts = itemInventoryDisplay.inventory.GetItemCountsEffective(itemGroup);
                             baseItemCount = Math.Max(0, baseItemCount - itemCounts.TotalQualityCount);
                         }
                     }
@@ -168,12 +167,12 @@ namespace ItemQualities.Items
 
             static int getItemCountWithQualities(int itemCount, Inventory inventory, ItemIndex itemIndex)
             {
-                if (QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None)
+                if (inventory && QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None)
                 {
-                    ItemQualityGroup itemGroup = QualityCatalog.GetItemQualityGroup(QualityCatalog.FindItemQualityGroupIndex(itemIndex));
-                    if (itemGroup)
+                    ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
+                    if (itemGroupIndex != ItemQualityGroupIndex.Invalid)
                     {
-                        itemCount += itemGroup.GetItemCountsEffective(inventory).TotalQualityCount;
+                        itemCount += inventory.GetItemCountsEffective(itemGroupIndex).TotalQualityCount;
                     }
                 }
 

@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 using UnityEngine.Networking;
 
@@ -16,11 +17,11 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender)
+            if (!sender.inventory)
                 return;
 
-            ItemQualityCounts moveSpeedOnKill = ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCountsEffective(sender.inventory);
-            BuffQualityCounts killMoveSpeedBuff = ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed.GetBuffCounts(sender);
+            ItemQualityCounts moveSpeedOnKill = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill);
+            BuffQualityCounts killMoveSpeedBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.KillMoveSpeed);
 
             float moveSpeedPerBuff = (0.005f * moveSpeedOnKill.UncommonCount) +
                                      (0.006f * moveSpeedOnKill.RareCount) +
@@ -35,9 +36,9 @@ namespace ItemQualities.Items
             if (!NetworkServer.active || damageReport == null)
                 return;
 
-            if (damageReport.attackerMaster && damageReport.attackerBody)
+            if (damageReport.attackerMaster && damageReport.attackerBody && damageReport.attackerMaster.inventory)
             {
-                ItemQualityCounts moveSpeedOnKill = ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill.GetItemCountsEffective(damageReport.attackerMaster.inventory);
+                ItemQualityCounts moveSpeedOnKill = damageReport.attackerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill);
 
                 if (moveSpeedOnKill.TotalQualityCount > 0)
                 {

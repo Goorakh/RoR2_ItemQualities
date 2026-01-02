@@ -81,8 +81,10 @@ namespace ItemQualities.Items
 
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return false;
 
-                ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts bossDamageBonus = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
                 return bossDamageBonus.TotalQualityCount > 0 && victim.body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
             }
 

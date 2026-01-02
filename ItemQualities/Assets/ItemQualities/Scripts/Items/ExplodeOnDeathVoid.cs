@@ -42,16 +42,18 @@ namespace ItemQualities.Items
             {
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                ItemQualityCounts explodeOnDeathVoid = ItemQualitiesContent.ItemQualityGroups.ExplodeOnDeathVoid.GetItemCountsEffective(attackerInventory);
-                if (explodeOnDeathVoid.TotalQualityCount > 0)
+                if (attackerInventory)
                 {
-                    float bonusDamageCoefficient = (0.5f * explodeOnDeathVoid.UncommonCount) +
-                                                   (0.7f * explodeOnDeathVoid.RareCount) +
-                                                   (1.0f * explodeOnDeathVoid.EpicCount) +
-                                                   (1.5f * explodeOnDeathVoid.LegendaryCount);
+                    ItemQualityCounts explodeOnDeathVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExplodeOnDeathVoid);
+                    if (explodeOnDeathVoid.TotalQualityCount > 0)
+                    {
+                        float bonusDamageCoefficient = (0.5f * explodeOnDeathVoid.UncommonCount) +
+                                                       (0.7f * explodeOnDeathVoid.RareCount) +
+                                                       (1.0f * explodeOnDeathVoid.EpicCount) +
+                                                       (1.5f * explodeOnDeathVoid.LegendaryCount);
 
-                    damage += damageInfo.damage * bonusDamageCoefficient;
+                        damage += damageInfo.damage * bonusDamageCoefficient;
+                    }
                 }
 
                 return damage;

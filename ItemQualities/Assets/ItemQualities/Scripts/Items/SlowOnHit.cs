@@ -57,8 +57,13 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 CharacterMaster attackerMaster = attackerBody ? attackerBody.master : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                {
+                    isQualityProc = false;
+                    return true;
+                }
 
-                ItemQualityCounts slowOnHit = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts slowOnHit = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SlowOnHit);
                 if (slowOnHit.TotalQualityCount <= 0)
                 {
                     isQualityProc = false;
@@ -76,7 +81,7 @@ namespace ItemQualities.Items
                     return false;
 
                 CharacterBody victimBody = victim ? victim.GetComponent<CharacterBody>() : null;
-                return ItemQualitiesContent.BuffQualityGroups.Slow60.GetBuffCounts(victimBody).TotalQualityCount == 0;
+                return victimBody && victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.Slow60).TotalQualityCount == 0;
             }
 
             c.Emit(OpCodes.Ldloc, isQualityProcVar);
@@ -97,8 +102,10 @@ namespace ItemQualities.Items
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
                 CharacterMaster attackerMaster = attackerBody ? attackerBody.master : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return;
 
-                ItemQualityCounts slowOnHit = ItemQualitiesContent.ItemQualityGroups.SlowOnHit.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts slowOnHit = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SlowOnHit);
 
                 QualityTier slowOnHitQuality = slowOnHit.HighestQuality;
                 if (slowOnHitQuality == QualityTier.None)

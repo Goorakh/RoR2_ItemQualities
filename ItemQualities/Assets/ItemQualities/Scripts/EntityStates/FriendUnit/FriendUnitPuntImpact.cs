@@ -1,5 +1,6 @@
 ﻿using ItemQualities;
 using ItemQualities.Items;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
 using UnityEngine;
@@ -64,9 +65,9 @@ namespace EntityStates.FriendUnit
                 CharacterMaster master = characterBody.master;
 
                 ItemQualityCounts physicsProjectile = default;
-                if (master && master.minionOwnership.ownerMaster)
+                if (master && master.minionOwnership.ownerMaster && master.minionOwnership.ownerMaster.inventory)
                 {
-                    physicsProjectile = ItemQualitiesContent.ItemQualityGroups.PhysicsProjectile.GetItemCountsEffective(master.minionOwnership.ownerMaster.inventory);
+                    physicsProjectile = master.minionOwnership.ownerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PhysicsProjectile);
                 }
 
                 if (physicsProjectile.TotalQualityCount == 0)

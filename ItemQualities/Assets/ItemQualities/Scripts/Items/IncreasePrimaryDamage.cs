@@ -74,8 +74,10 @@ namespace ItemQualities.Items
 
                 CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return false;
 
-                ItemQualityCounts increasePrimaryDamage = ItemQualitiesContent.ItemQualityGroups.IncreasePrimaryDamage.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts increasePrimaryDamage = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.IncreasePrimaryDamage);
                 if (increasePrimaryDamage.TotalQualityCount <= 0)
                     return false;
 

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    public static class FileExtensions
+    internal static class FileExtensions
     {
         public static bool IsChildOf(this DirectoryInfo dir, DirectoryInfo other)
         {

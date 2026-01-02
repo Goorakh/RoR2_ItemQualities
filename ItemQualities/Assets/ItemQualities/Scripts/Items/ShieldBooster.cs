@@ -72,12 +72,12 @@ namespace ItemQualities.Items
         {
             float radius = baseRadius;
 
-            if (body)
+            if (body && body.inventory)
             {
-                ItemQualityCounts shieldBooster = ItemQualitiesContent.ItemQualityGroups.ShieldBooster.GetItemCountsEffective(body.inventory);
+                ItemQualityCounts shieldBooster = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ShieldBooster);
                 if (shieldBooster.TotalQualityCount > 0)
                 {
-                    BuffQualityCounts shieldBoosterBuff = ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.GetBuffCounts(body);
+                    BuffQualityCounts shieldBoosterBuff = body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff);
                     float shieldBoosterBuffFraction = shieldBoosterBuff.TotalQualityCount / 100f;
                     if (shieldBoosterBuffFraction > 0)
                     {
@@ -102,12 +102,12 @@ namespace ItemQualities.Items
         {
             float damage = orig(self, stack);
 
-            if (self.body)
+            if (self.body && self.body.inventory)
             {
-                ItemQualityCounts shieldBooster = ItemQualitiesContent.ItemQualityGroups.ShieldBooster.GetItemCountsEffective(self.body.inventory);
+                ItemQualityCounts shieldBooster = self.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ShieldBooster);
                 if (shieldBooster.TotalQualityCount > 0)
                 {
-                    BuffQualityCounts shieldBoosterBuff = ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff.GetBuffCounts(self.body);
+                    BuffQualityCounts shieldBoosterBuff = self.body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff);
                     float shieldBoosterBuffFraction = shieldBoosterBuff.TotalQualityCount / 100f;
                     if (shieldBoosterBuffFraction > 0)
                     {

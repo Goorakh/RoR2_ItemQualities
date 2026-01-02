@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using RoR2.Projectile;
 using UnityEngine.Networking;
 
@@ -43,9 +44,9 @@ namespace ItemQualities.Items
         void onInitializedServer(ProjectileController projectileController)
         {
             ItemQualityCounts elementalRingVoid = default;
-            if (projectileController && projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody))
+            if (projectileController && projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
             {
-                elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCountsEffective(ownerBody.inventory);
+                elementalRingVoid = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid);
             }
 
             float scaleMultiplier;

@@ -86,8 +86,10 @@ namespace ItemQualities.Items
             TeamIndex interactorTeam = interactorBody && interactorBody.teamComponent ? interactorBody.teamComponent.teamIndex : TeamIndex.None;
 
             Inventory interactorInventory = interactorBody ? interactorBody.inventory : null;
+            if (!interactorInventory)
+                return;
 
-            ItemQualityCounts wardOnLevel = ItemQualitiesContent.ItemQualityGroups.WardOnLevel.GetItemCountsEffective(interactorInventory);
+            ItemQualityCounts wardOnLevel = interactorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WardOnLevel);
 
             if (wardOnLevel.TotalQualityCount > 0)
             {

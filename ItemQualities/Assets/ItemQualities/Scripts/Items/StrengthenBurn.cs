@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -15,7 +16,10 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts strengthenBurn = ItemQualitiesContent.ItemQualityGroups.StrengthenBurn.GetItemCountsEffective(sender.inventory);
+            if (!sender.inventory)
+                return;
+
+            ItemQualityCounts strengthenBurn = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.StrengthenBurn);
             if (strengthenBurn.TotalQualityCount > 0)
             {
                 args.critAdd += 5f;
@@ -31,7 +35,7 @@ namespace ItemQualities.Items
             {
                 if (damageReport.damageInfo.crit)
                 {
-                    ItemQualityCounts strengthenBurn = ItemQualitiesContent.ItemQualityGroups.StrengthenBurn.GetItemCountsEffective(damageReport.attackerMaster.inventory);
+                    ItemQualityCounts strengthenBurn = damageReport.attackerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.StrengthenBurn);
 
                     if (strengthenBurn.TotalQualityCount > 0)
                     {

@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities.Items
 {
@@ -28,7 +29,7 @@ namespace ItemQualities.Items
             if (!activatorInventory)
                 return;
 
-            ItemQualityCounts barrierOnCooldown = ItemQualitiesContent.ItemQualityGroups.BarrierOnCooldown.GetItemCountsEffective(activatorInventory);
+            ItemQualityCounts barrierOnCooldown = activatorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BarrierOnCooldown);
             if (barrierOnCooldown.TotalQualityCount > 0)
             {
                 float baseCooldown = EquipmentCatalog.GetEquipmentDef(equipmentIndex).cooldown;

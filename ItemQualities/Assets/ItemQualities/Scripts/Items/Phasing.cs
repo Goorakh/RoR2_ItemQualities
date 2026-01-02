@@ -1,4 +1,5 @@
 ﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -30,12 +31,12 @@ namespace ItemQualities.Items
             if (damageReport?.damageInfo == null)
                 return;
 
-            if (!damageReport.victimBody)
+            if (!damageReport.victimBody || !damageReport.victimBody.inventory)
                 return;
 
             if (damageReport.damageDealt > 0f && !damageReport.damageInfo.rejected)
             {
-                ItemQualityCounts phasing = ItemQualitiesContent.ItemQualityGroups.Phasing.GetItemCountsEffective(damageReport.victimBody.inventory);
+                ItemQualityCounts phasing = damageReport.victimBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
                 if (phasing.TotalQualityCount > 0)
                 {
                     float stealthProcChance = (5f * phasing.UncommonCount) +
@@ -77,7 +78,7 @@ namespace ItemQualities.Items
 
                 static bool isUnderStealthKitThreshold(HealthComponent healthComponent, bool isHealthLow)
                 {
-                    if (healthComponent && healthComponent.TryGetComponent(out CharacterBodyExtraStatsTracker extraStatsTracker))
+                    if (healthComponent && healthComponent.TryGetComponentCached(out CharacterBodyExtraStatsTracker extraStatsTracker))
                     {
                         isHealthLow = healthComponent.IsHealthBelowThreshold(extraStatsTracker.StealthKitActivationThreshold);
                     }

@@ -55,8 +55,10 @@ namespace ItemQualities.Items
 
                 CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return;
 
-                ItemQualityCounts chainLightning = ItemQualitiesContent.ItemQualityGroups.ChainLightning.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts chainLightning = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ChainLightning);
                 if (chainLightning.TotalQualityCount > 0)
                 {
                     int arcCount = (3 * chainLightning.UncommonCount) +

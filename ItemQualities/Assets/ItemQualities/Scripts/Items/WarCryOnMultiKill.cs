@@ -1,8 +1,6 @@
-﻿using Mono.Cecil.Cil;
-using MonoMod.Cil;
+﻿using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
-using System;
 
 namespace ItemQualities.Items
 {
@@ -16,10 +14,13 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
+            if (!sender.inventory)
+                return;
+
             if (sender.HasBuff(RoR2Content.Buffs.WarCryBuff) || sender.HasBuff(RoR2Content.Buffs.TeamWarCry))
             {
-                ItemQualityCounts warCryOnMultiKill = ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill.GetItemCountsEffective(sender.inventory);
-                BuffQualityCounts multikillWarCryBuff = ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff.GetBuffCounts(sender);
+                ItemQualityCounts warCryOnMultiKill = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill);
+                BuffQualityCounts multikillWarCryBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff);
                 if (warCryOnMultiKill.TotalQualityCount > 0 && multikillWarCryBuff.TotalQualityCount > 0)
                 {
                     float damageIncreasePerBuff = (0.01f * warCryOnMultiKill.UncommonCount) +

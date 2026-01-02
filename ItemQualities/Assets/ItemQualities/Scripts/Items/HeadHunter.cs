@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -13,7 +14,10 @@ namespace ItemQualities.Items
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            ItemQualityCounts headHunter = ItemQualitiesContent.ItemQualityGroups.HeadHunter.GetItemCountsEffective(sender.inventory);
+            if (!sender.inventory)
+                return;
+
+            ItemQualityCounts headHunter = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.HeadHunter);
             if (headHunter.TotalQualityCount > 0)
             {
                 int eliteBuffCount = 0;

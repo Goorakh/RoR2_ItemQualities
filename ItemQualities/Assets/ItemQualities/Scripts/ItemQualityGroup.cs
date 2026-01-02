@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -19,14 +20,18 @@ using Path = System.IO.Path;
 namespace ItemQualities
 {
     [CreateAssetMenu(menuName = "ItemQualities/Items/ItemQualityGroup")]
-    public class ItemQualityGroup : ScriptableObject, IAsyncContentLoadCallback
+    public sealed class ItemQualityGroup : ScriptableObject, IAsyncContentLoadCallback
     {
         [HideInInspector]
         [NonSerialized]
         public ItemQualityGroupIndex GroupIndex = ItemQualityGroupIndex.Invalid;
 
         [FormerlySerializedAs("BaseItem")]
-        public AssetReferenceT<ItemDef> BaseItemReference = new AssetReferenceT<ItemDef>(string.Empty);
+        [SerializeField]
+        internal AssetReferenceT<ItemDef> BaseItemReference = new AssetReferenceT<ItemDef>(string.Empty);
+
+        [SerializeField]
+        internal ItemDef BaseItem;
 
         [FormerlySerializedAs("UncommonVariant")]
         [SerializeField]
@@ -56,12 +61,23 @@ namespace ItemQualities
 
         public ItemIndex LegendaryItemIndex => _legendaryItem ? _legendaryItem.itemIndex : ItemIndex.None;
 
+        bool checkCanModify()
+        {
+            if (QualityCatalog.Availability.available)
+            {
+                Log.Error("Cannot modify ItemQualityGroup items after QualityCatalog is initialized");
+                return false;
+            }
+
+            return true;
+        }
+
         public ItemDef GetItemDef(QualityTier qualityTier)
         {
             switch (qualityTier)
             {
                 case QualityTier.None:
-                    return ItemCatalog.GetItemDef(BaseItemIndex);
+                    return BaseItem ? BaseItem : ItemCatalog.GetItemDef(BaseItemIndex);
                 case QualityTier.Uncommon:
                     return _uncommonItem;
                 case QualityTier.Rare:
@@ -70,6 +86,33 @@ namespace ItemQualities
                     return _epicItem;
                 case QualityTier.Legendary:
                     return _legendaryItem;
+                default:
+                    throw new NotImplementedException($"Quality tier '{qualityTier}' is not implemented");
+            }
+        }
+
+        public void SetItemDef(ItemDef itemDef, QualityTier qualityTier)
+        {
+            if (!checkCanModify())
+                return;
+
+            switch (qualityTier)
+            {
+                case QualityTier.None:
+                    Log.Warning($"Cannot change base item (group: '{name}')");
+                    break;
+                case QualityTier.Uncommon:
+                    _uncommonItem = itemDef;
+                    break;
+                case QualityTier.Rare:
+                    _rareItem = itemDef;
+                    break;
+                case QualityTier.Epic:
+                    _epicItem = itemDef;
+                    break;
+                case QualityTier.Legendary:
+                    _legendaryItem = itemDef;
+                    break;
                 default:
                     throw new NotImplementedException($"Quality tier '{qualityTier}' is not implemented");
             }
@@ -94,111 +137,81 @@ namespace ItemQualities
             }
         }
 
+        [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsEffective) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsEffective(Inventory inventory)
         {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.CalculateEffectiveItemStacks(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCountEffective(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCountEffective(RareItemIndex);
-            int epicItemCount = inventory.GetItemCountEffective(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCountEffective(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+            return inventory ? inventory.GetItemCountsEffective(this) : default;
         }
 
+        [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsPermanent) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsPermanent(Inventory inventory)
         {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.GetItemCountPermanent(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCountPermanent(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCountPermanent(RareItemIndex);
-            int epicItemCount = inventory.GetItemCountPermanent(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCountPermanent(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+            return inventory ? inventory.GetItemCountsPermanent(this) : default;
         }
 
+        [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsTemp) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsTemp(Inventory inventory)
         {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.GetItemCountTemp(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCountTemp(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCountTemp(RareItemIndex);
-            int epicItemCount = inventory.GetItemCountTemp(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCountTemp(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+            return inventory ? inventory.GetItemCountsTemp(this) : default;
         }
 
+        [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsChanneled) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsChanneled(Inventory inventory)
         {
-            if (!inventory)
-                return default;
-
-            int baseItemCount = inventory.GetItemCountChanneled(BaseItemIndex);
-            int uncommonItemCount = inventory.GetItemCountChanneled(UncommonItemIndex);
-            int rareItemCount = inventory.GetItemCountChanneled(RareItemIndex);
-            int epicItemCount = inventory.GetItemCountChanneled(EpicItemIndex);
-            int legendaryItemCount = inventory.GetItemCountChanneled(LegendaryItemIndex);
-
-            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+            return inventory ? inventory.GetItemCountsChanneled(this) : default;
         }
 
+        [Obsolete("Use " + nameof(ItemQualityUtils) + "." + nameof(ItemQualityUtils.GetTeamItemCounts) + "() instead")]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetTeamItemCounts(TeamIndex teamIndex, bool requireAlive, bool requireConnected = true)
         {
-            ItemQualityCounts itemCounts = default;
-
-            foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
-            {
-                if (!master)
-                    continue;
-
-                if (master.teamIndex != teamIndex)
-                    continue;
-
-                CharacterBody body = master.GetBody();
-                if (requireAlive && (!body || !body.healthComponent || !body.healthComponent.alive))
-                    continue;
-
-                if (requireConnected && (!master.playerCharacterMasterController || !master.playerCharacterMasterController.isConnected))
-                    continue;
-
-                itemCounts += GetItemCountsEffective(master.inventory);
-            }
-
-            return itemCounts;
+            return ItemQualityUtils.GetTeamItemCounts(this, teamIndex, requireAlive, requireConnected);
         }
 
         void OnValidate()
         {
-            if (BaseItemReference == null || !BaseItemReference.RuntimeKeyIsValid())
+            if (!BaseItem && (BaseItemReference == null || !BaseItemReference.RuntimeKeyIsValid()))
             {
-                Debug.LogError($"Invalid item address in group '{name}'");
+                Debug.LogError($"Invalid item reference in group '{name}'");
             }
         }
 
         IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
         {
-            if (BaseItemReference == null || !BaseItemReference.RuntimeKeyIsValid())
+            if (BaseItem)
             {
-                Log.Error($"Invalid item address in group '{name}'");
-                progressReceiver.Report(1f);
-                yield break;
+                populateItems(BaseItem);
+            }
+            else if (BaseItemReference != null && BaseItemReference.RuntimeKeyIsValid())
+            {
+                AsyncOperationHandle<ItemDef> baseItemLoad = AssetAsyncReferenceManager<ItemDef>.LoadAsset(BaseItemReference);
+                yield return baseItemLoad.AsProgressCoroutine(progressReceiver);
+
+                if (baseItemLoad.IsValid() && baseItemLoad.Status == AsyncOperationStatus.Succeeded)
+                {
+                    ItemDef baseItem = baseItemLoad.Result;
+                    populateItems(baseItem);
+                }
+                else
+                {
+                    Log.Error($"Failed to load base item for quality group '{name}': {(baseItemLoad.IsValid() ? baseItemLoad.OperationException : "Invalid handle")}");
+                }
+
+                AssetAsyncReferenceManager<ItemDef>.UnloadAsset(BaseItemReference);
+            }
+            else
+            {
+                Log.Error($"Invalid item reference in group '{name}'");
             }
 
-            AsyncOperationHandle<ItemDef> baseItemLoad = AssetAsyncReferenceManager<ItemDef>.LoadAsset(BaseItemReference);
-            yield return baseItemLoad.AsProgressCoroutine(progressReceiver);
+            progressReceiver.Report(1f);
 
-            if (baseItemLoad.IsValid() && baseItemLoad.Status == AsyncOperationStatus.Succeeded)
+            void populateItems(ItemDef baseItem)
             {
-                ItemDef baseItem = baseItemLoad.Result;
-
                 void populateItemAsset(ItemDef item, QualityTier qualityTier)
                 {
                     if (!item)
@@ -255,13 +268,104 @@ namespace ItemQualities
                 populateItemAsset(_epicItem, QualityTier.Epic);
                 populateItemAsset(_legendaryItem, QualityTier.Legendary);
             }
+        }
+
+        internal IEnumerator GenerateRuntimeAssetsAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver = null)
+        {
+            if (BaseItem)
+            {
+                generateRuntimeAssets(BaseItem);
+            }
+            else if (BaseItemReference != null && BaseItemReference.RuntimeKeyIsValid())
+            {
+                AsyncOperationHandle<ItemDef> baseItemLoad = AssetAsyncReferenceManager<ItemDef>.LoadAsset(BaseItemReference);
+                yield return progressReceiver != null ? baseItemLoad.AsProgressCoroutine(progressReceiver) : baseItemLoad;
+
+                if (baseItemLoad.IsValid() && baseItemLoad.Status == AsyncOperationStatus.Succeeded)
+                {
+                    generateRuntimeAssets(baseItemLoad.Result);
+                }
+                else
+                {
+                    Log.Error($"Failed to load base item for quality group '{name}': {(baseItemLoad.IsValid() ? baseItemLoad.OperationException : "Invalid handle")}");
+                }
+
+                AssetAsyncReferenceManager<ItemDef>.UnloadAsset(BaseItemReference);
+            }
             else
             {
-                Log.Error($"Failed to load base item for quality group '{name}': {(baseItemLoad.IsValid() ? baseItemLoad.OperationException : "Invalid handle")}");
-                yield break;
+                Log.Error($"Invalid item reference in group '{name}'");
             }
 
-            AssetAsyncReferenceManager<ItemDef>.UnloadAsset(BaseItemReference);
+            progressReceiver?.Report(1f);
+
+            void generateRuntimeAssets(ItemDef baseItem)
+            {
+                string baseItemName = baseItem.name;
+                Texture2D baseIconTexture = baseItem.pickupIconTexture as Texture2D;
+
+                ItemDef createItem(QualityTier qualityTier)
+                {
+                    QualityTierDef qualityTierDef = contentPack.qualityTierDefs.FirstOrDefault(qd => qd.qualityTier == qualityTier);
+                    if (!qualityTierDef)
+                    {
+                        Log.Error($"Failed to find quality tier def {qualityTier}");
+                    }
+
+                    ItemDef itemDef = ScriptableObject.CreateInstance<ItemDef>();
+                    itemDef.name = baseItemName + qualityTier;
+                    itemDef.descriptionToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
+                    itemDef.pickupToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
+                    itemDef.tags = new ItemTag[] { ItemTag.WorldUnique };
+                    itemDef.isConsumed = baseItem.isConsumed;
+                    itemDef.hidden = baseItem.hidden;
+                    itemDef.canRemove = baseItem.canRemove;
+
+                    if (baseIconTexture && qualityTierDef)
+                    {
+                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTierDef, baseItem.isConsumed);
+                        qualityIconTexture.name = $"tex{itemDef.name}";
+
+                        Sprite qualityIconSprite = Sprite.Create(qualityIconTexture, new Rect(0f, 0f, qualityIconTexture.width, qualityIconTexture.height), new Vector2(0.5f, 0.5f), qualityIconTexture.width / 5.12f);
+                        qualityIconSprite.name = $"tex{itemDef.name}";
+
+                        itemDef.pickupIconSprite = qualityIconSprite;
+                    }
+                    else
+                    {
+                        itemDef.pickupIconSprite = baseItem.pickupIconSprite;
+                    }
+
+#pragma warning disable CS0618 // Type or member is obsolete
+                    itemDef.deprecatedTier = baseItem.tier;
+                    itemDef._itemTierDef = baseItem._itemTierDef;
+#pragma warning restore CS0618 // Type or member is obsolete
+
+                    contentPack.itemDefs.Add(itemDef);
+
+                    return itemDef;
+                }
+
+                if (!_uncommonItem)
+                {
+                    _uncommonItem = createItem(QualityTier.Uncommon);
+                }
+
+                if (!_rareItem)
+                {
+                    _rareItem = createItem(QualityTier.Rare);
+                }
+
+                if (!_epicItem)
+                {
+                    _epicItem = createItem(QualityTier.Epic);
+                }
+
+                if (!_legendaryItem)
+                {
+                    _legendaryItem = createItem(QualityTier.Legendary);
+                }
+            }
         }
 
 #if UNITY_EDITOR

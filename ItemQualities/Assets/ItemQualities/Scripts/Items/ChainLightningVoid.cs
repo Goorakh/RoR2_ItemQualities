@@ -49,8 +49,10 @@ namespace ItemQualities.Items
 
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (!attackerInventory)
+                    return;
 
-                ItemQualityCounts chainLightningVoid = ItemQualitiesContent.ItemQualityGroups.ChainLightningVoid.GetItemCountsEffective(attackerInventory);
+                ItemQualityCounts chainLightningVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ChainLightningVoid);
                 if (chainLightningVoid.TotalQualityCount > 0)
                 {
                     float procCoefficientIncrease = (0.1f * chainLightningVoid.UncommonCount) +

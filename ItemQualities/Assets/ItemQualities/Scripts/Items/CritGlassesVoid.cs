@@ -1,5 +1,6 @@
 ﻿using HG;
 using ItemQualities.Orbs;
+using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 using RoR2.Orbs;
@@ -28,10 +29,10 @@ namespace ItemQualities.Items
                 return;
             }
 
-            if (!damageReport.attackerBody)
+            if (!damageReport.attackerBody || !damageReport.attackerBody.inventory)
                 return;
 
-            ItemQualityCounts critGlassesVoid = ItemQualitiesContent.ItemQualityGroups.CritGlassesVoid.GetItemCountsEffective(damageReport.attackerBody.inventory);
+            ItemQualityCounts critGlassesVoid = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.CritGlassesVoid);
             if (critGlassesVoid.TotalQualityCount <= 0)
                 return;
 

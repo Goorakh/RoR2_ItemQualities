@@ -38,16 +38,18 @@ namespace ItemQualities.Items
             static float getThornsDamage(float thornsDamage, DamageReport damageReport)
             {
                 Inventory victimInventory = damageReport?.victimBody ? damageReport.victimBody.inventory : null;
-
-                ItemQualityCounts thorns = ItemQualitiesContent.ItemQualityGroups.Thorns.GetItemCountsEffective(victimInventory);
-                if (thorns.TotalQualityCount > 0)
+                if (victimInventory)
                 {
-                    float returnDamageCoefficient = (0.10f * thorns.UncommonCount) +
-                                                    (0.15f * thorns.RareCount) +
-                                                    (0.20f * thorns.EpicCount) +
-                                                    (0.25f * thorns.LegendaryCount);
+                    ItemQualityCounts thorns = victimInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Thorns);
+                    if (thorns.TotalQualityCount > 0)
+                    {
+                        float returnDamageCoefficient = (0.10f * thorns.UncommonCount) +
+                                                        (0.15f * thorns.RareCount) +
+                                                        (0.20f * thorns.EpicCount) +
+                                                        (0.25f * thorns.LegendaryCount);
 
-                    thornsDamage += returnDamageCoefficient * damageReport.damageDealt;
+                        thornsDamage += returnDamageCoefficient * damageReport.damageDealt;
+                    }
                 }
 
                 return thornsDamage;

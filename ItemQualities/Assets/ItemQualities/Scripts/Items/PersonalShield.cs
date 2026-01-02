@@ -61,10 +61,10 @@ namespace ItemQualities.Items
                 return;
 
             CharacterBody body = interactor.GetComponent<CharacterBody>();
-            if (!body)
+            if (!body || !body.inventory)
                 return;
 
-            ItemQualityCounts personalShield = ItemQualitiesContent.ItemQualityGroups.PersonalShield.GetItemCountsEffective(body.inventory);
+            ItemQualityCounts personalShield = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PersonalShield);
             if (personalShield.TotalQualityCount <= 0)
                 return;
 

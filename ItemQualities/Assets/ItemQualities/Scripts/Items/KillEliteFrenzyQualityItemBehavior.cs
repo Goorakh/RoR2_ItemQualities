@@ -1,33 +1,22 @@
-﻿using RoR2;
-using UnityEngine;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class KillEliteFrenzyQualityItemBehavior : MonoBehaviour
+    public sealed class KillEliteFrenzyQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
-
-        void Awake()
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
         {
-            _body = GetComponent<CharacterBody>();
-        }
-
-        void OnEnable()
-        {
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-            }
+            return ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy;
         }
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.EnsureBuffQualities(_body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff);
             }
         }
 
@@ -35,18 +24,19 @@ namespace ItemQualities.Items
         {
             if (NetworkServer.active)
             {
-                if (!_body.HasBuff(RoR2Content.Buffs.NoCooldowns) &&
-                    ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffCounts(_body).TotalQualityCount > 0)
+                if (!Body.HasBuff(RoR2Content.Buffs.NoCooldowns) &&
+                    Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff).TotalQualityCount > 0)
                 {
-                    ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.EnsureBuffQualities(_body, QualityTier.None);
+                    Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff);
                 }
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.EnsureBuffQualities(_body, buffQualityTier);
+            base.OnStacksChanged();
+
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff, Stacks.HighestQuality);
         }
     }
 }

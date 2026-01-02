@@ -80,7 +80,7 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = _bodyAttachment ? _bodyAttachment.attachedBody : null;
 
-                BuffQualityCounts lanternBuffCounts = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(body);
+                BuffQualityCounts lanternBuffCounts = body ? body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff) : default;
                 if (lanternBuffCounts != _lastLanternBuffCounts)
                 {
                     updateBuffCounts();
@@ -110,10 +110,10 @@ namespace ItemQualities.Items
         void onCharacterDeathGlobal(DamageReport damageReport)
         {
             CharacterBody body = _bodyAttachment ? _bodyAttachment.attachedBody : null;
-            if (!body || damageReport.attackerBody != body)
+            if (!body || damageReport.attackerBody != body || !body.inventory)
                 return;
 
-            ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy.GetItemCountsEffective(body.inventory);
+            ItemQualityCounts attackSpeedPerNearbyAllyOrEnemy = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedPerNearbyAllyOrEnemy);
             if (attackSpeedPerNearbyAllyOrEnemy.TotalQualityCount > 0)
             {
                 QualityTier qualityTier = attackSpeedPerNearbyAllyOrEnemy.HighestQuality;
@@ -158,7 +158,13 @@ namespace ItemQualities.Items
                 _lanternCollider.ServerUpdateValuesFromInventory();
             }
 
-            _lastLanternBuffCounts = ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff.GetBuffCounts(_bodyAttachment.attachedBody);
+            BuffQualityCounts lanternBuffCounts = default;
+            if (_bodyAttachment.attachedBody)
+            {
+                lanternBuffCounts = _bodyAttachment.attachedBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff);
+            }
+
+            _lastLanternBuffCounts = lanternBuffCounts;
         }
 
         public bool HandleSetDiameter(float diameter)

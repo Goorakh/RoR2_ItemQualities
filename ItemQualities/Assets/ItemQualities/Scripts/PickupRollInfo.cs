@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities
 {
@@ -22,7 +23,10 @@ namespace ItemQualities
             ItemQualityCounts clover = default;
             if (master)
             {
-                clover = ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCountsEffective(master.inventory);
+                if (master.inventory)
+                {
+                    clover = master.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Clover);
+                }
             }
             else
             {
@@ -30,9 +34,9 @@ namespace ItemQualities
 
                 foreach (EnemyInfoPanelInventoryProvider enemyInventoryProvider in InstanceTracker.GetInstancesList<EnemyInfoPanelInventoryProvider>())
                 {
-                    if (enemyInventoryProvider.teamFilter && enemyInventoryProvider.teamFilter.teamIndex == teamAffiliation)
+                    if (enemyInventoryProvider.inventory && enemyInventoryProvider.teamFilter && enemyInventoryProvider.teamFilter.teamIndex == teamAffiliation)
                     {
-                        teamInventoryCloverCounts += ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCountsEffective(enemyInventoryProvider.inventory);
+                        teamInventoryCloverCounts += enemyInventoryProvider.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Clover);
                     }
                 }
 
@@ -40,7 +44,7 @@ namespace ItemQualities
 
                 foreach (CharacterMaster teammateMaster in CharacterMaster.readOnlyInstancesList)
                 {
-                    if (teammateMaster.teamIndex != teamAffiliation)
+                    if (teammateMaster.teamIndex != teamAffiliation || !teammateMaster.inventory)
                         continue;
 
                     if (isPlayer)
@@ -55,7 +59,7 @@ namespace ItemQualities
                             continue;
                     }
 
-                    clover += ItemQualitiesContent.ItemQualityGroups.Clover.GetItemCountsEffective(teammateMaster.inventory) - teamInventoryCloverCounts;
+                    clover += teammateMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Clover) - teamInventoryCloverCounts;
                 }
             }
 

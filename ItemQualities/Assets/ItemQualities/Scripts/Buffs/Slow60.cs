@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Buffs
@@ -13,7 +14,7 @@ namespace ItemQualities.Buffs
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            BuffQualityCounts slow60 = ItemQualitiesContent.BuffQualityGroups.Slow60.GetBuffCounts(sender);
+            BuffQualityCounts slow60 = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.Slow60);
 
             args.moveSpeedReductionMultAdd += (1 * slow60.UncommonCount) +
                                               (2 * slow60.RareCount) +

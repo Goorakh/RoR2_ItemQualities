@@ -1,6 +1,17 @@
-## ?.?.?
+## 0.6.0
+
+<details>
+<summary>Crowbar rework.</summary>
+
+* Old: Decrease damage increase threshold.
+* New: Builds up damage on stunned enemies, released when enemy regains control.
+</details>
 
 * Fixed Power Elixir quality effect not working properly.
+
+* Fixed Quality Ghor's Tome buffs staying after losing the item.
+
+* Fixed Networked Suffering crystals taking aggro from player allies.
 
 * Fixed some qualities not being sorted in logbook.
 

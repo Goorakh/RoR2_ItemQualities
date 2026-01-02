@@ -72,10 +72,10 @@ namespace ItemQualities.Items
 
             static void beforeGiveAntlerBuff(CharacterBody body)
             {
-                if (!body)
+                if (!body || !body.inventory)
                     return;
 
-                ItemQualityCounts speedBoostPickup = ItemQualitiesContent.ItemQualityGroups.SpeedBoostPickup.GetItemCountsEffective(body.inventory);
+                ItemQualityCounts speedBoostPickup = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SpeedBoostPickup);
                 if (speedBoostPickup.TotalQualityCount > 0 &&
                     body.GetBuffCount(DLC2Content.Buffs.ElusiveAntlersBuff) >= Mathf.Min(6, body.GetElusiveAntlersCurrentMaxStack()))
                 {

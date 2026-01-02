@@ -5,18 +5,17 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public sealed class MushroomVoidQualityItemBehavior : MonoBehaviour
+    public sealed class MushroomVoidQualityItemBehavior : QualityItemBodyBehavior
     {
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.MushroomVoid;
+        }
+
         public const float HealOrbSpawnInterval = 1f;
 
-        CharacterBody _body;
-
         float _healOrbSpawnTimer;
-
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
 
         void OnEnable()
         {
@@ -25,7 +24,7 @@ namespace ItemQualities.Items
 
         void FixedUpdate()
         {
-            if (_body.isSprinting)
+            if (Body.isSprinting)
             {
                 _healOrbSpawnTimer += Time.fixedDeltaTime;
                 if (_healOrbSpawnTimer >= HealOrbSpawnInterval)
@@ -42,12 +41,12 @@ namespace ItemQualities.Items
 
         IEnumerator spawnHealOrb()
         {
-            Vector3 spawnPosition = _body.corePosition;
+            Vector3 spawnPosition = Body.corePosition;
 
             const float SpawnDelay = 0.2f;
             yield return new WaitForSeconds(SpawnDelay);
 
-            ItemQualityCounts mushroomVoid = ItemQualitiesContent.ItemQualityGroups.MushroomVoid.GetItemCountsEffective(_body.inventory);
+            ItemQualityCounts mushroomVoid = Stacks;
             if (mushroomVoid.TotalQualityCount <= 0)
                 yield break;
 
@@ -58,7 +57,7 @@ namespace ItemQualities.Items
 
             float healPackSize = Mathf.Pow(healPackSizeBase, 0.25f);
 
-            float flatHealing = _body.maxHealth * ((0.01f * mushroomVoid.UncommonCount) +
+            float flatHealing = Body.maxHealth * ((0.01f * mushroomVoid.UncommonCount) +
                                                    (0.03f * mushroomVoid.RareCount) +
                                                    (0.05f * mushroomVoid.EpicCount) +
                                                    (0.10f * mushroomVoid.LegendaryCount));
@@ -70,7 +69,7 @@ namespace ItemQualities.Items
 
             if (healPackObj.TryGetComponent(out TeamFilter teamFilter))
             {
-                teamFilter.teamIndex = _body.teamComponent.teamIndex;
+                teamFilter.teamIndex = Body.teamComponent.teamIndex;
             }
 
             HealthPickup healthPickup = healPackObj.GetComponentInChildren<HealthPickup>(true);
@@ -91,9 +90,9 @@ namespace ItemQualities.Items
                 }
 
                 float estimatedTimeToLeavePickupRadius;
-                if (_body.moveSpeed > 0)
+                if (Body.moveSpeed > 0)
                 {
-                    estimatedTimeToLeavePickupRadius = (gravitateSize / _body.moveSpeed);
+                    estimatedTimeToLeavePickupRadius = (gravitateSize / Body.moveSpeed);
                 }
                 else
                 {

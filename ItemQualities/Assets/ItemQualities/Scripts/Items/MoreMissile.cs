@@ -21,10 +21,10 @@ namespace ItemQualities.Items
 
         static int rollAdditionalMissileCount(CharacterBody attackerBody, bool sureProc)
         {
-            if (!attackerBody)
+            if (!attackerBody || !attackerBody.inventory)
                 return 0;
 
-            ItemQualityCounts moreMissile = ItemQualitiesContent.ItemQualityGroups.MoreMissile.GetItemCountsEffective(attackerBody.inventory);
+            ItemQualityCounts moreMissile = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MoreMissile);
             if (moreMissile.TotalQualityCount <= 0)
                 return 0;
 

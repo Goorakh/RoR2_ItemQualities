@@ -1,4 +1,6 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using HG;
+using ItemQualities.Utilities.Extensions;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -18,6 +20,115 @@ namespace ItemQualities.Items
         static void CharacterMaster_TryCloverVoidUpgrades(ILContext il)
         {
             ILCursor c = new ILCursor(il);
+
+            int localsVar = -1;
+            FieldReference startingItemDefLocalsField = null;
+            if (c.Clone().TryGotoNext(MoveType.Before,
+                                      x => x.MatchLdloc(out localsVar),
+                                      x => x.MatchLdfld(out startingItemDefLocalsField) && startingItemDefLocalsField?.Name == "startingItemDef"))
+            {
+                int tier2DropListVarIndex = -1;
+                if (c.TryGotoNext(MoveType.After,
+                                  x => x.MatchLdfld<Run>(nameof(Run.availableTier2DropList)),
+                                  x => x.MatchNewobj<List<PickupIndex>>(),
+                                  x => x.MatchStloc(typeof(List<PickupIndex>), il, out tier2DropListVarIndex)))
+                {
+                    patchDropList(tier2DropListVarIndex, "tier2");
+                }
+                else
+                {
+                    Log.Error("Failed to find tier2 droplist variable");
+                }
+
+                c.Index = 0;
+
+                int tier3DropListVarIndex = -1;
+                if (c.TryGotoNext(MoveType.After,
+                                  x => x.MatchLdfld<Run>(nameof(Run.availableTier3DropList)),
+                                  x => x.MatchNewobj<List<PickupIndex>>(),
+                                  x => x.MatchStloc(typeof(List<PickupIndex>), il, out tier3DropListVarIndex)))
+                {
+                    patchDropList(tier3DropListVarIndex, "tier3");
+                }
+                else
+                {
+                    Log.Error("Failed to find tier3 droplist variable");
+                }
+
+                void patchDropList(int tierDropListVarIndex, string name)
+                {
+                    VariableDefinition tierDropListsByQualityVar = il.AddVariable<List<PickupIndex>[]>();
+
+                    c.Emit(OpCodes.Ldc_I4, (int)QualityTier.Count);
+                    c.Emit(OpCodes.Newarr, typeof(List<PickupIndex>));
+
+                    for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                    {
+                        c.Emit(OpCodes.Dup);
+                        c.Emit(OpCodes.Ldc_I4, (int)qualityTier);
+                        c.Emit(OpCodes.Ldloc, tierDropListVarIndex);
+                        c.Emit(OpCodes.Ldc_I4, (int)qualityTier);
+                        c.EmitDelegate<Func<List<PickupIndex>, QualityTier, List<PickupIndex>>>(getQualityPickupsList);
+                        c.Emit(OpCodes.Stelem_Ref);
+
+                        static List<PickupIndex> getQualityPickupsList(List<PickupIndex> pickupIndices, QualityTier qualityTier)
+                        {
+                            List<PickupIndex> qualityPickupIndices = new List<PickupIndex>(pickupIndices.Count);
+
+                            foreach (PickupIndex pickupIndex in pickupIndices)
+                            {
+                                PickupIndex qualityPickupIndex = QualityCatalog.GetPickupIndexOfQuality(pickupIndex, qualityTier);
+                                if (qualityPickupIndex.isValid && qualityPickupIndex != pickupIndex)
+                                {
+                                    qualityPickupIndices.Add(qualityPickupIndex);
+                                }
+                            }
+
+                            qualityPickupIndices.TrimExcess();
+                            return qualityPickupIndices;
+                        }
+                    }
+
+                    c.Emit(OpCodes.Stloc, tierDropListsByQualityVar);
+
+                    if (c.TryGotoNext(MoveType.After,
+                                      x => x.MatchLdloc(tierDropListVarIndex),
+                                      x => x.MatchStloc(typeof(List<PickupIndex>), il, out _)))
+                    {
+                        c.Index--;
+
+                        c.Emit(OpCodes.Ldloc, tierDropListsByQualityVar);
+
+                        c.Emit(OpCodes.Ldloc, localsVar);
+                        c.Emit(OpCodes.Ldfld, startingItemDefLocalsField);
+
+                        c.EmitDelegate<Func<List<PickupIndex>, List<PickupIndex>[], ItemDef, List<PickupIndex>>>(getAvailablePickupList);
+
+                        static List<PickupIndex> getAvailablePickupList(List<PickupIndex> availableDropList, List<PickupIndex>[] availableDropListsByQuality, ItemDef startingItemDef)
+                        {
+                            QualityTier startingQualityTier = QualityCatalog.GetQualityTier(startingItemDef ? startingItemDef.itemIndex : ItemIndex.None);
+
+                            List<PickupIndex> availableQualityDropList = null;
+                            if (availableDropListsByQuality != null)
+                            {
+                                availableQualityDropList = ArrayUtils.GetSafe(availableDropListsByQuality, (int)startingQualityTier);
+                            }
+
+                            return availableQualityDropList ?? availableDropList;
+                        }
+                    }
+                    else
+                    {
+                        Log.Error($"Failed to find {name} available transformations set location");
+                    }
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find locals variable");
+            }
+
+            c.Index = 0;
 
             int upgradableItemListVarIndex = -1;
             if (!c.TryFindNext(out _,
@@ -63,7 +174,7 @@ namespace ItemQualities.Items
                 if (!inventory)
                     return;
 
-                ItemQualityCounts cloverVoid = ItemQualitiesContent.ItemQualityGroups.CloverVoid.GetItemCountsEffective(inventory);
+                ItemQualityCounts cloverVoid = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.CloverVoid);
                 if (cloverVoid.TotalQualityCount <= 0)
                     return;
 

@@ -22,7 +22,7 @@ namespace ItemQualities.Items
         {
             if (attacker && attacker.inventory)
             {
-                ItemQualityCounts explodeOnDeath = ItemQualitiesContent.ItemQualityGroups.ExplodeOnDeath.GetItemCountsEffective(attacker.inventory);
+                ItemQualityCounts explodeOnDeath = attacker.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExplodeOnDeath);
                 if (explodeOnDeath.TotalQualityCount > 0)
                 {
                     float radiusIncrease = (0.10f * explodeOnDeath.UncommonCount) +

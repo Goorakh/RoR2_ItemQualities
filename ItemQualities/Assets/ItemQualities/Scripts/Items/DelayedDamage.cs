@@ -22,8 +22,6 @@ namespace ItemQualities.Items
 
             try
             {
-                int repeatProcsCount = 0;
-
                 CharacterBody victimBody = self ? self.body : null;
 
                 CharacterMaster victimMaster = null;
@@ -34,31 +32,34 @@ namespace ItemQualities.Items
                     victimInventory = victimBody.inventory;
                 }
 
-                ItemQualityCounts delayedDamage = ItemQualitiesContent.ItemQualityGroups.DelayedDamage.GetItemCountsEffective(victimInventory);
-
-                if (delayedDamage.TotalQualityCount > 0 &&
-                    !damageInfo.rejected &&
-                    damageInfo.delayedDamageSecondHalf &&
-                    !damageInfo.damageType.HasModdedDamageType(DamageTypes.ProcOnly))
-                {
-                    float repeatProcsChance = (10f * delayedDamage.UncommonCount) +
-                                              (30f * delayedDamage.RareCount) +
-                                              (50f * delayedDamage.EpicCount) +
-                                              (100f * delayedDamage.LegendaryCount);
-
-                    repeatProcsCount = RollUtil.GetOverflowRoll(repeatProcsChance, victimBody ? victimBody.master : null, false);
-                }
-
                 DamageInfo[] repeatDamageInfos = Array.Empty<DamageInfo>();
-                if (repeatProcsCount > 0)
+
+                if (victimInventory)
                 {
-                    repeatDamageInfos = new DamageInfo[repeatProcsCount];
-                    for (int i = 0; i < repeatDamageInfos.Length; i++)
+                    ItemQualityCounts delayedDamage = victimInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DelayedDamage);
+
+                    if (delayedDamage.TotalQualityCount > 0 &&
+                        !damageInfo.rejected &&
+                        damageInfo.delayedDamageSecondHalf &&
+                        !damageInfo.damageType.HasModdedDamageType(DamageTypes.ProcOnly))
                     {
-                        DamageInfo repeatDamageInfo = damageInfo.ShallowCopy();
-                        repeatDamageInfo.delayedDamageSecondHalf = true;
-                        repeatDamageInfo.firstHitOfDelayedDamageSecondHalf = false;
-                        repeatDamageInfos[i] = repeatDamageInfo;
+                        float repeatProcsChance = (10f * delayedDamage.UncommonCount) +
+                                                  (30f * delayedDamage.RareCount) +
+                                                  (50f * delayedDamage.EpicCount) +
+                                                  (100f * delayedDamage.LegendaryCount);
+
+                        int repeatProcsCount = RollUtil.GetOverflowRoll(repeatProcsChance, victimBody ? victimBody.master : null, false);
+                        if (repeatProcsCount > 0)
+                        {
+                            repeatDamageInfos = new DamageInfo[repeatProcsCount];
+                            for (int i = 0; i < repeatDamageInfos.Length; i++)
+                            {
+                                DamageInfo repeatDamageInfo = damageInfo.ShallowCopy();
+                                repeatDamageInfo.delayedDamageSecondHalf = true;
+                                repeatDamageInfo.firstHitOfDelayedDamageSecondHalf = false;
+                                repeatDamageInfos[i] = repeatDamageInfo;
+                            }
+                        }
                     }
                 }
 

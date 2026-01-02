@@ -57,9 +57,9 @@ namespace ItemQualities.Items
         {
             float radius = baseRadius;
             
-            if (attackerBody)
+            if (attackerBody && attackerBody.inventory)
             {
-                ItemQualityCounts meteorAttackOnHighDamage = ItemQualitiesContent.ItemQualityGroups.MeteorAttackOnHighDamage.GetItemCountsEffective(attackerBody.inventory);
+                ItemQualityCounts meteorAttackOnHighDamage = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MeteorAttackOnHighDamage);
 
                 if (meteorAttackOnHighDamage.TotalQualityCount > 0)
                 {

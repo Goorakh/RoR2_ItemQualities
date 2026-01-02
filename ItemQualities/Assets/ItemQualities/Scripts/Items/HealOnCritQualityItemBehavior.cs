@@ -1,48 +1,46 @@
 ﻿using RoR2;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public class HealOnCritQualityItemBehavior : MonoBehaviour
+    public sealed class HealOnCritQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.HealOnCrit;
+        }
 
         float _accumulatedHealing;
-
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
 
         void OnEnable()
         {
             HealthComponent.onCharacterHealServer += onCharacterHealServer;
-            _body.onInventoryChanged += onInventoryChanged;
         }
 
         void OnDisable()
         {
             HealthComponent.onCharacterHealServer -= onCharacterHealServer;
-            _body.onInventoryChanged -= onInventoryChanged;
         }
 
         void onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
         {
-            if (!healthComponent || healthComponent != _body.healthComponent)
+            if (!healthComponent || healthComponent != Body.healthComponent)
                 return;
 
             _accumulatedHealing += amount;
             updateAccumulatedHealing();
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
+            base.OnStacksChanged();
+
             updateAccumulatedHealing();
         }
 
         void updateAccumulatedHealing()
         {
-            ItemQualityCounts healOnCrit = ItemQualitiesContent.ItemQualityGroups.HealOnCrit.GetItemCountsEffective(_body.inventory);
+            ItemQualityCounts healOnCrit = Stacks;
             if (healOnCrit.TotalQualityCount == 0)
                 return;
 
@@ -67,7 +65,7 @@ namespace ItemQualities.Items
                     break;
             }
 
-            float healingThreshold = healingThresholdFraction * _body.healthComponent.fullHealth;
+            float healingThreshold = healingThresholdFraction * Body.healthComponent.fullHealth;
 
             if (healingThreshold > 0 && _accumulatedHealing >= healingThreshold)
             {
@@ -77,7 +75,7 @@ namespace ItemQualities.Items
                                      (10f * healOnCrit.LegendaryCount);
 
                 _accumulatedHealing %= healingThreshold;
-                _body.AddTimedBuff(ItemQualitiesContent.Buffs.HealCritBoost, buffDuration);
+                Body.AddTimedBuff(ItemQualitiesContent.Buffs.HealCritBoost, buffDuration);
             }
         }
     }

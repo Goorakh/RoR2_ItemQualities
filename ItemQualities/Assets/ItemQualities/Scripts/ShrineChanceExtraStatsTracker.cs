@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 
 namespace ItemQualities
@@ -55,7 +56,7 @@ namespace ItemQualities
                 CharacterMaster master = playerMaster ? playerMaster.master : null;
                 if (master && master.inventory)
                 {
-                    totalChanceDollCounts += ItemQualitiesContent.ItemQualityGroups.ExtraShrineItem.GetItemCountsEffective(master.inventory);
+                    totalChanceDollCounts += master.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExtraShrineItem);
                 }
             }
 

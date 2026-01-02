@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -20,14 +21,16 @@ namespace ItemQualities.Items
         static float getChronicExpansionBuffResetTime(float baseDuration, CharacterBody body)
         {
             Inventory inventory = body ? body.inventory : null;
-
-            ItemQualityCounts increaseDamageOnMultiKill = ItemQualitiesContent.ItemQualityGroups.IncreaseDamageOnMultiKill.GetItemCountsEffective(inventory);
-            if (increaseDamageOnMultiKill.TotalQualityCount > 0)
+            if (inventory)
             {
-                baseDuration += 1f * increaseDamageOnMultiKill.UncommonCount;
-                baseDuration += 3f * increaseDamageOnMultiKill.RareCount;
-                baseDuration += 5f * increaseDamageOnMultiKill.EpicCount;
-                baseDuration += 7f * increaseDamageOnMultiKill.LegendaryCount;
+                ItemQualityCounts increaseDamageOnMultiKill = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.IncreaseDamageOnMultiKill);
+                if (increaseDamageOnMultiKill.TotalQualityCount > 0)
+                {
+                    baseDuration += 1f * increaseDamageOnMultiKill.UncommonCount;
+                    baseDuration += 3f * increaseDamageOnMultiKill.RareCount;
+                    baseDuration += 5f * increaseDamageOnMultiKill.EpicCount;
+                    baseDuration += 7f * increaseDamageOnMultiKill.LegendaryCount;
+                }
             }
 
             return baseDuration;
@@ -96,8 +99,10 @@ namespace ItemQualities.Items
             static bool tryDoQualityBuffReset(CharacterBody body)
             {
                 Inventory inventory = body ? body.inventory : null;
+                if (!inventory)
+                    return false;
 
-                ItemQualityCounts increaseDamageOnMultiKill = ItemQualitiesContent.ItemQualityGroups.IncreaseDamageOnMultiKill.GetItemCountsEffective(inventory);
+                ItemQualityCounts increaseDamageOnMultiKill = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.IncreaseDamageOnMultiKill);
 
                 int maxStacksToRemove;
                 switch (increaseDamageOnMultiKill.HighestQuality)

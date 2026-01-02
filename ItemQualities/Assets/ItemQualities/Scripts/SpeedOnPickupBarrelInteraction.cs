@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -63,7 +64,12 @@ namespace ItemQualities
                     teamFilter.teamIndex = activatorBody ? activatorBody.teamComponent.teamIndex : TeamIndex.None;
                 }
 
-                ItemQualityCounts speedOnPickup = ItemQualitiesContent.ItemQualityGroups.SpeedOnPickup.GetItemCountsEffective(activatorInventory);
+                ItemQualityCounts speedOnPickup = default;
+                if (activatorInventory)
+                {
+                    speedOnPickup = activatorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SpeedOnPickup);
+                }
+
                 if (speedOnPickup.TotalQualityCount <= 0)
                     speedOnPickup.UncommonCount = 1;
 

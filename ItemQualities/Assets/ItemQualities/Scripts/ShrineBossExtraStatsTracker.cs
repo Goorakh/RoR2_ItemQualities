@@ -1,4 +1,5 @@
 ﻿using HG;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine;
 
@@ -56,7 +57,7 @@ namespace ItemQualities
                 CharacterMaster master = playerMaster ? playerMaster.master : null;
                 if (master && master.inventory)
                 {
-                    totalWarbondsCounts += ItemQualitiesContent.ItemQualityGroups.BarrageOnBoss.GetItemCountsEffective(master.inventory);
+                    totalWarbondsCounts += master.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BarrageOnBoss);
                 }
             }
 

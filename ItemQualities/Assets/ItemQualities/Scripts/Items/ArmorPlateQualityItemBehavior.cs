@@ -1,45 +1,30 @@
-﻿using RoR2;
-using UnityEngine;
+﻿using ItemQualities.Utilities.Extensions;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class ArmorPlateQualityItemBehavior : MonoBehaviour
+    public sealed class ArmorPlateQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
-
-        void Awake()
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
         {
-            _body = GetComponent<CharacterBody>();
-        }
-
-        void OnEnable()
-        {
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-            }
+            return ItemQualitiesContent.ItemQualityGroups.ArmorPlate;
         }
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(_body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup);
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.ArmorPlate.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup.EnsureBuffQualities(_body, buffQualityTier);
+            base.OnStacksChanged();
 
-            if (buffQualityTier > QualityTier.None)
-            {
-                ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff.EnsureBuffQualities(_body, buffQualityTier);
-            }
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuildup, Stacks.HighestQuality);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.ArmorPlateBuff, Stacks.HighestQuality);
         }
     }
 }
