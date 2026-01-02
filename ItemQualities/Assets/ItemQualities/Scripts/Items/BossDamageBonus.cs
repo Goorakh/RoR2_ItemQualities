@@ -18,6 +18,9 @@ namespace ItemQualities.Items
 
         private static void onCharacterDeathGlobal(DamageReport report)
         {
+            if(!report.attackerBody || !report.victimBody) {
+                return;
+            }
             if(report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker)) 
             {
                 ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(report.attackerBody.inventory);
