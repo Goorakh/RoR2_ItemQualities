@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public sealed class UtilitySkillMagazineQualityItemBehavior : MonoBehaviour
+    public sealed class UtilitySkillMagazineQualityItemBehavior : QualityItemBodyBehavior
     {
         static EffectIndex _restockEffectIndex = EffectIndex.Invalid;
 
@@ -17,19 +17,18 @@ namespace ItemQualities.Items
             }
         }
 
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Authority)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine;
+        }
 
         Run.FixedTimeStamp _lastUtilitySkillRechargeTime;
-
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
 
         void OnEnable()
         {
             GenericSkillHooks.OnSkillRechargeAuthority += onSkillRechargeAuthority;
-            _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
+            Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
 
             _lastUtilitySkillRechargeTime = Run.FixedTimeStamp.negativeInfinity;
         }
@@ -37,12 +36,12 @@ namespace ItemQualities.Items
         void OnDisable()
         {
             GenericSkillHooks.OnSkillRechargeAuthority -= onSkillRechargeAuthority;
-            _body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
+            Body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
         }
 
         void onSkillRechargeAuthority(GenericSkill skill)
         {
-            if (_body.skillLocator && skill && skill == _body.skillLocator.utility)
+            if (Body.skillLocator && skill && skill == Body.skillLocator.utility)
             {
                 _lastUtilitySkillRechargeTime = Run.FixedTimeStamp.now;
             }
@@ -50,9 +49,9 @@ namespace ItemQualities.Items
 
         void onSkillActivatedAuthority(GenericSkill skill)
         {
-            if (_body.inputBank.skill3.justPressed && _body.skillLocator && skill && skill == _body.skillLocator.utility)
+            if (Body.inputBank.skill3.justPressed && Body.skillLocator && skill && skill == Body.skillLocator.utility)
             {
-                ItemQualityCounts utilitySkillMagazine = ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine.GetItemCountsEffective(_body.inventory);
+                ItemQualityCounts utilitySkillMagazine = Stacks;
 
                 float cooldownRefundWindow = 0.1f;
                 float cooldownReductionWindow = cooldownRefundWindow + 0.2f;
@@ -65,7 +64,7 @@ namespace ItemQualities.Items
                     {
                         EffectManager.SpawnEffect(_restockEffectIndex, new EffectData
                         {
-                            origin = _body.corePosition
+                            origin = Body.corePosition
                         }, true);
                     }
                 }

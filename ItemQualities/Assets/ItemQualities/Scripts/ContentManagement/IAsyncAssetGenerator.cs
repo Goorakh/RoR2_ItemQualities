@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace ItemQualities.ContentManagement
 {
-    public interface IAsyncAssetGenerator
+    internal interface IAsyncAssetGenerator
     {
         IEnumerator GenerateAssetsAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver = null);
     }

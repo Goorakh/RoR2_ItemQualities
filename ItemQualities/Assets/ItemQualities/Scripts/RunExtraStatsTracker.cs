@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class RunExtraStatsTracker : NetworkBehaviour
+    public sealed class RunExtraStatsTracker : NetworkBehaviour
     {
         [SystemInitializer(typeof(GameModeCatalog))]
         static void Init()
@@ -19,7 +19,20 @@ namespace ItemQualities
             }
         }
 
+        static RunExtraStatsTracker _instance;
+        public static RunExtraStatsTracker Instance => _instance;
+
         [SyncVar]
         public int AmbientLevelPenalty;
+
+        void OnEnable()
+        {
+            SingletonHelper.Assign(ref _instance, this);
+        }
+
+        void OnDisable()
+        {
+            SingletonHelper.Unassign(ref _instance, this);
+        }
     }
 }

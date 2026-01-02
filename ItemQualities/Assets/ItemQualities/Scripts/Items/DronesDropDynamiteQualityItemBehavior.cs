@@ -1,28 +1,26 @@
 ﻿using RoR2;
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public sealed class DronesDropDynamiteQualityItemBehavior : MonoBehaviour
+    public sealed class DronesDropDynamiteQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite;
+        }
 
         readonly HashSet<MinionInfo> _trackedMinions = new HashSet<MinionInfo>();
-
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
 
         void OnEnable()
         {
             MinionOwnership.onMinionOwnerChangedGlobal += onMinionOwnerChangedGlobal;
 
-            if (_body.master)
+            if (Body.master)
             {
-                MinionOwnership.MinionGroup minionGroup = MinionOwnership.MinionGroup.FindGroup(_body.master.netId);
+                MinionOwnership.MinionGroup minionGroup = MinionOwnership.MinionGroup.FindGroup(Body.master.netId);
                 if (minionGroup != null)
                 {
                     _trackedMinions.EnsureCapacity(minionGroup.memberCount);
@@ -58,7 +56,7 @@ namespace ItemQualities.Items
         void onMinionOwnerChangedGlobal(MinionOwnership minionOwnership)
         {
             MinionInfo minionInfo = new MinionInfo(minionOwnership);
-            if (_body.master && minionOwnership.ownerMaster == _body.master)
+            if (Body.master && minionOwnership.ownerMaster == Body.master)
             {
                 if (_trackedMinions.Add(minionInfo))
                 {

@@ -239,7 +239,7 @@ namespace ItemQualities
 
                             Util.ShuffleSpan(avoidedItemQualityTakeOrder, context.rng);
 
-                            ItemQualityCounts avoidedItemCounts = avoidedItemGroup.GetItemCountsPermanent(inventory);
+                            ItemQualityCounts avoidedItemCounts = inventory.GetItemCountsPermanent(avoidedItemGroup);
                             foreach (QualityTier qualityTier in avoidedItemQualityTakeOrder)
                             {
                                 int itemCount = avoidedItemCounts[qualityTier];

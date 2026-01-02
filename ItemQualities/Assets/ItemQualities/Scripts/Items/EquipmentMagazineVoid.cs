@@ -1,4 +1,5 @@
-﻿using R2API;
+﻿using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -23,7 +24,7 @@ namespace ItemQualities.Items
             if (!attackerInventory)
                 return;
 
-            ItemQualityCounts equipmentMagazineVoid = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCountsEffective(attackerInventory);
+            ItemQualityCounts equipmentMagazineVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid);
             if (equipmentMagazineVoid.TotalQualityCount > 0)
             {
                 float damageIncrease = (0.1f * equipmentMagazineVoid.UncommonCount) +
@@ -44,7 +45,7 @@ namespace ItemQualities.Items
             if (!sender || !sender.inventory)
                 return;
 
-            ItemQualityCounts equipmentMagazineVoid = ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid.GetItemCountsEffective(sender.inventory);
+            ItemQualityCounts equipmentMagazineVoid = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid);
             if (equipmentMagazineVoid.TotalQualityCount > 0)
             {
                 float specialSkillCooldownScale;

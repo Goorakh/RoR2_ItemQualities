@@ -1,6 +1,6 @@
 ﻿namespace ItemQualities.ContentManagement
 {
-    public interface IContentLoadCallback
+    internal interface IContentLoadCallback
     {
         void OnContentLoad();
     }

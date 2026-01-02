@@ -1,6 +1,8 @@
-## ?.?.?
+## 0.6.0
 
 * Fixed Power Elixir quality effect not working properly.
+
+* Fixed Networked Suffering crystals taking aggro from player allies.
 
 * Fixed some qualities not being sorted in logbook.
 

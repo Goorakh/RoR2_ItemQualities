@@ -63,20 +63,22 @@ namespace ItemQualities.Items
             {
                 Inventory inventory = master ? master.inventory : null;
 
-                ItemQualityCounts freeChest = ItemQualitiesContent.ItemQualityGroups.FreeChest.GetItemCountsEffective(inventory);
-
                 int extraSpawnCount = 0;
 
-                if (freeChest.TotalQualityCount > 0)
+                if (inventory)
                 {
-                    float extraSpawnChance = (50f * freeChest.UncommonCount) +
-                                             (75f * freeChest.RareCount) +
-                                             (100f * freeChest.EpicCount) +
-                                             (150f * freeChest.LegendaryCount);
+                    ItemQualityCounts freeChest = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FreeChest);
+                    if (freeChest.TotalQualityCount > 0)
+                    {
+                        float extraSpawnChance = (50f * freeChest.UncommonCount) +
+                                                 (75f * freeChest.RareCount) +
+                                                 (100f * freeChest.EpicCount) +
+                                                 (150f * freeChest.LegendaryCount);
 
-                    extraSpawnCount += RollUtil.GetOverflowRoll(extraSpawnChance, master, false);
+                        extraSpawnCount += RollUtil.GetOverflowRoll(extraSpawnChance, master, false);
 
-                    Log.Debug($"Extra spawn count from {Util.GetBestMasterName(master)}: {extraSpawnCount}");
+                        Log.Debug($"Extra spawn count from {Util.GetBestMasterName(master)}: {extraSpawnCount}");
+                    }
                 }
 
                 return extraSpawnCount;

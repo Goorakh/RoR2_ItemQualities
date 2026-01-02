@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    public static class CollectionExtensions
+    internal static class CollectionExtensions
     {
         public static void EnsureCapacity<T>(this List<T> list, int capacity)
         {

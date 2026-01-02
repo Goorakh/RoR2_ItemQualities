@@ -1,10 +1,11 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class SprintOutOfCombatQualityItemBehavior : MonoBehaviour
+    public sealed class SprintOutOfCombatQualityItemBehavior : QualityItemBodyBehavior
     {
         static EffectIndex _whipActivateEffectIndex = EffectIndex.Invalid;
 
@@ -18,27 +19,16 @@ namespace ItemQualities.Items
             }
         }
 
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat;
+        }
 
         bool _providingBuff;
 
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
-
-        void OnEnable()
-        {
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-            }
-        }
-
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
-
             if (NetworkServer.active)
             {
                 setProvidingBuff(false);
@@ -53,10 +43,11 @@ namespace ItemQualities.Items
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.WhipBoost.EnsureBuffQualities(_body, buffQualityTier);
+            base.OnStacksChanged();
+
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.WhipBoost, Stacks.HighestQuality);
         }
 
         void setProvidingBuff(bool providingBuff)
@@ -67,29 +58,29 @@ namespace ItemQualities.Items
             _providingBuff = providingBuff;
             if (providingBuff)
             {
-                QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat.GetItemCountsEffective(_body.inventory).HighestQuality;
+                QualityTier buffQualityTier = Stacks.HighestQuality;
                 QualityTierDef buffQualityTierDef = QualityCatalog.GetQualityTierDef(buffQualityTier);
 
-                _body.AddBuff(ItemQualitiesContent.BuffQualityGroups.WhipBoost.GetBuffIndex(buffQualityTier));
+                Body.AddBuff(ItemQualitiesContent.BuffQualityGroups.WhipBoost.GetBuffIndex(buffQualityTier));
 
                 if (_whipActivateEffectIndex != EffectIndex.Invalid)
                 {
-                    Vector3 bodyForward = _body.transform.forward;
-                    if (_body.characterDirection)
+                    Vector3 bodyForward = Body.transform.forward;
+                    if (Body.characterDirection)
                     {
-                        if (_body.characterDirection.moveVector.sqrMagnitude > Mathf.Epsilon)
+                        if (Body.characterDirection.moveVector.sqrMagnitude > Mathf.Epsilon)
                         {
-                            bodyForward = _body.characterDirection.moveVector.normalized;
+                            bodyForward = Body.characterDirection.moveVector.normalized;
                         }
                         else
                         {
-                            bodyForward = _body.characterDirection.forward;
+                            bodyForward = Body.characterDirection.forward;
                         }
                     }
 
                     EffectData effectData = new EffectData
                     {
-                        origin = _body.corePosition,
+                        origin = Body.corePosition,
                         rotation = Util.QuaternionSafeLookRotation(bodyForward)
                     };
 
@@ -103,7 +94,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                ItemQualitiesContent.BuffQualityGroups.WhipBoost.EnsureBuffQualities(_body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.WhipBoost);
             }
         }
     }

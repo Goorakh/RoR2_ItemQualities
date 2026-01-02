@@ -106,7 +106,7 @@ namespace ItemQualities.Items
                 float largeFireworkChance = 0f;
                 if (ownerInventory)
                 {
-                    ItemQualityCounts firework = ItemQualitiesContent.ItemQualityGroups.Firework.GetItemCountsEffective(ownerInventory);
+                    ItemQualityCounts firework = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Firework);
 
                     largeFireworkChance = (10f * firework.UncommonCount) +
                                           (20f * firework.RareCount) +

@@ -88,11 +88,11 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.multiplayer-hlapi": {
-      "version": "https://github.com/risk-of-thunder/UnityMultiplayerHLAPI.git#1.1.1",
+      "version": "https://github.com/risk-of-thunder/UnityMultiplayerHLAPI.git#1.1.2",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "faf93100110c30bfeec46d5367928c18f73a6ce1"
+      "hash": "020f81839097b5508d8170ba35f867a30f6744c0"
     },
     "com.unity.performance.profile-analyzer": {
       "version": "1.2.2",
@@ -430,13 +430,13 @@
       "dependencies": {}
     },
     "riskofthunder-ror2editorkit": {
-      "version": "https://github.com/risk-of-thunder/RoR2EditorKit.git#5.6.1",
+      "version": "https://github.com/risk-of-thunder/RoR2EditorKit.git#5.6.5",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.editorcoroutines": "1.0.0"
       },
-      "hash": "da03258116d957acf2c825ee5b7af44d43e06a08"
+      "hash": "1397dc3a33bc0cbde5bcc443ab614e7f91abae51"
     },
     "riskofthunder-ror2importextensions": {
       "version": "https://github.com/risk-of-thunder/RoR2ImportExtensions.git#1.7.1",

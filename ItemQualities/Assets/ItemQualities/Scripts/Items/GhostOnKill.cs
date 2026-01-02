@@ -53,14 +53,16 @@ namespace ItemQualities.Items
             static float getGhostSpawnChance(float spawnChance, DamageReport damageReport)
             {
                 Inventory attackerInventory = damageReport?.attackerBody ? damageReport.attackerBody.inventory : null;
-
-                ItemQualityCounts ghostOnKill = ItemQualitiesContent.ItemQualityGroups.GhostOnKill.GetItemCountsEffective(attackerInventory);
-                if (ghostOnKill.TotalQualityCount > 0)
+                if (attackerInventory)
                 {
-                    spawnChance += (10f * ghostOnKill.UncommonCount) +
-                                   (20f * ghostOnKill.RareCount) +
-                                   (30f * ghostOnKill.EpicCount) +
-                                   (40f * ghostOnKill.LegendaryCount);
+                    ItemQualityCounts ghostOnKill = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.GhostOnKill);
+                    if (ghostOnKill.TotalQualityCount > 0)
+                    {
+                        spawnChance += (10f * ghostOnKill.UncommonCount) +
+                                       (20f * ghostOnKill.RareCount) +
+                                       (30f * ghostOnKill.EpicCount) +
+                                       (40f * ghostOnKill.LegendaryCount);
+                    }
                 }
 
                 return spawnChance;

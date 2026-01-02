@@ -1,17 +1,23 @@
-﻿using RoR2;
-using UnityEngine;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 
 namespace ItemQualities.Items
 {
-    public sealed class FeatherQualityItemBehavior : MonoBehaviour
+    public sealed class FeatherQualityItemBehavior : QualityItemBodyBehavior
     {
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.Feather;
+        }
+
         CharacterBodyExtraStatsTracker _bodyStats;
 
-        void Awake()
+        protected override void Awake()
         {
-            _body = GetComponent<CharacterBody>();
-            _bodyStats = GetComponent<CharacterBodyExtraStatsTracker>();
+            base.Awake();
+
+            _bodyStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
         void OnEnable()
@@ -28,10 +34,10 @@ namespace ItemQualities.Items
 
         void onCharacterDeathGlobal(DamageReport report)
         {
-            if (report.attackerBody != _body || (_body.characterMotor && _body.characterMotor.isGrounded))
+            if (report.attackerBody != Body || (Body.characterMotor && Body.characterMotor.isGrounded))
                 return;
 
-            ItemQualityCounts feather = ItemQualitiesContent.ItemQualityGroups.Feather.GetItemCountsEffective(_body.inventory);
+            ItemQualityCounts feather = Stacks;
 
             int maxJumps = (feather.UncommonCount * 2) +
                            (feather.RareCount * 4) +
@@ -46,7 +52,7 @@ namespace ItemQualities.Items
 
         void onHitGroundServer(CharacterMotor.HitGroundInfo info)
         {
-            _body.SetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps.buffIndex, 0);
+            Body.SetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps.buffIndex, 0);
         }
     }
 }

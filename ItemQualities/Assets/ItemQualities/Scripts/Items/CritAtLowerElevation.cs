@@ -68,7 +68,7 @@ namespace ItemQualities.Items
             if (!attackerInventory)
                 return;
 
-            ItemQualityCounts critAtLowerElevation = ItemQualitiesContent.ItemQualityGroups.CritAtLowerElevation.GetItemCountsEffective(attackerInventory);
+            ItemQualityCounts critAtLowerElevation = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.CritAtLowerElevation);
             if (critAtLowerElevation.TotalQualityCount == 0)
                 return;
 

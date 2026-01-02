@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    public static class ReflectionExtensions
+    internal static class ReflectionExtensions
     {
         public static bool IsSerialized(this FieldInfo field)
         {

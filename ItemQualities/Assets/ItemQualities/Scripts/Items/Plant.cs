@@ -79,18 +79,20 @@ namespace ItemQualities.Items
 
                     CharacterBody ownerObject = owner ? owner.GetComponent<CharacterBody>() : null;
                     Inventory ownerInventory = ownerObject ? ownerObject.inventory : null;
-
-                    ItemQualityCounts plant = ItemQualitiesContent.ItemQualityGroups.Plant.GetItemCountsEffective(ownerInventory);
-                    if (plant.TotalQualityCount > 0)
+                    if (ownerInventory)
                     {
-                        float healingRateIncrease = (0.15f * plant.UncommonCount) +
-                                                    (0.30f * plant.RareCount) +
-                                                    (0.60f * plant.EpicCount) +
-                                                    (1.00f * plant.LegendaryCount);
-
-                        if (healingRateIncrease > 0)
+                        ItemQualityCounts plant = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Plant);
+                        if (plant.TotalQualityCount > 0)
                         {
-                            healingWard.interval /= 1f + healingRateIncrease;
+                            float healingRateIncrease = (0.15f * plant.UncommonCount) +
+                                                        (0.30f * plant.RareCount) +
+                                                        (0.60f * plant.EpicCount) +
+                                                        (1.00f * plant.LegendaryCount);
+
+                            if (healingRateIncrease > 0)
+                            {
+                                healingWard.interval /= 1f + healingRateIncrease;
+                            }
                         }
                     }
                 }

@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -24,7 +25,7 @@ namespace ItemQualities
             {
                 if (other.TryGetComponent(out CharacterBody body) &&
                     body.master &&
-                    body.master.TryGetComponent(out CharacterMasterExtraStatsTracker masterExtraStats))
+                    body.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
                 {
                     body.OnPickup(CharacterBody.PickupClass.Minor);
 

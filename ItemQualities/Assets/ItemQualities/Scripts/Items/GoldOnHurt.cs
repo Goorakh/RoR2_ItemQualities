@@ -29,8 +29,10 @@ namespace ItemQualities.Items
 
             CharacterBody interactorBody = interactor ? interactor.GetComponent<CharacterBody>() : null;
             Inventory interactorInventory = interactorBody ? interactorBody.inventory : null;
+            if (!interactorInventory)
+                return;
 
-            ItemQualityCounts goldOnHurt = ItemQualitiesContent.ItemQualityGroups.GoldOnHurt.GetItemCountsEffective(interactorInventory);
+            ItemQualityCounts goldOnHurt = interactorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt);
             if (goldOnHurt.TotalQualityCount > 0)
             {
                 if (interactable is BarrelInteraction barrelInteraction)

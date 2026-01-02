@@ -1,4 +1,5 @@
 ﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 
@@ -46,8 +47,10 @@ namespace ItemQualities.Items
 
             CharacterMaster attackerMaster = damageReport.attackerMaster;
             Inventory attackerInventory = attackerMaster ? attackerMaster.inventory : null;
+            if (!attackerInventory)
+                return;
 
-            ItemQualityCounts stunChanceOnHit = ItemQualitiesContent.ItemQualityGroups.StunChanceOnHit.GetItemCountsEffective(attackerInventory);
+            ItemQualityCounts stunChanceOnHit = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.StunChanceOnHit);
 
             if (stunChanceOnHit.TotalQualityCount <= 0)
                 return;

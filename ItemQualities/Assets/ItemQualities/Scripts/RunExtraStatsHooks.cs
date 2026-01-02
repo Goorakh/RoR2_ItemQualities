@@ -31,9 +31,9 @@ namespace ItemQualities
 
             static float getAmbientLevel(float ambientLevel, Run run)
             {
-                if (run && run.TryGetComponent(out RunExtraStatsTracker runExtraStats))
+                if (RunExtraStatsTracker.Instance)
                 {
-                    ambientLevel = Mathf.Max(1f, ambientLevel - runExtraStats.AmbientLevelPenalty);
+                    ambientLevel = Mathf.Max(1f, ambientLevel - RunExtraStatsTracker.Instance.AmbientLevelPenalty);
                 }
 
                 return ambientLevel;

@@ -1,4 +1,5 @@
 ﻿using ItemQualities.Orbs;
+using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 using RoR2.Orbs;
@@ -36,7 +37,7 @@ namespace ItemQualities.Items
                 ItemQualityCounts flatHealth = default;
                 if (inventory)
                 {
-                    flatHealth = ItemQualitiesContent.ItemQualityGroups.FlatHealth.GetItemCountsEffective(inventory);
+                    flatHealth = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FlatHealth);
                 }
 
                 if (flatHealth.TotalQualityCount > 0)
@@ -69,12 +70,12 @@ namespace ItemQualities.Items
             ItemQualityCounts flatHealth = default;
             if (inventory)
             {
-                flatHealth = ItemQualitiesContent.ItemQualityGroups.FlatHealth.GetItemCountsEffective(inventory);
+                flatHealth = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FlatHealth);
             }
 
             if (flatHealth.TotalQualityCount > 0)
             {
-                if (master && master.TryGetComponent(out CharacterMasterExtraStatsTracker masterExtraStatsTracker))
+                if (master && master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStatsTracker))
                 {
                     args.baseHealthAdd += masterExtraStatsTracker.SteakBonus;
                 }

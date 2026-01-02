@@ -1,36 +1,21 @@
 ﻿using RoR2;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public sealed class DuplicatorQualityItemBehavior : MonoBehaviour
+    public sealed class DuplicatorQualityItemBehavior : QualityItemBodyBehavior
     {
-        NetworkIdentity _netIdentity;
-
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.Duplicator;
+        }
 
         GameObject _attachmentInstance;
 
-        void Awake()
-        {
-            _netIdentity = GetComponent<NetworkIdentity>();
-            _body = GetComponent<CharacterBody>();
-        }
-
         void OnEnable()
         {
-            trySpawnAttachment();
-        }
-
-        void Start()
-        {
-            trySpawnAttachment();
-        }
-
-        void trySpawnAttachment()
-        {
-            if (!_attachmentInstance && !_netIdentity.netId.IsEmpty() && _body.master && !_body.master.minionOwnership.ownerMaster)
+            if (!Body.master || !Body.master.minionOwnership.ownerMaster)
             {
                 _attachmentInstance = Instantiate(ItemQualitiesContent.NetworkedPrefabs.DuplicatorQualityAttachment);
                 _attachmentInstance.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(gameObject);

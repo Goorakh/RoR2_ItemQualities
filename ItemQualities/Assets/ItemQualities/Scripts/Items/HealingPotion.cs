@@ -52,8 +52,10 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = healthComponent ? healthComponent.body : null;
                 Inventory inventory = body ? body.inventory : null;
+                if (!inventory)
+                    return;
 
-                ItemQualityCounts elixir = ItemQualitiesContent.ItemQualityGroups.HealingPotion.GetItemCountsEffective(inventory);
+                ItemQualityCounts elixir = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.HealingPotion);
 
                 if (elixir.BaseItemCount == 0 && elixir.TotalQualityCount > 0)
                 {
@@ -74,8 +76,10 @@ namespace ItemQualities.Items
                 CharacterBody body = healthComponent ? healthComponent.body : null;
                 CharacterMaster master = body ? body.master : null;
                 Inventory inventory = body ? body.inventory : null;
+                if (!inventory)
+                    return false;
 
-                ItemQualityCounts elixir = ItemQualitiesContent.ItemQualityGroups.HealingPotion.GetItemCountsEffective(inventory);
+                ItemQualityCounts elixir = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.HealingPotion);
 
                 for (int i = 0; i < elixir.UncommonCount; i++)
                 {

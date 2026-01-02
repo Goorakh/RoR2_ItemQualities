@@ -1,4 +1,5 @@
 ﻿using HG;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -35,6 +36,13 @@ namespace ItemQualities
         void Awake()
         {
             _master = GetComponent<CharacterMaster>();
+
+            ComponentCache.Add(gameObject, this);
+        }
+
+        void OnDestroy()
+        {
+            ComponentCache.Remove(gameObject, this);
         }
 
         void OnEnable()
@@ -58,7 +66,7 @@ namespace ItemQualities
 
         void refreshBodyStatsComponentReference(GameObject bodyObject)
         {
-            _bodyExtraStatsComponent = bodyObject ? bodyObject.GetComponent<CharacterBodyExtraStatsTracker>() : null;
+            _bodyExtraStatsComponent = bodyObject ? bodyObject.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
         }
 
         void onServerStageBegin(Stage stage)

@@ -1,40 +1,23 @@
 ﻿using RoR2;
+using RoR2.Items;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public sealed class DronesDropDynamiteDroneItemQualityItemBehavior : MonoBehaviour
+    public sealed class DronesDropDynamiteDroneItemQualityItemBehavior : BaseItemBodyBehavior
     {
-        NetworkIdentity _netIdentity;
-
-        CharacterBody _body;
+        [ItemDefAssociation(useOnServer = true)]
+        static ItemDef GetItemDef()
+        {
+            return ItemQualitiesContent.Items.DronesDropDynamiteQualityDroneItem;
+        }
 
         GameObject _attachmentInstance;
 
-        void Awake()
-        {
-            _netIdentity = GetComponent<NetworkIdentity>();
-            _body = GetComponent<CharacterBody>();
-        }
-
         void OnEnable()
         {
-            trySpawnAttachment();
-        }
-
-        void Start()
-        {
-            trySpawnAttachment();
-        }
-
-        void trySpawnAttachment()
-        {
-            if (!_attachmentInstance && !_netIdentity.netId.IsEmpty())
-            {
-                _attachmentInstance = Instantiate(ItemQualitiesContent.NetworkedPrefabs.DroneShootableAttachment);
-                _attachmentInstance.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(gameObject);
-            }
+            _attachmentInstance = Instantiate(ItemQualitiesContent.NetworkedPrefabs.DroneShootableAttachment);
+            _attachmentInstance.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(gameObject);
         }
 
         void OnDisable()

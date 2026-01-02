@@ -72,7 +72,7 @@ namespace ItemQualities.Items
             sharedSufferingOrbBody.bodyFlags &= ~CharacterBody.BodyFlags.Ungrabbable;
 
             TeamComponent teamComponent = sharedSufferingOrbBodyPrefab.GetComponent<TeamComponent>();
-            teamComponent.teamIndex = TeamIndex.Monster;
+            teamComponent.teamIndex = TeamIndex.Neutral;
 
             NonSkillDamageModifier nonSkillDamageModifier = sharedSufferingOrbBodyPrefab.EnsureComponent<NonSkillDamageModifier>();
             nonSkillDamageModifier._damageCoeficient = 0f;
@@ -246,7 +246,7 @@ namespace ItemQualities.Items
             if (!damageReport.attackerBody || !damageReport.attackerBody.inventory)
                 return;
             
-            ItemQualityCounts sharedSuffering = ItemQualitiesContent.ItemQualityGroups.SharedSuffering.GetItemCountsEffective(damageReport.attackerBody.inventory);
+            ItemQualityCounts sharedSuffering = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SharedSuffering);
             if (sharedSuffering.TotalQualityCount > 0)
             {
                 float spawnChance;

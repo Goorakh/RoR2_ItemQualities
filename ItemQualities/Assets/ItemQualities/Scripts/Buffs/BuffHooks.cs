@@ -28,10 +28,10 @@ namespace ItemQualities.Buffs
             {
                 if (body)
                 {
-                    BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(QualityCatalog.FindBuffQualityGroupIndex(buffIndex));
-                    if (buffGroup)
+                    BuffQualityGroupIndex buffGroupIndex = QualityCatalog.FindBuffQualityGroupIndex(buffIndex);
+                    if (buffGroupIndex != BuffQualityGroupIndex.Invalid)
                     {
-                        buffCount = buffGroup.GetBuffCounts(body).TotalCount;
+                        buffCount = body.GetBuffCounts(buffGroupIndex).TotalCount;
                     }
                 }
 

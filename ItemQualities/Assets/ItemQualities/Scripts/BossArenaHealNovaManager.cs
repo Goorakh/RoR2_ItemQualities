@@ -1,4 +1,5 @@
 ﻿using ItemQualities.ModCompatibility;
+using ItemQualities.Utilities;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -78,7 +79,7 @@ namespace ItemQualities
             {
                 for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
                 {
-                    ItemQualityCounts tpHealingNova = ItemQualitiesContent.ItemQualityGroups.TPHealingNova.GetTeamItemCounts(teamIndex, false);
+                    ItemQualityCounts tpHealingNova = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.TPHealingNova, teamIndex, true);
 
                     bool novaSpawnerActive = tpHealingNova.TotalQualityCount > 0;
 

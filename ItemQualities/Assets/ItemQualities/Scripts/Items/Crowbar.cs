@@ -1,5 +1,6 @@
 ﻿using EntityStates;
 using EntityStates.Vehicles;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
@@ -55,7 +56,7 @@ namespace ItemQualities.Items
         {
             DelayedHitHandler delayedHitHandler = report.victimBody.GetComponent<DelayedHitHandler>();
             CharacterBody attackerbody = report.attackerBody;
-            if (!attackerbody)
+            if (!attackerbody || !attackerbody.inventory)
             {
                 return;
             }
@@ -73,7 +74,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ItemQualityCounts crowbar = ItemQualitiesContent.ItemQualityGroups.Crowbar.GetItemCountsEffective(attackerbody.inventory);
+            ItemQualityCounts crowbar = attackerbody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Crowbar);
             float multiplier =  crowbar.UncommonCount * 0.15f +
                                 crowbar.RareCount * 0.3f +
                                 crowbar.EpicCount * 0.45f +

@@ -1,10 +1,11 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public sealed class FragileDamageBonusQualityItemBehavior : MonoBehaviour
+    public sealed class FragileDamageBonusQualityItemBehavior : QualityItemBodyBehavior
     {
         static EffectIndex _watchBreakEffectIndex = EffectIndex.Invalid;
 
@@ -18,29 +19,22 @@ namespace ItemQualities.Items
             }
         }
 
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus;
+        }
+
         CharacterBodyExtraStatsTracker _bodyExtraStats;
 
         bool _buffCountsDirty;
 
         int _maxHits;
 
-        void Awake()
+        protected override void Awake()
         {
-            _body = GetComponent<CharacterBody>();
-            _bodyExtraStats = GetComponent<CharacterBodyExtraStatsTracker>();
-        }
-
-        void OnEnable()
-        {
-            if (NetworkServer.active)
-            {
-                _body.onInventoryChanged += onInventoryChanged;
-                _bodyExtraStats.OnIncomingDamageServer += onIncomingDamageServer;
-
-                onInventoryChanged();
-                refreshBuffCounts();
-            }
+            base.Awake();
+            _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
         void Start()
@@ -48,14 +42,20 @@ namespace ItemQualities.Items
             refreshBuffCounts();
         }
 
+        void OnEnable()
+        {
+            _bodyExtraStats.OnIncomingDamageServer += onIncomingDamageServer;
+
+            refreshBuffCounts();
+        }
+
         void OnDisable()
         {
-            _body.onInventoryChanged -= onInventoryChanged;
             _bodyExtraStats.OnIncomingDamageServer -= onIncomingDamageServer;
 
             if (NetworkServer.active)
             {
-                ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.EnsureBuffQualities(_body, QualityTier.None);
+                Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff);
             }
         }
 
@@ -76,12 +76,13 @@ namespace ItemQualities.Items
             }
         }
 
-        void onInventoryChanged()
+        protected override void OnStacksChanged()
         {
+            base.OnStacksChanged();
+
             ensureBuffQualities();
 
-            QualityTier qualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).HighestQuality;
-            switch (qualityTier)
+            switch (Stacks.HighestQuality)
             {
                 case QualityTier.Uncommon:
                     _maxHits = 10;
@@ -105,15 +106,14 @@ namespace ItemQualities.Items
 
         void ensureBuffQualities()
         {
-            QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).HighestQuality;
-            ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.EnsureBuffQualities(_body, buffQualityTier);
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff, Stacks.HighestQuality);
         }
 
         void refreshBuffCounts()
         {
             int hitsTaken = _bodyExtraStats.MasterExtraStatsTracker ? _bodyExtraStats.MasterExtraStatsTracker.StageDamageInstancesTakenCount : 0;
 
-            int currentBuffCount = ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.GetBuffCounts(_body).TotalQualityCount;
+            int currentBuffCount = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff).TotalQualityCount;
             int targetBuffCount = Mathf.Max(0, _maxHits - hitsTaken);
 
             int buffCountDiff = targetBuffCount - currentBuffCount;
@@ -121,21 +121,20 @@ namespace ItemQualities.Items
             {
                 ensureBuffQualities();
 
-                QualityTier buffQualityTier = ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus.GetItemCountsEffective(_body.inventory).HighestQuality;
-                BuffIndex buffIndex = ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.GetBuffIndex(buffQualityTier);
+                BuffIndex buffIndex = ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff.GetBuffIndex(Stacks.HighestQuality);
 
                 if (buffCountDiff > 0)
                 {
                     for (int i = 0; i < buffCountDiff; i++)
                     {
-                        _body.AddBuff(buffIndex);
+                        Body.AddBuff(buffIndex);
                     }
                 }
                 else
                 {
                     for (int i = 0; i < -buffCountDiff; i++)
                     {
-                        _body.RemoveBuff(buffIndex);
+                        Body.RemoveBuff(buffIndex);
                     }
                 }
 
@@ -145,10 +144,10 @@ namespace ItemQualities.Items
                     {
                         EffectData effectData = new EffectData
                         {
-                            origin = _body.corePosition
+                            origin = Body.corePosition
                         };
 
-                        effectData.SetNetworkedObjectReference(_body.gameObject);
+                        effectData.SetNetworkedObjectReference(Body.gameObject);
 
                         EffectManager.SpawnEffect(_watchBreakEffectIndex, effectData, true);
                     }

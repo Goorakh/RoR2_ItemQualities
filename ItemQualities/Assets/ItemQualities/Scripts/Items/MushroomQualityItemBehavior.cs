@@ -19,7 +19,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    public sealed class MushroomQualityItemBehavior : MonoBehaviour
+    public sealed class MushroomQualityItemBehavior : QualityItemBodyBehavior
     {
         static DeployableSlot _mushroomBubbleDeployableSlot = DeployableSlot.None;
 
@@ -122,31 +122,30 @@ namespace ItemQualities.Items
             args.ContentPack.networkedObjectPrefabs.Add(_bubbleShieldPrefab);
         }
 
-        CharacterBody _body;
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.Mushroom;
+        }
 
         MushroomBubbleController _shieldInstance;
-
-        void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
 
         void FixedUpdate()
         {
             if (!NetworkServer.active)
                 return;
 
-            if (_body && _body.notMovingStopwatch >= 0.25f && _body.healthComponent && _body.healthComponent.alive)
+            if (Body && Body.notMovingStopwatch >= 0.25f && Body.healthComponent && Body.healthComponent.alive)
             {
                 if (!_shieldInstance)
                 {
                     GameObject shieldObj = Instantiate(_bubbleShieldPrefab, transform.position, Quaternion.identity);
                     shieldObj.GetComponent<GenericOwnership>().ownerObject = gameObject;
 
-                    if (_body.master)
+                    if (Body.master)
                     {
                         Deployable deployable = shieldObj.GetComponent<Deployable>();
-                        _body.master.AddDeployable(deployable, _mushroomBubbleDeployableSlot);
+                        Body.master.AddDeployable(deployable, _mushroomBubbleDeployableSlot);
                     }
 
                     _shieldInstance = shieldObj.GetComponent<MushroomBubbleController>();

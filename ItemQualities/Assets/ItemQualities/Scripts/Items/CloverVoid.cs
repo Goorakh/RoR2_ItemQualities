@@ -63,7 +63,7 @@ namespace ItemQualities.Items
                 if (!inventory)
                     return;
 
-                ItemQualityCounts cloverVoid = ItemQualitiesContent.ItemQualityGroups.CloverVoid.GetItemCountsEffective(inventory);
+                ItemQualityCounts cloverVoid = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.CloverVoid);
                 if (cloverVoid.TotalQualityCount <= 0)
                     return;
 

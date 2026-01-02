@@ -64,27 +64,29 @@ namespace ItemQualities.Items
             {
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                ItemQualityCounts elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCountsEffective(attackerInventory);
-                if (elementalRingVoid.TotalQualityCount > 0)
+                if (attackerInventory)
                 {
-                    switch (elementalRingVoid.HighestQuality)
+                    ItemQualityCounts elementalRingVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid);
+                    if (elementalRingVoid.TotalQualityCount > 0)
                     {
-                        case QualityTier.Uncommon:
-                            cooldown = Mathf.Min(cooldown, 18f);
-                            break;
-                        case QualityTier.Rare:
-                            cooldown = Mathf.Min(cooldown, 15f);
-                            break;
-                        case QualityTier.Epic:
-                            cooldown = Mathf.Min(cooldown, 12f);
-                            break;
-                        case QualityTier.Legendary:
-                            cooldown = Mathf.Min(cooldown, 10f);
-                            break;
-                        default:
-                            Log.Error($"Quality tier {elementalRingVoid.HighestQuality} is not implemented");
-                            break;
+                        switch (elementalRingVoid.HighestQuality)
+                        {
+                            case QualityTier.Uncommon:
+                                cooldown = Mathf.Min(cooldown, 18f);
+                                break;
+                            case QualityTier.Rare:
+                                cooldown = Mathf.Min(cooldown, 15f);
+                                break;
+                            case QualityTier.Epic:
+                                cooldown = Mathf.Min(cooldown, 12f);
+                                break;
+                            case QualityTier.Legendary:
+                                cooldown = Mathf.Min(cooldown, 10f);
+                                break;
+                            default:
+                                Log.Error($"Quality tier {elementalRingVoid.HighestQuality} is not implemented");
+                                break;
+                        }
                     }
                 }
 
@@ -100,14 +102,16 @@ namespace ItemQualities.Items
             {
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                ItemQualityCounts elementalRingVoid = ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid.GetItemCountsEffective(attackerInventory);
-                if (elementalRingVoid.TotalQualityCount > 0)
+                if (attackerInventory)
                 {
-                    damageCoefficient += 2f + (3f * elementalRingVoid.UncommonCount) +
-                                              (4f * elementalRingVoid.RareCount) +
-                                              (5f * elementalRingVoid.EpicCount) +
-                                              (6f * elementalRingVoid.LegendaryCount);
+                    ItemQualityCounts elementalRingVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid);
+                    if (elementalRingVoid.TotalQualityCount > 0)
+                    {
+                        damageCoefficient += 2f + (3f * elementalRingVoid.UncommonCount) +
+                                                  (4f * elementalRingVoid.RareCount) +
+                                                  (5f * elementalRingVoid.EpicCount) +
+                                                  (6f * elementalRingVoid.LegendaryCount);
+                    }
                 }
 
                 return damageCoefficient;

@@ -50,8 +50,10 @@ namespace ItemQualities.Items
 
                 CharacterBody interactorBody = interactor ? interactor.GetComponent<CharacterBody>() : null;
                 Inventory interactorInventory = interactorBody ? interactorBody.inventory : null;
+                if (!interactorInventory)
+                    return;
 
-                ItemQualityCounts squid = ItemQualitiesContent.ItemQualityGroups.Squid.GetItemCountsEffective(interactorInventory);
+                ItemQualityCounts squid = interactorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Squid);
                 if (squid.TotalQualityCount > 0)
                 {
                     directorSpawnRequest.onSpawnedServer += (SpawnCard.SpawnResult result) =>

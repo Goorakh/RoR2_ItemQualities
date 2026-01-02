@@ -44,25 +44,27 @@ namespace ItemQualities.Items
             {
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                ItemQualityCounts missileVoid = ItemQualitiesContent.ItemQualityGroups.MissileVoid.GetItemCountsEffective(attackerInventory);
-                if (missileVoid.TotalQualityCount > 0)
+                if (attackerInventory)
                 {
-                    float maxDamageCoefficient = (1f * missileVoid.UncommonCount) +
-                                                 (2f * missileVoid.RareCount) +
-                                                 (3f * missileVoid.EpicCount) +
-                                                 (5f * missileVoid.LegendaryCount);
-
-                    float shieldFraction = 0f;
-                    if (attackerBody && attackerBody.healthComponent)
+                    ItemQualityCounts missileVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MissileVoid);
+                    if (missileVoid.TotalQualityCount > 0)
                     {
-                        shieldFraction = attackerBody.healthComponent.shield / attackerBody.healthComponent.fullCombinedHealth;
-                    }
+                        float maxDamageCoefficient = (1f * missileVoid.UncommonCount) +
+                                                     (2f * missileVoid.RareCount) +
+                                                     (3f * missileVoid.EpicCount) +
+                                                     (5f * missileVoid.LegendaryCount);
 
-                    float damageCoefficient = shieldFraction * maxDamageCoefficient;
-                    if (damageCoefficient > 0)
-                    {
-                        damageValue += Util.OnHitProcDamage(damageInfo.damage, attackerBody.damage, damageCoefficient);
+                        float shieldFraction = 0f;
+                        if (attackerBody && attackerBody.healthComponent)
+                        {
+                            shieldFraction = attackerBody.healthComponent.shield / attackerBody.healthComponent.fullCombinedHealth;
+                        }
+
+                        float damageCoefficient = shieldFraction * maxDamageCoefficient;
+                        if (damageCoefficient > 0)
+                        {
+                            damageValue += Util.OnHitProcDamage(damageInfo.damage, attackerBody.damage, damageCoefficient);
+                        }
                     }
                 }
 

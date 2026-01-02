@@ -52,54 +52,56 @@ namespace ItemQualities.Items
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
                 TeamIndex attackerTeam = TeamComponent.GetObjectTeam(attacker);
 
-                ItemQualityCounts nearbyDamageBonus = ItemQualitiesContent.ItemQualityGroups.NearbyDamageBonus.GetItemCountsEffective(attackerInventory);
-
-                if (nearbyDamageBonus.TotalCount > nearbyDamageBonus.BaseItemCount)
+                if (attackerInventory)
                 {
-                    SphereSearch targetSearch = new SphereSearch()
+                    ItemQualityCounts nearbyDamageBonus = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NearbyDamageBonus);
+                    if (nearbyDamageBonus.TotalQualityCount > 0)
                     {
-                        origin = attackerBody.corePosition,
-                        radius = 13f,
-                        queryTriggerInteraction = QueryTriggerInteraction.Ignore,
-                        mask = LayerIndex.entityPrecise.mask
-                    };
-
-                    targetSearch.RefreshCandidates();
-
-                    TeamMask enemyTeams = TeamMask.all;
-                    if (attackerTeam != TeamIndex.None)
-                    {
-                        enemyTeams = TeamMask.GetEnemyTeams(attackerTeam);
-                    }
-
-                    targetSearch.FilterCandidatesByHurtBoxTeam(enemyTeams);
-                    targetSearch.FilterCandidatesByDistinctHurtBoxEntities();
-
-                    int enemiesInRange = 0;
-
-                    foreach (HurtBox hurtBox in targetSearch.GetHurtBoxes())
-                    {
-                        HealthComponent enemyHealthComponent = hurtBox ? hurtBox.healthComponent : null;
-                        if (!enemyHealthComponent || !enemyHealthComponent.alive)
-                            continue;
-
-                        if (enemyHealthComponent.gameObject == attacker)
-                            continue;
-
-                        enemiesInRange++;
-                    }
-
-                    if (enemiesInRange == 1)
-                    {
-                        float damageBonus = (0.05f * nearbyDamageBonus.UncommonCount) +
-                                            (0.15f * nearbyDamageBonus.RareCount) +
-                                            (0.35f * nearbyDamageBonus.EpicCount) +
-                                            (0.50f * nearbyDamageBonus.LegendaryCount);
-
-                        if (damageBonus > 0)
+                        SphereSearch targetSearch = new SphereSearch()
                         {
-                            damagePerFocusCrystal += damageBonus;
-                            damageInfo.damageColorIndex = _nearbyBoostedColorIndex;
+                            origin = attackerBody.corePosition,
+                            radius = 13f,
+                            queryTriggerInteraction = QueryTriggerInteraction.Ignore,
+                            mask = LayerIndex.entityPrecise.mask
+                        };
+
+                        targetSearch.RefreshCandidates();
+
+                        TeamMask enemyTeams = TeamMask.all;
+                        if (attackerTeam != TeamIndex.None)
+                        {
+                            enemyTeams = TeamMask.GetEnemyTeams(attackerTeam);
+                        }
+
+                        targetSearch.FilterCandidatesByHurtBoxTeam(enemyTeams);
+                        targetSearch.FilterCandidatesByDistinctHurtBoxEntities();
+
+                        int enemiesInRange = 0;
+
+                        foreach (HurtBox hurtBox in targetSearch.GetHurtBoxes())
+                        {
+                            HealthComponent enemyHealthComponent = hurtBox ? hurtBox.healthComponent : null;
+                            if (!enemyHealthComponent || !enemyHealthComponent.alive)
+                                continue;
+
+                            if (enemyHealthComponent.gameObject == attacker)
+                                continue;
+
+                            enemiesInRange++;
+                        }
+
+                        if (enemiesInRange == 1)
+                        {
+                            float damageBonus = (0.05f * nearbyDamageBonus.UncommonCount) +
+                                                (0.15f * nearbyDamageBonus.RareCount) +
+                                                (0.35f * nearbyDamageBonus.EpicCount) +
+                                                (0.50f * nearbyDamageBonus.LegendaryCount);
+
+                            if (damageBonus > 0)
+                            {
+                                damagePerFocusCrystal += damageBonus;
+                                damageInfo.damageColorIndex = _nearbyBoostedColorIndex;
+                            }
                         }
                     }
                 }
