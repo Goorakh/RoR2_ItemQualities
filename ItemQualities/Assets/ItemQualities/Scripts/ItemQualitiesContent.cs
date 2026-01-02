@@ -762,6 +762,10 @@ namespace ItemQualities
             public static BuffDef FeatherExtraJumps;
 
             public static BuffDef SlugHealth;
+
+            public static BuffDef HitlistDamage;
+
+            public static BuffDef MiniBossCooldown;
         }
 
         public static class Prefabs

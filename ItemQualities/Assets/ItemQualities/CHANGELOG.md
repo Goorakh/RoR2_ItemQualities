@@ -7,6 +7,13 @@
 * New: Builds up damage on stunned enemies, released when enemy regains control.
 </details>
 
+<details>
+<summary>Armor Piercing Rounds rework.</summary>
+
+* Old: Mark enemies within the teleporter radius after boss. Deal bonus damage to marked enemies.
+* New: Marks an enemy every 60 seconds for 10 seconds, deal bonus damage to marked enemies for every marked enemy killed.
+</details>
+
 * Fixed Power Elixir quality effect not working properly.
 
 * Fixed Quality Ghor's Tome buffs staying after losing the item.
