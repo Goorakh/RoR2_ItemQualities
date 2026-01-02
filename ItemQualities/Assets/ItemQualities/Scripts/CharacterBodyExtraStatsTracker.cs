@@ -44,17 +44,6 @@ namespace ItemQualities
 
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
 
-        const float BaseCrowbarMinHealthFraction = 0.9f;
-        float _crowbarMinHealthFraction = BaseCrowbarMinHealthFraction;
-        public float CrowbarMinHealthFraction
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _crowbarMinHealthFraction;
-            }
-        }
-
         float _executeBossHealthFraction;
         public float ExecuteBossHealthFraction
         {
@@ -268,26 +257,16 @@ namespace ItemQualities
 
         void recalculateExtraStats()
         {
-            ItemQualityCounts crowbar = default;
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
             ItemQualityCounts jumpBoost = default;
             if (_body && _body.inventory)
             {
-                crowbar = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Crowbar);
                 executeLowHealthElite = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite);
                 phasing = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
                 jumpBoost = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
             }
 
-            float crowbarMinHealthFractionReduction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
-                (0.25f * crowbar.UncommonCount) +
-                (0.43f * crowbar.RareCount) +
-                (1.00f * crowbar.EpicCount) +
-                (3.00f * crowbar.LegendaryCount));
-
-            _crowbarMinHealthFraction = Mathf.Lerp(BaseCrowbarMinHealthFraction, BaseCrowbarMinHealthFraction * 0.5f, crowbarMinHealthFractionReduction);
-            
             _executeBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
                 (0.10f * executeLowHealthElite.UncommonCount) +
                 (0.15f * executeLowHealthElite.RareCount) +

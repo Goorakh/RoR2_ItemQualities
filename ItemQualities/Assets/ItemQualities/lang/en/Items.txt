@@ -61,18 +61,18 @@
         "ITEM_HEALWHILESAFE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while outside of danger increase health temporarily.",
         "ITEM_HEALWHILESAFE_LEGENDARY_DESC": "{0}\nKills while outside of danger gives <sprite name=\"Quality\"> <style=cIsHealing>+20 <style=cStack>(+20 per stack)</style> non-regenerating maximum health</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsHealing>1000 <style=cStack>(+1000 per stack)</style> maximum health</style>.",
 
-        "ITEM_CROWBAR_UNCOMMON_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 85% health.",
-        "ITEM_CROWBAR_UNCOMMON_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>85% health</style> <style=cStack>(-10% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>).",
+        "ITEM_CROWBAR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Store up extra damage on immobile enemies, release damage when enemy regains control.",
+        "ITEM_CROWBAR_UNCOMMON_DESC": "{0}\nDealing damage to <style=cIsUtility>stunned/frozen/rooted/bagged</style> enemies <style=cIsUtility>stores extra damage</style> equal to <sprite name=\"Quality\"> <style=cIsDamage>15% <style=cStack>(+15% per stack)</style> damage dealt</style>. Stored damage is <style=cIsUtility>released once the enemy regains control</style>.",
 
-        "ITEM_CROWBAR_RARE_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 80% health.",
-        "ITEM_CROWBAR_RARE_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>80% health</style> <style=cStack>(-15% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>).",
+        "ITEM_CROWBAR_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Store up extra damage on immobile enemies, release damage when enemy regains control.",
+        "ITEM_CROWBAR_RARE_DESC": "{0}\nDealing damage to <style=cIsUtility>stunned/frozen/rooted/bagged</style> enemies <style=cIsUtility>stores extra damage</style> equal to <sprite name=\"Quality\"> <style=cIsDamage>30% <style=cStack>(+30% per stack)</style> damage dealt</style>. Stored damage is <style=cIsUtility>released once the enemy regains control</style>.",
 
-        "ITEM_CROWBAR_EPIC_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 75% health.",
-        "ITEM_CROWBAR_EPIC_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>75% health</style> <style=cStack>(-25% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>).",
+        "ITEM_CROWBAR_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Store up extra damage on immobile enemies, release damage when enemy regains control.",
+        "ITEM_CROWBAR_EPIC_DESC": "{0}\nDealing damage to <style=cIsUtility>stunned/frozen/rooted/bagged</style> enemies <style=cIsUtility>stores extra damage</style> equal to <sprite name=\"Quality\"> <style=cIsDamage>45% <style=cStack>(+45% per stack)</style> damage dealt</style>. Stored damage is <style=cIsUtility>released once the enemy regains control</style>.",
 
-        "ITEM_CROWBAR_LEGENDARY_PICKUP": "Deal bonus damage to enemies above <sprite name=\"Quality\"> 70% health.",
-        "ITEM_CROWBAR_LEGENDARY_DESC": "Deal <style=cIsDamage>+75%</style> <style=cStack>(+75% per stack)</style> damage to enemies above <sprite name=\"Quality\"> <style=cIsDamage>70% health</style> <style=cStack>(-40% per stack)</style> (<style=cIsHealing>hyperbolic</style>, cannot reduce below <style=cIsUtility>50%</style>).",
-
+        "ITEM_CROWBAR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Store up extra damage on immobile enemies, release damage when enemy regains control.",
+        "ITEM_CROWBAR_LEGENDARY_DESC": "{0}\nDealing damage to <style=cIsUtility>stunned/frozen/rooted/bagged</style> enemies <style=cIsUtility>stores extra damage</style> equal to <sprite name=\"Quality\"> <style=cIsDamage>60% <style=cStack>(+60% per stack)</style> damage dealt</style>. Stored damage is <style=cIsUtility>released once the enemy regains control</style>.",
+        
         "ITEM_PERSONALSHIELD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable gives non recharging shield.",
         "ITEM_PERSONALSHIELD_UNCOMMON_DESC": "{0}\nActivating an interactable gives <style=cIsUtility>non recharging shield</style> equal to <sprite name=\"Quality\"> <style=cIsHealing>2%</style> of your maximum hp, <style=cIsHealing>up to <sprite name=\"Quality\"> 20% <style=cStack>(+20% per stack)</style></style> maximum hp.",
 

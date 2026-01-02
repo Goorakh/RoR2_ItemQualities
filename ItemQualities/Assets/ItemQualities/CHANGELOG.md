@@ -1,5 +1,12 @@
 ## 0.6.0
 
+<details>
+<summary>Crowbar rework.</summary>
+
+* Old: Decrease damage increase threshold.
+* New: Builds up damage on stunned enemies, released when enemy regains control.
+</details>
+
 * Fixed Power Elixir quality effect not working properly.
 
 * Fixed Networked Suffering crystals taking aggro from player allies.
