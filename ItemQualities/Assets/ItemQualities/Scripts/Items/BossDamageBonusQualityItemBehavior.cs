@@ -17,10 +17,13 @@ namespace ItemQualities.Items
             _body = GetComponent<CharacterBody>();
         }
 
+        private void OnDisable()
+        {
+            unsetMiniboss();
+        }
+
         void FixedUpdate()
         {
-            if (!NetworkServer.active)
-                return;
             _updateMiniBossTimer += Time.fixedDeltaTime;
 
             ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(_body.inventory);
@@ -36,13 +39,7 @@ namespace ItemQualities.Items
 
             if (_updateMiniBossTimer >= 10)
             {
-                if (_currentMiniBoss)
-                {
-                    _currentMiniBoss.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
-                    Destroy(_currentMiniBossAttachment, 0.5f);
-                    _currentMiniBossAttachment = null;
-                    _currentMiniBoss = null;
-                }
+                unsetMiniboss();
             }
             if (_updateMiniBossTimer >= markfrequency)
             {
@@ -51,12 +48,29 @@ namespace ItemQualities.Items
             }
         }
 
+        void unsetMiniboss()
+        {
+            if (_currentMiniBoss)
+            {
+                _currentMiniBoss.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
+                Destroy(_currentMiniBossAttachment, 0.5f);
+                _currentMiniBossAttachment = null;
+                _currentMiniBoss = null;
+            }
+        }
+
         CharacterBody findBestMiniBoss()
         {
             CharacterBody highestHealthBody = null;
-            highestHealthBody = getMiniBossOfTeam(TeamIndex.Monster, highestHealthBody);
-            highestHealthBody = getMiniBossOfTeam(TeamIndex.Void, highestHealthBody);
-            highestHealthBody = getMiniBossOfTeam(TeamIndex.Lunar, highestHealthBody);
+            TeamMask teamMask = TeamMask.allButNeutral;
+            teamMask.RemoveTeam(_body.teamComponent.teamIndex);
+            for (int i = 0; i < (int)TeamIndex.Count; i++)
+            {
+                if (teamMask.HasTeam((TeamIndex)i))
+                {
+                    highestHealthBody = getMiniBossOfTeam((TeamIndex)i, highestHealthBody);
+                }
+            }
             return highestHealthBody;
         }
 
@@ -65,7 +79,7 @@ namespace ItemQualities.Items
             foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(teamIndex))
             {
                 CharacterBody body = teamComponent.body;
-                if (!body || !body.healthComponent || !body.healthComponent.alive || body.HasBuff(ItemQualitiesContent.Buffs.MiniBossCooldown))
+                if (!body || !body.healthComponent || !body.healthComponent.alive || body.HasBuff(ItemQualitiesContent.Buffs.MiniBossCooldown) || body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
                     continue;
 
                 if (!highestHealthBody || body.healthComponent.fullCombinedHealth > highestHealthBody.healthComponent.fullCombinedHealth)

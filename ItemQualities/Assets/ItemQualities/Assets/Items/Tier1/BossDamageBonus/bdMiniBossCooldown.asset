@@ -20,7 +20,7 @@ MonoBehaviour:
   isDebuff: 0
   isDOT: 0
   ignoreGrowthNectar: 1
-  isCooldown: 1
+  isCooldown: 0
   isHidden: 1
   flags: 1
   stackingDisplayMethod: 0
