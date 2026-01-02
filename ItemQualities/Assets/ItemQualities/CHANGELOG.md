@@ -9,6 +9,8 @@
 
 * Fixed Power Elixir quality effect not working properly.
 
+* Fixed Quality Ghor's Tome buffs staying after losing the item.
+
 * Fixed Networked Suffering crystals taking aggro from player allies.
 
 * Fixed some qualities not being sorted in logbook.
