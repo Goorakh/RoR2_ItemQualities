@@ -28,6 +28,7 @@ namespace ItemQualities.Items
                 delayedHitHandler = victim.AddComponent<DelayedHitHandler>();
                 delayedHitHandler.attacker = attacker;
             }
+
             return delayedHitHandler;
         }
 
@@ -38,6 +39,7 @@ namespace ItemQualities.Items
             {
                 return false;
             }
+
             if (entityStateMachine.state is StunState ||
                 entityStateMachine.state is FrozenState ||
                 entityStateMachine.state is ShockState ||
@@ -49,6 +51,7 @@ namespace ItemQualities.Items
             {
                 return true;
             }
+
             return false;
         }
 
@@ -57,10 +60,10 @@ namespace ItemQualities.Items
             DelayedHitHandler delayedHitHandler = report.victimBody.GetComponent<DelayedHitHandler>();
             CharacterBody attackerbody = report.attackerBody;
             if (!attackerbody || !attackerbody.inventory)
-            {
                 return;
-            }
-            if (!delayedHitHandler) {
+
+            if (!delayedHitHandler)
+            {
                 //fallback if something immobilizes directly, set the proc owner to the first person attacking after that instead, this should handle immobilizing attack automatically
                 //things that are procced or don't deal damage still need to be handled manually, like quality opal
                 if (report.victimBody.TryGetComponent<EntityStateMachine>(out EntityStateMachine entityStateMachine) &&
@@ -75,11 +78,11 @@ namespace ItemQualities.Items
             }
 
             ItemQualityCounts crowbar = attackerbody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Crowbar);
-            float multiplier =  crowbar.UncommonCount * 0.15f +
-                                crowbar.RareCount * 0.3f +
-                                crowbar.EpicCount * 0.45f +
-                                crowbar.LegendaryCount * 0.6f;
-   
+            float multiplier = (crowbar.UncommonCount * 0.15f) +
+                               (crowbar.RareCount * 0.3f) +
+                               (crowbar.EpicCount * 0.45f) +
+                               (crowbar.LegendaryCount * 0.6f);
+
             delayedHitHandler.damage += report.damageDealt * multiplier;
         }
 
@@ -114,6 +117,7 @@ namespace ItemQualities.Items
                 HandleDelayedHit(damageInfo.attacker, victim);
                 return true;
             }
+
             return false;
         }
 
@@ -132,7 +136,9 @@ namespace ItemQualities.Items
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
-            } else {
+            }
+            else
+            {
                 Log.Error("stungrenade IL Hook failed!");
             }
 
@@ -148,7 +154,9 @@ namespace ItemQualities.Items
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
-            } else { 
+            }
+            else
+            {
                 Log.Error("freezeonhit IL Hook failed!");
             }
 
@@ -164,7 +172,9 @@ namespace ItemQualities.Items
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
-            } else {
+            }
+            else
+            {
                 Log.Error("shockonhit IL Hook failed!");
             }
 
@@ -181,7 +191,9 @@ namespace ItemQualities.Items
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
-            } else {
+            }
+            else
+            {
                 Log.Error("stunbullet IL Hook failed!");
             }
 
@@ -197,11 +209,11 @@ namespace ItemQualities.Items
                 c.Emit(OpCodes.Ldarg_1);
                 c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
                 c.Emit(OpCodes.Brfalse, label);
-            } else {
+            }
+            else
+            {
                 Log.Error("immobilizestate IL Hook failed!");
             }
-
-            Debug.Log(il);
         }
 
         private static bool checkImmobileProcChainMask(DamageReport damageReport)
@@ -211,6 +223,7 @@ namespace ItemQualities.Items
                 HandleDelayedHit(damageReport.attacker, damageReport.victimBody.gameObject);
                 return true;
             }
+
             return false;
         }
 
@@ -227,7 +240,7 @@ namespace ItemQualities.Items
             {
                 _entityStateMachine = GetComponent<EntityStateMachine>();
                 _body = GetComponent<CharacterBody>();
-                if(!_entityStateMachine || !_body)
+                if (!_entityStateMachine || !_body)
                 {
                     Destroy(this);
                 }
@@ -235,7 +248,7 @@ namespace ItemQualities.Items
 
             private void FixedUpdate()
             {
-                if(damage == 0 || !_body.healthComponent)
+                if (damage == 0 || !_body.healthComponent)
                 {
                     Destroy(this);
                     return;
@@ -246,12 +259,15 @@ namespace ItemQualities.Items
                     dealDelayedDamage();
                     Destroy(this);
                 }
+
                 wasInFrozenState = _body.healthComponent.isInFrozenState;
             }
 
-            void dealDelayedDamage() {
+            void dealDelayedDamage()
+            {
                 ProcChainMask procChainMask = default(ProcChainMask);
                 procChainMask.AddModdedProc(ProcTypes.Immobilize);
+
                 bool restorefrozen = _body.healthComponent.isInFrozenState;
                 _body.healthComponent.isInFrozenState = wasInFrozenState;
 
@@ -266,6 +282,7 @@ namespace ItemQualities.Items
                     damageType = DamageTypeExtended.BypassDamageCalculations,
                     position = _body.corePosition,
                 };
+
                 _body.healthComponent.TakeDamage(damageInfo);
                 GlobalEventManager.instance.OnHitEnemy(damageInfo, _body.healthComponent.gameObject);
                 GlobalEventManager.instance.OnHitAll(damageInfo, _body.healthComponent.gameObject);
