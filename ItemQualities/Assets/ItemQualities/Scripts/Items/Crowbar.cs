@@ -97,7 +97,7 @@ namespace ItemQualities.Items
                 c.Emit(OpCodes.Ldarg_1);
                 c.Emit(OpCodes.Ldarg_2);
                 c.EmitDelegate<Func<DamageInfo, GameObject, bool>>(checkImmobileProcChainMask);
-                c.Emit(OpCodes.Brfalse_S, label);
+                c.Emit(OpCodes.Brfalse, label);
             }
             else
             {
