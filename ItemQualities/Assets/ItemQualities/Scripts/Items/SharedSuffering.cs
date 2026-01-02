@@ -72,7 +72,7 @@ namespace ItemQualities.Items
             sharedSufferingOrbBody.bodyFlags &= ~CharacterBody.BodyFlags.Ungrabbable;
 
             TeamComponent teamComponent = sharedSufferingOrbBodyPrefab.GetComponent<TeamComponent>();
-            teamComponent.teamIndex = TeamIndex.Monster;
+            teamComponent.teamIndex = TeamIndex.Neutral;
 
             NonSkillDamageModifier nonSkillDamageModifier = sharedSufferingOrbBodyPrefab.EnsureComponent<NonSkillDamageModifier>();
             nonSkillDamageModifier._damageCoeficient = 0f;
