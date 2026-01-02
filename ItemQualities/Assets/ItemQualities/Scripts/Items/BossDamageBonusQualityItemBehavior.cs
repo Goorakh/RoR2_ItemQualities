@@ -1,21 +1,21 @@
-﻿using RoR2;
+﻿using ItemQualities.ModCompatibility;
+using RoR2;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class BossDamageBonusQualityItemBehavior : MonoBehaviour
+    public sealed class BossDamageBonusQualityItemBehavior : QualityItemBodyBehavior
     {
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        static ItemQualityGroup GetItemGroup()
+        {
+            return ItemQualitiesContent.ItemQualityGroups.BossDamageBonus;
+        }
+
         CharacterBody _currentMiniBoss;
         GameObject _currentMiniBossAttachment;
-        CharacterBody _body;
 
         float _updateMiniBossTimer = 60f;
-
-        private void Awake()
-        {
-            _body = GetComponent<CharacterBody>();
-        }
 
         private void OnDisable()
         {
@@ -26,7 +26,7 @@ namespace ItemQualities.Items
         {
             _updateMiniBossTimer += Time.fixedDeltaTime;
 
-            ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(_body.inventory);
+            ItemQualityCounts bossDamageBonus = Stacks;
 
             float markfrequency = bossDamageBonus.HighestQuality switch
             {
@@ -63,24 +63,28 @@ namespace ItemQualities.Items
         {
             CharacterBody highestHealthBody = null;
             TeamMask teamMask = TeamMask.allButNeutral;
-            teamMask.RemoveTeam(_body.teamComponent.teamIndex);
-            for (int i = 0; i < (int)TeamIndex.Count; i++)
+            teamMask.RemoveTeam(Body.teamComponent.teamIndex);
+
+            for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
             {
-                if (teamMask.HasTeam((TeamIndex)i))
+                if (teamMask.HasTeam(teamIndex))
                 {
-                    highestHealthBody = getMiniBossOfTeam((TeamIndex)i, highestHealthBody);
+                    highestHealthBody = getMiniBossOfTeam(teamIndex, highestHealthBody);
                 }
             }
+
             return highestHealthBody;
         }
 
-        CharacterBody getMiniBossOfTeam(TeamIndex teamIndex, CharacterBody highestHealthBody)
+        static CharacterBody getMiniBossOfTeam(TeamIndex teamIndex, CharacterBody highestHealthBody)
         {
             foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(teamIndex))
             {
                 CharacterBody body = teamComponent.body;
                 if (!body || !body.healthComponent || !body.healthComponent.alive || body.HasBuff(ItemQualitiesContent.Buffs.MiniBossCooldown) || body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
+                {
                     continue;
+                }
 
                 if (!highestHealthBody || body.healthComponent.fullCombinedHealth > highestHealthBody.healthComponent.fullCombinedHealth)
                 {
@@ -90,6 +94,7 @@ namespace ItemQualities.Items
                     }
                 }
             }
+
             return highestHealthBody;
         }
 
