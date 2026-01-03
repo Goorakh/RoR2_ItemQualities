@@ -18,19 +18,19 @@ namespace ItemQualities.Items
 
         private static void onCharacterDeathGlobal(DamageReport report)
         {
-            if(!report.attackerBody || !report.victimBody) {
+            if (!report.attackerBody || !report.attackerBody.inventory || !report.victimBody)
                 return;
-            }
-            if(report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker)) 
-            {
-                ItemQualityCounts bossDamageBonus = ItemQualitiesContent.ItemQualityGroups.BossDamageBonus.GetItemCountsEffective(report.attackerBody.inventory);
 
-                int maxHitlistBonus = bossDamageBonus.UncommonCount * 15 +
-                                    bossDamageBonus.RareCount * 30 +
-                                    bossDamageBonus.EpicCount * 45 +
-                                    bossDamageBonus.LegendaryCount * 60;
-                
-                if(report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.HitlistDamage) < maxHitlistBonus) 
+            if (report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
+            {
+                ItemQualityCounts bossDamageBonus = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
+
+                int maxHitlistBonus = (15 * bossDamageBonus.UncommonCount) +
+                                      (30 * bossDamageBonus.RareCount) +
+                                      (45 * bossDamageBonus.EpicCount) +
+                                      (60 * bossDamageBonus.LegendaryCount);
+
+                if (report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.HitlistDamage) < maxHitlistBonus)
                 {
                     report.attackerBody.AddBuff(ItemQualitiesContent.Buffs.HitlistDamage);
                 }
