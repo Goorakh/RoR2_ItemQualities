@@ -14,13 +14,24 @@ namespace ItemQualities.Items
         private static void ShrineChanceBehavior_AddShrineStack(On.RoR2.ShrineChanceBehavior.orig_AddShrineStack orig, RoR2.ShrineChanceBehavior self, RoR2.Interactor activator)
         {
             TeamComponent interactorTeamComponent = activator.GetComponent<TeamComponent>();
-            if (!interactorTeamComponent)
+            if (!interactorTeamComponent) {
+                orig(self, activator);
                 return;
+            }
+                
             ItemQualityCounts extraShrineItem = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.ExtraShrineItem, interactorTeamComponent.teamIndex, true);
 
-            if ((extraShrineItem.HighestQuality >= QualityTier.Rare && self.successfulPurchaseCount >= 1) ||
-            (extraShrineItem.HighestQuality >= QualityTier.Uncommon && self.successfulPurchaseCount >= 2))
-            {
+            int purchasesUntilPriceincreaseStops;
+            if (extraShrineItem.HighestQuality >= QualityTier.Rare) {
+                purchasesUntilPriceincreaseStops = 2;
+            } else if (extraShrineItem.HighestQuality == QualityTier.Uncommon) {
+                purchasesUntilPriceincreaseStops = 1;
+            } else {
+                orig(self, activator);
+                return;
+            }
+
+            if (self.successfulPurchaseCount >= purchasesUntilPriceincreaseStops) {
                 self.costMultiplierPerPurchase = 1;
             }
 
