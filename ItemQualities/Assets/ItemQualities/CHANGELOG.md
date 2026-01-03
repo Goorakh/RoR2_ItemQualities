@@ -14,6 +14,17 @@
 * New: Marks an enemy every 60 seconds for 10 seconds, deal bonus damage to marked enemies for every marked enemy killed.
 </details>
 
+<details>
+<summary>Bandolier rework</summary>
+
+* Temporary skill charges granted: 1 ->
+    * Uncommon: 3 (+3 per stack)
+    * Rare: 6 (+6 per stack)
+    * Epic: 10 (+10 per stack)
+    * Legendary: 15 (+15 per stack)
+* Temporary skill charge chance -> 8% (previously stacked with qualities)
+</details>
+
 * Power Elixir:
     * Fixed quality effect not working properly.
 
