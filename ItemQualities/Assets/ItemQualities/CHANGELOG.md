@@ -30,6 +30,11 @@
         * Epic: 3.5% -> 2%
         * Legendary: 4% -> 3%
 
+* Chance Doll:
+    * Stopped price scaling after some succesful rolls:
+        * Uncommon: 2 succesful rolls
+        * Rare and up: 1 succesful roll
+
 * Spare Drone Parts:
     * Fixed additional drones only spawning to half capacity.
     * Fixed drone spawn cooldown being wasted if a drone fails to spawn.
