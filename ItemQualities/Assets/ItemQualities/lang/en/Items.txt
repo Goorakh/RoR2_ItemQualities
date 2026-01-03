@@ -217,17 +217,17 @@
         "ITEM_HEALINGPOTION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed.",
         "ITEM_HEALINGPOTION_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style>.",
 
-        "ITEM_HEALINGPOTIONCONSUMED_UNCOMMON_PICKUP": "An empty container for an Elixir. Tasted <sprite name=\"Quality\"> alright. Does nothing.",
-        "ITEM_HEALINGPOTIONCONSUMED_UNCOMMON_DESC": "An empty container for an Elixir. Tasted <sprite name=\"Quality\"> alright. Does nothing.",
+        "ITEM_HEALINGPOTIONCONSUMED_UNCOMMON_PICKUP": "An empty container for an Elixir. <sprite name=\"Quality\"> Refreshing. Does nothing.",
+        "ITEM_HEALINGPOTIONCONSUMED_UNCOMMON_DESC": "An empty container for an Elixir. <sprite name=\"Quality\"> Refreshing. Does nothing.",
 
-        "ITEM_HEALINGPOTIONCONSUMED_RARE_PICKUP": "An empty container for an Elixir. Tasted <sprite name=\"Quality\"> good. Does nothing.",
-        "ITEM_HEALINGPOTIONCONSUMED_RARE_DESC": "An empty container for an Elixir. Tasted <sprite name=\"Quality\"> good. Does nothing.",
+        "ITEM_HEALINGPOTIONCONSUMED_RARE_PICKUP": "An empty container for an Elixir. Has a <sprite name=\"Quality\"> pleasant aftertaste. Does nothing.",
+        "ITEM_HEALINGPOTIONCONSUMED_RARE_DESC": "An empty container for an Elixir. Has a <sprite name=\"Quality\"> pleasant aftertaste. Does nothing.",
 
-        "ITEM_HEALINGPOTIONCONSUMED_EPIC_PICKUP": "An empty container for an Elixir. Tasted <sprite name=\"Quality\"> great. Does nothing.",
-        "ITEM_HEALINGPOTIONCONSUMED_EPIC_DESC": "An empty container for an Elixir. Tasted <sprite name=\"Quality\"> great. Does nothing.",
+        "ITEM_HEALINGPOTIONCONSUMED_EPIC_PICKUP": "An empty container for an Elixir. It was <sprite name=\"Quality\"> delicious. Does nothing.",
+        "ITEM_HEALINGPOTIONCONSUMED_EPIC_DESC": "An empty container for an Elixir. It was <sprite name=\"Quality\"> delicious. Does nothing.",
 
-        "ITEM_HEALINGPOTIONCONSUMED_LEGENDARY_PICKUP": "An empty container for an Elixir. It was <sprite name=\"Quality\"> delicious. Does nothing.",
-        "ITEM_HEALINGPOTIONCONSUMED_LEGENDARY_DESC": "An empty container for an Elixir. It was <sprite name=\"Quality\"> delicious. Does nothing.",
+        "ITEM_HEALINGPOTIONCONSUMED_LEGENDARY_PICKUP": "An empty container for an Elixir. <sprite name=\"Quality\"> I can't go back, I need more. Does nothing.",
+        "ITEM_HEALINGPOTIONCONSUMED_LEGENDARY_DESC": "An empty container for an Elixir. <sprite name=\"Quality\"> I can't go back, I need more. Does nothing.",
 
         "ITEM_TRIGGERENEMYDEBUFFS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase transferred debuff duration.",
         "ITEM_TRIGGERENEMYDEBUFFS_UNCOMMON_DESC": "{0}\nIncreases <style=cIsUtility>durations</style> of <style=cIsDamage>transferred debuffs</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style>",
