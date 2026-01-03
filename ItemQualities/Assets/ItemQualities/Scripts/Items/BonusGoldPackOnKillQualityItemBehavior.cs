@@ -65,16 +65,16 @@ namespace ItemQualities.Items
                     targetBuffCountMultiplier = 0f;
                     break;
                 case QualityTier.Uncommon:
-                    targetBuffCountMultiplier = 2f;
+                    targetBuffCountMultiplier = 1f;
                     break;
                 case QualityTier.Rare:
-                    targetBuffCountMultiplier = 3f;
+                    targetBuffCountMultiplier = 1.5f;
                     break;
                 case QualityTier.Epic:
-                    targetBuffCountMultiplier = 3.5f;
+                    targetBuffCountMultiplier = 2f;
                     break;
                 case QualityTier.Legendary:
-                    targetBuffCountMultiplier = 4f;
+                    targetBuffCountMultiplier = 3f;
                     break;
                 default:
                     targetBuffCountMultiplier = 0f;
