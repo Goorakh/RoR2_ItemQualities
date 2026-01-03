@@ -434,16 +434,16 @@
         "ITEM_KNOCKBACKHITENEMIES_LEGENDARY_DESC": "Grounded enemies hit with any <style=cIsUtility>skill</style> are <style=cIsUtility>launched</style> and <style=cIsUtility>stunned</style>. Enemies hit while airborne are <style=cIsUtility>launched</style> again up to <style=cIsUtility>2 times</style> <style=cStack>(+1 per stack)</style>. Launched enemies take increased damage by <sprite name=\"Quality\"> <style=cIsDamage>45%</style> <style=cStack>(+35% per stack)</style> from all sources per launch. Recharges after <style=cIsUtility>15s</style>.",
         
         "ITEM_BONUSGOLDPACKONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase base damage with current gold.",
-        "ITEM_BONUSGOLDPACKONKILL_UNCOMMON_DESC": "{0}\nIncrease <style=cIsDamage>base damage by 2%</style> for every <style=cIsDamage>25 gold</style> you have, up to <style=cIsDamage>20% <style=cStack>(+20% per stack)</style> damage</style>.<style=cIsUtility> Gold requirement scales over time</style>.",
+        "ITEM_BONUSGOLDPACKONKILL_UNCOMMON_DESC": "{0}\nIncrease <style=cIsDamage>base damage by 1%</style> for every <style=cIsDamage>25 gold</style> you have, up to <style=cIsDamage>20% <style=cStack>(+20% per stack)</style> damage</style>.<style=cIsUtility> Gold requirement scales over time</style>.",
         
         "ITEM_BONUSGOLDPACKONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase base damage with current gold.",
-        "ITEM_BONUSGOLDPACKONKILL_RARE_DESC": "{0}\nIncrease <style=cIsDamage>base damage by 3%</style> for every <style=cIsDamage>25 gold</style> you have, up to <style=cIsDamage>40% <style=cStack>(+40% per stack)</style> damage</style>.<style=cIsUtility> Gold requirement scales over time</style>.",
+        "ITEM_BONUSGOLDPACKONKILL_RARE_DESC": "{0}\nIncrease <style=cIsDamage>base damage by 1.5%</style> for every <style=cIsDamage>25 gold</style> you have, up to <style=cIsDamage>40% <style=cStack>(+40% per stack)</style> damage</style>.<style=cIsUtility> Gold requirement scales over time</style>.",
         
         "ITEM_BONUSGOLDPACKONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase base damage with current gold.",
-        "ITEM_BONUSGOLDPACKONKILL_EPIC_DESC": "{0}\nIncrease <style=cIsDamage>base damage by 3.5%</style> for every <style=cIsDamage>25 gold</style> you have, up to <style=cIsDamage>60% <style=cStack>(+60% per stack)</style> damage</style>.<style=cIsUtility> Gold requirement scales over time</style>.",
+        "ITEM_BONUSGOLDPACKONKILL_EPIC_DESC": "{0}\nIncrease <style=cIsDamage>base damage by 2%</style> for every <style=cIsDamage>25 gold</style> you have, up to <style=cIsDamage>60% <style=cStack>(+60% per stack)</style> damage</style>.<style=cIsUtility> Gold requirement scales over time</style>.",
         
         "ITEM_BONUSGOLDPACKONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase base damage with current gold.",
-        "ITEM_BONUSGOLDPACKONKILL_LEGENDARY_DESC": "{0}\nIncrease <style=cIsDamage>base damage by 4%</style> for every <style=cIsDamage>25 gold</style> you have, up to <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> damage</style>.<style=cIsUtility> Gold requirement scales over time</style>.",
+        "ITEM_BONUSGOLDPACKONKILL_LEGENDARY_DESC": "{0}\nIncrease <style=cIsDamage>base damage by 3%</style> for every <style=cIsDamage>25 gold</style> you have, up to <style=cIsDamage>100% <style=cStack>(+100% per stack)</style> damage</style>.<style=cIsUtility> Gold requirement scales over time</style>.",
 
         "ITEM_DEATHMARK_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Enemies with 7 or more debuffs can be marked once, taking additional bonus damage.",
         "ITEM_DEATHMARK_UNCOMMON_DESC": "{0}\nEnemies with <style=cIsDamage>7</style> or more debuffs are <style=cIsDamage>marked for death</style> <style=cIsUtility>once</style>, increasing damage taken by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> for <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> seconds.",
