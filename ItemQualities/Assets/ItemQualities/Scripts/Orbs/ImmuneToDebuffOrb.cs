@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ItemQualities.Orbs
 {
-    public class ImmuneToDebuffOrb : Orb
+    public sealed class ImmuneToDebuffOrb : Orb
     {
         static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
 
@@ -29,6 +29,8 @@ namespace ItemQualities.Orbs
             }
         }
 
+        public InflictDotInfo? InflictDotInfo;
+
         public BuffIndex BuffIndex = BuffIndex.None;
 
         public float BuffDuration;
@@ -51,6 +53,11 @@ namespace ItemQualities.Orbs
 
                 EffectManager.SpawnEffect(_orbEffectIndex, orbEffectData, true);
             }
+
+            if (!Attacker && InflictDotInfo.HasValue)
+            {
+                Attacker = InflictDotInfo.Value.attackerObject;
+            }
         }
 
         public override void OnArrival()
@@ -59,36 +66,31 @@ namespace ItemQualities.Orbs
             CharacterBody victimBody = victim ? victim.body : null;
             if (victimBody)
             {
-                BuffDef buffDef = BuffCatalog.GetBuffDef(BuffIndex);
-                DotController.DotIndex dotIndex = DotController.GetDotDefIndex(buffDef);
-
-                if (dotIndex != DotController.DotIndex.None)
+                if (InflictDotInfo.HasValue)
                 {
-                    InflictDotInfo inflictDotInfo = new InflictDotInfo
-                    {
-                        attackerObject = Attacker,
-                        victimObject = victimBody.gameObject,
-                        damageMultiplier = 1f,
-                        dotIndex = dotIndex,
-                        duration = BuffDuration
-                    };
-
-                    if (_attackerMaster)
-                    {
-                        StrengthenBurnUtils.CheckDotForUpgrade(_attackerMaster.inventory, ref inflictDotInfo);
-                    }
-
-                    for (int i = 0; i < BuffStackCount; i++)
-                    {
-                        InflictDotInfo modifiableDotInfo = inflictDotInfo;
-                        DotController.InflictDot(ref modifiableDotInfo);
-                    }
+                    onArriveDot(InflictDotInfo.Value);
                 }
                 else
                 {
-                    for (int i = 0; i < BuffStackCount; i++)
+                    BuffDef buffDef = BuffCatalog.GetBuffDef(BuffIndex);
+                    DotController.DotIndex dotIndex = DotController.GetDotDefIndex(buffDef);
+
+                    if (dotIndex != DotController.DotIndex.None)
                     {
-                        victimBody.AddTimedBuff(BuffIndex, BuffDuration);
+                        InflictDotInfo inflictDotInfo = new InflictDotInfo
+                        {
+                            attackerObject = Attacker,
+                            victimObject = victimBody.gameObject,
+                            damageMultiplier = 1f,
+                            dotIndex = dotIndex,
+                            duration = BuffDuration
+                        };
+
+                        onArriveDot(inflictDotInfo);
+                    }
+                    else
+                    {
+                        onArriveBuff(victimBody);
                     }
                 }
 
@@ -98,6 +100,28 @@ namespace ItemQualities.Orbs
                 }
 
                 Util.PlaySound("Play_item_proc_triggerEnemyDebuffs", victimBody.gameObject);
+            }
+        }
+
+        private void onArriveDot(InflictDotInfo inflictDotInfo)
+        {
+            if (_attackerMaster)
+            {
+                StrengthenBurnUtils.CheckDotForUpgrade(_attackerMaster.inventory, ref inflictDotInfo);
+            }
+
+            for (int i = 0; i < BuffStackCount; i++)
+            {
+                InflictDotInfo modifiableDotInfo = inflictDotInfo;
+                DotController.InflictDot(ref modifiableDotInfo);
+            }
+        }
+
+        private void onArriveBuff(CharacterBody victimBody)
+        {
+            for (int i = 0; i < BuffStackCount; i++)
+            {
+                victimBody.AddTimedBuff(BuffIndex, BuffDuration);
             }
         }
     }

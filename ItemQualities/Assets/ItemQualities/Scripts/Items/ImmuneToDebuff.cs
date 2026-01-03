@@ -28,7 +28,7 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.ExtendTimedBuffIfPresent_BuffDef_float_float += handleDebuffBuffReflectPatch;
         }
 
-        static void trySpreadBlockedDebuff(CharacterBody victimBody, BuffIndex buffIndex, float duration)
+        static void trySpreadBlockedDebuff(CharacterBody victimBody, BuffIndex buffIndex, float duration, InflictDotInfo? inflictDotInfo)
         {
             if (!NetworkServer.active)
             {
@@ -36,8 +36,28 @@ namespace ItemQualities.Items
                 return;
             }
 
-            if (!victimBody || !victimBody.inventory || buffIndex == BuffIndex.None || duration <= 0f)
+            if (!victimBody || !victimBody.inventory)
                 return;
+
+            if (duration <= 0f && !inflictDotInfo.HasValue)
+                return;
+
+            if (inflictDotInfo.HasValue)
+            {
+                if (buffIndex == BuffIndex.None)
+                {
+                    DotController.DotDef dotDef = DotController.GetDotDef(inflictDotInfo.Value.dotIndex);
+                    if (dotDef != null && dotDef.associatedBuff)
+                    {
+                        buffIndex = dotDef.associatedBuff.buffIndex;
+                    }
+                }
+
+                if (duration <= 0f)
+                {
+                    duration = inflictDotInfo.Value.duration;
+                }
+            }
 
             BuffDef buffDef = BuffCatalog.GetBuffDef(buffIndex);
             if (!buffDef || (buffDef.flags & BuffDef.Flags.ExcludeFromNoxiousThorns) != 0)
@@ -47,11 +67,10 @@ namespace ItemQualities.Items
             if (immuneToDebuff.TotalQualityCount == 0)
                 return;
 
-            float spreadRadius = 25f;
-            spreadRadius += 5f * immuneToDebuff.UncommonCount;
-            spreadRadius += 10f * immuneToDebuff.RareCount;
-            spreadRadius += 30f * immuneToDebuff.EpicCount;
-            spreadRadius += 50f * immuneToDebuff.LegendaryCount;
+            float spreadRadius = 25f + (5f * immuneToDebuff.UncommonCount) +
+                                       (10f * immuneToDebuff.RareCount) +
+                                       (30f * immuneToDebuff.EpicCount) +
+                                       (50f * immuneToDebuff.LegendaryCount);
 
             SphereSearch targetSearch = new SphereSearch
             {
@@ -75,15 +94,34 @@ namespace ItemQualities.Items
                 CharacterBody targetBody = targetHealthComponent ? targetHealthComponent.body : null;
                 if (targetBody && targetBody != victimBody)
                 {
-                    ImmuneToDebuffOrb orb = new ImmuneToDebuffOrb
+                    ImmuneToDebuffOrb orb;
+                    if (inflictDotInfo.HasValue)
                     {
-                        origin = victimBody.corePosition,
-                        target = targetHurtBox,
-                        BuffDuration = duration,
-                        BuffIndex = buffIndex,
-                        BuffStackCount = 1,
-                        Attacker = victimBody.gameObject,
-                    };
+                        InflictDotInfo victimDotInfo = inflictDotInfo.Value;
+                        victimDotInfo.attackerObject = victimBody.gameObject;
+                        victimDotInfo.victimObject = targetBody.gameObject;
+
+                        orb = new ImmuneToDebuffOrb
+                        {
+                            origin = victimBody.corePosition,
+                            target = targetHurtBox,
+                            InflictDotInfo = victimDotInfo,
+                            Attacker = victimDotInfo.attackerObject,
+                            BuffStackCount = 1,
+                        };
+                    }
+                    else
+                    {
+                        orb = new ImmuneToDebuffOrb
+                        {
+                            origin = victimBody.corePosition,
+                            target = targetHurtBox,
+                            BuffDuration = duration,
+                            BuffIndex = buffIndex,
+                            BuffStackCount = 1,
+                            Attacker = victimBody.gameObject,
+                        };
+                    }
 
                     OrbManager.instance.AddOrb(orb);
                 }
@@ -98,14 +136,7 @@ namespace ItemQualities.Items
             {
                 CharacterBody victimBody = inflictDotInfo.victimObject ? inflictDotInfo.victimObject.GetComponent<CharacterBody>() : null;
 
-                BuffIndex dotBuffIndex = BuffIndex.None;
-                DotController.DotDef dotDef = DotController.GetDotDef(inflictDotInfo.dotIndex);
-                if (dotDef != null && dotDef.associatedBuff)
-                {
-                    dotBuffIndex = dotDef.associatedBuff.buffIndex;
-                }
-
-                trySpreadBlockedDebuff(victimBody, dotBuffIndex, inflictDotInfo.duration);
+                trySpreadBlockedDebuff(victimBody, BuffIndex.None, 0f, inflictDotInfo);
             }
 
             return blocked;
@@ -169,7 +200,7 @@ namespace ItemQualities.Items
                 {
                     if (blocked && buffDef && buffDef.isDebuff)
                     {
-                        trySpreadBlockedDebuff(body, buffDef.buffIndex, duration);
+                        trySpreadBlockedDebuff(body, buffDef.buffIndex, duration, null);
                     }
                 }
 
