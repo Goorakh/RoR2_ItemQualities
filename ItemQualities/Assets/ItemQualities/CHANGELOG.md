@@ -30,6 +30,11 @@
 
 * Ghor's Tome:
     * Fixed quality buffs staying after losing the item.
+    * Decreased damage gained per 25 gold (maximum damage unchanged):
+        * Uncommon: 2% -> 1%
+        * Rare: 3% -> 1.5%
+        * Epic: 3.5% -> 2%
+        * Legendary: 4% -> 3%
 
 * Spare Drone Parts:
     * Fixed additional drones only spawning to half capacity.
