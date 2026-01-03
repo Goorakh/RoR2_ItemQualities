@@ -1,36 +1,83 @@
-﻿using ItemQualities.ModCompatibility;
+﻿using HG;
+using ItemQualities.ModCompatibility;
 using ItemQualities.Utilities;
 using RoR2;
+using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class BossArenaHealNovaManager : MonoBehaviour
+    public sealed class BossArenaHealNovaManager : MonoBehaviour
     {
+        [SystemInitializer]
+        static void Init()
+        {
+            On.RoR2.SolusWingGrid.GridManager.OnTierSet += GridManager_OnTierSet;
+        }
+
+        private static void GridManager_OnTierSet(On.RoR2.SolusWingGrid.GridManager.orig_OnTierSet orig, RoR2.SolusWingGrid.GridManager self, int tier)
+        {
+            orig(self, tier);
+
+            try
+            {
+                foreach (BossArenaHealNovaManager novaManager in InstanceTracker.GetInstancesList<BossArenaHealNovaManager>())
+                {
+                    Vector3 arenaCenter = novaManager.transform.position;
+                    arenaCenter.y = self.GetLavaPosition(tier).y;
+
+                    novaManager.setPosition(arenaCenter);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error_NoCallerPrefix(e);
+            }
+        }
+
         public BossGroup WatchingBossGroup;
 
         public float ArenaRadius = 100f;
 
         readonly GameObject[] _healNovaSpawnersByTeam = new GameObject[TeamsAPICompat.TeamsCount];
 
-        [SystemInitializer()]
-        static void Init()
-        {
-            On.RoR2.SolusWingGrid.GridManager.OnTierSet += GridManager_OnTierSet;
-        }
-
         void Awake()
         {
-            InstanceTracker.Add(this);
-            if (NetworkServer.active)
+            if (!NetworkServer.active)
             {
-                BossGroup.onBossGroupDefeatedServer += onBossGroupDefeatedServer;
+                Log.Warning("Created on server");
+                enabled = false;
+                return;
             }
+        }
+
+        void Start()
+        {
+            if (WatchingBossGroup)
+            {
+                updateAllTeamHealNovaManagers();
+            }
+        }
+
+        void OnEnable()
+        {
+            InstanceTracker.Add(this);
+
+            if (WatchingBossGroup)
+            {
+                updateAllTeamHealNovaManagers();
+            }
+
+            Inventory.onInventoryChangedGlobal += onInventoryChangedGlobal;
+
+            BossGroup.onBossGroupDefeatedServer += onBossGroupDefeatedServer;
         }
 
         void OnDisable()
         {
+            InstanceTracker.Remove(this);
+
             foreach (GameObject healNovaSpawner in _healNovaSpawnersByTeam)
             {
                 if (healNovaSpawner)
@@ -38,31 +85,10 @@ namespace ItemQualities
                     Destroy(healNovaSpawner);
                 }
             }
-        }
 
-        void OnDestroy()
-        {
+            Inventory.onInventoryChangedGlobal -= onInventoryChangedGlobal;
+
             BossGroup.onBossGroupDefeatedServer -= onBossGroupDefeatedServer;
-        }
-
-        private static void GridManager_OnTierSet(On.RoR2.SolusWingGrid.GridManager.orig_OnTierSet orig, RoR2.SolusWingGrid.GridManager self, int tier)
-        {
-            orig(self, tier);
-            foreach (BossArenaHealNovaManager novaManager in InstanceTracker.GetInstancesList<BossArenaHealNovaManager>())
-            {
-                Vector3 arenacenter = novaManager.transform.position;
-                arenacenter.y = self.GetLavaPosition(tier).y;
-                novaManager.transform.position = arenacenter;
-
-                for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
-                {
-                    GameObject teamHealNovaSpawnerObj = novaManager._healNovaSpawnersByTeam[(int)teamIndex];
-                    if (teamHealNovaSpawnerObj)
-                    {
-                        teamHealNovaSpawnerObj.transform.position = novaManager.transform.position;
-                    }
-                }
-            }
         }
 
         void onBossGroupDefeatedServer(BossGroup bossGroup)
@@ -73,38 +99,76 @@ namespace ItemQualities
             }
         }
 
-        void FixedUpdate()
+        void onInventoryChangedGlobal(Inventory inventory)
         {
-            if (NetworkServer.active)
+            if (inventory.TryGetComponent(out CharacterMaster master) && master.teamIndex != TeamIndex.None)
             {
-                for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
+                updateTeamHealNovaManager(master.teamIndex);
+            }
+        }
+
+        void updateAllTeamHealNovaManagers()
+        {
+            for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
+            {
+                updateTeamHealNovaManager(teamIndex);
+            }
+        }
+
+        void updateTeamHealNovaManager(TeamIndex teamIndex)
+        {
+            if (!ArrayUtils.IsInBounds(_healNovaSpawnersByTeam, (int)teamIndex))
+            {
+                Log.Warning($"TeamIndex {teamIndex} is not in bounds of heal nova spawners array");
+                return;
+            }
+
+            ItemQualityCounts tpHealingNova = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.TPHealingNova, teamIndex, true);
+
+            bool novaSpawnerActive = tpHealingNova.TotalQualityCount > 0;
+
+            ref GameObject teamHealNovaSpawnerObj = ref _healNovaSpawnersByTeam[(int)teamIndex];
+            if (teamHealNovaSpawnerObj != novaSpawnerActive)
+            {
+                if (novaSpawnerActive)
                 {
-                    ItemQualityCounts tpHealingNova = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.TPHealingNova, teamIndex, true);
+                    teamHealNovaSpawnerObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.BossArenaHealNovaSpawner, transform.position, transform.rotation);
 
-                    bool novaSpawnerActive = tpHealingNova.TotalQualityCount > 0;
+                    TeamFilter novaSpawnerTeamFilter = teamHealNovaSpawnerObj.GetComponent<TeamFilter>();
+                    novaSpawnerTeamFilter.teamIndex = teamIndex;
 
-                    ref GameObject teamHealNovaSpawnerObj = ref _healNovaSpawnersByTeam[(int)teamIndex];
-                    if (teamHealNovaSpawnerObj != novaSpawnerActive)
-                    {
-                        if (novaSpawnerActive)
-                        {
-                            teamHealNovaSpawnerObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.BossArenaHealNovaSpawner, transform.position, transform.rotation);
+                    BossGroupHealNovaSpawner teamHealNovaSpawner = teamHealNovaSpawnerObj.GetComponent<BossGroupHealNovaSpawner>();
+                    teamHealNovaSpawner.BossGroup = WatchingBossGroup;
+                    teamHealNovaSpawner.NovaRadius = ArenaRadius;
 
-                            TeamFilter novaSpawnerTeamFilter = teamHealNovaSpawnerObj.GetComponent<TeamFilter>();
-                            novaSpawnerTeamFilter.teamIndex = teamIndex;
+                    NetworkServer.Spawn(teamHealNovaSpawnerObj);
+                }
+                else
+                {
+                    Destroy(teamHealNovaSpawnerObj);
+                    teamHealNovaSpawnerObj = null;
+                }
+            }
+        }
 
-                            BossGroupHealNovaSpawner teamHealNovaSpawner = teamHealNovaSpawnerObj.GetComponent<BossGroupHealNovaSpawner>();
-                            teamHealNovaSpawner.BossGroup = WatchingBossGroup;
-                            teamHealNovaSpawner.NovaRadius = ArenaRadius;
+        void setPosition(Vector3 arenaCenter)
+        {
+            transform.position = arenaCenter;
 
-                            NetworkServer.Spawn(teamHealNovaSpawnerObj);
-                        }
-                        else
-                        {
-                            Destroy(teamHealNovaSpawnerObj);
-                            teamHealNovaSpawnerObj = null;
-                        }
-                    }
+            foreach (GameObject healNovaSpawnerObj in _healNovaSpawnersByTeam)
+            {
+                if (healNovaSpawnerObj && healNovaSpawnerObj.TryGetComponent(out BossGroupHealNovaSpawner healNovaSpawner))
+                {
+                    healNovaSpawner.SetPositionServer(arenaCenter);
+                }
+            }
+
+            for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
+            {
+                GameObject teamHealNovaSpawnerObj = _healNovaSpawnersByTeam[(int)teamIndex];
+                if (teamHealNovaSpawnerObj)
+                {
+                    teamHealNovaSpawnerObj.transform.position = transform.position;
                 }
             }
         }
