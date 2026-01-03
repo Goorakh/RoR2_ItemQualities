@@ -1,5 +1,6 @@
 using ItemQualities.Utilities;
 using RoR2;
+using System;
 
 namespace ItemQualities.Items
 {
@@ -11,28 +12,35 @@ namespace ItemQualities.Items
             On.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehavior_AddShrineStack;
         }
 
-        private static void ShrineChanceBehavior_AddShrineStack(On.RoR2.ShrineChanceBehavior.orig_AddShrineStack orig, RoR2.ShrineChanceBehavior self, RoR2.Interactor activator)
+        private static void ShrineChanceBehavior_AddShrineStack(On.RoR2.ShrineChanceBehavior.orig_AddShrineStack orig, ShrineChanceBehavior self, Interactor activator)
         {
-            TeamComponent interactorTeamComponent = activator.GetComponent<TeamComponent>();
-            if (!interactorTeamComponent) {
-                orig(self, activator);
-                return;
-            }
-                
-            ItemQualityCounts extraShrineItem = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.ExtraShrineItem, interactorTeamComponent.teamIndex, true);
+            try
+            {
+                if (activator.TryGetComponent(out TeamComponent interactorTeamComponent))
+                {
+                    ItemQualityCounts extraShrineItem = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.ExtraShrineItem, interactorTeamComponent.teamIndex, true);
+                    if (extraShrineItem.TotalQualityCount > 0)
+                    {
+                        int maxPurchaseCountForCostIncrease;
+                        if (extraShrineItem.HighestQuality > QualityTier.Uncommon)
+                        {
+                            maxPurchaseCountForCostIncrease = 1;
+                        }
+                        else
+                        {
+                            maxPurchaseCountForCostIncrease = 2;
+                        }
 
-            int purchasesUntilPriceincreaseStops;
-            if (extraShrineItem.HighestQuality >= QualityTier.Rare) {
-                purchasesUntilPriceincreaseStops = 2;
-            } else if (extraShrineItem.HighestQuality == QualityTier.Uncommon) {
-                purchasesUntilPriceincreaseStops = 1;
-            } else {
-                orig(self, activator);
-                return;
+                        if (self.successfulPurchaseCount >= maxPurchaseCountForCostIncrease)
+                        {
+                            self.costMultiplierPerPurchase = 1;
+                        }
+                    }
+                }
             }
-
-            if (self.successfulPurchaseCount >= purchasesUntilPriceincreaseStops) {
-                self.costMultiplierPerPurchase = 1;
+            catch (Exception e)
+            {
+                Log.Error_NoCallerPrefix(e);
             }
 
             orig(self, activator);
