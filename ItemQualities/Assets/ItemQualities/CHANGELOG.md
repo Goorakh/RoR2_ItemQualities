@@ -24,7 +24,7 @@
 
 * Ghor's Tome:
     * Fixed quality buffs staying after losing the item.
-    * Decreased damage gained per 25 gold (maximum damage unchanged):
+    * Decreased damage gained per 25 gold (maximum damage increase unchanged):
         * Uncommon: 2% -> 1%
         * Rare: 3% -> 1.5%
         * Epic: 3.5% -> 2%
@@ -50,6 +50,15 @@
         * Rare: 1s -> 0.9s
         * Epic: 1s -> 0.8s
         * Legendary: 1s -> 0.7s
+
+* Warped Echo:
+    * Clarified that this item applies to 'on damage taken' effects, not 'on-hit enemy' effects.
+    * Fixed incorrect stacking in item descriptions.
+    * Increased 'on damage taken' repeat chance:
+        * Uncommon: 10% (+10% per stack) -> 30% (+30% per stack)
+        * Rare: 30% (+30% per stack) -> 60% (+60% per stack)
+        * Epic: 50% (+50% per stack) -> 1 (+1 per stack) guaranteed
+        * Legendary: 1 (+1 per stack) guaranteed -> 1 (+1 per stack) guaranteed and 50% (+50% per stack) for an additional repeat
 
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:
