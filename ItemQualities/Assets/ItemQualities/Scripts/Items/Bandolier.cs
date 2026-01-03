@@ -60,16 +60,17 @@ namespace ItemQualities.Items
                     bandolier = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Bandolier);
                 }
 
-                float extraSkillRestockChance = (10f * bandolier.UncommonCount) +
-                                                (25f * bandolier.RareCount) +
-                                                (50f * bandolier.EpicCount) +
-                                                (100f * bandolier.LegendaryCount);
-
-                int extraSkillRestocks = RollUtil.GetOverflowRoll(extraSkillRestockChance, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc));
-
-                if (extraSkillRestocks > 0 && bandolierObj.TryGetComponent(out BandolierQualityInfo bandolierQualityInfo))
+                if (bandolier.TotalQualityCount > 0 && RollUtil.CheckRoll(8f, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
                 {
-                    bandolierQualityInfo.ExtraSkillChargesServer = extraSkillRestocks;
+                    int extraSkillRestocks =    (3 * bandolier.UncommonCount) +
+                                                (6 * bandolier.RareCount) +
+                                                (10 * bandolier.EpicCount) +
+                                                (15 * bandolier.LegendaryCount);
+
+                    if (extraSkillRestocks > 0 && bandolierObj.TryGetComponent(out BandolierQualityInfo bandolierQualityInfo))
+                    {
+                        bandolierQualityInfo.ExtraSkillChargesServer = extraSkillRestocks;
+                    }
                 }
             }
         }

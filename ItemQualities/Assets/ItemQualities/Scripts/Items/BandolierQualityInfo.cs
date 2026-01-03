@@ -66,7 +66,7 @@ namespace ItemQualities.Items
                 if (genericSkill &&
                     genericSkill.skillDef &&
                     genericSkill.baseRechargeInterval > 0f &&
-                    (!genericSkill.skillDef.dontAllowPastMaxStocks || genericSkill.stock < genericSkill.maxStock))
+                    !genericSkill.skillDef.dontAllowPastMaxStocks)
                 {
                     skills.Add(genericSkill);
                 }
@@ -81,26 +81,10 @@ namespace ItemQualities.Items
                 return;
 
             Xoroshiro128Plus rng = new Xoroshiro128Plus(RoR2Application.rng.nextUlong);
-            for (int i = 0; i < extraSkillCharges; i++)
-            {
-                int skillIndex = rng.RangeInt(0, skills.Count);
-                GenericSkill skillToRestock = skills[skillIndex];
+            GenericSkill skillToRestock = rng.NextElementUniform(skills);
+            skillToRestock.stock += extraSkillCharges;
 
-                skillToRestock.stock++;
-
-                if (skillToRestock.stock >= skillToRestock.maxStock && skillToRestock.skillDef.dontAllowPastMaxStocks)
-                {
-                    skillToRestock.stock = skillToRestock.maxStock;
-                    skills.RemoveAt(skillIndex);
-
-                    if (skills.Count == 0)
-                        break;
-
-                    continue;
-                }
-
-                Log.Debug($"Added 1 stock to {Util.GetGameObjectHierarchyName(recipient)} {skillLocator.FindSkillSlot(skillToRestock)}");
-            }
+            Log.Debug($"Added {extraSkillCharges} stocks to {Util.GetGameObjectHierarchyName(recipient)} {skillLocator.FindSkillSlot(skillToRestock)}");
         }
     }
 }
