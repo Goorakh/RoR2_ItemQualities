@@ -1,6 +1,4 @@
-﻿using ItemQualities.Utilities.Extensions;
-using RoR2;
-using System;
+﻿using RoR2;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,60 +20,8 @@ namespace ItemQualities.Items
             }
 
             On.EntityStates.Missions.Goldshores.GoldshoresBossfight.SpawnBoss += GoldshoresBossfight_SpawnBoss;
-            On.RoR2.HoldoutZoneController.Start += HoldoutZoneController_Start;
 
             Stage.onServerStageBegin += onServerStageBegin;
-        }
-
-        private static void HoldoutZoneController_Start(On.RoR2.HoldoutZoneController.orig_Start orig, HoldoutZoneController self)
-        {
-            orig(self);
-            self.gameObject.AddComponent<LeptonController>();
-        }
-
-        public class LeptonController : MonoBehaviour 
-        {
-            HoldoutZoneController _holdoutZoneController;
-
-            private void Awake()
-            {
-                _holdoutZoneController = GetComponent<HoldoutZoneController>();
-            }
-
-            void OnEnable() 
-            {
-                _holdoutZoneController.calcChargeRate += ApplyRate;
-            }
-
-            void OnDisable()
-            {
-                _holdoutZoneController.calcChargeRate -= ApplyRate;
-            }
-
-            private void ApplyRate(ref float rate)
-            {
-                if (!_holdoutZoneController)
-                    return;
-
-                float rateMultiplier = 0;
-                foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(_holdoutZoneController.chargingTeam))
-                {
-                    if (!teamComponent.body || !teamComponent.body.isPlayerControlled || teamComponent.body.isRemoteOp || !teamComponent.body.inventory)
-                        continue;
-
-                    if (HoldoutZoneController.IsBodyInChargingRadius(_holdoutZoneController, transform.position, MathF.Pow(_holdoutZoneController.currentRadius, 2), teamComponent.body))
-                    {
-                        ItemQualityCounts tpHealingNova = teamComponent.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TPHealingNova);
-
-                        rateMultiplier += (tpHealingNova.UncommonCount * 0.4f) +
-                                          (tpHealingNova.RareCount * 0.8f) +
-                                          (tpHealingNova.EpicCount * 1.2f) +
-                                          (tpHealingNova.LegendaryCount * 1.6f);
-                    }
-                }
-
-                rate *= 1f + (rateMultiplier / HoldoutZoneController.CountLivingPlayers(_holdoutZoneController.chargingTeam));
-            }
         }
 
         static void GoldshoresBossfight_SpawnBoss(On.EntityStates.Missions.Goldshores.GoldshoresBossfight.orig_SpawnBoss orig, EntityStates.Missions.Goldshores.GoldshoresBossfight self)
@@ -86,13 +32,15 @@ namespace ItemQualities.Items
 
         static void onServerStageBegin(Stage stage)
         {
-            if (!NetworkServer.active || !stage) 
+            if (!NetworkServer.active || !stage)
                 return;
+
             SceneIndex sceneIndex = stage.sceneDef ? stage.sceneDef.sceneDefIndex : SceneIndex.Invalid;
             stage.StartCoroutine(tryInitializeStageNovaManagers(sceneIndex));
         }
 
-        static GameObject CreateHealNovaManager(BossGroup bossGroup, Transform parent, Vector3 position, float radius) {
+        static GameObject createHealNovaManager(BossGroup bossGroup, Transform parent, Vector3 position, float radius)
+        {
             GameObject healNovaManager = new GameObject("HealNovaManager");
             healNovaManager.transform.SetParent(parent);
             healNovaManager.transform.position = position;
@@ -129,29 +77,38 @@ namespace ItemQualities.Items
         static void tryInitializeHeartNovaManagers()
         {
             GameObject solusWebMissionController = GameObject.Find("SolusWebMissionController");
-            if (!solusWebMissionController) return;
-            GameObject SolusHeartSpawn = GameObject.Find("SolusHeartSpawn");
-            if (!SolusHeartSpawn) return;
+            if (!solusWebMissionController)
+                return;
 
-            Vector3 arenaCenterPosition = SolusHeartSpawn.transform.position;
+            GameObject solusHeartSpawn = GameObject.Find("SolusHeartSpawn");
+            if (!solusHeartSpawn)
+                return;
+
+            Vector3 arenaCenterPosition = solusHeartSpawn.transform.position;
 
             BossGroup bossGroup = solusWebMissionController.GetComponent<BossGroup>();
-            if (!bossGroup) return;
+            if (!bossGroup)
+                return;
 
-            CreateHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 150f);        
+            createHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 150f);
         }
 
         static void tryInitializeHauntNovaManagers()
         {
+            if (!SolutionalHauntReferences.singletonInstance)
+                return;
+
             GameObject arenaCenter = GameObject.Find("HOLDER2: Geo and Spawnpoints (prev ArenaCenter)");
-            if (!arenaCenter) return;
+            if (!arenaCenter)
+                return;
 
             Vector3 arenaCenterPosition = arenaCenter.transform.position;
 
             BossGroup bossGroup = SolutionalHauntReferences.singletonInstance.solusWingBossGroup;
-            if (!bossGroup) return;
+            if (!bossGroup)
+                return;
 
-            CreateHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 250f);
+            createHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 250f);
         }
 
         static void tryInitializeMoonNovaManagers()
@@ -178,7 +135,7 @@ namespace ItemQualities.Items
             {
                 foreach (BossGroup bossGroup in bossGroups)
                 {
-                    CreateHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 260f);
+                    createHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 260f);
                 }
             }
         }
@@ -229,7 +186,7 @@ namespace ItemQualities.Items
                         break;
                 }
 
-                CreateHealNovaManager(phaseBossGroup, arena.root.transform, arenaCenterPosition, 200f);
+                createHealNovaManager(phaseBossGroup, arena.root.transform, arenaCenterPosition, 200f);
             }
         }
 
@@ -269,7 +226,7 @@ namespace ItemQualities.Items
                         }
                     }
 
-                    CreateHealNovaManager(phaseBossGroup, phaseObject.transform, arenaCenterPosition, arenaRadius);
+                    createHealNovaManager(phaseBossGroup, phaseObject.transform, arenaCenterPosition, arenaRadius);
                 }
             }
         }
@@ -278,7 +235,7 @@ namespace ItemQualities.Items
         {
             if (combatEncounter && combatEncounter.TryGetComponent(out BossGroup bossGroup))
             {
-                CreateHealNovaManager(bossGroup, combatEncounter.transform, new Vector3(0f, -8.5f, 0f), 200f);
+                createHealNovaManager(bossGroup, combatEncounter.transform, new Vector3(0f, -8.5f, 0f), 200f);
             }
         }
 
@@ -290,7 +247,7 @@ namespace ItemQualities.Items
 
             if (scavLunarEncounter.TryGetComponent(out BossGroup scavLunarBossGroup))
             {
-                GameObject healNovaManager = CreateHealNovaManager(scavLunarBossGroup, scavLunarEncounter.transform, new Vector3(23.64539f, -6.5077f, 24.37448f), 300f);
+                GameObject healNovaManager = createHealNovaManager(scavLunarBossGroup, scavLunarEncounter.transform, new Vector3(23.64539f, -6.5077f, 24.37448f), 300f);
                 healNovaManager.transform.eulerAngles = new Vector3(0.7121587f, 0f, 4.222344f);
             }
         }

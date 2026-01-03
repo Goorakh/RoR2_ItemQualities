@@ -14,7 +14,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 namespace ItemQualities
 {
     [RequireComponent(typeof(TeamFilter))]
-    public class BossGroupHealNovaSpawner : NetworkBehaviour
+    public sealed class BossGroupHealNovaSpawner : NetworkBehaviour
     {
         static GameObject _pulsePrefab;
 
@@ -142,6 +142,20 @@ namespace ItemQualities
             pulseTeamFilter.teamIndex = _teamFilter.teamIndex;
 
             NetworkServer.Spawn(pulseObj);
+        }
+
+        [Server]
+        public void SetPositionServer(Vector3 position)
+        {
+            transform.position = position;
+
+            RpcSetPosition(position);
+        }
+
+        [ClientRpc]
+        void RpcSetPosition(Vector3 position)
+        {
+            transform.position = position;
         }
     }
 }
