@@ -14,19 +14,13 @@
 * New: Marks an enemy every 60 seconds for 10 seconds, deal bonus damage to marked enemies for every marked enemy killed.
 </details>
 
-<details>
-<summary>Bandolier rework</summary>
-
-* Temporary skill charges granted: 1 ->
-    * Uncommon: 3 (+3 per stack)
-    * Rare: 6 (+6 per stack)
-    * Epic: 10 (+10 per stack)
-    * Legendary: 15 (+15 per stack)
-* Temporary skill charge chance -> 8% (previously stacked with qualities)
-</details>
-
-* Power Elixir:
-    * Fixed quality effect not working properly.
+* Bandolier:
+    * Temporary skill charges granted: 1 ->
+        * Uncommon: 3 (+3 per stack)
+        * Rare: 6 (+6 per stack)
+        * Epic: 10 (+10 per stack)
+        * Legendary: 15 (+15 per stack)
+    * Temporary skill charge chance -> 8% (previously stacked with qualities)
 
 * Ghor's Tome:
     * Fixed quality buffs staying after losing the item.
@@ -39,6 +33,9 @@
 * Spare Drone Parts:
     * Fixed additional drones only spawning to half capacity.
     * Fixed drone spawn cooldown being wasted if a drone fails to spawn.
+
+* Power Elixir:
+    * Fixed quality effect not working properly.
 
 * Networked Suffering:
     * Fixed crystals taking aggro from player allies.
