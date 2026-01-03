@@ -36,9 +36,9 @@ namespace ItemQualities.Items
                 return;
 
             int healthPerKill = (2 * slug.UncommonCount) +
-                                (6 * slug.RareCount) +
-                                (12 * slug.EpicCount) +
-                                (20 * slug.LegendaryCount);
+                                (4 * slug.RareCount) +
+                                (8 * slug.EpicCount) +
+                                (12 * slug.LegendaryCount);
 
             int maxHealthIncrease = healthPerKill * 50;
 

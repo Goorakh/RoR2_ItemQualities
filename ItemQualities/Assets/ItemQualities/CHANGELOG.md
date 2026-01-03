@@ -30,10 +30,22 @@
         * Epic: 3.5% -> 2%
         * Legendary: 4% -> 3%
 
+* Cautios Slug:
+    * Decreased health gained per kill:
+        * Uncommon: Unchanged
+        * Rare: 6 (+6 per stack) -> 4 (+4 per stack)
+        * Epic: 12 (+12 per stack) -> 8 (+8 per stack)
+        * Legendary: 20 (+20 per stack) -> 12 (+12 per stack)
+    * Decreased maximum health increase:
+        * Uncommon: Unchanged
+        * Rare: 300 (+300 per stack) -> 200 (+200 per stack)
+        * Epic: 600 (+600 per stack) -> 400 (+400 per stack)
+        * Legendary: 1000 (+1000 per stack) -> 600 (+600 per stack)
+
 * Chance Doll:
-    * Stopped price scaling after some succesful rolls:
-        * Uncommon: 2 succesful rolls
-        * Rare and up: 1 succesful roll
+    * Now stops price scaling after succesful shrine hits:
+        * Uncommon: 2 succesful hit
+        * Rare and up: 1 succesful hit
 
 * Spare Drone Parts:
     * Fixed additional drones only spawning to half capacity.
