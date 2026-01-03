@@ -18,6 +18,8 @@
 
 * Fixed Quality Ghor's Tome buffs staying after losing the item.
 
+* Fixed additional drones from Quality Spare Drone Parts sometimes not spawning.
+
 * Fixed Networked Suffering crystals taking aggro from player allies.
 
 * Fixed Quality Ben's Raincoat not deflecting burn from fire elites.
