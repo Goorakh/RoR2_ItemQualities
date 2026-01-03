@@ -42,6 +42,15 @@
         * Epic: 600 (+600 per stack) -> 400 (+400 per stack)
         * Legendary: 1000 (+1000 per stack) -> 600 (+600 per stack)
 
+* Rose Buckler:
+    * Slightly reduced straight-line strictness.
+    * Bonus armor now lasts for 0.5 seconds instead of immediately ending after you stop sprinting along the line.
+    * Required duration for straight-line armor:
+        * Uncommon: 1s (Unchanged)
+        * Rare: 1s -> 0.9s
+        * Epic: 1s -> 0.8s
+        * Legendary: 1s -> 0.7s
+
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:
         * Uncommon: 2 succesful hit
