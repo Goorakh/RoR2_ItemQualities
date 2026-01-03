@@ -60,7 +60,7 @@ namespace ItemQualities.Items
                     bandolier = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Bandolier);
                 }
 
-                if (bandolier.TotalCount > 0 && RollUtil.CheckRoll(8f, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+                if (bandolier.TotalQualityCount > 0 && RollUtil.CheckRoll(8f, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
                 {
                     int extraSkillRestocks =    (3 * bandolier.UncommonCount) +
                                                 (6 * bandolier.RareCount) +
