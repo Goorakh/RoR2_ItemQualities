@@ -98,16 +98,16 @@
         "ITEM_BARRIERONKILL_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 
         "ITEM_EXTRASHRINEITEM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
-        "ITEM_EXTRASHRINEITEM_UNCOMMON_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
+        "ITEM_EXTRASHRINEITEM_UNCOMMON_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s). Stop <style=cIsDamage>price scaling</style> after <sprite name=\"Quality\"> <style=cIsDamage>2 succesful rolls</style>.",
 
         "ITEM_EXTRASHRINEITEM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
-        "ITEM_EXTRASHRINEITEM_RARE_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional times.",
+        "ITEM_EXTRASHRINEITEM_RARE_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional times. Stop <style=cIsDamage>price scaling</style> after <sprite name=\"Quality\"> <style=cIsDamage>1 succesful roll</style>.",
 
         "ITEM_EXTRASHRINEITEM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
-        "ITEM_EXTRASHRINEITEM_EPIC_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional times.",
+        "ITEM_EXTRASHRINEITEM_EPIC_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional times. Stop <style=cIsDamage>price scaling</style> after <sprite name=\"Quality\"> <style=cIsDamage>1 succesful roll</style>.",
 
         "ITEM_EXTRASHRINEITEM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
-        "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional times.",
+        "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional times. Stop <style=cIsDamage>price scaling</style> after <sprite name=\"Quality\"> <style=cIsDamage>1 succesful roll</style>.",
 
         "ITEM_DAGGER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
         "ITEM_DAGGER_UNCOMMON_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>4</style> <style=cStack>(+1 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
