@@ -32,10 +32,10 @@ namespace ItemQualities.Items
 
             if (primarySkillShuriken.TotalQualityCount > 0)
             {
-                float scaleMultAdd = (0.1f * primarySkillShuriken.UncommonCount) +
-                                     (0.3f * primarySkillShuriken.RareCount) +
-                                     (0.5f * primarySkillShuriken.EpicCount) +
-                                     (0.8f * primarySkillShuriken.LegendaryCount);
+                float scaleMultAdd = (0.3f * primarySkillShuriken.UncommonCount) +
+                                     (0.6f * primarySkillShuriken.RareCount) +
+                                     (1f * primarySkillShuriken.EpicCount) +
+                                     (1.5f * primarySkillShuriken.LegendaryCount);
 
                 if (scaleMultAdd > 0f)
                 {

@@ -19,6 +19,7 @@ namespace ItemQualities.Items
         static IEnumerator Init()
         {
             IL.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate;
+            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
 
             AsyncOperationHandle<GameObject> shurikenLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC1_PrimarySkillShuriken.ShurikenProjectile_prefab);
             AsyncOperationHandle<GameObject> shurikenGhostLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC1_PrimarySkillShuriken.ShurikenGhost_prefab);
@@ -95,6 +96,39 @@ namespace ItemQualities.Items
             static float getTotalShurikenReloadTime(float totalReloadTime, PrimarySkillShurikenBehavior shurikenBehavior)
             {
                 return getTotalReloadTime(totalReloadTime, shurikenBehavior ? shurikenBehavior.body : null);
+            }
+        }
+
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
+        {
+            if (damageReport == null)
+                return;
+            CharacterBody attackerBody = damageReport.attackerBody;
+            CharacterMaster attackerMaster = damageReport.attackerMaster;
+            if (!attackerMaster || !attackerBody || damageReport.damageInfo == null)
+                return;
+            Inventory inventory = attackerBody.inventory;
+            if (!inventory)
+                return;
+
+            ItemQualityCounts primarySkillShuriken = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken);
+
+            if (primarySkillShuriken.TotalQualityCount == 0)
+                return;
+
+            float regainShurikenChance = primarySkillShuriken.HighestQuality switch
+            {
+                QualityTier.Uncommon => 20,
+                QualityTier.Rare => 40,
+                QualityTier.Epic => 70,
+                QualityTier.Legendary => 100,
+                _ => 0
+            };
+
+            bool regainShuriken = RollUtil.CheckRoll(regainShurikenChance, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc));
+            if (regainShuriken)
+            {
+                attackerBody.AddBuff(DLC1Content.Buffs.PrimarySkillShurikenBuff);
             }
         }
     }
