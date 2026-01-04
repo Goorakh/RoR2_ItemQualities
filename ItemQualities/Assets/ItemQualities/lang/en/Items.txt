@@ -1181,16 +1181,16 @@
         "ITEM_DRONEWEAPONS_LEGENDARY_DESC" : "Gain <sprite name=\"Quality\"> <style=cIsDamage>5 <style=cStack>(+5 per stack)</style> Col. Dronemans</style>, that <style=cIsUtility>respawn</style> after <sprite name=\"Quality\"> <style=cIsUtility>1 second</style>. \nDrones gain <style=cIsDamage>+25%</style> <style=cStack>(+25% per stack)</style> attack speed and cooldown reduction. \nDrones gain <style=cIsDamage>10%</style> chance to fire a <style=cIsDamage>missile</style> on hit, dealing <style=cIsDamage>150%</style> TOTAL damage. \nDrones gain an <style=cIsDamage>automatic chain gun</style> that deals <style=cIsDamage>6x50%</style> damage, bouncing to <style=cIsDamage>2</style> enemies.",
 
         "ITEM_BARRAGEONBOSS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
-        "ITEM_BARRAGEONBOSS_UNCOMMON_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s).",
+        "ITEM_BARRAGEONBOSS_UNCOMMON_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s). An additional Shrine of the Mountain will appear on each stage.",
 
         "ITEM_BARRAGEONBOSS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
-        "ITEM_BARRAGEONBOSS_RARE_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s).",
+        "ITEM_BARRAGEONBOSS_RARE_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional time(s). An additional Shrine of the Mountain will appear on each stage.",
 
         "ITEM_BARRAGEONBOSS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
-        "ITEM_BARRAGEONBOSS_EPIC_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s).",
+        "ITEM_BARRAGEONBOSS_EPIC_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional time(s). An additional Shrine of the Mountain will appear on each stage.",
 
         "ITEM_BARRAGEONBOSS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of the Mountain can be activated more times.",
-        "ITEM_BARRAGEONBOSS_LEGENDARY_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s).",
+        "ITEM_BARRAGEONBOSS_LEGENDARY_DESC": "{0}\nShrines of the Mountain can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional time(s). An additional Shrine of the Mountain will appear on each stage.",
 
         "ITEM_CLOVERVOID_UNCOMMON_PICKUP": "Upgrades your items at the start of each stage, <sprite name=\"Quality\"> chance to upgrade quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
         "ITEM_CLOVERVOID_UNCOMMON_DESC": "<style=cIsUtility>Upgrades 3</style> <style=cStack>(+3 per stack)</style> random items to items of the next <style=cIsUtility>higher rarity</style> at the <style=cIsUtility>start of each stage</style>, <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> chance to also upgrade the <style=cIsUtility>quality</style> of items, up to a maximum of uncommon <sprite name=\"QualityUncommon\"> quality. <style=cIsVoid>Corrupts all 57 Leaf Clovers</style>.",
