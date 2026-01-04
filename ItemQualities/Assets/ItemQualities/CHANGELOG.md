@@ -86,6 +86,20 @@
         * Uncommon: 10 -> 12
         * Rare and up: Unchanged
 
+* Paul's Goat Hoof:
+    * Decreased movement speed gain:
+        * Uncommon: 28% (+28% per stack) -> 25% (+25% per stack)
+        * Rare: 49% (+49% per stack) -> 40% (+40% per stack)
+        * Epic: 70% (+70% per stack) -> 60% (+60% per stack)
+        * Legendary: 98% (+98% per stack) -> 75% (+75% per stack)
+
+* Energy Drink:
+    * Decreased sprint speed gain:
+        * Uncommon: 40% (+40% per stack) (Unchanged)
+        * Rare: 70% (+70% per stack) -> 50% (+50% per stack)
+        * Epic: 100% (+100% per stack) -> 65% (+65% per stack)
+        * Legendary: 150% (+150% per stack) -> 80% (+80% per stack)
+
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:
         * Uncommon: 2 succesful hit
