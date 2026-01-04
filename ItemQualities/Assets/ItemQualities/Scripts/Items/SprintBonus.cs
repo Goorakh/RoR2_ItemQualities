@@ -22,9 +22,9 @@ namespace ItemQualities.Items
             if (sender.isSprinting && sprintBonus.TotalQualityCount > 0)
             {
                 args.moveSpeedMultAdd += (((0.40f - 0.25f) * sprintBonus.UncommonCount) +
-                                          ((0.70f - 0.25f) * sprintBonus.RareCount) +
-                                          ((1.00f - 0.25f) * sprintBonus.EpicCount) +
-                                          ((1.50f - 0.25f) * sprintBonus.LegendaryCount)) / sender.sprintingSpeedMultiplier;
+                                          ((0.50f - 0.25f) * sprintBonus.RareCount) +
+                                          ((0.65f - 0.25f) * sprintBonus.EpicCount) +
+                                          ((0.80f - 0.25f) * sprintBonus.LegendaryCount)) / sender.sprintingSpeedMultiplier;
             }
         }
     }

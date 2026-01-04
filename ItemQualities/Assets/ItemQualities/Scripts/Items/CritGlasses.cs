@@ -20,10 +20,10 @@ namespace ItemQualities.Items
             ItemQualityCounts critGlasses = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.CritGlasses);
             if (critGlasses.TotalQualityCount > 0)
             {
-                args.critDamageMultAdd += (0.2f * critGlasses.UncommonCount) +
-                                          (0.4f * critGlasses.RareCount) +
-                                          (1.0f * critGlasses.EpicCount) +
-                                          (1.5f * critGlasses.LegendaryCount);
+                args.critDamageMultAdd += (0.15f * critGlasses.UncommonCount) +
+                                          (0.30f * critGlasses.RareCount) +
+                                          (0.80f * critGlasses.EpicCount) +
+                                          (1.20f * critGlasses.LegendaryCount);
             }
         }
     }

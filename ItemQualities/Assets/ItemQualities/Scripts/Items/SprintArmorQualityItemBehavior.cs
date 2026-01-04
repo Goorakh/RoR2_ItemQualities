@@ -1,6 +1,5 @@
 ﻿using RoR2;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -12,8 +11,9 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.SprintArmor;
         }
 
-        public const float MaxSprintDeviationDistance = 0.3f;
-        public const float RequiredSprintDuration = 1f;
+        public static readonly float MaxSprintDeviationDistance = 0.5f;
+
+        float _requiredSprintDuration = 1f;
 
         bool _wasSprinting = false;
 
@@ -23,26 +23,26 @@ namespace ItemQualities.Items
         void OnDisable()
         {
             updateSprinting(false);
-            setProvidingBuff(false);
         }
 
         void FixedUpdate()
         {
-            if (!NetworkServer.active)
-                return;
-
             updateSprinting(Body.isSprinting);
 
             if (Body.isSprinting)
             {
                 _sprintingStopwatch += Time.fixedDeltaTime;
+
                 if (Mathf.Abs(_sprintPlane.GetDistanceToPoint(Body.footPosition)) >= MaxSprintDeviationDistance)
                 {
                     restartSprintTracking();
                 }
-            }
 
-            setProvidingBuff(Body.isSprinting && _sprintingStopwatch >= RequiredSprintDuration);
+                if (_sprintingStopwatch >= _requiredSprintDuration)
+                {
+                    Body.AddTimedBuff(ItemQualitiesContent.Buffs.SprintArmorStrong, 0.5f);
+                }
+            }
         }
 
         void updateSprinting(bool isSprinting)
@@ -82,19 +82,33 @@ namespace ItemQualities.Items
             _sprintPlane = new Plane(Vector3.Cross(sprintDirection, Vector3.up), startPosition);
         }
 
-        void setProvidingBuff(bool providingBuff)
+        protected override void OnStacksChanged()
         {
-            if (providingBuff != Body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong))
+            base.OnStacksChanged();
+
+            float requiredSprintDuration;
+            switch (Stacks.HighestQuality)
             {
-                if (providingBuff)
-                {
-                    Body.AddBuff(ItemQualitiesContent.Buffs.SprintArmorStrong);
-                }
-                else
-                {
-                    Body.RemoveBuff(ItemQualitiesContent.Buffs.SprintArmorStrong);
-                }
+                case QualityTier.None:
+                case QualityTier.Uncommon:
+                    requiredSprintDuration = 1.0f;
+                    break;
+                case QualityTier.Rare:
+                    requiredSprintDuration = 0.9f;
+                    break;
+                case QualityTier.Epic:
+                    requiredSprintDuration = 0.8f;
+                    break;
+                case QualityTier.Legendary:
+                    requiredSprintDuration = 0.7f;
+                    break;
+                default:
+                    Log.Error($"Quality tier {Stacks.HighestQuality} is not implemented");
+                    requiredSprintDuration = 1f;
+                    break;
             }
+
+            _requiredSprintDuration = requiredSprintDuration;
         }
     }
 }

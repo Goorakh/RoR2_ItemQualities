@@ -85,17 +85,20 @@ namespace ItemQualities.Items
         void recalculateRadius()
         {
             Inventory ownerInventory = _ownerBody ? _ownerBody.inventory : null;
-            if (!ownerInventory)
-                return;
 
-            ItemQualityCounts sharedSuffering = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SharedSuffering);
+            ItemQualityCounts sharedSuffering = default;
+            if (ownerInventory)
+            {
+                sharedSuffering = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SharedSuffering);
+            }
+
             if (sharedSuffering.TotalQualityCount == 0)
                 sharedSuffering.UncommonCount = 1;
 
-            float radius = (15f * sharedSuffering.UncommonCount) +
-                           (20f * sharedSuffering.RareCount) +
-                           (25f * sharedSuffering.EpicCount) +
-                           (35f * sharedSuffering.LegendaryCount);
+            float radius = (25f * sharedSuffering.UncommonCount) +
+                           (35f * sharedSuffering.RareCount) +
+                           (50f * sharedSuffering.EpicCount) +
+                           (65f * sharedSuffering.LegendaryCount);
 
             if (_ownerBody)
             {

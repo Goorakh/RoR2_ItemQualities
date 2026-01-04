@@ -85,7 +85,7 @@ namespace ItemQualities.Items
             switch (Stacks.HighestQuality)
             {
                 case QualityTier.Uncommon:
-                    _maxHits = 10;
+                    _maxHits = 12;
                     break;
                 case QualityTier.Rare:
                     _maxHits = 15;

@@ -19,10 +19,10 @@ namespace ItemQualities.Items
 
             ItemQualityCounts hoof = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Hoof);
 
-            args.moveSpeedMultAdd += ((0.28f - 0.14f) * hoof.UncommonCount) +
-                                     ((0.49f - 0.14f) * hoof.RareCount) +
-                                     ((0.70f - 0.14f) * hoof.EpicCount) +
-                                     ((0.98f - 0.14f) * hoof.LegendaryCount);
+            args.moveSpeedMultAdd += ((0.25f - 0.14f) * hoof.UncommonCount) +
+                                     ((0.40f - 0.14f) * hoof.RareCount) +
+                                     ((0.60f - 0.14f) * hoof.EpicCount) +
+                                     ((0.75f - 0.14f) * hoof.LegendaryCount);
         }
     }
 }

@@ -357,8 +357,19 @@ namespace ItemQualities
 
         public void UpdateAllTemporaryVisualEffects()
         {
-            _body.UpdateSingleTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
-            _body.UpdateSingleTemporaryVisualEffect(ref _sprintArmorStrongEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.radius * 1.5f, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong));
+            updateTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
+            updateTemporaryVisualEffect(ref _sprintArmorStrongEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.radius * 1.5f, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong));
+
+            void updateTemporaryVisualEffect(ref TemporaryVisualEffect temporaryEffect, GameObject effectPrefab, float effectRadius, bool active)
+            {
+                _body.UpdateSingleTemporaryVisualEffect(ref temporaryEffect, effectPrefab, effectRadius, active);
+
+                // Fix temp effects not spawning if disabled and re-enabled within the exit duration
+                if (!active && temporaryEffect && temporaryEffect.visualState == TemporaryVisualEffect.VisualState.Exit)
+                {
+                    temporaryEffect = null;
+                }
+            }
         }
 
         public void OnQuailJumpAuthority()
