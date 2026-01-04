@@ -25,7 +25,13 @@ namespace ItemQualities.Buffs
                                          (0.6f * energized.EpicCount) +
                                          (1.0f * energized.LegendaryCount);
 
+                float cdrMult = (0.1f * energized.UncommonCount) +
+                                         (0.3f * energized.RareCount) +
+                                         (0.5f * energized.EpicCount) +
+                                         (0.9f * energized.LegendaryCount);
+
                 args.attackSpeedMultAdd += 0.7f + bonusAttackSpeed;
+                args.allSkills.cooldownReductionMultAdd += 0.1f + cdrMult;
             }
         }
     }
