@@ -114,6 +114,13 @@
         * Epic: +80% (+80% per stack) -> +100% (+100% per stack)
         * Legendary: +100% (+100% per stack) -> +150% (+150% per stack)
 
+* Lens-Maker's Glasses:
+    * Decreased crit damage:
+        * Uncommon: 20% (+20% per stack) -> 15% (+15% per stack)
+        * Rare: 40% (+40% per stack) -> 30% (+30% per stack)
+        * Epic: 100% (+100% per stack) -> 80% (+80% per stack)
+        * Legendary: 150% (+150% per stack) -> 120% (+120% per stack)
+
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:
         * Uncommon: 2 succesful hit
