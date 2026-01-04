@@ -31,23 +31,20 @@ namespace ItemQualities.Items
             if (damageReport?.damageInfo == null)
                 return;
 
-            if (damageReport.victimBody && damageReport.attackerBody && damageReport.attackerMaster && damageReport.attackerMaster.inventory)
+            if (damageReport.damageInfo.crit)
             {
-                if (damageReport.damageInfo.crit)
+                if (damageReport.victimBody && damageReport.attackerBody && damageReport.attackerMaster && damageReport.attackerMaster.inventory)
                 {
                     ItemQualityCounts strengthenBurn = damageReport.attackerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.StrengthenBurn);
 
                     if (strengthenBurn.TotalQualityCount > 0)
                     {
-                        float burnDamageCoefficient = (0.2f * strengthenBurn.UncommonCount) +
-                                                      (0.5f * strengthenBurn.RareCount) +
-                                                      (0.8f * strengthenBurn.EpicCount) +
-                                                      (1.0f * strengthenBurn.LegendaryCount);
+                        float burnDamageCoefficient = (0.1f * strengthenBurn.UncommonCount) +
+                                                      (0.2f * strengthenBurn.RareCount) +
+                                                      (0.3f * strengthenBurn.EpicCount) +
+                                                      (0.5f * strengthenBurn.LegendaryCount);
 
-                        int maxBurnStacks = (5 * strengthenBurn.UncommonCount) +
-                                            (10 * strengthenBurn.RareCount) +
-                                            (15 * strengthenBurn.EpicCount) +
-                                            (20 * strengthenBurn.LegendaryCount);
+                        uint maxBurnStacks = 5;
 
                         InflictDotInfo burnDotInfo = new InflictDotInfo
                         {
@@ -56,7 +53,7 @@ namespace ItemQualities.Items
                             dotIndex = DotController.DotIndex.Burn,
                             totalDamage = burnDamageCoefficient * damageReport.attackerBody.damage,
                             damageMultiplier = 1f,
-                            maxStacksFromAttacker = (uint)maxBurnStacks
+                            maxStacksFromAttacker = maxBurnStacks
                         };
 
                         if (damageReport.attackerMaster && damageReport.attackerMaster.inventory)

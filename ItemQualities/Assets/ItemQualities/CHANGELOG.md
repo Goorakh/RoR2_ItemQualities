@@ -60,6 +60,13 @@
         * Epic: 50% (+50% per stack) -> 1 (+1 per stack) guaranteed
         * Legendary: 1 (+1 per stack) guaranteed -> 1 (+1 per stack) guaranteed and 50% (+50% per stack) for an additional repeat
 
+* Ignition Tank:
+    * Reduced burn damage:
+        * Uncommon: 20% (+20% per stack) -> 10% (+10% per stack)
+        * Rare: 50% (+50% per stack) -> 20% (+20% per stack)
+        * Epic: 80% (+80% per stack) -> 30% (+30% per stack)
+        * Legendary: 100% (+100% per stack) -> 50% (+50% per stack)
+
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:
         * Uncommon: 2 succesful hit
