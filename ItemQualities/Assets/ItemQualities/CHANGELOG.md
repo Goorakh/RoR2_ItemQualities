@@ -43,7 +43,7 @@
         * Legendary: 100% (+90% per stack)
 
 * War Bonds:
-    * Each stage spawn an additional Shrine of the Mountain.
+    * At least one Shrine of the Mountain will appear every stage.
 
 * Spare Drone Parts:
     * Fixed additional drones only spawning to half capacity.

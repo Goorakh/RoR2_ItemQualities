@@ -1,58 +1,47 @@
-using HG.Coroutines;
-using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
-using ItemQualities.Utilities.Extensions;
+using MonoMod.Cil;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
-using System.Collections;
-using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
+using System;
 
 namespace ItemQualities.Items
 {
     static class BarrageOnBoss
     {
-        static SpawnCard _shrineBossPrefab;
-
         [SystemInitializer]
         static void Init()
         {
-            On.RoR2.Run.OnServerTeleporterPlaced += Run_OnServerTeleporterPlaced;
+            IL.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
         }
 
-        [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        private static void SceneDirector_PopulateScene(ILContext il)
         {
-            AsyncOperationHandle<SpawnCard> shrineBossLoad = AddressableUtil.LoadTempAssetAsync<SpawnCard>(RoR2_Base_ShrineBoss.iscShrineBoss_asset);
-
-            ParallelProgressCoroutine prefabsLoadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
-            prefabsLoadCoroutine.Add(shrineBossLoad);
-
-            yield return prefabsLoadCoroutine;
-
-            if (shrineBossLoad.Status != AsyncOperationStatus.Succeeded || !shrineBossLoad.Result)
+            ILLabel label = null;
+            ILCursor c = new ILCursor(il);
+            if (c.TryGotoNext(
+                    x => x.MatchLdsfld(typeof(DLC3Content.Artifacts), nameof(DLC3Content.Artifacts.Prestige)),
+                    x => x.MatchCallOrCallvirt(typeof(RunArtifactManager), nameof(RunArtifactManager.IsArtifactEnabled))
+                ) &&
+                c.TryGotoNext(MoveType.Before,
+                    x => x.MatchBrfalse(out label)
+                ))
             {
-                Log.Error($"Failed to load mountain shrine prefab: {shrineBossLoad.OperationException}");
-                yield break;
+                c.EmitDelegate<Func<bool, bool>>(checkWarBonds);
             }
-
-            _shrineBossPrefab = shrineBossLoad.Result;
+            else
+            {
+                Log.Error(il.Method.Name + " IL Hook failed!");
+                return;
+            }
         }
 
-        static void Run_OnServerTeleporterPlaced(On.RoR2.Run.orig_OnServerTeleporterPlaced orig, Run self, SceneDirector sceneDirector, GameObject teleporter)
+        private static bool checkWarBonds(bool forcespawn)
         {
-            Xoroshiro128Plus xoroshiro128Plus = new Xoroshiro128Plus(RoR2Application.rng.nextUlong);
-            foreach (CharacterMaster characterMaster in CharacterMaster.readOnlyInstancesList)
+            ItemQualityCounts barrageOnBoss = ItemQualityUtils.GetTeamItemCounts(ItemQualitiesContent.ItemQualityGroups.BarrageOnBoss, TeamIndex.Player, false);
+            if (barrageOnBoss.TotalQualityCount > 0)
             {
-                ItemQualityCounts barrageOnBoss = characterMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BarrageOnBoss);
-                if (barrageOnBoss.TotalQualityCount == 0)
-                    continue;
-
-                DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(_shrineBossPrefab, new DirectorPlacementRule
-                {
-                    placementMode = DirectorPlacementRule.PlacementMode.Random
-                }, xoroshiro128Plus));
+                return true;
             }
+            return forcespawn; 
         }
     }
 }
