@@ -67,6 +67,9 @@
         * Epic: 80% (+80% per stack) -> 30% (+30% per stack)
         * Legendary: 100% (+100% per stack) -> 50% (+50% per stack)
 
+* Bustling Fungus:
+    * Increased shield spawn delay: 0.25s -> 0.6s
+
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:
         * Uncommon: 2 succesful hit
