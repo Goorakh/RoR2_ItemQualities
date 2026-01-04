@@ -42,6 +42,18 @@
         * Epic: 60% (+50% per stack)
         * Legendary: 100% (+90% per stack)
 
+* Shuriken:
+    * Added chance to regain shuriken on kill:
+        * Uncommon: 20%
+        * Rare: 40%
+        * Epic: 70%
+        * Legendary: 100%
+    * Buffed shuriken size:
+        * Uncommon: 10% -> 30%
+        * Rare: 30% -> 60%
+        * Epic: 50% -> 100%
+        * Legendary: 80% -> 150%
+
 * Spare Drone Parts:
     * Fixed additional drones only spawning to half capacity.
     * Fixed drone spawn cooldown being wasted if a drone fails to spawn.
