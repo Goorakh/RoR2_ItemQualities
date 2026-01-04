@@ -1,5 +1,6 @@
 ﻿using ItemQualities.Utilities;
 using RoR2;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -39,12 +40,12 @@ namespace ItemQualities.Items
             {
                 ItemQualityCounts secondarySkillMagazine = Stacks;
 
-                float freeRestockChance = (10f * secondarySkillMagazine.UncommonCount) +
-                                          (20f * secondarySkillMagazine.RareCount) +
-                                          (35f * secondarySkillMagazine.EpicCount) +
-                                          (60f * secondarySkillMagazine.LegendaryCount);
+                float freeRestockChanceNormalized = 1f - (Mathf.Pow(1f - 0.15f, secondarySkillMagazine.UncommonCount) *
+                                                          Mathf.Pow(1f - 0.25f, secondarySkillMagazine.RareCount) *
+                                                          Mathf.Pow(1f - 0.40f, secondarySkillMagazine.EpicCount) *
+                                                          Mathf.Pow(1f - 0.60f, secondarySkillMagazine.LegendaryCount));
 
-                if (RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), Body.master, false))
+                if (RollUtil.CheckRoll(freeRestockChanceNormalized * 100f, Body.master, false))
                 {
                     skill.AddOneStock();
 

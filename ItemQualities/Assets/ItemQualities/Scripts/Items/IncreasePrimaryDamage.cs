@@ -94,10 +94,10 @@ namespace ItemQualities.Items
                     spawnPosition = hit.point;
                 }
 
-                float damageCoefficient = 6f + (4f * increasePrimaryDamage.UncommonCount) +
-                                               (6f * increasePrimaryDamage.RareCount) +
-                                               (8f * increasePrimaryDamage.EpicCount) +
-                                               (10f * increasePrimaryDamage.LegendaryCount);
+                float damageCoefficient = 4f + (8f * increasePrimaryDamage.UncommonCount) +
+                                               (12f * increasePrimaryDamage.RareCount) +
+                                               (14f * increasePrimaryDamage.EpicCount) +
+                                               (16f * increasePrimaryDamage.LegendaryCount);
 
                 ProcChainMask procChainMask = damageInfo.procChainMask;
                 procChainMask.AddModdedProc(ProcTypes.IncreasePrimaryDamage);

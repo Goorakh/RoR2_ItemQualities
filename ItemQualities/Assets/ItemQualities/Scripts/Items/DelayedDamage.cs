@@ -18,21 +18,11 @@ namespace ItemQualities.Items
 
         static void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damageInfo)
         {
-            bool invokedOrig = false;
-
             try
             {
                 CharacterBody victimBody = self ? self.body : null;
-
-                CharacterMaster victimMaster = null;
-                Inventory victimInventory = null;
-                if (victimBody)
-                {
-                    victimMaster = victimBody.master;
-                    victimInventory = victimBody.inventory;
-                }
-
-                DamageInfo[] repeatDamageInfos = Array.Empty<DamageInfo>();
+                CharacterMaster victimMaster = victimBody ? victimBody.master : null;
+                Inventory victimInventory = victimBody ? victimBody.inventory : null;
 
                 if (victimInventory)
                 {
@@ -43,15 +33,15 @@ namespace ItemQualities.Items
                         damageInfo.delayedDamageSecondHalf &&
                         !damageInfo.damageType.HasModdedDamageType(DamageTypes.ProcOnly))
                     {
-                        float repeatProcsChance = (10f * delayedDamage.UncommonCount) +
-                                                  (30f * delayedDamage.RareCount) +
-                                                  (50f * delayedDamage.EpicCount) +
-                                                  (100f * delayedDamage.LegendaryCount);
+                        float repeatProcsChance = (30f * delayedDamage.UncommonCount) +
+                                                  (60f * delayedDamage.RareCount) +
+                                                  (100f * delayedDamage.EpicCount) +
+                                                  (150f * delayedDamage.LegendaryCount);
 
-                        int repeatProcsCount = RollUtil.GetOverflowRoll(repeatProcsChance, victimBody ? victimBody.master : null, false);
+                        int repeatProcsCount = RollUtil.GetOverflowRoll(repeatProcsChance, victimMaster, false);
                         if (repeatProcsCount > 0)
                         {
-                            repeatDamageInfos = new DamageInfo[repeatProcsCount];
+                            DamageInfo[] repeatDamageInfos = new DamageInfo[repeatProcsCount];
                             for (int i = 0; i < repeatDamageInfos.Length; i++)
                             {
                                 DamageInfo repeatDamageInfo = damageInfo.ShallowCopy();
@@ -59,27 +49,18 @@ namespace ItemQualities.Items
                                 repeatDamageInfo.firstHitOfDelayedDamageSecondHalf = false;
                                 repeatDamageInfos[i] = repeatDamageInfo;
                             }
+
+                            self.StartCoroutine(inflictRepeatProcs(self, repeatDamageInfos));
                         }
                     }
-                }
-
-                invokedOrig = true;
-                orig(self, damageInfo);
-
-                if (repeatDamageInfos.Length > 0)
-                {
-                    self.StartCoroutine(inflictRepeatProcs(self, repeatDamageInfos));
                 }
             }
             catch (Exception e)
             {
                 Log.Error("Failed to execute repeat damage hook: " + e);
-
-                if (!invokedOrig)
-                {
-                    orig(self, damageInfo);
-                }
             }
+
+            orig(self, damageInfo);
         }
 
         static IEnumerator inflictRepeatProcs(HealthComponent victim, DamageInfo[] repeatDamageInfos)

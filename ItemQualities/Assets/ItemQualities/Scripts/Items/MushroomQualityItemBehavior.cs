@@ -132,10 +132,7 @@ namespace ItemQualities.Items
 
         void FixedUpdate()
         {
-            if (!NetworkServer.active)
-                return;
-
-            if (Body && Body.notMovingStopwatch >= 0.25f && Body.healthComponent && Body.healthComponent.alive)
+            if (Body && Body.notMovingStopwatch >= 0.6f && Body.healthComponent && Body.healthComponent.alive)
             {
                 if (!_shieldInstance)
                 {
