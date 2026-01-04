@@ -70,6 +70,14 @@
 * Bustling Fungus:
     * Increased shield spawn delay: 0.25s -> 0.6s
 
+* Luminous Shot:
+    * Fixed an error causing lightning storms to deal ~5x more damage than they were supposed to (lol).
+    * Increased (after effective 5x reduction above) storm TOTAL damage:
+        * Uncommon: 1000% (+400% per stack) -> 1200% (+800% per stack)
+        * Rare: 1200% (+600% per stack) -> 1600% (+1200% per stack)
+        * Epic: 1400% (+800% per stack) -> 1800% (+1400% per stack)
+        * Legendary: 1600% (+1000% per stack) -> 2000% (+1600% per stack)
+
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:
         * Uncommon: 2 succesful hit
