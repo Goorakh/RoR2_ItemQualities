@@ -121,6 +121,14 @@
         * Epic: 100% (+100% per stack) -> 80% (+80% per stack)
         * Legendary: 150% (+150% per stack) -> 120% (+120% per stack)
 
+* Networked Suffering:
+    * Fixed player allies targetting crystals.
+    * Increased crystal aoe radius:
+        * Uncommon: 15m (+15m per stack) -> 25m (+25m per stack)
+        * Rare: 20m (+20m per stack) -> 35m (+35m per stack)
+        * Epic: 25m (+25m per stack) -> 50m (+50m per stack)
+        * Legendary: 35m (+35m per stack) -> 65m (+65m per stack)
+
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:
         * Uncommon: 2 succesful hit
@@ -132,9 +140,6 @@
 
 * Power Elixir:
     * Fixed quality effect not working properly.
-
-* Networked Suffering:
-    * Fixed crystals taking aggro from player allies.
 
 * Ben's Raincoat:
     * Fixed not deflecting burn from fire elites.
