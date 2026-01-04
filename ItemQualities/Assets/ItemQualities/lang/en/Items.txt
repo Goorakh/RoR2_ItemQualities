@@ -808,17 +808,17 @@
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
 
-        "ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
-        "ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+80% <style=cStack>(+10% per stack)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+        "ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed and reduced skill cooldowns.",
+        "ITEM_ENERGIZEDONEQUIPMENTUSE_UNCOMMON_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+80% <style=cStack>(+10% per stack)</style> attack speed</style> and <style=cIsUtility>reduces skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>20% <style=cStack>(+10% per stack)</style></style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 
-        "ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
-        "ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+100% <style=cStack>(+30% per stack)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+        "ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed and reduced skill cooldowns.",
+        "ITEM_ENERGIZEDONEQUIPMENTUSE_RARE_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+100% <style=cStack>(+30% per stack)</style> attack speed</style> and <style=cIsUtility>reduces skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>40% <style=cStack>(+30% per stack)</style></style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 
-        "ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
-        "ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+130% <style=cStack>(+60% per stack)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+        "ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed and reduced skill cooldowns.",
+        "ITEM_ENERGIZEDONEQUIPMENTUSE_EPIC_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+140% <style=cStack>(+60% per stack)</style> attack speed</style> and <style=cIsUtility>reduces skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>60% <style=cStack>(+50% per stack)</style></style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 
-        "ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed.",
-        "ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+170% <style=cStack>(+100% per stack)</style> attack speed</style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
+        "ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_PICKUP": "Activating your Equipment gives you a burst of <sprite name=\"Quality\"> attack speed and reduced skill cooldowns.",
+        "ITEM_ENERGIZEDONEQUIPMENTUSE_LEGENDARY_DESC": "Activating your Equipment gives you <sprite name=\"Quality\"> <style=cIsDamage>+170% <style=cStack>(+100% per stack)</style> attack speed</style> and <style=cIsUtility>reduces skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>100% <style=cStack>(+90% per stack)</style></style> for <style=cIsDamage>8s</style> <style=cStack>(+4s per stack)</style>.",
 
         "ITEM_JUMPBOOST_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase speed when chaining jumps. Increase air control.",
         "ITEM_JUMPBOOST_UNCOMMON_DESC": "{0}\n<style=cIsUtility>Chained</style> jumps increase speed by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> per jump, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style>. Increases <style=cIsUtility>air control</style> when quail jumping by <sprite name=\"Quality\"> <style=cIsUtility>10%</style>",

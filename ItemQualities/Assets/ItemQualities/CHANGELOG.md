@@ -35,6 +35,13 @@
         * Uncommon: 2 succesful rolls
         * Rare and up: 1 succesful roll
 
+* War Horn:
+    * Added skill cooldown reduction on use:
+        * Uncommon: 20% (+10% per stack)
+        * Rare: 40% (+30% per stack)
+        * Epic: 60% (+50% per stack)
+        * Legendary: 100% (+90% per stack)
+
 * Spare Drone Parts:
     * Fixed additional drones only spawning to half capacity.
     * Fixed drone spawn cooldown being wasted if a drone fails to spawn.
