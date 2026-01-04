@@ -49,10 +49,10 @@
         * Epic: 70%
         * Legendary: 100%
     * Buffed shuriken size:
-        * Uncommon: 10% -> 30%
-        * Rare: 30% -> 60%
-        * Epic: 50% -> 100%
-        * Legendary: 80% -> 150%
+        * Uncommon: 10% (+10% per stack) -> 30% (+30% per stack)
+        * Rare: 30% (+30% per stack) -> 60% (+60% per stack)
+        * Epic: 50% (+50% per stack) -> 100% (+100% per stack)
+        * Legendary: 80% (+80% per stack) -> 150% (+150% per stack)
 
 * Spare Drone Parts:
     * Fixed additional drones only spawning to half capacity.
