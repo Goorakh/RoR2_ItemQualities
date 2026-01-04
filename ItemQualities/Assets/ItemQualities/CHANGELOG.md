@@ -77,6 +77,14 @@
         * Rare: 1200% (+600% per stack) -> 1600% (+1200% per stack)
         * Epic: 1400% (+800% per stack) -> 1800% (+1400% per stack)
         * Legendary: 1600% (+1000% per stack) -> 2000% (+1600% per stack)
+        
+* Delicate Watch
+    * Increased damage:
+        * Uncommon: 5% (+5% per stack) -> 7% (+7% per stack)
+        * Rare and up: Unchanged
+    * Maximum hits per stage:
+        * Uncommon: 10 -> 12
+        * Rare and up: Unchanged
 
 * Chance Doll:
     * Now stops price scaling after succesful shrine hits:

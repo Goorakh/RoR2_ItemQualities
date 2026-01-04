@@ -122,7 +122,7 @@
         "ITEM_DAGGER_LEGENDARY_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>10</style> <style=cStack>(+7 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
 
         "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Deal bonus damage until you are hit 10 times.",
-        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "{0}\nIncrease damage by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> if you have <style=cIsHealth>received</style> or <style=cIsHealing>blocked</style> damage fewer than <sprite name=\"Quality\"> <style=cIsHealth>10</style> times on a stage.",
+        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "{0}\nIncrease damage by <sprite name=\"Quality\"> <style=cIsDamage>7%</style> <style=cStack>(+7% per stack)</style> if you have <style=cIsHealth>received</style> or <style=cIsHealing>blocked</style> damage fewer than <sprite name=\"Quality\"> <style=cIsHealth>10</style> times on a stage.",
 
         "ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_PICKUP": "...well, it's still right <sprite name=\"Quality\"> thrice a day.",
         "ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_DESC": "{0}",

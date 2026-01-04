@@ -27,7 +27,7 @@ namespace ItemQualities.Items
                 BuffQualityCounts fragileDamageBonusBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff);
                 if (fragileDamageBonusBuff.TotalQualityCount > 0)
                 {
-                    float damageBonusPerBuff = (0.05f * fragileDamageBonus.UncommonCount) +
+                    float damageBonusPerBuff = (0.07f * fragileDamageBonus.UncommonCount) +
                                                (0.10f * fragileDamageBonus.RareCount) +
                                                (0.15f * fragileDamageBonus.EpicCount) +
                                                (0.20f * fragileDamageBonus.LegendaryCount);
