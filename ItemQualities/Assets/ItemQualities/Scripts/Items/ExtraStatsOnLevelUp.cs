@@ -127,7 +127,14 @@ namespace ItemQualities.Items
 
                     if (targetLevelExperience > currentLevelExperience)
                     {
-                        ExperienceManager.instance.AwardExperience(body.footPosition, body, targetLevelExperience - currentLevelExperience);
+                        ulong experienceToGive = targetLevelExperience - currentLevelExperience;
+
+                        if (body.teamComponent.teamIndex == TeamIndex.Player)
+                        {
+                            PrayerBeadsIgnoreXp.IgnoreXpGain(experienceToGive, ExperienceManager.maxOrbTravelTime + 0.2f);
+                        }
+
+                        ExperienceManager.instance.AwardExperience(body.footPosition, body, experienceToGive);
                     }
                 }
 
