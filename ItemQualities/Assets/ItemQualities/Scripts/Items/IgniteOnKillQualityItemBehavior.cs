@@ -47,12 +47,40 @@ namespace ItemQualities.Items
             Transform particles = _fireAuraPrefab.transform.Find("Particles");
             if (particles)
             {
-                setColor(particles, "Chunks");
-                setColor(particles, "Ring, Core");
-                setColor(particles, "Ring, Outer");
-                setColor(particles, "Ring, Procced");
-                setColor(particles, "SpinningSharpChunks");
-                setColor(particles, "Area");
+                Dictionary<Material, Material> materialCache = new Dictionary<Material, Material>();
+
+                setColor("Chunks");
+                setColor("Ring, Core");
+                setColor("Ring, Outer");
+                setColor("Ring, Procced");
+                setColor("SpinningSharpChunks");
+                setColor("Area");
+
+                Log.Debug($"Created {materialCache.Count} colored material(s)");
+
+                void setColor(string childName)
+                {
+                    Transform child = particles.Find(childName);
+                    if (child && child.TryGetComponent(out ParticleSystemRenderer particleSystemRenderer))
+                    {
+                        Material material = particleSystemRenderer.sharedMaterial;
+                        if (material)
+                        {
+                            if (!materialCache.TryGetValue(material, out Material redMaterial))
+                            {
+                                redMaterial = new Material(material);
+                                redMaterial.name = $"{material.name}_Red";
+
+                                redMaterial.SetColor(ShaderProperties._TintColor, new Color(1f, 0.1f, 0f));
+                                redMaterial.SetColor(ShaderProperties._Color, new Color(1f, 0.1f, 0f));
+
+                                materialCache.Add(material, redMaterial);
+                            }
+
+                            particleSystemRenderer.sharedMaterial = redMaterial;
+                        }
+                    }
+                }
             }
             else
             {
@@ -60,25 +88,6 @@ namespace ItemQualities.Items
             }
 
             args.ContentPack.networkedObjectPrefabs.Add(_fireAuraPrefab);
-        }
-
-        static void setColor(Transform particles, string childName)
-        {
-            Transform child = particles.Find(childName);
-            if (child && child.TryGetComponent(out ParticleSystemRenderer particleSystemRenderer))
-            {
-                Material material = particleSystemRenderer.sharedMaterial;
-                if (material)
-                {
-                    Material redMaterial = new Material(material);
-                    redMaterial.name = $"{material.name}_Red";
-
-                    redMaterial.SetColor(ShaderProperties._TintColor, new Color(1f, 0.1f, 0f));
-                    redMaterial.SetColor(ShaderProperties._Color, new Color(1f, 0.1f, 0f));
-
-                    particleSystemRenderer.sharedMaterial = redMaterial;
-                }
-            }
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
