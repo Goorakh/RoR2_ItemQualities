@@ -114,10 +114,10 @@ namespace ItemQualities.Items
                         Material goldMaterial = new Material(modelRenderer.sharedMaterial);
                         goldMaterial.name = "matBarrelGold";
                         goldMaterial.mainTexture = goldTexture;
-                        goldMaterial.SetFloat("_Smoothness", 0.9f);
-                        goldMaterial.SetFloat("_SpecularStrength", 0.3f);
-                        goldMaterial.SetFloat("_SpecularExponent", 2f);
-                        goldMaterial.SetInt("_FEON", 1);
+                        goldMaterial.SetFloat(ShaderProperties._Smoothness, 0.9f);
+                        goldMaterial.SetFloat(ShaderProperties._SpecularStrength, 0.3f);
+                        goldMaterial.SetFloat(ShaderProperties._SpecularExponent, 2f);
+                        goldMaterial.SetInt(ShaderProperties._FresnelEmissionEnabled, 1);
                         modelRenderer.sharedMaterial = goldMaterial;
                     }
                     else

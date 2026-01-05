@@ -9,7 +9,7 @@ using R2API;
 using RoR2;
 using RoR2.Items;
 using RoR2.Projectile;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2BepInExPack.GameAssetPaths.Version_1_39_0;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -104,8 +104,8 @@ namespace ItemQualities.Items
                 {
                     Material material = Material.Instantiate(matTimeCrystalSolidLoad.Result);
                     material.name = "matSharedSufferingOrb";
-                    material.SetColor("_Color", new Color32(75, 221, 164, 255));
-                    material.SetColor("_EmColor", new Color32(39, 93, 70, 255));
+                    material.SetColor(ShaderProperties._Color, new Color32(75, 221, 164, 255));
+                    material.SetColor(ShaderProperties._EmissionColor, new Color32(39, 93, 70, 255));
 
                     skinDef.skinDefParams.rendererInfos = new CharacterModel.RendererInfo[]
                     {
@@ -122,7 +122,7 @@ namespace ItemQualities.Items
                         new SkinDefParams.MeshReplacement
                         {
                             renderer = renderer,
-                            meshAddress = new AssetReferenceT<Mesh>(RoR2_Base_crystalworld.crystalworld_props_fbx + "[CrystalMeshLarge]")
+                            meshAddress = new AssetReferenceT<Mesh>(RoR2_Base_crystalworld.crystalworld_props_fbx_CrystalMeshLarge_)
                         }
                     };
 
