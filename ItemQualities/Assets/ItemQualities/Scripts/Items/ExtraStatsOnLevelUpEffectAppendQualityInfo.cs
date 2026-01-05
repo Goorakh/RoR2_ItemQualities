@@ -3,14 +3,12 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public class ExtraStatsOnLevelUpEffectAppendQualityInfo : MonoBehaviour
+    public sealed class ExtraStatsOnLevelUpEffectAppendQualityInfo : MonoBehaviour
     {
         [SystemInitializer]
         static void Init()
@@ -24,7 +22,7 @@ namespace ItemQualities.Items
         EffectComponent _effectComponent;
         MultiTextRiserController _textRiserController;
 
-        readonly List<string> _appendedTextRiserStrings = new List<string>();
+        List<string> _appendedTextRiserStrings;
 
         void Awake()
         {
@@ -44,53 +42,62 @@ namespace ItemQualities.Items
                 enabled = false;
                 return;
             }
+
+            _effectComponent.OnEffectComponentReset += onReset;
+
+            _appendedTextRiserStrings = ListPool<string>.RentCollection();
         }
 
-        void OnEnable()
+        void OnDestroy()
         {
-            StartCoroutine(appendQualityInfo());
+            _effectComponent.OnEffectComponentReset -= onReset;
+
+            _appendedTextRiserStrings = ListPool<string>.ReturnCollection(_appendedTextRiserStrings);
         }
 
-        void OnDisable()
+        void onReset(bool hasEffectData)
         {
-            StopAllCoroutines();
+            if (_appendedTextRiserStrings == null)
+                return;
 
             if (_appendedTextRiserStrings.Count > 0)
             {
-                List<string> textRiserStrings = _textRiserController.DisplayStrings.ToList();
+                using var _ = ListPool<string>.RentCollection(out List<string> textRiserStrings);
+                textRiserStrings.AddRange(_textRiserController.DisplayStrings);
 
                 foreach (string appendedString in _appendedTextRiserStrings)
                 {
                     textRiserStrings.Remove(appendedString);
                 }
 
-                _textRiserController.DisplayStrings = textRiserStrings.ToArray();
+                if (textRiserStrings.Count < _textRiserController.DisplayStrings.Length)
+                {
+                    _textRiserController.DisplayStrings = textRiserStrings.ToArray();
+                }
 
                 _appendedTextRiserStrings.Clear();
             }
-        }
 
-        IEnumerator appendQualityInfo()
-        {
-            yield return null;
-
-            (int playerLevelBonus, int ambientLevelPenalty) = ExtraStatsOnLevelUp.UnpackLevelBonuses(_effectComponent.effectData.genericUInt);
-
-            if (playerLevelBonus > 0)
+            if (hasEffectData)
             {
-                addTextRiserString(Language.GetStringFormatted("EXTRASTATSONLEVELUP_INCREASE_LEVEL", playerLevelBonus));
-            }
+                (int playerLevelBonus, int ambientLevelPenalty) = ExtraStatsOnLevelUp.UnpackLevelBonuses(_effectComponent.effectData.genericUInt);
 
-            if (ambientLevelPenalty > 0)
-            {
-                addTextRiserString(Language.GetStringFormatted("EXTRASTATSONLEVELUP_REDUCE_AMBIENT_LEVEL", ambientLevelPenalty));
-            }
-        }
+                if (playerLevelBonus > 0)
+                {
+                    addTextRiserString(Language.GetStringFormatted("EXTRASTATSONLEVELUP_INCREASE_LEVEL", playerLevelBonus));
+                }
 
-        void addTextRiserString(string str)
-        {
-            _appendedTextRiserStrings.Add(str);
-            ArrayUtils.ArrayAppend(ref _textRiserController.DisplayStrings, str);
+                if (ambientLevelPenalty > 0)
+                {
+                    addTextRiserString(Language.GetStringFormatted("EXTRASTATSONLEVELUP_REDUCE_AMBIENT_LEVEL", ambientLevelPenalty));
+                }
+
+                void addTextRiserString(string str)
+                {
+                    _appendedTextRiserStrings.Add(str);
+                    ArrayUtils.ArrayAppend(ref _textRiserController.DisplayStrings, str);
+                }
+            }
         }
     }
 }
