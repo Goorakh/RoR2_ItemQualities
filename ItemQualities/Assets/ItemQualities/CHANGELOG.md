@@ -101,6 +101,7 @@
         * Legendary: 150% (+150% per stack) -> 80% (+80% per stack)
 
 * Backup Magazine:
+    * Free recharge now triggers 'on skill cooldown' effects (Eclipse Lite).
     * Increased recharge chance:
         * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
         * Rare: 20% (+20% per stack) -> 25% (+25% per stack)
