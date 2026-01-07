@@ -44,7 +44,6 @@
         "Ak.Wwise.Api.WAAPI.dll",
         "AK.Wwise.Unity.Timeline.dll",
         "ShaderSwapper.dll",
-        "ReviveAPI.dll",
         "RiskOfOptions.dll"
     ],
     "autoReferenced": true,
