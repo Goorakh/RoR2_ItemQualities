@@ -172,6 +172,9 @@
 * Ben's Raincoat:
     * Fixed not deflecting burn from fire elites.
 
+* Hiker's Boots:
+    * Fixed quality effect not working on Blind Pests and Vultures.
+
 * Fixed some qualities not being sorted in logbook.
 
 * Fixed incompatibility with RiskyTweaks if `Frost Relic - Remove Bubble` config was enabled.

@@ -81,14 +81,17 @@ namespace ItemQualities.Items
             if (forceDownCount <= 0)
                 return;
 
-            Rigidbody victimRigidbody = damageReport.victim.GetComponent<Rigidbody>();
-            if (victimRigidbody && victimRigidbody.isKinematic)
+            IPhysMotor victimMotor = damageReport.victim.GetComponent<IPhysMotor>();
+            if (victimMotor is PseudoCharacterMotor)
                 return;
 
-            IPhysMotor victimMotor = damageReport.victim.GetComponent<IPhysMotor>();
+            bool hasMotor = victimMotor != null && (victimMotor as Behaviour) != null;
 
-            CharacterMotor victimCharacterMotor = victimMotor as CharacterMotor;
-            if (victimCharacterMotor && victimCharacterMotor.isGrounded)
+            Rigidbody victimRigidbody = damageReport.victim.GetComponent<Rigidbody>();
+            if ((!hasMotor || victimMotor is RigidbodyMotor) && victimRigidbody && victimRigidbody.isKinematic)
+                return;
+
+            if (hasMotor && victimMotor is CharacterMotor victimCharacterMotor && victimCharacterMotor.isGrounded)
                 return;
 
             float pushDownForce;
@@ -138,12 +141,12 @@ namespace ItemQualities.Items
             };
 
             bool appliedForce = false;
-            if (victimMotor != null)
+            if (hasMotor)
             {
                 victimMotor.ApplyForceImpulse(forceInfo);
                 appliedForce = true;
             }
-            else if (victimRigidbody)
+            else if (victimRigidbody && !victimRigidbody.isKinematic)
             {
                 victimRigidbody.AddForceWithInfo(forceInfo);
                 appliedForce = true;
