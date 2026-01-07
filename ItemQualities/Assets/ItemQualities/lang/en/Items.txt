@@ -1468,7 +1468,7 @@
         "ITEM_DUPLICATOR_LEGENDARY_DESC": "{0}\nAll <style=cIsTemporary>temporary items</style> are shared with your allies for <sprite name=\"Quality\"> <style=cIsUtility>150% <style=cStack>(+150% per stack)</style></style> of the <style=cIsTemporary>temporary item duration</style>.",
 
         "ITEM_EXPLODEONDEATH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_UNCOMMON_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>10% <style=cStack>(+10% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_UNCOMMON_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>15% <style=cStack>(+15% per stack)</style></style>.",
 
         "ITEM_EXPLODEONDEATH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
         "ITEM_EXPLODEONDEATH_RARE_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>25% <style=cStack>(+25% per stack)</style></style>.",

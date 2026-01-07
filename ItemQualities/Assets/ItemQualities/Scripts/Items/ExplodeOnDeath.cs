@@ -25,7 +25,7 @@ namespace ItemQualities.Items
                 ItemQualityCounts explodeOnDeath = attacker.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExplodeOnDeath);
                 if (explodeOnDeath.TotalQualityCount > 0)
                 {
-                    float radiusIncrease = (0.10f * explodeOnDeath.UncommonCount) +
+                    float radiusIncrease = (0.15f * explodeOnDeath.UncommonCount) +
                                            (0.25f * explodeOnDeath.RareCount) +
                                            (0.50f * explodeOnDeath.EpicCount) +
                                            (0.75f * explodeOnDeath.LegendaryCount);

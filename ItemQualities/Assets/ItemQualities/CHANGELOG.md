@@ -154,6 +154,11 @@
         * Epic: 50% (+50% per stack) -> 100% (+100% per stack)
         * Legendary: 80% (+80% per stack) -> 150% (+150% per stack)
 
+* Will-o'-the-wisp:
+    * Increased explosion size:
+        * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
+        * Rare and up: Unchanged
+
 * War Bonds:
     * At least one Shrine of the Mountain will appear every stage.
 
