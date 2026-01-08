@@ -101,7 +101,7 @@
         * Legendary: 150% (+150% per stack) -> 80% (+80% per stack)
 
 * Backup Magazine:
-    * Free recharge now triggers 'on skill cooldown' effects (Eclipse Lite).
+    * Free recharge now triggers 'on skill cooldown' effects (ie. Eclipse Lite).
     * Increased recharge chance:
         * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
         * Rare: 20% (+20% per stack) -> 25% (+25% per stack)
@@ -131,9 +131,9 @@
         * Legendary: 35m (+35m per stack) -> 65m (+65m per stack)
 
 * Chance Doll:
-    * Now stops price scaling after succesful shrine hits:
-        * Uncommon: 2 succesful hit
-        * Rare and up: 1 succesful hit
+    * Now stops price scaling after successful shrine hits:
+        * Uncommon: 2 successful hits
+        * Rare and up: 1 successful hit
 
 * War Horn:
     * Added skill cooldown reduction on use:
