@@ -30,7 +30,7 @@
         * Epic: 3.5% -> 2%
         * Legendary: 4% -> 3%
 
-* Cautios Slug:
+* Cautious Slug:
     * Decreased health gained per kill:
         * Uncommon: Unchanged
         * Rare: 6 (+6 per stack) -> 4 (+4 per stack)
