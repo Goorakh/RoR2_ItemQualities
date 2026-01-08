@@ -175,6 +175,8 @@
 * Hiker's Boots:
     * Fixed quality effect not working on Blind Pests and Vultures.
 
+* Fixed Quality 3D Printers sometimes printing the incorrect quality items if used repeatedly as soon as they finish.
+
 * Fixed Artifact of Command not showing all options for quality items.
 
 * Fixed some qualities not being sorted in logbook.
