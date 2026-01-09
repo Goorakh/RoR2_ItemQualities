@@ -6,19 +6,50 @@ namespace ItemQualities.Items
 {
     public sealed class MushroomBubbleController : MonoBehaviour
     {
+        GenericOwnership _genericOwnership;
+
+        IgnoredCollisionsProvider _ignoredCollisionsProvider;
+
         EntityStateMachine _stateMachine;
 
         void Awake()
         {
+            _genericOwnership = GetComponent<GenericOwnership>();
+            _ignoredCollisionsProvider = GetComponent<IgnoredCollisionsProvider>();
             _stateMachine = GetComponent<EntityStateMachine>();
+        }
 
-            if (TryGetComponent(out Deployable deployable))
+        void OnEnable()
+        {
+            if (_genericOwnership)
             {
-                deployable.onUndeploy.AddListener(UndeployImmediate);
+                _genericOwnership.onOwnerChanged += onOwnerChanged;
             }
-            else
+
+            refreshCollisionWhitelist();
+        }
+
+        void OnDisable()
+        {
+            if (_genericOwnership)
             {
-                Log.Error("Mushroom bubble is missing Deployable component");
+                _genericOwnership.onOwnerChanged -= onOwnerChanged;
+            }
+        }
+
+        void onOwnerChanged(GameObject newOwner)
+        {
+            refreshCollisionWhitelist();
+        }
+
+        void refreshCollisionWhitelist()
+        {
+            GameObject ownerObject = _genericOwnership ? _genericOwnership.ownerObject : null;
+            TeamIndex ownerTeam = TeamComponent.GetObjectTeam(ownerObject);
+
+            if (_ignoredCollisionsProvider)
+            {
+                _ignoredCollisionsProvider.CollisionWhitelistFilter = ownerTeam != TeamIndex.None ? new TeamObjectFilter(ownerTeam) { InvertFilter = true } : null;
             }
         }
 
