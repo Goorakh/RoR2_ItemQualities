@@ -106,14 +106,13 @@ namespace ItemQualities
             if ((newIgnoredColliders == null || newIgnoredColliders.Count == 0) && _ignoringCollisionsWith.Count == 0)
                 return;
 
+            _ignoringCollisionsWith.RemoveWhere(c => !c);
+
             using var _ = ListPool<Collider>.RentCollection(out List<Collider> previousIgnoredColliders);
 
             previousIgnoredColliders.EnsureCapacity(_ignoringCollisionsWith.Count);
             foreach (Collider collider in _ignoringCollisionsWith)
             {
-                if (!collider)
-                    continue;
-                
                 previousIgnoredColliders.Add(collider);
             }
 
