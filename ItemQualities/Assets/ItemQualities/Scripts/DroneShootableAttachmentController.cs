@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 namespace ItemQualities
 {
     [RequireComponent(typeof(NetworkedBodyAttachment))]
-    public sealed class DroneShootableAttachmentController : NetworkBehaviour, IOnKilledServerReceiver, IOnTakeDamageServerReceiver, INetworkedBodyAttachmentListener
+    public sealed class DroneShootableAttachmentController : NetworkBehaviour, IOnKilledServerReceiver, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver, INetworkedBodyAttachmentListener
     {
         NetworkedBodyAttachment _bodyAttachment;
 
@@ -188,40 +188,46 @@ namespace ItemQualities
             _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.positiveInfinity;
         }
 
+        void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
+        {
+            if (_bodyAttachment.attachedBody)
+            {
+                if (!damageInfo.damageType.IsDamageSourceSkillBased ||
+                    !damageInfo.attacker ||
+                    TeamComponent.GetObjectTeam(damageInfo.attacker) != _bodyAttachment.attachedBody.teamComponent.teamIndex)
+                {
+                    damageInfo.rejected = true;
+                }
+            }
+        }
+
         void IOnTakeDamageServerReceiver.OnTakeDamageServer(DamageReport damageReport)
         {
-            if (!_bodyAttachment.attachedBody)
-                return;
-
-            if (damageReport.damageInfo.damageType.IsDamageSourceSkillBased &&
-                damageReport.attackerTeamIndex == _bodyAttachment.attachedBody.teamComponent.teamIndex)
+            float damageToStore = Mathf.Min(_maxStoredDamage - _storedDamage, damageReport.damageDealt * _storedDamageMultiplier);
+            if (damageToStore > 0f)
             {
-                float damageToStore = Mathf.Min(_maxStoredDamage - _storedDamage, damageReport.damageDealt * _storedDamageMultiplier);
-                if (damageToStore > 0f)
+                _storedDamage += damageToStore;
+
+                float damageFraction = Mathf.Clamp01(_storedDamage / _maxStoredDamage);
+                float radius = Mathf.Lerp(_minRadius, _maxRadius, damageFraction);
+
+                if (HitEffectPrefab)
                 {
-                    _storedDamage += damageToStore;
-
-                    float damageFraction = Mathf.Clamp01(_storedDamage / _maxStoredDamage);
-                    float radius = Mathf.Lerp(_minRadius, _maxRadius, damageFraction);
-
-                    if (HitEffectPrefab)
+                    EffectManager.SpawnEffect(HitEffectPrefab, new EffectData
                     {
-                        EffectManager.SpawnEffect(HitEffectPrefab, new EffectData
-                        {
-                            origin = _bodyAttachment.attachedBody.corePosition,
-                            color = DamageColorGradient.Evaluate(damageFraction),
-                            scale = radius
-                        }, true);
-                    }
-
-                    if (damageFraction >= 1f)
-                    {
-                        _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.now;
-                    }
+                        origin = _bodyAttachment.attachedBody.corePosition,
+                        color = DamageColorGradient.Evaluate(damageFraction),
+                        scale = radius
+                    }, true);
                 }
 
-                _lastDamageTimeStamp = Run.FixedTimeStamp.now;
+                if (damageFraction >= 1f)
+                {
+                    _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.now;
+                }
             }
+
+            _lastDamageTimeStamp = Run.FixedTimeStamp.now;
         }
 
         void IOnKilledServerReceiver.OnKilledServer(DamageReport damageReport)

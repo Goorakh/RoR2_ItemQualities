@@ -1,4 +1,5 @@
 ﻿using AK.Wwise;
+using HG;
 using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
@@ -92,6 +93,10 @@ namespace ItemQualities.Items
             {
                 teamComponent._teamIndex = TeamIndex.Neutral;
             }
+
+            ProcDamageModifier procDamageModifier = droneShootableAttachmentPrefab.EnsureComponent<ProcDamageModifier>();
+            procDamageModifier.ProcCoefficientMultiplier = 0f;
+            procDamageModifier.DamageTypeToAdd = DamageType.Silent;
 
             GameObject.Destroy(droneShootableAttachmentPrefab.GetComponent<BuffWard>());
             GameObject.Destroy(droneBallShootableController);

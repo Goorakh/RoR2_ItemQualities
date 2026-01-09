@@ -125,6 +125,7 @@
 
 * Networked Suffering:
     * Fixed player allies targetting crystals.
+    * Procs can no longer happen from hitting Network Crystals.
     * Increased crystal aoe radius:
         * Uncommon: 15m (+15m per stack) -> 25m (+25m per stack)
         * Rare: 20m (+20m per stack) -> 35m (+35m per stack)
@@ -177,6 +178,8 @@
     * Fixed quality effect not working on Blind Pests and Vultures.
 
 * Box of Dynamite:
+    * Procs can no longer happen from hitting allied drones.
+    * Fixed attacks on allied drones that do not count towards stored damage showing damage numbers and playing hit sounds.
     * Fixed certain drones blocking their own attacks when this item was present.
     * Fixed allied drones sometimes attacking other drones after a player damaged it.
 
