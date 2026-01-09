@@ -68,6 +68,7 @@
         * Legendary: 100% (+100% per stack) -> 50% (+50% per stack)
 
 * Bustling Fungus:
+    * Allied attacks no longer collide with the outside of the shield.
     * Increased shield spawn delay: 0.25s -> 0.6s
 
 * Luminous Shot:
