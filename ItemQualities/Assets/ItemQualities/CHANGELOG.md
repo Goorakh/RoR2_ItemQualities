@@ -175,6 +175,10 @@
 * Hiker's Boots:
     * Fixed quality effect not working on Blind Pests and Vultures.
 
+* Box of Dynamite:
+    * Fixed certain drones blocking their own attacks when this item was present.
+    * Fixed allied drones sometimes attacking other drones after a player damaged it.
+
 * Fixed Quality 3D Printers sometimes printing the incorrect quality items if used repeatedly as soon as they finish.
 
 * Fixed Artifact of Command not showing all options for quality items.

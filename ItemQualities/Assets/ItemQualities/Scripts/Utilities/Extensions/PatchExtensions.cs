@@ -594,5 +594,11 @@ namespace ItemQualities.Utilities.Extensions
             instruction = instr;
             return true;
         }
+
+        public static bool MatchImplicitConversion<TFrom, TTo>(this Instruction instruction)
+        {
+            MethodInfo implicitConverterMethod = ReflectionUtil.FindImplicitConverter<TFrom, TTo>();
+            return implicitConverterMethod != null && instruction.MatchCallOrCallvirt(implicitConverterMethod);
+        }
     }
 }
