@@ -31,20 +31,7 @@ namespace ItemQualities
 
         public bool PassesFilter(ObjectCollisionManager collisionManager)
         {
-            if (collisionManager.Body && bodyPassesFilter(collisionManager.Body))
-            {
-                return true;
-            }
-
-            if (collisionManager.ProjectileController &&
-                collisionManager.ProjectileController.owner &&
-                collisionManager.ProjectileController.owner.TryGetComponent(out CharacterBody ownerBody) &&
-                bodyPassesFilter(ownerBody))
-            {
-                return true;
-            }
-
-            return false;
+            return collisionManager && (bodyPassesFilter(collisionManager.Body) || bodyPassesFilter(collisionManager.OwnerBody));
         }
 
         void onLeaveTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
