@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -8,6 +9,7 @@ using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -34,6 +36,8 @@ namespace ItemQualities
 
         static void appendQualityCraftableDefs(ref CraftableDef[] allCraftableDefs)
         {
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             if (_qualityCraftableDefs.Length > 0)
             {
                 foreach (CraftableDef qualityCraftableDef in _qualityCraftableDefs)
@@ -49,6 +53,7 @@ namespace ItemQualities
             // so we need to do this after PickupCatalog and IngredientTypeCatalog are initialized.
 
             List<CraftableDef> qualityCraftableDefs = new List<CraftableDef>(allCraftableDefs.Length * (int)QualityTier.Count);
+            int totalRecipeCount = 0;
 
             foreach (CraftableDef craftableDef in allCraftableDefs)
             {
@@ -107,7 +112,21 @@ namespace ItemQualities
 
                         if (validIngredients.Count > 0)
                         {
-                            possibleIngredientsBySlot[i] = validIngredients.ToArray();
+                            PickupIndex[] validIngredientsArray = validIngredients.ToArray();
+
+                            int orderedIndex = possibleIngredientsBySlot.BinarySearch(validIngredientsArray, CollectionComparer<PickupIndex>.SizeDescending);
+                            if (orderedIndex < 0)
+                            {
+                                orderedIndex = ~orderedIndex;
+                            }
+
+                            if (orderedIndex < possibleIngredientsBySlot.Length - 1 && possibleIngredientsBySlot[orderedIndex] != null)
+                            {
+                                // Shift all smaller elements forward in the array (discard last element, since it will always be unassigned because of the ordering)
+                                possibleIngredientsBySlot.Slice(orderedIndex, possibleIngredientsBySlot.Length - orderedIndex - 1).CopyTo(possibleIngredientsBySlot.Slice(orderedIndex + 1));
+                            }
+
+                            possibleIngredientsBySlot[orderedIndex] = validIngredientsArray;
                         }
                         else
                         {
@@ -179,7 +198,23 @@ namespace ItemQualities
 
                                 if (i > 0)
                                 {
-                                    slotIngredientIndices.Slice(0, i).Fill(0);
+                                    // For sequences with maximum values sorted in descending order, setting the previous values to the new incremented value like this skips all (unordered) duplicate pairs.
+
+                                    // Table of all elements iterated over for an input where the maximum value of the first element is 3, and the maximum of the second is 2. '---' indicates a permutation skipped by this method (duplicate):
+                                    // 0 0
+                                    // 1 0
+                                    // 2 0
+                                    // 3 0
+                                    // 0 1 ---
+                                    // 1 1
+                                    // 2 1
+                                    // 3 1
+                                    // 0 2 ---
+                                    // 1 2 ---
+                                    // 2 2
+                                    // 3 2
+
+                                    slotIngredientIndices.Slice(0, i).Fill(slotIngredientIndices[i]);
                                 }
 
                                 successfullyIncrementedIndex = true;
@@ -209,6 +244,8 @@ namespace ItemQualities
                                 qualityCraftableDef.recipes = qualityRecipes.ToArray();
 
                                 qualityCraftableDefs.Add(qualityCraftableDef);
+
+                                totalRecipeCount += qualityCraftableDef.recipes.Length;
                             }
                         }
                     }
@@ -222,9 +259,9 @@ namespace ItemQualities
                 int baseCraftableDefsCount = allCraftableDefs.Length;
                 Array.Resize(ref allCraftableDefs, baseCraftableDefsCount + qualityCraftableDefs.Count);
                 qualityCraftableDefs.CopyTo(allCraftableDefs, baseCraftableDefsCount);
-
-                Log.Debug($"Added {qualityCraftableDefs.Count} quality CraftableDef(s)");
             }
+
+            Log.Debug($"Added {qualityCraftableDefs.Count} quality CraftableDef(s) (total {totalRecipeCount} recipe(s)) ({stopwatch.Elapsed.TotalMilliseconds:F0}ms)");
         }
 
         static UnityEngine.Object getPickupDefObject(PickupIndex pickupIndex)
