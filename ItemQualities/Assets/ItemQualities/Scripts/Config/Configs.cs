@@ -12,17 +12,22 @@ namespace ItemQualities
 
         internal static void Init(ConfigFile configFile)
         {
+            configFile.SaveOnConfigSet = false;
+
             General.Init(configFile);
 
 #if DEBUG
             Debug.Init(configFile);
 #endif
+
+            configFile.SaveOnConfigSet = true;
+            configFile.Save();
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void InitRiskOfOptions()
         {
-            ModSettingsManager.SetModDescription("Settings for ItemQualities", ModGuid, ModName);
+            ModSettingsManager.SetModDescription("Settings for Quality", ModGuid, ModName);
 
             RoR2Application.onLoad += () =>
             {
