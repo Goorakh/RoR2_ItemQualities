@@ -114,7 +114,7 @@ namespace ItemQualities
                         {
                             PickupIndex[] validIngredientsArray = validIngredients.ToArray();
 
-                            int orderedIndex = possibleIngredientsBySlot.BinarySearch(validIngredientsArray, CollectionComparer<PickupIndex>.SizeDescending);
+                            int orderedIndex = possibleIngredientsBySlot.BinarySearch(validIngredientsArray, CollectionComparer.SizeDescending);
                             if (orderedIndex < 0)
                             {
                                 orderedIndex = ~orderedIndex;
