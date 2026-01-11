@@ -307,11 +307,6 @@ namespace ItemQualities
 
         void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
         {
-            if (MasterExtraStatsTracker)
-            {
-                MasterExtraStatsTracker.OnIncomingDamageServer(damageInfo);
-            }
-
             OnIncomingDamageServer?.Invoke(damageInfo);
         }
 
