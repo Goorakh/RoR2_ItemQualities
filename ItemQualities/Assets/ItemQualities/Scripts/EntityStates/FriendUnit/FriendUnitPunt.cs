@@ -125,6 +125,7 @@ namespace EntityStates.FriendUnit
             outer.SetNextState(new FriendUnitPuntImpact
             {
                 Punter = Punter,
+                ImpactPoint = movementHitInfo.hitPoint,
                 ImpactNormal = movementHitInfo.hitNormal,
                 ImpactVelocity = movementHitInfo.velocity,
                 DamageMultiplierFromSpeed = Mathf.Max(1f, movementHitInfo.velocity.magnitude / moveSpeedStat),

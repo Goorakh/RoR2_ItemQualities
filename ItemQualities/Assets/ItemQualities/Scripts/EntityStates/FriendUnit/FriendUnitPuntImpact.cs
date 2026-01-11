@@ -26,8 +26,15 @@ namespace EntityStates.FriendUnit
 
         public static string ImpactSoundString;
 
+        public static float ReturnVelocityMaxAngleDelta;
+
+        public static float ReturnVelocityMaxMagnitudeMultiplier = 1f;
+
         [NonSerialized]
         public GameObject Punter;
+
+        [NonSerialized]
+        public Vector3 ImpactPoint;
 
         [NonSerialized]
         public Vector3 ImpactNormal;
@@ -42,6 +49,7 @@ namespace EntityStates.FriendUnit
         {
             base.OnSerialize(writer);
             writer.Write(Punter);
+            writer.Write(ImpactPoint);
             writer.Write(ImpactNormal);
             writer.Write(ImpactVelocity);
             writer.Write(DamageMultiplierFromSpeed);
@@ -51,6 +59,7 @@ namespace EntityStates.FriendUnit
         {
             base.OnDeserialize(reader);
             Punter = reader.ReadGameObject();
+            ImpactPoint = reader.ReadVector3();
             ImpactNormal = reader.ReadVector3();
             ImpactVelocity = reader.ReadVector3();
             DamageMultiplierFromSpeed = reader.ReadSingle();
@@ -103,12 +112,12 @@ namespace EntityStates.FriendUnit
 
                 BlastAttack blastAttack = new BlastAttack
                 {
-                    position = characterBody.corePosition,
+                    position = ImpactPoint,
                     radius = blastRadius,
                     baseDamage = damageCoefficient * damageStat * DamageMultiplierFromSpeed,
                     damageType = new DamageTypeCombo(DamageType.Stun1s, DamageTypeExtended.Generic, DamageSource.Primary),
                     crit = RollCrit(),
-                    attacker = gameObject,
+                    attacker = Punter ? Punter : gameObject,
                     inflictor = gameObject,
                     attackerFiltering = AttackerFiltering.NeverHitSelf,
                     damageColorIndex = DamageColorIndex.Item,
@@ -130,7 +139,7 @@ namespace EntityStates.FriendUnit
             }
 
             Util.PlaySound(ImpactSoundString, gameObject);
-            EffectManager.SimpleImpactEffect(KineticAura.knockbackEffectPrefab, characterBody.corePosition, -ImpactNormal, false);
+            EffectManager.SimpleImpactEffect(KineticAura.knockbackEffectPrefab, ImpactPoint, -ImpactNormal, false);
 
             if (isAuthority)
             {
@@ -149,6 +158,24 @@ namespace EntityStates.FriendUnit
                 else
                 {
                     newVelocity = characterMotor.velocity * -ImpactBounciness;
+                }
+
+                if (Punter)
+                {
+                    Vector3 returnToPunterVelocity = Trajectory.CalculateInitialVelocityFromHSpeed(transform.position, Punter.transform.position, ImpactVelocity.magnitude);
+
+                    float magnitudeMultiplier = Mathf.Min(returnToPunterVelocity.magnitude / newVelocity.magnitude, ReturnVelocityMaxMagnitudeMultiplier);
+
+                    Quaternion returnToPunterRotation = Quaternion.identity;
+                    if (ReturnVelocityMaxAngleDelta > 0f)
+                    {
+                        returnToPunterRotation = Quaternion.FromToRotation(newVelocity, returnToPunterVelocity);
+                        returnToPunterRotation.ToAngleAxis(out float angle, out Vector3 rotationAxis);
+                        angle = Mathf.MoveTowardsAngle(0f, angle, ReturnVelocityMaxAngleDelta);
+                        returnToPunterRotation = Quaternion.AngleAxis(angle, rotationAxis);
+                    }
+
+                    newVelocity = returnToPunterRotation * newVelocity * magnitudeMultiplier;
                 }
 
                 characterMotor.ApplyForceImpulse(new PhysForceInfo

@@ -186,6 +186,10 @@
     * Fixed certain drones blocking their own attacks when this item was present.
     * Fixed allied drones sometimes attacking other drones after a player damaged it.
 
+* Orphaned Core:
+    * Buddy impact damage is now attributed to the player that launched it. (Can proc your items)
+    * Buddy is now has a slight aim to return to you after impacting something and bouncing off of it.
+
 * Fixed Quality 3D Printers sometimes printing the incorrect quality items if used repeatedly as soon as they finish.
 
 * Fixed Artifact of Command not showing all options for quality items.
