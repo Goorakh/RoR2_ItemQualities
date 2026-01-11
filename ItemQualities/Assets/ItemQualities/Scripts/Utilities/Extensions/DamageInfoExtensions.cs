@@ -1,0 +1,34 @@
+﻿using RoR2;
+using RoR2BepInExPack.Utilities;
+
+namespace ItemQualities.Utilities.Extensions
+{
+    static class DamageInfoExtensions
+    {
+        static readonly FixedConditionalWeakTable<DamageInfo, DamageInfoData> _damageInfoDataLookup = new FixedConditionalWeakTable<DamageInfo, DamageInfoData>();
+
+        [SystemInitializer]
+        static void Init()
+        {
+            On.RoR2.HealthComponent.ProcParry += HealthComponent_ProcParry;
+        }
+
+        static void HealthComponent_ProcParry(On.RoR2.HealthComponent.orig_ProcParry orig, HealthComponent self, DamageInfo damageInfo)
+        {
+            orig(self, damageInfo);
+
+            DamageInfoData damageInfoData = _damageInfoDataLookup.GetOrAddNew(damageInfo);
+            damageInfoData.Parried = true;
+        }
+
+        public static bool IsParried(this DamageInfo damageInfo)
+        {
+            return _damageInfoDataLookup.TryGetValue(damageInfo, out DamageInfoData damageInfoData) && damageInfoData.Parried;
+        }
+
+        sealed class DamageInfoData
+        {
+            public bool Parried;
+        }
+    }
+}
