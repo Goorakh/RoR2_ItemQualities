@@ -1,18 +1,10 @@
 ## 0.6.0
 
-<details>
-<summary>Crowbar rework</summary>
+* Crowbar rework:
+    * Store damage dealt to stunned enemies, deal stored damage when enemy regains control.
 
-* Old: Decrease damage increase threshold.
-* New: Builds up damage on stunned enemies, released when enemy regains control.
-</details>
-
-<details>
-<summary>Armor Piercing Rounds rework</summary>
-
-* Old: Mark enemies within the teleporter radius after boss. Deal bonus damage to marked enemies.
-* New: Marks an enemy every 60 seconds for 10 seconds, deal bonus damage to marked enemies for every marked enemy killed.
-</details>
+* Armor Piercing Rounds rework:
+    * Periodically marks an enemy for 10 seconds, deal bonus damage to marked enemies for every marked enemy killed.
 
 * Bandolier:
     * Temporary skill charges granted: 1 ->
