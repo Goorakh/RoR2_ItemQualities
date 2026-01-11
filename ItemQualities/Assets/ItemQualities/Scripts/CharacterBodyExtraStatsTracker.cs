@@ -35,8 +35,6 @@ namespace ItemQualities
 
         CharacterModel _cachedCharacterModel;
 
-        bool _statsDirty;
-
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
         TemporaryVisualEffect _sprintArmorStrongEffectInstance;
 
@@ -44,35 +42,11 @@ namespace ItemQualities
 
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
 
-        float _executeBossHealthFraction;
-        public float ExecuteBossHealthFraction
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _executeBossHealthFraction;
-            }
-        }
+        public float ExecuteBossHealthFraction { get; private set; }
 
-        float _stealthKitActivationThreshold = HealthComponent.lowHealthFraction;
-        public float StealthKitActivationThreshold
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _stealthKitActivationThreshold;
-            }
-        }
+        public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
 
-        float _airControlBonus = 1f;
-        public float AirControlBonus
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _airControlBonus;
-            }
-        }
+        public float AirControlBonus { get; private set; } = 1f;
 
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
 
@@ -139,8 +113,7 @@ namespace ItemQualities
 
         void OnEnable()
         {
-            recalculateExtraStats();
-            _body.onInventoryChanged += onBodyInventoryChanged;
+            _body.onRecalculateStats += onBodyRecalculateStats;
 
             if (_body.characterMotor)
             {
@@ -153,11 +126,13 @@ namespace ItemQualities
             }
 
             refreshModelReference(_body.modelLocator ? _body.modelLocator.modelTransform : null);
+
+            recalculateExtraStats();
         }
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onBodyInventoryChanged;
+            _body.onRecalculateStats -= onBodyRecalculateStats;
 
             if (_body.characterMotor)
             {
@@ -172,8 +147,6 @@ namespace ItemQualities
 
         void FixedUpdate()
         {
-            recalculateStatsIfNeeded();
-
             if (NetworkServer.active)
             {
                 if (!HasHadAnyQualityDeathMarkDebuffServer && DeathMark.HasAnyQualityDeathMarkDebuff(_body))
@@ -191,11 +164,6 @@ namespace ItemQualities
             }
 
             updateOverlays();
-        }
-
-        void onBodyInventoryChanged()
-        {
-            MarkAllStatsDirty();
         }
 
         void refreshModelReference(Transform modelTransform)
@@ -241,18 +209,9 @@ namespace ItemQualities
             setOverlay(ref _healCritBoostOverlay, ItemQualitiesContent.Materials.HealCritBoost, _body.HasBuff(ItemQualitiesContent.Buffs.HealCritBoost));
         }
 
-        public void MarkAllStatsDirty()
+        void onBodyRecalculateStats(CharacterBody body)
         {
-            _statsDirty = true;
-        }
-
-        void recalculateStatsIfNeeded()
-        {
-            if (_statsDirty)
-            {
-                _statsDirty = false;
-                recalculateExtraStats();
-            }
+            recalculateExtraStats();
         }
 
         void recalculateExtraStats()
@@ -267,7 +226,7 @@ namespace ItemQualities
                 jumpBoost = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
             }
 
-            _executeBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
+            ExecuteBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
                 (0.10f * executeLowHealthElite.UncommonCount) +
                 (0.15f * executeLowHealthElite.RareCount) +
                 (0.25f * executeLowHealthElite.EpicCount) +
@@ -279,7 +238,7 @@ namespace ItemQualities
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.50f, phasing.EpicCount);
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
 
-            _stealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
+            StealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
 
             float airControlBonus = 0f;
 
@@ -302,7 +261,7 @@ namespace ItemQualities
                 }
             }
 
-            _airControlBonus = airControlBonus;
+            AirControlBonus = airControlBonus;
         }
 
         void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
@@ -426,7 +385,7 @@ namespace ItemQualities
 
             if (changed)
             {
-                MarkAllStatsDirty();
+                _body.MarkAllStatsDirty();
             }
         }
     }
