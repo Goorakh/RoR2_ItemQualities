@@ -161,6 +161,9 @@
         * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
         * Rare and up: Unchanged
 
+* Tougher Times:
+    * Now counts blocks from any source, not just blocks by Tougher Times.
+
 * War Bonds:
     * At least one Shrine of the Mountain will appear every stage.
 
