@@ -22,7 +22,7 @@ using Path = System.IO.Path;
 
 namespace ItemQualities
 {
-    public class ItemQualitiesContent : IContentPackProvider
+    public sealed class ItemQualitiesContent : IContentPackProvider
     {
         readonly ExtendedContentPack _contentPack = new ExtendedContentPack();
 
