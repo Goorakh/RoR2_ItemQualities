@@ -322,7 +322,7 @@ namespace ItemQualities.Items
         }
 
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        public sealed class ItemGroupAssociationAttribute : SearchableAttribute
+        protected sealed class ItemGroupAssociationAttribute : SearchableAttribute
         {
             public new MethodInfo target => base.target as MethodInfo;
 
