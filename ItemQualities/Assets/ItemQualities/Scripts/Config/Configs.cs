@@ -8,7 +8,7 @@ namespace ItemQualities
     public static partial class Configs
     {
         const string ModGuid = ItemQualitiesPlugin.PluginGUID;
-        const string ModName = ItemQualitiesPlugin.PluginName;
+        const string ModName = "Quality";
 
         internal static void Init(ConfigFile configFile)
         {
