@@ -8,7 +8,7 @@ namespace ItemQualities
         [SystemInitializer]
         static void Init()
         {
-            foreach (TMP_SpriteAsset spriteAsset in ItemQualitiesContent.TMP_SpriteAssets)
+            foreach (TMP_SpriteAsset spriteAsset in ItemQualitiesContent.TMP_SpriteAssets.AllSpriteAssets)
             {
                 registerSpriteAsset(spriteAsset);
             }

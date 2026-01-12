@@ -31,8 +31,6 @@ namespace ItemQualities
         QualityContagiousItemHelper _qualityContagiousItemHelper;
         ProjectileExplosionEffectScaleFixHelper _projectileExplosionEffectScaleFixHelper;
 
-        internal static NamedAssetCollection<TMP_SpriteAsset> TMP_SpriteAssets = new NamedAssetCollection<TMP_SpriteAsset>(ContentPack.getScriptableObjectName);
-
         internal ItemQualitiesContent()
         {
         }
@@ -100,7 +98,8 @@ namespace ItemQualities
 
             populateTypeFields(typeof(Sprites), _contentPack.sprites);
 
-            TMP_SpriteAssets = _contentPack.spriteAssets;
+            populateTypeFields(typeof(TMP_SpriteAssets), _contentPack.spriteAssets, fieldName => "tmpspr");
+            TMP_SpriteAssets.AllSpriteAssets = new ReadOnlyCollection<TMP_SpriteAsset>(_contentPack.spriteAssets.ToArray());
 
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -844,6 +843,11 @@ namespace ItemQualities
         {
             [TargetAssetName("icon")]
             public static Sprite ModIcon;
+        }
+
+        public static class TMP_SpriteAssets
+        {
+            internal static IReadOnlyCollection<TMP_SpriteAsset> AllSpriteAssets = Array.Empty<TMP_SpriteAsset>();
         }
     }
 }
