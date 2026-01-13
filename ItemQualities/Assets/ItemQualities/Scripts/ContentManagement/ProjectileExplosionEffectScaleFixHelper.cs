@@ -35,59 +35,73 @@ namespace ItemQualities.ContentManagement
 
                         if (!_fixedExplosionEffectCache.TryGetValue(effectPrefab, out EffectDef scaleFixExplosionEffectDef))
                         {
-                            GameObject scaleFixExplosionEffectPrefab = effectPrefab.InstantiateClone($"{effectPrefab.name}_ScaleFix", false);
-                            effectComponent = scaleFixExplosionEffectPrefab.GetComponent<EffectComponent>();
-                            effectComponent.applyScale = true;
-
-                            if (scaleFixExplosionEffectPrefab.transform.childCount > 0)
+                            scaleFixExplosionEffectDef = TryCreateFixedScalingCopy(effectPrefab, defaultRadius);
+                            if (scaleFixExplosionEffectDef != null)
                             {
-                                GameObject scalerObj = new GameObject("Scaler");
-                                scalerObj.transform.SetParent(scaleFixExplosionEffectPrefab.transform);
-                                scalerObj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-                                scalerObj.transform.localScale = scaleFixExplosionEffectPrefab.transform.localScale * (1f / defaultRadius);
-
-                                for (int i = scaleFixExplosionEffectPrefab.transform.childCount - 1; i >= 0; i--)
-                                {
-                                    Transform child = scaleFixExplosionEffectPrefab.transform.GetChild(i);
-                                    if (child != scalerObj.transform)
-                                    {
-                                        child.SetParent(scalerObj.transform, false);
-                                        child.SetAsFirstSibling();
-                                    }
-                                }
-
-                                foreach (ParticleSystem particleSystem in scaleFixExplosionEffectPrefab.GetComponentsInChildren<ParticleSystem>(true))
-                                {
-                                    ParticleSystem.MainModule main = particleSystem.main;
-                                    switch (main.scalingMode)
-                                    {
-                                        case ParticleSystemScalingMode.Local:
-                                            Vector3 scale = particleSystem.transform.localScale * (1f / defaultRadius);
-                                            particleSystem.transform.SetParent(scaleFixExplosionEffectPrefab.transform, true);
-                                            particleSystem.transform.localScale = scale;
-
-                                            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
-                                            break;
-                                    }
-                                }
+                                _fixedExplosionEffectCache.Add(effectPrefab, scaleFixExplosionEffectDef);
                             }
-                            else
-                            {
-                                Log.Warning($"Scaled effect {effectPrefab.name} has no children, set prefab scale will be lost");
-                            }
-
-                            scaleFixExplosionEffectDef = new EffectDef(scaleFixExplosionEffectPrefab);
-                            _fixedExplosionEffectCache.Add(effectPrefab, scaleFixExplosionEffectDef);
                         }
 
-                        Log.Debug($"Replacing explosion effect {effectPrefab.name} on projectile {projectilePrefab.name}");
-                        effectPrefab = scaleFixExplosionEffectDef.prefab;
+                        if (scaleFixExplosionEffectDef != null)
+                        {
+                            Log.Debug($"Replacing explosion effect {effectPrefab.name} on projectile {projectilePrefab.name}");
+                            effectPrefab = scaleFixExplosionEffectDef.prefab;
+                        }
                     }
                 }
             }
 
             args.output.effectDefs.Add(_fixedExplosionEffectCache.Values.ToArray());
             Log.Debug($"Fixed {_fixedExplosionEffectCache.Count} projectile explosion effect(s)");
+        }
+
+        public static EffectDef TryCreateFixedScalingCopy(GameObject effectPrefab, float defaultRadius)
+        {
+            if (!effectPrefab || !effectPrefab.TryGetComponent(out EffectComponent effectComponent) || effectComponent.applyScale)
+                return null;
+
+            GameObject scaleFixExplosionEffectPrefab = effectPrefab.InstantiateClone($"{effectPrefab.name}_ScaleFix", false);
+            effectComponent = scaleFixExplosionEffectPrefab.GetComponent<EffectComponent>();
+            effectComponent.applyScale = true;
+
+            if (scaleFixExplosionEffectPrefab.transform.childCount > 0)
+            {
+                GameObject scalerObj = new GameObject("Scaler");
+                scalerObj.transform.SetParent(scaleFixExplosionEffectPrefab.transform);
+                scalerObj.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                scalerObj.transform.localScale = scaleFixExplosionEffectPrefab.transform.localScale * (1f / defaultRadius);
+
+                for (int i = scaleFixExplosionEffectPrefab.transform.childCount - 1; i >= 0; i--)
+                {
+                    Transform child = scaleFixExplosionEffectPrefab.transform.GetChild(i);
+                    if (child != scalerObj.transform)
+                    {
+                        child.SetParent(scalerObj.transform, false);
+                        child.SetAsFirstSibling();
+                    }
+                }
+
+                foreach (ParticleSystem particleSystem in scaleFixExplosionEffectPrefab.GetComponentsInChildren<ParticleSystem>(true))
+                {
+                    ParticleSystem.MainModule main = particleSystem.main;
+                    switch (main.scalingMode)
+                    {
+                        case ParticleSystemScalingMode.Local:
+                            Vector3 scale = particleSystem.transform.localScale * (1f / defaultRadius);
+                            particleSystem.transform.SetParent(scaleFixExplosionEffectPrefab.transform, true);
+                            particleSystem.transform.localScale = scale;
+
+                            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                Log.Warning($"Scaled effect {effectPrefab.name} has no children, set prefab scale will be lost");
+            }
+
+            return new EffectDef(scaleFixExplosionEffectPrefab);
         }
     }
 }

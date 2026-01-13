@@ -1,4 +1,8 @@
 ﻿using EntityStates;
+using HG.Coroutines;
+using HG.GeneralSerializer;
+using ItemQualities.ContentManagement;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -10,14 +14,18 @@ using RoR2.Items;
 using RoR2.Projectile;
 using RoR2.VoidRaidCrab;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
     static class ExplodeOnDeath
     {
+        static GameObject _banditSmokeBombScalingFixPrefab;
+
         public static float GetExplosionRadius(float radius, CharacterBody attacker)
         {
             if (attacker && attacker.inventory)
@@ -38,6 +46,50 @@ namespace ItemQualities.Items
             }
 
             return radius;
+        }
+
+        [ContentInitializer]
+        static IEnumerator LoadContent(ContentIntializerArgs args)
+        {
+            AsyncOperationHandle<GameObject> smokeBombPrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.Bandit2SmokeBomb_prefab);
+            AsyncOperationHandle<EntityStateConfiguration> stealthModeConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.EntityStates_Bandit2_StealthMode_asset);
+
+            ParallelProgressCoroutine loadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
+            loadCoroutine.Add(smokeBombPrefabLoad);
+            loadCoroutine.Add(stealthModeConfigurationLoad);
+
+            yield return loadCoroutine;
+
+            if (smokeBombPrefabLoad.AssertLoaded("Bandit2SmokeBomb") && stealthModeConfigurationLoad.AssertLoaded("EntityStates.Bandit2.StealthMode"))
+            {
+                float radiusValue = float.NaN;
+                foreach (SerializedField field in stealthModeConfigurationLoad.Result.serializedFieldsCollection.serializedFields)
+                {
+                    if (field.fieldName == nameof(EntityStates.Bandit2.StealthMode.blastAttackRadius))
+                    {
+                        try
+                        {
+                            radiusValue = (float)StringSerializer.Deserialize(typeof(float), field.fieldValue.stringValue);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error_NoCallerPrefix(e);
+                        }
+
+                        break;
+                    }
+                }
+
+                if (float.IsFinite(radiusValue))
+                {
+                    EffectDef smokebombFixedScaling = ProjectileExplosionEffectScaleFixHelper.TryCreateFixedScalingCopy(smokeBombPrefabLoad.Result, radiusValue);
+                    if (smokebombFixedScaling != null)
+                    {
+                        _banditSmokeBombScalingFixPrefab = smokebombFixedScaling.prefab;
+                        args.ContentPack.effectDefs.Add(smokebombFixedScaling);
+                    }
+                }
+            }
         }
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
@@ -114,6 +166,8 @@ namespace ItemQualities.Items
             IL.RoR2.WormBodyPositions2.FireImpactBlastAttack += getVisualBlastAttackRadiusManipulator(emitGetBodyComponentBody);
 
             On.RoR2.Projectile.DroneBallShootableController.Start += DroneBallShootableController_Start_ReplaceRadius;
+
+            IL.EntityStates.Bandit2.StealthMode.FireSmokebomb += StealthMode_FireSmokebomb_ReplaceRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -369,6 +423,62 @@ namespace ItemQualities.Items
             }
 
             orig(self);
+        }
+
+        static void StealthMode_FireSmokebomb_ReplaceRadius(ILContext il)
+        {
+            getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody).Invoke(il);
+
+            ILCursor c = new ILCursor(il);
+
+            ILLabel afterSpawnBlastEffectLabel = null;
+            if (!c.TryGotoNext(MoveType.AfterLabel,
+                               x => x.MatchLdsfld<EntityStates.Bandit2.StealthMode>(nameof(EntityStates.Bandit2.StealthMode.smokeBombEffectPrefab)),
+                               x => x.MatchImplicitConversion<UnityEngine.Object, bool>(),
+                               x => x.MatchBrfalse(out afterSpawnBlastEffectLabel)))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<EntityStates.Bandit2.StealthMode, bool>>(trySpawnEffectScaled);
+            c.Emit(OpCodes.Brtrue, afterSpawnBlastEffectLabel);
+
+            static bool trySpawnEffectScaled(EntityStates.Bandit2.StealthMode stealthMode)
+            {
+                if (!_banditSmokeBombScalingFixPrefab)
+                    return false;
+
+                CharacterBody body = stealthMode?.characterBody;
+                if (!body)
+                    return false;
+
+                float finalRadius = GetExplosionRadius(EntityStates.Bandit2.StealthMode.blastAttackRadius, body);
+                if (Mathf.Abs(finalRadius - EntityStates.Bandit2.StealthMode.blastAttackRadius) < 0.01f)
+                    return false;
+
+                ModelLocator modelLocator = stealthMode.modelLocator;
+                if (!modelLocator || !modelLocator.modelChildLocator)
+                    return false;
+
+                int smokeBombMuzzleIndex = modelLocator.modelChildLocator.FindChildIndex(EntityStates.Bandit2.StealthMode.smokeBombMuzzleString);
+                Transform smokeBombMuzzle = modelLocator.modelChildLocator.FindChild(smokeBombMuzzleIndex);
+                if (!smokeBombMuzzle)
+                    return false;
+
+                EffectData effectData = new EffectData
+                {
+                    origin = smokeBombMuzzle.position,
+                    scale = finalRadius
+                };
+
+                effectData.SetChildLocatorTransformReference(stealthMode.gameObject, smokeBombMuzzleIndex);
+
+                EffectManager.SpawnEffect(_banditSmokeBombScalingFixPrefab, effectData, false);
+
+                return true;
+            }
         }
 
         static ILContext.Manipulator groupManipulators(params ILContext.Manipulator[] manipulators)
