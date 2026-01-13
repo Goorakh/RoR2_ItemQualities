@@ -155,6 +155,7 @@
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
+    * Added AIBlacklist tag.
 
 * War Bonds:
     * At least one Shrine of the Mountain will appear every stage.
