@@ -37,21 +37,22 @@ namespace ItemQualities.Items
             _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
-        void Start()
-        {
-            refreshBuffCounts();
-        }
-
         void OnEnable()
         {
-            _bodyExtraStats.OnIncomingDamageServer += onIncomingDamageServer;
+            if (_bodyExtraStats.MasterExtraStatsTracker)
+            {
+                _bodyExtraStats.MasterExtraStatsTracker.OnStageDamageInstancesTakenCountChangedServer += onStageDamageInstancesTakenCountChangedServer;
+            }
 
             refreshBuffCounts();
         }
 
         void OnDisable()
         {
-            _bodyExtraStats.OnIncomingDamageServer -= onIncomingDamageServer;
+            if (_bodyExtraStats.MasterExtraStatsTracker)
+            {
+                _bodyExtraStats.MasterExtraStatsTracker.OnStageDamageInstancesTakenCountChangedServer -= onStageDamageInstancesTakenCountChangedServer;
+            }
 
             if (NetworkServer.active)
             {
@@ -68,12 +69,9 @@ namespace ItemQualities.Items
             }
         }
 
-        void onIncomingDamageServer(DamageInfo damageInfo)
+        void onStageDamageInstancesTakenCountChangedServer(CharacterMasterExtraStatsTracker _)
         {
-            if (damageInfo.damage > 0f && !damageInfo.delayedDamageSecondHalf)
-            {
-                _buffCountsDirty = true;
-            }
+            _buffCountsDirty = true;
         }
 
         protected override void OnStacksChanged()

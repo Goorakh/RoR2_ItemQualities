@@ -1,6 +1,7 @@
 ﻿using HG;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
+using System;
 using UnityEngine.Networking;
 
 namespace ItemQualities
@@ -32,6 +33,8 @@ namespace ItemQualities
 
         int _stageIncomingDamageInstanceCountServer;
         public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
+
+        public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
 
         void Awake()
         {
@@ -85,7 +88,11 @@ namespace ItemQualities
 
         void onServerStageBegin(Stage stage)
         {
-            _stageIncomingDamageInstanceCountServer = 0;
+            if (_stageIncomingDamageInstanceCountServer != 0)
+            {
+                _stageIncomingDamageInstanceCountServer = 0;
+                OnStageDamageInstancesTakenCountChangedServer?.Invoke(this);
+            }
         }
 
         void onIncomingDamageServer(DamageInfo damageInfo)
@@ -93,6 +100,7 @@ namespace ItemQualities
             if (damageInfo.damage > 0f && !damageInfo.delayedDamageSecondHalf)
             {
                 _stageIncomingDamageInstanceCountServer++;
+                OnStageDamageInstancesTakenCountChangedServer?.Invoke(this);
             }
         }
 
