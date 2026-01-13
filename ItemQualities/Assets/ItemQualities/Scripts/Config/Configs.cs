@@ -15,6 +15,7 @@ namespace ItemQualities
             configFile.SaveOnConfigSet = false;
 
             General.Init(configFile);
+            Interface.Init(configFile);
 
 #if DEBUG
             Debug.Init(configFile);
@@ -38,6 +39,7 @@ namespace ItemQualities
             };
 
             General.InitRiskOfOptions();
+            Interface.InitRiskOfOptions();
 
 #if DEBUG
             Debug.InitRiskOfOptions();
