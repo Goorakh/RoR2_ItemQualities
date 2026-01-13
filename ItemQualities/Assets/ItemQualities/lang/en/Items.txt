@@ -37,16 +37,16 @@
         "ITEM_SPRINTBONUS_LEGENDARY_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +80%.",
         "ITEM_SPRINTBONUS_LEGENDARY_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>80%</style> <style=cStack>(+80% per stack)</style>.",
 
-        "ITEM_SYRINGE_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+        "ITEM_SYRINGE_UNCOMMON_PICKUP": "Increase <sprite name=\"Quality\"> attack speed.",
         "ITEM_SYRINGE_UNCOMMON_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>30% <style=cStack>(+30% per stack)</style></style>.",
 
-        "ITEM_SYRINGE_RARE_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+        "ITEM_SYRINGE_RARE_PICKUP": "Increase <sprite name=\"Quality\"> attack speed.",
         "ITEM_SYRINGE_RARE_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>60% <style=cStack>(+60% per stack)</style></style>.",
 
-        "ITEM_SYRINGE_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+        "ITEM_SYRINGE_EPIC_PICKUP": "Increase <sprite name=\"Quality\"> attack speed.",
         "ITEM_SYRINGE_EPIC_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>105% <style=cStack>(+105% per stack)</style></style>.",
 
-        "ITEM_SYRINGE_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+        "ITEM_SYRINGE_LEGENDARY_PICKUP": "Increase <sprite name=\"Quality\"> attack speed.",
         "ITEM_SYRINGE_LEGENDARY_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style></style>.",
         
         "ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while outside of danger increase health temporarily.",
@@ -1048,16 +1048,16 @@
         "ITEM_CRITDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
         "ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style> chance to crit an additional time.",
 
-        "ITEM_INCREASEHEALING_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+        "ITEM_INCREASEHEALING_UNCOMMON_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_UNCOMMON_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+150%</style> <style=cStack>(+150% per stack)</style> more.",
 
-        "ITEM_INCREASEHEALING_RARE_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+        "ITEM_INCREASEHEALING_RARE_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_RARE_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+200%</style> <style=cStack>(+200% per stack)</style> more.",
 
-        "ITEM_INCREASEHEALING_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+        "ITEM_INCREASEHEALING_EPIC_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_EPIC_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+300%</style> <style=cStack>(+300% per stack)</style> more.",
 
-        "ITEM_INCREASEHEALING_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+        "ITEM_INCREASEHEALING_LEGENDARY_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_LEGENDARY_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+400%</style> <style=cStack>(+400% per stack)</style> more.",
     
         "ITEM_NOVAONHEAL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
