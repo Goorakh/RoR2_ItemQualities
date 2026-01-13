@@ -147,7 +147,8 @@ namespace ItemQualities.Items
 
             IL.RoR2.FireballVehicle.DetonateServer += getVisualBlastAttackRadiusManipulator(emitGetVehicleSeatPassengerBody);
 
-            IL.RoR2.FissureSlamCracksController.DetonateMeteor += getVisualBlastAttackRadiusManipulator(emitGetBodyComponentBody);
+            IL.RoR2.FissureSlamCracksController.DetonateMeteor += getVisualBlastAttackRadiusManipulator(emitGetFissureSlamCracksControllerOwnerBody);
+            IL.RoR2.FissureSlamCracksController.DoMeteorEffect += getSimpleEffectDataScaleManipulator(emitGetFissureSlamCracksControllerOwnerBody);
 
             IL.RoR2.GlobalEventManager.FrozenExplosion += getVisualBlastAttackRadiusManipulator(emitGetMethodParameterBody);
 
@@ -168,6 +169,8 @@ namespace ItemQualities.Items
             On.RoR2.Projectile.DroneBallShootableController.Start += DroneBallShootableController_Start_ReplaceRadius;
 
             IL.EntityStates.Bandit2.StealthMode.FireSmokebomb += StealthMode_FireSmokebomb_ReplaceRadius;
+
+            IL.RoR2.Projectile.ProjectileFunballBehavior.FixedUpdate += getVisualBlastAttackRadiusManipulator(emitGetProjectileOwner);
 
             RoR2Application.onLoad += onLoad;
         }
@@ -677,6 +680,19 @@ namespace ItemQualities.Items
             {
                 LegController legController = tryGetAsComponent<LegController>(component);
                 return legController ? legController.mainBody : null;
+            }
+        }
+
+        static void emitGetFissureSlamCracksControllerOwnerBody(ILCursor c)
+        {
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getBody);
+
+            static CharacterBody getBody(MonoBehaviour component)
+            {
+                FissureSlamCracksController fissureSlamCracksController = tryGetAsComponent<FissureSlamCracksController>(component);
+                GameObject owner = fissureSlamCracksController ? fissureSlamCracksController.owner : null;
+                return owner ? owner.GetComponent<CharacterBody>() : null;
             }
         }
 
