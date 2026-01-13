@@ -182,6 +182,8 @@
     * Buddy impact damage is now attributed to the player that launched it. (Can proc your items)
     * Buddy is now has a slight aim to return to you after impacting something and bouncing off of it.
 
+* Quality items are now automatically sorted and grouped together in your inventory to help item visibility, can be toggled in config.
+
 * Fixed Quality 3D Printers sometimes printing the incorrect quality items if used repeatedly as soon as they finish.
 
 * Fixed Artifact of Command not showing all options for quality items.
