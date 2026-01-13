@@ -188,6 +188,8 @@
 
 * Fixed some qualities not being sorted in logbook.
 
+* Fixed quality item descriptions not showing properly in languages other than English.
+
 * Fixed incompatibility with RiskyTweaks if `Frost Relic - Remove Bubble` config was enabled.
 
 <details>
