@@ -35,6 +35,8 @@ namespace ItemQualities
 
         CharacterModel _cachedCharacterModel;
 
+        MemoizedGetComponentCached<CharacterMasterExtraStatsTracker> _memoizedMasterExtraStatsComponent;
+
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
         TemporaryVisualEffect _sprintArmorStrongEffectInstance;
 
@@ -78,7 +80,7 @@ namespace ItemQualities
 
         public int EliteKillCount { get; private set; } = 0;
 
-        public CharacterMasterExtraStatsTracker MasterExtraStatsTracker { get; private set; }
+        public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _memoizedMasterExtraStatsComponent.Get(_body.masterObject);
 
         public event Action<DamageInfo> OnIncomingDamageServer;
 
@@ -96,14 +98,6 @@ namespace ItemQualities
             _body = GetComponent<CharacterBody>();
 
             ComponentCache.Add(gameObject, this);
-        }
-
-        void Start()
-        {
-            if (_body.master)
-            {
-                MasterExtraStatsTracker = _body.master.GetComponentCached<CharacterMasterExtraStatsTracker>();
-            }
         }
 
         void OnDestroy()
