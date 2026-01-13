@@ -328,6 +328,56 @@ namespace ItemQualities
 
             yield return baseAssetsParallelLoadCoroutine;
 
+            List<Language> tempLoadedLanguages = new List<Language>();
+            ParallelCoroutine languagesLoad = new ParallelCoroutine();
+
+            foreach (Language language in Language.GetAllLanguages())
+            {
+                if (!language.stringsLoaded)
+                {
+                    Language.LanguageLoaderCoroutine languageLoader = new Language.LanguageLoaderCoroutine(language);
+                    languagesLoad.Add(languageLoader.LoadStringsWithYield());
+                    tempLoadedLanguages.Add(language);
+                }
+            }
+
+            if (tempLoadedLanguages.Count > 0)
+            {
+                Log.Debug($"Loading strings from {tempLoadedLanguages.Count} language(s)");
+                yield return languagesLoad;
+            }
+
+            static void formatQualityNameTokens(string baseNameToken, string qualityNameToken, string qualityModifierToken)
+            {
+                if (string.IsNullOrEmpty(qualityNameToken) || !Language.IsTokenInvalid(qualityNameToken))
+                    return;
+                
+                foreach (Language language in Language.GetAllLanguages())
+                {
+                    string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseNameToken));
+                    LanguageAPI.Add(qualityNameToken, generatedQualityName, language.name);
+                }
+            }
+
+            static void formatQualityTokens(string baseToken, string qualityToken)
+            {
+                if (string.IsNullOrEmpty(qualityToken) || Language.IsTokenInvalid(qualityToken))
+                    return;
+
+                string fallbackQualityString = Language.english.GetLocalizedStringByToken(qualityToken);
+
+                foreach (Language language in Language.GetAllLanguages())
+                {
+                    string qualityString = language.TokenIsRegistered(qualityToken) ? language.GetLocalizedStringByToken(qualityToken) : fallbackQualityString;
+
+                    if (qualityString.Contains("{0}"))
+                    {
+                        qualityString = string.Format(qualityString, language.GetLocalizedStringByToken(baseToken));
+                        LanguageAPI.Add(qualityToken, qualityString, language.name);
+                    }
+                }
+            }
+
             foreach (ItemQualityGroup itemQualityGroup in _allItemQualityGroups)
             {
                 ItemDef baseItem = ItemCatalog.GetItemDef(itemQualityGroup.BaseItemIndex);
@@ -356,42 +406,10 @@ namespace ItemQualities
                         qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
                     }
 
-                    if (!string.IsNullOrEmpty(item.nameToken) && Language.IsTokenInvalid(item.nameToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseItem.nameToken));
-                            LanguageAPI.Add(item.nameToken, generatedQualityName, language.name);
-                        }
-                    }
+                    formatQualityNameTokens(baseItem.nameToken, item.nameToken, qualityModifierToken);
 
-                    if (!string.IsNullOrEmpty(item.pickupToken) && !Language.IsTokenInvalid(item.pickupToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string pickupString = language.GetLocalizedStringByToken(item.pickupToken);
-
-                            if (pickupString.Contains("{0}"))
-                            {
-                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseItem.pickupToken));
-                                LanguageAPI.Add(item.pickupToken, pickupString, language.name);
-                            }
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(item.descriptionToken) && !Language.IsTokenInvalid(item.descriptionToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string pickupString = language.GetLocalizedStringByToken(item.descriptionToken);
-
-                            if (pickupString.Contains("{0}"))
-                            {
-                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseItem.descriptionToken));
-                                LanguageAPI.Add(item.descriptionToken, pickupString, language.name);
-                            }
-                        }
-                    }
+                    formatQualityTokens(baseItem.pickupToken, item.pickupToken);
+                    formatQualityTokens(baseItem.descriptionToken, item.descriptionToken);
                 }
             }
 
@@ -414,43 +432,16 @@ namespace ItemQualities
                     string qualityTierName = qualityTier.ToString().ToUpper();
                     string qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
 
-                    if (!string.IsNullOrEmpty(equipment.nameToken) && Language.IsTokenInvalid(equipment.nameToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseEquipment.nameToken));
-                            LanguageAPI.Add(equipment.nameToken, generatedQualityName, language.name);
-                        }
-                    }
+                    formatQualityNameTokens(baseEquipment.nameToken, equipment.nameToken, qualityModifierToken);
 
-                    if (!string.IsNullOrEmpty(equipment.pickupToken) && !Language.IsTokenInvalid(equipment.pickupToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string pickupString = language.GetLocalizedStringByToken(equipment.pickupToken);
-
-                            if (pickupString.Contains("{0}"))
-                            {
-                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseEquipment.pickupToken));
-                                LanguageAPI.Add(equipment.pickupToken, pickupString, language.name);
-                            }
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(equipment.descriptionToken) && !Language.IsTokenInvalid(equipment.descriptionToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string pickupString = language.GetLocalizedStringByToken(equipment.descriptionToken);
-
-                            if (pickupString.Contains("{0}"))
-                            {
-                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseEquipment.descriptionToken));
-                                LanguageAPI.Add(equipment.descriptionToken, pickupString, language.name);
-                            }
-                        }
-                    }
+                    formatQualityTokens(baseEquipment.pickupToken, equipment.pickupToken);
+                    formatQualityTokens(baseEquipment.descriptionToken, equipment.descriptionToken);
                 }
+            }
+
+            foreach (Language language in tempLoadedLanguages)
+            {
+                language.UnloadStrings();
             }
         }
 
