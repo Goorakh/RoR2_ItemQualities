@@ -41,7 +41,7 @@ namespace ItemQualities.ContentManagement
                 yield break;
             }
 
-            using PartitionedProgress totalProgress = new PartitionedProgress(args.ProgressReceiver);
+            PartitionedProgress totalProgress = new PartitionedProgress(args.ProgressReceiver);
             IProgress<float> loadContentProgress = totalProgress.AddPartition();
             IProgress<float> generateAssetsProgress = totalProgress.AddPartition();
 

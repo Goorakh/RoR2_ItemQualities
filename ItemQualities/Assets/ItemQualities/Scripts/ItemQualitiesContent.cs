@@ -47,7 +47,7 @@ namespace ItemQualities
 
         public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
         {
-            using PartitionedProgress partitionedProgress = new PartitionedProgress(args.progressReceiver);
+            PartitionedProgress partitionedProgress = new PartitionedProgress(args.progressReceiver);
             IProgress<float> loadContentProgress = partitionedProgress.AddPartition(1f);
             IProgress<float> finalizeContentProgress = partitionedProgress.AddPartition(1f);
 
@@ -114,7 +114,7 @@ namespace ItemQualities
                 throw new FileNotFoundException("Could not find ItemQualities assetbundle file");
             }
 
-            using PartitionedProgress totalProgress = new PartitionedProgress(progressReceiver);
+            PartitionedProgress totalProgress = new PartitionedProgress(progressReceiver);
             IProgress<float> loadAssetBundleProgress = totalProgress.AddPartition(0.5f);
             IProgress<float> loadAssetsProgress = totalProgress.AddPartition();
             IProgress<float> generateAssetsProgress = totalProgress.AddPartition();
