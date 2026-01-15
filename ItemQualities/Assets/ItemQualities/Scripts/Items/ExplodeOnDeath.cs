@@ -153,6 +153,15 @@ namespace ItemQualities.Items
             beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Plating_prefab);
             beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Shocking_prefab);
 
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.FalseSonMeridiansWillIndicator_prefab).OnSuccess(meridiansWillIndicator =>
+            {
+                meridiansWillIndicator.EnsureComponent<GenericOwnership>();
+
+                ExplosionRangeIndicatorScaler explosionRangeIndicatorScaler = meridiansWillIndicator.EnsureComponent<ExplosionRangeIndicatorScaler>();
+                explosionRangeIndicatorScaler.ExplosionInfoIndex = ExplosionInfoIndex.MeridiansWill;
+                explosionRangeIndicatorScaler.IndicatorTransforms = new Transform[] { meridiansWillIndicator.transform };
+            });
+
             IL.EntityStates.Chef.RolyPoly.GearShift += getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody, false);
 
             IL.EntityStates.Chef.YesChef.OnEnter += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);
@@ -215,6 +224,11 @@ namespace ItemQualities.Items
 
             IL.EntityStates.FalseSon.ChargedClubSwing.DoBlastAttack += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
             IL.EntityStates.FalseSon.ChargedClubSwing.InitializeBlastAttackAsCharged += ChargedClubSwing_InitializeBlastAttackAsCharged_ReplaceEffectRadius;
+
+            IL.EntityStates.FalseSon.MeridiansWillFire.GetHurtBoxs += getSimpleSphereSearchRadiusManipulator(emitGetEntityStateAttackerBody);
+
+            On.EntityStates.FalseSon.MeridiansWillAim.OnEnter += MeridiansWillAim_OnEnter_SetIndicatorOwner;
+            On.EntityStates.FalseSon.MeridiansWillAim.OnExit += MeridiansWillAim_OnExit_UnsetIndicatorOwner;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -588,6 +602,40 @@ namespace ItemQualities.Items
 
             emitGetEntityStateAttackerBody(c);
             c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
+        }
+
+        static void MeridiansWillAim_OnEnter_SetIndicatorOwner(On.EntityStates.FalseSon.MeridiansWillAim.orig_OnEnter orig, EntityStates.FalseSon.MeridiansWillAim self)
+        {
+            orig(self);
+
+            try
+            {
+                if (self?.areaIndicatorInstance && self.areaIndicatorInstance.TryGetComponent(out GenericOwnership areaIndicatorOwnership))
+                {
+                    areaIndicatorOwnership.ownerObject = self.gameObject;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error_NoCallerPrefix(e);
+            }
+        }
+
+        static void MeridiansWillAim_OnExit_UnsetIndicatorOwner(On.EntityStates.FalseSon.MeridiansWillAim.orig_OnExit orig, EntityStates.FalseSon.MeridiansWillAim self)
+        {
+            try
+            {
+                if (self?.areaIndicatorInstance && self.areaIndicatorInstance.TryGetComponent(out GenericOwnership areaIndicatorOwnership))
+                {
+                    areaIndicatorOwnership.ownerObject = null;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error_NoCallerPrefix(e);
+            }
+
+            orig(self);
         }
 
         static ILContext.Manipulator groupManipulators(params ILContext.Manipulator[] manipulators)

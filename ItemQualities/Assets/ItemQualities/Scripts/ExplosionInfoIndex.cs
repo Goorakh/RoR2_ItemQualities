@@ -4,6 +4,7 @@
     {
         None = -1,
         CaptainSupplyDropImpact,
+        MeridiansWill,
         Count,
     }
 }

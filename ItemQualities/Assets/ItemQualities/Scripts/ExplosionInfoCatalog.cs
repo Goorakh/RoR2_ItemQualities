@@ -1,6 +1,10 @@
 ﻿using HG;
+using HG.GeneralSerializer;
 using RoR2;
+using RoR2.ContentManagement;
 using System;
+using System.Linq;
+using System.Reflection;
 
 namespace ItemQualities
 {
@@ -34,6 +38,51 @@ namespace ItemQualities
             {
                 DefaultRangeGetter = () => EntityStates.CaptainSupplyDrop.HitGroundState.impactBulletRadius
             }, ExplosionInfoIndex.CaptainSupplyDropImpact);
+
+            register(new ExplosionInfoDef
+            {
+                DefaultRangeGetter = getEntityStateInstanceFieldGetter(typeof(EntityStates.FalseSon.MeridiansWillFire), nameof(EntityStates.FalseSon.MeridiansWillFire.blastRadius))
+            }, ExplosionInfoIndex.MeridiansWill);
+
+            ExplosionInfoDef.GetDefaultRangeDelegate getEntityStateInstanceFieldGetter(Type entityStateType, string fieldName)
+            {
+                if (entityStateType is null)
+                    throw new ArgumentNullException(nameof(entityStateType));
+
+                if (string.IsNullOrEmpty(fieldName))
+                    throw new ArgumentException($"'{nameof(fieldName)}' cannot be null or empty.", nameof(fieldName));
+
+                EntityStateConfiguration stateConfiguration = ContentManager.entityStateConfigurations.FirstOrDefault(esc => (Type)esc.targetType == entityStateType);
+                if (stateConfiguration)
+                {
+                    FieldInfo field = entityStateType.GetField(fieldName, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+                    if (field != null && field.FieldType == typeof(float))
+                    {
+                        return () =>
+                        {
+                            foreach (SerializedField serializedField in stateConfiguration.serializedFieldsCollection.serializedFields)
+                            {
+                                if (serializedField.fieldName == field.Name)
+                                {
+                                    return (float)serializedField.fieldValue.GetValue(field);
+                                }
+                            }
+
+                            return 0f;
+                        };
+                    }
+                    else
+                    {
+                        Log.Error($"Failed to find target field '{fieldName}' in {entityStateType.FullName} ({stateConfiguration.name})");
+                    }
+                }
+                else
+                {
+                    Log.Error($"Failed to find entity state configuration for type '{entityStateType.FullName}'");
+                }
+
+                return () => 0f;
+            }
 
             ModHelper.CollectAndRegisterAdditionalEntries(ref _explosionInfoDefs);
         }
