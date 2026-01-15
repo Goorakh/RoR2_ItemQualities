@@ -159,6 +159,7 @@
         * False Son meridian's will
         * Royal Capacitor
         * Glowing Meteorite
+        * Charged Perforator
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.

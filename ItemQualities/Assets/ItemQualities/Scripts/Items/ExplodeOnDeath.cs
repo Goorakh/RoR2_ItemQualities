@@ -29,10 +29,17 @@ namespace ItemQualities.Items
         static GameObject _banditSmokeBombScalingFixPrefab;
 
         static GameObject _lightningStrikeScalingFixPrefab;
+        static GameObject _simpleLightningStrikeScalingFixPrefab;
 
         static GameObject _meteorWarningEffectScalingFixPrefab;
         static GameObject _meteorTravelEffectScalingFixPrefab;
         static GameObject _meteorImpactEffectScalingFixPrefab;
+
+        // RoR2.Orbs.LightningStrikeOrb.OnArrival
+        const float LightningStrikeOrbRadius = 3f;
+
+        // RoR2.Orbs.SimpleLightningStrikeOrb.OnArrival
+        const float SimpleLightningStrikeOrbRadius = 3f;
 
         public static float GetExplosionRadius(float radius, CharacterBody attacker)
         {
@@ -118,10 +125,7 @@ namespace ItemQualities.Items
                 if (!impactEffectLoad.AssertLoaded("LightningStrikeImpact"))
                     yield break;
 
-                // RoR2.Orbs.LightningStrikeOrb.OnArrival
-                float defaultRadius = 3f;
-
-                EffectDef impactEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(impactEffectLoad.Result, defaultRadius);
+                EffectDef impactEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(impactEffectLoad.Result, LightningStrikeOrbRadius);
                 if (impactEffectScaleFix != null)
                 {
                     _lightningStrikeScalingFixPrefab = impactEffectScaleFix.prefab;
@@ -130,6 +134,25 @@ namespace ItemQualities.Items
 
             ReadableProgress<float> lightningStrikeImpactProgress = new ReadableProgress<float>();
             coroutine.Add(lightningStrikeImpactScaleFixAsync(lightningStrikeImpactProgress), lightningStrikeImpactProgress);
+
+            static IEnumerator simpleLightningStrikeImpactScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_LightningStrikeOnHit.SimpleLightningStrikeImpact_prefab);
+
+                yield return impactEffectLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!impactEffectLoad.AssertLoaded("SimpleLightningStrikeImpact"))
+                    yield break;
+
+                EffectDef impactEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(impactEffectLoad.Result,SimpleLightningStrikeOrbRadius);
+                if (impactEffectScaleFix != null)
+                {
+                    _simpleLightningStrikeScalingFixPrefab = impactEffectScaleFix.prefab;
+                }
+            }
+
+            ReadableProgress<float> simpleLightningStrikeImpactProgress = new ReadableProgress<float>();
+            coroutine.Add(simpleLightningStrikeImpactScaleFixAsync(simpleLightningStrikeImpactProgress), simpleLightningStrikeImpactProgress);
 
             static IEnumerator meteorStormScaleFixAsync(IProgress<float> progressReceiver)
             {
@@ -321,6 +344,8 @@ namespace ItemQualities.Items
             On.EntityStates.FalseSon.MeridiansWillAim.OnExit += MeridiansWillAim_OnExit_UnsetIndicatorOwner;
 
             IL.RoR2.Orbs.LightningStrikeOrb.OnArrival += LightningStrikeOrb_OnArrival_ReplaceRadius;
+
+            IL.RoR2.Orbs.SimpleLightningStrikeOrb.OnArrival += SimpleLightningStrikeOrb_OnArrival_ReplaceRadius;
 
             IL.RoR2.MeteorStormController.FixedUpdate += MeteorStormController_FixedUpdate_ReplaceRadius;
             IL.RoR2.MeteorStormController.DetonateMeteor += MeteorStormController_DetonateMeteor_ReplaceRadius;
@@ -737,8 +762,6 @@ namespace ItemQualities.Items
 
         static void LightningStrikeOrb_OnArrival_ReplaceRadius(ILContext il)
         {
-            const float BaseRadius = 3f;
-
             if (!simpleBlastAttackRadiusManipulator(il, emitGetOrbOwnerBody))
                 return;
 
@@ -756,9 +779,9 @@ namespace ItemQualities.Items
             {
                 CharacterBody attackerBody = self?.attacker ? self.attacker.GetComponent<CharacterBody>() : null;
 
-                float scaledRadius = GetExplosionRadius(BaseRadius, attackerBody);
+                float scaledRadius = GetExplosionRadius(LightningStrikeOrbRadius, attackerBody);
 
-                return Mathf.Abs((scaledRadius / BaseRadius) - 1f) > Mathf.Epsilon;
+                return Mathf.Abs((scaledRadius / LightningStrikeOrbRadius) - 1f) > Mathf.Epsilon;
             }
 
             c.Emit(OpCodes.Ldarg_0);
@@ -785,7 +808,62 @@ namespace ItemQualities.Items
                 if (isScaledImpact(self))
                 {
                     CharacterBody attackerBody = self?.attacker ? self.attacker.GetComponent<CharacterBody>() : null;
-                    effectData.scale = GetExplosionRadius(BaseRadius, attackerBody);
+                    effectData.scale = GetExplosionRadius(LightningStrikeOrbRadius, attackerBody);
+                }
+            }
+        }
+
+        static void SimpleLightningStrikeOrb_OnArrival_ReplaceRadius(ILContext il)
+        {
+            if (!simpleBlastAttackRadiusManipulator(il, emitGetOrbOwnerBody))
+                return;
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdstr("Prefabs/Effects/ImpactEffects/SimpleLightningStrikeImpact"),
+                               x => x.MatchCallOrCallvirt(typeof(OrbStorageUtility), nameof(OrbStorageUtility.Get))))
+            {
+                Log.Error("Failed to find impact prefab patch location");
+                return;
+            }
+
+            static bool isScaledImpact(SimpleLightningStrikeOrb self)
+            {
+                CharacterBody attackerBody = self?.attacker ? self.attacker.GetComponent<CharacterBody>() : null;
+                if (!attackerBody)
+                    return false;
+
+                float scaledRadius = GetExplosionRadius(SimpleLightningStrikeOrbRadius, attackerBody);
+
+                return Mathf.Abs((scaledRadius / SimpleLightningStrikeOrbRadius) - 1f) > Mathf.Epsilon;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, SimpleLightningStrikeOrb, GameObject>>(getImpactPrefab);
+
+            static GameObject getImpactPrefab(GameObject prefab, SimpleLightningStrikeOrb self)
+            {
+                return isScaledImpact(self) && _simpleLightningStrikeScalingFixPrefab ? _simpleLightningStrikeScalingFixPrefab : prefab;
+            }
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchNewobj<EffectData>()))
+            {
+                Log.Error("Failed to find impact effect patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<EffectData, SimpleLightningStrikeOrb>>(populateImpactEffect);
+
+            static void populateImpactEffect(EffectData effectData, SimpleLightningStrikeOrb self)
+            {
+                if (isScaledImpact(self))
+                {
+                    CharacterBody attackerBody = self?.attacker ? self.attacker.GetComponent<CharacterBody>() : null;
+                    effectData.scale = GetExplosionRadius(SimpleLightningStrikeOrbRadius, attackerBody);
                 }
             }
         }
