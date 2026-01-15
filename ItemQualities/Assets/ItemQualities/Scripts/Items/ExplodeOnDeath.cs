@@ -27,7 +27,12 @@ namespace ItemQualities.Items
     static class ExplodeOnDeath
     {
         static GameObject _banditSmokeBombScalingFixPrefab;
+
         static GameObject _lightningStrikeScalingFixPrefab;
+
+        static GameObject _meteorWarningEffectScalingFixPrefab;
+        static GameObject _meteorTravelEffectScalingFixPrefab;
+        static GameObject _meteorImpactEffectScalingFixPrefab;
 
         public static float GetExplosionRadius(float radius, CharacterBody attacker)
         {
@@ -56,7 +61,7 @@ namespace ItemQualities.Items
         {
             ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
 
-            static IEnumerator banditSmokeBombScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+            static IEnumerator banditSmokeBombScaleFixAsync(IProgress<float> progressReceiver)
             {
                 AsyncOperationHandle<GameObject> smokeBombPrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.Bandit2SmokeBomb_prefab);
                 AsyncOperationHandle<EntityStateConfiguration> stealthModeConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.EntityStates_Bandit2_StealthMode_asset);
@@ -102,9 +107,9 @@ namespace ItemQualities.Items
             }
 
             ReadableProgress<float> banditSmokeBombProgress = new ReadableProgress<float>();
-            coroutine.Add(banditSmokeBombScaleFixAsync(args.ContentPack, banditSmokeBombProgress), banditSmokeBombProgress);
+            coroutine.Add(banditSmokeBombScaleFixAsync(banditSmokeBombProgress), banditSmokeBombProgress);
 
-            static IEnumerator lightningStrikeImpactScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+            static IEnumerator lightningStrikeImpactScaleFixAsync(IProgress<float> progressReceiver)
             {
                 AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Lightning.LightningStrikeImpact_prefab);
 
@@ -124,7 +129,56 @@ namespace ItemQualities.Items
             }
 
             ReadableProgress<float> lightningStrikeImpactProgress = new ReadableProgress<float>();
-            coroutine.Add(lightningStrikeImpactScaleFixAsync(args.ContentPack, lightningStrikeImpactProgress), lightningStrikeImpactProgress);
+            coroutine.Add(lightningStrikeImpactScaleFixAsync(lightningStrikeImpactProgress), lightningStrikeImpactProgress);
+
+            static IEnumerator meteorStormScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<GameObject> meteorStormLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Meteor.MeteorStorm_prefab);
+
+                yield return meteorStormLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!meteorStormLoad.AssertLoaded("MeteorStorm"))
+                    yield break;
+
+                MeteorStormController meteorStormController = meteorStormLoad.Result.GetComponent<MeteorStormController>();
+                if (!meteorStormController)
+                {
+                    Log.Error($"Missing MeteorStormController on {meteorStormLoad.Result}");
+                    yield break;
+                }
+
+                float defaultRadius = meteorStormController.blastRadius;
+
+                if (meteorStormController.warningEffectPrefab)
+                {
+                    EffectDef warningEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(meteorStormController.warningEffectPrefab, defaultRadius);
+                    if (warningEffectScaleFix != null)
+                    {
+                        _meteorWarningEffectScalingFixPrefab = warningEffectScaleFix.prefab;
+                    }
+                }
+
+                if (meteorStormController.impactEffectPrefab)
+                {
+                    EffectDef impactEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(meteorStormController.impactEffectPrefab, defaultRadius);
+                    if (impactEffectScaleFix != null)
+                    {
+                        _meteorImpactEffectScalingFixPrefab = impactEffectScaleFix.prefab;
+                    }
+                }
+
+                if (meteorStormController.travelEffectPrefab)
+                {
+                    EffectDef travelEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(meteorStormController.travelEffectPrefab, defaultRadius);
+                    if (travelEffectScaleFix != null)
+                    {
+                        _meteorTravelEffectScalingFixPrefab = travelEffectScaleFix.prefab;
+                    }
+                }
+            }
+
+            ReadableProgress<float> meteorStormProgress = new ReadableProgress<float>();
+            coroutine.Add(meteorStormScaleFixAsync(meteorStormProgress), meteorStormProgress);
 
             return coroutine;
         }
@@ -267,6 +321,11 @@ namespace ItemQualities.Items
             On.EntityStates.FalseSon.MeridiansWillAim.OnExit += MeridiansWillAim_OnExit_UnsetIndicatorOwner;
 
             IL.RoR2.Orbs.LightningStrikeOrb.OnArrival += LightningStrikeOrb_OnArrival_ReplaceRadius;
+
+            IL.RoR2.MeteorStormController.FixedUpdate += MeteorStormController_FixedUpdate_ReplaceRadius;
+            IL.RoR2.MeteorStormController.DetonateMeteor += MeteorStormController_DetonateMeteor_ReplaceRadius;
+
+            IL.RoR2.MeteorStormController.DoMeteorEffect += MeteorStormController_DoMeteorEffect_ReplaceTravelEffectRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -731,6 +790,172 @@ namespace ItemQualities.Items
             }
         }
 
+        static void MeteorStormController_ReplaceRadius(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            int patchCount = 0;
+
+            while (c.TryGotoNext(MoveType.After,
+                                 x => x.MatchLdfld<MeteorStormController>(nameof(MeteorStormController.blastRadius))))
+            {
+                emitGetMeteorStormControllerOwner(c);
+                c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
+
+                patchCount++;
+            }
+
+            if (patchCount == 0)
+            {
+                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+            }
+            else
+            {
+                Log.Debug($"{il.Method.FullName}: Found {patchCount} patch location(s)");
+            }
+        }
+
+        static void MeteorStormController_FixedUpdate_ReplaceRadius(ILContext il)
+        {
+            MeteorStormController_ReplaceRadius(il);
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdfld<MeteorStormController>(nameof(MeteorStormController.warningEffectPrefab))))
+            {
+                Log.Error("Failed to find warning prefab patch location");
+                return;
+            }
+
+            static bool isScaledImpact(MeteorStormController self)
+            {
+                if (!self)
+                    return false;
+
+                CharacterBody attackerBody = self.owner ? self.owner.GetComponent<CharacterBody>() : null;
+
+                float scaledRadius = GetExplosionRadius(self.blastRadius, attackerBody);
+
+                return Mathf.Abs((scaledRadius / self.blastRadius) - 1f) > Mathf.Epsilon;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, MeteorStormController, GameObject>>(getWarningPrefab);
+
+            static GameObject getWarningPrefab(GameObject prefab, MeteorStormController self)
+            {
+                return isScaledImpact(self) && _meteorWarningEffectScalingFixPrefab ? _meteorWarningEffectScalingFixPrefab : prefab;
+            }
+        }
+
+        static void MeteorStormController_DetonateMeteor_ReplaceRadius(ILContext il)
+        {
+            MeteorStormController_ReplaceRadius(il);
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdfld<MeteorStormController>(nameof(MeteorStormController.impactEffectPrefab))))
+            {
+                Log.Error("Failed to find impact prefab patch location");
+                return;
+            }
+
+            static bool isScaledImpact(MeteorStormController self)
+            {
+                if (!self)
+                    return false;
+
+                CharacterBody attackerBody = self.owner ? self.owner.GetComponent<CharacterBody>() : null;
+
+                float scaledRadius = GetExplosionRadius(self.blastRadius, attackerBody);
+
+                return Mathf.Abs((scaledRadius / self.blastRadius) - 1f) > Mathf.Epsilon;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, MeteorStormController, GameObject>>(getImpactPrefab);
+
+            static GameObject getImpactPrefab(GameObject prefab, MeteorStormController self)
+            {
+                return isScaledImpact(self) && _meteorImpactEffectScalingFixPrefab ? _meteorImpactEffectScalingFixPrefab : prefab;
+            }
+
+            if (!c.TryGotoPrev(MoveType.After,
+                               x => x.MatchNewobj<EffectData>()))
+            {
+                Log.Error("Failed to find impact effect patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<EffectData, MeteorStormController>>(populateImpactEffect);
+
+            static void populateImpactEffect(EffectData effectData, MeteorStormController self)
+            {
+                if (self && isScaledImpact(self))
+                {
+                    CharacterBody attackerBody = self.owner ? self.owner.GetComponent<CharacterBody>() : null;
+                    effectData.scale = GetExplosionRadius(self.blastRadius, attackerBody);
+                }
+            }
+        }
+
+        static void MeteorStormController_DoMeteorEffect_ReplaceTravelEffectRadius(ILContext il)
+        {
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdfld<MeteorStormController>(nameof(MeteorStormController.travelEffectPrefab))))
+            {
+                Log.Error("Failed to find travel prefab patch location");
+                return;
+            }
+
+            static bool isScaledImpact(MeteorStormController self)
+            {
+                if (!self)
+                    return false;
+
+                CharacterBody attackerBody = self.owner ? self.owner.GetComponent<CharacterBody>() : null;
+
+                float scaledRadius = GetExplosionRadius(self.blastRadius, attackerBody);
+
+                return Mathf.Abs((scaledRadius / self.blastRadius) - 1f) > Mathf.Epsilon;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, MeteorStormController, GameObject>>(getTravelEffectPrefab);
+
+            static GameObject getTravelEffectPrefab(GameObject prefab, MeteorStormController self)
+            {
+                return isScaledImpact(self) && _meteorTravelEffectScalingFixPrefab ? _meteorTravelEffectScalingFixPrefab : prefab;
+            }
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchNewobj<EffectData>()))
+            {
+                Log.Error("Failed to find travel effect patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<EffectData, MeteorStormController>>(populateTravelEffect);
+
+            static void populateTravelEffect(EffectData effectData, MeteorStormController self)
+            {
+                if (self && isScaledImpact(self))
+                {
+                    CharacterBody attackerBody = self.owner ? self.owner.GetComponent<CharacterBody>() : null;
+                    effectData.scale = GetExplosionRadius(self.blastRadius, attackerBody);
+                }
+            }
+        }
+
         static ILContext.Manipulator groupManipulators(params ILContext.Manipulator[] manipulators)
         {
             return il =>
@@ -970,6 +1195,19 @@ namespace ItemQualities.Items
                         Log.Error($"Unhandled orb type {orb}");
                         return null;
                 }
+            }
+        }
+
+        static void emitGetMeteorStormControllerOwner(ILCursor c)
+        {
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getBody);
+
+            static CharacterBody getBody(MonoBehaviour component)
+            {
+                MeteorStormController meteorStormController = tryGetAsComponent<MeteorStormController>(component);
+                GameObject owner = meteorStormController ? meteorStormController.owner : null;
+                return owner ? owner.GetComponent<CharacterBody>() : null;
             }
         }
 
