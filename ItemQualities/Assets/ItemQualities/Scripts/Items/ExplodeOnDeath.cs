@@ -1,4 +1,5 @@
 ﻿using EntityStates;
+using HG;
 using HG.Coroutines;
 using HG.GeneralSerializer;
 using ItemQualities.ContentManagement;
@@ -116,6 +117,42 @@ namespace ItemQualities.Items
 
             enableEffectScale("DrifterJunkCubeExplosionVFX");
 
+            static void beaconImpactIndicatorScaler(string beaconGuid)
+            {
+                AddressableUtil.LoadAssetAsync<GameObject>(beaconGuid).OnSuccess(static beaconPrefab =>
+                {
+                    Transform indicatorRoot = beaconPrefab.transform.Find("Inactive");
+                    if (!indicatorRoot)
+                    {
+                        Log.Error($"Failed to find prediction VFX for beacon prefab: {beaconPrefab}");
+                        return;
+                    }
+
+                    foreach (ParticleSystem particleSystem in indicatorRoot.GetComponentsInChildren<ParticleSystem>(true))
+                    {
+                        ParticleSystem.MainModule main = particleSystem.main;
+                        if (main.scalingMode == ParticleSystemScalingMode.Local)
+                        {
+                            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
+
+                            // HACK: Assume all child particle systems are not children of each other, and assume no rotation
+                            particleSystem.transform.localScale = Vector3.Scale(particleSystem.transform.localScale, particleSystem.transform.lossyScale.Inverse());
+                        }
+                    }
+
+                    ExplosionRangeIndicatorScaler indicatorScaler = beaconPrefab.EnsureComponent<ExplosionRangeIndicatorScaler>();
+                    indicatorScaler.ExplosionInfoIndex = ExplosionInfoIndex.CaptainSupplyDropImpact;
+                    indicatorScaler.IndicatorTransforms = new Transform[] { indicatorRoot };
+                });
+            }
+
+            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Base_prefab);
+            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__EquipmentRestock_prefab);
+            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Hacking_prefab);
+            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Healing_prefab);
+            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Plating_prefab);
+            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Shocking_prefab);
+
             IL.EntityStates.Chef.RolyPoly.GearShift += getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody, false);
 
             IL.EntityStates.Chef.YesChef.OnEnter += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);
@@ -171,6 +208,8 @@ namespace ItemQualities.Items
             IL.EntityStates.Bandit2.StealthMode.FireSmokebomb += StealthMode_FireSmokebomb_ReplaceRadius;
 
             IL.RoR2.Projectile.ProjectileFunballBehavior.FixedUpdate += getVisualBlastAttackRadiusManipulator(emitGetProjectileOwner);
+
+            IL.EntityStates.CaptainSupplyDrop.HitGroundState.OnEnter += HitGroundState_OnEnter_ReplaceRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -481,6 +520,31 @@ namespace ItemQualities.Items
                 EffectManager.SpawnEffect(_banditSmokeBombScalingFixPrefab, effectData, false);
 
                 return true;
+            }
+        }
+
+        static void HitGroundState_OnEnter_ReplaceRadius(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            int patchCount = 0;
+
+            while (c.TryGotoNext(MoveType.After,
+                                 x => x.MatchLdsfld<EntityStates.CaptainSupplyDrop.HitGroundState>(nameof(EntityStates.CaptainSupplyDrop.HitGroundState.impactBulletRadius))))
+            {
+                emitGetEntityStateAttackerBody(c);
+                c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
+
+                patchCount++;
+            }
+
+            if (patchCount == 0)
+            {
+                Log.Error("Failed to find patch location");
+            }
+            else
+            {
+                Log.Debug($"Found {patchCount} patch location(s)");
             }
         }
 

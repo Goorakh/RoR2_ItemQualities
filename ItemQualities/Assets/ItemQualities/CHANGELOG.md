@@ -154,6 +154,7 @@
         * Rare and up: Unchanged
     * Fixed explosion size increase not applying to:
         * Bandit Smoke Bomb
+        * Captain beacon impact
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
