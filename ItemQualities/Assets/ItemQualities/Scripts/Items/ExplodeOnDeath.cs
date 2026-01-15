@@ -211,6 +211,11 @@ namespace ItemQualities.Items
 
             IL.EntityStates.CaptainSupplyDrop.HitGroundState.OnEnter += HitGroundState_OnEnter_ReplaceRadius;
 
+            IL.EntityStates.FalseSon.ClubGroundSlam.DetonateAuthority += ClubGroundSlam_DetonateAuthority_ReplaceRadius;
+
+            IL.EntityStates.FalseSon.ChargedClubSwing.DoBlastAttack += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
+            IL.EntityStates.FalseSon.ChargedClubSwing.InitializeBlastAttackAsCharged += ChargedClubSwing_InitializeBlastAttackAsCharged_ReplaceEffectRadius;
+
             RoR2Application.onLoad += onLoad;
         }
 
@@ -548,6 +553,43 @@ namespace ItemQualities.Items
             }
         }
 
+        static void ClubGroundSlam_DetonateAuthority_ReplaceRadius(ILContext il)
+        {
+            if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
+                return;
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdsfld<EntityStates.FalseSon.ClubGroundSlam>(nameof(EntityStates.FalseSon.ClubGroundSlam.blastVFXScaleMultiplier)),
+                               x => x.MatchMul()))
+            {
+                Log.Error("Failed to find effect scale patch location");
+                return;
+            }
+
+            emitGetEntityStateAttackerBody(c);
+            c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
+        }
+
+        static void ChargedClubSwing_InitializeBlastAttackAsCharged_ReplaceEffectRadius(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdarg(0),
+                               x => x.MatchLdfld<EntityStates.FalseSon.ChargedClubSwing>(nameof(EntityStates.FalseSon.ChargedClubSwing.charge)),
+                               x => x.MatchLdsfld<EntityStates.FalseSon.ChargedClubSwing>(nameof(EntityStates.FalseSon.ChargedClubSwing.blastVFXScaleMultiplier)),
+                               x => x.MatchMul()))
+            {
+                Log.Error("Failed to find effect scale patch location");
+                return;
+            }
+
+            emitGetEntityStateAttackerBody(c);
+            c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
+        }
+
         static ILContext.Manipulator groupManipulators(params ILContext.Manipulator[] manipulators)
         {
             return il =>
@@ -857,7 +899,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void simpleBlastAttackRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
+        static bool simpleBlastAttackRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
         {
             ILCursor c = new ILCursor(il);
 
@@ -881,6 +923,8 @@ namespace ItemQualities.Items
             {
                 Log.Debug($"{il.Method.FullName}: Found {patchCount} patch location(s)");
             }
+
+            return patchCount > 0;
         }
 
         static void simpleSphereSearchRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)

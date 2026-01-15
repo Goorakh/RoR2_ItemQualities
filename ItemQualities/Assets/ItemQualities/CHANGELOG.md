@@ -153,8 +153,9 @@
         * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
         * Rare and up: Unchanged
     * Fixed explosion size increase not applying to:
-        * Bandit Smoke Bomb
+        * Bandit smoke bomb
         * Captain beacon impact
+        * False Son charged slam
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
