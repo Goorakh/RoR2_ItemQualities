@@ -359,6 +359,8 @@ namespace ItemQualities
 
             _projectileExplosionEffectScaleFixHelper ??= new ProjectileExplosionEffectScaleFixHelper();
             _projectileExplosionEffectScaleFixHelper.Step(_contentPack, args);
+
+            EffectScalingFixer.AddToContentPack(args.output);
         }
 
         public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
@@ -369,6 +371,8 @@ namespace ItemQualities
             _qualityContagiousItemHelper = null;
 
             _projectileExplosionEffectScaleFixHelper = null;
+
+            EffectScalingFixer.OnContentFinalized();
 
             args.ReportProgress(1f);
             yield break;

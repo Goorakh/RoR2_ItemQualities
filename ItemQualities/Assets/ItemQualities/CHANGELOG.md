@@ -157,6 +157,7 @@
         * Captain beacon impact
         * False Son charged slam
         * False Son meridian's will
+        * Royal Capacitor
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.

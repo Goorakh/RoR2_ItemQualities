@@ -12,6 +12,7 @@ using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using RoR2;
 using RoR2.Items;
+using RoR2.Orbs;
 using RoR2.Projectile;
 using RoR2.VoidRaidCrab;
 using System;
@@ -26,6 +27,7 @@ namespace ItemQualities.Items
     static class ExplodeOnDeath
     {
         static GameObject _banditSmokeBombScalingFixPrefab;
+        static GameObject _lightningStrikeScalingFixPrefab;
 
         public static float GetExplosionRadius(float radius, CharacterBody attacker)
         {
@@ -52,17 +54,25 @@ namespace ItemQualities.Items
         [ContentInitializer]
         static IEnumerator LoadContent(ContentIntializerArgs args)
         {
-            AsyncOperationHandle<GameObject> smokeBombPrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.Bandit2SmokeBomb_prefab);
-            AsyncOperationHandle<EntityStateConfiguration> stealthModeConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.EntityStates_Bandit2_StealthMode_asset);
+            ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
 
-            ParallelProgressCoroutine loadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
-            loadCoroutine.Add(smokeBombPrefabLoad);
-            loadCoroutine.Add(stealthModeConfigurationLoad);
-
-            yield return loadCoroutine;
-
-            if (smokeBombPrefabLoad.AssertLoaded("Bandit2SmokeBomb") && stealthModeConfigurationLoad.AssertLoaded("EntityStates.Bandit2.StealthMode"))
+            static IEnumerator banditSmokeBombScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
             {
+                AsyncOperationHandle<GameObject> smokeBombPrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.Bandit2SmokeBomb_prefab);
+                AsyncOperationHandle<EntityStateConfiguration> stealthModeConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.EntityStates_Bandit2_StealthMode_asset);
+
+                ParallelProgressCoroutine loadCoroutine = new ParallelProgressCoroutine(progressReceiver);
+                loadCoroutine.Add(smokeBombPrefabLoad);
+                loadCoroutine.Add(stealthModeConfigurationLoad);
+
+                yield return loadCoroutine;
+
+                if (!smokeBombPrefabLoad.AssertLoaded("Bandit2SmokeBomb") ||
+                    !stealthModeConfigurationLoad.AssertLoaded("EntityStates.Bandit2.StealthMode"))
+                {
+                    yield break;
+                }
+                
                 float radiusValue = float.NaN;
                 foreach (SerializedField field in stealthModeConfigurationLoad.Result.serializedFieldsCollection.serializedFields)
                 {
@@ -83,14 +93,40 @@ namespace ItemQualities.Items
 
                 if (float.IsFinite(radiusValue))
                 {
-                    EffectDef smokebombFixedScaling = ProjectileExplosionEffectScaleFixHelper.TryCreateFixedScalingCopy(smokeBombPrefabLoad.Result, radiusValue);
+                    EffectDef smokebombFixedScaling = EffectScalingFixer.GetOrCreateFixedScalingCopy(smokeBombPrefabLoad.Result, radiusValue);
                     if (smokebombFixedScaling != null)
                     {
                         _banditSmokeBombScalingFixPrefab = smokebombFixedScaling.prefab;
-                        args.ContentPack.effectDefs.Add(smokebombFixedScaling);
                     }
                 }
             }
+
+            ReadableProgress<float> banditSmokeBombProgress = new ReadableProgress<float>();
+            coroutine.Add(banditSmokeBombScaleFixAsync(args.ContentPack, banditSmokeBombProgress), banditSmokeBombProgress);
+
+            static IEnumerator lightningStrikeImpactScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Lightning.LightningStrikeImpact_prefab);
+
+                yield return impactEffectLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!impactEffectLoad.AssertLoaded("LightningStrikeImpact"))
+                    yield break;
+
+                // RoR2.Orbs.LightningStrikeOrb.OnArrival
+                float defaultRadius = 3f;
+
+                EffectDef impactEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(impactEffectLoad.Result, defaultRadius);
+                if (impactEffectScaleFix != null)
+                {
+                    _lightningStrikeScalingFixPrefab = impactEffectScaleFix.prefab;
+                }
+            }
+
+            ReadableProgress<float> lightningStrikeImpactProgress = new ReadableProgress<float>();
+            coroutine.Add(lightningStrikeImpactScaleFixAsync(args.ContentPack, lightningStrikeImpactProgress), lightningStrikeImpactProgress);
+
+            return coroutine;
         }
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
@@ -229,6 +265,8 @@ namespace ItemQualities.Items
 
             On.EntityStates.FalseSon.MeridiansWillAim.OnEnter += MeridiansWillAim_OnEnter_SetIndicatorOwner;
             On.EntityStates.FalseSon.MeridiansWillAim.OnExit += MeridiansWillAim_OnExit_UnsetIndicatorOwner;
+
+            IL.RoR2.Orbs.LightningStrikeOrb.OnArrival += LightningStrikeOrb_OnArrival_ReplaceRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -638,6 +676,61 @@ namespace ItemQualities.Items
             orig(self);
         }
 
+        static void LightningStrikeOrb_OnArrival_ReplaceRadius(ILContext il)
+        {
+            const float BaseRadius = 3f;
+
+            if (!simpleBlastAttackRadiusManipulator(il, emitGetOrbOwnerBody))
+                return;
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdstr("Prefabs/Effects/ImpactEffects/LightningStrikeImpact"),
+                               x => x.MatchCallOrCallvirt(typeof(OrbStorageUtility), nameof(OrbStorageUtility.Get))))
+            {
+                Log.Error("Failed to find impact prefab patch location");
+                return;
+            }
+
+            static bool isScaledImpact(LightningStrikeOrb self)
+            {
+                CharacterBody attackerBody = self?.attacker ? self.attacker.GetComponent<CharacterBody>() : null;
+
+                float scaledRadius = GetExplosionRadius(BaseRadius, attackerBody);
+
+                return Mathf.Abs((scaledRadius / BaseRadius) - 1f) > Mathf.Epsilon;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, LightningStrikeOrb, GameObject>>(getImpactPrefab);
+
+            static GameObject getImpactPrefab(GameObject prefab, LightningStrikeOrb self)
+            {
+                return isScaledImpact(self) && _lightningStrikeScalingFixPrefab ? _lightningStrikeScalingFixPrefab : prefab;
+            }
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchNewobj<EffectData>()))
+            {
+                Log.Error("Failed to find impact effect patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<EffectData, LightningStrikeOrb>>(populateImpactEffect);
+
+            static void populateImpactEffect(EffectData effectData, LightningStrikeOrb self)
+            {
+                if (isScaledImpact(self))
+                {
+                    CharacterBody attackerBody = self?.attacker ? self.attacker.GetComponent<CharacterBody>() : null;
+                    effectData.scale = GetExplosionRadius(BaseRadius, attackerBody);
+                }
+            }
+        }
+
         static ILContext.Manipulator groupManipulators(params ILContext.Manipulator[] manipulators)
         {
             return il =>
@@ -847,6 +940,36 @@ namespace ItemQualities.Items
                 FissureSlamCracksController fissureSlamCracksController = tryGetAsComponent<FissureSlamCracksController>(component);
                 GameObject owner = fissureSlamCracksController ? fissureSlamCracksController.owner : null;
                 return owner ? owner.GetComponent<CharacterBody>() : null;
+            }
+        }
+
+        static void emitGetOrbOwnerBody(ILCursor c)
+        {
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<Orb, CharacterBody>>(getBody);
+
+            static CharacterBody getBody(Orb orb)
+            {
+                switch (orb)
+                {
+                    case BounceOrb bounceOrb:
+                        return bounceOrb.attacker ? bounceOrb.attacker.GetComponent<CharacterBody>() : null;
+                    case DamageOrb damageOrb:
+                        return damageOrb.attacker ? damageOrb.attacker.GetComponent<CharacterBody>() : null;
+                    case DevilOrb devilOrb:
+                        return devilOrb.attacker ? devilOrb.attacker.GetComponent<CharacterBody>() : null;
+                    case GenericDamageOrb genericDamageOrb:
+                        return genericDamageOrb.attacker ? genericDamageOrb.attacker.GetComponent<CharacterBody>() : null;
+                    case LightningOrb lightningOrb:
+                        return lightningOrb.attacker ? lightningOrb.attacker.GetComponent<CharacterBody>() : null;
+                    case LunarDetonatorOrb lunarDetonatorOrb:
+                        return lunarDetonatorOrb.attacker ? lunarDetonatorOrb.attacker.GetComponent<CharacterBody>() : null;
+                    case VoidLightningOrb voidLightningOrb:
+                        return voidLightningOrb.attacker ? voidLightningOrb.attacker.GetComponent<CharacterBody>() : null;
+                    default:
+                        Log.Error($"Unhandled orb type {orb}");
+                        return null;
+                }
             }
         }
 
