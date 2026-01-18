@@ -1,7 +1,6 @@
 ﻿using EntityStates;
 using HG;
 using HG.Coroutines;
-using HG.GeneralSerializer;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
@@ -36,6 +35,8 @@ namespace ItemQualities.Items
         static GameObject _meteorImpactEffectScalingFixPrefab;
 
         static GameObject _brotherFistSlamImpactScaleFixPrefab;
+
+        static GameObject _brotherWeaponSlamImpactScaleFixPrefab;
 
         // RoR2.Orbs.LightningStrikeOrb.OnArrival
         const float LightningStrikeOrbRadius = 3f;
@@ -228,6 +229,38 @@ namespace ItemQualities.Items
             ReadableProgress<float> brotherFistSlamProgress = new ReadableProgress<float>();
             coroutine.Add(brotherFistSlamScaleFixAsync(brotherFistSlamProgress), brotherFistSlamProgress);
 
+            static IEnumerator brotherWeaponSlamScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<EntityStateConfiguration> brotherWeaponSlamConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Brother.EntityStates_BrotherMonster_WeaponSlam_asset);
+
+                yield return brotherWeaponSlamConfigurationLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!brotherWeaponSlamConfigurationLoad.AssertLoaded("EntityStates.BrotherMonster.WeaponSlam"))
+                    yield break;
+
+                if (!brotherWeaponSlamConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.BrotherMonster.WeaponSlam.radius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.BrotherMonster.WeaponSlam.radius field");
+                    yield break;
+                }
+
+                if (brotherWeaponSlamConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.BrotherMonster.WeaponSlam.slamImpactEffect), out GameObject brotherWeaponSlamImpactPrefab))
+                {
+                    EffectDef brotherWeaponSlamImpactScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(brotherWeaponSlamImpactPrefab, baseRadius);
+                    if (brotherWeaponSlamImpactScaleFixPrefab != null)
+                    {
+                        _brotherWeaponSlamImpactScaleFixPrefab = brotherWeaponSlamImpactScaleFixPrefab.prefab;
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to get EntityStates.BrotherMonster.WeaponSlam.slamImpactEffect field");
+                }
+            }
+
+            ReadableProgress<float> brotherWeaponSlamProgress = new ReadableProgress<float>();
+            coroutine.Add(brotherWeaponSlamScaleFixAsync(brotherWeaponSlamProgress), brotherWeaponSlamProgress);
+
             return coroutine;
         }
 
@@ -378,6 +411,7 @@ namespace ItemQualities.Items
             IL.RoR2.MeteorStormController.DoMeteorEffect += MeteorStormController_DoMeteorEffect_ReplaceTravelEffectRadius;
 
             IL.EntityStates.BrotherMonster.FistSlam.FixedUpdate += FistSlam_FixedUpdate_ReplaceRadius;
+            IL.EntityStates.BrotherMonster.WeaponSlam.FixedUpdate += WeaponSlam_FixedUpdate_ReplaceRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -1108,6 +1142,57 @@ namespace ItemQualities.Items
                 effectData.SetChildLocatorTransformReference(self.gameObject, explosionMuzzleIndex);
 
                 EffectManager.SpawnEffect(_brotherFistSlamImpactScaleFixPrefab, effectData, false);
+                return true;
+            }
+        }
+
+        static void WeaponSlam_FixedUpdate_ReplaceRadius(ILContext il)
+        {
+            if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
+                return;
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdsfld<EntityStates.BrotherMonster.WeaponSlam>(nameof(EntityStates.BrotherMonster.WeaponSlam.slamImpactEffect)),
+                               x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SimpleMuzzleFlash))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After);
+            ILLabel afterSpawnEffectLabel = c.MarkLabel();
+
+            c.Goto(foundCursors[0].Next, MoveType.AfterLabel);
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<EntityStates.BrotherMonster.WeaponSlam, bool>>(trySpawnScaledEffect);
+            c.Emit(OpCodes.Brtrue, afterSpawnEffectLabel);
+
+            static bool trySpawnScaledEffect(EntityStates.BrotherMonster.WeaponSlam self)
+            {
+                if (!isScaledExplosion(EntityStates.BrotherMonster.WeaponSlam.radius, self?.characterBody) || !_brotherWeaponSlamImpactScaleFixPrefab)
+                    return false;
+
+                ChildLocator childLocator = self.GetModelChildLocator();
+                if (!childLocator)
+                    return false;
+
+                int explosionMuzzleIndex = childLocator.FindChildIndex(EntityStates.BrotherMonster.WeaponSlam.muzzleString);
+                Transform explosionMuzzle = explosionMuzzleIndex != -1 ? childLocator.FindChild(explosionMuzzleIndex) : null;
+                if (!explosionMuzzle)
+                    return false;
+
+                EffectData effectData = new EffectData
+                {
+                    origin = explosionMuzzle.position,
+                    scale = GetExplosionRadius(EntityStates.BrotherMonster.WeaponSlam.radius, self.characterBody)
+                };
+
+                effectData.SetChildLocatorTransformReference(self.gameObject, explosionMuzzleIndex);
+
+                EffectManager.SpawnEffect(_brotherWeaponSlamImpactScaleFixPrefab, effectData, false);
                 return true;
             }
         }
