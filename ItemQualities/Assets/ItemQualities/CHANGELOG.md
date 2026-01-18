@@ -160,6 +160,7 @@
         * Royal Capacitor
         * Glowing Meteorite
         * Charged Perforator
+        * Mithrix Phase 4 Orb Slam
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
