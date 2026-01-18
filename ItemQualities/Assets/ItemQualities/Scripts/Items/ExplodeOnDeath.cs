@@ -85,25 +85,7 @@ namespace ItemQualities.Items
                     yield break;
                 }
                 
-                float radiusValue = float.NaN;
-                foreach (SerializedField field in stealthModeConfigurationLoad.Result.serializedFieldsCollection.serializedFields)
-                {
-                    if (field.fieldName == nameof(EntityStates.Bandit2.StealthMode.blastAttackRadius))
-                    {
-                        try
-                        {
-                            radiusValue = (float)StringSerializer.Deserialize(typeof(float), field.fieldValue.stringValue);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Error_NoCallerPrefix(e);
-                        }
-
-                        break;
-                    }
-                }
-
-                if (float.IsFinite(radiusValue))
+                if (stealthModeConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.Bandit2.StealthMode.blastAttackRadius), out float radiusValue))
                 {
                     EffectDef smokebombFixedScaling = EffectScalingFixer.GetOrCreateFixedScalingCopy(smokeBombPrefabLoad.Result, radiusValue);
                     if (smokebombFixedScaling != null)
