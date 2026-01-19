@@ -60,6 +60,11 @@ namespace ItemQualities
                 DefaultRangeGetter = () => EntityStates.GolemMonster.ClapState.radius
             }, ExplosionInfoIndex.GolemClap);
 
+            register(new ExplosionInfoDef
+            {
+                DefaultRangeGetter = getEntityStateInstanceFieldGetter(typeof(EntityStates.ImpBossMonster.BlinkState), nameof(EntityStates.ImpBossMonster.BlinkState.blastAttackRadius))
+            }, ExplosionInfoIndex.ImpBossBlink);
+
             ExplosionInfoDef.GetDefaultRangeDelegate getEntityStateInstanceFieldGetter(Type entityStateType, string fieldName)
             {
                 if (entityStateType is null)

@@ -44,6 +44,8 @@ namespace ItemQualities.Items
 
         static GameObject _halcyoniteTriLaserImpactScaleFixPrefab;
 
+        static GameObject _impBossBlinkScaleFixPrefab;
+
         // RoR2.Orbs.LightningStrikeOrb.OnArrival
         const float LightningStrikeOrbRadius = 3f;
 
@@ -542,6 +544,61 @@ namespace ItemQualities.Items
             ReadableProgress<float> halcyoniteTriLaserProgress = new ReadableProgress<float>();
             coroutine.Add(halcyoniteTriLaserScaleFixAsync(halcyoniteTriLaserProgress), halcyoniteTriLaserProgress);
 
+            static IEnumerator impBossBlinkScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<EntityStateConfiguration> impBossBlinkConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_ImpBoss.EntityStates_ImpBossMonster_BlinkState_asset);
+
+                yield return impBossBlinkConfigurationLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!impBossBlinkConfigurationLoad.AssertLoaded("EntityStates.ImpBossMonster.BlinkState"))
+                    yield break;
+
+                if (!impBossBlinkConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.ImpBossMonster.BlinkState.blastAttackRadius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.ImpBossMonster.BlinkState.blastAttackRadius field");
+                    yield break;
+                }
+
+                if (impBossBlinkConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.ImpBossMonster.BlinkState.blinkPrefab), out GameObject impBossBlinkPrefab))
+                {
+                    EffectDef impBossBlinkScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(impBossBlinkPrefab, baseRadius);
+                    if (impBossBlinkScaleFixPrefab != null)
+                    {
+                        _impBossBlinkScaleFixPrefab = impBossBlinkScaleFixPrefab.prefab;
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to get EntityStates.ImpBossMonster.BlinkState.blinkPrefab field");
+                }
+
+                if (impBossBlinkConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.ImpBossMonster.BlinkState.blinkDestinationPrefab), out GameObject impBossBlinkDestinationPrefab))
+                {
+                    GameObject impBossBlinkDestinationScaleFixPrefab = EffectScalingFixer.CreateFixedScalingCopy(impBossBlinkDestinationPrefab, baseRadius);
+                    if (impBossBlinkDestinationScaleFixPrefab)
+                    {
+                        impBossBlinkDestinationScaleFixPrefab.EnsureComponent<EffectManagerHelper>();
+                        impBossBlinkDestinationScaleFixPrefab.EnsureComponent<LocalEffectOwnership>();
+
+                        ExplosionRangeIndicatorScaler scaler = impBossBlinkDestinationScaleFixPrefab.EnsureComponent<ExplosionRangeIndicatorScaler>();
+                        scaler.ExplosionInfoIndex = ExplosionInfoIndex.ImpBossBlink;
+                        scaler.IndicatorTransforms = new Transform[] { impBossBlinkDestinationScaleFixPrefab.transform };
+
+                        if (!impBossBlinkConfigurationLoad.Result.TrySetFieldValue(nameof(EntityStates.ImpBossMonster.BlinkState.blinkDestinationPrefab), impBossBlinkDestinationScaleFixPrefab))
+                        {
+                            Log.Error("Failed to set EntityStates.ImpBossMonster.BlinkState.blinkDestinationPrefab field");
+                        }
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to get EntityStates.ImpBossMonster.BlinkState.blinkDestinationPrefab field");
+                }
+            }
+
+            ReadableProgress<float> impBossBlinkProgress = new ReadableProgress<float>();
+            coroutine.Add(impBossBlinkScaleFixAsync(impBossBlinkProgress), impBossBlinkProgress);
+
             return coroutine;
         }
 
@@ -705,6 +762,12 @@ namespace ItemQualities.Items
             IL.EntityStates.GolemMonster.FireLaser.OnEnter += FireLaser_OnEnter_ReplaceRadius;
 
             IL.EntityStates.Halcyonite.TriLaser.FireTriLaser += TriLaser_FireTriLaser_ReplaceRadius;
+
+            IL.EntityStates.ImpBossMonster.BlinkState.ExitCleanup += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
+
+            IL.EntityStates.ImpBossMonster.BlinkState.CreateBlinkEffect += ImpBoss_BlinkState_CreateBlinkEffect_ReplaceRadius;
+
+            IL.EntityStates.ImpBossMonster.BlinkState.FixedUpdate += ImpBoss_BlinkState_FixedUpdate_SetBlinkDestinationEffectOwner;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -1599,6 +1662,80 @@ namespace ItemQualities.Items
                 }
 
                 return effectData;
+            }
+        }
+
+        static void ImpBoss_BlinkState_CreateBlinkEffect_ReplaceRadius(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (c.TryGotoNext(MoveType.After,
+                              x => x.MatchCallOrCallvirt<EffectData>("set_" + nameof(EffectData.origin))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Action<EntityStates.ImpBossMonster.BlinkState>>(trySetEffectDataScale);
+
+                static void trySetEffectDataScale(EntityStates.ImpBossMonster.BlinkState self)
+                {
+                    if (self == null || self._effectData == null)
+                        return;
+
+                    self._effectData.scale = 1f;
+                    if (isScaledExplosion(self.blastAttackRadius, self.characterBody))
+                    {
+                        self._effectData.scale = GetExplosionRadius(self.blastAttackRadius, self.characterBody);
+                    }
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find blink effect scale set patch location");
+            }
+
+            if (c.TryGotoNext(MoveType.After,
+                              x => x.MatchLdfld<EntityStates.ImpBossMonster.BlinkState>(nameof(EntityStates.ImpBossMonster.BlinkState.blinkPrefab))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<GameObject, EntityStates.ImpBossMonster.BlinkState, GameObject>>(getBlinkPrefab);
+
+                static GameObject getBlinkPrefab(GameObject blinkPrefab, EntityStates.ImpBossMonster.BlinkState self)
+                {
+                    return self != null && isScaledExplosion(self.blastAttackRadius, self.characterBody) && _impBossBlinkScaleFixPrefab ? _impBossBlinkScaleFixPrefab : blinkPrefab;
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find blink effect prefab patch location");
+            }
+        }
+
+        static void ImpBoss_BlinkState_FixedUpdate_SetBlinkDestinationEffectOwner(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            ILLabel afterInstantiateBlinkDestinationInstanceLabel = null;
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchLdarg(0),
+                               x => x.MatchLdfld<EntityStates.ImpBossMonster.BlinkState>(nameof(EntityStates.ImpBossMonster.BlinkState.blinkDestinationPrefab)),
+                               x => x.MatchImplicitConversion<UnityEngine.Object, bool>(),
+                               x => x.MatchBrfalse(out afterInstantiateBlinkDestinationInstanceLabel)))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Goto(afterInstantiateBlinkDestinationInstanceLabel.Target, MoveType.Before);
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<EntityStates.ImpBossMonster.BlinkState>>(setBlinkDestinationEffectOwner);
+
+            static void setBlinkDestinationEffectOwner(EntityStates.ImpBossMonster.BlinkState self)
+            {
+                if (self?.blinkDestinationInstance && self.blinkDestinationInstance.TryGetComponent(out LocalEffectOwnership ownership))
+                {
+                    CharacterBody ownerBody = entityStateGetAttackerBody(self);
+                    ownership.OwnerObject = ownerBody ? ownerBody.gameObject : self.gameObject;
+                }
             }
         }
 

@@ -8,6 +8,7 @@
         FalseSonBossFissureSlam,
         FalseSonBossPrimeDevastator,
         GolemClap,
+        ImpBossBlink,
         Count,
     }
 }

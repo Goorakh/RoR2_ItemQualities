@@ -7,6 +7,7 @@ namespace ItemQualities
     internal sealed class LocalEffectOwnership : MonoBehaviour
     {
         EffectComponent _effectComponent;
+        EffectManagerHelper _effectManagerHelper;
 
         GameObject _ownerObject;
         public GameObject OwnerObject
@@ -30,10 +31,15 @@ namespace ItemQualities
         void Awake()
         {
             _effectComponent = GetComponent<EffectComponent>();
+            _effectManagerHelper = GetComponent<EffectManagerHelper>();
 
             if (_effectComponent)
             {
                 _effectComponent.OnEffectComponentReset += onReset;
+            }
+            else if (_effectManagerHelper)
+            {
+                _effectManagerHelper.OnEffectActivated += onActivated;
             }
         }
 
@@ -43,11 +49,20 @@ namespace ItemQualities
             {
                 _effectComponent.OnEffectComponentReset -= onReset;
             }
+            else if (_effectManagerHelper)
+            {
+                _effectManagerHelper.OnEffectActivated -= onActivated;
+            }
         }
 
         void onReset(bool hasEffectData)
         {
             OwnerObject = hasEffectData && _effectComponent.effectData != null ? _effectComponent.effectData.ResolveNetworkedObjectReference() : null;
+        }
+
+        void onActivated()
+        {
+            OwnerObject = null;
         }
     }
 }
