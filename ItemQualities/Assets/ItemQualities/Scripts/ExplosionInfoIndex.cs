@@ -7,6 +7,7 @@
         MeridiansWill,
         FalseSonBossFissureSlam,
         FalseSonBossPrimeDevastator,
+        GolemClap,
         Count,
     }
 }

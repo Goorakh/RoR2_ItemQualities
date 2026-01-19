@@ -405,6 +405,75 @@ namespace ItemQualities.Items
             ReadableProgress<float> falseSonBossPrimeDevastatorProgress = new ReadableProgress<float>();
             coroutine.Add(falseSonBossPrimeDevastatorScaleFixAsync(args.ContentPack, falseSonBossPrimeDevastatorProgress), falseSonBossPrimeDevastatorProgress);
 
+            static IEnumerator golemClapScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+            {
+                AssetReferenceT<AnimationClip> golemClapClipReference = new AssetReferenceT<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Golem.mdlGolem_fbx_GolemArmature_Smack_);
+                AsyncOperationHandle<AnimationClip> golemClapClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(golemClapClipReference);
+                AsyncOperationHandle<EntityStateConfiguration> golemClapConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Golem.EntityStates_GolemMonster_ClapState_asset);
+
+                ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
+                coroutine.Add(golemClapClipLoad);
+                coroutine.Add(golemClapConfigurationLoad);
+
+                yield return coroutine;
+
+                if (!golemClapClipLoad.AssertLoaded("GolemArmature|Smack") ||
+                    !golemClapConfigurationLoad.AssertLoaded("EntityStates.GolemMonster.ClapState"))
+                {
+                    yield break;
+                }
+
+                if (!golemClapConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.GolemMonster.ClapState.radius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.GolemMonster.ClapState.radius field");
+                    yield break;
+                }
+
+                AnimationEvent[] events = golemClapClipLoad.Result.events;
+                bool eventsChanged = false;
+                bool foundCreateImpactEffectEvent = false;
+
+                foreach (AnimationEvent evnt in events)
+                {
+                    if (evnt.functionName == nameof(AnimationEvents.CreatePrefab) &&
+                        evnt.objectReferenceParameter is GameObject explosionEffectPrefab && explosionEffectPrefab)
+                    {
+                        GameObject golemClapImpactScaleFixPrefab = EffectScalingFixer.CreateFixedScalingCopy(explosionEffectPrefab, baseRadius);
+                        golemClapImpactScaleFixPrefab.name += "_GolemClap";
+
+                        golemClapImpactScaleFixPrefab.EnsureComponent<LocalEffectOwnership>();
+
+                        ExplosionRangeIndicatorScaler scaler = golemClapImpactScaleFixPrefab.EnsureComponent<ExplosionRangeIndicatorScaler>();
+                        scaler.ExplosionInfoIndex = ExplosionInfoIndex.GolemClap;
+                        scaler.IndicatorTransforms = new Transform[] { golemClapImpactScaleFixPrefab.transform };
+
+                        evnt.objectReferenceParameter = golemClapImpactScaleFixPrefab;
+
+                        contentPack.effectDefs.Add(new EffectDef(golemClapImpactScaleFixPrefab));
+
+                        eventsChanged = true;
+                        foundCreateImpactEffectEvent = true;
+                    }
+                }
+
+                if (eventsChanged)
+                {
+                    golemClapClipLoad.Result.events = events;
+                }
+                else
+                {
+                    if (!foundCreateImpactEffectEvent)
+                    {
+                        Log.Error($"Failed to find create impact effect animation event(s) in {golemClapClipLoad.Result.name}");
+                    }
+
+                    AssetAsyncReferenceManager<AnimationClip>.UnloadAsset(golemClapClipReference);
+                }
+            }
+
+            ReadableProgress<float> golemClapProgress = new ReadableProgress<float>();
+            coroutine.Add(golemClapScaleFixAsync(args.ContentPack, golemClapProgress), golemClapProgress);
+
             return coroutine;
         }
 
@@ -562,6 +631,8 @@ namespace ItemQualities.Items
             IL.EntityStates.FalseSonBoss.CorruptedPathsDash.FixedUpdate += CorruptedPathsDash_FixedUpdate_ReplaceRadius;
 
             IL.EntityStates.FalseSonBoss.PrimeDevastator.DetonateAuthority += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
+
+            IL.EntityStates.GolemMonster.ClapState.FixedUpdate += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
 
             RoR2Application.onLoad += onLoad;
         }

@@ -55,6 +55,11 @@ namespace ItemQualities
                 DefaultRangeGetter = () => EntityStates.FalseSonBoss.PrimeDevastator.blastRadius
             }, ExplosionInfoIndex.FalseSonBossPrimeDevastator);
 
+            register(new ExplosionInfoDef
+            {
+                DefaultRangeGetter = () => EntityStates.GolemMonster.ClapState.radius
+            }, ExplosionInfoIndex.GolemClap);
+
             ExplosionInfoDef.GetDefaultRangeDelegate getEntityStateInstanceFieldGetter(Type entityStateType, string fieldName)
             {
                 if (entityStateType is null)
