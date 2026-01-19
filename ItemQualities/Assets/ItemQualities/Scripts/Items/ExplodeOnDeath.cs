@@ -40,6 +40,8 @@ namespace ItemQualities.Items
 
         static GameObject _brotherWeaponSlamImpactScaleFixPrefab;
 
+        static GameObject _golemLaserImpactScaleFixPrefab;
+
         // RoR2.Orbs.LightningStrikeOrb.OnArrival
         const float LightningStrikeOrbRadius = 3f;
 
@@ -474,6 +476,38 @@ namespace ItemQualities.Items
             ReadableProgress<float> golemClapProgress = new ReadableProgress<float>();
             coroutine.Add(golemClapScaleFixAsync(args.ContentPack, golemClapProgress), golemClapProgress);
 
+            static IEnumerator golemLaserScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<EntityStateConfiguration> golemLaserConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Golem.EntityStates_GolemMonster_FireLaser_asset);
+
+                yield return golemLaserConfigurationLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!golemLaserConfigurationLoad.AssertLoaded("EntityStates.GolemMonster.FireLaser"))
+                    yield break;
+
+                if (!golemLaserConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.GolemMonster.FireLaser.blastRadius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.GolemMonster.FireLaser.blastRadius field");
+                    yield break;
+                }
+
+                if (golemLaserConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.GolemMonster.FireLaser.hitEffectPrefab), out GameObject golemLaserImpactPrefab))
+                {
+                    EffectDef golemLaserImpactScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(golemLaserImpactPrefab, baseRadius);
+                    if (golemLaserImpactScaleFixPrefab != null)
+                    {
+                        _golemLaserImpactScaleFixPrefab = golemLaserImpactScaleFixPrefab.prefab;
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to get EntityStates.BrotherMonster.WeaponSlam.slamImpactEffect field");
+                }
+            }
+
+            ReadableProgress<float> golemLaserProgress = new ReadableProgress<float>();
+            coroutine.Add(golemLaserScaleFixAsync(golemLaserProgress), golemLaserProgress);
+
             return coroutine;
         }
 
@@ -633,6 +667,8 @@ namespace ItemQualities.Items
             IL.EntityStates.FalseSonBoss.PrimeDevastator.DetonateAuthority += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
 
             IL.EntityStates.GolemMonster.ClapState.FixedUpdate += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
+
+            IL.EntityStates.GolemMonster.FireLaser.OnEnter += FireLaser_OnEnter_ReplaceRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -1445,6 +1481,47 @@ namespace ItemQualities.Items
 
                 float blastRadius = GetExplosionRadius(DefaultBlastRadius, corruptedPathsDash.characterBody);
                 return blastRadius / DefaultBlastRadius;
+            }
+        }
+
+        static void FireLaser_OnEnter_ReplaceRadius(ILContext il)
+        {
+            if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
+                return;
+
+            ILCursor c = new ILCursor(il);
+
+            int effectDataLocalIndex = -1;
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdsfld<EntityStates.GolemMonster.FireLaser>(nameof(EntityStates.GolemMonster.FireLaser.hitEffectPrefab)),
+                               x => x.MatchLdloc(typeof(EffectData), il, out effectDataLocalIndex)))
+            {
+                Log.Error("Failed to find hit effect scale patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[0].Next, MoveType.After);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, EntityStates.GolemMonster.FireLaser, GameObject>>(getHitEffectPrefab);
+
+            static GameObject getHitEffectPrefab(GameObject prefab, EntityStates.GolemMonster.FireLaser self)
+            {
+                return isScaledExplosion(EntityStates.GolemMonster.FireLaser.blastRadius, self?.characterBody) && _golemLaserImpactScaleFixPrefab ? _golemLaserImpactScaleFixPrefab : prefab;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<EffectData, EntityStates.GolemMonster.FireLaser, EffectData>>(getHitEffectData);
+
+            static EffectData getHitEffectData(EffectData effectData, EntityStates.GolemMonster.FireLaser self)
+            {
+                if (isScaledExplosion(EntityStates.GolemMonster.FireLaser.blastRadius, self?.characterBody))
+                {
+                    effectData = effectData.Clone();
+                    effectData.scale = GetExplosionRadius(EntityStates.GolemMonster.FireLaser.blastRadius, self.characterBody);
+                }
+
+                return effectData;
             }
         }
 
