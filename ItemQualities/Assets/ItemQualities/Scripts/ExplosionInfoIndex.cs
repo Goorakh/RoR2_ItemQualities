@@ -5,6 +5,7 @@
         None = -1,
         CaptainSupplyDropImpact,
         MeridiansWill,
+        FalseSonBossFissureSlam,
         Count,
     }
 }

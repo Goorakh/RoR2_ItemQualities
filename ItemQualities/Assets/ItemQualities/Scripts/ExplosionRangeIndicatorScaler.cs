@@ -14,12 +14,11 @@ namespace ItemQualities
 
         ProjectileController _projectileController;
         GenericOwnership _genericOwnership;
+        LocalEffectOwnership _localEffectOwnership;
 
         ProjectileExplosion _projectileExplosion;
 
         CharacterBody _ownerBody;
-
-        float _cachedDefaultRange = 10f;
 
         float _lastIndicatorScaleMultiplier = 1f;
 
@@ -28,6 +27,7 @@ namespace ItemQualities
             _projectileController = GetComponent<ProjectileController>();
             _projectileExplosion = GetComponent<ProjectileExplosion>();
             _genericOwnership = GetComponent<GenericOwnership>();
+            _localEffectOwnership = GetComponent<LocalEffectOwnership>();
         }
 
         void OnEnable()
@@ -42,6 +42,11 @@ namespace ItemQualities
                 _genericOwnership.onOwnerChanged += setOwnerObject;
                 setOwnerObject(_genericOwnership.ownerObject);
             }
+            else if (_localEffectOwnership)
+            {
+                _localEffectOwnership.OnOwnerChanged += setOwnerObject;
+                setOwnerObject(_localEffectOwnership.OwnerObject);
+            }
         }
 
         void OnDisable()
@@ -53,6 +58,10 @@ namespace ItemQualities
             else if (_genericOwnership)
             {
                 _genericOwnership.onOwnerChanged -= setOwnerObject;
+            }
+            else if (_localEffectOwnership)
+            {
+                _localEffectOwnership.OnOwnerChanged -= setOwnerObject;
             }
 
             setOwner(null);

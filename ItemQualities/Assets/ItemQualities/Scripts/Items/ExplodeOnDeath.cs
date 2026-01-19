@@ -261,6 +261,77 @@ namespace ItemQualities.Items
             ReadableProgress<float> brotherWeaponSlamProgress = new ReadableProgress<float>();
             coroutine.Add(brotherWeaponSlamScaleFixAsync(brotherWeaponSlamProgress), brotherWeaponSlamProgress);
 
+            static IEnumerator falseSonBossPrimarySlamScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<AnimationClip> falseSonBossPrimarySlamClipLoad = AddressableUtil.LoadAssetAsync<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSon_PrimarySlam_fbx_FSArmature_BossPrimarySlam_);
+                AsyncOperationHandle<EntityStateConfiguration> falseSonFissureSlamConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_FissureSlam_asset);
+
+                ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
+                coroutine.Add(falseSonBossPrimarySlamClipLoad);
+                coroutine.Add(falseSonFissureSlamConfigurationLoad);
+
+                yield return coroutine;
+
+                if (!falseSonBossPrimarySlamClipLoad.AssertLoaded("FSArmature|BossPrimarySlam") ||
+                    !falseSonFissureSlamConfigurationLoad.AssertLoaded("EntityStates.FalseSonBoss.FissureSlam"))
+                {
+                    yield break;
+                }
+
+                if (!falseSonFissureSlamConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.FalseSonBoss.FissureSlam.blastRadius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.FalseSonBoss.FissureSlam.blastRadius field");
+                    yield break;
+                }
+
+                // FissureSlam adds 3 to the radius for the blast attack because ???
+                baseRadius += 3f;
+
+                AnimationEvent[] events = falseSonBossPrimarySlamClipLoad.Result.events;
+                bool eventsChanged = false;
+                bool foundCreateImpactEffectEvent = false;
+
+                foreach (AnimationEvent evnt in events)
+                {
+                    if (evnt.functionName == nameof(AnimationEvents.CreatePrefab) &&
+                        evnt.stringParameter == "ClubExplosionPoint" &&
+                        evnt.objectReferenceParameter is GameObject explosionEffectPrefab && explosionEffectPrefab)
+                    {
+                        EffectDef falseSonBossPrimarySlamImpactScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(explosionEffectPrefab, baseRadius);
+                        if (falseSonBossPrimarySlamImpactScaleFixPrefab != null)
+                        {
+                            falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.transform.localScale *= baseRadius;
+
+                            falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.EnsureComponent<LocalEffectOwnership>();
+
+                            if (!falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.GetComponent<ExplosionRangeIndicatorScaler>())
+                            {
+                                ExplosionRangeIndicatorScaler scaler = falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.AddComponent<ExplosionRangeIndicatorScaler>();
+                                scaler.ExplosionInfoIndex = ExplosionInfoIndex.FalseSonBossFissureSlam;
+                                scaler.IndicatorTransforms = new Transform[] { falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.transform };
+                            }
+
+                            evnt.objectReferenceParameter = falseSonBossPrimarySlamImpactScaleFixPrefab.prefab;
+                            eventsChanged = true;
+                        }
+
+                        foundCreateImpactEffectEvent = true;
+                    }
+                }
+
+                if (eventsChanged)
+                {
+                    falseSonBossPrimarySlamClipLoad.Result.events = events;
+                }
+                else if (!foundCreateImpactEffectEvent)
+                {
+                    Log.Error($"Failed to find create impact effect animation event in {falseSonBossPrimarySlamClipLoad.Result.name}");
+                }
+            }
+
+            ReadableProgress<float> falseSonBossPrimarySlamProgress = new ReadableProgress<float>();
+            coroutine.Add(falseSonBossPrimarySlamScaleFixAsync(falseSonBossPrimarySlamProgress), falseSonBossPrimarySlamProgress);
+
             return coroutine;
         }
 
@@ -412,6 +483,8 @@ namespace ItemQualities.Items
 
             IL.EntityStates.BrotherMonster.FistSlam.FixedUpdate += FistSlam_FixedUpdate_ReplaceRadius;
             IL.EntityStates.BrotherMonster.WeaponSlam.FixedUpdate += WeaponSlam_FixedUpdate_ReplaceRadius;
+
+            IL.EntityStates.FalseSonBoss.FissureSlam.DetonateAuthority += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
 
             RoR2Application.onLoad += onLoad;
         }
