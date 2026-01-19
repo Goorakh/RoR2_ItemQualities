@@ -10,6 +10,7 @@ using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using RoR2;
+using RoR2.ContentManagement;
 using RoR2.Items;
 using RoR2.Orbs;
 using RoR2.Projectile;
@@ -19,6 +20,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
@@ -199,7 +201,7 @@ namespace ItemQualities.Items
 
             static IEnumerator brotherFistSlamScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> brotherFistSlamConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Brother.EntityStates_BrotherMonster_FistSlam_asset);
+                AsyncOperationHandle<EntityStateConfiguration> brotherFistSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Brother.EntityStates_BrotherMonster_FistSlam_asset);
 
                 yield return brotherFistSlamConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -231,7 +233,7 @@ namespace ItemQualities.Items
 
             static IEnumerator brotherWeaponSlamScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> brotherWeaponSlamConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Brother.EntityStates_BrotherMonster_WeaponSlam_asset);
+                AsyncOperationHandle<EntityStateConfiguration> brotherWeaponSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Brother.EntityStates_BrotherMonster_WeaponSlam_asset);
 
                 yield return brotherWeaponSlamConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -263,8 +265,9 @@ namespace ItemQualities.Items
 
             static IEnumerator falseSonBossPrimarySlamScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<AnimationClip> falseSonBossPrimarySlamClipLoad = AddressableUtil.LoadAssetAsync<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSon_PrimarySlam_fbx_FSArmature_BossPrimarySlam_);
-                AsyncOperationHandle<EntityStateConfiguration> falseSonFissureSlamConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_FissureSlam_asset);
+                AssetReferenceT<AnimationClip> falseSonBossPrimarySlamClipReference = new AssetReferenceT<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSon_PrimarySlam_fbx_FSArmature_BossPrimarySlam_);
+                AsyncOperationHandle<AnimationClip> falseSonBossPrimarySlamClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(falseSonBossPrimarySlamClipReference);
+                AsyncOperationHandle<EntityStateConfiguration> falseSonFissureSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_FissureSlam_asset);
 
                 ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
                 coroutine.Add(falseSonBossPrimarySlamClipLoad);
@@ -319,9 +322,14 @@ namespace ItemQualities.Items
                 {
                     falseSonBossPrimarySlamClipLoad.Result.events = events;
                 }
-                else if (!foundCreateImpactEffectEvent)
+                else
                 {
-                    Log.Error($"Failed to find create impact effect animation event in {falseSonBossPrimarySlamClipLoad.Result.name}");
+                    if (!foundCreateImpactEffectEvent)
+                    {
+                        Log.Error($"Failed to find create impact effect animation event in {falseSonBossPrimarySlamClipLoad.Result.name}");
+                    }
+
+                    AssetAsyncReferenceManager<AnimationClip>.UnloadAsset(falseSonBossPrimarySlamClipReference);
                 }
             }
 
@@ -330,8 +338,9 @@ namespace ItemQualities.Items
 
             static IEnumerator falseSonBossPrimeDevastatorScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<AnimationClip> falseSonBossPrimeDevastatorClipLoad = AddressableUtil.LoadAssetAsync<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSonBoss_PrimeDevastator_fbx_FSArmature_BossPrimaryDevastator_);
-                AsyncOperationHandle<EntityStateConfiguration> falseSonPrimeDevastatorConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_PrimeDevastator_asset);
+                AssetReferenceT<AnimationClip> falseSonBossPrimeDevastatorClipReference = new AssetReferenceT<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSonBoss_PrimeDevastator_fbx_FSArmature_BossPrimaryDevastator_);
+                AsyncOperationHandle<AnimationClip> falseSonBossPrimeDevastatorClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(falseSonBossPrimeDevastatorClipReference);
+                AsyncOperationHandle<EntityStateConfiguration> falseSonPrimeDevastatorConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_PrimeDevastator_asset);
 
                 ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
                 coroutine.Add(falseSonBossPrimeDevastatorClipLoad);
@@ -382,9 +391,14 @@ namespace ItemQualities.Items
                 {
                     falseSonBossPrimeDevastatorClipLoad.Result.events = events;
                 }
-                else if (!foundCreateImpactEffectEvent)
+                else
                 {
-                    Log.Error($"Failed to find create impact effect animation event(s) in {falseSonBossPrimeDevastatorClipLoad.Result.name}");
+                    if (!foundCreateImpactEffectEvent)
+                    {
+                        Log.Error($"Failed to find create impact effect animation event(s) in {falseSonBossPrimeDevastatorClipLoad.Result.name}");
+                    }
+
+                    AssetAsyncReferenceManager<AnimationClip>.UnloadAsset(falseSonBossPrimeDevastatorClipReference);
                 }
             }
 
