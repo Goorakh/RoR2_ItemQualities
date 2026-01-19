@@ -60,6 +60,7 @@ namespace ItemQualities.Utilities.Extensions
                     if (isUnityObjectValue)
                     {
                         field.fieldValue.objectValue = value as UnityEngine.Object;
+                        return true;
                     }
                     else
                     {
