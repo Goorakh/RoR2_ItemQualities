@@ -162,7 +162,7 @@
         * Charged Perforator
         * Mithrix Phase 4 Orb Slam
         * Mithrix Phase 1 & 3 hammer slam
-        * False Son (Boss) club slam
+        * False Son (Boss) attacks
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.

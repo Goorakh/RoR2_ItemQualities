@@ -6,6 +6,7 @@
         CaptainSupplyDropImpact,
         MeridiansWill,
         FalseSonBossFissureSlam,
+        FalseSonBossPrimeDevastator,
         Count,
     }
 }

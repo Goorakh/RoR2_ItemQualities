@@ -261,7 +261,7 @@ namespace ItemQualities.Items
             ReadableProgress<float> brotherWeaponSlamProgress = new ReadableProgress<float>();
             coroutine.Add(brotherWeaponSlamScaleFixAsync(brotherWeaponSlamProgress), brotherWeaponSlamProgress);
 
-            static IEnumerator falseSonBossPrimarySlamScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator falseSonBossPrimarySlamScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
             {
                 AsyncOperationHandle<AnimationClip> falseSonBossPrimarySlamClipLoad = AddressableUtil.LoadAssetAsync<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSon_PrimarySlam_fbx_FSArmature_BossPrimarySlam_);
                 AsyncOperationHandle<EntityStateConfiguration> falseSonFissureSlamConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_FissureSlam_asset);
@@ -297,24 +297,20 @@ namespace ItemQualities.Items
                         evnt.stringParameter == "ClubExplosionPoint" &&
                         evnt.objectReferenceParameter is GameObject explosionEffectPrefab && explosionEffectPrefab)
                     {
-                        EffectDef falseSonBossPrimarySlamImpactScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(explosionEffectPrefab, baseRadius);
-                        if (falseSonBossPrimarySlamImpactScaleFixPrefab != null)
-                        {
-                            falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.transform.localScale *= baseRadius;
+                        GameObject falseSonBossPrimarySlamImpactScaleFixPrefab = EffectScalingFixer.CreateFixedScalingCopy(explosionEffectPrefab, baseRadius);
+                        falseSonBossPrimarySlamImpactScaleFixPrefab.name += "_FissureSlam";
 
-                            falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.EnsureComponent<LocalEffectOwnership>();
+                        falseSonBossPrimarySlamImpactScaleFixPrefab.EnsureComponent<LocalEffectOwnership>();
 
-                            if (!falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.GetComponent<ExplosionRangeIndicatorScaler>())
-                            {
-                                ExplosionRangeIndicatorScaler scaler = falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.AddComponent<ExplosionRangeIndicatorScaler>();
-                                scaler.ExplosionInfoIndex = ExplosionInfoIndex.FalseSonBossFissureSlam;
-                                scaler.IndicatorTransforms = new Transform[] { falseSonBossPrimarySlamImpactScaleFixPrefab.prefab.transform };
-                            }
+                        ExplosionRangeIndicatorScaler scaler = falseSonBossPrimarySlamImpactScaleFixPrefab.EnsureComponent<ExplosionRangeIndicatorScaler>();
+                        scaler.ExplosionInfoIndex = ExplosionInfoIndex.FalseSonBossFissureSlam;
+                        scaler.IndicatorTransforms = new Transform[] { falseSonBossPrimarySlamImpactScaleFixPrefab.transform };
 
-                            evnt.objectReferenceParameter = falseSonBossPrimarySlamImpactScaleFixPrefab.prefab;
-                            eventsChanged = true;
-                        }
+                        evnt.objectReferenceParameter = falseSonBossPrimarySlamImpactScaleFixPrefab;
 
+                        contentPack.effectDefs.Add(new EffectDef(falseSonBossPrimarySlamImpactScaleFixPrefab));
+
+                        eventsChanged = true;
                         foundCreateImpactEffectEvent = true;
                     }
                 }
@@ -330,7 +326,70 @@ namespace ItemQualities.Items
             }
 
             ReadableProgress<float> falseSonBossPrimarySlamProgress = new ReadableProgress<float>();
-            coroutine.Add(falseSonBossPrimarySlamScaleFixAsync(falseSonBossPrimarySlamProgress), falseSonBossPrimarySlamProgress);
+            coroutine.Add(falseSonBossPrimarySlamScaleFixAsync(args.ContentPack, falseSonBossPrimarySlamProgress), falseSonBossPrimarySlamProgress);
+
+            static IEnumerator falseSonBossPrimeDevastatorScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<AnimationClip> falseSonBossPrimeDevastatorClipLoad = AddressableUtil.LoadAssetAsync<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSonBoss_PrimeDevastator_fbx_FSArmature_BossPrimaryDevastator_);
+                AsyncOperationHandle<EntityStateConfiguration> falseSonPrimeDevastatorConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_PrimeDevastator_asset);
+
+                ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
+                coroutine.Add(falseSonBossPrimeDevastatorClipLoad);
+                coroutine.Add(falseSonPrimeDevastatorConfigurationLoad);
+
+                yield return coroutine;
+
+                if (!falseSonBossPrimeDevastatorClipLoad.AssertLoaded("FSArmature|BossPrimaryDevastator") ||
+                    !falseSonPrimeDevastatorConfigurationLoad.AssertLoaded("EntityStates.FalseSonBoss.PrimeDevastator"))
+                {
+                    yield break;
+                }
+
+                if (!falseSonPrimeDevastatorConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.FalseSonBoss.PrimeDevastator.blastRadius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.FalseSonBoss.PrimeDevastator.blastRadius field");
+                    yield break;
+                }
+
+                AnimationEvent[] events = falseSonBossPrimeDevastatorClipLoad.Result.events;
+                bool eventsChanged = false;
+                bool foundCreateImpactEffectEvent = false;
+
+                foreach (AnimationEvent evnt in events)
+                {
+                    if (evnt.functionName == nameof(AnimationEvents.CreatePrefab) &&
+                        evnt.objectReferenceParameter is GameObject explosionEffectPrefab && explosionEffectPrefab)
+                    {
+                        GameObject falseSonBossPrimeDevastatorImpactScaleFixPrefab = EffectScalingFixer.CreateFixedScalingCopy(explosionEffectPrefab, baseRadius);
+                        falseSonBossPrimeDevastatorImpactScaleFixPrefab.name += "_PrimeDevastator";
+
+                        falseSonBossPrimeDevastatorImpactScaleFixPrefab.EnsureComponent<LocalEffectOwnership>();
+
+                        ExplosionRangeIndicatorScaler scaler = falseSonBossPrimeDevastatorImpactScaleFixPrefab.EnsureComponent<ExplosionRangeIndicatorScaler>();
+                        scaler.ExplosionInfoIndex = ExplosionInfoIndex.FalseSonBossPrimeDevastator;
+                        scaler.IndicatorTransforms = new Transform[] { falseSonBossPrimeDevastatorImpactScaleFixPrefab.transform };
+
+                        evnt.objectReferenceParameter = falseSonBossPrimeDevastatorImpactScaleFixPrefab;
+
+                        contentPack.effectDefs.Add(new EffectDef(falseSonBossPrimeDevastatorImpactScaleFixPrefab));
+
+                        eventsChanged = true;
+                        foundCreateImpactEffectEvent = true;
+                    }
+                }
+
+                if (eventsChanged)
+                {
+                    falseSonBossPrimeDevastatorClipLoad.Result.events = events;
+                }
+                else if (!foundCreateImpactEffectEvent)
+                {
+                    Log.Error($"Failed to find create impact effect animation event(s) in {falseSonBossPrimeDevastatorClipLoad.Result.name}");
+                }
+            }
+
+            ReadableProgress<float> falseSonBossPrimeDevastatorProgress = new ReadableProgress<float>();
+            coroutine.Add(falseSonBossPrimeDevastatorScaleFixAsync(args.ContentPack, falseSonBossPrimeDevastatorProgress), falseSonBossPrimeDevastatorProgress);
 
             return coroutine;
         }
@@ -485,6 +544,10 @@ namespace ItemQualities.Items
             IL.EntityStates.BrotherMonster.WeaponSlam.FixedUpdate += WeaponSlam_FixedUpdate_ReplaceRadius;
 
             IL.EntityStates.FalseSonBoss.FissureSlam.DetonateAuthority += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
+
+            IL.EntityStates.FalseSonBoss.CorruptedPathsDash.FixedUpdate += CorruptedPathsDash_FixedUpdate_ReplaceRadius;
+
+            IL.EntityStates.FalseSonBoss.PrimeDevastator.DetonateAuthority += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
 
             RoR2Application.onLoad += onLoad;
         }
@@ -1267,6 +1330,36 @@ namespace ItemQualities.Items
 
                 EffectManager.SpawnEffect(_brotherWeaponSlamImpactScaleFixPrefab, effectData, false);
                 return true;
+            }
+        }
+
+        static void CorruptedPathsDash_FixedUpdate_ReplaceRadius(ILContext il)
+        {
+            const float DefaultBlastRadius = 20f;
+
+            if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
+                return;
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchStfld<EffectData>(nameof(EffectData.scale))))
+            {
+                Log.Error("Failed to find effect scale patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<EntityStates.FalseSonBoss.CorruptedPathsDash, float>>(getScaleMultiplier);
+            c.Emit(OpCodes.Mul);
+
+            static float getScaleMultiplier(EntityStates.FalseSonBoss.CorruptedPathsDash corruptedPathsDash)
+            {
+                if (!corruptedPathsDash?.characterBody)
+                    return 1f;
+
+                float blastRadius = GetExplosionRadius(DefaultBlastRadius, corruptedPathsDash.characterBody);
+                return blastRadius / DefaultBlastRadius;
             }
         }
 

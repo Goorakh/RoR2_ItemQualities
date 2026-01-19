@@ -55,9 +55,17 @@ namespace ItemQualities
             if (scaledPrefabsCache.TryGetValue(dictionaryKey, out EffectDef cachedScaledEffectDef))
                 return cachedScaledEffectDef;
 
-            GameObject scaleFixExplosionEffectPrefab = effectPrefab.InstantiateClone($"{effectPrefab.name}_ScaleFix_x{defaultRadius:F1}", false);
-            effectComponent = scaleFixExplosionEffectPrefab.GetComponent<EffectComponent>();
-            effectComponent.applyScale = true;
+            EffectDef effectDef = new EffectDef(CreateFixedScalingCopy(effectPrefab, defaultRadius));
+            scaledPrefabsCache.Add(dictionaryKey, effectDef);
+            return effectDef;
+        }
+
+        public static GameObject CreateFixedScalingCopy(GameObject prefab, float defaultRadius)
+        {
+            GameObject scaleFixExplosionEffectPrefab = prefab.InstantiateClone($"{prefab.name}_ScaleFix_x{defaultRadius:F1}", false);
+
+            if (scaleFixExplosionEffectPrefab.TryGetComponent(out EffectComponent effectComponent))
+                effectComponent.applyScale = true;
 
             if (scaleFixExplosionEffectPrefab.transform.childCount > 0)
             {
@@ -93,12 +101,13 @@ namespace ItemQualities
             }
             else
             {
-                Log.Warning($"Scaled effect {effectPrefab.name} has no children, set prefab scale will be lost");
+                Log.Warning($"Scaled effect {prefab.name} has no children, set prefab scale will be lost");
             }
 
-            EffectDef effectDef = new EffectDef(scaleFixExplosionEffectPrefab);
-            scaledPrefabsCache.Add(dictionaryKey, effectDef);
-            return effectDef;
+            // Restore the original scale of the prefab, in case it is used elsewhere without setting the scale
+            scaleFixExplosionEffectPrefab.transform.localScale *= defaultRadius;
+
+            return scaleFixExplosionEffectPrefab;
         }
     }
 }
