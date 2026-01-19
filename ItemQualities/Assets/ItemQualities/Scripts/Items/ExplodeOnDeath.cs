@@ -503,7 +503,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("Failed to get EntityStates.BrotherMonster.WeaponSlam.slamImpactEffect field");
+                    Log.Error("Failed to get EntityStates.GolemMonster.FireLaser.hitEffectPrefab field");
                 }
             }
 
@@ -535,7 +535,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("Failed to get EntityStates.BrotherMonster.WeaponSlam.slamImpactEffect field");
+                    Log.Error("Failed to get EntityStates.Halcyonite.TriLaser.hitEffectPrefab field");
                 }
             }
 
