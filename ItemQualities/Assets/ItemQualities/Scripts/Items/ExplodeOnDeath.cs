@@ -42,6 +42,8 @@ namespace ItemQualities.Items
 
         static GameObject _golemLaserImpactScaleFixPrefab;
 
+        static GameObject _halcyoniteTriLaserImpactScaleFixPrefab;
+
         // RoR2.Orbs.LightningStrikeOrb.OnArrival
         const float LightningStrikeOrbRadius = 3f;
 
@@ -508,6 +510,38 @@ namespace ItemQualities.Items
             ReadableProgress<float> golemLaserProgress = new ReadableProgress<float>();
             coroutine.Add(golemLaserScaleFixAsync(golemLaserProgress), golemLaserProgress);
 
+            static IEnumerator halcyoniteTriLaserScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<EntityStateConfiguration> halcyoniteTriLaserConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_Halcyonite.EntityStates_HalcyoniteMonster_TriLaser_asset);
+
+                yield return halcyoniteTriLaserConfigurationLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!halcyoniteTriLaserConfigurationLoad.AssertLoaded("EntityStates.Halcyonite.TriLaser"))
+                    yield break;
+
+                if (!halcyoniteTriLaserConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.Halcyonite.TriLaser.blastRadius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.Halcyonite.TriLaser.blastRadius field");
+                    yield break;
+                }
+
+                if (halcyoniteTriLaserConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.Halcyonite.TriLaser.hitEffectPrefab), out GameObject halcyoniteTriLaserImpactPrefab))
+                {
+                    EffectDef halcyoniteTriLaserImpactScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(halcyoniteTriLaserImpactPrefab, baseRadius);
+                    if (halcyoniteTriLaserImpactScaleFixPrefab != null)
+                    {
+                        _halcyoniteTriLaserImpactScaleFixPrefab = halcyoniteTriLaserImpactScaleFixPrefab.prefab;
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to get EntityStates.BrotherMonster.WeaponSlam.slamImpactEffect field");
+                }
+            }
+
+            ReadableProgress<float> halcyoniteTriLaserProgress = new ReadableProgress<float>();
+            coroutine.Add(halcyoniteTriLaserScaleFixAsync(halcyoniteTriLaserProgress), halcyoniteTriLaserProgress);
+
             return coroutine;
         }
 
@@ -669,6 +703,8 @@ namespace ItemQualities.Items
             IL.EntityStates.GolemMonster.ClapState.FixedUpdate += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
 
             IL.EntityStates.GolemMonster.FireLaser.OnEnter += FireLaser_OnEnter_ReplaceRadius;
+
+            IL.EntityStates.Halcyonite.TriLaser.FireTriLaser += TriLaser_FireTriLaser_ReplaceRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -1519,6 +1555,47 @@ namespace ItemQualities.Items
                 {
                     effectData = effectData.Clone();
                     effectData.scale = GetExplosionRadius(EntityStates.GolemMonster.FireLaser.blastRadius, self.characterBody);
+                }
+
+                return effectData;
+            }
+        }
+
+        static void TriLaser_FireTriLaser_ReplaceRadius(ILContext il)
+        {
+            if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
+                return;
+
+            ILCursor c = new ILCursor(il);
+
+            int effectDataLocalIndex = -1;
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdsfld<EntityStates.Halcyonite.TriLaser>(nameof(EntityStates.Halcyonite.TriLaser.hitEffectPrefab)),
+                               x => x.MatchLdloc(typeof(EffectData), il, out effectDataLocalIndex)))
+            {
+                Log.Error("Failed to find hit effect scale patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[0].Next, MoveType.After);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, EntityStates.Halcyonite.TriLaser, GameObject>>(getHitEffectPrefab);
+
+            static GameObject getHitEffectPrefab(GameObject prefab, EntityStates.Halcyonite.TriLaser self)
+            {
+                return isScaledExplosion(EntityStates.Halcyonite.TriLaser.blastRadius, self?.characterBody) && _halcyoniteTriLaserImpactScaleFixPrefab ? _halcyoniteTriLaserImpactScaleFixPrefab : prefab;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<EffectData, EntityStates.Halcyonite.TriLaser, EffectData>>(getHitEffectData);
+
+            static EffectData getHitEffectData(EffectData effectData, EntityStates.Halcyonite.TriLaser self)
+            {
+                if (isScaledExplosion(EntityStates.Halcyonite.TriLaser.blastRadius, self?.characterBody))
+                {
+                    effectData = effectData.Clone();
+                    effectData.scale = GetExplosionRadius(EntityStates.Halcyonite.TriLaser.blastRadius, self.characterBody);
                 }
 
                 return effectData;

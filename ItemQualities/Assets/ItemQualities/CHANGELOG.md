@@ -165,6 +165,7 @@
         * False Son (Boss) attacks
         * Stone Golem Clap
         * Stone Golem Laser
+        * Halcyonite Laser
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
