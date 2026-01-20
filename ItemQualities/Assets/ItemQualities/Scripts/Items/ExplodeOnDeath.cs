@@ -48,6 +48,8 @@ namespace ItemQualities.Items
         
         static GameObject _impBossGroundPoundSlamScaleFixPrefab;
 
+        static GameObject _mageFlyUpBlinkScaleFixPrefab;
+
         // RoR2.Orbs.LightningStrikeOrb.OnArrival
         const float LightningStrikeOrbRadius = 3f;
 
@@ -715,6 +717,38 @@ namespace ItemQualities.Items
             ReadableProgress<float> parentGroundSlamProgress = new ReadableProgress<float>();
             coroutine.Add(parentGroundSlamScaleFixAsync(parentGroundSlamProgress), parentGroundSlamProgress);
 
+            static IEnumerator mageFlyUpBlinkScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<EntityStateConfiguration> mageFlyUpStateConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Mage.EntityStates_Mage_FlyUpState_asset);
+
+                yield return mageFlyUpStateConfigurationLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!mageFlyUpStateConfigurationLoad.AssertLoaded("EntityStates.Mage.FlyUpState"))
+                    yield break;
+
+                if (!mageFlyUpStateConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.Mage.FlyUpState.blastAttackRadius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.Mage.FlyUpState.blastAttackRadius field");
+                    yield break;
+                }
+
+                if (mageFlyUpStateConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.Mage.FlyUpState.blinkPrefab), out GameObject mageFlyUpBlinkPrefab))
+                {
+                    EffectDef mageFlyUpBlinkScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(mageFlyUpBlinkPrefab, baseRadius);
+                    if (mageFlyUpBlinkScaleFixPrefab != null)
+                    {
+                        _mageFlyUpBlinkScaleFixPrefab = mageFlyUpBlinkScaleFixPrefab.prefab;
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to get EntityStates.Mage.FlyUpState.blinkPrefab field");
+                }
+            }
+
+            ReadableProgress<float> mageFlyUpBlinkProgress = new ReadableProgress<float>();
+            coroutine.Add(mageFlyUpBlinkScaleFixAsync(mageFlyUpBlinkProgress), mageFlyUpBlinkProgress);
+
             return coroutine;
         }
 
@@ -803,6 +837,7 @@ namespace ItemQualities.Items
             IL.EntityStates.JunkCube.DeathState.Explode += groupManipulators(getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody), getUnscaledEffectDataScaleManipulator(emitGetEntityStateAttackerBody));
 
             IL.EntityStates.Mage.FlyUpState.OnEnter += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
+            IL.EntityStates.Mage.FlyUpState.CreateBlinkEffect += Mage_FlyUpState_CreateBlinkEffect_ReplaceEffectRadius;
 
             IL.EntityStates.Seeker.Meditate.Update += groupManipulators(getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody), getUnscaledEffectDataScaleManipulator(emitGetEntityStateAttackerBody));
 
@@ -1754,11 +1789,7 @@ namespace ItemQualities.Items
                     if (self == null || self._effectData == null)
                         return;
 
-                    self._effectData.scale = 1f;
-                    if (isScaledExplosion(self.blastAttackRadius, self.characterBody))
-                    {
-                        self._effectData.scale = GetExplosionRadius(self.blastAttackRadius, self.characterBody);
-                    }
+                    self._effectData.scale = GetExplosionRadius(self.blastAttackRadius, self.characterBody);
                 }
             }
             else
@@ -1848,6 +1879,49 @@ namespace ItemQualities.Items
                 }, self.gameObject, "GroundPoundCenter", true);
 
                 return true;
+            }
+        }
+
+        static void Mage_FlyUpState_CreateBlinkEffect_ReplaceEffectRadius(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            int effectDataVarIndex = -1;
+            if (c.TryGotoNext(MoveType.After,
+                              x => x.MatchNewobj<EffectData>(),
+                              x => x.MatchStloc(typeof(EffectData), il, out effectDataVarIndex)))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc, effectDataVarIndex);
+                c.EmitDelegate<Action<EntityStates.Mage.FlyUpState, EffectData>>(trySetEffectDataScale);
+
+                static void trySetEffectDataScale(EntityStates.Mage.FlyUpState self, EffectData effectData)
+                {
+                    if (self == null || effectData == null)
+                        return;
+
+                    effectData.scale = GetExplosionRadius(EntityStates.Mage.FlyUpState.blastAttackRadius, self.characterBody);
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find blink effect scale set patch location");
+            }
+
+            if (c.TryGotoNext(MoveType.After,
+                              x => x.MatchLdsfld<EntityStates.Mage.FlyUpState>(nameof(EntityStates.Mage.FlyUpState.blinkPrefab))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<GameObject, EntityStates.Mage.FlyUpState, GameObject>>(getBlinkPrefab);
+
+                static GameObject getBlinkPrefab(GameObject blinkPrefab, EntityStates.Mage.FlyUpState self)
+                {
+                    return self != null && isScaledExplosion(EntityStates.Mage.FlyUpState.blastAttackRadius, self.characterBody) && _mageFlyUpBlinkScaleFixPrefab ? _mageFlyUpBlinkScaleFixPrefab : blinkPrefab;
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find blink effect prefab patch location");
             }
         }
 

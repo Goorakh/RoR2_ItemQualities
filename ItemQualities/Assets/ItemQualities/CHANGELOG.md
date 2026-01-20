@@ -169,6 +169,8 @@
         * Imp Overlord teleport
         * Imp Overlord ground pound
         * Parent ground slam
+    * Fixed explosion size increase not changing vfx scale:
+        * Artificer Ion Surge
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
