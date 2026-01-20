@@ -65,6 +65,11 @@ namespace ItemQualities
                 DefaultRangeGetter = getEntityStateInstanceFieldGetter(typeof(EntityStates.ImpBossMonster.BlinkState), nameof(EntityStates.ImpBossMonster.BlinkState.blastAttackRadius))
             }, ExplosionInfoIndex.ImpBossBlink);
 
+            register(new ExplosionInfoDef
+            {
+                DefaultRangeGetter = () => EntityStates.ParentMonster.GroundSlam.radius
+            }, ExplosionInfoIndex.ParentGroundSlam);
+
             ExplosionInfoDef.GetDefaultRangeDelegate getEntityStateInstanceFieldGetter(Type entityStateType, string fieldName)
             {
                 if (entityStateType is null)
@@ -106,6 +111,11 @@ namespace ItemQualities
             }
 
             ModHelper.CollectAndRegisterAdditionalEntries(ref _explosionInfoDefs);
+
+            if (ExplosionInfoDefCount >= byte.MaxValue)
+            {
+                Log.Warning($"Explosions catalog exceeded soft limit (count={ExplosionInfoDefCount}), binary packing will have errors!");
+            }
         }
 
         public static ExplosionInfoDef GetExplosionInfoDef(ExplosionInfoIndex index)

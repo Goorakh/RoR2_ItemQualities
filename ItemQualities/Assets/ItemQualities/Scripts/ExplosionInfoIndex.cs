@@ -9,6 +9,7 @@
         FalseSonBossPrimeDevastator,
         GolemClap,
         ImpBossBlink,
+        ParentGroundSlam,
         Count,
     }
 }

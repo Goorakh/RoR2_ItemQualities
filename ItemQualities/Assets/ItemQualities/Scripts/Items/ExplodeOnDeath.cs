@@ -651,6 +651,70 @@ namespace ItemQualities.Items
             ReadableProgress<float> impBossGroundPoundProgress = new ReadableProgress<float>();
             coroutine.Add(impBossGroundPoundScaleFixAsync(impBossGroundPoundProgress), impBossGroundPoundProgress);
 
+            static IEnumerator parentGroundSlamScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AssetReferenceT<AnimationClip> parentGroundSlamClipReference = new AssetReferenceT<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Parent.mdlParent_fbx_ParentArmature_Slam_);
+                AsyncOperationHandle<AnimationClip> parentGroundSlamClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(parentGroundSlamClipReference);
+                AsyncOperationHandle<EntityStateConfiguration> parentGroundSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Parent.EntityStates_ParentMonster_GroundSlam_asset);
+
+                ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
+                coroutine.Add(parentGroundSlamClipLoad);
+                coroutine.Add(parentGroundSlamConfigurationLoad);
+
+                yield return coroutine;
+
+                if (!parentGroundSlamClipLoad.AssertLoaded("ParentArmature|Slam") ||
+                    !parentGroundSlamConfigurationLoad.AssertLoaded("EntityStates.ParentMonster.GroundSlam"))
+                {
+                    yield break;
+                }
+
+                if (!parentGroundSlamConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.ParentMonster.GroundSlam.radius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.ParentMonster.GroundSlam.radius field");
+                    yield break;
+                }
+
+                AnimationEvent[] events = parentGroundSlamClipLoad.Result.events;
+                bool eventsChanged = false;
+                bool foundCreateImpactEffectEvent = false;
+
+                foreach (AnimationEvent evnt in events)
+                {
+                    if (evnt.functionName == nameof(AnimationEvents.CreateEffect) &&
+                        evnt.objectReferenceParameter is GameObject explosionEffectPrefab && explosionEffectPrefab)
+                    {
+                        EffectDef parentGroundSlamImpactScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(explosionEffectPrefab, baseRadius);
+                        if (parentGroundSlamImpactScaleFixPrefab != null)
+                        {
+                            evnt.objectReferenceParameter = parentGroundSlamImpactScaleFixPrefab.prefab;
+                            AnimationEffectSetExplosionScalePatch.SetEncodedExplosionIndex(evnt, ExplosionInfoIndex.ParentGroundSlam);
+
+                            eventsChanged = true;
+                        }
+
+                        foundCreateImpactEffectEvent = true;
+                    }
+                }
+
+                if (eventsChanged)
+                {
+                    parentGroundSlamClipLoad.Result.events = events;
+                }
+                else
+                {
+                    if (!foundCreateImpactEffectEvent)
+                    {
+                        Log.Error($"Failed to find create impact effect animation event(s) in {parentGroundSlamClipLoad.Result.name}");
+                    }
+
+                    AssetAsyncReferenceManager<AnimationClip>.UnloadAsset(parentGroundSlamClipReference);
+                }
+            }
+
+            ReadableProgress<float> parentGroundSlamProgress = new ReadableProgress<float>();
+            coroutine.Add(parentGroundSlamScaleFixAsync(parentGroundSlamProgress), parentGroundSlamProgress);
+
             return coroutine;
         }
 
@@ -821,6 +885,8 @@ namespace ItemQualities.Items
 
             IL.EntityStates.ImpBossMonster.GroundPound.OnEnter += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
             IL.EntityStates.ImpBossMonster.GroundPound.FixedUpdate += ImpBoss_GroundPound_FixedUpdate_ReplaceEffectRadius;
+
+            IL.EntityStates.ParentMonster.GroundSlam.FixedUpdate += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
 
             RoR2Application.onLoad += onLoad;
         }

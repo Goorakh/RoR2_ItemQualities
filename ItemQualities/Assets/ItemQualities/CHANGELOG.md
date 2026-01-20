@@ -168,6 +168,7 @@
         * Halcyonite Laser
         * Imp Overlord teleport
         * Imp Overlord ground pound
+        * Parent ground slam
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
