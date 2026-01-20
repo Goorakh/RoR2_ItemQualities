@@ -45,6 +45,8 @@ namespace ItemQualities.Items
         static GameObject _halcyoniteTriLaserImpactScaleFixPrefab;
 
         static GameObject _impBossBlinkScaleFixPrefab;
+        
+        static GameObject _impBossGroundPoundSlamScaleFixPrefab;
 
         // RoR2.Orbs.LightningStrikeOrb.OnArrival
         const float LightningStrikeOrbRadius = 3f;
@@ -81,6 +83,24 @@ namespace ItemQualities.Items
 
             float radius = GetExplosionRadius(baseRadius, attacker);
             return Mathf.Abs((radius / baseRadius) - 1f) > Mathf.Epsilon;
+        }
+
+        static void spawnEffectAtMuzzle(GameObject effectPrefab, EffectData effectData, GameObject entityObject, string muzzleName, bool transmit)
+        {
+            if (entityObject &&
+                entityObject.TryGetComponent(out ModelLocator modelLocator) &&
+                modelLocator.modelChildLocator)
+            {
+                int muzzleTransformIndex = modelLocator.modelChildLocator.FindChildIndex(muzzleName);
+                Transform muzzleTransform = muzzleTransformIndex < 0 ? null : modelLocator.modelChildLocator.FindChild(muzzleTransformIndex);
+                if (muzzleTransform)
+                {
+                    effectData.origin = muzzleTransform.position;
+                    effectData.SetChildLocatorTransformReference(entityObject, muzzleTransformIndex);
+
+                    EffectManager.SpawnEffect(effectPrefab, effectData, transmit);
+                }
+            }
         }
 
         [ContentInitializer]
@@ -599,6 +619,38 @@ namespace ItemQualities.Items
             ReadableProgress<float> impBossBlinkProgress = new ReadableProgress<float>();
             coroutine.Add(impBossBlinkScaleFixAsync(impBossBlinkProgress), impBossBlinkProgress);
 
+            static IEnumerator impBossGroundPoundScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AsyncOperationHandle<EntityStateConfiguration> impBossGroundPoundConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_ImpBoss.EntityStates_ImpBossMonster_GroundPound_asset);
+
+                yield return impBossGroundPoundConfigurationLoad.AsProgressCoroutine(progressReceiver);
+
+                if (!impBossGroundPoundConfigurationLoad.AssertLoaded("EntityStates.ImpBossMonster.GroundPound"))
+                    yield break;
+
+                if (!impBossGroundPoundConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.ImpBossMonster.GroundPound.blastAttackRadius), out float baseRadius))
+                {
+                    Log.Error("Failed to get EntityStates.ImpBossMonster.GroundPound.blastAttackRadius field");
+                    yield break;
+                }
+
+                if (impBossGroundPoundConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.ImpBossMonster.GroundPound.slamEffectPrefab), out GameObject impBossGroundPoundSlamPrefab))
+                {
+                    EffectDef impBossGroundPoundSlamScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(impBossGroundPoundSlamPrefab, baseRadius);
+                    if (impBossGroundPoundSlamScaleFixPrefab != null)
+                    {
+                        _impBossGroundPoundSlamScaleFixPrefab = impBossGroundPoundSlamScaleFixPrefab.prefab;
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to get EntityStates.ImpBossMonster.GroundPound.slamEffectPrefab field");
+                }
+            }
+
+            ReadableProgress<float> impBossGroundPoundProgress = new ReadableProgress<float>();
+            coroutine.Add(impBossGroundPoundScaleFixAsync(impBossGroundPoundProgress), impBossGroundPoundProgress);
+
             return coroutine;
         }
 
@@ -764,10 +816,11 @@ namespace ItemQualities.Items
             IL.EntityStates.Halcyonite.TriLaser.FireTriLaser += TriLaser_FireTriLaser_ReplaceRadius;
 
             IL.EntityStates.ImpBossMonster.BlinkState.ExitCleanup += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
-
             IL.EntityStates.ImpBossMonster.BlinkState.CreateBlinkEffect += ImpBoss_BlinkState_CreateBlinkEffect_ReplaceRadius;
-
             IL.EntityStates.ImpBossMonster.BlinkState.FixedUpdate += ImpBoss_BlinkState_FixedUpdate_SetBlinkDestinationEffectOwner;
+
+            IL.EntityStates.ImpBossMonster.GroundPound.OnEnter += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
+            IL.EntityStates.ImpBossMonster.GroundPound.FixedUpdate += ImpBoss_GroundPound_FixedUpdate_ReplaceEffectRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -1050,32 +1103,13 @@ namespace ItemQualities.Items
                 if (!_banditSmokeBombScalingFixPrefab)
                     return false;
 
-                CharacterBody body = stealthMode?.characterBody;
-                if (!body)
+                if (!isScaledExplosion(EntityStates.Bandit2.StealthMode.blastAttackRadius, stealthMode?.characterBody))
                     return false;
 
-                float finalRadius = GetExplosionRadius(EntityStates.Bandit2.StealthMode.blastAttackRadius, body);
-                if (Mathf.Abs(finalRadius - EntityStates.Bandit2.StealthMode.blastAttackRadius) < 0.01f)
-                    return false;
-
-                ModelLocator modelLocator = stealthMode.modelLocator;
-                if (!modelLocator || !modelLocator.modelChildLocator)
-                    return false;
-
-                int smokeBombMuzzleIndex = modelLocator.modelChildLocator.FindChildIndex(EntityStates.Bandit2.StealthMode.smokeBombMuzzleString);
-                Transform smokeBombMuzzle = modelLocator.modelChildLocator.FindChild(smokeBombMuzzleIndex);
-                if (!smokeBombMuzzle)
-                    return false;
-
-                EffectData effectData = new EffectData
+                spawnEffectAtMuzzle(_banditSmokeBombScalingFixPrefab, new EffectData
                 {
-                    origin = smokeBombMuzzle.position,
-                    scale = finalRadius
-                };
-
-                effectData.SetChildLocatorTransformReference(stealthMode.gameObject, smokeBombMuzzleIndex);
-
-                EffectManager.SpawnEffect(_banditSmokeBombScalingFixPrefab, effectData, false);
+                    scale = GetExplosionRadius(EntityStates.Bandit2.StealthMode.blastAttackRadius, stealthMode.characterBody)
+                }, stealthMode.gameObject, EntityStates.Bandit2.StealthMode.smokeBombMuzzleString, false);
 
                 return true;
             }
@@ -1480,24 +1514,11 @@ namespace ItemQualities.Items
                 if (!isScaledExplosion(EntityStates.BrotherMonster.FistSlam.radius, self?.characterBody) || !_brotherFistSlamImpactScaleFixPrefab)
                     return false;
 
-                ChildLocator childLocator = self.GetModelChildLocator();
-                if (!childLocator)
-                    return false;
-
-                int explosionMuzzleIndex = childLocator.FindChildIndex(EntityStates.BrotherMonster.FistSlam.muzzleString);
-                Transform explosionMuzzle = explosionMuzzleIndex != -1 ? childLocator.FindChild(explosionMuzzleIndex) : null;
-                if (!explosionMuzzle)
-                    return false;
-
-                EffectData effectData = new EffectData
+                spawnEffectAtMuzzle(_banditSmokeBombScalingFixPrefab, new EffectData
                 {
-                    origin = explosionMuzzle.position,
                     scale = GetExplosionRadius(EntityStates.BrotherMonster.FistSlam.radius, self.characterBody)
-                };
+                }, self.gameObject, EntityStates.BrotherMonster.FistSlam.muzzleString, false);
 
-                effectData.SetChildLocatorTransformReference(self.gameObject, explosionMuzzleIndex);
-
-                EffectManager.SpawnEffect(_brotherFistSlamImpactScaleFixPrefab, effectData, false);
                 return true;
             }
         }
@@ -1531,24 +1552,11 @@ namespace ItemQualities.Items
                 if (!isScaledExplosion(EntityStates.BrotherMonster.WeaponSlam.radius, self?.characterBody) || !_brotherWeaponSlamImpactScaleFixPrefab)
                     return false;
 
-                ChildLocator childLocator = self.GetModelChildLocator();
-                if (!childLocator)
-                    return false;
-
-                int explosionMuzzleIndex = childLocator.FindChildIndex(EntityStates.BrotherMonster.WeaponSlam.muzzleString);
-                Transform explosionMuzzle = explosionMuzzleIndex != -1 ? childLocator.FindChild(explosionMuzzleIndex) : null;
-                if (!explosionMuzzle)
-                    return false;
-
-                EffectData effectData = new EffectData
+                spawnEffectAtMuzzle(_banditSmokeBombScalingFixPrefab, new EffectData
                 {
-                    origin = explosionMuzzle.position,
                     scale = GetExplosionRadius(EntityStates.BrotherMonster.WeaponSlam.radius, self.characterBody)
-                };
+                }, self.gameObject, EntityStates.BrotherMonster.WeaponSlam.muzzleString, false);
 
-                effectData.SetChildLocatorTransformReference(self.gameObject, explosionMuzzleIndex);
-
-                EffectManager.SpawnEffect(_brotherWeaponSlamImpactScaleFixPrefab, effectData, false);
                 return true;
             }
         }
@@ -1736,6 +1744,44 @@ namespace ItemQualities.Items
                     CharacterBody ownerBody = entityStateGetAttackerBody(self);
                     ownership.OwnerObject = ownerBody ? ownerBody.gameObject : self.gameObject;
                 }
+            }
+        }
+
+        static void ImpBoss_GroundPound_FixedUpdate_ReplaceEffectRadius(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdsfld<EntityStates.ImpBossMonster.GroundPound>(nameof(EntityStates.ImpBossMonster.GroundPound.slamEffectPrefab)),
+                               x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SimpleMuzzleFlash))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After);
+            ILLabel afterMuzzleFlashLabel = c.MarkLabel();
+
+            c.Goto(foundCursors[0].Next, MoveType.AfterLabel);
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<EntityStates.ImpBossMonster.GroundPound, bool>>(trySpawnScaledEffect);
+            c.Emit(OpCodes.Brtrue, afterMuzzleFlashLabel);
+
+            static bool trySpawnScaledEffect(EntityStates.ImpBossMonster.GroundPound self)
+            {
+                if (!isScaledExplosion(EntityStates.ImpBossMonster.GroundPound.blastAttackRadius, self?.characterBody) ||
+                    !_impBossGroundPoundSlamScaleFixPrefab)
+                {
+                    return false;
+                }
+
+                spawnEffectAtMuzzle(_impBossGroundPoundSlamScaleFixPrefab, new EffectData
+                {
+                    scale = GetExplosionRadius(EntityStates.ImpBossMonster.GroundPound.blastAttackRadius, self.characterBody)
+                }, self.gameObject, "GroundPoundCenter", true);
+
+                return true;
             }
         }
 
