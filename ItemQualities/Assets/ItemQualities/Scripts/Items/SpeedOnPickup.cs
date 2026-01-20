@@ -50,7 +50,7 @@ namespace ItemQualities.Items
                         "SPEEDONPICKUP_STATBUFF_ARMOR",
                     };
 
-                    multiTextRiserController.BaseDuration = 1.5f;
+                    multiTextRiserController.BaseDuration = 1f;
                     multiTextRiserController.DurationModifier = 0f;
                 }
                 else
@@ -134,6 +134,14 @@ namespace ItemQualities.Items
 
                 GenericDisplayNameProvider genericDisplayNameProvider = speedOnPickupBarrelPrefab.EnsureComponent<GenericDisplayNameProvider>();
                 genericDisplayNameProvider.displayToken = "BARREL_SPEEDONPICKUP_NAME";
+
+                if (speedOnPickupBarrelPrefab.TryGetComponent(out GenericInspectInfoProvider genericInspectInfoProvider))
+                {
+                    genericInspectInfoProvider.InspectInfo = ScriptableObject.Instantiate(genericInspectInfoProvider.InspectInfo);
+                    genericInspectInfoProvider.InspectInfo.name = "SpeedOnPickupBarrelInspectDef";
+                    genericInspectInfoProvider.InspectInfo.Info.TitleToken = "BARREL_SPEEDONPICKUP_NAME";
+                    genericInspectInfoProvider.InspectInfo.Info.DescriptionToken = "BARREL_SPEEDONPICKUP_DESCRIPTION";
+                }
 
                 SpeedOnPickupBarrelInteraction speedOnPickupBarrelInteraction = speedOnPickupBarrelPrefab.AddComponent<SpeedOnPickupBarrelInteraction>();
                 speedOnPickupBarrelInteraction.PickupPrefab = speedOnPickupBarrelSalvagePrefab;
