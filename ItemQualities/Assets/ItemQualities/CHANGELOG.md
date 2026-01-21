@@ -169,8 +169,9 @@
         * Imp Overlord teleport
         * Imp Overlord ground pound
         * Parent ground slam
-    * Fixed explosion size increase not changing vfx scale:
+    * Fixed explosion size not increasing visually:
         * Artificer Ion Surge
+        * Drifter Junk Cube
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.

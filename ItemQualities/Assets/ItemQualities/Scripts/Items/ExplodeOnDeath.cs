@@ -749,6 +749,203 @@ namespace ItemQualities.Items
             ReadableProgress<float> mageFlyUpBlinkProgress = new ReadableProgress<float>();
             coroutine.Add(mageFlyUpBlinkScaleFixAsync(mageFlyUpBlinkProgress), mageFlyUpBlinkProgress);
 
+            static IEnumerator junkCubeDamageImpactScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AssetReferenceT<EntityStateConfiguration>[] junkCubeDamageConfigurationReferences = new AssetReferenceT<EntityStateConfiguration>[]
+                {
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DamageSmall_asset),
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DamageMedium_asset),
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DamageLarge_asset)
+                };
+
+                AsyncOperationHandle<EntityStateConfiguration>[] junkCubeDamageConfigurationLoadHandles = Array.ConvertAll(junkCubeDamageConfigurationReferences, r => AssetAsyncReferenceManager<EntityStateConfiguration>.LoadAsset(r));
+
+                ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
+                foreach (AsyncOperationHandle<EntityStateConfiguration> handle in junkCubeDamageConfigurationLoadHandles)
+                {
+                    coroutine.Add(handle);
+                }
+
+                yield return coroutine;
+
+                for (int i = 0; i < junkCubeDamageConfigurationLoadHandles.Length; i++)
+                {
+                    AsyncOperationHandle<EntityStateConfiguration> handle = junkCubeDamageConfigurationLoadHandles[i];
+
+                    bool modified = false;
+
+                    string assetName = i switch
+                    {
+                        0 => "EntityStates.JunkCube.DamageSmall",
+                        1 => "EntityStates.JunkCube.DamageMedium",
+                        2 => "EntityStates.JunkCube.DamageLarge",
+                        _ => throw new NotImplementedException()
+                    };
+
+                    if (handle.AssertLoaded(assetName))
+                    {
+                        EntityStateConfiguration stateConfiguration = handle.Result;
+                        if (stateConfiguration.TryGetFieldValue(nameof(EntityStates.JunkCube.Damage.DamageRadius), out float baseRadius))
+                        {
+                            if (stateConfiguration.TryGetFieldValue(nameof(EntityStates.JunkCube.Damage.AttackVfxPrefab), out GameObject explosionEffectPrefab))
+                            {
+                                EffectDef explosionEffectScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(explosionEffectPrefab, baseRadius);
+                                if (explosionEffectScaleFixPrefab != null)
+                                {
+                                    if (stateConfiguration.TrySetFieldValue(nameof(EntityStates.JunkCube.Damage.AttackVfxPrefab), explosionEffectScaleFixPrefab.prefab))
+                                    {
+                                        modified = true;
+                                    }
+                                    else
+                                    {
+                                        Log.Error($"Failed to set EntityStates.{stateConfiguration.name}.AttackVfxPrefab field");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Log.Error($"Failed to get EntityStates.{stateConfiguration.name}.AttackVfxPrefab field");
+                            }
+                        }
+                        else
+                        {
+                            Log.Error($"Failed to get EntityStates.{stateConfiguration.name}.DamageRadius field");
+                        }
+                    }
+
+                    if (!modified)
+                    {
+                        AssetAsyncReferenceManager<EntityStateConfiguration>.UnloadAsset(junkCubeDamageConfigurationReferences[i]);
+                    }
+                }
+            }
+
+            ReadableProgress<float> junkCubeDamageImpactProgress = new ReadableProgress<float>();
+            coroutine.Add(junkCubeDamageImpactScaleFixAsync(junkCubeDamageImpactProgress), junkCubeDamageImpactProgress);
+
+            static IEnumerator junkCubeLaunchedImpactScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AssetReferenceT<EntityStateConfiguration> junkCubeLaunchedConfigurationReference = new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.EntityStates_JunkCube_Launched_asset);
+                AsyncOperationHandle<EntityStateConfiguration> junkCubeLaunchedConfigurationLoad = AssetAsyncReferenceManager<EntityStateConfiguration>.LoadAsset(junkCubeLaunchedConfigurationReference);
+
+                yield return junkCubeLaunchedConfigurationLoad.AsProgressCoroutine(progressReceiver);
+
+                bool modified = false;
+
+                if (junkCubeLaunchedConfigurationLoad.AssertLoaded("EntityStates.JunkCube.Launched"))
+                {
+                    EntityStateConfiguration stateConfiguration = junkCubeLaunchedConfigurationLoad.Result;
+                    if (stateConfiguration.TryGetFieldValue(nameof(EntityStates.JunkCube.Launched.blastRadius), out float baseRadius))
+                    {
+                        if (stateConfiguration.TryGetFieldValue(nameof(EntityStates.JunkCube.Launched.impactEffectPrefab), out GameObject impactEffectPrefab))
+                        {
+                            EffectDef impactEffectScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(impactEffectPrefab, baseRadius);
+                            if (impactEffectScaleFixPrefab != null)
+                            {
+                                if (stateConfiguration.TrySetFieldValue(nameof(EntityStates.JunkCube.Launched.impactEffectPrefab), impactEffectScaleFixPrefab.prefab))
+                                {
+                                    modified = true;
+                                }
+                                else
+                                {
+                                    Log.Error($"Failed to set EntityStates.JunkCube.Launched.impactEffectPrefab field");
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Log.Error($"Failed to get EntityStates.JunkCube.Launched.impactEffectPrefab field");
+                        }
+                    }
+                    else
+                    {
+                        Log.Error("Failed to get EntityStates.JunkCube.Launched.blastRadius field");
+                    }
+                }
+
+                if (!modified)
+                {
+                    AssetAsyncReferenceManager<EntityStateConfiguration>.UnloadAsset(junkCubeLaunchedConfigurationReference);
+                }
+            }
+
+            ReadableProgress<float> junkCubeLaunchedImpactProgress = new ReadableProgress<float>();
+            coroutine.Add(junkCubeLaunchedImpactScaleFixAsync(junkCubeLaunchedImpactProgress), junkCubeLaunchedImpactProgress);
+
+            static IEnumerator junkCubeDeathImpactScaleFixAsync(IProgress<float> progressReceiver)
+            {
+                AssetReferenceT<EntityStateConfiguration>[] junkCubeDeathConfigurationReferences = new AssetReferenceT<EntityStateConfiguration>[]
+                {
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DeathSmall_asset),
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DeathMedium_asset),
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DeathLarge_asset)
+                };
+
+                AsyncOperationHandle<EntityStateConfiguration>[] junkCubeDeathConfigurationLoadHandles = Array.ConvertAll(junkCubeDeathConfigurationReferences, r => AssetAsyncReferenceManager<EntityStateConfiguration>.LoadAsset(r));
+
+                ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
+                foreach (AsyncOperationHandle<EntityStateConfiguration> handle in junkCubeDeathConfigurationLoadHandles)
+                {
+                    coroutine.Add(handle);
+                }
+
+                yield return coroutine;
+
+                for (int i = 0; i < junkCubeDeathConfigurationLoadHandles.Length; i++)
+                {
+                    AsyncOperationHandle<EntityStateConfiguration> handle = junkCubeDeathConfigurationLoadHandles[i];
+
+                    bool modified = false;
+
+                    string assetName = i switch
+                    {
+                        0 => "EntityStates.JunkCube.DeathSmall",
+                        1 => "EntityStates.JunkCube.DeathMedium",
+                        2 => "EntityStates.JunkCube.DeathLarge",
+                        _ => throw new NotImplementedException()
+                    };
+
+                    if (handle.AssertLoaded(assetName))
+                    {
+                        EntityStateConfiguration stateConfiguration = handle.Result;
+                        if (stateConfiguration.TryGetFieldValue(nameof(EntityStates.JunkCube.DeathState.explosionRadius), out float baseRadius))
+                        {
+                            if (stateConfiguration.TryGetFieldValue(nameof(EntityStates.JunkCube.DeathState.explosionEffectPrefab), out GameObject explosionEffectPrefab))
+                            {
+                                EffectDef explosionEffectScaleFixPrefab = EffectScalingFixer.GetOrCreateFixedScalingCopy(explosionEffectPrefab, baseRadius);
+                                if (explosionEffectScaleFixPrefab != null)
+                                {
+                                    if (stateConfiguration.TrySetFieldValue(nameof(EntityStates.JunkCube.DeathState.explosionEffectPrefab), explosionEffectScaleFixPrefab.prefab))
+                                    {
+                                        modified = true;
+                                    }
+                                    else
+                                    {
+                                        Log.Error($"Failed to set EntityStates.{stateConfiguration.name}.explosionEffectPrefab field");
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Log.Error($"Failed to get EntityStates.{stateConfiguration.name}.explosionEffectPrefab field");
+                            }
+                        }
+                        else
+                        {
+                            Log.Error($"Failed to get EntityStates.{stateConfiguration.name}.explosionRadius field");
+                        }
+                    }
+
+                    if (!modified)
+                    {
+                        AssetAsyncReferenceManager<EntityStateConfiguration>.UnloadAsset(junkCubeDeathConfigurationReferences[i]);
+                    }
+                }
+            }
+
+            ReadableProgress<float> junkCubeDeathImpactProgress = new ReadableProgress<float>();
+            coroutine.Add(junkCubeDeathImpactScaleFixAsync(junkCubeDeathImpactProgress), junkCubeDeathImpactProgress);
+
             return coroutine;
         }
 
