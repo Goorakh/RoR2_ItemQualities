@@ -1050,6 +1050,22 @@ namespace ItemQualities.Items
                 }
             });
 
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainAirstrikeGhost1_prefab).OnSuccess(captainAirstrikeGhostPrefab =>
+            {
+                Transform expanderTransform = captainAirstrikeGhostPrefab.transform.Find("Expander");
+                if (!expanderTransform)
+                {
+                    Log.Error($"Failed to find Expander child on {captainAirstrikeGhostPrefab}");
+                    return;
+                }
+
+                if (!captainAirstrikeGhostPrefab.TryGetComponent(out ExplosionRangeIndicatorScaler indicatorScaler))
+                {
+                    indicatorScaler = captainAirstrikeGhostPrefab.AddComponent<ExplosionRangeIndicatorScaler>();
+                    indicatorScaler.IndicatorTransforms = new Transform[] { expanderTransform };
+                }
+            });
+
             IL.EntityStates.Chef.RolyPoly.GearShift += getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody, false);
 
             IL.EntityStates.Chef.YesChef.OnEnter += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);
@@ -1148,6 +1164,8 @@ namespace ItemQualities.Items
             IL.EntityStates.ImpBossMonster.GroundPound.FixedUpdate += ImpBoss_GroundPound_FixedUpdate_ReplaceEffectRadius;
 
             IL.EntityStates.ParentMonster.GroundSlam.FixedUpdate += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
+
+            IL.EntityStates.AimThrowableBase.OnEnter += AimThrowableBase_OnEnter_ReplaceEndpointRadius;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -2200,6 +2218,32 @@ namespace ItemQualities.Items
                     return;
 
                 effectData.scale = GetExplosionRadius(self.explosionRadius, entityStateGetAttackerBody(self));
+            }
+        }
+
+        static void AimThrowableBase_OnEnter_ReplaceEndpointRadius(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            int projectileExplosionComponentVarIndex = -1;
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdloc(out projectileExplosionComponentVarIndex),
+                               x => x.MatchLdfld<ProjectileExplosion>(nameof(ProjectileExplosion.blastRadius))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            emitGetEntityStateAttackerBody(c);
+            c.Emit(OpCodes.Ldloc, projectileExplosionComponentVarIndex);
+            c.EmitDelegate<Func<float, CharacterBody, ProjectileExplosion, float>>(getImpactExplosionRadius);
+
+            static float getImpactExplosionRadius(float radius, CharacterBody attackerBody, ProjectileExplosion projectileExplosionPrefabComponent)
+            {
+                if (!projectileExplosionPrefabComponent || !projectileExplosionPrefabComponent.enabled)
+                    return radius;
+
+                return GetExplosionRadius(radius, attackerBody);
             }
         }
 

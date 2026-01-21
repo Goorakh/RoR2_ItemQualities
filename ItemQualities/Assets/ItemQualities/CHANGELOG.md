@@ -173,6 +173,7 @@
         * Artificer Ion Surge
         * Drifter Junk Cube
         * Engineer Pressure Mines
+        * Captain Orbital Strike
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
