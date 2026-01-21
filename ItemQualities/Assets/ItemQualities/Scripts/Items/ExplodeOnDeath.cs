@@ -826,20 +826,17 @@ namespace ItemQualities.Items
             IL.EntityStates.Chef.YesChef.OnEnter += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);
             IL.EntityStates.Chef.YesChef.FixedUpdate += groupManipulators(getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody), getSimpleSphereSearchRadiusManipulator(emitGetEntityStateAttackerBody));
 
-            IL.EntityStates.DefectiveUnit.Detonate.OnEnter += getUnscaledEffectDataScaleManipulator(emitGetEntityStateAttackerBody);
-            IL.EntityStates.DefectiveUnit.Detonate.FixedUpdate += groupManipulators(getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody), getUnscaledEffectDataScaleManipulator(emitGetEntityStateAttackerBody));
-
             IL.EntityStates.Drone.DroneBombardment.BombardmentDroneProjectileEffect.ExecuteRadialAttack += groupManipulators(getSimpleSphereSearchRadiusManipulator(emitGetEntityStateAttackerBody), getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody));
             IL.EntityStates.Drone.DroneBombardment.BombardmentDroneSkill.SpawnBombardmentRays += groupManipulators(getSimpleSphereSearchRadiusManipulator(emitGetEntityStateAttackerBody), getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody));
 
             IL.EntityStates.JellyfishMonster.JellyNova.OnEnter += JellyNova_ReplaceNovaRadius;
 
-            IL.EntityStates.JunkCube.DeathState.Explode += groupManipulators(getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody), getUnscaledEffectDataScaleManipulator(emitGetEntityStateAttackerBody));
+            IL.EntityStates.JunkCube.DeathState.Explode += JunkCube_DeathState_Explode_ReplaceRadius;
 
             IL.EntityStates.Mage.FlyUpState.OnEnter += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
             IL.EntityStates.Mage.FlyUpState.CreateBlinkEffect += Mage_FlyUpState_CreateBlinkEffect_ReplaceEffectRadius;
 
-            IL.EntityStates.Seeker.Meditate.Update += groupManipulators(getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody), getUnscaledEffectDataScaleManipulator(emitGetEntityStateAttackerBody));
+            IL.EntityStates.Seeker.Meditate.Update += Seeker_Meditate_Update_ReplaceRadius;
 
             IL.EntityStates.SolusAmalgamator.ShockArmor.OnEnter += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);
             IL.EntityStates.SolusAmalgamator.ShockArmor.StartShock += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);
@@ -1925,6 +1922,58 @@ namespace ItemQualities.Items
             }
         }
 
+        static void Seeker_Meditate_Update_ReplaceRadius(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            int patchCount = 0;
+
+            while (c.TryGotoNext(MoveType.After,
+                                 x => x.MatchLdfld<EntityStates.Seeker.Meditate>(nameof(EntityStates.Seeker.Meditate.blastRadius))))
+            {
+                emitGetEntityStateAttackerBody(c);
+                c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
+
+                patchCount++;
+            }
+
+            if (patchCount == 0)
+            {
+                Log.Error("Failed to find patch location");
+            }
+            else
+            {
+                Log.Debug($"Found {patchCount} patch location(s)");
+            }
+        }
+
+        static void JunkCube_DeathState_Explode_ReplaceRadius(ILContext il)
+        {
+            if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
+                return;
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchNewobj<EffectData>()))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<EffectData, EntityStates.JunkCube.DeathState>>(setEffectScale);
+            
+            static void setEffectScale(EffectData effectData, EntityStates.JunkCube.DeathState self)
+            {
+                if (effectData == null || self == null)
+                    return;
+
+                effectData.scale = GetExplosionRadius(self.explosionRadius, entityStateGetAttackerBody(self));
+            }
+        }
+
         static ILContext.Manipulator groupManipulators(params ILContext.Manipulator[] manipulators)
         {
             return il =>
@@ -2212,14 +2261,6 @@ namespace ItemQualities.Items
             };
         }
 
-        static ILContext.Manipulator getUnscaledEffectDataScaleManipulator(Action<ILCursor> emitGetAttackerBody)
-        {
-            return il =>
-            {
-                unscaledEffectDataScaleManipulator(il, emitGetAttackerBody);
-            };
-        }
-
         static void visualBlastAttackRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody, bool strictRadiusMatch = true)
         {
             ILCursor c = new ILCursor(il);
@@ -2341,43 +2382,6 @@ namespace ItemQualities.Items
             {
                 emitGetAttackerBody(c);
                 c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
-
-                patchCount++;
-
-                c.SearchTarget = SearchTarget.Next;
-            }
-
-            if (patchCount == 0)
-            {
-                Log.Error($"{il.Method.FullName}: Failed to find patch location");
-            }
-            else
-            {
-                Log.Debug($"{il.Method.FullName}: Found {patchCount} patch location(s)");
-            }
-        }
-
-        static void unscaledEffectDataScaleManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
-        {
-            FieldInfo effectDataScaleField = typeof(EffectData).GetField(nameof(EffectData.scale), BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
-            if (effectDataScaleField == null)
-            {
-                Log.Error("Failed to find EffectData.scale field");
-                return;
-            }
-
-            ILCursor c = new ILCursor(il);
-
-            int patchCount = 0;
-            while (c.TryGotoNext(MoveType.After,
-                                 x => x.MatchNewobj<EffectData>()))
-            {
-                c.Emit(OpCodes.Dup);
-                c.Emit(OpCodes.Dup);
-                c.Emit(OpCodes.Ldfld, effectDataScaleField);
-                emitGetAttackerBody(c);
-                c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
-                c.Emit(OpCodes.Stfld, effectDataScaleField);
 
                 patchCount++;
 
