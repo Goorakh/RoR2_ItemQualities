@@ -70,6 +70,11 @@ namespace ItemQualities
                 DefaultRangeGetter = () => EntityStates.ParentMonster.GroundSlam.radius
             }, ExplosionInfoIndex.ParentGroundSlam);
 
+            register(new ExplosionInfoDef
+            {
+                DefaultRangeGetter = () => EntityStates.Engi.Mine.Detonate.blastRadius
+            }, ExplosionInfoIndex.EngiMine);
+
             ExplosionInfoDef.GetDefaultRangeDelegate getEntityStateInstanceFieldGetter(Type entityStateType, string fieldName)
             {
                 if (entityStateType is null)

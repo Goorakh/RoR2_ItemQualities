@@ -10,6 +10,7 @@
         GolemClap,
         ImpBossBlink,
         ParentGroundSlam,
+        EngiMine,
         Count,
     }
 }

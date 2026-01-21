@@ -1018,6 +1018,38 @@ namespace ItemQualities.Items
                 explosionRangeIndicatorScaler.IndicatorTransforms = new Transform[] { meridiansWillIndicator.transform };
             });
 
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Engi.EngiMine_prefab).OnSuccess(engiMinePrefab =>
+            {
+                List<Transform> indicatorTransforms = new List<Transform>();
+
+                Transform weakIndicator = engiMinePrefab.transform.Find("WeakIndicator");
+                if (weakIndicator)
+                {
+                    indicatorTransforms.Add(weakIndicator);
+                }
+                else
+                {
+                    Log.Warning($"Failed to find WeakIndicator transform on {engiMinePrefab}");
+                }
+
+                Transform strongIndicator = engiMinePrefab.transform.Find("StrongIndicator");
+                if (strongIndicator)
+                {
+                    indicatorTransforms.Add(strongIndicator);
+                }
+                else
+                {
+                    Log.Warning($"Failed to find StrongIndicator transform on {engiMinePrefab}");
+                }
+
+                if (indicatorTransforms.Count > 0 && !engiMinePrefab.TryGetComponent(out ExplosionRangeIndicatorScaler indicatorScaler))
+                {
+                    indicatorScaler = engiMinePrefab.AddComponent<ExplosionRangeIndicatorScaler>();
+                    indicatorScaler.ExplosionInfoIndex = ExplosionInfoIndex.EngiMine;
+                    indicatorScaler.IndicatorTransforms = indicatorTransforms.ToArray();
+                }
+            });
+
             IL.EntityStates.Chef.RolyPoly.GearShift += getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody, false);
 
             IL.EntityStates.Chef.YesChef.OnEnter += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);
