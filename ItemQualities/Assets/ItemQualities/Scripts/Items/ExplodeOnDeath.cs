@@ -15,6 +15,7 @@ using RoR2.Items;
 using RoR2.Orbs;
 using RoR2.Projectile;
 using RoR2.VoidRaidCrab;
+using RoR2BepInExPack.GameAssetPaths.Version_1_39_0;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -112,8 +113,8 @@ namespace ItemQualities.Items
 
             static IEnumerator banditSmokeBombScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<GameObject> smokeBombPrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.Bandit2SmokeBomb_prefab);
-                AsyncOperationHandle<EntityStateConfiguration> stealthModeConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Bandit2.EntityStates_Bandit2_StealthMode_asset);
+                AsyncOperationHandle<GameObject> smokeBombPrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Bandit2.Bandit2SmokeBomb_prefab);
+                AsyncOperationHandle<EntityStateConfiguration> stealthModeConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Bandit2.EntityStates_Bandit2_StealthMode_asset);
 
                 ParallelProgressCoroutine loadCoroutine = new ParallelProgressCoroutine(progressReceiver);
                 loadCoroutine.Add(smokeBombPrefabLoad);
@@ -142,7 +143,7 @@ namespace ItemQualities.Items
 
             static IEnumerator lightningStrikeImpactScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Lightning.LightningStrikeImpact_prefab);
+                AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Lightning.LightningStrikeImpact_prefab);
 
                 yield return impactEffectLoad.AsProgressCoroutine(progressReceiver);
 
@@ -161,7 +162,7 @@ namespace ItemQualities.Items
 
             static IEnumerator simpleLightningStrikeImpactScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_LightningStrikeOnHit.SimpleLightningStrikeImpact_prefab);
+                AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_LightningStrikeOnHit.SimpleLightningStrikeImpact_prefab);
 
                 yield return impactEffectLoad.AsProgressCoroutine(progressReceiver);
 
@@ -180,7 +181,7 @@ namespace ItemQualities.Items
 
             static IEnumerator meteorStormScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<GameObject> meteorStormLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Meteor.MeteorStorm_prefab);
+                AsyncOperationHandle<GameObject> meteorStormLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Meteor.MeteorStorm_prefab);
 
                 yield return meteorStormLoad.AsProgressCoroutine(progressReceiver);
 
@@ -229,7 +230,7 @@ namespace ItemQualities.Items
 
             static IEnumerator brotherFistSlamScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> brotherFistSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Brother.EntityStates_BrotherMonster_FistSlam_asset);
+                AsyncOperationHandle<EntityStateConfiguration> brotherFistSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Brother.EntityStates_BrotherMonster_FistSlam_asset);
 
                 yield return brotherFistSlamConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -261,7 +262,7 @@ namespace ItemQualities.Items
 
             static IEnumerator brotherWeaponSlamScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> brotherWeaponSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Brother.EntityStates_BrotherMonster_WeaponSlam_asset);
+                AsyncOperationHandle<EntityStateConfiguration> brotherWeaponSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Brother.EntityStates_BrotherMonster_WeaponSlam_asset);
 
                 yield return brotherWeaponSlamConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -293,9 +294,9 @@ namespace ItemQualities.Items
 
             static IEnumerator falseSonBossPrimarySlamScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
             {
-                AssetReferenceT<AnimationClip> falseSonBossPrimarySlamClipReference = new AssetReferenceT<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSon_PrimarySlam_fbx_FSArmature_BossPrimarySlam_);
+                AssetReferenceT<AnimationClip> falseSonBossPrimarySlamClipReference = new AssetReferenceT<AnimationClip>(RoR2_DLC2_FalseSon.AS_FalseSon_PrimarySlam_fbx_FSArmature_BossPrimarySlam_);
                 AsyncOperationHandle<AnimationClip> falseSonBossPrimarySlamClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(falseSonBossPrimarySlamClipReference);
-                AsyncOperationHandle<EntityStateConfiguration> falseSonFissureSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_FissureSlam_asset);
+                AsyncOperationHandle<EntityStateConfiguration> falseSonFissureSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_FissureSlam_asset);
 
                 ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
                 coroutine.Add(falseSonBossPrimarySlamClipLoad);
@@ -366,9 +367,9 @@ namespace ItemQualities.Items
 
             static IEnumerator falseSonBossPrimeDevastatorScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
             {
-                AssetReferenceT<AnimationClip> falseSonBossPrimeDevastatorClipReference = new AssetReferenceT<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.AS_FalseSonBoss_PrimeDevastator_fbx_FSArmature_BossPrimaryDevastator_);
+                AssetReferenceT<AnimationClip> falseSonBossPrimeDevastatorClipReference = new AssetReferenceT<AnimationClip>(RoR2_DLC2_FalseSon.AS_FalseSonBoss_PrimeDevastator_fbx_FSArmature_BossPrimaryDevastator_);
                 AsyncOperationHandle<AnimationClip> falseSonBossPrimeDevastatorClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(falseSonBossPrimeDevastatorClipReference);
-                AsyncOperationHandle<EntityStateConfiguration> falseSonPrimeDevastatorConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_PrimeDevastator_asset);
+                AsyncOperationHandle<EntityStateConfiguration> falseSonPrimeDevastatorConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_DLC2_FalseSonBoss.EntityStates_FalseSonBoss_PrimeDevastator_asset);
 
                 ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
                 coroutine.Add(falseSonBossPrimeDevastatorClipLoad);
@@ -435,9 +436,9 @@ namespace ItemQualities.Items
 
             static IEnumerator golemClapScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
             {
-                AssetReferenceT<AnimationClip> golemClapClipReference = new AssetReferenceT<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Golem.mdlGolem_fbx_GolemArmature_Smack_);
+                AssetReferenceT<AnimationClip> golemClapClipReference = new AssetReferenceT<AnimationClip>(RoR2_Base_Golem.mdlGolem_fbx_GolemArmature_Smack_);
                 AsyncOperationHandle<AnimationClip> golemClapClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(golemClapClipReference);
-                AsyncOperationHandle<EntityStateConfiguration> golemClapConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Golem.EntityStates_GolemMonster_ClapState_asset);
+                AsyncOperationHandle<EntityStateConfiguration> golemClapConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Golem.EntityStates_GolemMonster_ClapState_asset);
 
                 ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
                 coroutine.Add(golemClapClipLoad);
@@ -504,7 +505,7 @@ namespace ItemQualities.Items
 
             static IEnumerator golemLaserScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> golemLaserConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Golem.EntityStates_GolemMonster_FireLaser_asset);
+                AsyncOperationHandle<EntityStateConfiguration> golemLaserConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Golem.EntityStates_GolemMonster_FireLaser_asset);
 
                 yield return golemLaserConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -536,7 +537,7 @@ namespace ItemQualities.Items
 
             static IEnumerator halcyoniteTriLaserScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> halcyoniteTriLaserConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_Halcyonite.EntityStates_HalcyoniteMonster_TriLaser_asset);
+                AsyncOperationHandle<EntityStateConfiguration> halcyoniteTriLaserConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_DLC2_Halcyonite.EntityStates_HalcyoniteMonster_TriLaser_asset);
 
                 yield return halcyoniteTriLaserConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -568,7 +569,7 @@ namespace ItemQualities.Items
 
             static IEnumerator impBossBlinkScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> impBossBlinkConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_ImpBoss.EntityStates_ImpBossMonster_BlinkState_asset);
+                AsyncOperationHandle<EntityStateConfiguration> impBossBlinkConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2_Base_ImpBoss.EntityStates_ImpBossMonster_BlinkState_asset);
 
                 yield return impBossBlinkConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -623,7 +624,7 @@ namespace ItemQualities.Items
 
             static IEnumerator impBossGroundPoundScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> impBossGroundPoundConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_ImpBoss.EntityStates_ImpBossMonster_GroundPound_asset);
+                AsyncOperationHandle<EntityStateConfiguration> impBossGroundPoundConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_ImpBoss.EntityStates_ImpBossMonster_GroundPound_asset);
 
                 yield return impBossGroundPoundConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -655,9 +656,9 @@ namespace ItemQualities.Items
 
             static IEnumerator parentGroundSlamScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AssetReferenceT<AnimationClip> parentGroundSlamClipReference = new AssetReferenceT<AnimationClip>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Parent.mdlParent_fbx_ParentArmature_Slam_);
+                AssetReferenceT<AnimationClip> parentGroundSlamClipReference = new AssetReferenceT<AnimationClip>(RoR2_Base_Parent.mdlParent_fbx_ParentArmature_Slam_);
                 AsyncOperationHandle<AnimationClip> parentGroundSlamClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(parentGroundSlamClipReference);
-                AsyncOperationHandle<EntityStateConfiguration> parentGroundSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Parent.EntityStates_ParentMonster_GroundSlam_asset);
+                AsyncOperationHandle<EntityStateConfiguration> parentGroundSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Parent.EntityStates_ParentMonster_GroundSlam_asset);
 
                 ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(progressReceiver);
                 coroutine.Add(parentGroundSlamClipLoad);
@@ -719,7 +720,7 @@ namespace ItemQualities.Items
 
             static IEnumerator mageFlyUpBlinkScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AsyncOperationHandle<EntityStateConfiguration> mageFlyUpStateConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Mage.EntityStates_Mage_FlyUpState_asset);
+                AsyncOperationHandle<EntityStateConfiguration> mageFlyUpStateConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2_Base_Mage.EntityStates_Mage_FlyUpState_asset);
 
                 yield return mageFlyUpStateConfigurationLoad.AsProgressCoroutine(progressReceiver);
 
@@ -753,9 +754,9 @@ namespace ItemQualities.Items
             {
                 AssetReferenceT<EntityStateConfiguration>[] junkCubeDamageConfigurationReferences = new AssetReferenceT<EntityStateConfiguration>[]
                 {
-                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DamageSmall_asset),
-                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DamageMedium_asset),
-                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DamageLarge_asset)
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2_DLC3_Drifter.JunkCube_DamageSmall_asset),
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2_DLC3_Drifter.JunkCube_DamageMedium_asset),
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2_DLC3_Drifter.JunkCube_DamageLarge_asset)
                 };
 
                 AsyncOperationHandle<EntityStateConfiguration>[] junkCubeDamageConfigurationLoadHandles = Array.ConvertAll(junkCubeDamageConfigurationReferences, r => AssetAsyncReferenceManager<EntityStateConfiguration>.LoadAsset(r));
@@ -825,7 +826,7 @@ namespace ItemQualities.Items
 
             static IEnumerator junkCubeLaunchedImpactScaleFixAsync(IProgress<float> progressReceiver)
             {
-                AssetReferenceT<EntityStateConfiguration> junkCubeLaunchedConfigurationReference = new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.EntityStates_JunkCube_Launched_asset);
+                AssetReferenceT<EntityStateConfiguration> junkCubeLaunchedConfigurationReference = new AssetReferenceT<EntityStateConfiguration>(RoR2_DLC3_Drifter.EntityStates_JunkCube_Launched_asset);
                 AsyncOperationHandle<EntityStateConfiguration> junkCubeLaunchedConfigurationLoad = AssetAsyncReferenceManager<EntityStateConfiguration>.LoadAsset(junkCubeLaunchedConfigurationReference);
 
                 yield return junkCubeLaunchedConfigurationLoad.AsProgressCoroutine(progressReceiver);
@@ -876,9 +877,9 @@ namespace ItemQualities.Items
             {
                 AssetReferenceT<EntityStateConfiguration>[] junkCubeDeathConfigurationReferences = new AssetReferenceT<EntityStateConfiguration>[]
                 {
-                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DeathSmall_asset),
-                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DeathMedium_asset),
-                    new AssetReferenceT<EntityStateConfiguration>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC3_Drifter.JunkCube_DeathLarge_asset)
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2_DLC3_Drifter.JunkCube_DeathSmall_asset),
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2_DLC3_Drifter.JunkCube_DeathMedium_asset),
+                    new AssetReferenceT<EntityStateConfiguration>(RoR2_DLC3_Drifter.JunkCube_DeathLarge_asset)
                 };
 
                 AsyncOperationHandle<EntityStateConfiguration>[] junkCubeDeathConfigurationLoadHandles = Array.ConvertAll(junkCubeDeathConfigurationReferences, r => AssetAsyncReferenceManager<EntityStateConfiguration>.LoadAsset(r));
@@ -981,14 +982,14 @@ namespace ItemQualities.Items
                 });
             }
 
-            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Base_prefab);
-            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__EquipmentRestock_prefab);
-            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Hacking_prefab);
-            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Healing_prefab);
-            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Plating_prefab);
-            beaconImpactIndicatorScaler(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainSupplyDrop__Shocking_prefab);
+            beaconImpactIndicatorScaler(RoR2_Base_Captain.CaptainSupplyDrop__Base_prefab);
+            beaconImpactIndicatorScaler(RoR2_Base_Captain.CaptainSupplyDrop__EquipmentRestock_prefab);
+            beaconImpactIndicatorScaler(RoR2_Base_Captain.CaptainSupplyDrop__Hacking_prefab);
+            beaconImpactIndicatorScaler(RoR2_Base_Captain.CaptainSupplyDrop__Healing_prefab);
+            beaconImpactIndicatorScaler(RoR2_Base_Captain.CaptainSupplyDrop__Plating_prefab);
+            beaconImpactIndicatorScaler(RoR2_Base_Captain.CaptainSupplyDrop__Shocking_prefab);
 
-            AddressableUtil.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_DLC2_FalseSon.FalseSonMeridiansWillIndicator_prefab).OnSuccess(meridiansWillIndicator =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_FalseSon.FalseSonMeridiansWillIndicator_prefab).OnSuccess(meridiansWillIndicator =>
             {
                 meridiansWillIndicator.EnsureComponent<GenericOwnership>();
 
@@ -997,7 +998,7 @@ namespace ItemQualities.Items
                 explosionRangeIndicatorScaler.IndicatorTransforms = new Transform[] { meridiansWillIndicator.transform };
             });
 
-            AddressableUtil.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Engi.EngiMine_prefab).OnSuccess(engiMinePrefab =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Engi.EngiMine_prefab).OnSuccess(engiMinePrefab =>
             {
                 List<Transform> indicatorTransforms = new List<Transform>();
 
@@ -1029,7 +1030,7 @@ namespace ItemQualities.Items
                 }
             });
 
-            AddressableUtil.LoadAssetAsync<GameObject>(RoR2BepInExPack.GameAssetPaths.Version_1_39_0.RoR2_Base_Captain.CaptainAirstrikeGhost1_prefab).OnSuccess(captainAirstrikeGhostPrefab =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Captain.CaptainAirstrikeGhost1_prefab).OnSuccess(captainAirstrikeGhostPrefab =>
             {
                 Transform expanderTransform = captainAirstrikeGhostPrefab.transform.Find("Expander");
                 if (!expanderTransform)
