@@ -152,6 +152,31 @@
     * Increased explosion size:
         * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
         * Rare and up: Unchanged
+    * Fixed explosion size increase not applying to:
+        * Bandit smoke bomb
+        * Captain beacon impact
+        * False Son charged slam
+        * False Son meridian's will
+        * Royal Capacitor
+        * Glowing Meteorite
+        * Charged Perforator
+        * Mithrix Phase 4 Orb Slam
+        * Mithrix Phase 1 & 3 hammer slam
+        * False Son (Boss) attacks
+        * Stone Golem Clap
+        * Stone Golem Laser
+        * Halcyonite Laser
+        * Imp Overlord teleport
+        * Imp Overlord ground pound
+        * Parent ground slam
+    * Fixed explosion size not increasing visually:
+        * Artificer Ion Surge
+        * Drifter Junk Cube
+        * Engineer Pressure Mines
+        * Captain Orbital Strike
+        * Captain Diablo Strike
+        * REX Seed Barrage
+        * False Son Lunar Stakes
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
