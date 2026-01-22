@@ -952,27 +952,6 @@ namespace ItemQualities.Items
         [SystemInitializer(typeof(EffectCatalogUtils))]
         static void Init()
         {
-            static void enableEffectScale(string effectName)
-            {
-                EffectIndex effectIndex = EffectCatalogUtils.FindEffectIndex(effectName);
-                if (effectIndex == EffectIndex.Invalid)
-                {
-                    Log.Error($"Failed to find effect '{effectName}'");
-                    return;
-                }
-
-                EffectComponent effectComponent = EffectCatalog.GetEffectDef(effectIndex)?.prefabEffectComponent;
-                if (effectComponent)
-                {
-                    effectComponent.applyScale = true;
-                }
-            }
-
-            enableEffectScale("DetonateChargeVFX");
-            enableEffectScale("DetonateVFX");
-
-            enableEffectScale("DrifterJunkCubeExplosionVFX");
-
             static void beaconImpactIndicatorScaler(string beaconGuid)
             {
                 AddressableUtil.LoadAssetAsync<GameObject>(beaconGuid).OnSuccess(static beaconPrefab =>
