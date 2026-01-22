@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
+using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
@@ -1069,6 +1070,7 @@ namespace ItemQualities.Items
                 }
             });
 
+            // Seed Barrage
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Treebot.TreebotMortar2_prefab).OnSuccess(mortarProjectilePrefab =>
             {
                 Transform expanderTransform = mortarProjectilePrefab.transform.Find("Expander");
@@ -1082,6 +1084,48 @@ namespace ItemQualities.Items
                 {
                     indicatorScaler = mortarProjectilePrefab.AddComponent<ExplosionRangeIndicatorScaler>();
                     indicatorScaler.IndicatorTransforms = new Transform[] { expanderTransform };
+                }
+            });
+
+            // Lunar Stakes
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_FalseSon.FalseSonLightningProjectile_prefab).OnSuccess(falseSonLightningProjectilePrefab =>
+            {
+                Transform areaIndicatorTransform = falseSonLightningProjectilePrefab.transform.Find("TeamAreaIndicator, GroundOnly");
+                if (!areaIndicatorTransform)
+                {
+                    Log.Error($"Failed to find area indicator child on {falseSonLightningProjectilePrefab}");
+                    return;
+                }
+
+                if (!falseSonLightningProjectilePrefab.TryGetComponent(out ExplosionRangeIndicatorScaler indicatorScaler))
+                {
+                    indicatorScaler = falseSonLightningProjectilePrefab.AddComponent<ExplosionRangeIndicatorScaler>();
+                    indicatorScaler.IndicatorTransforms = new Transform[] { areaIndicatorTransform };
+                }
+            });
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_FalseSon.FalseSonLightningPredictGhost_prefab).OnSuccess(falseSonLightningProjectileGhostPrefab =>
+            {
+                Transform particleIndicatorTransform = falseSonLightningProjectileGhostPrefab.transform.Find("ParticleInitial");
+                if (!particleIndicatorTransform)
+                {
+                    Log.Error($"Failed to find area indicator child on {falseSonLightningProjectileGhostPrefab}");
+                    return;
+                }
+
+                if (!falseSonLightningProjectileGhostPrefab.TryGetComponent(out ExplosionRangeIndicatorScaler indicatorScaler))
+                {
+                    indicatorScaler = falseSonLightningProjectileGhostPrefab.AddComponent<ExplosionRangeIndicatorScaler>();
+                    indicatorScaler.IndicatorTransforms = new Transform[] { particleIndicatorTransform };
+
+                    foreach (ParticleSystem particleSystem in particleIndicatorTransform.GetComponentsInChildren<ParticleSystem>())
+                    {
+                        ParticleSystem.MainModule main = particleSystem.main;
+                        if (main.scalingMode == ParticleSystemScalingMode.Local)
+                        {
+                            main.scalingMode = ParticleSystemScalingMode.Hierarchy;
+                            particleSystem.transform.localScale = Vector3.Scale(particleSystem.transform.localScale, particleSystem.transform.lossyScale.Inverse());
+                        }
+                    }
                 }
             });
 
@@ -1185,6 +1229,9 @@ namespace ItemQualities.Items
             IL.EntityStates.ParentMonster.GroundSlam.FixedUpdate += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
 
             IL.EntityStates.AimThrowableBase.OnEnter += AimThrowableBase_OnEnter_ReplaceEndpointRadius;
+
+            IL.RoR2.Projectile.LunarStakesLightningController.FireLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
+            IL.RoR2.Projectile.LunarStakesLightningController.FireLastLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
 
             RoR2Application.onLoad += onLoad;
         }
@@ -2263,6 +2310,30 @@ namespace ItemQualities.Items
                     return radius;
 
                 return GetExplosionRadius(radius, attackerBody);
+            }
+        }
+
+        // Fixes dumb false son code that instantiates a projectile prefab directly for no reason, thus not invoking the onInitialized event.
+        static void LunarStakesLightningController_FixProjectileInitializeDispatch(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.AfterLabel,
+                               x => x.MatchCallOrCallvirt(typeof(NetworkServer), nameof(NetworkServer.Spawn))))
+            {
+                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Dup);
+            c.EmitDelegate<Action<GameObject>>(dispatchOnInitialized);
+
+            static void dispatchOnInitialized(GameObject projectileObj)
+            {
+                if (projectileObj && projectileObj.TryGetComponent(out ProjectileController projectileController))
+                {
+                    projectileController.DispatchOnInitialized();
+                }
             }
         }
 

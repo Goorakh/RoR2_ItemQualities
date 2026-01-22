@@ -176,6 +176,7 @@
         * Captain Orbital Strike
         * Captain Diablo Strike
         * REX Seed Barrage
+        * False Son Lunar Stakes
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
