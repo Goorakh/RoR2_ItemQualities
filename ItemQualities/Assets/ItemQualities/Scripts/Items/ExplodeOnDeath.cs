@@ -1069,6 +1069,22 @@ namespace ItemQualities.Items
                 }
             });
 
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Treebot.TreebotMortar2_prefab).OnSuccess(mortarProjectilePrefab =>
+            {
+                Transform expanderTransform = mortarProjectilePrefab.transform.Find("Expander");
+                if (!expanderTransform)
+                {
+                    Log.Error($"Failed to find Expander child on {mortarProjectilePrefab}");
+                    return;
+                }
+
+                if (!mortarProjectilePrefab.TryGetComponent(out ExplosionRangeIndicatorScaler indicatorScaler))
+                {
+                    indicatorScaler = mortarProjectilePrefab.AddComponent<ExplosionRangeIndicatorScaler>();
+                    indicatorScaler.IndicatorTransforms = new Transform[] { expanderTransform };
+                }
+            });
+
             IL.EntityStates.Chef.RolyPoly.GearShift += getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody, false);
 
             IL.EntityStates.Chef.YesChef.OnEnter += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);

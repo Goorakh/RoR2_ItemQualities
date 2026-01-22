@@ -175,6 +175,7 @@
         * Engineer Pressure Mines
         * Captain Orbital Strike
         * Captain Diablo Strike
+        * REX Seed Barrage
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
