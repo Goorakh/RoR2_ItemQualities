@@ -1046,6 +1046,29 @@ namespace ItemQualities.Items
                 }
             });
 
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Captain.CaptainAirstrikeAltGhost_prefab).OnSuccess(captainAirstrikeAltGhostPrefab =>
+            {
+                List<Transform> indicatorTransforms = new List<Transform>();
+
+                for (int i = captainAirstrikeAltGhostPrefab.transform.childCount - 1; i >= 0; i--)
+                {
+                    indicatorTransforms.Add(captainAirstrikeAltGhostPrefab.transform.GetChild(i));
+                }
+
+                if (indicatorTransforms.Count > 0)
+                {
+                    if (!captainAirstrikeAltGhostPrefab.TryGetComponent(out ExplosionRangeIndicatorScaler indicatorScaler))
+                    {
+                        indicatorScaler = captainAirstrikeAltGhostPrefab.AddComponent<ExplosionRangeIndicatorScaler>();
+                        indicatorScaler.IndicatorTransforms = indicatorTransforms.ToArray();
+                    }
+                }
+                else
+                {
+                    Log.Warning($"Failed to find indicator transforms for {captainAirstrikeAltGhostPrefab}");
+                }
+            });
+
             IL.EntityStates.Chef.RolyPoly.GearShift += getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody, false);
 
             IL.EntityStates.Chef.YesChef.OnEnter += getSimpleEffectDataScaleManipulator(emitGetEntityStateAttackerBody);

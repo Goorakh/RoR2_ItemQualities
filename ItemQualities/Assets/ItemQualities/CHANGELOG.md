@@ -174,6 +174,7 @@
         * Drifter Junk Cube
         * Engineer Pressure Mines
         * Captain Orbital Strike
+        * Captain Diablo Strike
 
 * Tougher Times:
     * Now counts blocks from any source, not just blocks by Tougher Times.
