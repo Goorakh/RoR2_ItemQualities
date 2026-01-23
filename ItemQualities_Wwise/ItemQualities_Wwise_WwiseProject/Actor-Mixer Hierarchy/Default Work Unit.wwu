@@ -4,6 +4,13 @@
 		<WorkUnit Name="Default Work Unit" ID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}" PersistMode="Standalone">
 			<ChildrenList>
 				<Sound Name="EpicLand" ID="{77802D52-DB89-4418-9C10-711705007D1B}" ShortID="1011729330">
+					<PropertyList>
+						<Property Name="OutputBusVolume" Type="Real64">
+							<ValueList>
+								<Value>-5</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
@@ -26,6 +33,13 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="EpicPop" ID="{7B9E265A-3939-4716-B9F7-D2861262AD5D}" ShortID="225785306">
+					<PropertyList>
+						<Property Name="OutputBusVolume" Type="Real64">
+							<ValueList>
+								<Value>-5</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
@@ -48,6 +62,13 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="LegendaryLand" ID="{C784CF75-949C-45A9-B2E1-0A9C337ACDDF}" ShortID="455915542">
+					<PropertyList>
+						<Property Name="OutputBusVolume" Type="Real64">
+							<ValueList>
+								<Value>-5</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
@@ -70,6 +91,13 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="LegendaryPop" ID="{AADBEB96-3D00-4057-8D2B-C04194148A1F}" ShortID="819935056">
+					<PropertyList>
+						<Property Name="OutputBusVolume" Type="Real64">
+							<ValueList>
+								<Value>-5</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
@@ -92,6 +120,13 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="RareLand" ID="{771D3DB4-2888-414E-8C81-9937E956DB0B}" ShortID="304562733">
+					<PropertyList>
+						<Property Name="OutputBusVolume" Type="Real64">
+							<ValueList>
+								<Value>-5</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
@@ -114,6 +149,13 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="RarePop" ID="{F71311EF-4CF0-4BDC-B05B-F13520EDE230}" ShortID="1027831273">
+					<PropertyList>
+						<Property Name="OutputBusVolume" Type="Real64">
+							<ValueList>
+								<Value>-5</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
@@ -136,6 +178,13 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="UncommonLand" ID="{344EFD47-9A27-4791-9A58-087D2ED6ACB9}" ShortID="229988127">
+					<PropertyList>
+						<Property Name="OutputBusVolume" Type="Real64">
+							<ValueList>
+								<Value>-5</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
@@ -158,6 +207,13 @@
 					</ActiveSourceList>
 				</Sound>
 				<Sound Name="UncommonPop" ID="{D46B7A4E-DF3D-4E1E-852F-628FEDCF5FE6}" ShortID="709496015">
+					<PropertyList>
+						<Property Name="OutputBusVolume" Type="Real64">
+							<ValueList>
+								<Value>-5</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
