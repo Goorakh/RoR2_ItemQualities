@@ -20,6 +20,7 @@ namespace ItemQualities
     [BepInDependency(R2API.ProcTypeAPI.PluginGUID)]
     [BepInDependency(R2API.DeployableAPI.PluginGUID)]
     [BepInDependency(R2API.ExecuteAPI.PluginGUID)]
+    [BepInDependency(R2API.SoundAPI.PluginGUID)]
     [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public sealed class ItemQualitiesPlugin : BaseUnityPlugin

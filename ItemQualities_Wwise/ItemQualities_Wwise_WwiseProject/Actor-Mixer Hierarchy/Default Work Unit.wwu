@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}" SchemaVersion="119">
+	<AudioObjects>
+		<WorkUnit Name="Default Work Unit" ID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}" PersistMode="Standalone">
+			<ChildrenList>
+				<Sound Name="EpicLand" ID="{77802D52-DB89-4418-9C10-711705007D1B}" ShortID="1011729330">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{42AFB743-B56B-4726-A4CA-7A16438660D2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="EpicLand" ID="{6AFBA04B-5310-4D30-81F7-1E2467CDBE27}">
+							<Language>SFX</Language>
+							<AudioFile>EpicLand.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="198783125"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="EpicLand" ID="{6AFBA04B-5310-4D30-81F7-1E2467CDBE27}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="EpicPop" ID="{7B9E265A-3939-4716-B9F7-D2861262AD5D}" ShortID="225785306">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{42AFB743-B56B-4726-A4CA-7A16438660D2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="EpicPop" ID="{40021CF7-5723-4DC6-BEDA-C88F4F0C3479}">
+							<Language>SFX</Language>
+							<AudioFile>EpicPop.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="219370256"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="EpicPop" ID="{40021CF7-5723-4DC6-BEDA-C88F4F0C3479}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="LegendaryLand" ID="{C784CF75-949C-45A9-B2E1-0A9C337ACDDF}" ShortID="455915542">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{42AFB743-B56B-4726-A4CA-7A16438660D2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="LegendaryLand" ID="{914F99F5-6726-4377-B8D0-2DBDBD7382DE}">
+							<Language>SFX</Language>
+							<AudioFile>LegendaryLand.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="875957982"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="LegendaryLand" ID="{914F99F5-6726-4377-B8D0-2DBDBD7382DE}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="LegendaryPop" ID="{AADBEB96-3D00-4057-8D2B-C04194148A1F}" ShortID="819935056">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{42AFB743-B56B-4726-A4CA-7A16438660D2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="LegendaryPop" ID="{DD4B7474-FE8D-4EF1-939D-207216CA7A7C}">
+							<Language>SFX</Language>
+							<AudioFile>LegendaryPop.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="284230557"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="LegendaryPop" ID="{DD4B7474-FE8D-4EF1-939D-207216CA7A7C}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="RareLand" ID="{771D3DB4-2888-414E-8C81-9937E956DB0B}" ShortID="304562733">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{42AFB743-B56B-4726-A4CA-7A16438660D2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="RareLand" ID="{55127AFC-0EB1-4FC0-BD2F-F5755AB52B0D}">
+							<Language>SFX</Language>
+							<AudioFile>RareLand.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="604123797"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="RareLand" ID="{55127AFC-0EB1-4FC0-BD2F-F5755AB52B0D}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="RarePop" ID="{F71311EF-4CF0-4BDC-B05B-F13520EDE230}" ShortID="1027831273">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{42AFB743-B56B-4726-A4CA-7A16438660D2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="RarePop" ID="{6A5ADDD3-3794-4D7A-85A2-6ED98364FBD3}">
+							<Language>SFX</Language>
+							<AudioFile>RarePop.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="550029053"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="RarePop" ID="{6A5ADDD3-3794-4D7A-85A2-6ED98364FBD3}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="UncommonLand" ID="{344EFD47-9A27-4791-9A58-087D2ED6ACB9}" ShortID="229988127">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{42AFB743-B56B-4726-A4CA-7A16438660D2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="UncommonLand" ID="{995425D3-FD44-4A2A-8589-63F456B06819}">
+							<Language>SFX</Language>
+							<AudioFile>UncommonLand.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="182841732"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="UncommonLand" ID="{995425D3-FD44-4A2A-8589-63F456B06819}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+				<Sound Name="UncommonPop" ID="{D46B7A4E-DF3D-4E1E-852F-628FEDCF5FE6}" ShortID="709496015">
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{42AFB743-B56B-4726-A4CA-7A16438660D2}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="UncommonPop" ID="{74ED7637-E9C4-464C-93BD-7515F70B6B7A}">
+							<Language>SFX</Language>
+							<AudioFile>UncommonPop.wav</AudioFile>
+							<MediaIDList>
+								<MediaID ID="331923642"/>
+							</MediaIDList>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="UncommonPop" ID="{74ED7637-E9C4-464C-93BD-7515F70B6B7A}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
+			</ChildrenList>
+		</WorkUnit>
+	</AudioObjects>
+</WwiseDocument>
