@@ -47,7 +47,7 @@ namespace ItemQualities
                     PickupDiscoveryNetworker droneOwnerPickupDiscovery = droneOwnerNetworkUser ? droneOwnerNetworkUser.GetComponent<PickupDiscoveryNetworker>() : null;
 
                     int droneTier = droneInventory ? droneInventory.GetItemCountEffective(DLC3Content.Items.DroneUpgradeHidden) : 0;
-                    QualityTier maxPickupQualityTier = (QualityTier)Mathf.Clamp(droneTier - 1, (int)QualityTier.None, (int)QualityTier.Count - 1);
+                    QualityTier maxPickupQualityTier = (QualityTier)Mathf.Clamp((2 * droneTier) - 1, (int)QualityTier.None, (int)QualityTier.Count - 1);
 
                     if (droneOwnerPickupDiscovery)
                     {
