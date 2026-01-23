@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using HG;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
@@ -92,7 +93,9 @@ namespace ItemQualities
             }
 
             ObjectPurchaseContext.PurchaseResults payCostResults = purchaseContext.Results;
-            List<UniquePickup> pickupsSpentOnPurchase = new List<UniquePickup>(payCostResults.ItemStacksTaken.Length + payCostResults.EquipmentTaken.Length);
+
+            using var _ = ListPool<UniquePickup>.RentCollection(out List<UniquePickup> pickupsSpentOnPurchase);
+            pickupsSpentOnPurchase.EnsureCapacity(payCostResults.ItemStacksTaken.Length + payCostResults.EquipmentTaken.Length);
 
             foreach (Inventory.ItemAndStackValues itemStackValues in payCostResults.ItemStacksTaken)
             {
@@ -116,11 +119,10 @@ namespace ItemQualities
             foreach (UniquePickup inputPickup in pickupsSpentOnPurchase)
             {
                 QualityTier qualityTier = QualityCatalog.GetQualityTier(inputPickup.pickupIndex);
-
-                averageInputQualityTierValue += (float)qualityTier;
-
                 if (qualityTier > QualityTier.None)
                 {
+                    averageInputQualityTierValue += (float)qualityTier;
+
                     numInputItemsWithQuality++;
                 }
             }
@@ -128,7 +130,7 @@ namespace ItemQualities
             if (numInputItemsWithQuality == 0)
                 return QualityTier.None;
 
-            averageInputQualityTierValue /= pickupsSpentOnPurchase.Count;
+            averageInputQualityTierValue /= numInputItemsWithQuality;
             QualityTier outputQualityTier = (QualityTier)Mathf.Clamp(Mathf.CeilToInt(averageInputQualityTierValue), 0, (int)QualityTier.Count - 1);
 
             Log.Debug($"{numInputItemsWithQuality}/{pickupsSpentOnPurchase.Count} input items of quality (avg={outputQualityTier})");

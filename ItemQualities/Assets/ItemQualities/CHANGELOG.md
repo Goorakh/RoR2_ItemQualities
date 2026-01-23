@@ -222,6 +222,8 @@
     * Tier 1: Uncommon -> Uncommon to Rare
     * Tier 2: Uncommon to Rare -> Uncommon to Legendary
 
+* Fixed Quality Regenerating Scrap giving lower qualities than intended when used in Cauldrons.
+
 * Quality items are now automatically sorted and grouped together in your inventory to help item visibility, can be toggled in config.
 
 * Fixed Quality 3D Printers sometimes printing the incorrect quality items if used repeatedly as soon as they finish.
