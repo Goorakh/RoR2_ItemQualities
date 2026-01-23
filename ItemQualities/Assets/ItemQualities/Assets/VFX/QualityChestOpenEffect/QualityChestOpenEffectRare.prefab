@@ -59,6 +59,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 52d3c9cadb2286a4d8bcdc99a64efb3f, type: 2}
+    - target: {fileID: 5909859635213592264, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
+      propertyPath: soundName
+      value: play_quality_item_pop_rare
+      objectReference: {fileID: 0}
     - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: m_Color.b
       value: 1

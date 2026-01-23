@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{0C3C6378-9BA5-4923-B486-7C2A63EBEEF2}" SchemaVersion="119">
 	<SoundBanks>
-		<WorkUnit Name="Default Work Unit" ID="{0C3C6378-9BA5-4923-B486-7C2A63EBEEF2}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{0C3C6378-9BA5-4923-B486-7C2A63EBEEF2}" PersistMode="Standalone">
+			<ChildrenList>
+				<SoundBank Name="ItemQualities_SoundBank" ID="{086E9A6A-D7E4-4AB3-94DA-71BBA1B5106B}">
+					<ObjectInclusionList>
+						<ObjectRef Name="play_quality_item_land_epic" ID="{3D751886-0450-400B-AF11-0072E4B8B176}" WorkUnitID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="play_quality_item_land_rare" ID="{F35148D9-B8A8-4030-887A-6C33E05C5C91}" WorkUnitID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="play_quality_item_pop_rare" ID="{3696FD55-0C1D-4687-93C6-9579F4F6E71F}" WorkUnitID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="play_quality_item_pop_uncommon" ID="{984385E8-5772-4B97-932C-EEF424C9712E}" WorkUnitID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="play_quality_item_land_legendary" ID="{362EE369-FB6A-4C31-83DA-33E930B9A0A7}" WorkUnitID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="play_quality_item_pop_legendary" ID="{D41CB3AC-8D45-4DEC-BCB6-90D4C423EF9B}" WorkUnitID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="play_quality_item_pop_epic" ID="{F8BCCEE7-2799-4F6F-AC47-EB34FDF51A97}" WorkUnitID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" Origin="Manual" Filter="7"/>
+						<ObjectRef Name="play_quality_item_land_uncommon" ID="{0295053F-387F-4F7E-9013-8C87613C4E49}" WorkUnitID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" Origin="Manual" Filter="7"/>
+					</ObjectInclusionList>
+					<ObjectExclusionList/>
+					<GameSyncExclusionList/>
+				</SoundBank>
+			</ChildrenList>
+		</WorkUnit>
 	</SoundBanks>
 </WwiseDocument>

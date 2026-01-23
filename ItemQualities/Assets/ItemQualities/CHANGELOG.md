@@ -1,5 +1,7 @@
 ## 0.6.0
 
+* Quality items now play a unique sound when dropped.
+
 * Crowbar rework:
     * Store damage dealt to stunned enemies, deal stored damage when enemy regains control.
 

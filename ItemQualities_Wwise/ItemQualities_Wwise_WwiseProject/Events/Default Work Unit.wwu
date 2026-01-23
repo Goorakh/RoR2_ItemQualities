@@ -1,6 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <WwiseDocument Type="WorkUnit" ID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" SchemaVersion="119">
 	<Events>
-		<WorkUnit Name="Default Work Unit" ID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" PersistMode="Standalone"/>
+		<WorkUnit Name="Default Work Unit" ID="{9DF19FBC-726A-46C9-A877-9AB49D55AB7D}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="play_quality_item_land_epic" ID="{3D751886-0450-400B-AF11-0072E4B8B176}">
+					<ChildrenList>
+						<Action Name="" ID="{8A7B1833-0F13-4857-9259-E6380035024C}" ShortID="883456030">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="EpicLand" ID="{77802D52-DB89-4418-9C10-711705007D1B}" WorkUnitID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_quality_item_pop_epic" ID="{F8BCCEE7-2799-4F6F-AC47-EB34FDF51A97}">
+					<ChildrenList>
+						<Action Name="" ID="{C72608DE-2999-4C73-A75E-F94706464FF6}" ShortID="370412554">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="EpicPop" ID="{7B9E265A-3939-4716-B9F7-D2861262AD5D}" WorkUnitID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_quality_item_land_legendary" ID="{362EE369-FB6A-4C31-83DA-33E930B9A0A7}">
+					<ChildrenList>
+						<Action Name="" ID="{DA14D966-A5B3-41DB-832E-0DB7561F5ABA}" ShortID="795853354">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="LegendaryLand" ID="{C784CF75-949C-45A9-B2E1-0A9C337ACDDF}" WorkUnitID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_quality_item_pop_legendary" ID="{D41CB3AC-8D45-4DEC-BCB6-90D4C423EF9B}">
+					<ChildrenList>
+						<Action Name="" ID="{840FBFBC-8A80-4966-9280-9C405357A683}" ShortID="81469945">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="LegendaryPop" ID="{AADBEB96-3D00-4057-8D2B-C04194148A1F}" WorkUnitID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_quality_item_land_rare" ID="{F35148D9-B8A8-4030-887A-6C33E05C5C91}">
+					<ChildrenList>
+						<Action Name="" ID="{3FFD6504-90A7-498A-A618-F1AF6B776387}" ShortID="12826736">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="RareLand" ID="{771D3DB4-2888-414E-8C81-9937E956DB0B}" WorkUnitID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_quality_item_pop_rare" ID="{3696FD55-0C1D-4687-93C6-9579F4F6E71F}">
+					<ChildrenList>
+						<Action Name="" ID="{97C8E115-22E8-485F-A482-2C684138FAB9}" ShortID="37208392">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="RarePop" ID="{F71311EF-4CF0-4BDC-B05B-F13520EDE230}" WorkUnitID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_quality_item_land_uncommon" ID="{0295053F-387F-4F7E-9013-8C87613C4E49}">
+					<ChildrenList>
+						<Action Name="" ID="{349154D5-655C-4DB1-A232-40414A85ED88}" ShortID="920281145">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="UncommonLand" ID="{344EFD47-9A27-4791-9A58-087D2ED6ACB9}" WorkUnitID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="play_quality_item_pop_uncommon" ID="{984385E8-5772-4B97-932C-EEF424C9712E}">
+					<ChildrenList>
+						<Action Name="" ID="{94133CD1-8703-4143-A8EA-76DC48264F14}" ShortID="766711246">
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="UncommonPop" ID="{D46B7A4E-DF3D-4E1E-852F-628FEDCF5FE6}" WorkUnitID="{455D2FDE-6245-4354-A3A9-E53BA0D5A0F0}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
 	</Events>
 </WwiseDocument>
