@@ -150,6 +150,13 @@
         * Epic: 50% (+50% per stack) -> 100% (+100% per stack)
         * Legendary: 80% (+80% per stack) -> 150% (+150% per stack)
 
+* Pocket I.C.B.M.:
+    * Increased extra missile chance:
+        * Uncommon: 10% (+10% per stack) -> 40% (+40% per stack)
+        * Rare: 20% (+20% per stack) -> 75% (+75% per stack)
+        * Epic: 30% (+30% per stack) -> +1 missile (+1 per stack)
+        * Legendary: 40% (+40% per stack) -> +1 missile (+1 per stack), 50% (+50% per stack) for an additional missile
+
 * Will-o'-the-wisp:
     * Increased explosion size:
         * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
