@@ -121,8 +121,8 @@
         "ITEM_DAGGER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 단검을 더 많이 발사합니다.",
         "ITEM_DAGGER_LEGENDARY_DESC": "적 처치 시 <sprite name=\"Quality\"> <style=cIsDamage>10개</style><style=cStack>(중첩당 +7)</style>의 <style=cIsDamage>유도 단검</style>을 발사합니다. 단검은 기본 피해의 <style=cIsDamage>150%</style><style=cStack>(중첩당 +150%)</style>를 입힙니다.",
 
-        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 피해를 10회 입기 전까지 피해량이 증가합니다.",
-        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "{0}\n스테이지에서 피해를 <style=cIsHealing>입거나 막은</style> 횟수가 <sprite name=\"Quality\"> <style=cIsHealth>10회</style> 미만이면 피해량이 <sprite name=\"Quality\"> <style=cIsDamage>7%</style><style=cStack>(중첩당 +7%)</style> 증가합니다.",
+        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 피해를 12회 입기 전까지 피해량이 증가합니다.",
+        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "{0}\n스테이지에서 피해를 <style=cIsHealing>입거나 막은</style> 횟수가 <sprite name=\"Quality\"> <style=cIsHealth>12회</style> 미만이면 피해량이 <sprite name=\"Quality\"> <style=cIsDamage>7%</style><style=cStack>(중첩당 +7%)</style> 증가합니다.",
 
         "ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_PICKUP": "...뭐, 그래도 하루에 <sprite name=\"Quality\"> 세 번은 맞으니까요.",
         "ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_DESC": "{0}",
@@ -1096,17 +1096,17 @@
         "ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 운석 충돌 반경이 증가합니다.",
         "ITEM_METEORATTACKONHIGHDAMAGE_LEGENDARY_DESC": "{0}\n운석 충돌 반경이 <sprite name=\"Quality\"> <style=cIsDamage>200%</style><style=cStack>(중첩당 +200%)</style> 증가합니다.",
 
-        "ITEM_BOSSDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 주기적으로 강력한 몬스터에 표식을 남깁니다. 표식 있는 몬스터를 처치하면 해당 몬스터들에게 입히는 피해량이 영구적으로 증가합니다.",
-        "ITEM_BOSSDAMAGEBONUS_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60초</style>마다 <style=cIsDamage>보스가 아닌 강력한 몬스터</style>에 <style=cIsUtility>10초 동안 표식</style>을 남깁니다. 표식 있는 몬스터를 처치하면 <style=cIsDamage>해당 몬스터들에게 입히는 피해량이 영구적으로 1%씩, 최대 <sprite name=\"Quality\"> 15%<style=cStack>(중첩당 +15%)</style>까지 증가합니다</style>.",
+        "ITEM_BOSSDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 주기적으로 강력한 몬스터에 표식을 남깁니다. 해당 몬스터를 처치하면 표식 있는 몬스터에게 입히는 피해량이 영구적으로 증가합니다.",
+        "ITEM_BOSSDAMAGEBONUS_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60초</style>마다 <style=cIsDamage>보스가 아닌 강력한 몬스터</style>에 <style=cIsUtility>10초 동안 표식</style>을 남깁니다. 해당 몬스터를 처치하면 <style=cIsDamage>표식 있는 몬스터에게 입히는 피해량이 영구적으로 1%씩, 최대 <sprite name=\"Quality\"> 15%<style=cStack>(중첩당 +15%)</style>까지 증가합니다</style>.",
 
         "ITEM_BOSSDAMAGEBONUS_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> 주기적으로 강력한 몬스터에 표식을 남깁니다. 표식 있는 몬스터를 처치하면 해당 몬스터들에게 입히는 피해량이 영구적으로 증가합니다.",
-        "ITEM_BOSSDAMAGEBONUS_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50초</style>마다 <style=cIsDamage>보스가 아닌 강력한 몬스터</style>에 <style=cIsUtility>10초 동안 표식</style>을 남깁니다. 표식 있는 몬스터를 처치하면 <style=cIsDamage>해당 몬스터들에게 입히는 피해량이 영구적으로 1%씩, 최대 <sprite name=\"Quality\"> 30%<style=cStack>(중첩당 +30%)</style>까지 증가합니다</style>.",
+        "ITEM_BOSSDAMAGEBONUS_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50초</style>마다 <style=cIsDamage>보스가 아닌 강력한 몬스터</style>에 <style=cIsUtility>10초 동안 표식</style>을 남깁니다. 해당 몬스터를 처치하면 <style=cIsDamage>표식 있는 몬스터에게 입히는 피해량이 영구적으로 1%씩, 최대 <sprite name=\"Quality\"> 30%<style=cStack>(중첩당 +30%)</style>까지 증가합니다</style>.",
 
         "ITEM_BOSSDAMAGEBONUS_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> 주기적으로 강력한 몬스터에 표식을 남깁니다. 표식 있는 몬스터를 처치하면 해당 몬스터들에게 입히는 피해량이 영구적으로 증가합니다.",
-        "ITEM_BOSSDAMAGEBONUS_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>40초</style>마다 <style=cIsDamage>보스가 아닌 강력한 몬스터</style>에 <style=cIsUtility>10초 동안 표식</style>을 남깁니다. 표식 있는 몬스터를 처치하면 <style=cIsDamage>해당 몬스터들에게 입히는 피해량이 영구적으로 1%씩, 최대 <sprite name=\"Quality\"> 45%<style=cStack>(중첩당 +45%)</style>까지 증가합니다</style>.",
+        "ITEM_BOSSDAMAGEBONUS_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>40초</style>마다 <style=cIsDamage>보스가 아닌 강력한 몬스터</style>에 <style=cIsUtility>10초 동안 표식</style>을 남깁니다. 해당 몬스터를 처치하면 <style=cIsDamage>표식 있는 몬스터에게 입히는 피해량이 영구적으로 1%씩, 최대 <sprite name=\"Quality\"> 45%<style=cStack>(중첩당 +45%)</style>까지 증가합니다</style>.",
 
         "ITEM_BOSSDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 주기적으로 강력한 몬스터에 표식을 남깁니다. 표식 있는 몬스터를 처치하면 해당 몬스터들에게 입히는 피해량이 영구적으로 증가합니다.",
-        "ITEM_BOSSDAMAGEBONUS_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20초</style>마다 <style=cIsDamage>보스가 아닌 강력한 몬스터</style>에 <style=cIsUtility>10초 동안 표식</style>을 남깁니다. 표식 있는 몬스터를 처치하면 <style=cIsDamage>해당 몬스터들에게 입히는 피해량이 영구적으로 1%씩, 최대 <sprite name=\"Quality\"> 60%<style=cStack>(중첩당 +60%)</style>까지 증가합니다</style>.",
+        "ITEM_BOSSDAMAGEBONUS_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20초</style>마다 <style=cIsDamage>보스가 아닌 강력한 몬스터</style>에 <style=cIsUtility>10초 동안 표식</style>을 남깁니다. 해당 몬스터를 처치하면 <style=cIsDamage>표식 있는 몬스터에게 입히는 피해량이 영구적으로 1%씩, 최대 <sprite name=\"Quality\"> 60%<style=cStack>(중첩당 +60%)</style>까지 증가합니다</style>.",
 
         "ITEM_PERMANENTDEBUFFONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 더 높은 피해를 입히면 더 많이 감소시킵니다.",
         "ITEM_PERMANENTDEBUFFONHIT_UNCOMMON_DESC": "{0}\n<style=cIsDamage>400%의 피해를 입힐 때마다</style> <style=cIsDamage>방어력</style>을 영구적으로 <sprite name=\"Quality\"> <style=cIsDamage>2</style><style=cStack>(중첩당 +2)</style>만큼 추가로 감소시킵니다.",
