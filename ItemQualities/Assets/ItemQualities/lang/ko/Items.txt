@@ -1525,7 +1525,7 @@
         "ITEM_SHAREDSUFFERING_EPIC_DESC": "{0}\n적 처치 시 <sprite name=\"Quality\"> <style=cIsUtility>15%</style> 확률로 <color=#45F7CA>네트워크 수정</color>을 생성합니다. 수정은 스킬 피해를 입으면 폭발하여 <sprite name=\"Quality\"> <style=cIsUtility>50m<style=cStack>(중첩당 +50m)</style></style> 반경에 <style=cIsDamage>100%의 피해</style>를 입히고, 최대 감염자 수 제한과 관계없이 폭발에 적중당한 <style=cIsUtility>모든</style> 적을 <color=#45F7CA>감염</color>시킵니다.",
 
         "ITEM_SHAREDSUFFERING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 적 처치 시 일정 확률로 수정을 생성하여 주변 적들을 네트워크에 연결합니다.",
-        "ITEM_SHAREDSUFFERING_LEGENDARY_DESC": "{0}\n적 처치 시 <sprite name=\"Quality\"> <style=cIsUtility>20%</style> 확률로 <color=#45F7CA>네트워크 수정</color>을 생성합니다. 수정은 스킬 피해를 입으면 폭발하여 <sprite name=\"Quality\"> <style=cIsUtility>65m<style=cStack>(중첩당 +65m)</style></style> 반경에 <style=cIsDamage>100%의 피해</style>를 입히고, 최대 감염자 수 제한과 관계없이 폭발에 적중당한 <style=cIsUtility>모든</style> 적을 <color=#45F7CA>감염</color>시킵니다
+        "ITEM_SHAREDSUFFERING_LEGENDARY_DESC": "{0}\n적 처치 시 <sprite name=\"Quality\"> <style=cIsUtility>20%</style> 확률로 <color=#45F7CA>네트워크 수정</color>을 생성합니다. 수정은 스킬 피해를 입으면 폭발하여 <sprite name=\"Quality\"> <style=cIsUtility>65m<style=cStack>(중첩당 +65m)</style></style> 반경에 <style=cIsDamage>100%의 피해</style>를 입히고, 최대 감염자 수 제한과 관계없이 폭발에 적중당한 <style=cIsUtility>모든</style> 적을 <color=#45F7CA>감염</color>시킵니다.",
 
         "ITEM_PHYSICSPROJECTILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 친구와 상호작용하면 적에게 발사됩니다.",
         "ITEM_PHYSICSPROJECTILE_UNCOMMON_DESC": "{0}\n유닛과 상호작용하면 적을 향해 발사되어 충돌 시 <sprite name=\"Quality\"> <style=cIsUtility>10m<style=cStack>(중첩당 +10m)</style></style> 반경에 <sprite name=\"Quality\"> <style=cIsDamage>400%<style=cStack>(중첩당 +400%)</style>의 피해</style>를 입힙니다.",
