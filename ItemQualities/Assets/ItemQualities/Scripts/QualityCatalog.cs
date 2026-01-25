@@ -347,35 +347,43 @@ namespace ItemQualities
                 yield return languagesLoad;
             }
 
-            static void formatQualityNameTokens(string baseNameToken, string qualityNameToken, string qualityModifierToken)
+            static void formatQualityNameTokens(string baseNameToken, string qualityNameToken, string qualityModifierToken, Dictionary<string, Dictionary<string, string>> qualityLanguageDictionary)
             {
-                if (string.IsNullOrEmpty(qualityNameToken) || !Language.IsTokenInvalid(qualityNameToken))
+                if (string.IsNullOrEmpty(qualityNameToken))
                     return;
                 
                 foreach (Language language in Language.GetAllLanguages())
                 {
-                    string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseNameToken));
-                    LanguageAPI.Add(qualityNameToken, generatedQualityName, language.name);
+                    if (!language.TokenIsRegistered(qualityNameToken))
+                    {
+                        string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseNameToken));
+                        qualityLanguageDictionary[language.name][qualityNameToken] = generatedQualityName;
+                    }
                 }
             }
 
-            static void formatQualityTokens(string baseToken, string qualityToken)
+            static void formatQualityTokens(string baseToken, string qualityToken, Dictionary<string, Dictionary<string, string>> qualityLanguageDictionary)
             {
-                if (string.IsNullOrEmpty(qualityToken) || Language.IsTokenInvalid(qualityToken))
+                if (string.IsNullOrEmpty(qualityToken))
                     return;
-
-                string fallbackQualityString = Language.english.GetLocalizedStringByToken(qualityToken);
 
                 foreach (Language language in Language.GetAllLanguages())
                 {
-                    string qualityString = language.TokenIsRegistered(qualityToken) ? language.GetLocalizedStringByToken(qualityToken) : fallbackQualityString;
+                    string qualityString = language.GetLocalizedStringByToken(qualityToken);
 
                     if (qualityString.Contains("{0}"))
                     {
                         qualityString = string.Format(qualityString, language.GetLocalizedStringByToken(baseToken));
-                        LanguageAPI.Add(qualityToken, qualityString, language.name);
+
+                        qualityLanguageDictionary[language.name][qualityToken] = qualityString;
                     }
                 }
+            }
+
+            Dictionary<string, Dictionary<string, string>> qualityLanguageDictionary = new Dictionary<string, Dictionary<string, string>>();
+            foreach (Language language in Language.GetAllLanguages())
+            {
+                qualityLanguageDictionary.Add(language.name, new Dictionary<string, string>());
             }
 
             foreach (ItemQualityGroup itemQualityGroup in _allItemQualityGroups)
@@ -406,10 +414,10 @@ namespace ItemQualities
                         qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
                     }
 
-                    formatQualityNameTokens(baseItem.nameToken, item.nameToken, qualityModifierToken);
+                    formatQualityNameTokens(baseItem.nameToken, item.nameToken, qualityModifierToken, qualityLanguageDictionary);
 
-                    formatQualityTokens(baseItem.pickupToken, item.pickupToken);
-                    formatQualityTokens(baseItem.descriptionToken, item.descriptionToken);
+                    formatQualityTokens(baseItem.pickupToken, item.pickupToken, qualityLanguageDictionary);
+                    formatQualityTokens(baseItem.descriptionToken, item.descriptionToken, qualityLanguageDictionary);
                 }
             }
 
@@ -432,12 +440,14 @@ namespace ItemQualities
                     string qualityTierName = qualityTier.ToString().ToUpper();
                     string qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
 
-                    formatQualityNameTokens(baseEquipment.nameToken, equipment.nameToken, qualityModifierToken);
+                    formatQualityNameTokens(baseEquipment.nameToken, equipment.nameToken, qualityModifierToken, qualityLanguageDictionary);
 
-                    formatQualityTokens(baseEquipment.pickupToken, equipment.pickupToken);
-                    formatQualityTokens(baseEquipment.descriptionToken, equipment.descriptionToken);
+                    formatQualityTokens(baseEquipment.pickupToken, equipment.pickupToken, qualityLanguageDictionary);
+                    formatQualityTokens(baseEquipment.descriptionToken, equipment.descriptionToken, qualityLanguageDictionary);
                 }
             }
+
+            LanguageAPI.Add(qualityLanguageDictionary);
 
             foreach (Language language in tempLoadedLanguages)
             {

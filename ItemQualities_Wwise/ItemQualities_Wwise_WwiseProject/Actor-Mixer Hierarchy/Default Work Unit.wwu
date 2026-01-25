@@ -7,11 +7,14 @@
 					<PropertyList>
 						<Property Name="OutputBusVolume" Type="Real64">
 							<ValueList>
-								<Value>-5</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="item_drop" ID="{E4466E6A-58BB-46F1-BC9D-1BBC294C6862}" WorkUnitID="{C2C56B59-7A83-4C6D-BD2D-03B2BE0C15BE}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
 						</Reference>
@@ -21,6 +24,11 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="EpicLand" ID="{6AFBA04B-5310-4D30-81F7-1E2467CDBE27}">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="0.123715973451786"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.152265813479121"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>EpicLand.wav</AudioFile>
 							<MediaIDList>
@@ -36,11 +44,14 @@
 					<PropertyList>
 						<Property Name="OutputBusVolume" Type="Real64">
 							<ValueList>
-								<Value>-5</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="item_drop" ID="{E4466E6A-58BB-46F1-BC9D-1BBC294C6862}" WorkUnitID="{C2C56B59-7A83-4C6D-BD2D-03B2BE0C15BE}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
 						</Reference>
@@ -50,6 +61,11 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="EpicPop" ID="{40021CF7-5723-4DC6-BEDA-C88F4F0C3479}">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="0.117865374460286"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.15413164352499"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>EpicPop.wav</AudioFile>
 							<MediaIDList>
@@ -65,11 +81,14 @@
 					<PropertyList>
 						<Property Name="OutputBusVolume" Type="Real64">
 							<ValueList>
-								<Value>-5</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="item_drop" ID="{E4466E6A-58BB-46F1-BC9D-1BBC294C6862}" WorkUnitID="{C2C56B59-7A83-4C6D-BD2D-03B2BE0C15BE}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
 						</Reference>
@@ -79,6 +98,11 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="LegendaryLand" ID="{914F99F5-6726-4377-B8D0-2DBDBD7382DE}">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="0.124999844686733"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.16666645958231"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>LegendaryLand.wav</AudioFile>
 							<MediaIDList>
@@ -94,11 +118,14 @@
 					<PropertyList>
 						<Property Name="OutputBusVolume" Type="Real64">
 							<ValueList>
-								<Value>-5</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="item_drop" ID="{E4466E6A-58BB-46F1-BC9D-1BBC294C6862}" WorkUnitID="{C2C56B59-7A83-4C6D-BD2D-03B2BE0C15BE}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
 						</Reference>
@@ -108,6 +135,11 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="LegendaryPop" ID="{DD4B7474-FE8D-4EF1-939D-207216CA7A7C}">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="0.140301514822063"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.180387661914081"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>LegendaryPop.wav</AudioFile>
 							<MediaIDList>
@@ -123,11 +155,14 @@
 					<PropertyList>
 						<Property Name="OutputBusVolume" Type="Real64">
 							<ValueList>
-								<Value>-5</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="item_drop" ID="{E4466E6A-58BB-46F1-BC9D-1BBC294C6862}" WorkUnitID="{C2C56B59-7A83-4C6D-BD2D-03B2BE0C15BE}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
 						</Reference>
@@ -137,6 +172,11 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="RareLand" ID="{55127AFC-0EB1-4FC0-BD2F-F5755AB52B0D}">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="0.0928607668333696"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.185721533666739"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>RareLand.wav</AudioFile>
 							<MediaIDList>
@@ -152,11 +192,14 @@
 					<PropertyList>
 						<Property Name="OutputBusVolume" Type="Real64">
 							<ValueList>
-								<Value>-5</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="item_drop" ID="{E4466E6A-58BB-46F1-BC9D-1BBC294C6862}" WorkUnitID="{C2C56B59-7A83-4C6D-BD2D-03B2BE0C15BE}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
 						</Reference>
@@ -166,6 +209,11 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="RarePop" ID="{6A5ADDD3-3794-4D7A-85A2-6ED98364FBD3}">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="0.108975035980907"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.070513258575881"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>RarePop.wav</AudioFile>
 							<MediaIDList>
@@ -181,11 +229,14 @@
 					<PropertyList>
 						<Property Name="OutputBusVolume" Type="Real64">
 							<ValueList>
-								<Value>-5</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="item_drop" ID="{E4466E6A-58BB-46F1-BC9D-1BBC294C6862}" WorkUnitID="{C2C56B59-7A83-4C6D-BD2D-03B2BE0C15BE}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
 						</Reference>
@@ -195,6 +246,12 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="UncommonLand" ID="{995425D3-FD44-4A2A-8589-63F456B06819}">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="0.0416669255221115"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.0576926661075388"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+								<Property Name="TrimBegin" Type="Real64" Value="0.0833338510442229"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>UncommonLand.wav</AudioFile>
 							<MediaIDList>
@@ -210,11 +267,14 @@
 					<PropertyList>
 						<Property Name="OutputBusVolume" Type="Real64">
 							<ValueList>
-								<Value>-5</Value>
+								<Value>-3</Value>
 							</ValueList>
 						</Property>
 					</PropertyList>
 					<ReferenceList>
+						<Reference Name="Attenuation">
+							<ObjectRef Name="item_drop" ID="{E4466E6A-58BB-46F1-BC9D-1BBC294C6862}" WorkUnitID="{C2C56B59-7A83-4C6D-BD2D-03B2BE0C15BE}"/>
+						</Reference>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{F69242F5-F808-4E1D-A42D-9941CBD026A6}"/>
 						</Reference>
@@ -224,6 +284,11 @@
 					</ReferenceList>
 					<ChildrenList>
 						<AudioFileSource Name="UncommonPop" ID="{74ED7637-E9C4-464C-93BD-7515F70B6B7A}">
+							<PropertyList>
+								<Property Name="FadeInDuration" Type="Real64" Value="0.0714452934903032"/>
+								<Property Name="FadeOutDuration" Type="Real64" Value="0.0745516105985773"/>
+								<Property Name="OverrideWavLoop" Type="bool" Value="True"/>
+							</PropertyList>
 							<Language>SFX</Language>
 							<AudioFile>UncommonPop.wav</AudioFile>
 							<MediaIDList>

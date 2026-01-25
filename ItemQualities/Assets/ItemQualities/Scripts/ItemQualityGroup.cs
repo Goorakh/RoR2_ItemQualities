@@ -1,4 +1,5 @@
-﻿using ItemQualities.ContentManagement;
+﻿using HG;
+using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -255,10 +256,13 @@ namespace ItemQualities
                     item.hidden = baseItem.hidden;
                     item.canRemove = baseItem.canRemove;
 
-                    HashSet<ItemTag> tags = new HashSet<ItemTag>(item.tags);
-                    tags.UnionWith(baseItem.tags);
-                    tags.Add(ItemTag.WorldUnique);
-                    item.tags = tags.ToArray();
+                    using (SetPool<ItemTag>.RentCollection(out HashSet<ItemTag> tags))
+                    {
+                        tags.UnionWith(item.tags);
+                        tags.UnionWith(baseItem.tags);
+                        tags.Add(ItemTag.WorldUnique);
+                        item.tags = tags.ToArray();
+                    }
 
                     item.requiredExpansion = baseItem.requiredExpansion;
                 }
@@ -316,10 +320,16 @@ namespace ItemQualities
                     itemDef.name = baseItemName + qualityTier;
                     itemDef.descriptionToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
                     itemDef.pickupToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
-                    itemDef.tags = new ItemTag[] { ItemTag.WorldUnique };
                     itemDef.isConsumed = baseItem.isConsumed;
                     itemDef.hidden = baseItem.hidden;
                     itemDef.canRemove = baseItem.canRemove;
+
+                    using (SetPool<ItemTag>.RentCollection(out HashSet<ItemTag> itemTags))
+                    {
+                        itemTags.UnionWith(baseItem.tags);
+                        itemTags.Add(ItemTag.WorldUnique);
+                        itemDef.tags = itemTags.ToArray();
+                    }
 
                     if (baseIconTexture && qualityTierDef)
                     {

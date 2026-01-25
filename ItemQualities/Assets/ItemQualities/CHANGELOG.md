@@ -1,3 +1,9 @@
+## 0.6.1
+
+* Fixed quality item descriptions not showing properly if game was launched in a language other than English.
+
+* Fixed quality item drop sounds playing globally.
+
 ## 0.6.0
 
 * Quality items now play a unique sound when dropped.
