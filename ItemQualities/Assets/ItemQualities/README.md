@@ -8,6 +8,8 @@ Quality items stack in both their quality effect and as another instance of the 
 
 Qualities of the same item all increase the same stat, and stack together. Stats that are changed with quality are marked with a blue diamond icon in item descriptions.
 
+Quality stats that are non-stacking only apply the stat of the highest quality of that item in your inventory.
+
 #
 
 Quality items have a small chance to drop from any regular item source, and always drop from Quality chest variants.
