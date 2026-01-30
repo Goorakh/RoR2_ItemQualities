@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class StunAndPierceProjectileController : NetworkBehaviour
+    public sealed class StunAndPierceProjectileController : NetworkBehaviour
     {
         [SystemInitializer]
         static void Init()

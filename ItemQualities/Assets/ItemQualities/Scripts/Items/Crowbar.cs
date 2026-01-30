@@ -227,7 +227,7 @@ namespace ItemQualities.Items
             return false;
         }
 
-        public class DelayedHitHandler : MonoBehaviour
+        public sealed class DelayedHitHandler : MonoBehaviour
         {
             public float damage = 0;
             public GameObject attacker;

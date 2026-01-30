@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 
 namespace EntityStates.BossGroupHealNovaController
 {
-    public class BossGroupHealNovaPulse : EntityState
+    public sealed class BossGroupHealNovaPulse : EntityState
     {
         public static AnimationCurve NovaRadiusCurve;
 
@@ -83,7 +83,7 @@ namespace EntityStates.BossGroupHealNovaController
             }
         }
 
-        class HealPulse
+        sealed class HealPulse
         {
             readonly HashSet<HealthComponent> _healedTargets = new HashSet<HealthComponent>();
 

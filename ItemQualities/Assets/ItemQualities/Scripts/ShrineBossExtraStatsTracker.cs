@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    public class ShrineBossExtraStatsTracker : MonoBehaviour
+    public sealed class ShrineBossExtraStatsTracker : MonoBehaviour
     {
         [SystemInitializer]
         static void Init()

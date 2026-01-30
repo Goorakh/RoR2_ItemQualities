@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ItemQualities.Orbs
 {
-    public class VoidDeathOrb : Orb
+    public sealed class VoidDeathOrb : Orb
     {
         public static ModdedProcType VoidDeathOrbProcType { get; private set; } = ModdedProcType.Invalid;
 

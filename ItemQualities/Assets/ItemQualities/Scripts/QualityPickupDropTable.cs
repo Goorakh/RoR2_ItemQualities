@@ -6,7 +6,7 @@ using UnityEngine;
 namespace ItemQualities
 {
     [CreateAssetMenu(menuName = "ItemQualities/DropTable/QualityPickupDropTable")]
-    public class QualityPickupDropTable : PickupDropTable
+    public sealed class QualityPickupDropTable : PickupDropTable
     {
         [Header("Pickups")]
 

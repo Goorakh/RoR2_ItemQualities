@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class EventFilter : MonoBehaviour
+    public sealed class EventFilter : MonoBehaviour
     {
         public NetworkConnectionType AllowedConnectionTypes = NetworkConnectionType.Any;
 

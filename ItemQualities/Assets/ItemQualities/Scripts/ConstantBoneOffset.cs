@@ -2,7 +2,7 @@
 
 namespace ItemQualities
 {
-    public class ConstantBoneOffset : MonoBehaviour
+    public sealed class ConstantBoneOffset : MonoBehaviour
     {
         public Vector3 PositionOffset;
 

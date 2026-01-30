@@ -3,7 +3,7 @@
 namespace ItemQualities
 {
     [CreateAssetMenu(menuName = "ItemQualities/QualityTierDef")]
-    public class QualityTierDef : ScriptableObject
+    public sealed class QualityTierDef : ScriptableObject
     {
         public QualityTier qualityTier = QualityTier.None;
 

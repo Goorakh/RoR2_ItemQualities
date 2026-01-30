@@ -9,7 +9,7 @@ using UnityEngine.Networking;
 namespace ItemQualities.Items
 {
     [RequireComponent(typeof(NetworkedBodyAttachment))]
-    public class ChainLightningArcController : NetworkBehaviour
+    public sealed class ChainLightningArcController : NetworkBehaviour
     {
         public static readonly float FireInterval = 0.2f;
 

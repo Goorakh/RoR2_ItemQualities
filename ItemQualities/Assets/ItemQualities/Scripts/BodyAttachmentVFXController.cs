@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ItemQualities
 {
     [RequireComponent(typeof(NetworkedBodyAttachment))]
-    public class BodyAttachmentVFXController : MonoBehaviour, INetworkedBodyAttachmentListener
+    public sealed class BodyAttachmentVFXController : MonoBehaviour, INetworkedBodyAttachmentListener
     {
         [SerializeField]
         InstantiateAddressablePrefab _bodyVFXInstantiator;

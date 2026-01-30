@@ -4,7 +4,7 @@ using UnityEngine;
 namespace ItemQualities
 {
     [RequireComponent(typeof(NetworkedBodyAttachment))]
-    public class PositionIndicatorAttachment : MonoBehaviour, INetworkedBodyAttachmentListener
+    public sealed class PositionIndicatorAttachment : MonoBehaviour, INetworkedBodyAttachmentListener
     {
         public PositionIndicator PositionIndicator;
 
