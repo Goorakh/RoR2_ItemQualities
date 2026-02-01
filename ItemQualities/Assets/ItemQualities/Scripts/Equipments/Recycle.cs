@@ -1,4 +1,5 @@
-﻿using Mono.Cecil.Cil;
+﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
@@ -10,11 +11,11 @@ namespace ItemQualities.Equipments
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.EquipmentSlot.FireRecycle += RecycleQualityItemManipulator;
-            IL.RoR2.EquipmentSlot.UpdateTargets += RecycleQualityItemManipulator;
+            IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
+            IL.RoR2.EquipmentSlot.FireRecycle += EquipmentSlot_FireRecycle;
         }
 
-        static void RecycleQualityItemManipulator(ILContext il)
+        static void EquipmentSlot_UpdateTargets(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -26,11 +27,18 @@ namespace ItemQualities.Equipments
                                  x => x.MatchLdfld<GenericPickupController>(nameof(GenericPickupController.Recycled))))
             {
                 c.Emit(OpCodes.Ldloc, pickupControllerVarIndex);
-                c.EmitDelegate<Func<bool, GenericPickupController, bool>>(isUnrecyclable);
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<bool, GenericPickupController, EquipmentSlot, bool>>(isUnrecyclable);
 
-                static bool isUnrecyclable(bool isRecycled, GenericPickupController pickupController)
+                static bool isUnrecyclable(bool isRecycled, GenericPickupController pickupController, EquipmentSlot equipmentSlot)
                 {
-                    return isRecycled || (pickupController && QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex) > QualityTier.None);
+                    if (isRecycled)
+                        return true;
+
+                    if (pickupController && QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex) > equipmentSlot.GetActiveEquipmentQualityTier())
+                        return true;
+
+                    return false;
                 }
 
                 patchCount++;
@@ -38,11 +46,50 @@ namespace ItemQualities.Equipments
 
             if (patchCount == 0)
             {
-                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+                Log.Error("Failed to find patch location");
             }
             else
             {
-                Log.Debug($"{il.Method.FullName}: Found {patchCount} patch location(s)");
+                Log.Debug($"Found {patchCount} patch location(s)");
+            }
+        }
+
+        static void EquipmentSlot_FireRecycle(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            int patchCount = 0;
+
+            int pickupControllerVarIndex = -1;
+            while (c.TryGotoNext(MoveType.After,
+                                 x => x.MatchLdloc(out pickupControllerVarIndex),
+                                 x => x.MatchLdfld<GenericPickupController>(nameof(GenericPickupController.Recycled))))
+            {
+                c.Emit(OpCodes.Ldloc, pickupControllerVarIndex);
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<bool, GenericPickupController, EquipmentSlot, bool>>(isUnrecyclable);
+
+                static bool isUnrecyclable(bool isRecycled, GenericPickupController pickupController, EquipmentSlot equipmentSlot)
+                {
+                    if (isRecycled)
+                        return true;
+
+                    if (pickupController && QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex) > equipmentSlot.GetCurrentEquipmentActionQualityTier())
+                        return true;
+
+                    return false;
+                }
+
+                patchCount++;
+            }
+
+            if (patchCount == 0)
+            {
+                Log.Error("Failed to find patch location");
+            }
+            else
+            {
+                Log.Debug($"Found {patchCount} patch location(s)");
             }
         }
     }

@@ -17,7 +17,7 @@ MonoBehaviour:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
-  cooldown: 0.65
+  cooldown: -1
   nameToken: 
   pickupToken: EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP
   descriptionToken: EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC
@@ -32,6 +32,7 @@ MonoBehaviour:
   enigmaCompatible: 0
   isLunar: 0
   isBoss: 0
+  foodRelated: 0
   passiveBuffDef: {fileID: 0}
   appearsInSinglePlayer: 1
   appearsInMultiPlayer: 1

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egRecycle
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: 78c9d7a4ba99a904d8f4e6bfb8bb13df
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 06dd1ac7a52d76140b4a95ebdabd5037, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: 17cf0e303b249d349b81fadc6881de33, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: eb1ccfd2459ec3c40b24aaa399682bf2, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: afffdcdf82daeae46a146546e6e01539, type: 2}

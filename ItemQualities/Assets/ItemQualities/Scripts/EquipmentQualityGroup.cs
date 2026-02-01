@@ -208,11 +208,13 @@ namespace ItemQualities
                     if (!equipment.passiveBuffDef)
                         equipment.passiveBuffDef = baseEquipment.passiveBuffDef;
 
-                    equipment.cooldown *= baseEquipment.cooldown;
+                    if (equipment.cooldown < 0)
+                        equipment.cooldown = baseEquipment.cooldown;
 
                     equipment.isConsumed = baseEquipment.isConsumed;
                     equipment.isLunar = baseEquipment.isLunar;
                     equipment.isBoss = baseEquipment.isBoss;
+                    equipment.foodRelated = baseEquipment.foodRelated;
 
                     equipment.canBeRandomlyTriggered = baseEquipment.canBeRandomlyTriggered;
                     equipment.enigmaCompatible = baseEquipment.enigmaCompatible;
@@ -276,7 +278,7 @@ namespace ItemQualities
                     equipmentDef.name = baseEquipmentName + qualityTier;
                     equipmentDef.descriptionToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
                     equipmentDef.pickupToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
-                    equipmentDef.cooldown = 1f;
+                    equipmentDef.cooldown = -1f;
                     equipmentDef.colorIndex = ColorCatalog.ColorIndex.None;
                     equipmentDef.canDrop = false;
                     equipmentDef.dropOnDeathChance = 0f;
@@ -346,7 +348,7 @@ namespace ItemQualities
                 equipmentDef.name = baseEquipmentName + qualityTier;
                 equipmentDef.descriptionToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
                 equipmentDef.pickupToken = $"EQUIPMENT_{baseEquipmentName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
-                equipmentDef.cooldown = 1f;
+                equipmentDef.cooldown = -1f;
                 equipmentDef.colorIndex = ColorCatalog.ColorIndex.None;
                 equipmentDef.canDrop = false;
                 equipmentDef.dropOnDeathChance = 0f;
