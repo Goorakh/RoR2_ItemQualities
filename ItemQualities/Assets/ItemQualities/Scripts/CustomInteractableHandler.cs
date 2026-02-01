@@ -156,7 +156,6 @@ namespace ItemQualities
                     }
                 }
 
-                /*
                 if (equipmentBarrelCard != null && !addedQualityEquipmentBarrel)
                 {
                     DirectorCard qualityEquipmentBarrelCard = new DirectorCard
@@ -172,7 +171,6 @@ namespace ItemQualities
 
                     addedQualityEquipmentBarrel = true;
                 }
-                */
 
                 if (chest1Card != null && !addedQualityChest1)
                 {

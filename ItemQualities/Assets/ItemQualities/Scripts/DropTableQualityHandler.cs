@@ -119,6 +119,10 @@ namespace ItemQualities
                 {
                     QualityTier qualityTier = rollQuality(rng);
                     PickupIndex qualityPickupIndexCandidate = QualityCatalog.GetPickupIndexOfQuality(qualityPickupIndex, qualityTier);
+
+                    if (Run.instance && Run.instance.ruleBook != null && !Run.instance.ruleBook.IsPickupRuleEnabled(qualityPickupIndexCandidate))
+                        continue;
+
                     if (qualityTier > currentPickupQualityTier && (isPickupAllowedFunc == null || isPickupAllowedFunc(qualityPickupIndexCandidate)))
                     {
                         qualityPickupIndex = qualityPickupIndexCandidate;

@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -165,13 +166,19 @@ namespace ItemQualities
                     {
                         void tryAddQualityChoice(QualityTier qualityTier, float qualityWeight)
                         {
-                            if (qualityWeight > 0f)
+                            if (qualityWeight <= 0f)
+                                return;
+                            
+                            PickupIndex qualityPickupIndex = QualityCatalog.GetPickupIndexOfQuality(pickupIndex, qualityTier);
+                            if (qualityPickupIndex == PickupIndex.none)
+                                return;
+
+                            if (Run.instance && Run.instance.ruleBook != null && !Run.instance.ruleBook.IsPickupRuleEnabled(qualityPickupIndex))
+                                return;
+
+                            if (qualityTier == QualityTier.None || qualityPickupIndex != pickupIndex)
                             {
-                                PickupIndex qualityPickupIndex = QualityCatalog.GetPickupIndexOfQuality(pickupIndex, qualityTier);
-                                if (qualityPickupIndex != PickupIndex.none && (qualityTier == QualityTier.None || qualityPickupIndex != pickupIndex))
-                                {
-                                    _selector.AddChoice(new UniquePickup(qualityPickupIndex), weight * qualityWeight);
-                                }
+                                _selector.AddChoice(new UniquePickup(qualityPickupIndex), weight * qualityWeight);
                             }
                         }
 
