@@ -34,7 +34,6 @@ namespace ItemQualities.Items
             if (damageInfo.rejected)
             {
                 bool isInvincible = Body.HasBuff(RoR2Content.Buffs.Immune) ||
-                                    Body.HasBuff(RoR2Content.Buffs.HiddenInvincibility) ||
                                     Body.HasBuff(DLC2Content.Buffs.SojournVehicle);
 
                 if (!isInvincible || damageInfo.IsParried())
