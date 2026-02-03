@@ -707,6 +707,12 @@ namespace ItemQualities
             internal static IReadOnlyCollection<EquipmentQualityGroup> AllGroups = Array.Empty<EquipmentQualityGroup>();
 
             public static EquipmentQualityGroup BossHunterConsumed;
+
+            public static EquipmentQualityGroup Recycle;
+
+            public static EquipmentQualityGroup VendingMachine;
+
+            public static EquipmentQualityGroup CommandMissile;
         }
 
         public static class BuffQualityGroups
