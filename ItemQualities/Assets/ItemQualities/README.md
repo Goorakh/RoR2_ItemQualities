@@ -50,13 +50,13 @@ These are mods we recommend you use in combination with Quality, though they are
 
 * `Gorakh`: Code + Design
 
-* `0n_x`, `OrphanTaint`, `Lawlzee`, and `Judgy`: Code.
+* `0n_x`, `OrphanTaint`, and `Lawlzee`: Code.
 
 * `TheTimesweeper`, `TullyVin`: Models
 
-* `Sivelos`: VFX
+* `Sivelos`: Quality item drop VFX
 
-* `Hyleo`: SFX
+* `Hyleo`: Quality item drop SFX
 
 * `Lena`: Trailer editing and miscellaneous assets.
 
