@@ -5,6 +5,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
+using R2API.Utils;
 using RoR2;
 using RoR2BepInExPack.Utilities;
 using System;
@@ -40,6 +41,14 @@ namespace ItemQualities.Equipments
 
             action = default;
             return false;
+        }
+
+        [InitDuringStartupPhase(GameInitPhase.PreFrame)]
+        static void PreInit()
+        {
+            SystemInitializerInjector.InjectDependency(typeof(RuleCatalog), typeof(QualityCatalog));
+
+            IL.RoR2.RuleCatalog.Init += qualityEquipmentCanDropPatch;
         }
 
         [SystemInitializer(typeof(CostTypeCatalog))]
@@ -194,7 +203,6 @@ namespace ItemQualities.Equipments
             }
 
             IL.RoR2.UI.LogBook.LogBookController.CanSelectEquipmentEntry += qualityEquipmentCanDropPatch;
-            IL.RoR2.RuleCatalog.Init += qualityEquipmentCanDropPatch;
 
             MethodInfo gameCompletionStatsAddPickupMethod = typeof(GameCompletionStatsHelper).GetMethods(BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static).SingleOrDefault(m => m.Name.StartsWith("<.ctor>g__AddPickup|"));
             if (gameCompletionStatsAddPickupMethod != null)
