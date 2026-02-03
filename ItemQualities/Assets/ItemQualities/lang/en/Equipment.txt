@@ -40,5 +40,17 @@
         
         "EQUIPMENT_CLEANSE_LEGENDARY_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 4 seconds.",
         "EQUIPMENT_CLEANSE_LEGENDARY_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+
+        "EQUIPMENT_VENDINGMACHINE_UNCOMMON_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 15 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_UNCOMMON_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>15 seconds for free</style>.",
+
+        "EQUIPMENT_VENDINGMACHINE_RARE_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 8 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_RARE_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>8 seconds for free</style>.",
+
+        "EQUIPMENT_VENDINGMACHINE_EPIC_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 4 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_EPIC_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>4 seconds for free</style>.",
+
+        "EQUIPMENT_VENDINGMACHINE_LEGENDARY_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every second for free.",
+        "EQUIPMENT_VENDINGMACHINE_LEGENDARY_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>second for free</style>.",
     }
 }
