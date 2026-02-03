@@ -1,3 +1,13 @@
+## \{Next Version\}
+
+* Faraday Spur:
+    * Removed charge speed increase.
+    * Charge used per jump: 100% ->
+        * Uncommon: 75%
+        * Rare: 50%
+        * Epic: 25%
+        * Legendary: 10%
+
 ## 0.6.1
 
 * Fixed quality item descriptions not showing properly if game was launched in a language other than English.
