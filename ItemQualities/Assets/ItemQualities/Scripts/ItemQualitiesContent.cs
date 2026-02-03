@@ -713,6 +713,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup VendingMachine;
 
             public static EquipmentQualityGroup CommandMissile;
+
+            public static EquipmentQualityGroup MultiShopCard;
         }
 
         public static class BuffQualityGroups

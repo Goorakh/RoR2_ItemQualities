@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egMultiShopCard
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: f2ddbb7586240e648945ad494ebe3984
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 2270e337a8bd69942a4bb03ed8300779, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: d676ffad1ba496f4999dd2911e06da9e, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 234dfa84e4c23d04786232632d425580, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 2385428da7e87ff41bf166b7916d8fcd, type: 2}
