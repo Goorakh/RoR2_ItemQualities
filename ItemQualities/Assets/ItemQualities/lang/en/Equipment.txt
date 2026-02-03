@@ -52,5 +52,17 @@
 
         "EQUIPMENT_VENDINGMACHINE_LEGENDARY_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every second for free.",
         "EQUIPMENT_VENDINGMACHINE_LEGENDARY_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>second for free</style>.",
+        
+        "EQUIPMENT_COMMANDMISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
+        "EQUIPMENT_COMMANDMISSILE_UNCOMMON_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>2</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
+        
+        "EQUIPMENT_COMMANDMISSILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
+        "EQUIPMENT_COMMANDMISSILE_RARE_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>5</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
+        
+        "EQUIPMENT_COMMANDMISSILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
+        "EQUIPMENT_COMMANDMISSILE_EPIC_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>8</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
+        
+        "EQUIPMENT_COMMANDMISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
+        "EQUIPMENT_COMMANDMISSILE_LEGENDARY_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>12</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
     }
 }
