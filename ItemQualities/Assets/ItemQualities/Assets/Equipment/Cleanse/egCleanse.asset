@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egCleanse
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: 1f41a06b0810ad5499c1a7ce63b2b2b0
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 219619c454926804d99c7a17d180f1c2, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: d4c668962afeaf3429279bdacff4ba7f, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: c238b50762a3c02458fde07fc52f7d85, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 430fc8ba3da610449aac35eb5dc7ff03, type: 2}

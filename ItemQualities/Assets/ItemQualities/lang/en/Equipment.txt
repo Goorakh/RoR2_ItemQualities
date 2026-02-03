@@ -28,5 +28,17 @@
 
 		"EQUIPMENT_RECYCLE_LEGENDARY_PICKUP": "Transform a <sprite name=\"QualityLegendary\"> legendary or lower quality Item or Equipment into a different one. Can only recycle once.",
 		"EQUIPMENT_RECYCLE_LEGENDARY_DESC": "<style=cIsUtility>Transform</style> a <sprite name=\"QualityLegendary\"> legendary or lower quality Item or Equipment into a different one. <style=cIsUtility>Can only be converted into the same tier one time</style>.",
+		
+		"EQUIPMENT_CLEANSE_UNCOMMON_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 1 second.",
+		"EQUIPMENT_CLEANSE_UNCOMMON_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>1 second</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+		
+		"EQUIPMENT_CLEANSE_RARE_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 2 seconds.",
+		"EQUIPMENT_CLEANSE_RARE_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>2 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+		
+		"EQUIPMENT_CLEANSE_EPIC_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 3 seconds.",
+		"EQUIPMENT_CLEANSE_EPIC_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>4 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+		
+		"EQUIPMENT_CLEANSE_LEGENDARY_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 4 seconds.",
+		"EQUIPMENT_CLEANSE_LEGENDARY_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
 	}
 }

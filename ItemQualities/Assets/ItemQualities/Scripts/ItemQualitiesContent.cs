@@ -807,6 +807,8 @@ namespace ItemQualities
             public static GameObject DuplicatorQualityAttachment;
 
             public static GameObject DroneShootableAttachment;
+
+            public static GameObject CleanseQualityAttachment;
         }
 
         public static class ProjectilePrefabs
