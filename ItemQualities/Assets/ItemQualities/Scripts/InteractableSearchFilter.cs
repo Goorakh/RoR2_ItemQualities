@@ -23,7 +23,7 @@ namespace ItemQualities
             if (interactable.SpecialObjectAttributes && (!interactable.SpecialObjectAttributes.grabbable || !interactable.SpecialObjectAttributes.isTargetable))
                 return false;
 
-            if (interactable.PurchaseInteraction && !interactable.PurchaseInteraction.available)
+            if (interactable.InteractableLockable != null && interactable.InteractableLockable.IsLocked())
                 return false;
 
             return true;

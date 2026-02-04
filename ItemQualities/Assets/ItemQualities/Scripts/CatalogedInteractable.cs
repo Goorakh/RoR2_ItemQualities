@@ -11,6 +11,8 @@ namespace ItemQualities
 
         public PurchaseInteraction PurchaseInteraction { get; private set; }
 
+        public IInteractableLockable InteractableLockable { get; private set; }
+
         public Transform IndicatorTransform
         {
             get
@@ -26,6 +28,7 @@ namespace ItemQualities
         {
             SpecialObjectAttributes = GetComponent<SpecialObjectAttributes>();
             PurchaseInteraction = GetComponent<PurchaseInteraction>();
+            InteractableLockable = GetComponent<IInteractableLockable>();
         }
 
         void OnEnable()
