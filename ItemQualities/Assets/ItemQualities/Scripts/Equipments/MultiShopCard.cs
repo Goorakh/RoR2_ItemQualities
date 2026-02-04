@@ -114,6 +114,14 @@ namespace ItemQualities.Equipments
                                     if (!spawnResult.success || !spawnResult.spawnedInstance)
                                         return;
                                     
+                                    if (spawnResult.spawnedInstance.TryGetComponent(out PurchaseInteraction purchaseInteraction))
+                                    {
+                                        if (purchaseInteraction.costType == CostTypeIndex.Money && !purchaseInteraction.automaticallyScaleCostWithDifficulty)
+                                        {
+                                            purchaseInteraction.Networkcost = Run.instance.GetDifficultyScaledCost(purchaseInteraction.cost);
+                                        }
+                                    }
+
                                     EffectData effectData = new EffectData
                                     {
                                         origin = spawnResult.spawnedInstance.transform.position,
