@@ -8,7 +8,7 @@ namespace ItemQualities.Utilities
         {
             int roll = (int)(percentChance / 100f);
 
-            if (rng.nextNormalizedFloat < percentChance % 100f)
+            if (rng.nextNormalizedFloat * 100f < percentChance % 100f)
             {
                 roll++;
             }
