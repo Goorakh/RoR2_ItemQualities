@@ -17,6 +17,10 @@ namespace ItemQualities
 
         SpecialObjectAttributes _attachedToObjectAttributes;
         PurchaseInteraction _attachedToPurchaseInteraction;
+        BarrelInteraction _attachedToBarrelInteraction;
+        SpeedOnPickupBarrelInteraction _attachedToSpeedOnPickupBarrelInteraction;
+        MultiShopController _attachedToMultiShopController;
+        DroneVendorMultiShopController _attachedToDroneVendorMultiShopController;
 
         float _particleStateSyncTimer = 0f;
 
@@ -38,7 +42,11 @@ namespace ItemQualities
             {
                 _particleStateSyncTimer = 0.5f;
 
-                if (_attachedToPurchaseInteraction && !_attachedToPurchaseInteraction.available)
+                if ((_attachedToPurchaseInteraction && !_attachedToPurchaseInteraction.available) ||
+                    (_attachedToBarrelInteraction && _attachedToBarrelInteraction.opened) ||
+                    (_attachedToSpeedOnPickupBarrelInteraction && _attachedToSpeedOnPickupBarrelInteraction.IsOpened) ||
+                    (_attachedToMultiShopController && !_attachedToMultiShopController.available) ||
+                    (_attachedToDroneVendorMultiShopController && !_attachedToDroneVendorMultiShopController.available))
                 {
                     foreach (ParticleSystem particleSystem in ParticleSystems)
                     {
@@ -82,6 +90,10 @@ namespace ItemQualities
             _attachedToObject = attachToObject;
             _attachedToObjectAttributes = _attachedToObject ? _attachedToObject.GetComponent<SpecialObjectAttributes>() : null;
             _attachedToPurchaseInteraction = _attachedToObject ? _attachedToObject.GetComponent<PurchaseInteraction>() : null;
+            _attachedToBarrelInteraction = _attachedToObject ? _attachedToObject.GetComponent<BarrelInteraction>() : null;
+            _attachedToMultiShopController = _attachedToObject ? _attachedToObject.GetComponent<MultiShopController>() : null;
+            _attachedToDroneVendorMultiShopController = _attachedToObject ? _attachedToObject.GetComponent<DroneVendorMultiShopController>() : null;
+            _attachedToSpeedOnPickupBarrelInteraction = _attachedToObject ? _attachedToObject.GetComponent<SpeedOnPickupBarrelInteraction>() : null;
 
             if (_attachedToObjectAttributes)
             {

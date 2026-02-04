@@ -12,6 +12,8 @@ namespace ItemQualities
         [SyncVar]
         bool _opened;
 
+        public bool IsOpened => _opened;
+
         void OnEnable()
         {
             InstanceTracker.Add(this);
