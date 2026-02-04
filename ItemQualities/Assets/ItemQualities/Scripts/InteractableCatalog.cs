@@ -74,6 +74,8 @@ namespace ItemQualities
 
                 _interactableNameToIndex.TrimExcess();
 
+                SpawnCard.onSpawnedServerGlobal += onSpawnCardSpawnedServerGlobal;
+
                 On.RoR2.SpecialObjectAttributes.Start += SpecialObjectAttributes_Start;
                 On.RoR2.PurchaseInteraction.Start += PurchaseInteraction_Start;
                 On.RoR2.DroneVendorMultiShopController.Start += DroneVendorMultiShopController_Start;
@@ -92,6 +94,14 @@ namespace ItemQualities
             }
         }
 
+        static void onSpawnCardSpawnedServerGlobal(SpawnCard.SpawnResult spawnResult)
+        {
+            if (spawnResult.spawnRequest.spawnCard is InteractableSpawnCard interactableSpawnCard)
+            {
+                recordSpawnCard(interactableSpawnCard);
+            }
+        }
+
         static void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
         {
             orig(self);
@@ -107,19 +117,7 @@ namespace ItemQualities
                             SpawnCard spawnCard = directorCard.GetSpawnCard();
                             if (spawnCard && spawnCard is InteractableSpawnCard interactableSpawnCard && interactableSpawnCard.prefab)
                             {
-                                int interactableIndex = FindInteractableIndex(interactableSpawnCard.prefab);
-                                if (interactableIndex == -1)
-                                {
-                                    Log.Debug($"Failed to find interactable index for '{interactableSpawnCard.prefab.name}'");
-                                    continue;
-                                }
-
-                                InteractableDef interactableDef = GetInteractableDef(interactableIndex);
-                                if (interactableDef != null && !interactableDef.SpawnCard)
-                                {
-                                    interactableDef.SpawnCard = interactableSpawnCard;
-                                    Log.Debug($"Recorded spawn card {interactableSpawnCard} for interactable {interactableDef.Name}");
-                                }
+                                recordSpawnCard(interactableSpawnCard);
                             }
                         }
                     }
@@ -128,6 +126,23 @@ namespace ItemQualities
             catch (Exception e)
             {
                 Log.Warning_NoCallerPrefix(e);
+            }
+        }
+
+        static void recordSpawnCard(InteractableSpawnCard spawnCard)
+        {
+            int interactableIndex = FindInteractableIndex(spawnCard.prefab);
+            if (interactableIndex == -1)
+            {
+                Log.Debug($"Failed to find interactable index for '{spawnCard.prefab.name}'");
+                return;
+            }
+
+            InteractableDef interactableDef = GetInteractableDef(interactableIndex);
+            if (interactableDef != null && !interactableDef.SpawnCard)
+            {
+                interactableDef.SpawnCard = spawnCard;
+                Log.Debug($"Recorded spawn card {spawnCard} for interactable {interactableDef.Name}");
             }
         }
 
