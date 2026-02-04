@@ -64,5 +64,17 @@
         
         "EQUIPMENT_COMMANDMISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
         "EQUIPMENT_COMMANDMISSILE_LEGENDARY_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>12</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
+        
+        "EQUIPMENT_MULTISHOPCARD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_UNCOMMON_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> instance of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        
+        "EQUIPMENT_MULTISHOPCARD_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_RARE_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> (<sprite name=\"Quality\"> <style=cIsUtility>30%</style> chance for <style=cIsUtility>2</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        
+        "EQUIPMENT_MULTISHOPCARD_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_EPIC_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> (<sprite name=\"Quality\"> <style=cIsUtility>80%</style> chance for <style=cIsUtility>2</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        
+        "EQUIPMENT_MULTISHOPCARD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates 2 instances of the stored interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_LEGENDARY_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>2</style> (<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance for <style=cIsUtility>3</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
     }
 }
