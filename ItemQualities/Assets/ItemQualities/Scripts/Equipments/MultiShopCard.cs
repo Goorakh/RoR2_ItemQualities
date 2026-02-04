@@ -100,10 +100,29 @@ namespace ItemQualities.Equipments
 
                             for (int i = 0; i < spawnCount; i++)
                             {
-                                DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(interactableDef.SpawnCard, new DirectorPlacementRule
+                                DirectorSpawnRequest directorSpawnRequest = new DirectorSpawnRequest(interactableDef.SpawnCard, new DirectorPlacementRule
                                 {
-                                    placementMode = DirectorPlacementRule.PlacementMode.Random
-                                }, cardInteractablesRng));
+                                    placementMode = DirectorPlacementRule.PlacementMode.Random,
+                                }, cardInteractablesRng);
+
+                                directorSpawnRequest.onSpawnedServer += onSpawnedServer;
+
+                                DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
+
+                                static void onSpawnedServer(SpawnCard.SpawnResult spawnResult)
+                                {
+                                    if (!spawnResult.success || !spawnResult.spawnedInstance)
+                                        return;
+                                    
+                                    EffectData effectData = new EffectData
+                                    {
+                                        origin = spawnResult.spawnedInstance.transform.position,
+                                    };
+
+                                    effectData.SetNetworkedObjectReference(spawnResult.spawnedInstance);
+
+                                    EffectManager.SpawnEffect(ItemQualitiesContent.Prefabs.DuplicatedInteractableEffect, effectData, true);
+                                }
                             }
 
                             Log.Debug($"Spawned {spawnCount}x {interactableDef} for {Util.GetBestMasterName(master)}");

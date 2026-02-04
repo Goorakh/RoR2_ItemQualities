@@ -786,6 +786,8 @@ namespace ItemQualities
             public static GameObject DeathMarkQualityEffect;
 
             public static GameObject VoidDeathOrbEffect;
+
+            public static GameObject DuplicatedInteractableEffect;
         }
 
         public static class NetworkedPrefabs
