@@ -17,7 +17,7 @@ MonoBehaviour:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
-  cooldown: 15
+  cooldown: -1
   nameToken: 
   pickupToken: EQUIPMENT_MULTISHOPCARD_EPIC_PICKUP
   descriptionToken: EQUIPMENT_MULTISHOPCARD_EPIC_DESC
