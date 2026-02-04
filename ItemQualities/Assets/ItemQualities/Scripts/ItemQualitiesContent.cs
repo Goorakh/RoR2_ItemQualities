@@ -98,8 +98,10 @@ namespace ItemQualities
 
             populateTypeFields(typeof(Sprites), _contentPack.sprites);
 
-            populateTypeFields(typeof(TMP_SpriteAssets), _contentPack.spriteAssets, fieldName => "tmpspr");
+            populateTypeFields(typeof(TMP_SpriteAssets), _contentPack.spriteAssets, fieldName => "tmpspr" + fieldName);
             TMP_SpriteAssets.AllSpriteAssets = new ReadOnlyCollection<TMP_SpriteAsset>(_contentPack.spriteAssets.ToArray());
+
+            populateTypeFields(typeof(NetworkSoundEvents), _contentPack.networkSoundEventDefs, fieldName => "nse" + fieldName);
 
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -192,6 +194,8 @@ namespace ItemQualities
 
             List<Sprite> spritesList = new List<Sprite>();
 
+            List<NetworkSoundEventDef> networkSoundEventsList = new List<NetworkSoundEventDef>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -270,6 +274,9 @@ namespace ItemQualities
                     case Sprite sprite:
                         spritesList.Add(sprite);
                         break;
+                    case NetworkSoundEventDef networkSoundEventDef:
+                        networkSoundEventsList.Add(networkSoundEventDef);
+                        break;
                 }
             }
 
@@ -309,6 +316,8 @@ namespace ItemQualities
             _contentPack.textures.Add(texturesList.ToArray());
 
             _contentPack.sprites.Add(spritesList.ToArray());
+
+            _contentPack.networkSoundEventDefs.Add(networkSoundEventsList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -864,6 +873,11 @@ namespace ItemQualities
         public static class TMP_SpriteAssets
         {
             internal static IReadOnlyCollection<TMP_SpriteAsset> AllSpriteAssets = Array.Empty<TMP_SpriteAsset>();
+        }
+
+        public static class NetworkSoundEvents
+        {
+            public static NetworkSoundEventDef DuplicateInteractable;
         }
     }
 }

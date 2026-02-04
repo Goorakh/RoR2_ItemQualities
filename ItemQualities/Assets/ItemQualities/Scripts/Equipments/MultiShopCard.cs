@@ -4,6 +4,7 @@ using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
+using RoR2.Audio;
 using RoR2.DirectionalSearch;
 using System;
 using UnityEngine;
@@ -234,6 +235,8 @@ namespace ItemQualities.Equipments
                         if (targetInteractable && targetInteractable.CatalogIndex != masterExtraStats.CardStoredInteractableIndex)
                         {
                             masterExtraStats.CardStoredInteractableIndex = targetInteractable.CatalogIndex;
+
+                            PointSoundManager.EmitSoundServer(ItemQualitiesContent.NetworkSoundEvents.DuplicateInteractable.index, targetInteractable.IndicatorTransform.position);
 
                             Log.Debug($"Stored {InteractableCatalog.GetInteractableDef(targetInteractable.CatalogIndex)} in {Util.GetBestMasterName(self.characterBody.master)}");
 
