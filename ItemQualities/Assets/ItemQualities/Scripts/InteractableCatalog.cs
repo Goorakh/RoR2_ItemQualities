@@ -82,15 +82,21 @@ namespace ItemQualities
 
                 On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
 
-                InteractableDef freeChestMultiShop = GetInteractableDef(FindInteractableIndex("FreeChestMultiShop"));
-                if (freeChestMultiShop != null)
+                static void disableCopy(string interactableName)
                 {
-                    freeChestMultiShop.CanCopy = false;
+                    InteractableDef freeChestMultiShop = GetInteractableDef(FindInteractableIndex(interactableName));
+                    if (freeChestMultiShop != null)
+                    {
+                        freeChestMultiShop.CanCopy = false;
+                    }
+                    else
+                    {
+                        Log.Warning($"Failed to find interactable '{interactableName}'");
+                    }
                 }
-                else
-                {
-                    Log.Warning("Failed to find interactable FreeChestMultiShop");
-                }
+
+                disableCopy("FreeChestMultiShop");
+                disableCopy("ShrineHalcyonite");
             }
         }
 
