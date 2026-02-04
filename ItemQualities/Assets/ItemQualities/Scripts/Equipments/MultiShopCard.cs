@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -11,7 +12,11 @@ namespace ItemQualities.Equipments
 {
     static class MultiShopCard
     {
-        static readonly InteractableSearch _sharedInteractableSearch = new InteractableSearch();
+        static readonly InteractableSearch _sharedInteractableSearch = new InteractableSearch
+        {
+            requireCanCopy = true,
+            requireSpawnCard = true
+        };
 
         static readonly float _interactableSearchMinDistance = 0f;
         static readonly float _interactableSearchMaxDistance = 15f;
@@ -28,6 +33,86 @@ namespace ItemQualities.Equipments
         static void Init()
         {
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
+
+            On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
+
+            SceneDirector.onPostPopulateSceneServer += onPostPopulateSceneServer;
+        }
+
+        static void onPostPopulateSceneServer(SceneDirector sceneDirector)
+        {
+            if (SceneInfo.instance.countsAsStage || SceneInfo.instance.sceneDef.allowItemsToSpawnObjects)
+            {
+                Xoroshiro128Plus cardInteractablesRng = new Xoroshiro128Plus(sceneDirector.rng.nextUlong);
+
+                foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
+                {
+                    if (master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats) &&
+                        masterExtraStats.CardStoredInteractableIndex != -1)
+                    {
+                        QualityTier cardQualityTier = QualityTier.None;
+
+                        int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
+                        for (uint slot = 0; slot < equipmentSlotCount; slot++)
+                        {
+                            int equipmentSetCount = master.inventory.GetEquipmentSetCount(slot);
+                            for (uint set = 0; set < equipmentSetCount; set++)
+                            {
+                                EquipmentState equipmentState = master.inventory.GetEquipment(slot, set);
+                                EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentState.equipmentIndex);
+                                if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.MultiShopCard.GroupIndex)
+                                {
+                                    QualityTier qualityTier = QualityCatalog.GetQualityTier(equipmentState.equipmentIndex);
+                                    if (qualityTier > cardQualityTier)
+                                    {
+                                        cardQualityTier = qualityTier;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (cardQualityTier > QualityTier.None)
+                        {
+                            InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(masterExtraStats.CardStoredInteractableIndex);
+
+                            float spawnChance;
+                            switch (cardQualityTier)
+                            {
+                                case QualityTier.Uncommon:
+                                    spawnChance = 100f;
+                                    break;
+                                case QualityTier.Rare:
+                                    spawnChance = 130f;
+                                    break;
+                                case QualityTier.Epic:
+                                    spawnChance = 180f;
+                                    break;
+                                case QualityTier.Legendary:
+                                    spawnChance = 220f;
+                                    break;
+                                default:
+                                    spawnChance = 100f;
+                                    Log.Warning($"Quality tier {cardQualityTier} is not implemented");
+                                    break;
+                            }
+
+                            int spawnCount = RollUtil.GetOverflowRoll(spawnChance, cardInteractablesRng);
+
+                            for (int i = 0; i < spawnCount; i++)
+                            {
+                                DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(interactableDef.SpawnCard, new DirectorPlacementRule
+                                {
+                                    placementMode = DirectorPlacementRule.PlacementMode.Random
+                                }, cardInteractablesRng));
+                            }
+
+                            Log.Debug($"Spawned {spawnCount}x {interactableDef} for {Util.GetBestMasterName(master)}");
+                        }
+
+                        masterExtraStats.CardStoredInteractableIndex = -1;
+                    }
+                }
+            }
         }
 
         static void EquipmentSlot_UpdateTargets(ILContext il)
@@ -80,20 +165,12 @@ namespace ItemQualities.Equipments
 
                         _sharedInteractableSearch.sortMode = _interactableSearchSortMode;
 
-                        SpecialObjectAttributes targetInteractable = _sharedInteractableSearch.SearchCandidatesForSingleTarget(SpecialObjectAttributes.AllVehiclePassengerAttributes);
-
-                        GameObject targetObject = targetInteractable ? targetInteractable.gameObject : null;
-
-                        Transform targetTransform = null;
-                        if (targetInteractable)
-                        {
-                            targetTransform = targetInteractable.indicatorOffset ? targetInteractable.indicatorOffset : targetInteractable.transform;
-                        }
+                        CatalogedInteractable targetInteractable = _sharedInteractableSearch.SearchCandidatesForSingleTarget(InstanceTracker.GetInstancesList<CatalogedInteractable>());
 
                         equipmentSlot.currentTarget = new EquipmentSlot.UserTargetInfo
                         {
-                            rootObject = targetObject,
-                            transformToIndicateAt = targetTransform
+                            rootObject = targetInteractable ? targetInteractable.gameObject : null,
+                            transformToIndicateAt = targetInteractable ? targetInteractable.IndicatorTransform : null
                         };
 
                         return true;
@@ -108,6 +185,42 @@ namespace ItemQualities.Equipments
             {
                 Log.Error("Failed to find target patch location");
             }
+        }
+
+        static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
+        {
+            bool result = orig(self, equipmentDef);
+
+            try
+            {
+                if (!result && equipmentDef == DLC1Content.Equipment.MultiShopCard && self.GetCurrentEquipmentActionQualityTier() > QualityTier.None)
+                {
+                    if (self.characterBody &&
+                        self.characterBody.master &&
+                        self.characterBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+                    {
+                        self.UpdateTargets(DLC1Content.Equipment.MultiShopCard.equipmentIndex, false);
+
+                        GameObject targetObject = self.currentTarget.rootObject;
+                        CatalogedInteractable targetInteractable = targetObject ? targetObject.GetComponent<CatalogedInteractable>() : null;
+
+                        if (targetInteractable && targetInteractable.CatalogIndex != masterExtraStats.CardStoredInteractableIndex)
+                        {
+                            masterExtraStats.CardStoredInteractableIndex = targetInteractable.CatalogIndex;
+
+                            Log.Debug($"Stored {InteractableCatalog.GetInteractableDef(targetInteractable.CatalogIndex)} in {Util.GetBestMasterName(self.characterBody.master)}");
+
+                            result = true;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Warning_NoCallerPrefix(e);
+            }
+
+            return result;
         }
     }
 }

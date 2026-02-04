@@ -1,10 +1,21 @@
-﻿using RoR2;
-using RoR2.DirectionalSearch;
+﻿using RoR2.DirectionalSearch;
 
 namespace ItemQualities
 {
-    public sealed class InteractableSearch : BaseDirectionalSearch<SpecialObjectAttributes, InteractableSearchSelector, InteractableSearchFilter>
+    internal sealed class InteractableSearch : BaseDirectionalSearch<CatalogedInteractable, InteractableSearchSelector, InteractableSearchFilter>
     {
+        public bool requireCanCopy
+        {
+            get => candidateFilter.requireCanCopy;
+            set => candidateFilter.requireCanCopy = value;
+        }
+
+        public bool requireSpawnCard
+        {
+            get => candidateFilter.requireSpawnCard;
+            set => candidateFilter.requireSpawnCard = value;
+        }
+
         public InteractableSearch() : base(default, default)
         {
         }

@@ -4,6 +4,18 @@ namespace ItemQualities.Utilities
 {
     public static class RollUtil
     {
+        public static int GetOverflowRoll(float percentChance, Xoroshiro128Plus rng)
+        {
+            int roll = (int)(percentChance / 100f);
+
+            if (rng.nextNormalizedFloat < percentChance % 100f)
+            {
+                roll++;
+            }
+
+            return roll;
+        }
+
         public static int GetOverflowRoll(float percentChance, CharacterMaster master, bool sureProc)
         {
             int roll = (int)(percentChance / 100f);

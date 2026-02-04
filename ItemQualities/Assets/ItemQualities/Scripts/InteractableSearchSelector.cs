@@ -1,19 +1,18 @@
-﻿using RoR2;
-using RoR2.DirectionalSearch;
+﻿using RoR2.DirectionalSearch;
 using UnityEngine;
 
 namespace ItemQualities
 {
-    public readonly struct InteractableSearchSelector : IGenericWorldSearchSelector<SpecialObjectAttributes>
+    internal readonly struct InteractableSearchSelector : IGenericWorldSearchSelector<CatalogedInteractable>
     {
-        public GameObject GetRootObject(SpecialObjectAttributes source)
+        public GameObject GetRootObject(CatalogedInteractable source)
         {
             return source.gameObject;
         }
 
-        public Transform GetTransform(SpecialObjectAttributes source)
+        public Transform GetTransform(CatalogedInteractable source)
         {
-            return source.indicatorOffset ? source.indicatorOffset : source.transform;
+            return source.IndicatorTransform;
         }
     }
 }

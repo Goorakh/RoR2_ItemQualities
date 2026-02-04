@@ -31,6 +31,8 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetSpeedOnPickupBonus))]
         public int SpeedOnPickupBonus;
 
+        public int CardStoredInteractableIndex = -1;
+
         int _stageIncomingDamageInstanceCountServer;
         public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
 

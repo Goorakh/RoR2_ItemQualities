@@ -59,5 +59,28 @@ namespace ItemQualities.Utilities.Extensions
 
             return equipmentState;
         }
+
+        public static bool HasAnyQualityEquipment(this Inventory inventory, EquipmentQualityGroupIndex equipmentGroupIndex, QualityTier minQualityTier = 0)
+        {
+            if (!inventory)
+                throw new ArgumentNullException(nameof(inventory));
+
+            int equipmentSlotCount = inventory.GetEquipmentSlotCount();
+            for (uint slot = 0; slot < equipmentSlotCount; slot++)
+            {
+                int equipmentSetCount = inventory.GetEquipmentSetCount(slot);
+                for (uint set = 0; set < equipmentSetCount; set++)
+                {
+                    EquipmentState equipmentState = inventory.GetEquipment(slot, set);
+                    if (QualityCatalog.FindEquipmentQualityGroupIndex(equipmentState.equipmentIndex) == equipmentGroupIndex &&
+                        QualityCatalog.GetQualityTier(equipmentState.equipmentIndex) >= minQualityTier)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

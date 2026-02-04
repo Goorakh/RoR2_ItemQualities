@@ -1,13 +1,32 @@
-﻿using RoR2;
-using RoR2.DirectionalSearch;
+﻿using RoR2.DirectionalSearch;
 
 namespace ItemQualities
 {
-    public readonly struct InteractableSearchFilter : IGenericDirectionalSearchFilter<SpecialObjectAttributes>
+    internal struct InteractableSearchFilter : IGenericDirectionalSearchFilter<CatalogedInteractable>
     {
-        public bool PassesFilter(SpecialObjectAttributes candidateInfo)
+        public bool requireCanCopy;
+
+        public bool requireSpawnCard;
+
+        public readonly bool PassesFilter(CatalogedInteractable interactable)
         {
-            return candidateInfo.grabbable && candidateInfo.isTargetable;
+            InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(interactable.CatalogIndex);
+            if (interactableDef == null)
+                return false;
+
+            if (requireSpawnCard && !interactableDef.SpawnCard)
+                return false;
+
+            if (requireCanCopy && !interactableDef.CanCopy)
+                return false;
+
+            if (interactable.SpecialObjectAttributes && (!interactable.SpecialObjectAttributes.grabbable || !interactable.SpecialObjectAttributes.isTargetable))
+                return false;
+
+            if (interactable.PurchaseInteraction && !interactable.PurchaseInteraction.available)
+                return false;
+
+            return true;
         }
     }
 }
