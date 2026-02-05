@@ -6,7 +6,7 @@ using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 using RoR2.Navigation;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
