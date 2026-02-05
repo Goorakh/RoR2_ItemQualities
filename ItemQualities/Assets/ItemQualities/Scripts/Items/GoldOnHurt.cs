@@ -35,7 +35,7 @@ namespace ItemQualities.Items
             ItemQualityCounts goldOnHurt = interactorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt);
             if (goldOnHurt.TotalQualityCount > 0)
             {
-                if (interactable is BarrelInteraction barrelInteraction)
+                if (interactable is BarrelInteraction || interactable is SpeedOnPickupBarrelInteraction)
                 {
                     if (_goldPackPrefab)
                     {

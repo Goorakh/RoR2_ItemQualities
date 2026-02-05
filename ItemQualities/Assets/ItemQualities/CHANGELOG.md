@@ -8,6 +8,9 @@
         * Epic: 25%
         * Legendary: 10%
 
+* Roll of Pennies:
+    * Fixed bonus gold not spawning when opening a Collector's Barrel.
+
 ## 0.6.1
 
 * Fixed quality item descriptions not showing properly if game was launched in a language other than English.
