@@ -4,6 +4,7 @@ using RoR2.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 
 namespace ItemQualities
@@ -201,6 +202,11 @@ namespace ItemQualities
             string interactableName = interactableObject.name;
             if (interactableName.EndsWith("(Clone)"))
                 interactableName = interactableName.Remove(interactableName.Length - 7);
+
+            // Interactables that have been placed into a scene may have the 'number-in-parentheses' suffix. eg. "(1)", "(2)", etc
+            interactableName = Regex.Replace(interactableName, @"\([123456789]+\)$", string.Empty);
+
+            interactableName = interactableName.Trim();
 
             return FindInteractableIndex(interactableName);
         }
