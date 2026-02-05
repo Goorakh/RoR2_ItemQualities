@@ -85,6 +85,12 @@ namespace ItemQualities
 
                     pickupComponent.BuffStacks = buffStacks;
                 }
+                
+                GravitatePickup gravitatePickup = pickupObj.GetComponentInChildren<GravitatePickup>();
+                if (gravitatePickup)
+                {
+                    gravitatePickup.ForceGravitate(activatorBody.GetComponent<Collider>());
+                }
 
                 NetworkServer.Spawn(pickupObj);
             }

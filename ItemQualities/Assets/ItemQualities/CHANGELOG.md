@@ -11,6 +11,9 @@
 * Roll of Pennies:
     * Fixed bonus gold not spawning when opening a Collector's Barrel.
 
+* Collector's Compulsion:
+    * Made barrel pickups always target the player that opened the barrel.
+
 ## 0.6.1
 
 * Fixed quality item descriptions not showing properly if game was launched in a language other than English.
