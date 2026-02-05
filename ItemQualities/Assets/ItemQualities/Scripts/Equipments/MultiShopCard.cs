@@ -6,6 +6,7 @@ using MonoMod.Cil;
 using RoR2;
 using RoR2.Audio;
 using RoR2.DirectionalSearch;
+using RoR2.UI;
 using System;
 using UnityEngine;
 
@@ -37,6 +38,8 @@ namespace ItemQualities.Equipments
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
 
             On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
+
+            IL.RoR2.UI.EquipmentIcon.SetDisplayData += EquipmentIcon_SetDisplayData;
 
             SceneDirector.onPostPopulateSceneServer += onPostPopulateSceneServer;
         }
@@ -257,6 +260,64 @@ namespace ItemQualities.Equipments
             }
 
             return result;
+        }
+
+        static void EquipmentIcon_SetDisplayData(ILContext il)
+        {
+            if (!il.Method.TryFindParameter<EquipmentIcon.DisplayData>(out ParameterDefinition displayDataParameter))
+            {
+                Log.Error("Failed to find DisplayData parameter");
+                return;
+            }
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchStfld<TooltipProvider>(nameof(TooltipProvider.bodyColor))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldarg, displayDataParameter);
+            c.EmitDelegate<Action<EquipmentIcon, EquipmentIcon.DisplayData>>(setupTooltipProvider);
+
+            static void setupTooltipProvider(EquipmentIcon equipmentIcon, EquipmentIcon.DisplayData displayData)
+            {
+                if (!equipmentIcon || !equipmentIcon.tooltipProvider)
+                    return;
+
+                bool shouldDisplayCardTooltip = false;
+
+                EquipmentIndex equipmentIndex = displayData.equipmentDef ? displayData.equipmentDef.equipmentIndex : EquipmentIndex.None;
+                if (equipmentIndex != EquipmentIndex.None)
+                {
+                    if (QualityCatalog.GetQualityTier(equipmentIndex) != QualityTier.None &&
+                        QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex) == ItemQualitiesContent.EquipmentQualityGroups.MultiShopCard.GroupIndex)
+                    {
+                        Inventory inventory = equipmentIcon.targetInventory;
+                        CharacterMasterExtraStatsTracker masterExtraStats = inventory ? inventory.GetComponentCached<CharacterMasterExtraStatsTracker>() : null;
+                        if (masterExtraStats.CardStoredInteractableIndex != -1)
+                        {
+                            shouldDisplayCardTooltip = true;
+                        }
+                    }
+                }
+
+                bool hasTooltipExtraContent = equipmentIcon.tooltipProvider.extraUIDisplayPrefab;
+                if (shouldDisplayCardTooltip != hasTooltipExtraContent)
+                {
+                    if (shouldDisplayCardTooltip)
+                    {
+                        equipmentIcon.tooltipProvider.extraUIDisplayPrefab = ItemQualitiesContent.Prefabs.MultiShopCardTooltipContext;
+                    }
+                    else if (equipmentIcon.tooltipProvider.extraUIDisplayPrefab == ItemQualitiesContent.Prefabs.MultiShopCardTooltipContext)
+                    {
+                        equipmentIcon.tooltipProvider.extraUIDisplayPrefab = null;
+                    }
+                }
+            }
         }
     }
 }

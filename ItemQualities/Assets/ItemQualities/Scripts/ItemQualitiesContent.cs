@@ -797,6 +797,8 @@ namespace ItemQualities
             public static GameObject VoidDeathOrbEffect;
 
             public static GameObject DuplicatedInteractableEffect;
+
+            public static GameObject MultiShopCardTooltipContext;
         }
 
         public static class NetworkedPrefabs
