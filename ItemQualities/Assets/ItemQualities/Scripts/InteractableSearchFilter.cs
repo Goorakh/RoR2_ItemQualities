@@ -8,6 +8,8 @@ namespace ItemQualities
 
         public bool requireSpawnCard;
 
+        public bool forbidDuplicated;
+
         public readonly bool PassesFilter(InteractableInfoProvider interactable)
         {
             InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(interactable.CatalogIndex);
@@ -18,6 +20,9 @@ namespace ItemQualities
                 return false;
 
             if (requireCanCopy && !interactableDef.CanCopy)
+                return false;
+
+            if (forbidDuplicated && interactable.Duplicated)
                 return false;
 
             if (interactable.SpecialObjectAttributes && (!interactable.SpecialObjectAttributes.grabbable || !interactable.SpecialObjectAttributes.isTargetable))

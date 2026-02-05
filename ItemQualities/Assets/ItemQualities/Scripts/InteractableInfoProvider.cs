@@ -7,6 +7,8 @@ namespace ItemQualities
     {
         public int CatalogIndex = -1;
 
+        public bool Duplicated;
+
         public SpecialObjectAttributes SpecialObjectAttributes { get; private set; }
 
         public PurchaseInteraction PurchaseInteraction { get; private set; }

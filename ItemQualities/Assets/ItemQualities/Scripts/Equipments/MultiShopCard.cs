@@ -16,7 +16,8 @@ namespace ItemQualities.Equipments
         static readonly InteractableSearch _sharedInteractableSearch = new InteractableSearch
         {
             requireCanCopy = true,
-            requireSpawnCard = true
+            requireSpawnCard = true,
+            forbidDuplicated = true,
         };
 
         static readonly float _interactableSearchMinDistance = 0f;
@@ -121,6 +122,11 @@ namespace ItemQualities.Equipments
                                         {
                                             purchaseInteraction.Networkcost = Run.instance.GetDifficultyScaledCost(purchaseInteraction.cost);
                                         }
+                                    }
+
+                                    if (spawnResult.spawnedInstance.TryGetComponent(out InteractableInfoProvider interactableInfo))
+                                    {
+                                        interactableInfo.Duplicated = true;
                                     }
 
                                     EffectData effectData = new EffectData
