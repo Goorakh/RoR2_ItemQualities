@@ -82,7 +82,8 @@ namespace ItemQualities
                         if (prefab.GetComponent<PortalSpawner>() ||
                             prefab.GetComponent<SceneExitController>() ||
                             prefab.GetComponent<HoldoutZoneController>() ||
-                            prefab.GetComponent<GeodeController>())
+                            prefab.GetComponent<GeodeController>() ||
+                            prefab.GetComponent<SpeedOnPickupBarrelInteraction>())
                         {
                             return false;
                         }
