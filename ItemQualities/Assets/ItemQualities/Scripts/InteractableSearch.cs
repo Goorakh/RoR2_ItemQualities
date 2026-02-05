@@ -2,7 +2,7 @@
 
 namespace ItemQualities
 {
-    internal sealed class InteractableSearch : BaseDirectionalSearch<CatalogedInteractable, InteractableSearchSelector, InteractableSearchFilter>
+    internal sealed class InteractableSearch : BaseDirectionalSearch<InteractableInfoProvider, InteractableSearchSelector, InteractableSearchFilter>
     {
         public bool requireCanCopy
         {
@@ -14,6 +14,12 @@ namespace ItemQualities
         {
             get => candidateFilter.requireSpawnCard;
             set => candidateFilter.requireSpawnCard = value;
+        }
+
+        public bool forbidDuplicated
+        {
+            get => candidateFilter.forbidDuplicated;
+            set => candidateFilter.forbidDuplicated = value;
         }
 
         public InteractableSearch() : base(default, default)

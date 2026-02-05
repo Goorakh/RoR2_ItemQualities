@@ -2,13 +2,13 @@
 
 namespace ItemQualities
 {
-    internal struct InteractableSearchFilter : IGenericDirectionalSearchFilter<CatalogedInteractable>
+    internal struct InteractableSearchFilter : IGenericDirectionalSearchFilter<InteractableInfoProvider>
     {
         public bool requireCanCopy;
 
         public bool requireSpawnCard;
 
-        public readonly bool PassesFilter(CatalogedInteractable interactable)
+        public readonly bool PassesFilter(InteractableInfoProvider interactable)
         {
             InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(interactable.CatalogIndex);
             if (interactableDef == null)

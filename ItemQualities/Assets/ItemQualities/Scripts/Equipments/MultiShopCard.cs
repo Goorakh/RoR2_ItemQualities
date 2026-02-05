@@ -193,7 +193,7 @@ namespace ItemQualities.Equipments
 
                         _sharedInteractableSearch.sortMode = _interactableSearchSortMode;
 
-                        CatalogedInteractable targetInteractable = _sharedInteractableSearch.SearchCandidatesForSingleTarget(InstanceTracker.GetInstancesList<CatalogedInteractable>());
+                        InteractableInfoProvider targetInteractable = _sharedInteractableSearch.SearchCandidatesForSingleTarget(InstanceTracker.GetInstancesList<InteractableInfoProvider>());
 
                         equipmentSlot.currentTarget = new EquipmentSlot.UserTargetInfo
                         {
@@ -230,7 +230,7 @@ namespace ItemQualities.Equipments
                         self.UpdateTargets(DLC1Content.Equipment.MultiShopCard.equipmentIndex, false);
 
                         GameObject targetObject = self.currentTarget.rootObject;
-                        CatalogedInteractable targetInteractable = targetObject ? targetObject.GetComponent<CatalogedInteractable>() : null;
+                        InteractableInfoProvider targetInteractable = targetObject ? targetObject.GetComponent<InteractableInfoProvider>() : null;
 
                         if (targetInteractable && targetInteractable.CatalogIndex != masterExtraStats.CardStoredInteractableIndex)
                         {

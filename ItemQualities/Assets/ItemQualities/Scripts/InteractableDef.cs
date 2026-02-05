@@ -5,20 +5,23 @@ namespace ItemQualities
 {
     internal sealed class InteractableDef
     {
-        public int InteractableIndex = -1;
-
         public GameObject Prefab;
 
         public InteractableSpawnCard SpawnCard;
 
         public bool CanCopy = true;
 
+        public InteractableInfoProvider PrefabInfoProviderComponent { get; }
+
         public string Name { get; }
+
+        public int InteractableIndex => PrefabInfoProviderComponent ? PrefabInfoProviderComponent.CatalogIndex : -1;
 
         public InteractableDef(GameObject prefab)
         {
             Prefab = prefab;
             Name = Prefab ? Prefab.name : string.Empty;
+            PrefabInfoProviderComponent = Prefab ? Prefab.GetComponent<InteractableInfoProvider>() : null;
         }
 
         public override string ToString()

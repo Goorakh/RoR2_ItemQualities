@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    internal sealed class CatalogedInteractable : MonoBehaviour
+    internal sealed class InteractableInfoProvider : MonoBehaviour
     {
         public int CatalogIndex = -1;
 

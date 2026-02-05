@@ -3,14 +3,14 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    internal readonly struct InteractableSearchSelector : IGenericWorldSearchSelector<CatalogedInteractable>
+    internal readonly struct InteractableSearchSelector : IGenericWorldSearchSelector<InteractableInfoProvider>
     {
-        public GameObject GetRootObject(CatalogedInteractable source)
+        public GameObject GetRootObject(InteractableInfoProvider source)
         {
             return source.gameObject;
         }
 
-        public Transform GetTransform(CatalogedInteractable source)
+        public Transform GetTransform(InteractableInfoProvider source)
         {
             return source.IndicatorTransform;
         }

@@ -1,5 +1,6 @@
 ﻿using HG;
 using RoR2;
+using RoR2.CharacterAI;
 using RoR2.ContentManagement;
 using System;
 using System.Collections.Generic;
@@ -31,8 +32,13 @@ namespace ItemQualities
                 if (prefab.GetComponent<GenericPickupController>())
                     continue;
 
-                if (prefab.GetComponent<PickupPickerController>() && !prefab.GetComponent<DelusionChestController>() && !prefab.GetComponent<ScrapperController>())
+                if (prefab.GetComponent<PickupPickerController>() &&
+                    !prefab.GetComponent<DelusionChestController>() &&
+                    !prefab.GetComponent<ScrapperController>() &&
+                    !prefab.GetComponent<LemurianEggController>())
+                {
                     continue;
+                }
 
                 if (prefab.GetComponent<DroneVendorTerminalBehavior>())
                     continue;
@@ -52,6 +58,11 @@ namespace ItemQualities
 
             if (interactablePrefabs.Count > 0)
             {
+                foreach (GameObject prefab in interactablePrefabs)
+                {
+                    prefab.EnsureComponent<InteractableInfoProvider>();
+                }
+
                 _interactableDefs = interactablePrefabs.Select(prefab => new InteractableDef(prefab)).ToArray();
 
                 Array.Sort(_interactableDefs, Comparer<InteractableDef>.Create((a, b) => StringComparer.Ordinal.Compare(a.Name, b.Name)));
@@ -60,17 +71,60 @@ namespace ItemQualities
 
                 for (int i = 0; i < _interactableDefs.Length; i++)
                 {
-                    _interactableDefs[i].InteractableIndex = i;
+                    InteractableDef interactableDef = _interactableDefs[i];
+                    GameObject interactablePrefab = interactableDef.Prefab;
+                    InteractableInfoProvider interactableInfoComponent = interactableDef.PrefabInfoProviderComponent;
 
-                    string name = _interactableDefs[i].Name;
+                    interactableInfoComponent.CatalogIndex = i;
 
-                    if (_interactableNameToIndex.ContainsKey(name))
+                    static bool allowCopy(GameObject prefab)
                     {
-                        Log.Warning($"Duplicate interactable name '{name}'");
-                        continue;
+                        if (prefab.GetComponent<PortalSpawner>() ||
+                            prefab.GetComponent<SceneExitController>() ||
+                            prefab.GetComponent<HoldoutZoneController>() ||
+                            prefab.GetComponent<GeodeController>())
+                        {
+                            return false;
+                        }
+
+                        // Don't allow copying for anything that drops an item for free
+                        if (prefab.GetComponent<ChestBehavior>() ||
+                            prefab.GetComponent<OptionChestBehavior>() ||
+                            prefab.GetComponent<ShopTerminalBehavior>() ||
+                            prefab.GetComponent<PickupDistributorBehavior>())
+                        {
+                            if (!prefab.TryGetComponent(out PurchaseInteraction purchaseInteraction) ||
+                                purchaseInteraction.cost == 0 ||
+                                purchaseInteraction.costType == CostTypeIndex.None)
+                            {
+                                return false;
+                            }
+                        }
+
+                        if (prefab.TryGetComponent(out MultiShopController multiShopController) &&
+                            (multiShopController.baseCost == 0 || multiShopController.costType == CostTypeIndex.None))
+                        {
+                            return false;
+                        }
+
+                        return true;
                     }
 
-                    _interactableNameToIndex[name] = i;
+                    if (!allowCopy(interactablePrefab))
+                    {
+                        interactableDef.CanCopy = false;
+                        Log.Debug($"Disabled copying for interactable '{interactableDef}'");
+                    }
+
+                    string interactableName = interactableDef.Name;
+                    if (!_interactableNameToIndex.ContainsKey(interactableName))
+                    {
+                        _interactableNameToIndex[interactableName] = i;
+                    }
+                    else
+                    {
+                        Log.Warning($"Duplicate interactable name '{interactableName}'");
+                    }
                 }
 
                 _interactableNameToIndex.TrimExcess();
@@ -83,12 +137,12 @@ namespace ItemQualities
 
                 On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
 
-                static void disableCopy(string interactableName)
+                static void overrideCanCopy(string interactableName, bool canCopy)
                 {
-                    InteractableDef freeChestMultiShop = GetInteractableDef(FindInteractableIndex(interactableName));
-                    if (freeChestMultiShop != null)
+                    InteractableDef interactableDef = GetInteractableDef(FindInteractableIndex(interactableName));
+                    if (interactableDef != null)
                     {
-                        freeChestMultiShop.CanCopy = false;
+                        interactableDef.CanCopy = canCopy;
                     }
                     else
                     {
@@ -96,8 +150,9 @@ namespace ItemQualities
                     }
                 }
 
-                disableCopy("FreeChestMultiShop");
-                disableCopy("ShrineHalcyonite");
+                overrideCanCopy("GoldshoresBeacon", false);
+
+                overrideCanCopy("Chest1StealthedVariant", true);
             }
         }
 
@@ -180,9 +235,9 @@ namespace ItemQualities
                 return;
             }
 
-            if (!interactableObject.TryGetComponent(out CatalogedInteractable catalogedInteractable))
+            if (!interactableObject.TryGetComponent(out InteractableInfoProvider catalogedInteractable))
             {
-                catalogedInteractable = interactableObject.AddComponent<CatalogedInteractable>();
+                catalogedInteractable = interactableObject.AddComponent<InteractableInfoProvider>();
                 catalogedInteractable.CatalogIndex = interactableIndex;
             }
         }
@@ -194,7 +249,7 @@ namespace ItemQualities
 
         public static int FindInteractableIndex(GameObject interactableObject)
         {
-            if (interactableObject.TryGetComponent(out CatalogedInteractable catalogedInteractable))
+            if (interactableObject.TryGetComponent(out InteractableInfoProvider catalogedInteractable))
             {
                 return catalogedInteractable.CatalogIndex;
             }
