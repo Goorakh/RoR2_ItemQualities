@@ -724,6 +724,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup CommandMissile;
 
             public static EquipmentQualityGroup MultiShopCard;
+
+            public static EquipmentQualityGroup DeathProjectile;
         }
 
         public static class BuffQualityGroups
