@@ -76,5 +76,17 @@
         
         "EQUIPMENT_MULTISHOPCARD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates 2 instances of the stored interactable when entering a stage.",
         "EQUIPMENT_MULTISHOPCARD_LEGENDARY_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>2</style> (<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance for <style=cIsUtility>3</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+
+        "EQUIPMENT_DEATHPROJECTILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
+        "EQUIPMENT_DEATHPROJECTILE_UNCOMMON_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>9</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>5%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
+
+        "EQUIPMENT_DEATHPROJECTILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
+        "EQUIPMENT_DEATHPROJECTILE_RARE_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>11</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>10%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
+
+        "EQUIPMENT_DEATHPROJECTILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
+        "EQUIPMENT_DEATHPROJECTILE_EPIC_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>13</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
+
+        "EQUIPMENT_DEATHPROJECTILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
+        "EQUIPMENT_DEATHPROJECTILE_LEGENDARY_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>16</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>33%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
     }
 }
