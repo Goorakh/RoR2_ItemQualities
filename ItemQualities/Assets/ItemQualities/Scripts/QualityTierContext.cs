@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using ItemQualities.Utilities.Extensions;
+using UnityEngine;
 
 namespace ItemQualities
 {
@@ -15,6 +16,11 @@ namespace ItemQualities
         void OnDestroy()
         {
             ComponentCache.Remove(gameObject, this);
+        }
+
+        public static QualityTier GetQualityTier(GameObject gameObject)
+        {
+            return gameObject && gameObject.TryGetComponentCached(out QualityTierContext context) ? context.QualityTier : QualityTier.None;
         }
     }
 }
