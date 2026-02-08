@@ -24,9 +24,9 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int isQuailJumpVarIndex = -1;
+            VariableDefinition isQuailJumpVar = null;
             if (!c.TryGotoNext(x => x.MatchLdstr("Prefabs/Effects/BoostJumpEffect")) ||
-                !c.TryGotoPrev(x => x.MatchLdloc(typeof(bool), il, out isQuailJumpVarIndex)))
+                !c.TryGotoPrev(x => x.MatchLdloc(typeof(bool), il, out isQuailJumpVar)))
             {
                 Log.Error("Failed to find isQuailJump variable");
                 return;
@@ -34,17 +34,17 @@ namespace ItemQualities.Items
 
             c.Goto(0);
 
-            int someVarIndex = -1;
-            int horizontalJumpVelocityScaleVarIndex = -1;
+            VariableDefinition someVar = null;
+            VariableDefinition horizontalJumpVelocityScaleVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.JumpBoost)),
-                               x => x.MatchStloc(isQuailJumpVarIndex)) ||
+                               x => x.MatchStloc(isQuailJumpVar)) ||
                 !c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdloc(typeof(float), il, out someVarIndex),
+                               x => x.MatchLdloc(typeof(float), il, out someVar),
                                x => x.MatchAdd(),
-                               x => x.MatchLdloc(someVarIndex),
+                               x => x.MatchLdloc(someVar),
                                x => x.MatchDiv(),
-                               x => x.MatchStloc(typeof(float), il, out horizontalJumpVelocityScaleVarIndex)))
+                               x => x.MatchStloc(typeof(float), il, out horizontalJumpVelocityScaleVar)))
             {
                 Log.Error("Failed to find patch location");
                 return;
@@ -98,7 +98,7 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, isQuailJumpVarIndex);
+            c.Emit(OpCodes.Ldloc, isQuailJumpVar);
             c.EmitDelegate<Action<GenericCharacterMain, bool>>(onJump);
 
             static void onJump(GenericCharacterMain genericCharacterMain, bool isQuailJump)

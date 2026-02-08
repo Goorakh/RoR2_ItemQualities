@@ -19,12 +19,12 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int potionItemTransformationVarIndex = -1;
+            VariableDefinition potionItemTransformationVar = null;
             Instruction skipPotionTransformationTargetInstruction = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.healingPotion))) ||
                 !c.TryGotoNext(MoveType.Before,
-                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out potionItemTransformationVarIndex),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out potionItemTransformationVar),
                                x => x.MatchLdarg(0),
                                x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.body)),
                                x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory)),
@@ -45,7 +45,7 @@ namespace ItemQualities.Items
             c.Emit(OpCodes.Brtrue, skipPotionTransformationLabel);
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloca, potionItemTransformationVarIndex);
+            c.Emit(OpCodes.Ldloca, potionItemTransformationVar);
             c.EmitDelegate<TryConsumeQualityElixirsDelegate>(tryConsumeQualityElixirs);
 
             static void tryConsumeQualityElixirs(HealthComponent healthComponent, ref Inventory.ItemTransformation itemTransformation)

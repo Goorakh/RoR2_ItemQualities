@@ -62,12 +62,12 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int healthDamageDealtVarIndex = -1;
+            VariableDefinition healthDamageDealtVar = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdarg(0),
                                x => x.MatchLdarg(0),
                                x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.shield)),
-                               x => x.MatchLdloc(typeof(float), il, out healthDamageDealtVarIndex),
+                               x => x.MatchLdloc(typeof(float), il, out healthDamageDealtVar),
                                x => x.MatchSub(),
                                x => x.MatchCallOrCallvirt<HealthComponent>("set_" + nameof(HealthComponent.Networkshield))))
             {
@@ -83,7 +83,7 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, healthDamageDealtVarIndex);
+            c.Emit(OpCodes.Ldloc, healthDamageDealtVar);
             c.EmitDelegate<Action<HealthComponent, float>>(onDamageDealt);
 
             static void onDamageDealt(HealthComponent healthComponent, float healthDamageDealt)

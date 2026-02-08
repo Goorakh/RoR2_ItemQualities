@@ -2009,10 +2009,10 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int effectDataLocalIndex = -1;
+            VariableDefinition effectDataVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld<EntityStates.GolemMonster.FireLaser>(nameof(EntityStates.GolemMonster.FireLaser.hitEffectPrefab)),
-                               x => x.MatchLdloc(typeof(EffectData), il, out effectDataLocalIndex)))
+                               x => x.MatchLdloc(typeof(EffectData), il, out effectDataVar)))
             {
                 Log.Error("Failed to find hit effect scale patch location");
                 return;
@@ -2050,10 +2050,10 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int effectDataLocalIndex = -1;
+            VariableDefinition effectDataVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld<EntityStates.Halcyonite.TriLaser>(nameof(EntityStates.Halcyonite.TriLaser.hitEffectPrefab)),
-                               x => x.MatchLdloc(typeof(EffectData), il, out effectDataLocalIndex)))
+                               x => x.MatchLdloc(typeof(EffectData), il, out effectDataVar)))
             {
                 Log.Error("Failed to find hit effect scale patch location");
                 return;
@@ -2196,13 +2196,13 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int effectDataVarIndex = -1;
+            VariableDefinition effectDataVar = null;
             if (c.TryGotoNext(MoveType.After,
                               x => x.MatchNewobj<EffectData>(),
-                              x => x.MatchStloc(typeof(EffectData), il, out effectDataVarIndex)))
+                              x => x.MatchStloc(typeof(EffectData), il, out effectDataVar)))
             {
                 c.Emit(OpCodes.Ldarg_0);
-                c.Emit(OpCodes.Ldloc, effectDataVarIndex);
+                c.Emit(OpCodes.Ldloc, effectDataVar);
                 c.EmitDelegate<Action<EntityStates.Mage.FlyUpState, EffectData>>(trySetEffectDataScale);
 
                 static void trySetEffectDataScale(EntityStates.Mage.FlyUpState self, EffectData effectData)

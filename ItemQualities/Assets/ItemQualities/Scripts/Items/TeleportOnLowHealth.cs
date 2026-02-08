@@ -68,9 +68,9 @@ namespace ItemQualities.Items
                 return;
             }
 
-            int itemTransformationLocalIndex = -1;
+            VariableDefinition itemTransformationVar = null;
             if (!c.TryFindPrev(out _,
-                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationLocalIndex),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationVar),
                                x => x.MatchInitobj<Inventory.ItemTransformation>()))
             {
                 Log.Fatal("Failed to find ItemTransformation variable");
@@ -78,7 +78,7 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, itemTransformationLocalIndex);
+            c.Emit(OpCodes.Ldloc, itemTransformationVar);
             c.EmitDelegate<Func<bool, TeleportOnLowHealthBehavior, Inventory.ItemTransformation, bool>>(tryConsumeQualityTransmitters);
 
             static bool tryConsumeQualityTransmitters(bool consumedRegularTransmitter, TeleportOnLowHealthBehavior teleportOnLowHealthBehavior, Inventory.ItemTransformation itemTransformation)

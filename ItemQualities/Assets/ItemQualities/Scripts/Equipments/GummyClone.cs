@@ -86,9 +86,9 @@ namespace ItemQualities.Equipments
         {
             ILCursor c = new ILCursor(il);
 
-            int spawnCardVarIndex = -1;
+            VariableDefinition spawnCardVar = null;
             if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdloc(typeof(MasterCopySpawnCard), il, out spawnCardVarIndex),
+                               x => x.MatchLdloc(typeof(MasterCopySpawnCard), il, out spawnCardVar),
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.GummyCloneIdentifier)),
                                x => x.MatchLdcI4(out _),
                                x => x.MatchCallOrCallvirt<MasterCopySpawnCard>(nameof(MasterCopySpawnCard.GiveItem))))
@@ -98,7 +98,7 @@ namespace ItemQualities.Equipments
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, spawnCardVarIndex);
+            c.Emit(OpCodes.Ldloc, spawnCardVar);
             c.EmitDelegate<Action<GummyCloneProjectile, MasterCopySpawnCard>>(setupSpawnCard);
 
             static void setupSpawnCard(GummyCloneProjectile gummyCloneProjectile, MasterCopySpawnCard spawnCard)

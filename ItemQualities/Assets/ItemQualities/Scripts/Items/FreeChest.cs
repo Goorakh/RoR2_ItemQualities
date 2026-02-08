@@ -29,10 +29,10 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int freeChestSpawnCountLocalIndex = -1;
+            VariableDefinition freeChestSpawnCountVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.FreeChest)),
-                               x => x.MatchStloc(typeof(int), il, out freeChestSpawnCountLocalIndex)))
+                               x => x.MatchStloc(typeof(int), il, out freeChestSpawnCountVar)))
             {
                 Log.Error("Failed to find patch location");
                 return;
@@ -51,13 +51,13 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[1].Next, MoveType.After);
 
-            c.Emit(OpCodes.Ldloc, freeChestSpawnCountLocalIndex);
+            c.Emit(OpCodes.Ldloc, freeChestSpawnCountVar);
 
             c.Emit(OpCodes.Ldloc, masterVar);
             c.EmitDelegate<Func<CharacterMaster, int>>(getExtraFreeChestSpawnCount);
 
             c.Emit(OpCodes.Add);
-            c.Emit(OpCodes.Stloc, freeChestSpawnCountLocalIndex);
+            c.Emit(OpCodes.Stloc, freeChestSpawnCountVar);
 
             static int getExtraFreeChestSpawnCount(CharacterMaster master)
             {
