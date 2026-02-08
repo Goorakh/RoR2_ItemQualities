@@ -114,7 +114,7 @@ namespace ItemQualities.Items
                 for (QualityTier lowerQualityTier = slowOnHitQuality - 1; lowerQualityTier >= QualityTier.None; lowerQualityTier--)
                 {
                     BuffIndex lowerQualitySlowDebuffIndex = ItemQualitiesContent.BuffQualityGroups.Slow60.GetBuffIndex(lowerQualityTier);
-                    if (victimBody.HasBuff(lowerQualitySlowDebuffIndex))
+                    if (victimBody.HasBuffRaw(lowerQualitySlowDebuffIndex))
                     {
                         victimBody.ClearTimedBuffs(lowerQualitySlowDebuffIndex);
                     }

@@ -16,7 +16,9 @@ MonoBehaviour:
     m_AssetGUID: 3bdd1fce23f153a41b3bf2e5434b5243
     m_SubObjectName: 
     m_SubObjectType: 
+  BaseBuff: {fileID: 0}
   _uncommonBuff: {fileID: 11400000, guid: 8a9be4a6d03df2042ba68c94ba1b848f, type: 2}
   _rareBuff: {fileID: 11400000, guid: d9604e9be46d91e4a8558287b9aac6d2, type: 2}
   _epicBuff: {fileID: 11400000, guid: c957cde5c8634e24b86ff92a8762e527, type: 2}
   _legendaryBuff: {fileID: 11400000, guid: b76de905b5b69534eafe95819228033d, type: 2}
+  InheritBaseBuffBehavior: 0
