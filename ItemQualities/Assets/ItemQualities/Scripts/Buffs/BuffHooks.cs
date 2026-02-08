@@ -12,6 +12,10 @@ namespace ItemQualities.Buffs
 {
     static class BuffHooks
     {
+        public delegate void BodyBuffGainedOrLostDelegate(CharacterBody body, BuffDef buffDef);
+        public static event BodyBuffGainedOrLostDelegate OnBuffFirstStackGainedGlobal;
+        public static event BodyBuffGainedOrLostDelegate OnBuffFinalStackLostGlobal;
+
         static readonly List<CharacterBody> _disableBuffCountHooksForBodies = new List<CharacterBody>();
 
         [SystemInitializer]
@@ -30,6 +34,51 @@ namespace ItemQualities.Buffs
             IL.RoR2.CharacterBody.OnBuffFinalStackLost += patchBuffEqualityComparison;
             IL.RoR2.CharacterBody.AddOrRemoveEliteItemBehavior += patchBuffEqualityComparison;
             IL.RoR2.CharacterBody.OnBuffFirstStackGained += patchBuffEqualityComparison;
+
+            On.RoR2.CharacterBody.OnBuffFirstStackGained += CharacterBody_OnBuffFirstStackGained;
+            On.RoR2.CharacterBody.OnBuffFinalStackLost += CharacterBody_OnBuffFinalStackLost;
+        }
+
+        static void CharacterBody_OnBuffFirstStackGained(On.RoR2.CharacterBody.orig_OnBuffFirstStackGained orig, CharacterBody self, BuffDef buffDef)
+        {
+            orig(self, buffDef);
+
+            if (OnBuffFirstStackGainedGlobal != null)
+            {
+                foreach (BodyBuffGainedOrLostDelegate onBuffFirstStackGainedGlobal in OnBuffFirstStackGainedGlobal.GetInvocationList()
+                                                                                                                  .OfType<BodyBuffGainedOrLostDelegate>())
+                {
+                    try
+                    {
+                        onBuffFirstStackGainedGlobal(self, buffDef);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warning_NoCallerPrefix("Failed to invoke event listener for OnBuffFirstStackGained: " + e);
+                    }
+                }
+            }
+        }
+
+        static void CharacterBody_OnBuffFinalStackLost(On.RoR2.CharacterBody.orig_OnBuffFinalStackLost orig, CharacterBody self, BuffDef buffDef)
+        {
+            orig(self, buffDef);
+
+            if (OnBuffFinalStackLostGlobal != null)
+            {
+                foreach (BodyBuffGainedOrLostDelegate onBuffFinalStackLostGlobal in OnBuffFinalStackLostGlobal.GetInvocationList()
+                                                                                                              .OfType<BodyBuffGainedOrLostDelegate>())
+                {
+                    try
+                    {
+                        onBuffFinalStackLostGlobal(self, buffDef);
+                    }
+                    catch (Exception e)
+                    {
+                        Log.Warning_NoCallerPrefix("Failed to invoke event listener for OnBuffFinalStackLost: " + e);
+                    }
+                }
+            }
         }
 
         static int CharacterBody_GetBuffCount_BuffIndex(On.RoR2.CharacterBody.orig_GetBuffCount_BuffIndex orig, CharacterBody self, BuffIndex buffType)
