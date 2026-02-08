@@ -112,5 +112,17 @@
         
         "EQUIPMENT_GUMMYCLONE_LEGENDARY_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
         "EQUIPMENT_GUMMYCLONE_LEGENDARY_DESC": "{0}\nThe clone inherits the <style=cIsUtility>first stack</style> of <style=cIsUtility>all</style> your items.",
+        
+        "EQUIPMENT_TEAMWARCRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
+        "EQUIPMENT_TEAMWARCRY_UNCOMMON_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>2 seconds</style> while the frenzy is active.",
+        
+        "EQUIPMENT_TEAMWARCRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
+        "EQUIPMENT_TEAMWARCRY_RARE_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style> while the frenzy is active.",
+        
+        "EQUIPMENT_TEAMWARCRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
+        "EQUIPMENT_TEAMWARCRY_EPIC_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>8 seconds</style> while the frenzy is active.",
+        
+        "EQUIPMENT_TEAMWARCRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
+        "EQUIPMENT_TEAMWARCRY_LEGENDARY_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>15 seconds</style> while the frenzy is active.",
     }
 }
