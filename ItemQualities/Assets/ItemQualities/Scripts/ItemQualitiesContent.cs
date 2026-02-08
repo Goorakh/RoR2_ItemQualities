@@ -728,6 +728,10 @@ namespace ItemQualities
             public static EquipmentQualityGroup DeathProjectile;
 
             public static EquipmentQualityGroup PassiveHealing;
+
+            public static EquipmentQualityGroup GummyClone;
+
+            public static EquipmentQualityGroup TeamWarCry;
         }
 
         public static class BuffQualityGroups
@@ -767,6 +771,8 @@ namespace ItemQualities
             public static BuffQualityGroup ShieldBoosterBuff;
 
             public static BuffQualityGroup MultikillWarCryBuff;
+
+            public static BuffQualityGroup TeamWarCry;
         }
 
         public static class Buffs
