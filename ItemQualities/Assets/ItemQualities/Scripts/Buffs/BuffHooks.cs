@@ -106,32 +106,23 @@ namespace ItemQualities.Buffs
 
         static void CharacterBody_RemoveBuff_BuffIndex(On.RoR2.CharacterBody.orig_RemoveBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
         {
-            if (buffType == RoR2Content.Buffs.Slow60.buffIndex)
-            {
-                Log.Debug($"removing Slow60, hook disabled: {_disableBuffCountHooksForBodies.Contains(self)}");
-            }
-
             if (!_disableBuffCountHooksForBodies.Contains(self))
             {
                 try
                 {
-                    //Log.Debug($"{BuffCatalog.GetBuffDef(buffType)}: hook enabled");
                     if (self.GetBuffCountRaw(buffType) == 0 && QualityCatalog.GetQualityTier(buffType) == QualityTier.None)
                     {
-                        //Log.Debug($"{BuffCatalog.GetBuffDef(buffType)}: base buff");
                         BuffQualityGroupIndex buffGroupIndex = QualityCatalog.FindBuffQualityGroupIndex(buffType);
                         if (buffGroupIndex != BuffQualityGroupIndex.Invalid)
                         {
                             BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(buffGroupIndex);
                             if (buffGroup.InheritBaseBuffBehavior)
                             {
-                                //Log.Debug($"{BuffCatalog.GetBuffDef(buffType)}: group inherit");
                                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                                 {
                                     BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(qualityTier);
                                     if (qualityBuffIndex != BuffIndex.None && self.GetBuffCountRaw(qualityBuffIndex) > 0)
                                     {
-                                        Log.Debug($"Overriding buff to remove: {BuffCatalog.GetBuffDef(buffType)} -> {BuffCatalog.GetBuffDef(qualityBuffIndex)}");
                                         buffType = qualityBuffIndex;
                                         break;
                                     }
