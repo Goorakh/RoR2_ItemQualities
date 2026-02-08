@@ -102,6 +102,22 @@ MonoBehaviour:
   includeMetaFiles: 0
   files:
   - {fileID: 102900000, guid: 8dccb57b8604fe646aa4d8b94800b709, type: 3}
+--- !u!114 &-3233274129559094446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b7e13dda513544419a89926bd12ad8a, type: 3}
+  m_Name: AssemblyDefinitions
+  m_EditorClassIdentifier: 
+  StagingPaths:
+  - <PatcherStaging>
+  definitions:
+  - {fileID: 5897886265953266890, guid: 64366fd6f0ae88640a798b7da1cb0901, type: 3}
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118,6 +134,7 @@ MonoBehaviour:
   - {fileID: -8786251695868898629}
   - {fileID: -7981261560201051757}
   - {fileID: 8828324314595533815}
+  - {fileID: -3233274129559094446}
   - {fileID: -9133019333146253987}
   - {fileID: -3521809848701759815}
   - {fileID: -8021981330241814630}

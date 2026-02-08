@@ -20,18 +20,19 @@ namespace ItemQualities.Buffs
             BuffQualityCounts energized = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.Energized);
             if (energized.TotalQualityCount > 0)
             {
+                // Includes +70% from normal warhorn
                 float bonusAttackSpeed = (0.1f * energized.UncommonCount) +
                                          (0.3f * energized.RareCount) +
                                          (0.6f * energized.EpicCount) +
                                          (1.0f * energized.LegendaryCount);
 
-                float cdrMult = (0.1f * energized.UncommonCount) +
-                                         (0.3f * energized.RareCount) +
-                                         (0.5f * energized.EpicCount) +
-                                         (0.9f * energized.LegendaryCount);
+                float cooldownReduction = 0.1f + (0.1f * energized.UncommonCount) +
+                                                 (0.3f * energized.RareCount) +
+                                                 (0.5f * energized.EpicCount) +
+                                                 (0.9f * energized.LegendaryCount);
 
-                args.attackSpeedMultAdd += 0.7f + bonusAttackSpeed;
-                args.allSkills.cooldownReductionMultAdd += 0.1f + cdrMult;
+                args.attackSpeedMultAdd += bonusAttackSpeed;
+                args.allSkills.cooldownReductionMultAdd += cooldownReduction;
             }
         }
     }

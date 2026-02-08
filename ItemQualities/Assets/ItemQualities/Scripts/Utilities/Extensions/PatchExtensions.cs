@@ -568,6 +568,17 @@ namespace ItemQualities.Utilities.Extensions
             return implicitConverterMethod != null && instruction.MatchCallOrCallvirt(implicitConverterMethod);
         }
 
+        public static bool MatchOpEquality<T>(this Instruction instruction)
+        {
+            return MatchOpEquality<T, T>(instruction);
+        }
+
+        public static bool MatchOpEquality<T1, T2>(this Instruction instruction)
+        {
+            MethodInfo equalityMethod = ReflectionUtil.FindEqualityOperator<T1, T2>();
+            return equalityMethod != null && instruction.MatchCallOrCallvirt(equalityMethod);
+        }
+
         #region MatchLdloc
         public static bool MatchLdloc(this Instruction instruction, ILContext il, out VariableDefinition variableDefinition)
         {

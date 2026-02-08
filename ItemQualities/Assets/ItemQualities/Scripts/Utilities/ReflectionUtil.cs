@@ -52,5 +52,40 @@ namespace ItemQualities.Utilities
 
             return null;
         }
+
+        public static MethodInfo FindEqualityOperator<T>()
+        {
+            return FindEqualityOperator<T, T>();
+        }
+
+        public static MethodInfo FindEqualityOperator<T1, T2>()
+        {
+            return FindEqualityOperator(typeof(T1), typeof(T2));
+        }
+
+        public static MethodInfo FindEqualityOperator(Type typeA, Type typeB)
+        {
+            const BindingFlags ConverterMethodFlags = BindingFlags.Static | BindingFlags.Public;
+
+            foreach (MethodInfo converterMethod in typeA.GetMethods(ConverterMethodFlags)
+                                                        .Concat(typeB.GetMethods(ConverterMethodFlags))
+                                                        .Where(m => m.IsSpecialName && m.Name == "op_Equality"))
+            {
+                if (converterMethod.ReturnType != typeof(bool))
+                    continue;
+
+                ParameterInfo[] parameters = converterMethod.GetParameters();
+                if (parameters.Length != 2 ||
+                    (parameters[0].ParameterType != typeA && parameters[0].ParameterType != typeB) ||
+                    (parameters[1].ParameterType != typeA && parameters[1].ParameterType != typeB))
+                {
+                    continue;
+                }
+
+                return converterMethod;
+            }
+
+            return null;
+        }
     }
 }

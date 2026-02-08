@@ -23,7 +23,7 @@ namespace ItemQualities.Items
                 int eliteBuffCount = 0;
                 foreach (BuffIndex buffIndex in BuffCatalog.eliteBuffIndices)
                 {
-                    if (sender.HasBuff(buffIndex))
+                    if (sender.HasBuffRaw(buffIndex))
                     {
                         eliteBuffCount++;
                     }
