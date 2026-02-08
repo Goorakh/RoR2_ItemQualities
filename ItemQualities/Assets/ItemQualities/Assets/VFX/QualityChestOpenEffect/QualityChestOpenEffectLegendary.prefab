@@ -99,10 +99,6 @@ PrefabInstance:
       propertyPath: soundName
       value: play_quality_item_pop_legendary
       objectReference: {fileID: 0}
-    - target: {fileID: 7010931812459697177, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
-      propertyPath: duration
-      value: 1.5
-      objectReference: {fileID: 0}
     - target: {fileID: 7012756841170541668, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: lengthInSec
       value: 1.5
@@ -110,6 +106,10 @@ PrefabInstance:
     - target: {fileID: 7012756841170541668, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: InitialModule.startLifetime.scalar
       value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
+      propertyPath: m_Range
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: m_Color.b
@@ -122,6 +122,10 @@ PrefabInstance:
     - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: m_Color.r
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
+      propertyPath: m_Intensity
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: m_BoundingSphereOverride.w

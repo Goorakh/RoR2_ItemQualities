@@ -100,6 +100,10 @@ PrefabInstance:
       value: 0.85
       objectReference: {fileID: 0}
     - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
+      propertyPath: m_Range
+      value: 7.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: m_Color.b
       value: 1
       objectReference: {fileID: 0}
@@ -110,6 +114,10 @@ PrefabInstance:
     - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: m_Color.r
       value: 0.5424528
+      objectReference: {fileID: 0}
+    - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
+      propertyPath: m_Intensity
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8416219883864187818, guid: 81d5b3429f9621c41b293cd950b53dc3, type: 3}
       propertyPath: m_BoundingSphereOverride.w
