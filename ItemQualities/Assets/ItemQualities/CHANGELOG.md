@@ -14,6 +14,9 @@
 * Collector's Compulsion:
     * Made barrel pickups always target the player that opened the barrel.
 
+* Ghor's Tome:
+    * Fixed money buff not being set on pickup.
+
 ## 0.6.1
 
 * Fixed quality item descriptions not showing properly if game was launched in a language other than English.
