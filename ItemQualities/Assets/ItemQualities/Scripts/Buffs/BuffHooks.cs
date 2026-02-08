@@ -196,76 +196,138 @@ namespace ItemQualities.Buffs
 
         static void CharacterBody_SetBuffCount(ILContext il)
         {
-            if (!il.Method.TryFindParameter<BuffIndex>(out ParameterDefinition buffIndexParameter))
-            {
-                Log.Error("Failed to find BuffIndex parameter");
-                return;
-            }
-
             ILCursor c = new ILCursor(il);
 
-            // IL_001C: ldloc.0
-            // IL_001D: ldind.i4
-            // IL_001E: stloc.1
-            // int oldCount = buffCountRef;
-
-            // IL_001F: ldloc.0
-            // IL_0020: ldarg.2
-            // IL_0021: stind.i4
-            // buffCountRef = newCount;
-
-            VariableDefinition buffCountRefVar = null;
-            VariableDefinition oldCountVar = null;
-            ParameterDefinition newCountParameter = null;
-            if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdloc(il, out buffCountRefVar),
-                               x => x.MatchLdindI4(),
-                               x => x.MatchStloc<int>(il, out oldCountVar),
-
-                               x => x.MatchLdloc(buffCountRefVar),
-                               x => x.MatchLdarg<int>(il, out newCountParameter),
-                               x => x.MatchStindI4()))
+            static bool shouldInvokeBuffGainedOrLost(CharacterBody body, BuffDef buffDef)
             {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldarg, buffIndexParameter);
-            c.EmitDelegate<Func<CharacterBody, BuffIndex, int>>(calculateBonusBuffCount);
-
-            c.Emit(OpCodes.Dup);
-
-            c.Emit(OpCodes.Ldloc, oldCountVar);
-            c.Emit(OpCodes.Add);
-            c.Emit(OpCodes.Stloc, oldCountVar);
-
-            c.Emit(OpCodes.Ldarg, newCountParameter);
-            c.Emit(OpCodes.Add);
-            c.Emit(OpCodes.Starg, newCountParameter);
-
-            static int calculateBonusBuffCount(CharacterBody self, BuffIndex buffIndex)
-            {
-                int bonusBuffCount = 0;
-
+                BuffIndex buffIndex = buffDef ? buffDef.buffIndex : BuffIndex.None;
                 BuffQualityGroupIndex buffGroupIndex = QualityCatalog.FindBuffQualityGroupIndex(buffIndex);
+
                 if (buffGroupIndex != BuffQualityGroupIndex.Invalid)
                 {
                     BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(buffGroupIndex);
-                    if (buffGroup.InheritBaseBuffBehavior)
+                    if (!buffGroup.InheritBaseBuffBehavior)
+                        return true;
+                }
+
+                // If this is a base buff and the body has any quality buff already, OnBuffFirstStackGained had already happened for this buff,
+                // so we skip the call when it was actually added for real.
+                return QualityCatalog.GetQualityTier(buffIndex) > QualityTier.None ||
+                       buffGroupIndex == BuffQualityGroupIndex.Invalid ||
+                       body.GetBuffCounts(buffGroupIndex).TotalQualityCount == 0;
+            }
+
+            static bool shouldInvokeBaseBuffGainedOrLost(CharacterBody body, BuffIndex buffIndex)
+            {
+                // If this is a quality buff, and it is the first of the group to be added to this body,
+                // we should also invoke the OnBuffFirstStackGained for the base buff.
+
+                QualityTier qualityTier = QualityCatalog.GetQualityTier(buffIndex);
+                if (qualityTier == QualityTier.None)
+                    return false;
+
+                BuffQualityGroupIndex buffGroupIndex = QualityCatalog.FindBuffQualityGroupIndex(buffIndex);
+                if (buffGroupIndex == BuffQualityGroupIndex.Invalid)
+                    return false;
+
+                BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(buffGroupIndex);
+                if (!buffGroup.InheritBaseBuffBehavior || buffGroup.BaseBuffIndex == BuffIndex.None)
+                    return false;
+
+                for (QualityTier buffQualityTier = QualityTier.None; buffQualityTier < QualityTier.Count; buffQualityTier++)
+                {
+                    if (buffQualityTier != qualityTier)
                     {
-                        for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                        BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(buffQualityTier);
+                        if (qualityBuffIndex != BuffIndex.None && body.HasBuffRaw(qualityBuffIndex))
                         {
-                            BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(qualityTier);
-                            if (qualityBuffIndex != BuffIndex.None && qualityBuffIndex != buffIndex)
-                            {
-                                bonusBuffCount += self.GetBuffCountRaw(qualityBuffIndex);
-                            }
+                            return false;
                         }
                     }
                 }
 
-                return bonusBuffCount;
+                return true;
+            }
+
+            VariableDefinition buffDefVar = null;
+            Instruction afterFinalBuffStackLostInstruction = null;
+            if (c.TryGotoNext(MoveType.Before,
+                              x => x.MatchLdarg(0),
+                              x => x.MatchLdloc<BuffDef>(il, out buffDefVar),
+                              x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.OnBuffFinalStackLost)),
+                              x => x.MatchAny(out afterFinalBuffStackLostInstruction)))
+            {
+                ILLabel afterFinalBuffStackLostLabel = c.DefineLabel();
+
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc, buffDefVar);
+                c.EmitDelegate<Func<CharacterBody, BuffDef, bool>>(shouldInvokeBuffGainedOrLost);
+                c.Emit(OpCodes.Brfalse, afterFinalBuffStackLostLabel);
+
+                c.Goto(afterFinalBuffStackLostInstruction, MoveType.Before);
+                c.MarkLabel(afterFinalBuffStackLostLabel);
+
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc, buffDefVar);
+                c.EmitDelegate<Action<CharacterBody, BuffDef>>(tryInvokeOnFinalBaseBuffStackLost);
+
+                static void tryInvokeOnFinalBaseBuffStackLost(CharacterBody body, BuffDef buffDef)
+                {
+                    BuffIndex buffIndex = buffDef ? buffDef.buffIndex : BuffIndex.None;
+                    if (buffIndex != BuffIndex.None && shouldInvokeBaseBuffGainedOrLost(body, buffIndex))
+                    {
+                        BuffIndex baseBuffIndex = QualityCatalog.GetBuffIndexOfQuality(buffIndex, QualityTier.None);
+                        if (baseBuffIndex != buffIndex)
+                        {
+                            body.OnBuffFinalStackLost(BuffCatalog.GetBuffDef(baseBuffIndex));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find OnBuffFinalStackLost patch location");
+            }
+
+            c.Goto(0, MoveType.Before);
+
+            Instruction afterFirstBuffStackGainedInstruction = null;
+            if (c.TryGotoNext(MoveType.Before,
+                              x => x.MatchLdarg(0),
+                              x => x.MatchLdloc<BuffDef>(il, out buffDefVar),
+                              x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.OnBuffFirstStackGained)),
+                              x => x.MatchAny(out afterFirstBuffStackGainedInstruction)))
+            {
+                ILLabel afterFirstBuffStackGainedLabel = c.DefineLabel();
+
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc, buffDefVar);
+                c.EmitDelegate<Func<CharacterBody, BuffDef, bool>>(shouldInvokeBuffGainedOrLost);
+                c.Emit(OpCodes.Brfalse, afterFirstBuffStackGainedLabel);
+
+                c.Goto(afterFirstBuffStackGainedInstruction, MoveType.Before);
+                c.MarkLabel(afterFirstBuffStackGainedLabel);
+
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc, buffDefVar);
+                c.EmitDelegate<Action<CharacterBody, BuffDef>>(tryInvokeOnFirstBaseBuffStackGained);
+
+                static void tryInvokeOnFirstBaseBuffStackGained(CharacterBody body, BuffDef buffDef)
+                {
+                    BuffIndex buffIndex = buffDef ? buffDef.buffIndex : BuffIndex.None;
+                    if (buffIndex != BuffIndex.None && shouldInvokeBaseBuffGainedOrLost(body, buffIndex))
+                    {
+                        BuffIndex baseBuffIndex = QualityCatalog.GetBuffIndexOfQuality(buffIndex, QualityTier.None);
+                        if (baseBuffIndex != buffIndex)
+                        {
+                            body.OnBuffFirstStackGained(BuffCatalog.GetBuffDef(baseBuffIndex));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find OnBuffFirstStackGained patch location");
             }
         }
 
