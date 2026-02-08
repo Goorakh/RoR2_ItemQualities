@@ -218,7 +218,11 @@ namespace ItemQualities
         static void SpecialObjectAttributes_Start(On.RoR2.SpecialObjectAttributes.orig_Start orig, SpecialObjectAttributes self)
         {
             orig(self);
-            tryLinkToCatalog(self.gameObject);
+
+            if (!self.GetComponent<CharacterBody>())
+            {
+                tryLinkToCatalog(self.gameObject);
+            }
         }
 
         static void DroneVendorMultiShopController_Start(On.RoR2.DroneVendorMultiShopController.orig_Start orig, DroneVendorMultiShopController self)
