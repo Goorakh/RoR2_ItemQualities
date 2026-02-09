@@ -732,6 +732,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup GummyClone;
 
             public static EquipmentQualityGroup TeamWarCry;
+
+            public static EquipmentQualityGroup GainArmor;
         }
 
         public static class BuffQualityGroups

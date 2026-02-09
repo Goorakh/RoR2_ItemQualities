@@ -124,5 +124,17 @@
         
         "EQUIPMENT_TEAMWARCRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
         "EQUIPMENT_TEAMWARCRY_LEGENDARY_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>15 seconds</style> while the frenzy is active.",
+
+        "EQUIPMENT_GAINARMOR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
+        "EQUIPMENT_GAINARMOR_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+30 armor</style>.",
+
+        "EQUIPMENT_GAINARMOR_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
+        "EQUIPMENT_GAINARMOR_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+60 armor</style>.",
+
+        "EQUIPMENT_GAINARMOR_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
+        "EQUIPMENT_GAINARMOR_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+100 armor</style>.",
+
+        "EQUIPMENT_GAINARMOR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
+        "EQUIPMENT_GAINARMOR_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+150 armor</style>.",
     }
 }
