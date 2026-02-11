@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egCritOnUse
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: b4638a5cc1d40c54c8e79b26638d6483
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: b5ff345cbd3048f448160b6be0579528, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: dff3b99d399b8644793795be1b562c25, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: edf5860e9b2c256469ad8217d53b649c, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 88959bb01c853d444bfe72f3cba80c7a, type: 2}

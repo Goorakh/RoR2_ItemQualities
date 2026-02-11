@@ -42,7 +42,19 @@ namespace ItemQualities
 
         TemporaryOverlayInstance _healCritBoostOverlay;
 
+        int _weakPointsEnabledCounterServer;
+
+        [SyncVar]
+        byte _weakPointHurtBoxIndexPlusOne;
+        public int WeakPointHurtBoxIndex
+        {
+            get => _weakPointHurtBoxIndexPlusOne - 1;
+            private set => _weakPointHurtBoxIndexPlusOne = (byte)(value + 1);
+        }
+
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
+
+        public CharacterBody Body => _body;
 
         public float ExecuteBossHealthFraction { get; private set; }
 
@@ -80,6 +92,36 @@ namespace ItemQualities
 
         public int EliteKillCount { get; private set; } = 0;
 
+        public float WeakPointCritMultiplierBonusServer { get; set; }
+
+        public int WeakPointsEnabledCounterServer
+        {
+            get
+            {
+                return _weakPointsEnabledCounterServer;
+            }
+            [Server]
+            set
+            {
+                bool weakPointsWasEnabled = _weakPointsEnabledCounterServer > 0;
+                bool weakPointsIsEnabled = value > 0;
+
+                _weakPointsEnabledCounterServer = value;
+
+                if (weakPointsWasEnabled != weakPointsIsEnabled)
+                {
+                    if (weakPointsIsEnabled && _body.hurtBoxGroup && _body.hurtBoxGroup.hurtBoxes.Length > 0)
+                    {
+                        WeakPointHurtBoxIndex = UnityEngine.Random.Range(0, _body.hurtBoxGroup.hurtBoxes.Length);
+                    }
+                    else
+                    {
+                        WeakPointHurtBoxIndex = -1;
+                    }
+                }
+            }
+        }
+
         public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _memoizedMasterExtraStatsComponent.Get(_body.masterObject);
 
         public event Action<DamageInfo> OnIncomingDamageServer;
@@ -107,6 +149,8 @@ namespace ItemQualities
 
         void OnEnable()
         {
+            InstanceTracker.Add(this);
+
             _body.onRecalculateStats += onBodyRecalculateStats;
 
             if (_body.characterMotor)
@@ -137,6 +181,10 @@ namespace ItemQualities
             {
                 _body.modelLocator.onModelChanged -= refreshModelReference;
             }
+
+            refreshModelReference(null);
+
+            InstanceTracker.Remove(this);
         }
 
         void FixedUpdate()
@@ -162,7 +210,27 @@ namespace ItemQualities
 
         void refreshModelReference(Transform modelTransform)
         {
+            GameObject cachedModelObject = _cachedCharacterModel ? _cachedCharacterModel.gameObject : null;
+            GameObject newModelObject = modelTransform ? modelTransform.gameObject : null;
+            if (cachedModelObject == newModelObject)
+                return;
+
             _cachedCharacterModel = modelTransform ? modelTransform.GetComponent<CharacterModel>() : null;
+
+            if (NetworkServer.active)
+            {
+                if (_weakPointsEnabledCounterServer > 0 &&
+                    modelTransform &&
+                    modelTransform.TryGetComponent(out HurtBoxGroup hurtBoxGroup) &&
+                    hurtBoxGroup.hurtBoxes.Length > 0)
+                {
+                    WeakPointHurtBoxIndex = UnityEngine.Random.Range(0, hurtBoxGroup.hurtBoxes.Length);
+                }
+                else
+                {
+                    WeakPointHurtBoxIndex = -1;
+                }
+            }
         }
 
         void updateOverlays()
