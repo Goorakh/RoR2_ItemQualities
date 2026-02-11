@@ -100,6 +100,11 @@ namespace ItemQualities
 
             PickupRollInfo rollInfo = GetCurrentPickupRollInfo(master);
 
+            return RollQuality(pickupIndex, rng, rollInfo, isPickupAllowedFunc);
+        }
+
+        public static PickupIndex RollQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, PickupRollInfo rollInfo, Func<PickupIndex, bool> isPickupAllowedFunc = null)
+        {
             if (!rollInfo.IsPlayerAffiliation)
             {
                 isPickupAllowedFunc ??= pickupCheckNotAIBlacklist;
@@ -107,7 +112,7 @@ namespace ItemQualities
 
             if (Configs.Debug.LogItemQualities)
             {
-                Log.Debug($"Rolling quality for pickup {pickupIndex}, luck={rollInfo.Luck}, master={master}, teamAffiliation={rollInfo.TeamAffiliation}");
+                Log.Debug($"Rolling quality for pickup {pickupIndex}, luck={rollInfo.Luck}, master={rollInfo.Master}, teamAffiliation={rollInfo.TeamAffiliation}");
             }
 
             PickupIndex qualityPickupIndex = pickupIndex;

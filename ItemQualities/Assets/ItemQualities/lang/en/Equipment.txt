@@ -164,5 +164,17 @@
         
         "EQUIPMENT_CRITONUSE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reveals weak-spots on all enemies for 8 seconds.",
         "EQUIPMENT_CRITONUSE_LEGENDARY_DESC": "{0}\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for 8 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+250% critical strike damage</style>.",
+        
+        "EQUIPMENT_BFG_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size.",
+        "EQUIPMENT_BFG_UNCOMMON_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 40m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 25m explosion for <style=cIsDamage>4000% damage</style>.",
+        
+        "EQUIPMENT_BFG_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size.",
+        "EQUIPMENT_BFG_RARE_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 45m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 30m explosion for <style=cIsDamage>4000% damage</style>.",
+        
+        "EQUIPMENT_BFG_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size.",
+        "EQUIPMENT_BFG_EPIC_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 55m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 40m explosion for <style=cIsDamage>4000% damage</style>.",
+        
+        "EQUIPMENT_BFG_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size.",
+        "EQUIPMENT_BFG_LEGENDARY_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 60m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 45m explosion for <style=cIsDamage>4000% damage</style>.",
     }
 }

@@ -736,6 +736,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup GainArmor;
 
             public static EquipmentQualityGroup CritOnUse;
+
+            public static EquipmentQualityGroup BFG;
         }
 
         public static class BuffQualityGroups

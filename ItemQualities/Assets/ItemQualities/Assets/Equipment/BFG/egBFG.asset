@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egBFG
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: f8b51477b5b507a4ba5d67cb26bda08a
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 1f631630c26f7564784f5c5bfa49d4a2, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: 1c8a6d4af64dbef408a6dd1bab2cfaa1, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 351e69d900002774f8d5ec23255c5841, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 56e790262a1d96546abbcb74a6bd86e4, type: 2}
