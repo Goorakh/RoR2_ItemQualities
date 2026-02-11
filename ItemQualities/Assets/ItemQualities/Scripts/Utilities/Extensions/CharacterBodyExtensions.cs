@@ -23,6 +23,14 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
+        public static void ClearTimedBuffsRaw(this CharacterBody body, BuffIndex buffIndex)
+        {
+            using (new BuffHooks.DisableBuffCountHooksScope(body))
+            {
+                body.ClearTimedBuffs(buffIndex);
+            }
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static BuffQualityCounts GetBuffCounts(this CharacterBody body, BuffQualityGroupIndex buffGroupIndex)
         {

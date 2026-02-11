@@ -152,5 +152,17 @@
         "EQUIPMENT_MOLOTOV_LEGENDARY_NAME": "Molotov (10-Pack) <sprite name=\"QualityLegendary\">",
         "EQUIPMENT_MOLOTOV_LEGENDARY_PICKUP": "Throw <sprite name=\"Quality\"> 10 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
         "EQUIPMENT_MOLOTOV_LEGENDARY_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>10</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>500% damage per second</style>. Increases molotov size by <sprite name=\"Quality\"> <style=cIsDamage>200%</style>.",
+        
+        "EQUIPMENT_CRITONUSE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Reveals weak-spots on all enemies for 8 seconds.",
+        "EQUIPMENT_CRITONUSE_UNCOMMON_DESC": "{0}\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for 8 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+50% critical strike damage</style>.",
+        
+        "EQUIPMENT_CRITONUSE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Reveals weak-spots on all enemies for 8 seconds.",
+        "EQUIPMENT_CRITONUSE_RARE_DESC": "{0}\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for 8 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+100% critical strike damage</style>.",
+        
+        "EQUIPMENT_CRITONUSE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Reveals weak-spots on all enemies for 8 seconds.",
+        "EQUIPMENT_CRITONUSE_EPIC_DESC": "{0}\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for 8 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+150% critical strike damage</style>.",
+        
+        "EQUIPMENT_CRITONUSE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reveals weak-spots on all enemies for 8 seconds.",
+        "EQUIPMENT_CRITONUSE_LEGENDARY_DESC": "{0}\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for 8 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+250% critical strike damage</style>.",
     }
 }

@@ -734,6 +734,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup TeamWarCry;
 
             public static EquipmentQualityGroup GainArmor;
+
+            public static EquipmentQualityGroup CritOnUse;
         }
 
         public static class BuffQualityGroups
@@ -775,6 +777,8 @@ namespace ItemQualities
             public static BuffQualityGroup MultikillWarCryBuff;
 
             public static BuffQualityGroup TeamWarCry;
+
+            public static BuffQualityGroup FullCrit;
         }
 
         public static class Buffs
@@ -842,6 +846,8 @@ namespace ItemQualities
             public static GameObject DroneShootableAttachment;
 
             public static GameObject CleanseQualityAttachment;
+
+            public static GameObject QualityCritOnUseAttachment;
         }
 
         public static class ProjectilePrefabs

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgFullCrit
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: 2eab0db23f3f08c4f908154f1f3c197e
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseBuff: {fileID: 0}
+  _uncommonBuff: {fileID: 11400000, guid: 482b444d212d69944a589af35f326eac, type: 2}
+  _rareBuff: {fileID: 11400000, guid: 9f83728cb60119b40ae00fd0407e5a72, type: 2}
+  _epicBuff: {fileID: 11400000, guid: acff000ab451b9546aab1a479afbbcf4, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: de0b22819d28d144fbb1d5e585ff2e1d, type: 2}
+  InheritBaseBuffBehavior: 1
