@@ -50,6 +50,9 @@ namespace ItemQualities.Buffs
 
         static void onBuffFirstStackGainedGlobal(CharacterBody body, BuffDef buffDef)
         {
+            if (!body.hasEffectiveAuthority)
+                return;
+
             BuffIndex buffIndex = buffDef ? buffDef.buffIndex : BuffIndex.None;
 
             if (QualityCatalog.GetQualityTier(buffIndex) == QualityTier.None)
