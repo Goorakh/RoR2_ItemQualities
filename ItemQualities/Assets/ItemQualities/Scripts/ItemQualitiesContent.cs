@@ -742,6 +742,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup Blackhole;
 
             public static EquipmentQualityGroup Scanner;
+
+            public static EquipmentQualityGroup Lightning;
         }
 
         public static class BuffQualityGroups

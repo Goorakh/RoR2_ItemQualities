@@ -200,5 +200,17 @@
         
         "EQUIPMENT_SCANNER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 2 large cloaked chests will appear every stage.",
         "EQUIPMENT_SCANNER_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> 2 large cloaked chests will appear every stage, each containing a quality <sprite name=\"Quality\"> item.",
+        
+        "EQUIPMENT_LIGHTNING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 50% chance to strike twice.",
+        "EQUIPMENT_LIGHTNING_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> chance to <style=cIsDamage>strike</style> twice.",
+        
+        "EQUIPMENT_LIGHTNING_RARE_PICKUP": "Call down <sprite name=\"Quality\"> 2 lightning strikes on a targeted monster.\n<sprite name=\"Quality\"> 20% chance to strike 3 times.",
+        "EQUIPMENT_LIGHTNING_RARE_DESC": "Call down <sprite name=\"Quality\"> 2 lightning strikes on a targeted monster, each dealing <style=cIsDamage>3000% damage</style> and <style=cIsDamage>stunning</style> nearby monsters.\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance to <style=cIsDamage>strike</style> 3 times.",
+        
+        "EQUIPMENT_LIGHTNING_EPIC_PICKUP": "Call down <sprite name=\"Quality\"> 3 lightning strikes on a targeted monster.\n<sprite name=\"Quality\"> 20% chance to strike 4 times.",
+        "EQUIPMENT_LIGHTNING_EPIC_DESC": "Call down <sprite name=\"Quality\"> 3 lightning strikes on a targeted monster, each dealing <style=cIsDamage>3000% damage</style> and <style=cIsDamage>stunning</style> nearby monsters.\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance to <style=cIsDamage>strike</style> 4 times.",
+        
+        "EQUIPMENT_LIGHTNING_LEGENDARY_PICKUP": "Call down <sprite name=\"Quality\"> 5 lightning strikes on a targeted monster.",
+        "EQUIPMENT_LIGHTNING_LEGENDARY_DESC": "Call down <sprite name=\"Quality\"> 5 lightning strikes on a targeted monster, each dealing <style=cIsDamage>3000% damage</style> and <style=cIsDamage>stunning</style> nearby monsters.",
     }
 }
