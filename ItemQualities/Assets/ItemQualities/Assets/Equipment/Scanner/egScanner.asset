@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egScanner
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: 77c68034a2db51445b14276c921c6ac1
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: be509f1874145de4ebcf9572a21d67c7, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: 858bcfda023b2f64482e7dd86e033a1e, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 02c6615cad0dd0b42992775998c12cc0, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: bd9d1fc79a6155340a6ff68854e5c045, type: 2}

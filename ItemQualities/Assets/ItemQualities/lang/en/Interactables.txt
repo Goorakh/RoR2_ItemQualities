@@ -18,19 +18,23 @@
         "DUPLICATOR_QUALITY_DESCRIPTION": "",
 
         "DUPLICATOR_MILITARY_QUALITY_NAME": "Mili-Tech Printer - Quality",
-		"DUPLICATOR_MILITARY_QUALITY_CONTEXT": "Use Mili-Tech Printer - Quality",
-		"DUPLICATOR_MILITARY_QUALITY_DESCRIPTION": "",
+        "DUPLICATOR_MILITARY_QUALITY_CONTEXT": "Use Mili-Tech Printer - Quality",
+        "DUPLICATOR_MILITARY_QUALITY_DESCRIPTION": "",
 
         "DUPLICATOR_WILD_QUALITY_NAME": "Overgrown 3D Printer - Quality",
-		"DUPLICATOR_WILD_QUALITY_CONTEXT": "Use Overgrown 3D Printer - Quality",
-		"DUPLICATOR_WILD_QUALITY_DESCRIPTION": "",
+        "DUPLICATOR_WILD_QUALITY_CONTEXT": "Use Overgrown 3D Printer - Quality",
+        "DUPLICATOR_WILD_QUALITY_DESCRIPTION": "",
 
         "BARREL_SPEEDONPICKUP_NAME": "Collector's Barrel",
-		"BARREL_SPEEDONPICKUP_CONTEXT": "Open collector's barrel",
-		"BARREL_SPEEDONPICKUP_DESCRIPTION": "Contains a pickup that slightly increases all stats.",
+        "BARREL_SPEEDONPICKUP_CONTEXT": "Open collector's barrel",
+        "BARREL_SPEEDONPICKUP_DESCRIPTION": "Contains a pickup that slightly increases all stats.",
 
         "COST_QUALITY_ITEM_FORMAT": "{0} Quality Item(s)",
 
         "FRIENDUNIT_QUALITY_PET_CONTEXT": "Punt",
+
+        "QUALITY_CHEST2_STEALTHED_NAME": "Large Cloaked Chest",
+        "QUALITY_CHEST2_STEALTHED_CONTEXT": "Open large cloaked chest",
+        "QUALITY_CHEST2_STEALTHED_DESCRIPTION": "An invisible chest that does not have to be purchased. The Large Cloaked Chest has a chance to contain either an uncommon or legendary quality <sprite name=\"Quality\"> item.",
     }
 }

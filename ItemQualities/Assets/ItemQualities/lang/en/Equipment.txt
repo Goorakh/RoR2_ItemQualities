@@ -188,5 +188,17 @@
         
         "EQUIPMENT_BLACKHOLE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size and duration.",
         "EQUIPMENT_BLACKHOLE_LEGENDARY_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 90m into its center</style>. Lasts <sprite name=\"Quality\"> 35 seconds.",
+        
+        "EQUIPMENT_SCANNER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> A free cloaked chest will appear every stage.",
+        "EQUIPMENT_SCANNER_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> 1 cloaked chest will appear every stage, containing a quality <sprite name=\"Quality\"> item.",
+        
+        "EQUIPMENT_SCANNER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> 2 free cloaked chests will appear every stage.",
+        "EQUIPMENT_SCANNER_RARE_DESC": "{0}\n<sprite name=\"Quality\"> 2 cloaked chests will appear every stage, each containing a quality <sprite name=\"Quality\"> item.",
+        
+        "EQUIPMENT_SCANNER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> A large cloaked chest will appear every stage.",
+        "EQUIPMENT_SCANNER_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> A large cloaked chest will appear every stage, containing a quality <sprite name=\"Quality\"> item.",
+        
+        "EQUIPMENT_SCANNER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 2 large cloaked chests will appear every stage.",
+        "EQUIPMENT_SCANNER_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> 2 large cloaked chests will appear every stage, each containing a quality <sprite name=\"Quality\"> item.",
     }
 }
