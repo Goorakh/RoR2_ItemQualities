@@ -738,6 +738,10 @@ namespace ItemQualities
             public static EquipmentQualityGroup CritOnUse;
 
             public static EquipmentQualityGroup BFG;
+
+            public static EquipmentQualityGroup Blackhole;
+
+            public static EquipmentQualityGroup Scanner;
         }
 
         public static class BuffQualityGroups
@@ -884,6 +888,9 @@ namespace ItemQualities
 
             [TargetAssetName("iscQualityDuplicatorWild")]
             public static InteractableSpawnCard QualityDuplicatorWild;
+
+            [TargetAssetName("iscChest2Stealthed")]
+            public static InteractableSpawnCard Chest2Stealthed;
         }
 
         public static class Sprites
