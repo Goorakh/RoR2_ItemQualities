@@ -248,5 +248,17 @@
         
         "EQUIPMENT_DRONEBACKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
         "EQUIPMENT_DRONEBACKUP_LEGENDARY_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>8 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        
+        "EQUIPMENT_GOLDGAT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_UNCOMMON_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>20%</style>.",
+        
+        "EQUIPMENT_GOLDGAT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_RARE_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>40%</style>.",
+        
+        "EQUIPMENT_GOLDGAT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_EPIC_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>80%</style>.",
+        
+        "EQUIPMENT_GOLDGAT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_LEGENDARY_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>150%</style>.",
     }
 }
