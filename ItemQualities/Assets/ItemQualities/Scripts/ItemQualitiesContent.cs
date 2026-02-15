@@ -744,6 +744,10 @@ namespace ItemQualities
             public static EquipmentQualityGroup Scanner;
 
             public static EquipmentQualityGroup Lightning;
+
+            public static EquipmentQualityGroup Saw;
+
+            public static EquipmentQualityGroup LifestealOnHit;
         }
 
         public static class BuffQualityGroups
@@ -787,6 +791,8 @@ namespace ItemQualities
             public static BuffQualityGroup TeamWarCry;
 
             public static BuffQualityGroup FullCrit;
+
+            public static BuffQualityGroup LifeSteal;
         }
 
         public static class Buffs

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgLifeSteal
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: c4c6c22133c77874b8f644b7a7a544c0
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseBuff: {fileID: 0}
+  _uncommonBuff: {fileID: 11400000, guid: 0cc0965453d495e4fac4298edb23f9cb, type: 2}
+  _rareBuff: {fileID: 11400000, guid: cefe792b732ac984097fc8b19795a11a, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 7552d1572e6c6db46ac144b22499b319, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: a631ebba497e9da44a9121db36d1cd90, type: 2}
+  InheritBaseBuffBehavior: 1
