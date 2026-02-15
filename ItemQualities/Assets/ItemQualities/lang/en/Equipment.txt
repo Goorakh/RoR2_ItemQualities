@@ -236,5 +236,17 @@
 
         "EQUIPMENT_LIFESTEALONHIT_LEGENDARY_PICKUP": "Heal for a percentage of the damage you deal for <sprite name=\"Quality\"> 25 seconds.\n<sprite name=\"Quality\"> Excess healing is turned into barrier.",
         "EQUIPMENT_LIFESTEALONHIT_LEGENDARY_DESC": "<style=cIsHealing>Heal</style> for <style=cIsHealing>20%</style> of the <style=cIsDamage>damage</style> you deal. Lasts <sprite name=\"Quality\"> <style=cIsHealing>10</style> seconds. Healing past maximum health grants <sprite name=\"Quality\"> <style=cIsHealing>200%</style> of amount healed as <style=cIsHealing>barrier</style>.",
+        
+        "EQUIPMENT_DRONEBACKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
+        "EQUIPMENT_DRONEBACKUP_UNCOMMON_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>5 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        
+        "EQUIPMENT_DRONEBACKUP_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
+        "EQUIPMENT_DRONEBACKUP_RARE_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>6 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        
+        "EQUIPMENT_DRONEBACKUP_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
+        "EQUIPMENT_DRONEBACKUP_EPIC_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>7 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        
+        "EQUIPMENT_DRONEBACKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
+        "EQUIPMENT_DRONEBACKUP_LEGENDARY_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>8 Strike Drones</style> to fight for you. Lasts 25 seconds.",
     }
 }
