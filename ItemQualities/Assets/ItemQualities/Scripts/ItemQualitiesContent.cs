@@ -715,6 +715,8 @@ namespace ItemQualities
         {
             internal static IReadOnlyCollection<EquipmentQualityGroup> AllGroups = Array.Empty<EquipmentQualityGroup>();
 
+            public static EquipmentQualityGroup BossHunter;
+
             public static EquipmentQualityGroup BossHunterConsumed;
 
             public static EquipmentQualityGroup Recycle;
@@ -748,6 +750,10 @@ namespace ItemQualities
             public static EquipmentQualityGroup Saw;
 
             public static EquipmentQualityGroup LifestealOnHit;
+
+            public static EquipmentQualityGroup DroneBackup;
+
+            public static EquipmentQualityGroup GoldGat;
         }
 
         public static class BuffQualityGroups
