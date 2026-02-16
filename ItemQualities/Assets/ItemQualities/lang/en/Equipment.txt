@@ -1,20 +1,32 @@
 ﻿{
     strings:
     {
-        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>",
-        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>",
+        "EQUIPMENT_BOSSHUNTER_UNCOMMON_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityUncommon\">. Consumed on use.",
+        "EQUIPMENT_BOSSHUNTER_UNCOMMON_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityUncommon\"> uncommon quality (or <sprite name=\"Quality\"> 1 extra copy of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
+        
+        "EQUIPMENT_BOSSHUNTER_RARE_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityRare\">. Consumed on use.",
+        "EQUIPMENT_BOSSHUNTER_RARE_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityRare\"> rare quality (or <sprite name=\"Quality\"> 2 extra copies of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
+        
+        "EQUIPMENT_BOSSHUNTER_EPIC_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityEpic\">. Consumed on use.",
+        "EQUIPMENT_BOSSHUNTER_EPIC_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityEpic\"> epic quality (or <sprite name=\"Quality\"> 3 extra copies of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
+        
+        "EQUIPMENT_BOSSHUNTER_LEGENDARY_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityLegendary\">. Consumed on use.",
+        "EQUIPMENT_BOSSHUNTER_LEGENDARY_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityLegendary\"> legendary quality (or <sprite name=\"Quality\"> 4 extra copies of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
+
+        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> I like your hat.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "<sprite name=\"Quality\"> I like your hat.",
         "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_CHAT": "Ahoy!!",
         
-        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>",
-        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "Oh wow, you look <sprite name=\"Quality\"> great.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "Oh wow, you look <sprite name=\"Quality\"> great.",
         "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_CHAT": "Ahoy!!!",
 
-        "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>300%</style>",
-        "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>300%</style>",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP": "Wow, you look <sprite name=\"Quality\"> amazing.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_DESC": "Wow, you look <sprite name=\"Quality\"> amazing.",
         "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_CHAT": "Ahoy!!!!",
         
-        "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>500%</style>",
-        "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>500%</style>",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_PICKUP": "You look <sprite name=\"Quality\"> fucking incredible.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_DESC": "You look <sprite name=\"Quality\"> fucking incredible.",
         "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_CHAT": "AHOY!!!!!",
 
         "EQUIPMENT_RECYCLE_UNCOMMON_PICKUP": "Transform an <sprite name=\"QualityUncommon\"> uncommon or lower quality Item or Equipment into a different one. Can only recycle once.",

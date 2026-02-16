@@ -98,21 +98,21 @@ namespace ItemQualities.Equipments
             IL.RoR2.CharacterMaster.TrueKill_GameObject_GameObject_DamageTypeCombo += CharacterMaster_TrueKill_GameObject_GameObject_DamageTypeCombo;
 
             // include quality
-            IL.RoR2.HealthComponent.ProcParry += genericPatchAllGetEquipmentQuality;
+            IL.RoR2.HealthComponent.ProcParry += GenericPatchAllGetEquipmentQuality;
 
-            IL.EntityStates.RoboBallBoss.Weapon.DeployMinions.SummonMinion += genericPatchAllGetEquipmentQuality;
+            IL.EntityStates.RoboBallBoss.Weapon.DeployMinions.SummonMinion += GenericPatchAllGetEquipmentQuality;
 
-            IL.RoR2.Stats.StatManager.ProcessCharacterUpdateEvents += genericPatchAllGetEquipmentQuality;
+            IL.RoR2.Stats.StatManager.ProcessCharacterUpdateEvents += GenericPatchAllGetEquipmentQuality;
 
-            IL.RoR2.CraftableCatalog.IngredientSlotEntry.Validate_Inventory += genericPatchAllGetEquipmentQuality;
+            IL.RoR2.CraftableCatalog.IngredientSlotEntry.Validate_Inventory += GenericPatchAllGetEquipmentQuality;
 
-            IL.RoR2.CraftingController.GetGeneratedOptionsFromInteractor += genericPatchAllGetEquipmentQuality;
+            IL.RoR2.CraftingController.GetGeneratedOptionsFromInteractor += GenericPatchAllGetEquipmentQuality;
 
-            IL.RoR2.EquipmentSlot.Execute += genericPatchAllGetEquipmentQuality;
+            IL.RoR2.EquipmentSlot.Execute += GenericPatchAllGetEquipmentQuality;
 
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += genericPatchAllGetEquipmentQuality;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted += GenericPatchAllGetEquipmentQuality;
 
-            IL.RoR2.GlobalEventManager.OnCharacterDeath += genericPatchAllGetEquipmentQuality;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += GenericPatchAllGetEquipmentQuality;
 
             IL.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
 
@@ -141,7 +141,7 @@ namespace ItemQualities.Equipments
 
                     if (onSpawnedServerMethod != null)
                     {
-                        new ILHook(onSpawnedServerMethod, genericPatchAllGetEquipmentQuality);
+                        new ILHook(onSpawnedServerMethod, GenericPatchAllGetEquipmentQuality);
                     }
                 }
                 else
@@ -179,7 +179,7 @@ namespace ItemQualities.Equipments
 
                     if (onSpawnedServerMethod != null)
                     {
-                        new ILHook(onSpawnedServerMethod, genericPatchAllGetEquipmentQuality);
+                        new ILHook(onSpawnedServerMethod, GenericPatchAllGetEquipmentQuality);
                     }
                 }
                 else
@@ -195,7 +195,7 @@ namespace ItemQualities.Equipments
             MethodInfo equipmentPayCostMethod = CostTypeCatalog.GetCostTypeDef(CostTypeIndex.Equipment)?.payCost?.Method;
             if (equipmentPayCostMethod != null)
             {
-                new ILHook(equipmentPayCostMethod, genericPatchAllGetEquipmentQuality);
+                new ILHook(equipmentPayCostMethod, GenericPatchAllGetEquipmentQuality);
             }
             else
             {
@@ -364,7 +364,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void genericPatchAllGetEquipmentQuality(ILContext il)
+        public static void GenericPatchAllGetEquipmentQuality(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
