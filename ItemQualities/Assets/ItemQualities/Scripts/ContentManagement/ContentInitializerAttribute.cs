@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 
 namespace ItemQualities.ContentManagement
 {
@@ -25,14 +26,37 @@ namespace ItemQualities.ContentManagement
             Dependencies = dependencies;
         }
 
+        static bool contentInitializerIsValid(ContentInitializerAttribute attribute)
+        {
+            MethodInfo method = attribute.target;
+            Type declaringType = method.DeclaringType;
+
+            ParameterInfo[] methodParameters = method.GetParameters();
+            if (methodParameters.Length != 1 || methodParameters[0].ParameterType != typeof(ContentIntializerArgs))
+            {
+                Log.Error($"Invalid parameters for Content Initializer method {declaringType.FullName}.{method.Name}");
+                return false;
+            }
+
+            return true;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        static bool contentInitializerIsInvalid(ContentInitializerAttribute attribute)
+        {
+            return !contentInitializerIsValid(attribute);
+        }
+
         public static IEnumerator RunContentInitializers(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
         {
-            List<(IEnumerator coroutine, ReadableProgress<float> progress)> contentInitializersSequence = new();
+            List<ProgressCoroutine> contentInitializersSequence = new List<ProgressCoroutine>();
 
             List<ParallelCoroutineGroup> contentInitializerGroups = new List<ParallelCoroutineGroup>();
 
             List<ContentInitializerAttribute> attributes = new List<ContentInitializerAttribute>();
             GetInstances(attributes);
+
+            attributes.RemoveAll(contentInitializerIsInvalid);
 
             while (attributes.Count > 0)
             {
@@ -43,34 +67,35 @@ namespace ItemQualities.ContentManagement
                     ContentInitializerAttribute attribute = attributes[i];
 
                     MethodInfo method = attribute.target;
-                    ParameterInfo[] methodParameters = method.GetParameters();
-                    if (methodParameters.Length != 1 || methodParameters[0].ParameterType != typeof(ContentIntializerArgs))
-                    {
-                        Log.Error($"Invalid parameters for Content Initializer method {method.DeclaringType.FullName}.{method.Name}");
-                        attributes.RemoveAt(i);
-                        continue;
-                    }
 
                     int highestGroupDependencyIndex = -1;
-                    List<Type> initializerDependencies = attribute.Dependencies.ToList();
-                    if (initializerDependencies.Count > 0)
+
+                    bool hasUninitializedDependencies = false;
+
+                    if (attribute.Dependencies.Length > 0)
                     {
-                        for (int j = 0; j < contentInitializerGroups.Count; j++)
+                        hasUninitializedDependencies = true;
+
+                        using var _ = ListPool<Type>.RentCollection(out List<Type> uninitializedDependencies);
+                        uninitializedDependencies.AddRange(attribute.Dependencies);
+
+                        for (int groupIndex = 0; groupIndex < contentInitializerGroups.Count; groupIndex++)
                         {
-                            int removedDependencies = initializerDependencies.RemoveAll(contentInitializerGroups[j].InitializesType);
+                            int removedDependencies = uninitializedDependencies.RemoveAll(contentInitializerGroups[groupIndex].InitializesType);
                             if (removedDependencies > 0)
                             {
-                                highestGroupDependencyIndex = j;
+                                highestGroupDependencyIndex = groupIndex;
 
-                                if (initializerDependencies.Count == 0)
+                                if (uninitializedDependencies.Count == 0)
                                 {
+                                    hasUninitializedDependencies = false;
                                     break;
                                 }
                             }
                         }
                     }
 
-                    if (initializerDependencies.Count == 0)
+                    if (!hasUninitializedDependencies)
                     {
                         ReadableProgress<float> contentInitializerProgress = new ReadableProgress<float>();
                         ContentIntializerArgs contentIntializerArgs = new ContentIntializerArgs(contentPack, contentInitializerProgress);
@@ -105,7 +130,7 @@ namespace ItemQualities.ContentManagement
                             initializerGroup = new ParallelCoroutineGroup(groupProgress);
                             contentInitializerGroups.Add(initializerGroup);
 
-                            contentInitializersSequence.Add((initializerGroup, groupProgress));
+                            contentInitializersSequence.Add(new ProgressCoroutine(initializerGroup, groupProgress));
                         }
 
                         initializerGroup.Add(attribute, runInitializerCoroutine(method, contentIntializerArgs), contentInitializerProgress);
@@ -130,15 +155,30 @@ namespace ItemQualities.ContentManagement
 
             for (int i = 0; i < contentInitializersSequence.Count; i++)
             {
-                (IEnumerator coroutine, ReadableProgress<float> progress) = contentInitializersSequence[i];
+                ProgressCoroutine coroutine = contentInitializersSequence[i];
 
-                while (coroutine.MoveNext())
+                yield return coroutine.WithProgressReciever(initializerGroupProgressReceivers[i]);
+            }
+        }
+
+        sealed class ProgressCoroutine
+        {
+            readonly IEnumerator _coroutine;
+            readonly ReadableProgress<float> _progress;
+
+            public ProgressCoroutine(IEnumerator coroutine, ReadableProgress<float> progress)
+            {
+                _coroutine = coroutine;
+                _progress = progress;
+            }
+
+            public IEnumerator WithProgressReciever(IProgress<float> progressReceiver)
+            {
+                while (_coroutine.MoveNext())
                 {
-                    yield return coroutine.Current;
-                    initializerGroupProgressReceivers[i].Report(progress.value);
+                    yield return _coroutine.Current;
+                    progressReceiver.Report(_progress.value);
                 }
-
-                initializerGroupProgressReceivers[i].Report(1f);
             }
         }
 

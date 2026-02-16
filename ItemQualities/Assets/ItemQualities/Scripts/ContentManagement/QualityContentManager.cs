@@ -32,76 +32,72 @@ namespace ItemQualities.ContentManagement
 
         static bool _hasCollectedLoadCoroutines = false;
 
-        [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        internal static IEnumerator LoadContent(ContentIntializerArgs args)
         {
-            if (loadContentInternal == null)
-            {
-                args.ProgressReceiver.Report(1f);
-                yield break;
-            }
-
-            PartitionedProgress totalProgress = new PartitionedProgress(args.ProgressReceiver);
-            IProgress<float> loadContentProgress = totalProgress.AddPartition();
-            IProgress<float> generateAssetsProgress = totalProgress.AddPartition();
-
-            ParallelProgressCoroutine loadContentCoroutine = new ParallelProgressCoroutine(loadContentProgress);
-
-            List<ItemQualityGroup> itemQualityGroups = new List<ItemQualityGroup>();
-            List<EquipmentQualityGroup> equipmentQualityGroups = new List<EquipmentQualityGroup>();
-            List<BuffQualityGroup> buffQualityGroups = new List<BuffQualityGroup>();
-
-            foreach (LoadContentAsyncDelegate loadContentDelegate in loadContentInternal.GetInvocationList()
-                                                                                           .OfType<LoadContentAsyncDelegate>())
-            {
-                if (loadContentDelegate != null)
-                {
-                    ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
-
-                    QualityContentLoadArgs loadArgs = new QualityContentLoadArgs(itemQualityGroups, equipmentQualityGroups, buffQualityGroups, progressReceiver);
-                    loadContentCoroutine.Add(safeCoroutineWrapper(loadContentDelegate, loadArgs), progressReceiver);
-                }
-            }
-
             _hasCollectedLoadCoroutines = true;
 
-            yield return loadContentCoroutine;
-
-            ParallelProgressCoroutine generateAssetsCoroutine = new ParallelProgressCoroutine(generateAssetsProgress);
-
-            foreach (ItemQualityGroup itemGroup in itemQualityGroups)
+            if (loadContentInternal != null)
             {
-                ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
-                generateAssetsCoroutine.Add(itemGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
-            }
+                PartitionedProgress totalProgress = new PartitionedProgress(args.ProgressReceiver);
+                IProgress<float> loadContentProgress = totalProgress.AddPartition();
+                IProgress<float> generateAssetsProgress = totalProgress.AddPartition();
 
-            foreach (EquipmentQualityGroup equipmentGroup in equipmentQualityGroups)
-            {
-                ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
-                generateAssetsCoroutine.Add(equipmentGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
-            }
+                ParallelProgressCoroutine loadContentCoroutine = new ParallelProgressCoroutine(loadContentProgress);
 
-            foreach (BuffQualityGroup buffGroup in buffQualityGroups)
-            {
-                ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
-                generateAssetsCoroutine.Add(buffGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
-            }
+                List<ItemQualityGroup> itemQualityGroups = new List<ItemQualityGroup>();
+                List<EquipmentQualityGroup> equipmentQualityGroups = new List<EquipmentQualityGroup>();
+                List<BuffQualityGroup> buffQualityGroups = new List<BuffQualityGroup>();
 
-            yield return generateAssetsCoroutine;
+                foreach (LoadContentAsyncDelegate loadContentDelegate in loadContentInternal.GetInvocationList()
+                                                                                            .OfType<LoadContentAsyncDelegate>())
+                {
+                    if (loadContentDelegate != null)
+                    {
+                        ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
 
-            if (itemQualityGroups.Count > 0)
-            {
-                args.ContentPack.itemQualityGroups.Add(itemQualityGroups.ToArray());
-            }
+                        QualityContentLoadArgs loadArgs = new QualityContentLoadArgs(itemQualityGroups, equipmentQualityGroups, buffQualityGroups, progressReceiver);
+                        loadContentCoroutine.Add(safeCoroutineWrapper(loadContentDelegate, loadArgs), progressReceiver);
+                    }
+                }
 
-            if (equipmentQualityGroups.Count > 0)
-            {
-                args.ContentPack.equipmentQualityGroups.Add(equipmentQualityGroups.ToArray());
-            }
+                yield return loadContentCoroutine;
 
-            if (buffQualityGroups.Count > 0)
-            {
-                args.ContentPack.buffQualityGroups.Add(buffQualityGroups.ToArray());
+                ParallelProgressCoroutine generateAssetsCoroutine = new ParallelProgressCoroutine(generateAssetsProgress);
+
+                foreach (ItemQualityGroup itemGroup in itemQualityGroups)
+                {
+                    ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
+                    generateAssetsCoroutine.Add(itemGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
+                }
+
+                foreach (EquipmentQualityGroup equipmentGroup in equipmentQualityGroups)
+                {
+                    ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
+                    generateAssetsCoroutine.Add(equipmentGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
+                }
+
+                foreach (BuffQualityGroup buffGroup in buffQualityGroups)
+                {
+                    ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
+                    generateAssetsCoroutine.Add(buffGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
+                }
+
+                yield return generateAssetsCoroutine;
+
+                if (itemQualityGroups.Count > 0)
+                {
+                    args.ContentPack.itemQualityGroups.Add(itemQualityGroups.ToArray());
+                }
+
+                if (equipmentQualityGroups.Count > 0)
+                {
+                    args.ContentPack.equipmentQualityGroups.Add(equipmentQualityGroups.ToArray());
+                }
+
+                if (buffQualityGroups.Count > 0)
+                {
+                    args.ContentPack.buffQualityGroups.Add(buffQualityGroups.ToArray());
+                }
             }
 
             args.ProgressReceiver.Report(1f);

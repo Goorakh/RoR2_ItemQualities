@@ -48,27 +48,20 @@ namespace ItemQualities
         public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
         {
             PartitionedProgress partitionedProgress = new PartitionedProgress(args.progressReceiver);
-            IProgress<float> loadContentProgress = partitionedProgress.AddPartition(1f);
-            IProgress<float> finalizeContentProgress = partitionedProgress.AddPartition(1f);
+            IProgress<float> loadAssetBundleContentProgress = partitionedProgress.AddPartition();
+            IProgress<float> qualityContentManagerProgress = partitionedProgress.AddPartition();
+            IProgress<float> contentInitializersProgress = partitionedProgress.AddPartition();
+            IProgress<float> finalizeContentProgress = partitionedProgress.AddPartition();
 
-            ParallelProgressCoroutine loadContentCoroutine = new ParallelProgressCoroutine(loadContentProgress);
+            yield return loadAssetBundleContentAsync(loadAssetBundleContentProgress);
 
-            ReadableProgress<float> loadAssetBundleProgress = new ReadableProgress<float>();
-            loadContentCoroutine.Add(loadAssetBundleContentAsync(loadAssetBundleProgress), loadAssetBundleProgress);
+            yield return QualityContentManager.LoadContent(new ContentIntializerArgs(_contentPack, qualityContentManagerProgress));
 
-            ReadableProgress<float> contentInitializersProgress = new ReadableProgress<float>();
-            loadContentCoroutine.Add(ContentInitializerAttribute.RunContentInitializers(_contentPack, contentInitializersProgress), contentInitializersProgress);
-
-            yield return loadContentCoroutine;
+            yield return ContentInitializerAttribute.RunContentInitializers(_contentPack, contentInitializersProgress);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            ParallelProgressCoroutine finalizeContentCoroutine = new ParallelProgressCoroutine(finalizeContentProgress);
-
-            ReadableProgress<float> contentLoadCallbacksProgress = new ReadableProgress<float>();
-            finalizeContentCoroutine.Add(runContentLoadCallbacks(contentLoadCallbacksProgress), contentLoadCallbacksProgress);
-
-            yield return finalizeContentCoroutine;
+            yield return runContentLoadCallbacks(finalizeContentProgress);
 
             populateTypeFields(typeof(QualityTiers), _contentPack.qualityTierDefs, fieldName => "qd" + fieldName);
             QualityTiers.AllQualityTiers = new ReadOnlyCollection<QualityTierDef>(_contentPack.qualityTierDefs.ToArray());
@@ -113,7 +106,9 @@ namespace ItemQualities
             string assetBundleLocation = Path.Combine(Path.GetDirectoryName(ItemQualitiesPlugin.Instance.Info.Location), "itemqualitiesassets");
             if (!File.Exists(assetBundleLocation))
             {
-                throw new FileNotFoundException("Could not find ItemQualities assetbundle file");
+                Log.Error($"Could not find assetbundle file at '{assetBundleLocation}'");
+                progressReceiver.Report(1f);
+                yield break;
             }
 
             PartitionedProgress totalProgress = new PartitionedProgress(progressReceiver);
