@@ -1,8 +1,10 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using UnityEngine;
 
@@ -14,6 +16,27 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
+            GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
+
+            AddressableUtil.LoadAssetAsync<Material>(RoR2_Base_Squid.matSquidTurret_mat).OnSuccess(squidMaterial =>
+            {
+                squidMaterial.SetFloat(ShaderProperties._EmPower, 0);
+            });
+        }
+
+        private static void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
+        {
+            Inventory inventory = damageReport?.attackerMaster?.inventory;
+            if (!inventory)
+                return;
+
+            int DroneUpgradeOnKillCount = inventory.GetItemCountEffective(ItemQualitiesContent.Items.DroneUpgradeOnKill);
+            if (DroneUpgradeOnKillCount > 0 &&
+            DroneUpgradeOnKillCount > inventory.GetItemCountEffective(DLC3Content.Items.DroneUpgradeHidden) &&
+            RollUtil.CheckRoll(DroneUpgradeOnKillCount * 10 + 10, damageReport.attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+            {
+                inventory.GiveItemPermanent(DLC3Content.Items.DroneUpgradeHidden);
+            }
         }
 
         static void GlobalEventManager_OnInteractionBegin(ILContext il)
@@ -63,35 +86,16 @@ namespace ItemQualities.Items
 
                         if (result.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster) && spawnedMaster.inventory)
                         {
-                            int boostHpCount = (2 * squid.UncommonCount) +
-                                               (4 * squid.RareCount) +
-                                               (8 * squid.EpicCount) +
-                                               (15 * squid.LegendaryCount);
+                            spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.DroneUpgradeOnKill, (int) squid.HighestQuality + 1);
 
-                            int boostDamageCount = (1 * squid.UncommonCount) +
-                                                   (3 * squid.RareCount) +
-                                                   (6 * squid.EpicCount) +
-                                                   (10 * squid.LegendaryCount);
+                            int boostDamageCount = (3 * squid.UncommonCount) +
+                                                   (4 * squid.RareCount) +
+                                                   (5 * squid.EpicCount) +
+                                                   (6 * squid.LegendaryCount);
 
                             if (boostDamageCount > 0)
                             {
                                 spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostDamage, boostDamageCount);
-                            }
-
-                            if (boostHpCount > 0)
-                            {
-                                spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostHp, boostHpCount);
-
-                                float hpBoostPercent = boostHpCount * 0.1f;
-                                int healthDecayDuration = spawnedMaster.inventory.GetItemCountPermanent(RoR2Content.Items.HealthDecay);
-                                if (healthDecayDuration > 0)
-                                {
-                                    int newHealthDecayDuration = Mathf.RoundToInt(healthDecayDuration * (1f + hpBoostPercent));
-                                    if (newHealthDecayDuration > healthDecayDuration)
-                                    {
-                                        spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, newHealthDecayDuration - healthDecayDuration);
-                                    }
-                                }
                             }
                         }
                     };

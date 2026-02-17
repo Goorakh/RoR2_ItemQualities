@@ -7,5 +7,7 @@ namespace ItemQualities
         public static readonly int _Color = Shader.PropertyToID("_Color");
 
         public static readonly int _TintColor = Shader.PropertyToID("_TintColor");
+
+        public static readonly int _EmPower = Shader.PropertyToID("_EmPower");
     }
 }

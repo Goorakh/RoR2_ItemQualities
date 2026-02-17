@@ -285,6 +285,8 @@ namespace ItemQualities
             _contentPack.itemDefs.Add(itemDefsList.ToArray());
             _contentPack.itemTierDefs.Add(itemTierDefsList.ToArray());
 
+            UnityEngine.Debug.Log(itemDefsList.ToArray());
+
             _contentPack.buffDefs.Add(buffDefsList.ToArray());
 
             _contentPack.equipmentDefs.Add(equipmentDefsList.ToArray());
@@ -697,6 +699,8 @@ namespace ItemQualities
         public static class Items
         {
             public static ItemDef DronesDropDynamiteQualityDroneItem;
+
+            public static ItemDef DroneUpgradeOnKill;
         }
 
         public static class EquipmentQualityGroups
