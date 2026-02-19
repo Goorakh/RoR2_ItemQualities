@@ -27,13 +27,6 @@
       "source": "builtin",
       "dependencies": {}
     },
-    "com.unity.collab-proxy": {
-      "version": "2.2.0",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {},
-      "url": "https://packages.unity.com"
-    },
     "com.unity.editorcoroutines": {
       "version": "1.0.0",
       "depth": 1,
@@ -124,7 +117,7 @@
     },
     "com.unity.test-framework": {
       "version": "1.1.33",
-      "depth": 0,
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.ext.nunit": "1.0.6",
@@ -172,16 +165,6 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
-    },
-    "com.unity.visualscripting": {
-      "version": "1.9.1",
-      "depth": 0,
-      "source": "registry",
-      "dependencies": {
-        "com.unity.ugui": "1.0.0",
-        "com.unity.modules.jsonserialize": "1.0.0"
-      },
-      "url": "https://packages.unity.com"
     },
     "mmhook-assemblies": {
       "version": "file:mmhook-assemblies",
@@ -233,6 +216,12 @@
     },
     "riskofthunder-r2api_artifactcode": {
       "version": "file:R2API_ArtifactCode",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
+    "riskofthunder-r2api_buffs": {
+      "version": "file:R2API_Buffs",
       "depth": 0,
       "source": "embedded",
       "dependencies": {}

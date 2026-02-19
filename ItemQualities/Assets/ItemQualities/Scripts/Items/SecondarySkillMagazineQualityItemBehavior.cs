@@ -48,6 +48,7 @@ namespace ItemQualities.Items
                 if (RollUtil.CheckRoll(freeRestockChanceNormalized * 100f, Body.master, false))
                 {
                     skill.AddOneStock();
+                    Body.OnSkillCooldown(skill, 1);
 
                     if (_restockEffectIndex != EffectIndex.Invalid)
                     {

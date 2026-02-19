@@ -2,13 +2,14 @@
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2.Audio;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public sealed class QualityItemDropletEffectController : MonoBehaviour
+    public sealed class QualityItemDropletEffectController : NetworkBehaviour
     {
         [SystemInitializer]
         static void Init()
@@ -21,56 +22,80 @@ namespace ItemQualities
 
         PickupDropletController _dropletController;
 
+        [SyncVar]
+        uint _pickupQualityTierInt;
+        public QualityTier PickupQualityTier
+        {
+            get => (QualityTier)_pickupQualityTierInt - 1;
+            private set => _pickupQualityTierInt = (uint)(value + 1);
+        }
+
         void Awake()
         {
             _dropletController = GetComponent<PickupDropletController>();
+            if (!_dropletController)
+            {
+                enabled = false;
+                Log.Warning($"{Util.GetGameObjectHierarchyName(gameObject)} is missing PickupDropletController component");
+            }
         }
 
         void Start()
         {
             if (NetworkServer.active)
             {
-                trySpawnQualityEffectServer();
+                QualityTier pickupQualityTier = QualityCatalog.GetQualityTier(_dropletController.pickupState.pickupIndex);
+                if (_dropletController.createPickupInfo.pickerOptions != null)
+                {
+                    foreach (PickupPickerController.Option option in _dropletController.createPickupInfo.pickerOptions)
+                    {
+                        if (option.available)
+                        {
+                            pickupQualityTier = QualityCatalog.Max(pickupQualityTier, QualityCatalog.GetQualityTier(option.pickup.pickupIndex));
+                        }
+                    }
+                }
+
+                PickupQualityTier = pickupQualityTier;
+
+                trySpawnQualityEffectServer(PickupQualityTier);
             }
         }
 
-        void trySpawnQualityEffectServer()
+        void OnDestroy()
         {
-            if (!NetworkServer.active)
-                return;
-
-            if (!_dropletController || !_dropletController.pickupState.isValid || !_dropletController.createPickupInfo.chest)
-                return;
-
-            ChestBehavior chest = _dropletController.createPickupInfo.chest;
-
-            QualityTier qualityTier = QualityCatalog.GetQualityTier(_dropletController.pickupState.pickupIndex);
-            if (qualityTier == QualityTier.None)
-                return;
-
-            QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(qualityTier);
-
-            Transform effectSpawnTransform = null;
-            int effectSpawnTransformChildIndex = -1;
-            if (chest.TryGetComponent(out ModelLocator modelLocator))
+            QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(PickupQualityTier);
+            if (qualityTierDef && !string.IsNullOrEmpty(qualityTierDef.pickupLandSoundEventName))
             {
-                ChildLocator chestModelChildLocator = modelLocator.modelChildLocator;
-                if (chestModelChildLocator)
-                {
-                    effectSpawnTransformChildIndex = chestModelChildLocator.FindChildIndex("BurstCenter");
-                    effectSpawnTransform = chestModelChildLocator.FindChild(effectSpawnTransformChildIndex);
-                }
+                PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSoundEventName, transform.position);
             }
+        }
+
+        [Server]
+        void trySpawnQualityEffectServer(QualityTier qualityTier)
+        {
+            QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(qualityTier);
+            if (!qualityTierDef)
+                return;
 
             EffectData effectData = new EffectData
             {
-                origin = effectSpawnTransform ? effectSpawnTransform.position : _dropletController.createPickupInfo.position,
-                rotation = Quaternion.identity,
+                origin = _dropletController.createPickupInfo.position,
             };
 
-            if (effectSpawnTransformChildIndex != -1)
+            Vector3 velocity = Vector3.zero;
+            if (TryGetComponent(out Rigidbody rigidbody))
             {
-                effectData.SetChildLocatorTransformReference(chest.gameObject, effectSpawnTransformChildIndex);
+                velocity = rigidbody.velocity;
+            }
+
+            if (velocity.sqrMagnitude > 0f)
+            {
+                effectData.rotation = Quaternion.FromToRotation(Vector3.up, velocity.normalized);
+            }
+            else
+            {
+                effectData.rotation = _dropletController.createPickupInfo.rotation;
             }
 
             EffectManager.SpawnEffect(qualityTierDef.ChestOpenEffectPrefab, effectData, true);

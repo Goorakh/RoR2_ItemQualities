@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 1386743312061916508}
   - component: {fileID: 4216515255286292405}
   - component: {fileID: 8159439704467611923}
-  - component: {fileID: 3959598177297909944}
   - component: {fileID: 6378681955861773747}
   - component: {fileID: 4887950223852862703}
   - component: {fileID: 8737935809385704075}
@@ -231,30 +230,6 @@ MonoBehaviour:
   onPurchase:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 8159439704467611923}
-        m_TargetAssemblyTypeName: RoR2.PurchaseInteraction, RoR2
-        m_MethodName: SetAvailable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3959598177297909944}
-        m_TargetAssemblyTypeName: RoR2.EntityLogic.DelayedEvent, RoR2
-        m_MethodName: CallDelayed
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 4
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 6132511278495916284}
         m_TargetAssemblyTypeName: RoR2.EntityStateMachine, RoR2
         m_MethodName: SetNextStateToMain
@@ -270,34 +245,6 @@ MonoBehaviour:
   onDetailedPurchaseServer:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3959598177297909944
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 133376595409305959}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 924743675, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  action:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8159439704467611923}
-        m_TargetAssemblyTypeName: RoR2.PurchaseInteraction, RoR2
-        m_MethodName: SetAvailable
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  timeStepType: 2
 --- !u!114 &6378681955861773747
 MonoBehaviour:
   m_ObjectHideFlags: 0

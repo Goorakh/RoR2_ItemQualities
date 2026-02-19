@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 namespace ItemQualities
 {
     [DefaultExecutionOrder(-1)]
-    public class InstantiateAddressablePrefab : MonoBehaviour
+    public sealed class InstantiateAddressablePrefab : MonoBehaviour
     {
         [SerializeField]
         Transform _parent;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    public class AxisBillboard : MonoBehaviour
+    public sealed class AxisBillboard : MonoBehaviour
     {
         public Vector3 Axis = Vector3.up;
 

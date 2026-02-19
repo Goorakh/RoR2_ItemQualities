@@ -65,7 +65,7 @@ namespace ItemQualities.Items
                 int growthNectarBuffCount = 0;
                 foreach (BuffIndex buffIndex in _validBuffIndices)
                 {
-                    if (Body.HasBuff(buffIndex))
+                    if (Body.HasBuffRaw(buffIndex))
                     {
                         growthNectarBuffCount++;
                     }

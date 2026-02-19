@@ -19,10 +19,10 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int damageReportLocalIndex = -1;
+            VariableDefinition damageReportVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchNewobj<DamageReport>(),
-                               x => x.MatchStloc(typeof(DamageReport), il, out damageReportLocalIndex),
+                               x => x.MatchStloc(typeof(DamageReport), il, out damageReportVar),
                                x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.thorns)),
                                x => x.MatchStfld<LightningOrb>(nameof(LightningOrb.damageValue))))
             {
@@ -32,7 +32,7 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[3].Next, MoveType.AfterLabel);
 
-            c.Emit(OpCodes.Ldloc, damageReportLocalIndex);
+            c.Emit(OpCodes.Ldloc, damageReportVar);
             c.EmitDelegate<Func<float, DamageReport, float>>(getThornsDamage);
 
             static float getThornsDamage(float thornsDamage, DamageReport damageReport)

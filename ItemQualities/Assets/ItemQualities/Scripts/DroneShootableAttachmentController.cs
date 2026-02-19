@@ -8,11 +8,8 @@ using UnityEngine.Networking;
 namespace ItemQualities
 {
     [RequireComponent(typeof(NetworkedBodyAttachment))]
-    public sealed class DroneShootableAttachmentController : NetworkBehaviour, IOnKilledServerReceiver, IOnTakeDamageServerReceiver, INetworkedBodyAttachmentListener
+    public sealed class DroneShootableAttachmentController : NetworkBehaviour, IOnKilledServerReceiver, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver, INetworkedBodyAttachmentListener
     {
-        static readonly int _Color = Shader.PropertyToID("_Color");
-        static readonly int _TintColor = Shader.PropertyToID("_TintColor");
-
         NetworkedBodyAttachment _bodyAttachment;
 
         CharacterMaster _cachedOwnerMaster;
@@ -31,6 +28,8 @@ namespace ItemQualities
         public GameObject ExplosionEffect;
 
         public HurtBoxGroup HurtBoxGroup;
+
+        public IgnoredCollisionsProvider IgnoredCollisionsProvider;
 
         [SyncVar(hook = nameof(hookSetStoredDamage))]
         float _storedDamage;
@@ -121,6 +120,9 @@ namespace ItemQualities
 
         bool shouldDisableHurtBoxes()
         {
+            if (_lastExplosionTimeStamp.timeSince <= 10f)
+                return true;
+
             CharacterBody attachedBody = _bodyAttachment.attachedBody;
             if (!attachedBody)
                 return true;
@@ -186,50 +188,46 @@ namespace ItemQualities
             _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.positiveInfinity;
         }
 
+        void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
+        {
+            if (_bodyAttachment.attachedBody)
+            {
+                if (!damageInfo.damageType.IsDamageSourceSkillBased ||
+                    !damageInfo.attacker ||
+                    TeamComponent.GetObjectTeam(damageInfo.attacker) != _bodyAttachment.attachedBody.teamComponent.teamIndex)
+                {
+                    damageInfo.rejected = true;
+                }
+            }
+        }
+
         void IOnTakeDamageServerReceiver.OnTakeDamageServer(DamageReport damageReport)
         {
-            if (!_bodyAttachment.attachedBody)
-                return;
-
-            if (_lastExplosionTimeStamp.timeSince > 10f &&
-                damageReport.damageInfo.damageType.IsDamageSourceSkillBased &&
-                damageReport.attackerTeamIndex == _bodyAttachment.attachedBody.teamComponent.teamIndex)
+            float damageToStore = Mathf.Min(_maxStoredDamage - _storedDamage, damageReport.damageDealt * _storedDamageMultiplier);
+            if (damageToStore > 0f)
             {
-                float damageToStore = Mathf.Min(_maxStoredDamage - _storedDamage, damageReport.damageDealt * _storedDamageMultiplier);
-                if (damageToStore > 0f)
+                _storedDamage += damageToStore;
+
+                float damageFraction = Mathf.Clamp01(_storedDamage / _maxStoredDamage);
+                float radius = Mathf.Lerp(_minRadius, _maxRadius, damageFraction);
+
+                if (HitEffectPrefab)
                 {
-                    _storedDamage += damageToStore;
-
-                    float damageFraction = Mathf.Clamp01(_storedDamage / _maxStoredDamage);
-                    float radius = Mathf.Lerp(_minRadius, _maxRadius, damageFraction);
-
-                    if (HitEffectPrefab)
+                    EffectManager.SpawnEffect(HitEffectPrefab, new EffectData
                     {
-                        EffectData effectData = new EffectData();
-                        effectData.origin = _bodyAttachment.attachedBody.corePosition;
-                        effectData.color = DamageColorGradient.Evaluate(damageFraction);
-                        effectData.scale = radius;
-                        EffectManager.SpawnEffect(HitEffectPrefab, effectData, true);
-                    }
-
-                    if (damageFraction >= 1f)
-                    {
-                        _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.now;
-                    }
+                        origin = _bodyAttachment.attachedBody.corePosition,
+                        color = DamageColorGradient.Evaluate(damageFraction),
+                        scale = radius
+                    }, true);
                 }
 
-                _lastDamageTimeStamp = Run.FixedTimeStamp.now;
+                if (damageFraction >= 1f)
+                {
+                    _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.now;
+                }
             }
 
-            if ((damageReport.damageInfo.damageType & DamageType.AOE) == 0 &&
-                FriendlyFireManager.ShouldDirectHitProceed(_bodyAttachment.attachedBody.healthComponent, damageReport.attackerTeamIndex))
-            {
-                // HACK: Because the attachment hurtbox is covering the drone's hurtboxes, damage might not reach it, so pass on any damage inflicted to the drone and pretend this is not a problem :)
-                float originalDamage = damageReport.damageInfo.damage;
-                damageReport.damageInfo.damage *= 0.5f;
-                _bodyAttachment.attachedBody.healthComponent.TakeDamage(damageReport.damageInfo);
-                damageReport.damageInfo.damage = originalDamage;
-            }
+            _lastDamageTimeStamp = Run.FixedTimeStamp.now;
         }
 
         void IOnKilledServerReceiver.OnKilledServer(DamageReport damageReport)
@@ -333,8 +331,8 @@ namespace ItemQualities
                     if (renderer)
                     {
                         renderer.GetPropertyBlock(_propertyBlock);
-                        _propertyBlock.SetColor(_Color, color);
-                        _propertyBlock.SetColor(_TintColor, color);
+                        _propertyBlock.SetColor(ShaderProperties._Color, color);
+                        _propertyBlock.SetColor(ShaderProperties._TintColor, color);
                         renderer.SetPropertyBlock(_propertyBlock);
                     }
                 }
@@ -350,7 +348,6 @@ namespace ItemQualities
             {
                 _cachedOwnerMaster.onBodyStart -= setOwnerBody;
                 _cachedOwnerMaster.onBodyDestroyed -= setOwnerBody;
-                _cachedOwnerMaster.inventory.onInventoryChanged -= onOwnerInventoryChanged;
             }
 
             _cachedOwnerMaster = ownerMaster;
@@ -359,7 +356,6 @@ namespace ItemQualities
             {
                 _cachedOwnerMaster.onBodyStart += setOwnerBody;
                 _cachedOwnerMaster.onBodyDestroyed += setOwnerBody;
-                _cachedOwnerMaster.inventory.onInventoryChanged += onOwnerInventoryChanged;
             }
 
             setOwnerBody(_cachedOwnerMaster ? _cachedOwnerMaster.GetBody() : null);
@@ -392,11 +388,6 @@ namespace ItemQualities
             _limitsDirty = true;
         }
 
-        void onOwnerInventoryChanged()
-        {
-            _limitsDirty = true;
-        }
-
         void INetworkedBodyAttachmentListener.OnAttachedBodyDiscovered(NetworkedBodyAttachment networkedBodyAttachment, CharacterBody attachedBody)
         {
             if (HurtBoxGroup.mainHurtBox && HurtBoxGroup.mainHurtBox.TryGetComponent(out SphereCollider mainHurtBoxCollider))
@@ -406,6 +397,11 @@ namespace ItemQualities
             else
             {
                 Log.Warning("Failed to set HurtBox size");
+            }
+
+            if (IgnoredCollisionsProvider)
+            {
+                IgnoredCollisionsProvider.CollisionWhitelistFilter = new ShooterObjectCollideFilter(attachedBody);
             }
 
             CharacterMaster ownerMaster = null;
@@ -424,6 +420,80 @@ namespace ItemQualities
         {
             _storedDamage = storedDamage;
             refreshIndicator();
+        }
+
+        sealed class ShooterObjectCollideFilter : IObjectCollideFilter, IDisposable
+        {
+            readonly CharacterBody _attachedBody;
+
+            public event Action<ObjectCollisionManager> OnFilterDirty;
+
+            public ShooterObjectCollideFilter(CharacterBody attachedBody)
+            {
+                _attachedBody = attachedBody;
+
+                TeamComponent.onJoinTeamGlobal += onJoinTeamGlobal;
+                TeamComponent.onLeaveTeamGlobal += onLeaveTeamGlobal;
+
+                MinionOwnership.onMinionOwnerChangedGlobal += onMinionOwnerChangedGlobal;
+            }
+
+            public void Dispose()
+            {
+                TeamComponent.onJoinTeamGlobal -= onJoinTeamGlobal;
+                TeamComponent.onLeaveTeamGlobal -= onLeaveTeamGlobal;
+
+                MinionOwnership.onMinionOwnerChangedGlobal -= onMinionOwnerChangedGlobal;
+
+                OnFilterDirty = null;
+            }
+
+            void onJoinTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
+            {
+                if (OnFilterDirty != null &&
+                    _attachedBody &&
+                    teamIndex == _attachedBody.teamComponent.teamIndex &&
+                    teamComponent.TryGetComponentCached(out ObjectCollisionManager collisionManager))
+                {
+                    OnFilterDirty(collisionManager);
+                }
+            }
+
+            void onLeaveTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
+            {
+                if (OnFilterDirty != null &&
+                    _attachedBody &&
+                    teamIndex == _attachedBody.teamComponent.teamIndex &&
+                    teamComponent.TryGetComponentCached(out ObjectCollisionManager collisionManager))
+                {
+                    OnFilterDirty(collisionManager);
+                }
+            }
+
+            void onMinionOwnerChangedGlobal(MinionOwnership minionOwnership)
+            {
+                if (OnFilterDirty != null && minionOwnership.TryGetComponent(out CharacterMaster master))
+                {
+                    GameObject bodyObject = master.GetBodyObject();
+                    if (bodyObject && bodyObject.TryGetComponentCached(out ObjectCollisionManager collisionManager))
+                    {
+                        OnFilterDirty(collisionManager);
+                    }
+                }
+            }
+
+            bool bodyPassesFilter(CharacterBody body)
+            {
+                return body &&
+                       body != _attachedBody &&
+                       (body.teamComponent.teamIndex == _attachedBody.teamComponent.teamIndex ||
+                        (body.master && _attachedBody.master && _attachedBody.master.minionOwnership.ownerMaster == body.master));
+            }
+
+            public bool PassesFilter(ObjectCollisionManager collisionManager)
+            {
+                return collisionManager && (bodyPassesFilter(collisionManager.Body) || bodyPassesFilter(collisionManager.OwnerBody));
+            }
         }
     }
 }

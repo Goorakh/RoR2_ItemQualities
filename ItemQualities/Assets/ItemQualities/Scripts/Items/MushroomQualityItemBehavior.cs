@@ -63,16 +63,16 @@ namespace ItemQualities.Items
             Destroy(_bubbleShieldPrefab.GetComponent<ProjectileSimple>());
             Destroy(_bubbleShieldPrefab.GetComponent<Rigidbody>());
 
-            EntityStateMachine statemachine = _bubbleShieldPrefab.GetComponent<EntityStateMachine>();
-            if (!statemachine)
+            EntityStateMachine stateMachine = _bubbleShieldPrefab.GetComponent<EntityStateMachine>();
+            if (!stateMachine)
             {
                 Log.Error("Missing EntityStateMachine in MushroomShield");
                 yield break;
             }
 
             SerializableEntityStateType mushroomBubbleDeploy = new SerializableEntityStateType(typeof(MushroomBubbleDeploy));
-            statemachine.initialStateType = mushroomBubbleDeploy;
-            statemachine.mainStateType = mushroomBubbleDeploy;
+            stateMachine.initialStateType = mushroomBubbleDeploy;
+            stateMachine.mainStateType = mushroomBubbleDeploy;
 
             ChildLocator childLocator = _bubbleShieldPrefab.GetComponent<ChildLocator>();
             if (childLocator)
@@ -93,10 +93,16 @@ namespace ItemQualities.Items
             }
 
             Deployable deployable = _bubbleShieldPrefab.EnsureComponent<Deployable>();
-            deployable.onUndeploy = new UnityEvent();
 
             _bubbleShieldPrefab.AddComponent<GenericOwnership>();
-            _bubbleShieldPrefab.AddComponent<MushroomBubbleController>();
+
+            MushroomBubbleController mushroomBubbleController = _bubbleShieldPrefab.AddComponent<MushroomBubbleController>();
+
+            deployable.onUndeploy ??= new UnityEvent();
+            deployable.onUndeploy.AddPersistentListener(mushroomBubbleController.UndeployImmediate);
+
+            IgnoredCollisionsProvider ignoredCollisionsProvider = _bubbleShieldPrefab.AddComponent<IgnoredCollisionsProvider>();
+            ignoredCollisionsProvider.Colliders = _bubbleShieldPrefab.GetComponentsInChildren<Collider>(true);
 
             Bank engiBank = null;
             if (engiBodyLoad.Status == AsyncOperationStatus.Succeeded && engiBodyLoad.Result)

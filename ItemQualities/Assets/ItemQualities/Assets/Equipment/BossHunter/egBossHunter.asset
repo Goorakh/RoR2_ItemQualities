@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egBossHunter
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: 92eb13f35db09b742a7c226bfc1c9cc2
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 29d9562362ef2b645a2eddc00ff1d655, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: edd237d8d2baebc498450b72f96b8093, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 4bf5bbe69e9270841b0eac1117650372, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 8a0073dcaa545a74bb9ccb71120b1ee0, type: 2}

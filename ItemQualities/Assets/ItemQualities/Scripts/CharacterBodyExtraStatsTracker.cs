@@ -35,44 +35,32 @@ namespace ItemQualities
 
         CharacterModel _cachedCharacterModel;
 
-        bool _statsDirty;
+        MemoizedGetComponentCached<CharacterMasterExtraStatsTracker> _memoizedMasterExtraStatsComponent;
 
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
         TemporaryVisualEffect _sprintArmorStrongEffectInstance;
 
         TemporaryOverlayInstance _healCritBoostOverlay;
 
+        int _weakPointsEnabledCounterServer;
+
+        [SyncVar]
+        byte _weakPointHurtBoxIndexPlusOne;
+        public int WeakPointHurtBoxIndex
+        {
+            get => _weakPointHurtBoxIndexPlusOne - 1;
+            private set => _weakPointHurtBoxIndexPlusOne = (byte)(value + 1);
+        }
+
         public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
 
-        float _executeBossHealthFraction;
-        public float ExecuteBossHealthFraction
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _executeBossHealthFraction;
-            }
-        }
+        public CharacterBody Body => _body;
 
-        float _stealthKitActivationThreshold = HealthComponent.lowHealthFraction;
-        public float StealthKitActivationThreshold
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _stealthKitActivationThreshold;
-            }
-        }
+        public float ExecuteBossHealthFraction { get; private set; }
 
-        float _airControlBonus = 1f;
-        public float AirControlBonus
-        {
-            get
-            {
-                recalculateStatsIfNeeded();
-                return _airControlBonus;
-            }
-        }
+        public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
+
+        public float AirControlBonus { get; private set; } = 1f;
 
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
 
@@ -104,7 +92,37 @@ namespace ItemQualities
 
         public int EliteKillCount { get; private set; } = 0;
 
-        public CharacterMasterExtraStatsTracker MasterExtraStatsTracker { get; private set; }
+        public float WeakPointCritMultiplierBonusServer { get; set; }
+
+        public int WeakPointsEnabledCounterServer
+        {
+            get
+            {
+                return _weakPointsEnabledCounterServer;
+            }
+            [Server]
+            set
+            {
+                bool weakPointsWasEnabled = _weakPointsEnabledCounterServer > 0;
+                bool weakPointsIsEnabled = value > 0;
+
+                _weakPointsEnabledCounterServer = value;
+
+                if (weakPointsWasEnabled != weakPointsIsEnabled)
+                {
+                    if (weakPointsIsEnabled && _body.hurtBoxGroup && _body.hurtBoxGroup.hurtBoxes.Length > 0)
+                    {
+                        WeakPointHurtBoxIndex = UnityEngine.Random.Range(0, _body.hurtBoxGroup.hurtBoxes.Length);
+                    }
+                    else
+                    {
+                        WeakPointHurtBoxIndex = -1;
+                    }
+                }
+            }
+        }
+
+        public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _memoizedMasterExtraStatsComponent.Get(_body.masterObject);
 
         public event Action<DamageInfo> OnIncomingDamageServer;
 
@@ -124,14 +142,6 @@ namespace ItemQualities
             ComponentCache.Add(gameObject, this);
         }
 
-        void Start()
-        {
-            if (_body.master)
-            {
-                MasterExtraStatsTracker = _body.master.GetComponentCached<CharacterMasterExtraStatsTracker>();
-            }
-        }
-
         void OnDestroy()
         {
             ComponentCache.Remove(gameObject, this);
@@ -139,8 +149,9 @@ namespace ItemQualities
 
         void OnEnable()
         {
-            recalculateExtraStats();
-            _body.onInventoryChanged += onBodyInventoryChanged;
+            InstanceTracker.Add(this);
+
+            _body.onRecalculateStats += onBodyRecalculateStats;
 
             if (_body.characterMotor)
             {
@@ -153,11 +164,13 @@ namespace ItemQualities
             }
 
             refreshModelReference(_body.modelLocator ? _body.modelLocator.modelTransform : null);
+
+            recalculateExtraStats();
         }
 
         void OnDisable()
         {
-            _body.onInventoryChanged -= onBodyInventoryChanged;
+            _body.onRecalculateStats -= onBodyRecalculateStats;
 
             if (_body.characterMotor)
             {
@@ -168,12 +181,14 @@ namespace ItemQualities
             {
                 _body.modelLocator.onModelChanged -= refreshModelReference;
             }
+
+            refreshModelReference(null);
+
+            InstanceTracker.Remove(this);
         }
 
         void FixedUpdate()
         {
-            recalculateStatsIfNeeded();
-
             if (NetworkServer.active)
             {
                 if (!HasHadAnyQualityDeathMarkDebuffServer && DeathMark.HasAnyQualityDeathMarkDebuff(_body))
@@ -193,14 +208,29 @@ namespace ItemQualities
             updateOverlays();
         }
 
-        void onBodyInventoryChanged()
-        {
-            MarkAllStatsDirty();
-        }
-
         void refreshModelReference(Transform modelTransform)
         {
+            GameObject cachedModelObject = _cachedCharacterModel ? _cachedCharacterModel.gameObject : null;
+            GameObject newModelObject = modelTransform ? modelTransform.gameObject : null;
+            if (cachedModelObject == newModelObject)
+                return;
+
             _cachedCharacterModel = modelTransform ? modelTransform.GetComponent<CharacterModel>() : null;
+
+            if (NetworkServer.active)
+            {
+                if (_weakPointsEnabledCounterServer > 0 &&
+                    modelTransform &&
+                    modelTransform.TryGetComponent(out HurtBoxGroup hurtBoxGroup) &&
+                    hurtBoxGroup.hurtBoxes.Length > 0)
+                {
+                    WeakPointHurtBoxIndex = UnityEngine.Random.Range(0, hurtBoxGroup.hurtBoxes.Length);
+                }
+                else
+                {
+                    WeakPointHurtBoxIndex = -1;
+                }
+            }
         }
 
         void updateOverlays()
@@ -241,18 +271,9 @@ namespace ItemQualities
             setOverlay(ref _healCritBoostOverlay, ItemQualitiesContent.Materials.HealCritBoost, _body.HasBuff(ItemQualitiesContent.Buffs.HealCritBoost));
         }
 
-        public void MarkAllStatsDirty()
+        void onBodyRecalculateStats(CharacterBody body)
         {
-            _statsDirty = true;
-        }
-
-        void recalculateStatsIfNeeded()
-        {
-            if (_statsDirty)
-            {
-                _statsDirty = false;
-                recalculateExtraStats();
-            }
+            recalculateExtraStats();
         }
 
         void recalculateExtraStats()
@@ -267,7 +288,7 @@ namespace ItemQualities
                 jumpBoost = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
             }
 
-            _executeBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
+            ExecuteBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
                 (0.10f * executeLowHealthElite.UncommonCount) +
                 (0.15f * executeLowHealthElite.RareCount) +
                 (0.25f * executeLowHealthElite.EpicCount) +
@@ -279,7 +300,7 @@ namespace ItemQualities
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.50f, phasing.EpicCount);
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
 
-            _stealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
+            StealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
 
             float airControlBonus = 0f;
 
@@ -302,16 +323,11 @@ namespace ItemQualities
                 }
             }
 
-            _airControlBonus = airControlBonus;
+            AirControlBonus = airControlBonus;
         }
 
         void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
         {
-            if (MasterExtraStatsTracker)
-            {
-                MasterExtraStatsTracker.OnIncomingDamageServer(damageInfo);
-            }
-
             OnIncomingDamageServer?.Invoke(damageInfo);
         }
 
@@ -431,7 +447,7 @@ namespace ItemQualities
 
             if (changed)
             {
-                MarkAllStatsDirty();
+                _body.MarkAllStatsDirty();
             }
         }
     }

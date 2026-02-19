@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egDroneBackup
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: 3f3410d1beaa12f4490cb3be42cff88c
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: f26cfc7bbe367c84f9a0c6095e18344f, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: 84057ecfb49da3e40906837d7266d216, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 671ce07c4d905b742acf112fced404a2, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 0eedce8431476e84a9ba28f6b8c601ac, type: 2}

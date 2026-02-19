@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities;
+﻿using ItemQualities.Equipments;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -22,7 +23,7 @@ namespace ItemQualities.Items
             ColorsAPI.RegisterDamageColor(new Color(1f, 0.0f, 0.0f))
         };
 
-        [SystemInitializer]
+        [SystemInitializer(typeof(CritOnUse))]
         static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;

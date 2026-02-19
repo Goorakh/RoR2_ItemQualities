@@ -125,7 +125,7 @@ namespace ItemQualities.ContentManagement
 
             Log.Debug($"Content initializers separated into {contentInitializerGroups.Count} group(s):\n{string.Join("\n", contentInitializerGroups.Select(g => $"[{string.Join(", ", g.InitializedTypes.Select(t => t.FullName))}]"))}");
 
-            using PartitionedProgress partitionedProgress = new PartitionedProgress(progressReceiver);
+            PartitionedProgress partitionedProgress = new PartitionedProgress(progressReceiver);
             IProgress<float>[] initializerGroupProgressReceivers = partitionedProgress.AddPartitions(contentInitializersSequence.Count);
 
             for (int i = 0; i < contentInitializersSequence.Count; i++)
@@ -142,7 +142,7 @@ namespace ItemQualities.ContentManagement
             }
         }
 
-        class ParallelCoroutineGroup : IEnumerator
+        sealed class ParallelCoroutineGroup : IEnumerator
         {
             readonly HashSet<Type> _initializedTypes = new HashSet<Type>();
             readonly ParallelProgressCoroutine _combinedCoroutine;

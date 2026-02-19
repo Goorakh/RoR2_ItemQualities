@@ -20,10 +20,10 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int devilOrbVariableIndex = -1;
+            VariableDefinition devilOrbVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchNewobj<DevilOrb>(),
-                               x => x.MatchStloc(typeof(DevilOrb), il, out devilOrbVariableIndex),
+                               x => x.MatchStloc(typeof(DevilOrb), il, out devilOrbVar),
                                x => x.MatchStfld<DevilOrb>(nameof(DevilOrb.isCrit))))
             {
                 Log.Error("Failed to find patch location");
@@ -32,7 +32,7 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[2].Next, MoveType.After); // stfld DevilOrb.isCrit
 
-            c.Emit(OpCodes.Ldloc, devilOrbVariableIndex);
+            c.Emit(OpCodes.Ldloc, devilOrbVar);
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Action<DevilOrb, HealthComponent>>(handleQualityItem);
 

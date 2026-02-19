@@ -6,7 +6,7 @@ namespace ItemQualities
 {
     [RequireComponent(typeof(NetworkedBodyAttachment))]
     [RequireComponent(typeof(HealthComponent))]
-    public class RepeatDeathEvent : MonoBehaviour
+    public sealed class RepeatDeathEvent : MonoBehaviour
     {
         static EffectIndex _deathEventTickEffectIndex = EffectIndex.Invalid;
 

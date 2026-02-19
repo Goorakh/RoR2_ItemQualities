@@ -37,16 +37,16 @@
         "ITEM_SPRINTBONUS_LEGENDARY_PICKUP": "Increase sprint speed by <sprite name=\"Quality\"> +80%.",
         "ITEM_SPRINTBONUS_LEGENDARY_DESC": "<style=cIsUtility>Sprint speed</style> is improved by <sprite name=\"Quality\"> <style=cIsUtility>80%</style> <style=cStack>(+80% per stack)</style>.",
 
-        "ITEM_SYRINGE_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+        "ITEM_SYRINGE_UNCOMMON_PICKUP": "Increase <sprite name=\"Quality\"> attack speed.",
         "ITEM_SYRINGE_UNCOMMON_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>30% <style=cStack>(+30% per stack)</style></style>.",
 
-        "ITEM_SYRINGE_RARE_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+        "ITEM_SYRINGE_RARE_PICKUP": "Increase <sprite name=\"Quality\"> attack speed.",
         "ITEM_SYRINGE_RARE_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>60% <style=cStack>(+60% per stack)</style></style>.",
 
-        "ITEM_SYRINGE_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+        "ITEM_SYRINGE_EPIC_PICKUP": "Increase <sprite name=\"Quality\"> attack speed.",
         "ITEM_SYRINGE_EPIC_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>105% <style=cStack>(+105% per stack)</style></style>.",
 
-        "ITEM_SYRINGE_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase attack speed.",
+        "ITEM_SYRINGE_LEGENDARY_PICKUP": "Increase <sprite name=\"Quality\"> attack speed.",
         "ITEM_SYRINGE_LEGENDARY_DESC": "Increases <style=cIsDamage>attack speed</style> by <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style></style>.",
         
         "ITEM_HEALWHILESAFE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while outside of danger increase health temporarily.",
@@ -97,17 +97,17 @@
         "ITEM_BARRIERONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Reduce barrier decay rate.",
         "ITEM_BARRIERONKILL_LEGENDARY_DESC": "{0}\nReduces <style=cIsHealing>barrier</style> decay rate by <sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style>",
 
-        "ITEM_EXTRASHRINEITEM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
-        "ITEM_EXTRASHRINEITEM_UNCOMMON_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional time(s). Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>2 succesful rolls</style>.",
+        "ITEM_EXTRASHRINEITEM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance contain more items.",
+        "ITEM_EXTRASHRINEITEM_UNCOMMON_DESC": "{0}\nShrines of Chance contain <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> additional item(s). Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>2 succesful hits</style>.",
 
-        "ITEM_EXTRASHRINEITEM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
-        "ITEM_EXTRASHRINEITEM_RARE_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional times. Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>1 succesful roll</style>.",
+        "ITEM_EXTRASHRINEITEM_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance contain more items.",
+        "ITEM_EXTRASHRINEITEM_RARE_DESC": "{0}\nShrines of Chance contain <sprite name=\"Quality\"> <style=cIsUtility>2</style> <style=cStack>(+2 per stack)</style> additional items. Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>1 succesful hit</style>.",
 
-        "ITEM_EXTRASHRINEITEM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
-        "ITEM_EXTRASHRINEITEM_EPIC_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional times. Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>1 succesful roll</style>.",
+        "ITEM_EXTRASHRINEITEM_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance contain more items.",
+        "ITEM_EXTRASHRINEITEM_EPIC_DESC": "{0}\nShrines of Chance contain <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> additional items. Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>1 succesful hit</style>.",
 
-        "ITEM_EXTRASHRINEITEM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance can be activated more times.",
-        "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance can be activated <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional times. Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>1 succesful roll</style>.",
+        "ITEM_EXTRASHRINEITEM_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Shrines of Chance contain more items.",
+        "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance contain <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional items. Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>1 succesful hit</style>.",
 
         "ITEM_DAGGER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
         "ITEM_DAGGER_UNCOMMON_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>4</style> <style=cStack>(+1 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
@@ -121,8 +121,8 @@
         "ITEM_DAGGER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
         "ITEM_DAGGER_LEGENDARY_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>10</style> <style=cStack>(+7 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
 
-        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Deal bonus damage until you are hit 10 times.",
-        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "{0}\nIncrease damage by <sprite name=\"Quality\"> <style=cIsDamage>7%</style> <style=cStack>(+7% per stack)</style> if you have <style=cIsHealth>received</style> or <style=cIsHealing>blocked</style> damage fewer than <sprite name=\"Quality\"> <style=cIsHealth>10</style> times on a stage.",
+        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Deal bonus damage until you are hit 12 times.",
+        "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "{0}\nIncrease damage by <sprite name=\"Quality\"> <style=cIsDamage>7%</style> <style=cStack>(+7% per stack)</style> if you have <style=cIsHealth>received</style> or <style=cIsHealing>blocked</style> damage fewer than <sprite name=\"Quality\"> <style=cIsHealth>12</style> times on a stage.",
 
         "ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_PICKUP": "...well, it's still right <sprite name=\"Quality\"> thrice a day.",
         "ITEM_FRAGILEDAMAGEBONUSCONSUMED_UNCOMMON_DESC": "{0}",
@@ -170,16 +170,16 @@
         "ITEM_FIREWORK_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance per firework to launch a <style=cIsDamage>large firework</style> instead, dealing <style=cIsDamage>500%</style> base damage and exploding in a larger area.",
 
         "ITEM_MEDKIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
-        "ITEM_MEDKIT_UNCOMMON_DESC": "{0}\nFor every second since the last time you were hit, increase healing by <sprite name=\"Quality\"> <style=cIsHealing>1% <style=cStack>(+1% per stack)</style></style>, up to a maximum of <style=cIsHealing>100% <style=cStack>(+100% per stack)</style></style>.",
+        "ITEM_MEDKIT_UNCOMMON_DESC": "{0}\nFor every second since the last time you were hit, increase delayed heal amount by <sprite name=\"Quality\"> <style=cIsHealing>1% <style=cStack>(+1% per stack)</style></style>, up to a maximum of <style=cIsHealing>100% <style=cStack>(+100% per stack)</style></style>.",
         
         "ITEM_MEDKIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
-        "ITEM_MEDKIT_RARE_DESC": "{0}\nFor every second since the last time you were hit, increase healing by <sprite name=\"Quality\"> <style=cIsHealing>2% <style=cStack>(+2% per stack)</style></style>, up to a maximum of <style=cIsHealing>150% <style=cStack>(+150% per stack)</style></style>.",
+        "ITEM_MEDKIT_RARE_DESC": "{0}\nFor every second since the last time you were hit, increase delayed heal amount by <sprite name=\"Quality\"> <style=cIsHealing>2% <style=cStack>(+2% per stack)</style></style>, up to a maximum of <style=cIsHealing>150% <style=cStack>(+150% per stack)</style></style>.",
         
         "ITEM_MEDKIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
-        "ITEM_MEDKIT_EPIC_DESC": "{0}\nFor every second since the last time you were hit, increase healing by <sprite name=\"Quality\"> <style=cIsHealing>4% <style=cStack>(+4% per stack)</style></style>, up to a maximum of <style=cIsHealing>250% <style=cStack>(+250% per stack)</style></style>.",
+        "ITEM_MEDKIT_EPIC_DESC": "{0}\nFor every second since the last time you were hit, increase delayed heal amount by <sprite name=\"Quality\"> <style=cIsHealing>4% <style=cStack>(+4% per stack)</style></style>, up to a maximum of <style=cIsHealing>250% <style=cStack>(+250% per stack)</style></style>.",
         
         "ITEM_MEDKIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
-        "ITEM_MEDKIT_LEGENDARY_DESC": "{0}\nFor every second since the last time you were hit, increase healing by <sprite name=\"Quality\"> <style=cIsHealing>8% <style=cStack>(+8% per stack)</style></style>, up to a maximum of <style=cIsHealing>400% <style=cStack>(+400% per stack)</style></style>.",
+        "ITEM_MEDKIT_LEGENDARY_DESC": "{0}\nFor every second since the last time you were hit, increase delayed heal amount by <sprite name=\"Quality\"> <style=cIsHealing>8% <style=cStack>(+8% per stack)</style></style>, up to a maximum of <style=cIsHealing>400% <style=cStack>(+400% per stack)</style></style>.",
 
         "ITEM_MUSHROOM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.6 seconds.",
         "ITEM_MUSHROOM_UNCOMMON_DESC": "{0}\nAfter standing still for <style=cIsUtility>0.6 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <sprite name=\"Quality\"> <style=cIsDamage>13m radius</style>, lasting for <sprite name=\"Quality\"> <style=cIsDamage>1 <style=cStack>(+1 per stack)</style> seconds</style>.",
@@ -337,17 +337,17 @@
         "ITEM_STICKYBOMB_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bomb damage and size.",
         "ITEM_STICKYBOMB_LEGENDARY_DESC": "<style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy, detonating for <sprite name=\"Quality\"> <style=cIsDamage>480%</style> <style=cStack>(+200% per stack)</style> TOTAL damage. Increases size of bombs by <sprite name=\"Quality\"> <style=cIsDamage>200%</style> <style=cStack>(+200% per stack)</style>.",
 
-        "ITEM_STUNCHANCEONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce attack speed of bosses on hit.",
-        "ITEM_STUNCHANCEONHIT_UNCOMMON_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>, <style=cIsHealth>bosses</style> receive <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style> reduced <style=cIsDamage>attack speed</style> for <style=cIsUtility>1.5s</style>.",
+        "ITEM_STUNCHANCEONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce attack speed of large monsters on hit.",
+        "ITEM_STUNCHANCEONHIT_UNCOMMON_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>, <style=cIsHealth>large monsters</style> receive <sprite name=\"Quality\"> <style=cIsUtility>15%</style> <style=cStack>(+15% per stack)</style> reduced <style=cIsDamage>attack speed</style> for <style=cIsUtility>1.5s</style>.",
 
-        "ITEM_STUNCHANCEONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce attack speed of bosses on hit.",
-        "ITEM_STUNCHANCEONHIT_RARE_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>, <style=cIsHealth>bosses</style> receive <sprite name=\"Quality\"> <style=cIsUtility>30%</style> <style=cStack>(+30% per stack)</style> reduced <style=cIsDamage>attack speed</style> for <style=cIsUtility>1.5s</style>.",
+        "ITEM_STUNCHANCEONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce attack speed of large monsters on hit.",
+        "ITEM_STUNCHANCEONHIT_RARE_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>, <style=cIsHealth>large monsters</style> receive <sprite name=\"Quality\"> <style=cIsUtility>30%</style> <style=cStack>(+30% per stack)</style> reduced <style=cIsDamage>attack speed</style> for <style=cIsUtility>1.5s</style>.",
 
-        "ITEM_STUNCHANCEONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce attack speed of bosses on hit.",
-        "ITEM_STUNCHANCEONHIT_EPIC_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>, <style=cIsHealth>bosses</style> receive <sprite name=\"Quality\"> <style=cIsUtility>45%</style> <style=cStack>(+45% per stack)</style> reduced <style=cIsDamage>attack speed</style> for <style=cIsUtility>1.5s</style>.",
+        "ITEM_STUNCHANCEONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce attack speed of large monsters on hit.",
+        "ITEM_STUNCHANCEONHIT_EPIC_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>, <style=cIsHealth>large monsters</style> receive <sprite name=\"Quality\"> <style=cIsUtility>45%</style> <style=cStack>(+45% per stack)</style> reduced <style=cIsDamage>attack speed</style> for <style=cIsUtility>1.5s</style>.",
 
-        "ITEM_STUNCHANCEONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce attack speed of bosses on hit.",
-        "ITEM_STUNCHANCEONHIT_LEGENDARY_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>, <style=cIsHealth>bosses</style> receive <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> reduced <style=cIsDamage>attack speed</style> for <style=cIsUtility>1.5s</style>.",
+        "ITEM_STUNCHANCEONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to reduce attack speed of large monsters on hit.",
+        "ITEM_STUNCHANCEONHIT_LEGENDARY_DESC": "<style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to <style=cIsUtility>stun</style> enemies for <style=cIsUtility>2 seconds</style>, <style=cIsHealth>large monsters</style> receive <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> reduced <style=cIsDamage>attack speed</style> for <style=cIsUtility>1.5s</style>.",
 
         "ITEM_BLEEDONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
         "ITEM_BLEEDONHIT_UNCOMMON_DESC": "<style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <sprite name=\"Quality\"> <style=cIsDamage>250%</style> <style=cStack>(+10% per stack)</style> base damage.",
@@ -410,16 +410,16 @@
         "ITEM_MISSILE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <sprite name=\"Quality\"> <style=cIsDamage>800%</style> <style=cStack>(+800% per stack)</style> TOTAL damage.",
 
         "ITEM_WARCRYONMULTIKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
-        "ITEM_WARCRYONMULTIKILL_UNCOMMON_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>1%</style> <style=cStack>(+1% per stack)</style>.",
+        "ITEM_WARCRYONMULTIKILL_UNCOMMON_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>1%</style> <style=cStack>(+1% per stack)</style> for the rest of the stage.",
 
         "ITEM_WARCRYONMULTIKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
-        "ITEM_WARCRYONMULTIKILL_RARE_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>2%</style> <style=cStack>(+2% per stack)</style>.",
+        "ITEM_WARCRYONMULTIKILL_RARE_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>2%</style> <style=cStack>(+2% per stack)</style> for the rest of the stage.",
 
         "ITEM_WARCRYONMULTIKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
-        "ITEM_WARCRYONMULTIKILL_EPIC_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>3%</style> <style=cStack>(+3% per stack)</style>.",
+        "ITEM_WARCRYONMULTIKILL_EPIC_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>3%</style> <style=cStack>(+3% per stack)</style> for the rest of the stage.",
 
         "ITEM_WARCRYONMULTIKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
-        "ITEM_WARCRYONMULTIKILL_LEGENDARY_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style>.",
+        "ITEM_WARCRYONMULTIKILL_LEGENDARY_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> for the rest of the stage.",
 
         "ITEM_KNOCKBACKHITENEMIES_UNCOMMON_PICKUP": "Grounded enemies hit with any skill are launched and take <sprite name=\"Quality\"> bonus damage.",
         "ITEM_KNOCKBACKHITENEMIES_UNCOMMON_DESC": "Grounded enemies hit with any <style=cIsUtility>skill</style> are <style=cIsUtility>launched</style> and <style=cIsUtility>stunned</style>. Enemies hit while airborne are <style=cIsUtility>launched</style> again up to <style=cIsUtility>2 times</style> <style=cStack>(+1 per stack)</style>. Launched enemies take increased damage by <sprite name=\"Quality\"> <style=cIsDamage>15%</style> <style=cStack>(+5% per stack)</style> from all sources per launch. Recharges after <style=cIsUtility>15s</style>.",
@@ -518,28 +518,28 @@
         "ITEM_FEATHER_LEGENDARY_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>8 <style=cStack>(+8 per stack)</style> extra jumps</style>.",
 
         "ITEM_STRENGTHENBURN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
-        "ITEM_STRENGTHENBURN_UNCOMMON_DESC": "{0}\nGain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> base damage.",
+        "ITEM_STRENGTHENBURN_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> base damage.",
 
         "ITEM_STRENGTHENBURN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
-        "ITEM_STRENGTHENBURN_RARE_DESC": "{0}\nGain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> base damage.",
+        "ITEM_STRENGTHENBURN_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> base damage.",
 
         "ITEM_STRENGTHENBURN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
-        "ITEM_STRENGTHENBURN_EPIC_DESC": "{0}\nGain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> base damage.",
+        "ITEM_STRENGTHENBURN_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> base damage.",
 
         "ITEM_STRENGTHENBURN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
-        "ITEM_STRENGTHENBURN_LEGENDARY_DESC": "{0}\nGain <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> base damage.",
+        "ITEM_STRENGTHENBURN_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> base damage.",
 
-        "ITEM_INFUSION_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_UNCOMMON_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>5</style> <style=cStack>(+5 per stack)</style>.",
+        "ITEM_INFUSION_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss or large enemy permanently increases your maximum health.",
+        "ITEM_INFUSION_UNCOMMON_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>5</style> <style=cStack>(+5 per stack)</style>.",
 
-        "ITEM_INFUSION_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_RARE_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>15</style> <style=cStack>(+15 per stack)</style>.",
+        "ITEM_INFUSION_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss or large enemy permanently increases your maximum health.",
+        "ITEM_INFUSION_RARE_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>15</style> <style=cStack>(+15 per stack)</style>.",
 
-        "ITEM_INFUSION_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_EPIC_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>30</style> <style=cStack>(+30 per stack)</style>.",
+        "ITEM_INFUSION_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss or large enemy permanently increases your maximum health.",
+        "ITEM_INFUSION_EPIC_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>30</style> <style=cStack>(+30 per stack)</style>.",
 
-        "ITEM_INFUSION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_LEGENDARY_DESC": "{0}\nKilling a boss enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style>.",
+        "ITEM_INFUSION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss or large enemy permanently increases your maximum health.",
+        "ITEM_INFUSION_LEGENDARY_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style>.",
 
         "ITEM_FIRERING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
         "ITEM_FIRERING_UNCOMMON_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>.",
@@ -1013,16 +1013,16 @@
         "ITEM_UTILITYSKILLMAGAZINE_LEGENDARY_DESC": "{0}\nUsing your <style=cIsUtility>Utility skill</style> within <style=cIsUtility>0.3</style> seconds of recharging reduces the next cooldown by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>. <style=cIsUtility>Utility skill</style> usage is <style=cIsUtility>free</style> if used <style=cIsUtility>0.1</style> seconds after recharging.",
 
         "ITEM_MOREMISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
-        "ITEM_MOREMISSILE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+        "ITEM_MOREMISSILE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
 
         "ITEM_MOREMISSILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
-        "ITEM_MOREMISSILE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+        "ITEM_MOREMISSILE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
 
-        "ITEM_MOREMISSILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
-        "ITEM_MOREMISSILE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+        "ITEM_MOREMISSILE_EPIC_PICKUP": "All Missile items deal more damage and fire an additional <sprite name=\"Quality\"> three missiles.",
+        "ITEM_MOREMISSILE_EPIC_DESC": "All missile items and equipment fire an additional <sprite name=\"Quality\"> <style=cIsDamage>3 <style=cStack>(+1 per stack)</style></style> <style=cIsDamage>missiles</style>. Increase missile damage by <style=cIsDamage>0%</style> <style=cStack>(+50% per stack)</style>.",
 
-        "ITEM_MOREMISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
-        "ITEM_MOREMISSILE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
+        "ITEM_MOREMISSILE_LEGENDARY_PICKUP": "All Missile items deal more damage and fire an additional <sprite name=\"Quality\"> three missiles.\n<sprite name=\"Quality\"> Chance to fire additional missiles.",
+        "ITEM_MOREMISSILE_LEGENDARY_DESC": "All missile items and equipment fire an additional <sprite name=\"Quality\"> <style=cIsDamage>3 <style=cStack>(+1 per stack)</style></style> <style=cIsDamage>missiles</style>. Increase missile damage by <style=cIsDamage>0%</style> <style=cStack>(+50% per stack)</style>.\n<sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to fire an additional missile. Every interval of <style=cIsDamage>100%</style> chance reached guarantees an additional missile.",
 
         "ITEM_PLANT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increases healing rate.",
         "ITEM_PLANT_UNCOMMON_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>15%</style> <style=cStack>(+15% per stack)</style>",
@@ -1048,16 +1048,16 @@
         "ITEM_CRITDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
         "ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style> chance to crit an additional time.",
 
-        "ITEM_INCREASEHEALING_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+        "ITEM_INCREASEHEALING_UNCOMMON_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_UNCOMMON_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+150%</style> <style=cStack>(+150% per stack)</style> more.",
 
-        "ITEM_INCREASEHEALING_RARE_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+        "ITEM_INCREASEHEALING_RARE_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_RARE_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+200%</style> <style=cStack>(+200% per stack)</style> more.",
 
-        "ITEM_INCREASEHEALING_EPIC_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+        "ITEM_INCREASEHEALING_EPIC_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_EPIC_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+300%</style> <style=cStack>(+300% per stack)</style> more.",
 
-        "ITEM_INCREASEHEALING_LEGENDARY_PICKUP": "<sprite name=\"Quality\"> Increase the strength of healing.",
+        "ITEM_INCREASEHEALING_LEGENDARY_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_LEGENDARY_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+400%</style> <style=cStack>(+400% per stack)</style> more.",
     
         "ITEM_NOVAONHEAL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Skulls deal more damage.",
@@ -1468,7 +1468,7 @@
         "ITEM_DUPLICATOR_LEGENDARY_DESC": "{0}\nAll <style=cIsTemporary>temporary items</style> are shared with your allies for <sprite name=\"Quality\"> <style=cIsUtility>150% <style=cStack>(+150% per stack)</style></style> of the <style=cIsTemporary>temporary item duration</style>.",
 
         "ITEM_EXPLODEONDEATH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_UNCOMMON_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>10% <style=cStack>(+10% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_UNCOMMON_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>15% <style=cStack>(+15% per stack)</style></style>.",
 
         "ITEM_EXPLODEONDEATH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
         "ITEM_EXPLODEONDEATH_RARE_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>25% <style=cStack>(+25% per stack)</style></style>.",
@@ -1539,17 +1539,17 @@
         "ITEM_PHYSICSPROJECTILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Interact with the Buddy to launch it at enemies.",
         "ITEM_PHYSICSPROJECTILE_LEGENDARY_DESC": "{0}\nInteracting with the unit also launches it towards enemies, dealing <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+1000% per stack)</style> damage</style> in a <sprite name=\"Quality\"> <style=cIsUtility>35m <style=cStack>(+35m per stack)</style></style> radius on impact.",
         
-        "ITEM_JUMPDAMAGESTRIKE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and increase charge speed.",
-        "ITEM_JUMPDAMAGESTRIKE_UNCOMMON_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area. Increases <style=cIsUtility>charge speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>25%</style>.",
+        "ITEM_JUMPDAMAGESTRIKE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and reduce charge used per jump.",
+        "ITEM_JUMPDAMAGESTRIKE_UNCOMMON_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping consumes <sprite name=\"Quality\"> <style=cIsUtility>75%</style> charge and triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area.",
         
-        "ITEM_JUMPDAMAGESTRIKE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and increase charge speed.",
-        "ITEM_JUMPDAMAGESTRIKE_RARE_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>250% <style=cStack>(+250% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area. Increases <style=cIsUtility>charge speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style>.",
+        "ITEM_JUMPDAMAGESTRIKE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and reduce charge used per jump.",
+        "ITEM_JUMPDAMAGESTRIKE_RARE_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping consumes <sprite name=\"Quality\"> <style=cIsUtility>50%</style> charge and triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>250% <style=cStack>(+250% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area.",
         
-        "ITEM_JUMPDAMAGESTRIKE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and increase charge speed.",
-        "ITEM_JUMPDAMAGESTRIKE_EPIC_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>350% <style=cStack>(+350% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area. Increases <style=cIsUtility>charge speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>75%</style>.",
+        "ITEM_JUMPDAMAGESTRIKE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and reduce charge used per jump.",
+        "ITEM_JUMPDAMAGESTRIKE_EPIC_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping consumes <sprite name=\"Quality\"> <style=cIsUtility>25%</style> charge and triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>350% <style=cStack>(+350% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area.",
         
-        "ITEM_JUMPDAMAGESTRIKE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and increase charge speed.",
-        "ITEM_JUMPDAMAGESTRIKE_LEGENDARY_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>500% <style=cStack>(+500% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area. Increases <style=cIsUtility>charge speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>.",
+        "ITEM_JUMPDAMAGESTRIKE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage based on movement speed and reduce charge used per jump.",
+        "ITEM_JUMPDAMAGESTRIKE_LEGENDARY_DESC": "Moving around builds up <style=cIsUtility>charge</style>, granting up to <style=cIsUtility>+160% movement speed</style> and <style=cIsUtility>+200% jump height</style> at 100%. At 25% charge or higher, jumping consumes <sprite name=\"Quality\"> <style=cIsUtility>10%</style> charge and triggers an <style=cIsDamage>explosive discharge</style> for <style=cIsDamage>400% <style=cStack>(+280% per stack)</style> damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>500% <style=cStack>(+500% per stack)</style> damage</style> for every <style=cIsUtility>100% movement speed</style>, in a 5m to 32.3m <style=cStack>(+7.5m per stack)</style> area.",
 
         "ITEM_SHOCKNEARBY_UNCOMMON_PICKUP": "Shock all nearby enemies every <sprite name=\"Quality\"> 9 seconds.",
         "ITEM_SHOCKNEARBY_UNCOMMON_DESC": "Fire out <style=cIsDamage>lightning</style> that hits <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>200%</style> base damage every <sprite name=\"Quality\"> <style=cIsDamage>0.45s <style=cStack>(-10% per stack)</style></style>. The Tesla Coil switches off every <sprite name=\"Quality\"> <style=cIsDamage>9 <style=cStack>(-10% per stack)</style> seconds</style>.",

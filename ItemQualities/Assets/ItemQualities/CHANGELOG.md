@@ -1,24 +1,44 @@
-## 0.6.2
+## \{Next Version\}
+
+* Faraday Spur:
+    * Removed charge speed increase.
+    * Charge used per jump: 100% ->
+        * Uncommon: 75%
+        * Rare: 50%
+        * Epic: 25%
+        * Legendary: 10%
 
 * Squid Polyp rework:
     * increased damage
     * on kill chance to upgrade squid
 
+* Roll of Pennies:
+    * Fixed bonus gold not spawning when opening a Collector's Barrel.
+
+* Collector's Compulsion:
+    * Made barrel pickups always target the player that opened the barrel.
+
+* Ghor's Tome:
+    * Fixed money buff not being set on pickup.
+
+* Delicate Watch:
+    * Fixed incorrect numbers in description of uncommon watch.
+
+## 0.6.1
+
+* Fixed quality item descriptions not showing properly if game was launched in a language other than English.
+
+* Fixed quality item drop sounds playing globally.
+
 ## 0.6.0
 
-<details>
-<summary>Crowbar rework</summary>
+* Quality items now play a unique sound when dropped.
 
-* Old: Decrease damage increase threshold.
-* New: Builds up damage on stunned enemies, released when enemy regains control.
-</details>
+* Crowbar rework:
+    * Store damage dealt to stunned enemies, deal stored damage when enemy regains control.
 
-<details>
-<summary>Armor Piercing Rounds rework</summary>
-
-* Old: Mark enemies within the teleporter radius after boss. Deal bonus damage to marked enemies.
-* New: Marks an enemy every 60 seconds for 10 seconds, deal bonus damage to marked enemies for every marked enemy killed.
-</details>
+* Armor Piercing Rounds rework:
+    * Periodically marks an enemy for 10 seconds, deal bonus damage to marked enemies for every marked enemy killed.
 
 * Bandolier:
     * Temporary skill charges granted: 1 ->
@@ -36,7 +56,7 @@
         * Epic: 3.5% -> 2%
         * Legendary: 4% -> 3%
 
-* Cautios Slug:
+* Cautious Slug:
     * Decreased health gained per kill:
         * Uncommon: Unchanged
         * Rare: 6 (+6 per stack) -> 4 (+4 per stack)
@@ -74,6 +94,7 @@
         * Legendary: 100% (+100% per stack) -> 50% (+50% per stack)
 
 * Bustling Fungus:
+    * Allied attacks no longer collide with the outside of the shield.
     * Increased shield spawn delay: 0.25s -> 0.6s
 
 * Luminous Shot:
@@ -107,6 +128,7 @@
         * Legendary: 150% (+150% per stack) -> 80% (+80% per stack)
 
 * Backup Magazine:
+    * Free recharge now triggers 'on skill cooldown' effects (ie. Eclipse Lite).
     * Increased recharge chance:
         * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
         * Rare: 20% (+20% per stack) -> 25% (+25% per stack)
@@ -129,6 +151,7 @@
 
 * Networked Suffering:
     * Fixed player allies targetting crystals.
+    * Procs can no longer happen from hitting Network Crystals.
     * Increased crystal aoe radius:
         * Uncommon: 15m (+15m per stack) -> 25m (+25m per stack)
         * Rare: 20m (+20m per stack) -> 35m (+35m per stack)
@@ -136,9 +159,9 @@
         * Legendary: 35m (+35m per stack) -> 65m (+65m per stack)
 
 * Chance Doll:
-    * Now stops price scaling after succesful shrine hits:
-        * Uncommon: 2 succesful hit
-        * Rare and up: 1 succesful hit
+    * Now stops price scaling after successful shrine hits:
+        * Uncommon: 2 successful hits
+        * Rare and up: 1 successful hit
 
 * War Horn:
     * Added skill cooldown reduction on use:
@@ -159,6 +182,47 @@
         * Epic: 50% (+50% per stack) -> 100% (+100% per stack)
         * Legendary: 80% (+80% per stack) -> 150% (+150% per stack)
 
+* Pocket I.C.B.M.:
+    * Increased extra missile chance:
+        * Uncommon: 10% (+10% per stack) -> 40% (+40% per stack)
+        * Rare: 20% (+20% per stack) -> 75% (+75% per stack)
+        * Epic: 30% (+30% per stack) -> +1 missile (+1 per stack)
+        * Legendary: 40% (+40% per stack) -> +1 missile (+1 per stack), 50% (+50% per stack) for an additional missile
+
+* Will-o'-the-wisp:
+    * Increased explosion size:
+        * Uncommon: 10% (+10% per stack) -> 15% (+15% per stack)
+        * Rare and up: Unchanged
+    * Fixed explosion size increase not applying to:
+        * Bandit smoke bomb
+        * Captain beacon impact
+        * False Son charged slam
+        * False Son meridian's will
+        * Royal Capacitor
+        * Glowing Meteorite
+        * Charged Perforator
+        * Mithrix Phase 4 Orb Slam
+        * Mithrix Phase 1 & 3 hammer slam
+        * False Son (Boss) attacks
+        * Stone Golem Clap
+        * Stone Golem Laser
+        * Halcyonite Laser
+        * Imp Overlord teleport
+        * Imp Overlord ground pound
+        * Parent ground slam
+    * Fixed explosion size not increasing visually:
+        * Artificer Ion Surge
+        * Drifter Junk Cube
+        * Engineer Pressure Mines
+        * Captain Orbital Strike
+        * Captain Diablo Strike
+        * REX Seed Barrage
+        * False Son Lunar Stakes
+
+* Tougher Times:
+    * Now counts blocks from any source, not just blocks by Tougher Times.
+    * Added AIBlacklist tag.
+
 * War Bonds:
     * At least one Shrine of the Mountain will appear every stage.
 
@@ -172,7 +236,35 @@
 * Ben's Raincoat:
     * Fixed not deflecting burn from fire elites.
 
+* Hiker's Boots:
+    * Fixed quality effect not working on Blind Pests and Vultures.
+
+* Box of Dynamite:
+    * Procs can no longer happen from hitting allied drones.
+    * Fixed attacks on allied drones that do not count towards stored damage showing damage numbers and playing hit sounds.
+    * Fixed certain drones blocking their own attacks when this item was present.
+    * Fixed allied drones sometimes attacking other drones after a player damaged it.
+
+* Orphaned Core:
+    * Buddy impact damage is now attributed to the player that launched it. (Can proc your items)
+    * Buddy is now has a slight aim to return to you after impacting something and bouncing off of it.
+
+* Lessened restrictions on Junk Drones dropping quality items:
+    * Tier 0: No quality (Unchanged)
+    * Tier 1: Uncommon -> Uncommon to Rare
+    * Tier 2: Uncommon to Rare -> Uncommon to Legendary
+
+* Fixed Quality Regenerating Scrap giving lower qualities than intended when used in Cauldrons.
+
+* Quality items are now automatically sorted and grouped together in your inventory to help item visibility, can be toggled in config.
+
+* Fixed Quality 3D Printers sometimes printing the incorrect quality items if used repeatedly as soon as they finish.
+
+* Fixed Artifact of Command not showing all options for quality items.
+
 * Fixed some qualities not being sorted in logbook.
+
+* Fixed quality item descriptions not showing properly in languages other than English.
 
 * Fixed incompatibility with RiskyTweaks if `Frost Relic - Remove Bubble` config was enabled.
 

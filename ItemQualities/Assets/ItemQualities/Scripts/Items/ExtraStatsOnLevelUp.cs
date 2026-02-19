@@ -21,7 +21,7 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int extraStatsOnLevelUpItemCountVar = -1;
+            VariableDefinition extraStatsOnLevelUpItemCountVar = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdsfld(typeof(DLC2Content.Items), nameof(DLC2Content.Items.ExtraStatsOnLevelUp)),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountPermanent)),

@@ -44,7 +44,7 @@ namespace ItemQualities.Utilities.Extensions
             _extraDataTable.Remove(self);
         }
 
-        class ExtraData
+        sealed class ExtraData
         {
             public ItemQualityCounts UsedSaleStarCounts;
         }

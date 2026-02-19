@@ -22,7 +22,7 @@ namespace ItemQualities
             }
         }
 
-        class ItemGrantTracker : MonoBehaviour
+        sealed class ItemGrantTracker : MonoBehaviour
         {
             NetworkUser _networkUser;
             Inventory _inventory;

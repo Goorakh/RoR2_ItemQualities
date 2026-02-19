@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ItemQualities.Items
 {
     [DefaultExecutionOrder(50)]
-    public class TeleportOnLowHealthAuraQualityController : MonoBehaviour
+    public sealed class TeleportOnLowHealthAuraQualityController : MonoBehaviour
     {
         TeleportOnLowHealthAuraController _auraController;
 

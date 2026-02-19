@@ -24,9 +24,9 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int pendingDamageLocalIndex = -1;
+            VariableDefinition pendingDamageVar = null;
             if (!c.TryGotoNext(MoveType.Before,
-                               x => x.MatchLdloc(typeof(float), il, out pendingDamageLocalIndex),
+                               x => x.MatchLdloc(typeof(float), il, out pendingDamageVar),
                                x => x.MatchLdarg(0),
                                x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.shield)),
                                x => x.MatchBgtUn(out _)))
@@ -36,7 +36,7 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, pendingDamageLocalIndex);
+            c.Emit(OpCodes.Ldloc, pendingDamageVar);
             c.EmitDelegate<Action<HealthComponent, float>>(onShieldDamaged);
 
             static void onShieldDamaged(HealthComponent healthComponent, float pendingDamage)

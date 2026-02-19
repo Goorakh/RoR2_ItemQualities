@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -21,14 +22,17 @@ namespace ItemQualities
         static ItemQualityGroup[] _allItemQualityGroups = Array.Empty<ItemQualityGroup>();
         static QualityTier[] _itemIndexToQuality = Array.Empty<QualityTier>();
         static ItemQualityGroupIndex[] _itemIndexToQualityGroupIndex = Array.Empty<ItemQualityGroupIndex>();
+        static readonly ReadOnlyArray<ItemIndex>[] _itemsByQualityTier = new ReadOnlyArray<ItemIndex>[(int)QualityTier.Count + 1];
 
         static EquipmentQualityGroup[] _allEquipmentQualityGroups = Array.Empty<EquipmentQualityGroup>();
         static QualityTier[] _equipmentIndexToQuality = Array.Empty<QualityTier>();
         static EquipmentQualityGroupIndex[] _equipmentIndexToQualityGroupIndex = Array.Empty<EquipmentQualityGroupIndex>();
+        static readonly ReadOnlyArray<EquipmentIndex>[] _equipmentsByQualityTier = new ReadOnlyArray<EquipmentIndex>[(int)QualityTier.Count + 1];
 
         static BuffQualityGroup[] _allBuffQualityGroups = Array.Empty<BuffQualityGroup>();
         static QualityTier[] _buffIndexToQuality = Array.Empty<QualityTier>();
         static BuffQualityGroupIndex[] _buffIndexToQualityGroupIndex = Array.Empty<BuffQualityGroupIndex>();
+        static readonly ReadOnlyArray<BuffIndex>[] _buffsByQualityTier = new ReadOnlyArray<BuffIndex>[(int)QualityTier.Count + 1];
 
         public static int ItemQualityGroupCount => _allItemQualityGroups.Length;
 
@@ -328,6 +332,116 @@ namespace ItemQualities
 
             yield return baseAssetsParallelLoadCoroutine;
 
+            List<ItemIndex>[] itemsByQuality = new List<ItemIndex>[(int)QualityTier.Count + 1];
+            List<EquipmentIndex>[] equipmentsByQuality = new List<EquipmentIndex>[(int)QualityTier.Count + 1];
+            List<BuffIndex>[] buffsByQuality = new List<BuffIndex>[(int)QualityTier.Count + 1];
+
+            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+            {
+                List<ItemIndex> items = ListPool<ItemIndex>.RentCollection();
+                items.EnsureCapacity(ItemCatalog.itemCount / ((int)QualityTier.Count + 1));
+                itemsByQuality[(int)qualityTier + 1] = items;
+
+                List<EquipmentIndex> equipments = ListPool<EquipmentIndex>.RentCollection();
+                items.EnsureCapacity(EquipmentCatalog.equipmentCount / ((int)QualityTier.Count + 1));
+                equipmentsByQuality[(int)qualityTier + 1] = equipments;
+
+                List<BuffIndex> buffs = ListPool<BuffIndex>.RentCollection();
+                buffs.EnsureCapacity(BuffCatalog.buffCount / ((int)QualityTier.Count + 1));
+                buffsByQuality[(int)qualityTier + 1] = buffs;
+            }
+
+            for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
+            {
+                itemsByQuality[(int)GetQualityTier(itemIndex) + 1].Add(itemIndex);
+            }
+
+            for (EquipmentIndex equipmentIndex = 0; (int)equipmentIndex < EquipmentCatalog.equipmentCount; equipmentIndex++)
+            {
+                equipmentsByQuality[(int)GetQualityTier(equipmentIndex) + 1].Add(equipmentIndex);
+            }
+
+            for (BuffIndex buffIndex = 0; (int)buffIndex < BuffCatalog.buffCount; buffIndex++)
+            {
+                buffsByQuality[(int)GetQualityTier(buffIndex) + 1].Add(buffIndex);
+            }
+
+            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+            {
+                List<ItemIndex> items = itemsByQuality[(int)qualityTier + 1];
+                _itemsByQualityTier[(int)qualityTier + 1] = items.Count > 0 ? items.ToArray() : Array.Empty<ItemIndex>();
+
+                ListPool<ItemIndex>.ReturnCollection(items);
+
+                List<EquipmentIndex> equipments = equipmentsByQuality[(int)qualityTier + 1];
+                _equipmentsByQualityTier[(int)qualityTier + 1] = equipments.Count > 0 ? equipments.ToArray() : Array.Empty<EquipmentIndex>();
+
+                ListPool<EquipmentIndex>.ReturnCollection(equipments);
+
+                List<BuffIndex> buffs = buffsByQuality[(int)qualityTier + 1];
+                _buffsByQualityTier[(int)qualityTier + 1] = buffs.Count > 0 ? buffs.ToArray() : Array.Empty<BuffIndex>();
+
+                ListPool<BuffIndex>.ReturnCollection(buffs);
+            }
+
+            List<Language> tempLoadedLanguages = new List<Language>();
+            ParallelCoroutine languagesLoad = new ParallelCoroutine();
+
+            foreach (Language language in Language.GetAllLanguages())
+            {
+                if (!language.stringsLoaded)
+                {
+                    Language.LanguageLoaderCoroutine languageLoader = new Language.LanguageLoaderCoroutine(language);
+                    languagesLoad.Add(languageLoader.LoadStringsWithYield());
+                    tempLoadedLanguages.Add(language);
+                }
+            }
+
+            if (tempLoadedLanguages.Count > 0)
+            {
+                Log.Debug($"Loading strings from {tempLoadedLanguages.Count} language(s)");
+                yield return languagesLoad;
+            }
+
+            static void formatQualityNameTokens(string baseNameToken, string qualityNameToken, string qualityModifierToken, Dictionary<string, Dictionary<string, string>> qualityLanguageDictionary)
+            {
+                if (string.IsNullOrEmpty(qualityNameToken))
+                    return;
+                
+                foreach (Language language in Language.GetAllLanguages())
+                {
+                    if (!language.TokenIsRegistered(qualityNameToken))
+                    {
+                        string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseNameToken));
+                        qualityLanguageDictionary[language.name][qualityNameToken] = generatedQualityName;
+                    }
+                }
+            }
+
+            static void formatQualityTokens(string baseToken, string qualityToken, Dictionary<string, Dictionary<string, string>> qualityLanguageDictionary)
+            {
+                if (string.IsNullOrEmpty(qualityToken))
+                    return;
+
+                foreach (Language language in Language.GetAllLanguages())
+                {
+                    string qualityString = language.GetLocalizedStringByToken(qualityToken);
+
+                    if (qualityString.Contains("{0}"))
+                    {
+                        qualityString = string.Format(qualityString, language.GetLocalizedStringByToken(baseToken));
+
+                        qualityLanguageDictionary[language.name][qualityToken] = qualityString;
+                    }
+                }
+            }
+
+            Dictionary<string, Dictionary<string, string>> qualityLanguageDictionary = new Dictionary<string, Dictionary<string, string>>();
+            foreach (Language language in Language.GetAllLanguages())
+            {
+                qualityLanguageDictionary.Add(language.name, new Dictionary<string, string>());
+            }
+
             foreach (ItemQualityGroup itemQualityGroup in _allItemQualityGroups)
             {
                 ItemDef baseItem = ItemCatalog.GetItemDef(itemQualityGroup.BaseItemIndex);
@@ -356,42 +470,10 @@ namespace ItemQualities
                         qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
                     }
 
-                    if (!string.IsNullOrEmpty(item.nameToken) && Language.IsTokenInvalid(item.nameToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseItem.nameToken));
-                            LanguageAPI.Add(item.nameToken, generatedQualityName, language.name);
-                        }
-                    }
+                    formatQualityNameTokens(baseItem.nameToken, item.nameToken, qualityModifierToken, qualityLanguageDictionary);
 
-                    if (!string.IsNullOrEmpty(item.pickupToken) && !Language.IsTokenInvalid(item.pickupToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string pickupString = language.GetLocalizedStringByToken(item.pickupToken);
-
-                            if (pickupString.Contains("{0}"))
-                            {
-                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseItem.pickupToken));
-                                LanguageAPI.Add(item.pickupToken, pickupString, language.name);
-                            }
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(item.descriptionToken) && !Language.IsTokenInvalid(item.descriptionToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string pickupString = language.GetLocalizedStringByToken(item.descriptionToken);
-
-                            if (pickupString.Contains("{0}"))
-                            {
-                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseItem.descriptionToken));
-                                LanguageAPI.Add(item.descriptionToken, pickupString, language.name);
-                            }
-                        }
-                    }
+                    formatQualityTokens(baseItem.pickupToken, item.pickupToken, qualityLanguageDictionary);
+                    formatQualityTokens(baseItem.descriptionToken, item.descriptionToken, qualityLanguageDictionary);
                 }
             }
 
@@ -414,43 +496,18 @@ namespace ItemQualities
                     string qualityTierName = qualityTier.ToString().ToUpper();
                     string qualityModifierToken = $"QUALITY_{qualityTierName}_MODIFIER";
 
-                    if (!string.IsNullOrEmpty(equipment.nameToken) && Language.IsTokenInvalid(equipment.nameToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string generatedQualityName = language.GetLocalizedFormattedStringByToken(qualityModifierToken, language.GetLocalizedStringByToken(baseEquipment.nameToken));
-                            LanguageAPI.Add(equipment.nameToken, generatedQualityName, language.name);
-                        }
-                    }
+                    formatQualityNameTokens(baseEquipment.nameToken, equipment.nameToken, qualityModifierToken, qualityLanguageDictionary);
 
-                    if (!string.IsNullOrEmpty(equipment.pickupToken) && !Language.IsTokenInvalid(equipment.pickupToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string pickupString = language.GetLocalizedStringByToken(equipment.pickupToken);
-
-                            if (pickupString.Contains("{0}"))
-                            {
-                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseEquipment.pickupToken));
-                                LanguageAPI.Add(equipment.pickupToken, pickupString, language.name);
-                            }
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(equipment.descriptionToken) && !Language.IsTokenInvalid(equipment.descriptionToken))
-                    {
-                        foreach (Language language in Language.GetAllLanguages())
-                        {
-                            string pickupString = language.GetLocalizedStringByToken(equipment.descriptionToken);
-
-                            if (pickupString.Contains("{0}"))
-                            {
-                                pickupString = string.Format(pickupString, language.GetLocalizedStringByToken(baseEquipment.descriptionToken));
-                                LanguageAPI.Add(equipment.descriptionToken, pickupString, language.name);
-                            }
-                        }
-                    }
+                    formatQualityTokens(baseEquipment.pickupToken, equipment.pickupToken, qualityLanguageDictionary);
+                    formatQualityTokens(baseEquipment.descriptionToken, equipment.descriptionToken, qualityLanguageDictionary);
                 }
+            }
+
+            LanguageAPI.Add(qualityLanguageDictionary);
+
+            foreach (Language language in tempLoadedLanguages)
+            {
+                language.UnloadStrings();
             }
         }
 
@@ -629,6 +686,24 @@ namespace ItemQualities
             PickupIndex scrapPickupIndex = PickupCatalog.FindScrapIndexForItemTier(scrappingPickupDef.itemTier);
 
             return GetPickupIndexOfQuality(scrapPickupIndex, GetQualityTier(scrappingPickupIndex));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyArray<ItemIndex> GetAllItemsOfQuality(QualityTier qualityTier)
+        {
+            return _itemsByQualityTier[(int)qualityTier + 1];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyArray<EquipmentIndex> GetAllEquipmentsOfQuality(QualityTier qualityTier)
+        {
+            return _equipmentsByQualityTier[(int)qualityTier + 1];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyArray<BuffIndex> GetAllBuffsOfQuality(QualityTier qualityTier)
+        {
+            return _buffsByQualityTier[(int)qualityTier + 1];
         }
 
         public static QualityTier Max(QualityTier a, QualityTier b)

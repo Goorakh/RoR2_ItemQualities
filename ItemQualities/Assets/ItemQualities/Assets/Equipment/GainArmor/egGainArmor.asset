@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egGainArmor
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: a16e87db1bc887a4583c4548dc59f51d
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 0a1612be4be22bd49adb648b1f96303d, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: d603fb4ce8a8b144a920c81a5b6657ac, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 6b553c9c32470324180a94815a380984, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: a72152f6a20ea4a468fd7d731d84878a, type: 2}

@@ -6,7 +6,7 @@ using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 using RoR2.Navigation;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -50,7 +50,7 @@ namespace ItemQualities.Items
                         "SPEEDONPICKUP_STATBUFF_ARMOR",
                     };
 
-                    multiTextRiserController.BaseDuration = 1.5f;
+                    multiTextRiserController.BaseDuration = 1f;
                     multiTextRiserController.DurationModifier = 0f;
                 }
                 else
@@ -114,10 +114,10 @@ namespace ItemQualities.Items
                         Material goldMaterial = new Material(modelRenderer.sharedMaterial);
                         goldMaterial.name = "matBarrelGold";
                         goldMaterial.mainTexture = goldTexture;
-                        goldMaterial.SetFloat("_Smoothness", 0.9f);
-                        goldMaterial.SetFloat("_SpecularStrength", 0.3f);
-                        goldMaterial.SetFloat("_SpecularExponent", 2f);
-                        goldMaterial.SetInt("_FEON", 1);
+                        goldMaterial.SetFloat(ShaderProperties._Smoothness, 0.9f);
+                        goldMaterial.SetFloat(ShaderProperties._SpecularStrength, 0.3f);
+                        goldMaterial.SetFloat(ShaderProperties._SpecularExponent, 2f);
+                        goldMaterial.SetInt(ShaderProperties._FresnelEmissionEnabled, 1);
                         modelRenderer.sharedMaterial = goldMaterial;
                     }
                     else
@@ -134,6 +134,14 @@ namespace ItemQualities.Items
 
                 GenericDisplayNameProvider genericDisplayNameProvider = speedOnPickupBarrelPrefab.EnsureComponent<GenericDisplayNameProvider>();
                 genericDisplayNameProvider.displayToken = "BARREL_SPEEDONPICKUP_NAME";
+
+                if (speedOnPickupBarrelPrefab.TryGetComponent(out GenericInspectInfoProvider genericInspectInfoProvider))
+                {
+                    genericInspectInfoProvider.InspectInfo = ScriptableObject.Instantiate(genericInspectInfoProvider.InspectInfo);
+                    genericInspectInfoProvider.InspectInfo.name = "SpeedOnPickupBarrelInspectDef";
+                    genericInspectInfoProvider.InspectInfo.Info.TitleToken = "BARREL_SPEEDONPICKUP_NAME";
+                    genericInspectInfoProvider.InspectInfo.Info.DescriptionToken = "BARREL_SPEEDONPICKUP_DESCRIPTION";
+                }
 
                 SpeedOnPickupBarrelInteraction speedOnPickupBarrelInteraction = speedOnPickupBarrelPrefab.AddComponent<SpeedOnPickupBarrelInteraction>();
                 speedOnPickupBarrelInteraction.PickupPrefab = speedOnPickupBarrelSalvagePrefab;

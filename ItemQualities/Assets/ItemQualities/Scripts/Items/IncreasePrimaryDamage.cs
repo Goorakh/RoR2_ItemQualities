@@ -40,13 +40,13 @@ namespace ItemQualities.Items
                 return;
             }
 
-            int attackerLuminousBuffCountLocalIndex = -1;
+            VariableDefinition attackerLuminousBuffCountVar = null;
             ILLabel afterLuminousBlockLabel = default;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(DLC2Content.Buffs), nameof(DLC2Content.Buffs.IncreasePrimaryDamageBuff)),
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.GetBuffCount)),
-                               x => x.MatchStloc(typeof(int), il, out attackerLuminousBuffCountLocalIndex),
-                               x => x.MatchLdloc(attackerLuminousBuffCountLocalIndex),
+                               x => x.MatchStloc(typeof(int), il, out attackerLuminousBuffCountVar),
+                               x => x.MatchLdloc(attackerLuminousBuffCountVar),
                                x => x.MatchBlt(out afterLuminousBlockLabel)))
             {
                 Log.Error("Failed to find patch location");
@@ -57,7 +57,7 @@ namespace ItemQualities.Items
 
             c.Emit(OpCodes.Ldarg, damageInfoParameter);
             c.Emit(OpCodes.Ldarg, victimParameter);
-            c.Emit(OpCodes.Ldloc, attackerLuminousBuffCountLocalIndex);
+            c.Emit(OpCodes.Ldloc, attackerLuminousBuffCountVar);
             c.EmitDelegate<Func<DamageInfo, GameObject, int, bool>>(tryQualityLuminousProc);
             c.Emit(OpCodes.Brtrue, afterLuminousBlockLabel);
 

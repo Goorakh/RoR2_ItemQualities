@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egGoldGat
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: ecb0e48503192bb4abb09cde35b1bed6
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 7e6b5d6b8c6c7764c8f4427dabb75bde, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: 8180cec6f737e1f42a098cd9d6dff0f4, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 4e38219a590518f4f977256b90b22135, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 789b99f73dce90e4ba11625dce037bc6, type: 2}

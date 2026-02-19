@@ -1,4 +1,5 @@
 ﻿using AK.Wwise;
+using HG;
 using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
@@ -6,7 +7,8 @@ using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 using RoR2.Projectile;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2BepInExPack.GameAssetPathsBetter;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -65,6 +67,9 @@ namespace ItemQualities.Items
 
             GameObject explosionEffect = projectileImpactExplosion.explosionEffect;
 
+            IgnoredCollisionsProvider ignoredCollisionsProvider = droneShootableAttachmentPrefab.AddComponent<IgnoredCollisionsProvider>();
+            ignoredCollisionsProvider.Colliders = Array.ConvertAll(hurtBoxGroup.hurtBoxes, h => h.GetComponent<Collider>());
+
             NetworkedBodyAttachment networkedBodyAttachment = droneShootableAttachmentPrefab.AddComponent<NetworkedBodyAttachment>();
             networkedBodyAttachment.forceHostAuthority = true;
             networkedBodyAttachment.shouldParentToAttachedBody = true;
@@ -77,11 +82,21 @@ namespace ItemQualities.Items
             droneShootableController.ExplosionEffect = explosionEffect;
             droneShootableController.HurtBoxGroup = hurtBoxGroup;
             droneShootableController.FxRoot = fxTransform.gameObject;
+            droneShootableController.IgnoredCollisionsProvider = ignoredCollisionsProvider;
 
             if (projectileController.flightSoundLoop)
             {
                 fxTransform.gameObject.AddComponent<LoopSoundPlayer>().loopDef = projectileController.flightSoundLoop;
             }
+
+            if (droneShootableAttachmentPrefab.TryGetComponent(out TeamComponent teamComponent))
+            {
+                teamComponent._teamIndex = TeamIndex.Neutral;
+            }
+
+            ProcDamageModifier procDamageModifier = droneShootableAttachmentPrefab.EnsureComponent<ProcDamageModifier>();
+            procDamageModifier.ProcCoefficientMultiplier = 0f;
+            procDamageModifier.DamageTypeToAdd = DamageType.Silent;
 
             GameObject.Destroy(droneShootableAttachmentPrefab.GetComponent<BuffWard>());
             GameObject.Destroy(droneBallShootableController);

@@ -30,11 +30,11 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[1].Next, MoveType.Before); // call CharacterBody.AddTimedBuff
 
-            int targetBodyLocalIndex = -1;
+            VariableDefinition targetBodyVar = null;
             if (c.TryFindPrev(out _,
-                              x => x.MatchLdloc(typeof(CharacterBody), il, out targetBodyLocalIndex)))
+                              x => x.MatchLdloc(typeof(CharacterBody), il, out targetBodyVar)))
             {
-                c.Emit(OpCodes.Ldloc, targetBodyLocalIndex);
+                c.Emit(OpCodes.Ldloc, targetBodyVar);
             }
             else
             {

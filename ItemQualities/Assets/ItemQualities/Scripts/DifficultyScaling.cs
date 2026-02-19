@@ -26,12 +26,7 @@ namespace ItemQualities
 
                 static float getScalingValue(float scalingValue)
                 {
-                    if (Configs.General.EnableDifficultyModifications.Value)
-                    {
-                        scalingValue *= 1.25f;
-                    }
-
-                    return scalingValue;
+                    return scalingValue * Configs.General.DifficultyCoefficientMultiplier.Value;
                 }
 
                 patchCount++;

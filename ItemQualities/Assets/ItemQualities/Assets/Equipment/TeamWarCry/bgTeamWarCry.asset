@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgTeamWarCry
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: 1c28951aea37fec47910c9693fb6ab38
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseBuff: {fileID: 0}
+  _uncommonBuff: {fileID: 11400000, guid: bdacdf66315fd7e4d996d9b2bd90ab0a, type: 2}
+  _rareBuff: {fileID: 11400000, guid: b1391a722cda7f84b954efe1dcbe508e, type: 2}
+  _epicBuff: {fileID: 11400000, guid: ba8b7efb9bfc0584cb64bce07e23ae48, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: 797a346124e202c4b9e82d238c9d4ff9, type: 2}
+  InheritBaseBuffBehavior: 1

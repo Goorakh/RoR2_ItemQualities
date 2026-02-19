@@ -29,7 +29,7 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int foundTargetsListVar = -1;
+            VariableDefinition foundTargetsListVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.BounceNearby)),
                                x => x.MatchStloc(typeof(List<HurtBox>), il, out foundTargetsListVar),

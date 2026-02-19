@@ -22,7 +22,7 @@ using Path = System.IO.Path;
 
 namespace ItemQualities
 {
-    public class ItemQualitiesContent : IContentPackProvider
+    public sealed class ItemQualitiesContent : IContentPackProvider
     {
         readonly ExtendedContentPack _contentPack = new ExtendedContentPack();
 
@@ -30,8 +30,6 @@ namespace ItemQualities
 
         QualityContagiousItemHelper _qualityContagiousItemHelper;
         ProjectileExplosionEffectScaleFixHelper _projectileExplosionEffectScaleFixHelper;
-
-        internal static NamedAssetCollection<TMP_SpriteAsset> TMP_SpriteAssets = new NamedAssetCollection<TMP_SpriteAsset>(ContentPack.getScriptableObjectName);
 
         internal ItemQualitiesContent()
         {
@@ -49,7 +47,7 @@ namespace ItemQualities
 
         public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
         {
-            using PartitionedProgress partitionedProgress = new PartitionedProgress(args.progressReceiver);
+            PartitionedProgress partitionedProgress = new PartitionedProgress(args.progressReceiver);
             IProgress<float> loadContentProgress = partitionedProgress.AddPartition(1f);
             IProgress<float> finalizeContentProgress = partitionedProgress.AddPartition(1f);
 
@@ -100,7 +98,10 @@ namespace ItemQualities
 
             populateTypeFields(typeof(Sprites), _contentPack.sprites);
 
-            TMP_SpriteAssets = _contentPack.spriteAssets;
+            populateTypeFields(typeof(TMP_SpriteAssets), _contentPack.spriteAssets, fieldName => "tmpspr" + fieldName);
+            TMP_SpriteAssets.AllSpriteAssets = new ReadOnlyCollection<TMP_SpriteAsset>(_contentPack.spriteAssets.ToArray());
+
+            populateTypeFields(typeof(NetworkSoundEvents), _contentPack.networkSoundEventDefs, fieldName => "nse" + fieldName);
 
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -115,7 +116,7 @@ namespace ItemQualities
                 throw new FileNotFoundException("Could not find ItemQualities assetbundle file");
             }
 
-            using PartitionedProgress totalProgress = new PartitionedProgress(progressReceiver);
+            PartitionedProgress totalProgress = new PartitionedProgress(progressReceiver);
             IProgress<float> loadAssetBundleProgress = totalProgress.AddPartition(0.5f);
             IProgress<float> loadAssetsProgress = totalProgress.AddPartition();
             IProgress<float> generateAssetsProgress = totalProgress.AddPartition();
@@ -192,6 +193,8 @@ namespace ItemQualities
             List<Texture> texturesList = new List<Texture>();
 
             List<Sprite> spritesList = new List<Sprite>();
+
+            List<NetworkSoundEventDef> networkSoundEventsList = new List<NetworkSoundEventDef>();
 
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
@@ -271,6 +274,9 @@ namespace ItemQualities
                     case Sprite sprite:
                         spritesList.Add(sprite);
                         break;
+                    case NetworkSoundEventDef networkSoundEventDef:
+                        networkSoundEventsList.Add(networkSoundEventDef);
+                        break;
                 }
             }
 
@@ -310,6 +316,8 @@ namespace ItemQualities
             _contentPack.textures.Add(texturesList.ToArray());
 
             _contentPack.sprites.Add(spritesList.ToArray());
+
+            _contentPack.networkSoundEventDefs.Add(networkSoundEventsList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -360,6 +368,8 @@ namespace ItemQualities
 
             _projectileExplosionEffectScaleFixHelper ??= new ProjectileExplosionEffectScaleFixHelper();
             _projectileExplosionEffectScaleFixHelper.Step(_contentPack, args);
+
+            EffectScalingFixer.AddToContentPack(args.output);
         }
 
         public IEnumerator FinalizeAsync(FinalizeAsyncArgs args)
@@ -370,6 +380,8 @@ namespace ItemQualities
             _qualityContagiousItemHelper = null;
 
             _projectileExplosionEffectScaleFixHelper = null;
+
+            EffectScalingFixer.OnContentFinalized();
 
             args.ReportProgress(1f);
             yield break;
@@ -705,7 +717,45 @@ namespace ItemQualities
         {
             internal static IReadOnlyCollection<EquipmentQualityGroup> AllGroups = Array.Empty<EquipmentQualityGroup>();
 
+            public static EquipmentQualityGroup BossHunter;
+
             public static EquipmentQualityGroup BossHunterConsumed;
+
+            public static EquipmentQualityGroup Recycle;
+
+            public static EquipmentQualityGroup VendingMachine;
+
+            public static EquipmentQualityGroup CommandMissile;
+
+            public static EquipmentQualityGroup MultiShopCard;
+
+            public static EquipmentQualityGroup DeathProjectile;
+
+            public static EquipmentQualityGroup PassiveHealing;
+
+            public static EquipmentQualityGroup GummyClone;
+
+            public static EquipmentQualityGroup TeamWarCry;
+
+            public static EquipmentQualityGroup GainArmor;
+
+            public static EquipmentQualityGroup CritOnUse;
+
+            public static EquipmentQualityGroup BFG;
+
+            public static EquipmentQualityGroup Blackhole;
+
+            public static EquipmentQualityGroup Scanner;
+
+            public static EquipmentQualityGroup Lightning;
+
+            public static EquipmentQualityGroup Saw;
+
+            public static EquipmentQualityGroup LifestealOnHit;
+
+            public static EquipmentQualityGroup DroneBackup;
+
+            public static EquipmentQualityGroup GoldGat;
         }
 
         public static class BuffQualityGroups
@@ -745,6 +795,12 @@ namespace ItemQualities
             public static BuffQualityGroup ShieldBoosterBuff;
 
             public static BuffQualityGroup MultikillWarCryBuff;
+
+            public static BuffQualityGroup TeamWarCry;
+
+            public static BuffQualityGroup FullCrit;
+
+            public static BuffQualityGroup LifeSteal;
         }
 
         public static class Buffs
@@ -777,6 +833,10 @@ namespace ItemQualities
             public static GameObject DeathMarkQualityEffect;
 
             public static GameObject VoidDeathOrbEffect;
+
+            public static GameObject DuplicatedInteractableEffect;
+
+            public static GameObject MultiShopCardTooltipContext;
         }
 
         public static class NetworkedPrefabs
@@ -806,6 +866,10 @@ namespace ItemQualities
             public static GameObject DuplicatorQualityAttachment;
 
             public static GameObject DroneShootableAttachment;
+
+            public static GameObject CleanseQualityAttachment;
+
+            public static GameObject QualityCritOnUseAttachment;
         }
 
         public static class ProjectilePrefabs
@@ -840,12 +904,25 @@ namespace ItemQualities
 
             [TargetAssetName("iscQualityDuplicatorWild")]
             public static InteractableSpawnCard QualityDuplicatorWild;
+
+            [TargetAssetName("iscChest2Stealthed")]
+            public static InteractableSpawnCard Chest2Stealthed;
         }
 
         public static class Sprites
         {
             [TargetAssetName("icon")]
             public static Sprite ModIcon;
+        }
+
+        public static class TMP_SpriteAssets
+        {
+            internal static IReadOnlyCollection<TMP_SpriteAsset> AllSpriteAssets = Array.Empty<TMP_SpriteAsset>();
+        }
+
+        public static class NetworkSoundEvents
+        {
+            public static NetworkSoundEventDef DuplicateInteractable;
         }
     }
 }

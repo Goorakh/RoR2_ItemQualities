@@ -15,7 +15,7 @@ using UnityEngine.Serialization;
 namespace ItemQualities
 {
     [DefaultExecutionOrder(-1000)]
-    public class AssignAddressableReferences : MonoBehaviour, IAsyncContentLoadCallback
+    public sealed class AssignAddressableReferences : MonoBehaviour, IAsyncContentLoadCallback
     {
         public ComponentFieldAddressableAssignment[] FieldAssignments = Array.Empty<ComponentFieldAddressableAssignment>();
 
@@ -186,7 +186,7 @@ namespace ItemQualities
         }
 
         [Serializable]
-        public class ComponentFieldAddressableAssignment
+        public sealed class ComponentFieldAddressableAssignment
         {
             [Tooltip("The object to assign the field on")]
             [SerializeField]

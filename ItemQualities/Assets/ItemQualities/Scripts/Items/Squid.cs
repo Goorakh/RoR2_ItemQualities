@@ -52,11 +52,11 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int squidDirectorSpawnRequestLocalIndex = -1;
+            VariableDefinition squidDirectorSpawnRequestVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.Squid)),
                                x => x.MatchNewobj<DirectorSpawnRequest>(),
-                               x => x.MatchStloc(typeof(DirectorSpawnRequest), il, out squidDirectorSpawnRequestLocalIndex),
+                               x => x.MatchStloc(typeof(DirectorSpawnRequest), il, out squidDirectorSpawnRequestVar),
                                x => x.MatchStfld<DirectorSpawnRequest>(nameof(DirectorSpawnRequest.onSpawnedServer))))
             {
                 Log.Error("Failed to find patch location");
@@ -65,7 +65,7 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[3].Next, MoveType.After);
 
-            c.Emit(OpCodes.Ldloc, squidDirectorSpawnRequestLocalIndex);
+            c.Emit(OpCodes.Ldloc, squidDirectorSpawnRequestVar);
             c.Emit(OpCodes.Ldarg, interactorParameter);
             c.EmitDelegate<Action<DirectorSpawnRequest, Interactor>>(handleQualitySquid);
 

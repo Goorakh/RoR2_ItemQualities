@@ -8,21 +8,27 @@ namespace ItemQualities
     public static partial class Configs
     {
         const string ModGuid = ItemQualitiesPlugin.PluginGUID;
-        const string ModName = ItemQualitiesPlugin.PluginName;
+        const string ModName = "Quality";
 
         internal static void Init(ConfigFile configFile)
         {
+            configFile.SaveOnConfigSet = false;
+
             General.Init(configFile);
+            Interface.Init(configFile);
 
 #if DEBUG
             Debug.Init(configFile);
 #endif
+
+            configFile.SaveOnConfigSet = true;
+            configFile.Save();
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         internal static void InitRiskOfOptions()
         {
-            ModSettingsManager.SetModDescription("Settings for ItemQualities", ModGuid, ModName);
+            ModSettingsManager.SetModDescription("Settings for Quality", ModGuid, ModName);
 
             RoR2Application.onLoad += () =>
             {
@@ -33,6 +39,7 @@ namespace ItemQualities
             };
 
             General.InitRiskOfOptions();
+            Interface.InitRiskOfOptions();
 
 #if DEBUG
             Debug.InitRiskOfOptions();

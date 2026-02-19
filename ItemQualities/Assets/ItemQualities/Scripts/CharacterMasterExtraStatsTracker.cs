@@ -1,7 +1,7 @@
 ﻿using HG;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
-using UnityEngine;
+using System;
 using UnityEngine.Networking;
 
 namespace ItemQualities
@@ -22,6 +22,7 @@ namespace ItemQualities
 
         CharacterMaster _master;
 
+        CharacterBody _cachedBody;
         CharacterBodyExtraStatsTracker _bodyExtraStatsComponent;
 
         [SyncVar(hook = nameof(hookSetSteakBonus))]
@@ -30,8 +31,13 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetSpeedOnPickupBonus))]
         public int SpeedOnPickupBonus;
 
+        [SyncVar]
+        public int CardStoredInteractableIndex = -1;
+
         int _stageIncomingDamageInstanceCountServer;
         public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
+
+        public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
 
         void Awake()
         {
@@ -47,52 +53,65 @@ namespace ItemQualities
 
         void OnEnable()
         {
-            _master.onBodyStart += onBodyStart;
-            refreshBodyStatsComponentReference(_master.GetBodyObject());
+            _master.onBodyStart += setBody;
+            _master.onBodyDestroyed += setBody;
 
             Stage.onServerStageBegin += onServerStageBegin;
+
+            setBody(_master.GetBody());
         }
 
         void OnDisable()
         {
-            _master.onBodyStart -= onBodyStart;
+            _master.onBodyStart -= setBody;
+            _master.onBodyDestroyed -= setBody;
             Stage.onServerStageBegin -= onServerStageBegin;
+
+            setBody(null);
         }
 
-        void onBodyStart(CharacterBody body)
+        void setBody(CharacterBody body)
         {
-            refreshBodyStatsComponentReference(body ? body.gameObject : null);
-        }
+            if (_cachedBody == body)
+                return;
 
-        void refreshBodyStatsComponentReference(GameObject bodyObject)
-        {
-            _bodyExtraStatsComponent = bodyObject ? bodyObject.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
+            if (_bodyExtraStatsComponent)
+            {
+                _bodyExtraStatsComponent.OnIncomingDamageServer -= onIncomingDamageServer;
+            }
+
+            _cachedBody = body;
+            _bodyExtraStatsComponent = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
+
+            if (_bodyExtraStatsComponent)
+            {
+                _bodyExtraStatsComponent.OnIncomingDamageServer += onIncomingDamageServer;
+            }
         }
 
         void onServerStageBegin(Stage stage)
         {
-            _stageIncomingDamageInstanceCountServer = 0;
+            if (_stageIncomingDamageInstanceCountServer != 0)
+            {
+                _stageIncomingDamageInstanceCountServer = 0;
+                OnStageDamageInstancesTakenCountChangedServer?.Invoke(this);
+            }
+        }
+
+        void onIncomingDamageServer(DamageInfo damageInfo)
+        {
+            if (damageInfo.damage > 0f && !damageInfo.delayedDamageSecondHalf && (damageInfo.damageType & DamageType.DoT) == 0)
+            {
+                _stageIncomingDamageInstanceCountServer++;
+                OnStageDamageInstancesTakenCountChangedServer?.Invoke(this);
+            }
         }
 
         void markBodyStatsDirty()
         {
-            CharacterBody body = _master ? _master.GetBody() : null;
-            if (body)
+            if (_cachedBody)
             {
-                body.MarkAllStatsDirty();
-            }
-
-            if (_bodyExtraStatsComponent)
-            {
-                _bodyExtraStatsComponent.MarkAllStatsDirty();
-            }
-        }
-
-        public void OnIncomingDamageServer(DamageInfo damageInfo)
-        {
-            if (damageInfo.damage > 0f && !damageInfo.delayedDamageSecondHalf)
-            {
-                _stageIncomingDamageInstanceCountServer++;
+                _cachedBody.MarkAllStatsDirty();
             }
         }
 

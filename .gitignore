@@ -89,3 +89,6 @@ ItemQualities/ThunderKit/
 ItemQualities/Packages/*
 !ItemQualities/Packages/packages-lock.json
 !ItemQualities/Packages/manifest.json
+
+# RoR2EK addressables cache
+ItemQualities/ProjectSettings/RoR2EditorKit/AddressablesPathDictionary.asset

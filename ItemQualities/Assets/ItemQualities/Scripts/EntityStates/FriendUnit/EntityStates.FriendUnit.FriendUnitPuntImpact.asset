@@ -25,3 +25,11 @@ MonoBehaviour:
       fieldValue:
         stringValue: Play_Item_FriendUnit_Hit
         objectValue: {fileID: 0}
+    - fieldName: ReturnVelocityMaxAngleDelta
+      fieldValue:
+        stringValue: 35
+        objectValue: {fileID: 0}
+    - fieldName: ReturnVelocityMaxMagnitudeMultiplier
+      fieldValue:
+        stringValue: 1.2
+        objectValue: {fileID: 0}

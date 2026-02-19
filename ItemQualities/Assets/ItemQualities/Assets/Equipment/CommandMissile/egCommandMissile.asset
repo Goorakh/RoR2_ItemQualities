@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egCommandMissile
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: 1d6dbff51f1a7564895375a59f07224e
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 34fe8f456a09a5e4aa71eff44385a48d, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: d6324574b84fe5940ae45d0b6f8f3e53, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 4a5ed7e54a894674b9970c101cb928f0, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 85145586c287fa34295cf18522d6ae83, type: 2}

@@ -19,6 +19,8 @@ namespace ItemQualities.Items
         static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
 
         static CharacterBody _earlyAssignmentBody;
+        static ItemQualityCounts _earlyAssignmentStacks;
+
         public CharacterBody Body { get; private set; }
 
         ItemQualityCounts _stacks;
@@ -28,6 +30,9 @@ namespace ItemQualities.Items
         {
             Body = _earlyAssignmentBody;
             _earlyAssignmentBody = null;
+
+            _stacks = _earlyAssignmentStacks;
+            _earlyAssignmentStacks = default;
         }
 
         protected virtual void OnStacksChanged()
@@ -255,6 +260,7 @@ namespace ItemQualities.Items
                 if (shouldHaveBehavior)
                 {
                     _earlyAssignmentBody = body;
+                    _earlyAssignmentStacks = itemCounts;
                     try
                     {
                         itemBehavior = (QualityItemBodyBehavior)body.gameObject.AddComponent(qualityBehaviorType);
@@ -262,7 +268,10 @@ namespace ItemQualities.Items
                     finally
                     {
                         _earlyAssignmentBody = null;
+                        _earlyAssignmentStacks = default;
                     }
+
+                    itemBehavior.OnStacksChanged();
 
                     hasBehavior = true;
                 }
@@ -274,8 +283,7 @@ namespace ItemQualities.Items
                     hasBehavior = false;
                 }
             }
-
-            if (hasBehavior && itemBehavior._stacks != itemCounts)
+            else if (hasBehavior && itemBehavior._stacks != itemCounts)
             {
                 itemBehavior._stacks = itemCounts;
                 itemBehavior.OnStacksChanged();
@@ -322,7 +330,7 @@ namespace ItemQualities.Items
         }
 
         [AttributeUsage(AttributeTargets.Method, AllowMultiple = false, Inherited = false)]
-        public sealed class ItemGroupAssociationAttribute : SearchableAttribute
+        protected sealed class ItemGroupAssociationAttribute : SearchableAttribute
         {
             public new MethodInfo target => base.target as MethodInfo;
 

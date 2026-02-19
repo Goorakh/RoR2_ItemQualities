@@ -63,7 +63,7 @@ namespace ItemQualities.Utilities
             return assetAsyncReferenceManager;
         }
 
-        class AssetAsyncReferenceManagerInstance
+        sealed class AssetAsyncReferenceManagerInstance
         {
             static readonly FieldInfo _assetReferenceSubObjectTypeField = typeof(AssetReference).GetField("m_SubObjectType", BindingFlags.Instance | BindingFlags.NonPublic);
 

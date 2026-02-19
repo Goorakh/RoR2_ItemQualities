@@ -3,7 +3,7 @@
 namespace ItemQualities
 {
     [CreateAssetMenu(menuName = "ItemQualities/QualityTierDef")]
-    public class QualityTierDef : ScriptableObject
+    public sealed class QualityTierDef : ScriptableObject
     {
         public QualityTier qualityTier = QualityTier.None;
 
@@ -14,5 +14,9 @@ namespace ItemQualities
         public Sprite consumedIcon;
 
         public GameObject ChestOpenEffectPrefab;
+
+        public string pickupDropSoundEventName = string.Empty;
+
+        public string pickupLandSoundEventName = string.Empty;
     }
 }

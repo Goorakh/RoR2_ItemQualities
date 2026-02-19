@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public class LaserTurbineBombQualityController : MonoBehaviour
+    public sealed class LaserTurbineBombQualityController : MonoBehaviour
     {
         [SystemInitializer]
         static void Init()

@@ -4,7 +4,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using RoR2;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Reflection;
 using UnityEngine;

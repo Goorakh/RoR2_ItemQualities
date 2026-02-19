@@ -126,6 +126,7 @@ Material:
     - _DecalLayer: 0
     - _Depth: 0.066
     - _DetailNormalMapScale: 1
+    - _DitherOn: 1
     - _DoubleColorsOn: 0
     - _DstBlend: 0
     - _EliteBrightnessMax: 1
@@ -135,6 +136,7 @@ Material:
     - _EnableCutout: 0
     - _FEON: 0
     - _Fade: 1
+    - _FadeBias: 0
     - _FlowEmissionStrength: 1
     - _FlowHeightBias: 0
     - _FlowHeightPower: 1

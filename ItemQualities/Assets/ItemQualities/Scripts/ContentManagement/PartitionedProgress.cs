@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ItemQualities.ContentManagement
 {
-    public sealed class PartitionedProgress : IDisposable
+    internal sealed class PartitionedProgress
     {
         readonly IProgress<float> _progressReceiver;
 
@@ -14,16 +14,6 @@ namespace ItemQualities.ContentManagement
         public PartitionedProgress(IProgress<float> receiver)
         {
             _progressReceiver = receiver;
-        }
-
-        public void Dispose()
-        {
-            foreach (ProgressPartition partition in _partitions)
-            {
-                partition.OnReport -= onPartitionReport;
-            }
-
-            _partitions.Clear();
         }
 
         public IProgress<float> AddPartition(float weight = 1f)
