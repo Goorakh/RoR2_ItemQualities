@@ -26,14 +26,17 @@ namespace ItemQualities.Items
 
         private static void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
         {
-            Inventory inventory = damageReport?.attackerMaster?.inventory;
+            CharacterMaster attackerMaster = damageReport?.attackerMaster;
+            if (!attackerMaster)
+                return;
+            Inventory inventory = attackerMaster.inventory;
             if (!inventory)
                 return;
 
             int DroneUpgradeOnKillCount = inventory.GetItemCountEffective(ItemQualitiesContent.Items.DroneUpgradeOnKill);
             if (DroneUpgradeOnKillCount > 0 &&
             DroneUpgradeOnKillCount > inventory.GetItemCountEffective(DLC3Content.Items.DroneUpgradeHidden) &&
-            RollUtil.CheckRoll(DroneUpgradeOnKillCount * 10 + 10, damageReport.attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+            RollUtil.CheckRoll(DroneUpgradeOnKillCount * 10 + 10, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
                 inventory.GiveItemPermanent(DLC3Content.Items.DroneUpgradeHidden);
             }
