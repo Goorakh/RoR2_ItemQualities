@@ -1,3 +1,9 @@
+## 0.6.2
+
+* Squid Polyp rework:
+    * increased damage
+    * on kill chance to upgrade squid
+
 ## 0.6.0
 
 <details>
