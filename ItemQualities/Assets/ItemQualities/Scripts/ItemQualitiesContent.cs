@@ -709,6 +709,8 @@ namespace ItemQualities
         public static class Items
         {
             public static ItemDef DronesDropDynamiteQualityDroneItem;
+
+            public static ItemDef DroneUpgradeOnKill;
         }
 
         public static class EquipmentQualityGroups

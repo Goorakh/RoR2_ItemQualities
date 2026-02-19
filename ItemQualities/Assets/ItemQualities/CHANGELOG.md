@@ -8,6 +8,10 @@
         * Epic: 25%
         * Legendary: 10%
 
+* Squid Polyp rework:
+    * increased damage
+    * on kill chance to upgrade squid
+
 * Roll of Pennies:
     * Fixed bonus gold not spawning when opening a Collector's Barrel.
 
