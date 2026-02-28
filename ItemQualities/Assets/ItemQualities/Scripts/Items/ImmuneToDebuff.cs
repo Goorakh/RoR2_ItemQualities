@@ -64,13 +64,40 @@ namespace ItemQualities.Items
                 return;
 
             ItemQualityCounts immuneToDebuff = victimBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ImmuneToDebuff);
-            if (immuneToDebuff.TotalQualityCount == 0)
+            QualityTier qualityTier = immuneToDebuff.HighestQuality;
+            if (qualityTier == QualityTier.None)
                 return;
 
-            float spreadRadius = 25f + (5f * immuneToDebuff.UncommonCount) +
-                                       (10f * immuneToDebuff.RareCount) +
-                                       (30f * immuneToDebuff.EpicCount) +
-                                       (50f * immuneToDebuff.LegendaryCount);
+            float spreadRadius = (15f * immuneToDebuff.UncommonCount) +
+                                 (25f * immuneToDebuff.RareCount) +
+                                 (35f * immuneToDebuff.EpicCount) +
+                                 (50f * immuneToDebuff.LegendaryCount);
+
+            int buffStackCount;
+            switch (qualityTier)
+            {
+                case QualityTier.Uncommon:
+                    buffStackCount = 2;
+                    break;
+                case QualityTier.Rare:
+                    buffStackCount = 3;
+                    break;
+                case QualityTier.Epic:
+                    buffStackCount = 4;
+                    break;
+                case QualityTier.Legendary:
+                    buffStackCount = 5;
+                    break;
+                default:
+                    buffStackCount = 1;
+                    Log.Warning($"Quality tier {qualityTier} is not implemented");
+                    break;
+            }
+
+            if (!buffDef.canStack)
+            {
+                duration *= buffStackCount;
+            }
 
             SphereSearch targetSearch = new SphereSearch
             {
@@ -94,33 +121,26 @@ namespace ItemQualities.Items
                 CharacterBody targetBody = targetHealthComponent ? targetHealthComponent.body : null;
                 if (targetBody && targetBody != victimBody)
                 {
-                    ImmuneToDebuffOrb orb;
+                    ImmuneToDebuffOrb orb = new ImmuneToDebuffOrb
+                    {
+                        origin = victimBody.corePosition,
+                        target = targetHurtBox,
+                        Attacker = victimBody.gameObject,
+                        BuffStackCount = buffDef.canStack ? buffStackCount : 1,
+                    };
+
                     if (inflictDotInfo.HasValue)
                     {
                         InflictDotInfo victimDotInfo = inflictDotInfo.Value;
-                        victimDotInfo.attackerObject = victimBody.gameObject;
+                        victimDotInfo.attackerObject = orb.Attacker;
                         victimDotInfo.victimObject = targetBody.gameObject;
 
-                        orb = new ImmuneToDebuffOrb
-                        {
-                            origin = victimBody.corePosition,
-                            target = targetHurtBox,
-                            InflictDotInfo = victimDotInfo,
-                            Attacker = victimDotInfo.attackerObject,
-                            BuffStackCount = 1,
-                        };
+                        orb.InflictDotInfo = victimDotInfo;
                     }
                     else
                     {
-                        orb = new ImmuneToDebuffOrb
-                        {
-                            origin = victimBody.corePosition,
-                            target = targetHurtBox,
-                            BuffDuration = duration,
-                            BuffIndex = buffIndex,
-                            BuffStackCount = 1,
-                            Attacker = victimBody.gameObject,
-                        };
+                        orb.BuffIndex = buffIndex;
+                        orb.BuffDuration = duration;
                     }
 
                     OrbManager.instance.AddOrb(orb);
