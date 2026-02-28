@@ -1,5 +1,17 @@
 ## \{Next Version\}
 
+* Ben's Raincoat:
+    * Debuff spread radius:
+        * Uncommon: 30m (+5m per stack) -> 15m (+15m per stack)
+        * Rare: 35m (+10m per stack) -> 25m (+25m per stack)
+        * Epic: 55m (+30m per stack) -> 35m (+35m per stack)
+        * Legendary: 75m (+50m per stack) -> 50m (+50m per stack)
+    * Spread debuff stacks: 1x ->
+        * Uncommon: 2x
+        * Rare: 3x
+        * Epic: 4x
+        * Legendary: 5x
+
 * Faraday Spur:
     * Removed charge speed increase.
     * Charge used per jump: 100% ->
