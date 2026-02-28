@@ -899,7 +899,7 @@
         "ITEM_IMMUNETODEBUFF_RARE_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>3</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>25m</style> <style=cStack>(+25m per stack)</style>",
 
         "ITEM_IMMUNETODEBUFF_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to all nearby enemies.",
-        "ITEM_IMMUNETODEBUFF_EPIC_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>4</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>55m</style> <style=cStack>(+35m per stack)</style>",
+        "ITEM_IMMUNETODEBUFF_EPIC_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>4</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>35m</style> <style=cStack>(+35m per stack)</style>",
 
         "ITEM_IMMUNETODEBUFF_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to all nearby enemies.",
         "ITEM_IMMUNETODEBUFF_LEGENDARY_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>5</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>50m</style> <style=cStack>(+50m per stack)</style>",
