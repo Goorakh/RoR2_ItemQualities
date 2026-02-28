@@ -9,8 +9,17 @@
         * Legendary: 10%
 
 * Squid Polyp rework:
-    * increased damage
-    * on kill chance to upgrade squid
+    * Squids have a chance to upgrade on kill, increasing maximum health and damage.
+        * Uncommon: 20%
+        * Rare: 30%
+        * Epic: 40%
+        * Legendary: 50%
+    * Squid base damage:
+        * Uncommon: 110% (+10% per stack) -> 130% (+30% per stack)
+        * Rare: 130% (+30% per stack) -> 140% (+40% per stack)
+        * Epic: 160% (+60% per stack) -> 150% (+50% per stack)
+        * Legendary: 200% (+100% per stack)
+    * Removed base max health and duration increase.
 
 * Roll of Pennies:
     * Fixed bonus gold not spawning when opening a Collector's Barrel.
