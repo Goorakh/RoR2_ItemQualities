@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: qdLegendary
   m_EditorClassIdentifier: 
   qualityTier: 3
+  modifierToken: QUALITY_LEGENDARY_MODIFIER
+  consumedModifierToken: QUALITY_LEGENDARY_CONSUMED_MODIFIER
   color: {r: 1, g: 0.5882353, b: 0, a: 1}
   icon: {fileID: 1200068530, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   consumedIcon: {fileID: 1632103838, guid: 227c6511dbc04584487beeb3021957e4, type: 3}

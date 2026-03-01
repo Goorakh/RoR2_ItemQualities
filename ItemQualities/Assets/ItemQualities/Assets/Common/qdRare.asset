@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: qdRare
   m_EditorClassIdentifier: 
   qualityTier: 1
+  modifierToken: QUALITY_RARE_MODIFIER
+  consumedModifierToken: QUALITY_RARE_CONSUMED_MODIFIER
   color: {r: 0.13725491, g: 0.5882353, b: 1, a: 1}
   icon: {fileID: 1310505188, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   consumedIcon: {fileID: -997151503, guid: 227c6511dbc04584487beeb3021957e4, type: 3}

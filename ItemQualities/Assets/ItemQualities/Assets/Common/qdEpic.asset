@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: qdEpic
   m_EditorClassIdentifier: 
   qualityTier: 2
+  modifierToken: QUALITY_EPIC_MODIFIER
+  consumedModifierToken: QUALITY_EPIC_CONSUMED_MODIFIER
   color: {r: 0.76470596, g: 0, b: 1, a: 1}
   icon: {fileID: 932333613, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   consumedIcon: {fileID: 931077086, guid: 227c6511dbc04584487beeb3021957e4, type: 3}

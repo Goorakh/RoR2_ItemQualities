@@ -173,14 +173,6 @@ namespace ItemQualities
             return ItemQualityUtils.GetTeamItemCounts(this, teamIndex, requireAlive, requireConnected);
         }
 
-        void OnValidate()
-        {
-            if (!BaseItem && (BaseItemReference == null || !BaseItemReference.RuntimeKeyIsValid()))
-            {
-                Debug.LogError($"Invalid item reference in group '{name}'");
-            }
-        }
-
         IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
         {
             if (BaseItem)
@@ -203,10 +195,6 @@ namespace ItemQualities
                 }
 
                 AssetAsyncReferenceManager<ItemDef>.UnloadAsset(BaseItemReference);
-            }
-            else
-            {
-                Log.Error($"Invalid item reference in group '{name}'");
             }
 
             progressReceiver.Report(1f);
@@ -296,10 +284,6 @@ namespace ItemQualities
 
                 AssetAsyncReferenceManager<ItemDef>.UnloadAsset(BaseItemReference);
             }
-            else
-            {
-                Log.Error($"Invalid item reference in group '{name}'");
-            }
 
             progressReceiver?.Report(1f);
 
@@ -388,12 +372,18 @@ namespace ItemQualities
 
             string currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
 
-            AsyncOperationHandle<ItemDef> baseItemLoadHandle = BaseItemReference.LoadAssetAsync<ItemDef>();
+            AsyncOperationHandle<ItemDef> baseItemLoadHandle = default;
+            ItemDef baseItemDef = null;
+            if (BaseItemReference != null && BaseItemReference.RuntimeKeyIsValid())
+            {
+                baseItemLoadHandle = BaseItemReference.LoadAssetAsync<ItemDef>();
+
+                baseItemDef = baseItemLoadHandle.WaitForCompletion();
+            }
+
             using ScopedAsyncOperationHandle<ItemDef> baseItemLoadScope = new ScopedAsyncOperationHandle<ItemDef>(baseItemLoadHandle);
 
-            ItemDef baseItemDef = baseItemLoadHandle.WaitForCompletion();
-
-            Texture2D baseIconTexture = baseItemDef.pickupIconSprite.texture;
+            Texture2D baseIconTexture = baseItemDef ? baseItemDef.pickupIconSprite.texture : null;
 
             ItemDef createItem(QualityTier qualityTier)
             {
@@ -402,33 +392,37 @@ namespace ItemQualities
                 itemDef.descriptionToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_DESC";
                 itemDef.pickupToken = $"ITEM_{baseItemName.ToUpper()}_{qualityTier.ToString().ToUpper()}_PICKUP";
                 itemDef.tags = new ItemTag[] { ItemTag.WorldUnique };
-                itemDef.isConsumed = baseItemDef.isConsumed;
-                itemDef.hidden = baseItemDef.hidden;
-                itemDef.canRemove = baseItemDef.canRemove;
 
-                string qualityIconTextureAssetPath = Path.Combine(currentDirectory, "tex" + itemDef.name + ".png");
-                itemDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
-                if (!itemDef.pickupIconSprite)
+                if (baseItemDef)
                 {
-                    Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier, baseItemDef.isConsumed);
+                    itemDef.isConsumed = baseItemDef.isConsumed;
+                    itemDef.hidden = baseItemDef.hidden;
+                    itemDef.canRemove = baseItemDef.canRemove;
 
-                    File.WriteAllBytes(qualityIconTextureAssetPath, qualityIconTexture.EncodeToPNG());
-
-                    AssetDatabase.ImportAsset(qualityIconTextureAssetPath);
-
-                    TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(qualityIconTextureAssetPath);
-                    textureImporter.textureType = TextureImporterType.Sprite;
-                    textureImporter.spritePixelsPerUnit = qualityIconTexture.width / 5.12f;
-                    textureImporter.alphaIsTransparency = true;
-
-                    AssetDatabase.ImportAsset(qualityIconTextureAssetPath, ImportAssetOptions.ForceUpdate);
-
+                    string qualityIconTextureAssetPath = Path.Combine(currentDirectory, "tex" + itemDef.name + ".png");
                     itemDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
-                }
+                    if (!itemDef.pickupIconSprite)
+                    {
+                        Texture2D qualityIconTexture = QualityCatalog.CreateQualityIconTexture(baseIconTexture, qualityTier, baseItemDef.isConsumed);
+
+                        File.WriteAllBytes(qualityIconTextureAssetPath, qualityIconTexture.EncodeToPNG());
+
+                        AssetDatabase.ImportAsset(qualityIconTextureAssetPath);
+
+                        TextureImporter textureImporter = (TextureImporter)AssetImporter.GetAtPath(qualityIconTextureAssetPath);
+                        textureImporter.textureType = TextureImporterType.Sprite;
+                        textureImporter.spritePixelsPerUnit = qualityIconTexture.width / 5.12f;
+                        textureImporter.alphaIsTransparency = true;
+
+                        AssetDatabase.ImportAsset(qualityIconTextureAssetPath, ImportAssetOptions.ForceUpdate);
+
+                        itemDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);
+                    }
 
 #pragma warning disable CS0618 // Type or member is obsolete
-                itemDef.deprecatedTier = baseItemDef.tier;
+                    itemDef.deprecatedTier = baseItemDef.tier;
 #pragma warning restore CS0618 // Type or member is obsolete
+                }
 
                 AssetDatabase.CreateAsset(itemDef, Path.Combine(currentDirectory, itemDef.name + ".asset"));
 

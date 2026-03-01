@@ -7,6 +7,10 @@ namespace ItemQualities
     {
         public QualityTier qualityTier = QualityTier.None;
 
+        public string modifierToken = string.Empty;
+
+        public string consumedModifierToken = string.Empty;
+
         public Color color;
 
         public Sprite icon;

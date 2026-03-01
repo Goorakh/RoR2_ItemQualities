@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1284244208, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: DroneUpgradeOnKill
+  m_Name: QualityTierLegendary
   m_EditorClassIdentifier: 
   deprecatedTier: 5
   _itemTierDef: {fileID: 0}
-  nameToken: ITEM_DRONEUPGRADEONKILL_NAME
-  pickupToken: ITEM_DRONEUPGRADEONKILL_PICKUP
-  descriptionToken: ITEM_DRONEUPGRADEONKILL_DESCRIPTION
-  loreToken: ITEM_DRONEUPGRADEONKILL_LORE
+  nameToken: ITEM_QUALITYTIER_LEGENDARY_NAME
+  pickupToken: ITEM_QUALITYTIER_LEGENDARY_PICKUP
+  descriptionToken: ITEM_QUALITYTIER_LEGENDARY_DESC
+  loreToken: ITEM_QUALITYTIER_LEGENDARY_LORE
   unlockableDef: {fileID: 0}
   pickupModelPrefab: {fileID: 0}
   pickupModelReference:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
-  pickupIconSprite: {fileID: 0}
+  pickupIconSprite: {fileID: 1200068530, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   isConsumed: 0
-  hidden: 1
-  canRemove: 0
-  tags: 
+  hidden: 0
+  canRemove: 1
+  tags: 09000000
   requiredExpansion: {fileID: 0}
