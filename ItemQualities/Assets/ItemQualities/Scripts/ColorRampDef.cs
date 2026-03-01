@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    [CreateAssetMenu(menuName = "ItemQualities/ColorRampTextureGenerator")]
+    [CreateAssetMenu(menuName = "ItemQualities/ColorRampDef")]
     public sealed class ColorRampDef : ScriptableObject
     {
         [Tooltip("The width of the generated texture")]

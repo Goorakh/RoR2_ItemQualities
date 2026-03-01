@@ -13,6 +13,8 @@ namespace ItemQualities
 
         public Color color;
 
+        public Texture2D colorRampTexture;
+
         public Sprite icon;
 
         public Sprite consumedIcon;

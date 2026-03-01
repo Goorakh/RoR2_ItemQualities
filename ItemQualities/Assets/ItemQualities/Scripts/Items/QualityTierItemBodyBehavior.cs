@@ -13,13 +13,16 @@ namespace ItemQualities.Items
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static float getScale(in ItemQualityCounts qualities)
+        static float getScale(QualityTier qualityTier)
         {
-            return Mathf.Max(1f, 1.5f + Mathf.Log((int)qualities.HighestQuality + 1, 4f));
+            return Mathf.Max(1f, 1.35f + Mathf.Log((int)qualityTier + 1, 4f));
         }
 
         Collider _collider;
         CameraTargetParams _cameraTargetParams;
+
+        Transform _modelScaleTransform;
+        Transform _modelOffsetTransform;
 
         ItemQualityCounts _previousStack;
 
@@ -27,6 +30,24 @@ namespace ItemQualities.Items
         {
             _collider = GetComponent<Collider>();
             _cameraTargetParams = GetComponent<CameraTargetParams>();
+
+            ModelLocator modelLocator = Body.modelLocator;
+            if (modelLocator)
+            {
+                _modelScaleTransform = modelLocator.modelTransform;
+
+                Transform modelOffsetTransform = null;
+                if (modelLocator.modelParentTransform)
+                {
+                    modelOffsetTransform = modelLocator.modelParentTransform;
+                }
+                else if (_modelScaleTransform && _modelScaleTransform.IsChildOf(modelLocator.transform))
+                {
+                    modelOffsetTransform = _modelScaleTransform;
+                }
+
+                _modelOffsetTransform = modelOffsetTransform;
+            }
         }
 
         void OnDisable()
@@ -46,8 +67,8 @@ namespace ItemQualities.Items
             if (_previousStack == newStack)
                 return;
 
-            float previousScale = getScale(_previousStack);
-            float newScale = getScale(newStack);
+            float previousScale = getScale(_previousStack.HighestQuality);
+            float newScale = getScale(newStack.HighestQuality);
 
             float scaleMult = newScale / previousScale;
 
@@ -56,11 +77,14 @@ namespace ItemQualities.Items
             if (Mathf.Abs(1f - scaleMult) < Mathf.Epsilon)
                 return;
 
-            Transform modelTransform = Body.modelLocator ? Body.modelLocator.modelTransform : null;
-            if (modelTransform)
+            if (_modelScaleTransform)
             {
-                modelTransform.localScale *= scaleMult;
-                modelTransform.localPosition *= scaleMult;
+                _modelScaleTransform.localScale *= scaleMult;
+            }
+
+            if (_modelOffsetTransform)
+            {
+                _modelOffsetTransform.localPosition *= scaleMult;
             }
 
             if (Body.characterMotor)

@@ -16,6 +16,7 @@ MonoBehaviour:
   modifierToken: QUALITY_RARE_MODIFIER
   consumedModifierToken: QUALITY_RARE_CONSUMED_MODIFIER
   color: {r: 0.13725491, g: 0.5882353, b: 1, a: 1}
+  colorRampTexture: {fileID: 2800000, guid: 7c7f4912710a54d41a8a494fdcf1ac12, type: 3}
   icon: {fileID: 1310505188, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   consumedIcon: {fileID: -997151503, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   ChestOpenEffectPrefab: {fileID: 6383163501004604878, guid: 417ce1945660afd4aae3448223600b6f, type: 3}

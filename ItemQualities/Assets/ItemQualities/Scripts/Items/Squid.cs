@@ -5,7 +5,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using UnityEngine;
 
@@ -38,6 +37,7 @@ namespace ItemQualities.Items
             {
                 args.healthMultAdd += squidUpgradeCount;
                 args.damageMultAdd += squidUpgradeCount;
+                args.allSkills.cooldownMultiplier *= Mathf.Pow(1.0f - 0.2f, squidUpgradeCount);
             }
         }
 
@@ -52,14 +52,45 @@ namespace ItemQualities.Items
                 return;
 
             int squidUpgradeOnKillCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill);
-            if (attackerInventory.GetItemCountPermanent(ItemQualitiesContent.Items.SquidUpgradeHidden) < squidUpgradeOnKillCount &&
-                RollUtil.CheckRoll(squidUpgradeOnKillCount * 10, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
-            {
-                attackerInventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeHidden);
+            if (squidUpgradeOnKillCount == 0)
+                return;
+            
+            int maxUpgradeLevel = Mathf.Min(squidUpgradeOnKillCount, (int)QualityTier.Count);
 
-                if (attackerInventory.GetItemCountEffective(RoR2Content.Items.HealthDecay) > 0)
+            int upgradeCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeHidden);
+            if (upgradeCount < maxUpgradeLevel &&
+                RollUtil.CheckRoll(10 + (squidUpgradeOnKillCount * 10), attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+            {
+                QualityTier currentQualityTier = (QualityTier)upgradeCount - 1;
+
+                bool upgradeSuccessful;
+                if (currentQualityTier != QualityTier.None)
                 {
-                    attackerInventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, 10);
+                    Inventory.ItemTransformation upgradeTransformation = new Inventory.ItemTransformation
+                    {
+                        originalItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier),
+                        newItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier + 1),
+                        minToTransform = 1,
+                        maxToTransform = 1,
+                        transformationType = ItemTransformationTypeIndex.None
+                    };
+
+                    upgradeSuccessful = upgradeTransformation.TryTransform(attackerInventory, out _);
+                }
+                else
+                {
+                    attackerInventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.UncommonItemIndex);
+                    upgradeSuccessful = true;
+                }
+
+                if (upgradeSuccessful)
+                {
+                    attackerInventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeHidden);
+
+                    if (attackerInventory.GetItemCountEffective(RoR2Content.Items.HealthDecay) > 0)
+                    {
+                        attackerInventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, 10);
+                    }
                 }
             }
         }
@@ -111,10 +142,7 @@ namespace ItemQualities.Items
 
                         if (result.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster) && spawnedMaster.inventory)
                         {
-                            // Uncommon start at 20%, +10% per quality
-                            int upgradeChanceOnKill = 2 + (int)squid.HighestQuality;
-
-                            spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill, upgradeChanceOnKill);
+                            spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill, (int)squid.HighestQuality + 1);
 
                             int boostDamageCount = (3 * squid.UncommonCount) +
                                                    (4 * squid.RareCount) +
