@@ -1,3 +1,17 @@
+## \{Next Version\}
+
+* Warbanner
+    * increase damage dealt with time spent in the banner radius
+        * Uncommon: +0.5% damage per second, up to 30 seconds
+        * Uncommon: +0.75% damage per second, up to 40 seconds
+        * Uncommon: +1% damage per second, up to 50 seconds
+        * Uncommon: +1.5% damage per second, up to 60 seconds
+    * temporary banner duration:
+        * Uncommon: 3 seconds (+3 seconds per stack) -> 10 seconds (+10 seconds per stack)
+        * Rare: 8 seconds (+8 seconds per stack) -> 20 seconds (+20 seconds per stack)
+        * Epic: 15 seconds (+15 seconds per stack) -> 30 seconds (+30 seconds per stack)
+        * Legendary: 30 seconds (+30 seconds per stack) -> 40 seconds (+40 seconds per stack)
+
 ## 0.6.1
 
 * Fixed quality item descriptions not showing properly if game was launched in a language other than English.
