@@ -46,7 +46,10 @@ namespace ItemQualities.Items
                     modelOffsetTransform = _modelScaleTransform;
                 }
 
-                _modelOffsetTransform = modelOffsetTransform;
+                if (modelOffsetTransform != Body.transform)
+                {
+                    _modelOffsetTransform = modelOffsetTransform;
+                }
             }
         }
 
@@ -111,12 +114,12 @@ namespace ItemQualities.Items
                 }
             }
 
-            if (Body.aimOriginTransform)
+            if (Body.aimOriginTransform && Body.aimOriginTransform != Body.transform)
             {
                 Body.aimOriginTransform.localPosition *= scaleMult;
             }
 
-            if (_cameraTargetParams && _cameraTargetParams.cameraPivotTransform)
+            if (_cameraTargetParams && _cameraTargetParams.cameraPivotTransform && _cameraTargetParams.cameraPivotTransform != Body.transform)
             {
                 _cameraTargetParams.cameraPivotTransform.localPosition *= scaleMult;
             }
