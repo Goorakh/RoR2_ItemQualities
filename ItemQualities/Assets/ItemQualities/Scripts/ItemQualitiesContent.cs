@@ -435,6 +435,8 @@ namespace ItemQualities
         {
             internal static IReadOnlyCollection<ItemQualityGroup> AllGroups = Array.Empty<ItemQualityGroup>();
 
+            public static ItemQualityGroup QualityTier;
+
             public static ItemQualityGroup Hoof;
 
             public static ItemQualityGroup CritGlasses;
@@ -710,7 +712,9 @@ namespace ItemQualities
         {
             public static ItemDef DronesDropDynamiteQualityDroneItem;
 
-            public static ItemDef DroneUpgradeOnKill;
+            public static ItemDef SquidUpgradeChanceOnKill;
+
+            public static ItemDef SquidUpgradeHidden;
         }
 
         public static class EquipmentQualityGroups

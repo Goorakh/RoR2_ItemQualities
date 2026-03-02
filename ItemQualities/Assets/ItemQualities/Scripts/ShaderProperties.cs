@@ -19,5 +19,7 @@ namespace ItemQualities
         public static readonly int _SpecularExponent = Shader.PropertyToID("_SpecularExponent");
 
         public static readonly int _FresnelEmissionEnabled = Shader.PropertyToID("_FEON");
+
+        public static readonly int _EliteRamp = Shader.PropertyToID("_EliteRamp");
     }
 }

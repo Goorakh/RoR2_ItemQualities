@@ -3,8 +3,8 @@ using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using UnityEngine;
 
@@ -16,29 +16,82 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
-            GlobalEventManager.onCharacterDeathGlobal += GlobalEventManager_onCharacterDeathGlobal;
 
-            AddressableUtil.LoadAssetAsync<Material>(RoR2_Base_Squid.matSquidTurret_mat).OnSuccess(squidMaterial =>
-            {
-                squidMaterial.SetFloat(ShaderProperties._EmPower, 0);
-            });
+            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+
+            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+
+            //AddressableUtil.LoadAssetAsync<Material>(RoR2_Base_Squid.matSquidTurret_mat).OnSuccess(squidMaterial =>
+            //{
+            //    squidMaterial.SetFloat(ShaderProperties._EmPower, 0);
+            //});
         }
 
-        private static void GlobalEventManager_onCharacterDeathGlobal(DamageReport damageReport)
+        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (!sender.inventory)
+                return;
+
+            int squidUpgradeCount = sender.inventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeHidden);
+            if (squidUpgradeCount > 0)
+            {
+                args.healthMultAdd += squidUpgradeCount;
+                args.damageMultAdd += squidUpgradeCount;
+                args.allSkills.cooldownMultiplier *= Mathf.Pow(1.0f - 0.2f, squidUpgradeCount);
+            }
+        }
+
+        static void onCharacterDeathGlobal(DamageReport damageReport)
         {
             CharacterMaster attackerMaster = damageReport?.attackerMaster;
             if (!attackerMaster)
                 return;
-            Inventory inventory = attackerMaster.inventory;
-            if (!inventory)
+
+            Inventory attackerInventory = attackerMaster.inventory;
+            if (!attackerInventory)
                 return;
 
-            int DroneUpgradeOnKillCount = inventory.GetItemCountEffective(ItemQualitiesContent.Items.DroneUpgradeOnKill);
-            if (DroneUpgradeOnKillCount > 0 &&
-            DroneUpgradeOnKillCount > inventory.GetItemCountEffective(DLC3Content.Items.DroneUpgradeHidden) &&
-            RollUtil.CheckRoll(DroneUpgradeOnKillCount * 10 + 10, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+            int squidUpgradeOnKillCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill);
+            if (squidUpgradeOnKillCount == 0)
+                return;
+            
+            int maxUpgradeLevel = Mathf.Min(squidUpgradeOnKillCount, (int)QualityTier.Count);
+
+            int upgradeCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeHidden);
+            if (upgradeCount < maxUpgradeLevel &&
+                RollUtil.CheckRoll(10 + (squidUpgradeOnKillCount * 10), attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
-                inventory.GiveItemPermanent(DLC3Content.Items.DroneUpgradeHidden);
+                QualityTier currentQualityTier = (QualityTier)upgradeCount - 1;
+
+                bool upgradeSuccessful;
+                if (currentQualityTier != QualityTier.None)
+                {
+                    Inventory.ItemTransformation upgradeTransformation = new Inventory.ItemTransformation
+                    {
+                        originalItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier),
+                        newItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier + 1),
+                        minToTransform = 1,
+                        maxToTransform = 1,
+                        transformationType = ItemTransformationTypeIndex.None
+                    };
+
+                    upgradeSuccessful = upgradeTransformation.TryTransform(attackerInventory, out _);
+                }
+                else
+                {
+                    attackerInventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.UncommonItemIndex);
+                    upgradeSuccessful = true;
+                }
+
+                if (upgradeSuccessful)
+                {
+                    attackerInventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeHidden);
+
+                    if (attackerInventory.GetItemCountEffective(RoR2Content.Items.HealthDecay) > 0)
+                    {
+                        attackerInventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, 10);
+                    }
+                }
             }
         }
 
@@ -89,7 +142,7 @@ namespace ItemQualities.Items
 
                         if (result.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster) && spawnedMaster.inventory)
                         {
-                            spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.DroneUpgradeOnKill, (int) squid.HighestQuality + 1);
+                            spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill, (int)squid.HighestQuality + 1);
 
                             int boostDamageCount = (3 * squid.UncommonCount) +
                                                    (4 * squid.RareCount) +

@@ -184,10 +184,6 @@ namespace ItemQualities
 
                     baseAssetsParallelLoadCoroutine.Add(baseItemLoad);
                 }
-                else
-                {
-                    Log.Error($"No base item defined for quality group '{itemQualityGroup.name}'");
-                }
             }
 
             for (int i = 0; i < _allEquipmentQualityGroups.Length; i++)
@@ -446,10 +442,7 @@ namespace ItemQualities
             {
                 ItemDef baseItem = ItemCatalog.GetItemDef(itemQualityGroup.BaseItemIndex);
                 if (!baseItem)
-                {
-                    Log.Error($"Invalid base item in group {itemQualityGroup}");
                     continue;
-                }
 
                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
