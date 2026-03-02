@@ -14,6 +14,7 @@ namespace ItemQualities.Buffs
         static void Init()
         {
             IL.RoR2.CharacterBody.UpdateAllTemporaryVisualEffects += CombineGroupedBuffCountsPatch;
+            IL.RoR2.CharacterBody.RecalculateStats += CombineGroupedBuffCountsPatch;
         }
 
         public static void CombineGroupedBuffCountsPatch(ILContext il)

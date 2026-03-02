@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28dc28c3bd85e2445a8cd55d97de1dde, type: 3}
+  m_Name: bgWarbanner
+  m_EditorClassIdentifier: 
+  BaseBuffReference:
+    m_AssetGUID: 76754cd4dafe18446b82d2ea725692e2
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseBuff: {fileID: 0}
+  _uncommonBuff: {fileID: 11400000, guid: de4edf29d323d35468d26ac1e3f1dc1f, type: 2}
+  _rareBuff: {fileID: 11400000, guid: 1c87e5d2024e3ea44adb9d0b26b980e9, type: 2}
+  _epicBuff: {fileID: 11400000, guid: e05fbe528074f6a4d8bfbd4f314f1d51, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: abb57473508084d4799915b3d8bd8e7a, type: 2}

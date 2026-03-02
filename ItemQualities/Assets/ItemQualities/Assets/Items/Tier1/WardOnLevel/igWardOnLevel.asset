@@ -16,6 +16,7 @@ MonoBehaviour:
     m_AssetGUID: 19a3323fd7b541e4c9e1a13e29e0260e
     m_SubObjectName: 
     m_SubObjectType: 
+  BaseItem: {fileID: 0}
   _uncommonItem: {fileID: 11400000, guid: 94dd0b7c65fea224e8c4f771f1f49de8, type: 2}
   _rareItem: {fileID: 11400000, guid: a28a10ada126b1e4496f58176db714db, type: 2}
   _epicItem: {fileID: 11400000, guid: e875fc74565119942b9b55da6f5a131f, type: 2}

@@ -373,17 +373,17 @@
         "ITEM_CLOVER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Luck is on your side.",
         "ITEM_CLOVER_LEGENDARY_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>+5</style> <style=cStack>(+5 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
 
-        "ITEM_WARDONLEVEL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
-        "ITEM_WARDONLEVEL_UNCOMMON_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>3</style> <style=cStack>(+3 per stack)</style> seconds.",
+        "ITEM_WARDONLEVEL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Deal bonus damage, scaling with time spent in the warbanner radius. Activating an interactable creates a temporary warbanner.",
+        "ITEM_WARDONLEVEL_UNCOMMON_DESC": "{0}\nDeal <style=cIsDamage>+0.5% damage</style> for every second spent in the warbanner radius, up to <style=cIsDamage>30 seconds <style=cStack>(+30 seconds per stack)</style></style>. Activating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>10</style> <style=cStack>(+10 per stack)</style> seconds.",
 
-        "ITEM_WARDONLEVEL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
-        "ITEM_WARDONLEVEL_RARE_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>8</style> <style=cStack>(+8 per stack)</style> seconds.",
+        "ITEM_WARDONLEVEL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Deal bonus damage, scaling with time spent in the warbanner radius. Activating an interactable creates a temporary warbanner.",
+        "ITEM_WARDONLEVEL_RARE_DESC": "{0}\nDeal <style=cIsDamage>+0.75% damage</style> for every second spent in the warbanner radius, up to <style=cIsDamage>40 seconds <style=cStack>(+40 seconds per stack)</style></style>. Activating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>20</style> <style=cStack>(+20 per stack)</style> seconds.",
 
-        "ITEM_WARDONLEVEL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
-        "ITEM_WARDONLEVEL_EPIC_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>15</style> <style=cStack>(+15 per stack)</style> seconds.",
+        "ITEM_WARDONLEVEL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Deal bonus damage, scaling with time spent in the warbanner radius. Activating an interactable creates a temporary warbanner.",
+        "ITEM_WARDONLEVEL_EPIC_DESC": "{0}\nDeal <style=cIsDamage>+1% damage</style> for every second spent in the warbanner radius, up to <style=cIsDamage>50 seconds <style=cStack>(+50 seconds per stack)</style></style>. Activating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>30</style> <style=cStack>(+30 per stack)</style> seconds.",
 
-        "ITEM_WARDONLEVEL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a temporary warbanner.",
-        "ITEM_WARDONLEVEL_LEGENDARY_DESC": "{0}\nActivating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>30</style> <style=cStack>(+30 per stack)</style> seconds.",
+        "ITEM_WARDONLEVEL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Deal bonus damage, scaling with time spent in the warbanner radius. Activating an interactable creates a temporary warbanner.",
+        "ITEM_WARDONLEVEL_LEGENDARY_DESC": "{0}\nDeal <style=cIsDamage>+1.5% damage</style> for every second spent in the warbanner radius, up to <style=cIsDamage>60 seconds <style=cStack>(+60 seconds per stack)</style></style>. Activating an interactable creates a <style=cIsUtility>temporary</style> warbanner for <sprite name=\"Quality\"> <style=cIsUtility>40</style> <style=cStack>(+40 per stack)</style> seconds.",
 
         "ITEM_BEAR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocking damage grants temporary invulnerability.",
         "ITEM_BEAR_UNCOMMON_DESC": "{0}\nFor every <style=cIsUtility>10%</style> of <style=cIsHealing>maximum health</style> blocked, become <style=cIsUtility>immune</style> to all damage for <sprite name=\"Quality\"> <style=cIsHealing>0.1</style> <style=cStack>(+0.1 per stack)</style> seconds.",

@@ -746,6 +746,8 @@ namespace ItemQualities
             public static BuffQualityGroup ShieldBoosterBuff;
 
             public static BuffQualityGroup MultikillWarCryBuff;
+
+            public static BuffQualityGroup Warbanner;
         }
 
         public static class Buffs
