@@ -874,6 +874,8 @@ namespace ItemQualities
             public static GameObject CleanseQualityAttachment;
 
             public static GameObject QualityCritOnUseAttachment;
+
+            public static GameObject BugPickup;
         }
 
         public static class ProjectilePrefabs
