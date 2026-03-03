@@ -31,6 +31,9 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetSpeedOnPickupBonus))]
         public int SpeedOnPickupBonus;
 
+        [SyncVar(hook = nameof(hookSetBossDamageBonusTicks))]
+        public int BossDamageBonusTicks;
+
         [SyncVar]
         public int CardStoredInteractableIndex = -1;
 
@@ -130,6 +133,17 @@ namespace ItemQualities
         {
             bool changed = SpeedOnPickupBonus != speedOnPickupBonus;
             SpeedOnPickupBonus = speedOnPickupBonus;
+
+            if (changed)
+            {
+                markBodyStatsDirty();
+            }
+        }
+
+        void hookSetBossDamageBonusTicks(int bossDamageBonusTicks)
+        {
+            bool changed = BossDamageBonusTicks != bossDamageBonusTicks;
+            BossDamageBonusTicks = bossDamageBonusTicks;
 
             if (changed)
             {

@@ -1,6 +1,8 @@
 ﻿using ItemQualities.ModCompatibility;
 using RoR2;
+using RoR2.UI;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace ItemQualities.Items
 {
@@ -17,8 +19,39 @@ namespace ItemQualities.Items
 
         float _updateMiniBossTimer = 60f;
 
+        private void OnEnable()
+        {
+            HUD gameHud = HUD.instancesList[0];
+            if (!gameHud)
+                return;
+
+            Debug.Log("TickUI: " + BossDamageBonus.tickUI);
+            if (BossDamageBonus.tickUI)
+            {
+                BossDamageBonus.tickUI.gameObject.SetActive(true);
+            } else {
+                Transform displayRoot = gameHud.transform.Find("MainContainer/MainUIArea/SpringCanvas/BottomRightCluster/Scaler/UtilityArea/DisplayRoot/");
+
+                BossDamageBonus.tickUI = GameObject.Instantiate(ItemQualitiesContent.Prefabs.HitlistMarkers).transform;
+                BossDamageBonus.tickUI.SetParent(displayRoot);
+                BossDamageBonus.tickUI.localPosition = new Vector3(0, 0, 0);
+                BossDamageBonus.tickUI.localScale = new Vector3(1, 1, 1);
+            }
+
+            CharacterBody body = GetComponent<CharacterBody>();
+            if(body) {
+                BossDamageBonus.updateTickVisual(body.master);
+            }
+        }
+
         private void OnDisable()
         {
+            Debug.Log("disabled");
+            if (BossDamageBonus.tickUI)
+            {
+                GameObject.Destroy(BossDamageBonus.tickUI);
+                //BossDamageBonus.tickUI.gameObject.SetActive(false);
+            }
             unsetMiniboss();
         }
 
