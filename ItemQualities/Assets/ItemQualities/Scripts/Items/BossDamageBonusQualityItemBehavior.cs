@@ -31,7 +31,8 @@ namespace ItemQualities.Items
                 _updateMiniBossTimer = 0f;
                 CharacterBody miniboss = findBestMiniBoss();
                 if (miniboss) {
-                    miniboss.gameObject.AddComponent<MinibossManager>().duration = markDuration;
+                    MinibossManager minibossManager = miniboss.gameObject.AddComponent<MinibossManager>();
+                    minibossManager.duration = markDuration;
                 } else {
                     _updateMiniBossTimer = 39f;
                 }
@@ -105,7 +106,6 @@ namespace ItemQualities.Items
         {
             _timer += Time.deltaTime;
             if (_timer > duration) {
-                _body.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
                 Destroy(this);
             }
         }

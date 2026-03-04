@@ -695,7 +695,7 @@ GameObject:
   - component: {fileID: 2219822369357618811}
   - component: {fileID: 107030314293850105}
   m_Layer: 5
-  m_Name: HitlistMarkers
+  m_Name: HitlistMarkersUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

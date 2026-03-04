@@ -842,7 +842,7 @@ namespace ItemQualities
 
             public static GameObject MultiShopCardTooltipContext;
 
-            public static GameObject HitlistMarkers;
+            public static GameObject HitlistMarkersUI;
         }
 
         public static class NetworkedPrefabs

@@ -34,7 +34,7 @@ namespace ItemQualities
         void Start()
         {
             Transform bottomRightClusterTransform = GetComponent<ChildLocator>().FindChild("BottomRightCluster");
-            _hitlistMarkers = Instantiate(ItemQualitiesContent.Prefabs.HitlistMarkers, bottomRightClusterTransform);
+            _hitlistMarkers = Instantiate(ItemQualitiesContent.Prefabs.HitlistMarkersUI, bottomRightClusterTransform);
             _hitlistMarkers.name = "HitlistMarkers";
         }
 
@@ -43,41 +43,41 @@ namespace ItemQualities
             setTargetBodyObject(_hud.targetBodyObject);
 
             HUD.onHudTargetChangedGlobal += onHudTargetChangedGlobal;
-            BossDamageBonus.TicksChanged += updateTickVisual;
+            if (_currentTargetBody && _currentTargetBody.master && _currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats)) {
+                masterExtraStats.BossDamageBonusTicksChanged += updateTickVisual;
+            }
         }
 
         void OnDisable()
         {
             HUD.onHudTargetChangedGlobal -= onHudTargetChangedGlobal;
-            BossDamageBonus.TicksChanged -= updateTickVisual;
+            if (_currentTargetBody && _currentTargetBody.master && _currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+            {
+                masterExtraStats.BossDamageBonusTicksChanged -= updateTickVisual;
+            }
             setTargetBodyObject(null);
         }
 
-        public void updateTickVisual()
+        public void updateTickVisual(CharacterMasterExtraStatsTracker masterExtraStats)
         {
-            if (!_currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+            ChildLocator childLocator = _hitlistMarkers.GetComponent<ChildLocator>();
+            if (!childLocator)
                 return;
-            if (_currentTargetBody.master.localPlayerAuthority)
-            {
-                ChildLocator childLocator = _hitlistMarkers.GetComponent<ChildLocator>();
-                if (!childLocator)
-                    return;
 
-                for (int i = 0; i < (float)masterExtraStats.BossDamageBonusTicks / 5; i++)
+            for (int i = 0; i < (float)masterExtraStats.BossDamageBonusTicks / 5; i++)
+            {
+                Transform child = childLocator.FindChild(i);
+                child.gameObject.SetActive(true);
+                Image image = child.GetComponent<Image>();
+                Sprite sprite = (masterExtraStats.BossDamageBonusTicks - 5 * i) switch
                 {
-                    Transform child = childLocator.FindChild(i);
-                    child.gameObject.SetActive(true);
-                    Image image = child.GetComponent<Image>();
-                    Sprite sprite = (masterExtraStats.BossDamageBonusTicks - 5 * i) switch
-                    {
-                        1 => ItemQualitiesContent.Sprites.hitlistTick_1,
-                        2 => ItemQualitiesContent.Sprites.hitlistTick_2,
-                        3 => ItemQualitiesContent.Sprites.hitlistTick_3,
-                        4 => ItemQualitiesContent.Sprites.hitlistTick_4,
-                        _ => ItemQualitiesContent.Sprites.hitlistTick_5,
-                    };
-                    image.sprite = sprite;
-                }
+                    1 => ItemQualitiesContent.Sprites.hitlistTick_1,
+                    2 => ItemQualitiesContent.Sprites.hitlistTick_2,
+                    3 => ItemQualitiesContent.Sprites.hitlistTick_3,
+                    4 => ItemQualitiesContent.Sprites.hitlistTick_4,
+                    _ => ItemQualitiesContent.Sprites.hitlistTick_5,
+                };
+                image.sprite = sprite;
             }
         }
 
@@ -94,9 +94,17 @@ namespace ItemQualities
             if (targetBodyObject == _currentTargetBodyObject)
                 return;
 
+            if (_currentTargetBodyObject && _currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+            {
+                masterExtraStats.BossDamageBonusTicksChanged -= updateTickVisual;
+            }
             _currentTargetBodyObject = targetBodyObject;
             _currentTargetBody = _currentTargetBodyObject ? _currentTargetBodyObject.GetComponent<CharacterBody>() : null;
-            updateTickVisual();
+            
+            if (_currentTargetBody && _currentTargetBody.master && _currentTargetBody.master.TryGetComponentCached(out masterExtraStats)) {
+                masterExtraStats.BossDamageBonusTicksChanged += updateTickVisual;
+                updateTickVisual(masterExtraStats);
+            }
         }
     }
 }

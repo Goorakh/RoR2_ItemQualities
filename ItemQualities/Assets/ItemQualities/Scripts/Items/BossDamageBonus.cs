@@ -4,21 +4,17 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
     static class BossDamageBonus
     {
-        public static Transform tickUI;
         [SystemInitializer]
         static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
-
-        public static event Action TicksChanged;
 
         private static void onCharacterDeathGlobal(DamageReport report)
         {
@@ -27,21 +23,29 @@ namespace ItemQualities.Items
 
             if (report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
             {
-                ItemQualityCounts bossDamageBonus = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
-
-                int maxHitlistBonus = bossDamageBonus.HighestQuality switch {
-                    QualityTier.Uncommon => 15,
-                    QualityTier.Rare => 30,
-                    QualityTier.Epic => 45,
-                    QualityTier.Legendary => 60,
-                    _ => 0,
-                };
-
-                if (!report.attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
-                    return;
-                masterExtraStats.BossDamageBonusTicks = Math.Min(masterExtraStats.BossDamageBonusTicks + 1, maxHitlistBonus);
-                TicksChanged.Invoke();
+                applyTicks(report.attackerBody);
+                CharacterBody owner = report.attackerBody.GetOwnerBody();
+                if (owner) {
+                    applyTicks(owner);
+                }
             }
+        }
+
+        static void applyTicks(CharacterBody attacker) {
+            ItemQualityCounts bossDamageBonus = attacker.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
+
+            int maxHitlistBonus = bossDamageBonus.HighestQuality switch
+            {
+                QualityTier.Uncommon => 15,
+                QualityTier.Rare => 30,
+                QualityTier.Epic => 45,
+                QualityTier.Legendary => 60,
+                _ => 0,
+            };
+
+            if (!attacker.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+                return;
+            masterExtraStats.BossDamageBonusTicks = Math.Min(masterExtraStats.BossDamageBonusTicks + 1, maxHitlistBonus);
         }
 
         static void HealthComponent_TakeDamageProcess(ILContext il)
@@ -112,7 +116,7 @@ namespace ItemQualities.Items
                     if (attackerBody && attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats)) {
                         ItemQualityCounts bossDamageBonus = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
 
-                        damageMultiplier =  masterExtraStats.BossDamageBonusTicks * (
+                        damageMultiplier +=  masterExtraStats.BossDamageBonusTicks * (
                                             bossDamageBonus.UncommonCount * 0.01f +
                                             bossDamageBonus.EpicCount * 0.0125f +
                                             bossDamageBonus.RareCount * 0.015f +
