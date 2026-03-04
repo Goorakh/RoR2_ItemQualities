@@ -13,7 +13,11 @@ MonoBehaviour:
   m_Name: bdWarbannerLegendary
   m_EditorClassIdentifier: 
   iconPath: Textures/ItemIcons/texNullIcon
+<<<<<<< Updated upstream
   iconSprite: {fileID: 21300000, guid: 85d2b5489860f894b81fe84bacac4ac4, type: 3}
+=======
+  iconSprite: {fileID: 21300000, guid: dec50601f752cde4692de0ecc0f74171, type: 3}
+>>>>>>> Stashed changes
   buffColor: {r: 1, g: 1, b: 1, a: 1}
   canStack: 1
   eliteDef: {fileID: 0}

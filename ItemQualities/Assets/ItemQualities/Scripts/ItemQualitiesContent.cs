@@ -747,6 +747,15 @@ namespace ItemQualities
 
             public static BuffQualityGroup MultikillWarCryBuff;
 
+<<<<<<< Updated upstream
+=======
+            public static BuffQualityGroup TeamWarCry;
+
+            public static BuffQualityGroup FullCrit;
+
+            public static BuffQualityGroup LifeSteal;
+
+>>>>>>> Stashed changes
             public static BuffQualityGroup Warbanner;
         }
 

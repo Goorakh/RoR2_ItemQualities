@@ -17,7 +17,15 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
   BaseBuff: {fileID: 0}
+<<<<<<< Updated upstream
   _uncommonBuff: {fileID: 11400000, guid: de4edf29d323d35468d26ac1e3f1dc1f, type: 2}
   _rareBuff: {fileID: 11400000, guid: 1c87e5d2024e3ea44adb9d0b26b980e9, type: 2}
   _epicBuff: {fileID: 11400000, guid: e05fbe528074f6a4d8bfbd4f314f1d51, type: 2}
   _legendaryBuff: {fileID: 11400000, guid: abb57473508084d4799915b3d8bd8e7a, type: 2}
+=======
+  _uncommonBuff: {fileID: 11400000, guid: 363c92be256fdcc4ab99375df7910e33, type: 2}
+  _rareBuff: {fileID: 11400000, guid: 2722ba50fb7c81d4aafcdfeb721270e6, type: 2}
+  _epicBuff: {fileID: 11400000, guid: 32d24aaf6954dda46ab1cbd666ec18f8, type: 2}
+  _legendaryBuff: {fileID: 11400000, guid: 8dc00c3198ffe2b47a9bf17503085c59, type: 2}
+  InheritBaseBuffBehavior: 1
+>>>>>>> Stashed changes

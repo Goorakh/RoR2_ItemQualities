@@ -3,14 +3,68 @@
 * Warbanner
     * increase damage dealt with time spent in the banner radius
         * Uncommon: +0.5% damage per second, up to 30 seconds
+<<<<<<< Updated upstream
         * Uncommon: +0.75% damage per second, up to 40 seconds
         * Uncommon: +1% damage per second, up to 50 seconds
         * Uncommon: +1.5% damage per second, up to 60 seconds
+=======
+        * Rare: +0.75% damage per second, up to 40 seconds
+        * Epic: +1% damage per second, up to 50 seconds
+        * Legendary: +1.5% damage per second, up to 60 seconds
+>>>>>>> Stashed changes
     * temporary banner duration:
         * Uncommon: 3 seconds (+3 seconds per stack) -> 10 seconds (+10 seconds per stack)
         * Rare: 8 seconds (+8 seconds per stack) -> 20 seconds (+20 seconds per stack)
         * Epic: 15 seconds (+15 seconds per stack) -> 30 seconds (+30 seconds per stack)
         * Legendary: 30 seconds (+30 seconds per stack) -> 40 seconds (+40 seconds per stack)
+<<<<<<< Updated upstream
+=======
+
+* Ben's Raincoat:
+    * Debuff spread radius:
+        * Uncommon: 30m (+5m per stack) -> 15m (+15m per stack)
+        * Rare: 35m (+10m per stack) -> 25m (+25m per stack)
+        * Epic: 55m (+30m per stack) -> 35m (+35m per stack)
+        * Legendary: 75m (+50m per stack) -> 50m (+50m per stack)
+    * Spread debuff stacks: 1x ->
+        * Uncommon: 2x
+        * Rare: 3x
+        * Epic: 4x
+        * Legendary: 5x
+
+* Faraday Spur:
+    * Removed charge speed increase.
+    * Charge used per jump: 100% ->
+        * Uncommon: 75%
+        * Rare: 50%
+        * Epic: 25%
+        * Legendary: 10%
+
+* Squid Polyp rework:
+    * Squids have a chance to upgrade on kill, increasing maximum health and damage.
+        * Uncommon: 20%
+        * Rare: 30%
+        * Epic: 40%
+        * Legendary: 50%
+    * Squid base damage:
+        * Uncommon: 110% (+10% per stack) -> 130% (+30% per stack)
+        * Rare: 130% (+30% per stack) -> 140% (+40% per stack)
+        * Epic: 160% (+60% per stack) -> 150% (+50% per stack)
+        * Legendary: 200% (+100% per stack)
+    * Removed base max health and duration increase.
+
+* Roll of Pennies:
+    * Fixed bonus gold not spawning when opening a Collector's Barrel.
+
+* Collector's Compulsion:
+    * Made barrel pickups always target the player that opened the barrel.
+
+* Ghor's Tome:
+    * Fixed money buff not being set on pickup.
+
+* Delicate Watch:
+    * Fixed incorrect numbers in description of uncommon watch.
+>>>>>>> Stashed changes
 
 ## 0.6.1
 

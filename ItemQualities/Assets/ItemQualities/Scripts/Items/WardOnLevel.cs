@@ -59,7 +59,7 @@ namespace ItemQualities.Items
                     endBlinkController.blinkingRootObject = modelRootObj;
 
                     durationComponent.BlinkController = endBlinkController;
-                    durationComponent.BlinkDuration = 1f;
+                    durationComponent.BlinkDuration = 5f;
                 }
                 else
                 {
@@ -87,10 +87,17 @@ namespace ItemQualities.Items
                 return;
 
             BuffQualityCounts warbanner = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.Warbanner);
+<<<<<<< Updated upstream
             args.baseDamageAdd +=   warbanner.UncommonCount * 0.005f +
                                     warbanner.RareCount * 0.0075f +
                                     warbanner.EpicCount * 0.01f +
                                     warbanner.LegendaryCount * 0.015f;
+=======
+            args.attackSpeedMultAdd +=  warbanner.UncommonCount * 0.02f +
+                                        warbanner.RareCount * 0.03f +
+                                        warbanner.EpicCount * 0.04f +
+                                        warbanner.LegendaryCount * 0.05f;
+>>>>>>> Stashed changes
         }
 
         private static void WardOnLevelManager_OnCharacterLevelUp(ILContext il)
@@ -114,7 +121,12 @@ namespace ItemQualities.Items
         static void addGrowingBuff(GameObject banner, CharacterBody body)
         {
             ItemQualityCounts WardOnLevel = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WardOnLevel);
+<<<<<<< Updated upstream
             if (WardOnLevel.TotalQualityCount > 0) {
+=======
+            if (WardOnLevel.TotalQualityCount > 0)
+            {
+>>>>>>> Stashed changes
                 banner.GetComponent<BuffWard>().buffDef = null;
                 WardOnLevelGrowingBuff wardOnLevelGrowingBuff = banner.GetComponent<WardOnLevelGrowingBuff>();
                 wardOnLevelGrowingBuff.enabled = true;
@@ -149,7 +161,11 @@ namespace ItemQualities.Items
                 float wardDuration = (10f * wardOnLevel.UncommonCount) +
                                      (20f * wardOnLevel.RareCount) +
                                      (30f * wardOnLevel.EpicCount) +
+<<<<<<< Updated upstream
                                      (50f * wardOnLevel.LegendaryCount);
+=======
+                                     (40f * wardOnLevel.LegendaryCount);
+>>>>>>> Stashed changes
 
                 if (wardDuration > 0f)
                 {
@@ -165,6 +181,7 @@ namespace ItemQualities.Items
 
                     GenericDurationComponent durationComponent = temporaryWardObj.GetComponent<GenericDurationComponent>();
                     durationComponent.Duration = wardDuration;
+                    addGrowingBuff(temporaryWardObj, interactorBody);
 
                     NetworkServer.Spawn(temporaryWardObj);
                 }
@@ -172,6 +189,7 @@ namespace ItemQualities.Items
         }
     }
 
+<<<<<<< Updated upstream
     public class WardOnLevelGrowingBuff : NetworkBehaviour {
         float buffTimer;
         TeamFilter teamFilter;
@@ -181,11 +199,28 @@ namespace ItemQualities.Items
         [SyncVar]
         public int maxStacks;
 
+=======
+    public class WardOnLevelGrowingBuff : NetworkBehaviour
+    {
+        float _buffTimer;
+        TeamFilter _teamFilter;
+        BuffWard _buffWard;
+
+        [SyncVar]
+        public float radius;
+
+        public int maxStacks;
+>>>>>>> Stashed changes
         public BuffDef buff;
 
         private void Awake()
         {
+<<<<<<< Updated upstream
             teamFilter = GetComponent<TeamFilter>();
+=======
+            _teamFilter = GetComponent<TeamFilter>();
+            _buffWard = GetComponent<BuffWard>();
+>>>>>>> Stashed changes
         }
 
         private void FixedUpdate()
@@ -194,6 +229,7 @@ namespace ItemQualities.Items
             {
                 return;
             }
+<<<<<<< Updated upstream
             buffTimer -= Time.fixedDeltaTime;
             if (!(buffTimer <= 0f))
             {
@@ -203,6 +239,16 @@ namespace ItemQualities.Items
             float radiusSqr = radius * radius;
             Vector3 position = base.transform.position;
             BuffTeam(TeamComponent.GetTeamMembers(teamFilter.teamIndex), radiusSqr, position);
+=======
+            _buffTimer -= Time.fixedDeltaTime;
+            if (_buffTimer > 0f)
+            {
+                return;
+            }
+            _buffTimer = 1;
+            
+            BuffTeam(TeamComponent.GetTeamMembers(_teamFilter.teamIndex), _buffWard.radius * _buffWard.radius, base.transform.position);
+>>>>>>> Stashed changes
         }
 
         private void BuffTeam(IEnumerable<TeamComponent> recipients, float radiusSqr, Vector3 currentPosition)
@@ -217,7 +263,12 @@ namespace ItemQualities.Items
                 Vector3 vector = recipient.transform.position - currentPosition;
                 if (vector.sqrMagnitude > radiusSqr)
                     continue;
+<<<<<<< Updated upstream
                 CharacterBody characterBody = recipient.GetComponent<CharacterBody>();
+=======
+                CharacterBody characterBody = recipient.body;
+
+>>>>>>> Stashed changes
                 if (!characterBody)
                     continue;
                 if (characterBody.healthComponent && characterBody.healthComponent.alive)
