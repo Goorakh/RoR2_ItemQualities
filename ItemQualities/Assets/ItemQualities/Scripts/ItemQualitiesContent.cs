@@ -841,6 +841,8 @@ namespace ItemQualities
             public static GameObject DuplicatedInteractableEffect;
 
             public static GameObject MultiShopCardTooltipContext;
+
+            public static GameObject HitlistMarkersUI;
         }
 
         public static class NetworkedPrefabs
@@ -917,6 +919,16 @@ namespace ItemQualities
         {
             [TargetAssetName("icon")]
             public static Sprite ModIcon;
+
+            public static Sprite hitlistTick_1;
+
+            public static Sprite hitlistTick_2;
+
+            public static Sprite hitlistTick_3;
+
+            public static Sprite hitlistTick_4;
+
+            public static Sprite hitlistTick_5;
         }
 
         public static class TMP_SpriteAssets
