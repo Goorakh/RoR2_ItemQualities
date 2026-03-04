@@ -2,15 +2,9 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
 using RoR2;
-using RoR2.ContentManagement;
-using RoR2.UI;
-using RoR2BepInExPack.GameAssetPaths.Version_1_39_0;
 using System;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.UI;
 
 namespace ItemQualities.Items
 {
@@ -24,42 +18,7 @@ namespace ItemQualities.Items
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        public static void updateTickVisual(CharacterMaster master) {
-            Debug.Log("updatevisual");
-            if (!master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
-                return;
-            Debug.Log(master.localPlayerAuthority);
-            if (master.localPlayerAuthority)
-            {
-                HUD gameHud = HUD.instancesList[0];
-                if (!gameHud || !tickUI)
-                    return;
-
-                ChildLocator childLocator = tickUI.GetComponent<ChildLocator>();
-                Debug.Log(childLocator);
-                Debug.Log(tickUI.name);
-                if (!childLocator)
-                    return;
-
-                Debug.Log((float)masterExtraStats.BossDamageBonusTicks / 5);
-                for (int i = 0; i < (float)masterExtraStats.BossDamageBonusTicks / 5; i++)
-                {
-                    Debug.Log("test");
-                    Transform child = childLocator.FindChild(i);
-                    child.gameObject.SetActive(true);
-                    Image image = child.GetComponent<Image>();
-                    Sprite sprite = (masterExtraStats.BossDamageBonusTicks - 5 * i) switch
-                    {
-                        1 => ItemQualitiesContent.Sprites.hitlistTick_1,
-                        2 => ItemQualitiesContent.Sprites.hitlistTick_2,
-                        3 => ItemQualitiesContent.Sprites.hitlistTick_3,
-                        4 => ItemQualitiesContent.Sprites.hitlistTick_4,
-                        _ => ItemQualitiesContent.Sprites.hitlistTick_5,
-                    };
-                    image.sprite = sprite;
-                }
-            }
-        }
+        public static event Action TicksChanged;
 
         private static void onCharacterDeathGlobal(DamageReport report)
         {
@@ -71,17 +30,17 @@ namespace ItemQualities.Items
                 ItemQualityCounts bossDamageBonus = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
 
                 int maxHitlistBonus = bossDamageBonus.HighestQuality switch {
-                    QualityTier.Uncommon => 20,
-                    QualityTier.Rare => 40,
-                    QualityTier.Epic => 60,
-                    QualityTier.Legendary => 80,
+                    QualityTier.Uncommon => 15,
+                    QualityTier.Rare => 30,
+                    QualityTier.Epic => 45,
+                    QualityTier.Legendary => 60,
                     _ => 0,
                 };
 
                 if (!report.attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
                     return;
-                masterExtraStats.BossDamageBonusTicks += 1;
-                updateTickVisual(report.attackerBody.master);
+                masterExtraStats.BossDamageBonusTicks = Math.Min(masterExtraStats.BossDamageBonusTicks + 1, maxHitlistBonus);
+                TicksChanged.Invoke();
             }
         }
 
@@ -124,11 +83,11 @@ namespace ItemQualities.Items
 
             static bool isMiniBoss(bool isBoss, HealthComponent victim, DamageInfo damageInfo)
             {
-                if (isBoss)
-                    return false;
-
                 if (!victim || !victim.body)
                     return false;
+
+                if (isBoss)
+                    return true;
 
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
@@ -151,7 +110,13 @@ namespace ItemQualities.Items
                 {
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                     if (attackerBody && attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats)) {
-                        damageMultiplier = masterExtraStats.BossDamageBonusTicks * 0.01f;
+                        ItemQualityCounts bossDamageBonus = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
+
+                        damageMultiplier =  masterExtraStats.BossDamageBonusTicks * (
+                                            bossDamageBonus.UncommonCount * 0.01f +
+                                            bossDamageBonus.EpicCount * 0.0125f +
+                                            bossDamageBonus.RareCount * 0.015f +
+                                            bossDamageBonus.LegendaryCount * 0.02f);
                     }
                 }
 

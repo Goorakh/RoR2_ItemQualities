@@ -1,8 +1,6 @@
 ﻿using ItemQualities.ModCompatibility;
 using RoR2;
-using RoR2.UI;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace ItemQualities.Items
 {
@@ -14,46 +12,7 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.BossDamageBonus;
         }
 
-        CharacterBody _currentMiniBoss;
-        GameObject _currentMiniBossAttachment;
-
         float _updateMiniBossTimer = 60f;
-
-        private void OnEnable()
-        {
-            HUD gameHud = HUD.instancesList[0];
-            if (!gameHud)
-                return;
-
-            Debug.Log("TickUI: " + BossDamageBonus.tickUI);
-            if (BossDamageBonus.tickUI)
-            {
-                BossDamageBonus.tickUI.gameObject.SetActive(true);
-            } else {
-                Transform displayRoot = gameHud.transform.Find("MainContainer/MainUIArea/SpringCanvas/BottomRightCluster/Scaler/UtilityArea/DisplayRoot/");
-
-                BossDamageBonus.tickUI = GameObject.Instantiate(ItemQualitiesContent.Prefabs.HitlistMarkers).transform;
-                BossDamageBonus.tickUI.SetParent(displayRoot);
-                BossDamageBonus.tickUI.localPosition = new Vector3(0, 0, 0);
-                BossDamageBonus.tickUI.localScale = new Vector3(1, 1, 1);
-            }
-
-            CharacterBody body = GetComponent<CharacterBody>();
-            if(body) {
-                BossDamageBonus.updateTickVisual(body.master);
-            }
-        }
-
-        private void OnDisable()
-        {
-            Debug.Log("disabled");
-            if (BossDamageBonus.tickUI)
-            {
-                GameObject.Destroy(BossDamageBonus.tickUI);
-                //BossDamageBonus.tickUI.gameObject.SetActive(false);
-            }
-            unsetMiniboss();
-        }
 
         void FixedUpdate()
         {
@@ -61,34 +20,21 @@ namespace ItemQualities.Items
 
             ItemQualityCounts bossDamageBonus = Stacks;
 
-            float markfrequency = bossDamageBonus.HighestQuality switch
-            {
-                QualityTier.Uncommon => 60f,
-                QualityTier.Rare => 50f,
-                QualityTier.Epic => 40f,
-                QualityTier.Legendary => 20f,
-                _ => 0f
-            };
+            float markDuration =    bossDamageBonus.UncommonCount * 5 +
+                                    bossDamageBonus.RareCount * 10 +
+                                    bossDamageBonus.EpicCount * 15 +
+                                    bossDamageBonus.LegendaryCount * 20 + 10;
 
-            if (_updateMiniBossTimer >= 10)
-            {
-                unsetMiniboss();
-            }
-            if (_updateMiniBossTimer >= markfrequency)
+
+            if (_updateMiniBossTimer >= 40)
             {
                 _updateMiniBossTimer = 0f;
-                setMiniBoss(findBestMiniBoss());
-            }
-        }
-
-        void unsetMiniboss()
-        {
-            if (_currentMiniBoss)
-            {
-                _currentMiniBoss.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
-                Destroy(_currentMiniBossAttachment, 0.5f);
-                _currentMiniBossAttachment = null;
-                _currentMiniBoss = null;
+                CharacterBody miniboss = findBestMiniBoss();
+                if (miniboss) {
+                    miniboss.gameObject.AddComponent<MinibossManager>().duration = markDuration;
+                } else {
+                    _updateMiniBossTimer = 39f;
+                }
             }
         }
 
@@ -102,14 +48,14 @@ namespace ItemQualities.Items
             {
                 if (teamMask.HasTeam(teamIndex))
                 {
-                    highestHealthBody = getMiniBossOfTeam(teamIndex, highestHealthBody);
+                    highestHealthBody = getMiniBossOfTeam(teamIndex, Body, highestHealthBody);
                 }
             }
 
             return highestHealthBody;
         }
 
-        static CharacterBody getMiniBossOfTeam(TeamIndex teamIndex, CharacterBody highestHealthBody)
+        static CharacterBody getMiniBossOfTeam(TeamIndex teamIndex, CharacterBody playerBody, CharacterBody highestHealthBody)
         {
             foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(teamIndex))
             {
@@ -121,7 +67,7 @@ namespace ItemQualities.Items
 
                 if (!highestHealthBody || body.healthComponent.fullCombinedHealth > highestHealthBody.healthComponent.fullCombinedHealth)
                 {
-                    if (!body.isBoss)
+                    if (!body.isBoss && Vector3.Distance(playerBody.transform.position, body.transform.position) < 250)
                     {
                         highestHealthBody = body;
                     }
@@ -130,25 +76,45 @@ namespace ItemQualities.Items
 
             return highestHealthBody;
         }
+    }
 
-        void setMiniBoss(CharacterBody body)
+    public class MinibossManager : MonoBehaviour
+    {
+        public float duration;
+
+        CharacterBody _body;
+        GameObject _miniBossBodyAttachmentObj;
+        float _timer;
+
+        private void Awake()
         {
-            _currentMiniBoss = body;
+            _body = GetComponent<CharacterBody>();
 
-            if (_currentMiniBoss)
-            {
-                Log.Debug($"New miniboss: {Util.GetBestBodyName(_currentMiniBoss.gameObject)}");
+            Log.Debug($"New miniboss: {Util.GetBestBodyName(gameObject)}");
 
-                _currentMiniBoss.AddBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
-                _currentMiniBoss.AddTimedBuff(ItemQualitiesContent.Buffs.MiniBossCooldown, 90);
+            _body.AddBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
+            _body.AddTimedBuff(ItemQualitiesContent.Buffs.MiniBossCooldown, 90);
 
-                GameObject miniBossBodyAttachmentObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.MiniBossBodyAttachment);
+            _miniBossBodyAttachmentObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.MiniBossBodyAttachment);
 
-                NetworkedBodyAttachment miniBossAttachment = miniBossBodyAttachmentObj.GetComponent<NetworkedBodyAttachment>();
-                miniBossAttachment.AttachToGameObjectAndSpawn(_currentMiniBoss.gameObject);
+            NetworkedBodyAttachment miniBossAttachment = _miniBossBodyAttachmentObj.GetComponent<NetworkedBodyAttachment>();
+            miniBossAttachment.AttachToGameObjectAndSpawn(gameObject);
+        }
 
-                _currentMiniBossAttachment = miniBossBodyAttachmentObj;
+        private void FixedUpdate()
+        {
+            _timer += Time.deltaTime;
+            if (_timer > duration) {
+                _body.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
+                Destroy(this);
             }
+        }
+
+        private void OnDisable()
+        {
+            _body.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
+            Destroy(_miniBossBodyAttachmentObj, 0.5f);
+            _miniBossBodyAttachmentObj = null;
         }
     }
 }
