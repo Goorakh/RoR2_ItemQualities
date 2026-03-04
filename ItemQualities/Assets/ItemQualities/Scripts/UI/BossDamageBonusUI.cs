@@ -94,7 +94,7 @@ namespace ItemQualities
             if (targetBodyObject == _currentTargetBodyObject)
                 return;
 
-            if (_currentTargetBodyObject && _currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+            if (_currentTargetBody && _currentTargetBody.master && _currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
             {
                 masterExtraStats.BossDamageBonusTicksChanged -= updateTickVisual;
             }
