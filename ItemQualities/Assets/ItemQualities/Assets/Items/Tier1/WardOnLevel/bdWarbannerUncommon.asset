@@ -10,18 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1783169300, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: bdHitlistDamage
+  m_Name: bdWarbannerUncommon
   m_EditorClassIdentifier: 
   iconPath: Textures/ItemIcons/texNullIcon
-  iconSprite: {fileID: 21300000, guid: 84d1b8bc33a248b43a9fa3871c874ebc, type: 3}
+  iconSprite: {fileID: 21300000, guid: e13a9f10ecbc7bc4cace8a2cab58802c, type: 3}
   buffColor: {r: 1, g: 1, b: 1, a: 1}
   canStack: 1
   eliteDef: {fileID: 0}
   isDebuff: 0
   isDOT: 0
-  ignoreGrowthNectar: 1
+  ignoreGrowthNectar: 0
   isCooldown: 0
   isHidden: 0
-  flags: 1
+  flags: 2
   stackingDisplayMethod: 0
   startSfx: {fileID: 0}
