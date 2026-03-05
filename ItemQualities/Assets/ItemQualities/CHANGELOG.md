@@ -1,5 +1,17 @@
 ## \{Next Version\}
 
+* Razorwire:
+    * Damage returned:
+        * Uncommon: 10% (+10% per stack) -> 100% (+100% per stack)
+        * Rare: 15% (+15% per stack) -> 200% (+200% per stack)
+        * Epic: 20% (+20% per stack) -> 300% (+300% per stack)
+        * Legendary: 25% (+25% per stack) -> 500% (+500% per stack)
+
+* Wax Quail:
+    * removed extra air control
+    * removed maximum angle to continue jump combo
+    * increased window to continue jump combo slightly: 0.1s -> 0.15s
+
 * Ben's Raincoat:
     * Debuff spread radius:
         * Uncommon: 30m (+5m per stack) -> 15m (+15m per stack)

@@ -43,10 +43,10 @@ namespace ItemQualities.Items
                     ItemQualityCounts thorns = victimInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Thorns);
                     if (thorns.TotalQualityCount > 0)
                     {
-                        float returnDamageCoefficient = (0.10f * thorns.UncommonCount) +
-                                                        (0.15f * thorns.RareCount) +
-                                                        (0.20f * thorns.EpicCount) +
-                                                        (0.25f * thorns.LegendaryCount);
+                        float returnDamageCoefficient = (1f * thorns.UncommonCount) +
+                                                        (2f * thorns.RareCount) +
+                                                        (3f * thorns.EpicCount) +
+                                                        (5f * thorns.LegendaryCount);
 
                         thornsDamage += returnDamageCoefficient * damageReport.damageDealt;
                     }

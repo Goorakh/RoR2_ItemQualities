@@ -60,8 +60,6 @@ namespace ItemQualities
 
         public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
 
-        public float AirControlBonus { get; private set; } = 1f;
-
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
 
         [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
@@ -199,7 +197,7 @@ namespace ItemQualities
 
             if (HasEffectiveAuthority)
             {
-                if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.1f)
+                if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.15f)
                 {
                     QuailJumpComboAuthority = 0;
                 }
@@ -301,29 +299,6 @@ namespace ItemQualities
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
 
             StealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
-
-            float airControlBonus = 0f;
-
-            if (IsPerformingQuailJump)
-            {
-                switch (jumpBoost.HighestQuality)
-                {
-                    case QualityTier.Uncommon:
-                        airControlBonus += 0.10f;
-                        break;
-                    case QualityTier.Rare:
-                        airControlBonus += 0.20f;
-                        break;
-                    case QualityTier.Epic:
-                        airControlBonus += 0.30f;
-                        break;
-                    case QualityTier.Legendary:
-                        airControlBonus += 0.50f;
-                        break;
-                }
-            }
-
-            AirControlBonus = airControlBonus;
         }
 
         void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
@@ -396,41 +371,7 @@ namespace ItemQualities
                 return;
             }
 
-            Vector3 jumpVelocity = _body.characterMotor ? _body.characterMotor.velocity : Vector3.zero;
-
-            if (QuailJumpComboAuthority > 0)
-            {
-                Vector3 horizontalJumpVelocity = jumpVelocity;
-                horizontalJumpVelocity.y = 0f;
-
-                Vector3 lastJumpHorizontalVelocity = LastQuailJumpVelocityAuthority;
-                lastJumpHorizontalVelocity.y = 0f;
-
-                bool resetJumpCombo = false;
-                if (horizontalJumpVelocity.sqrMagnitude > 0)
-                {
-                    if (lastJumpHorizontalVelocity.sqrMagnitude > 0)
-                    {
-                        float jumpAngleDiff = Vector3.Angle(horizontalJumpVelocity.normalized, lastJumpHorizontalVelocity.normalized);
-                        if (jumpAngleDiff >= 60f)
-                        {
-                            resetJumpCombo = true;
-                        }
-                    }
-                }
-                else if (lastJumpHorizontalVelocity.sqrMagnitude > 0)
-                {
-                    resetJumpCombo = true;
-                }
-
-                if (resetJumpCombo)
-                {
-                    QuailJumpComboAuthority = 0;
-                }
-            }
-
             IsPerformingQuailJump = true;
-            LastQuailJumpVelocityAuthority = jumpVelocity;
             QuailJumpComboAuthority++;
         }
 
