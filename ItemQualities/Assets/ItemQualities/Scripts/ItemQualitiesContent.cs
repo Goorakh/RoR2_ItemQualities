@@ -805,6 +805,8 @@ namespace ItemQualities
             public static BuffQualityGroup FullCrit;
 
             public static BuffQualityGroup LifeSteal;
+
+            public static BuffQualityGroup Warbanner;
         }
 
         public static class Buffs

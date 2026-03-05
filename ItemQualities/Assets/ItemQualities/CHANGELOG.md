@@ -1,5 +1,17 @@
 ## \{Next Version\}
 
+* Warbanner
+    * increase attack speed with time spent in the banner radius
+        * Uncommon: +2% attack speed per second, up to 30 seconds
+        * Rare:  +3% attack speed per second, up to 40 seconds
+        * Epic:  +4% attack speed per second, up to 50 seconds
+        * Legendary:  +5% attack speed per second, up to 60 seconds
+    * temporary banner duration:
+        * Uncommon: 3 seconds (+3 seconds per stack) -> 10 seconds (+10 seconds per stack)
+        * Rare: 8 seconds (+8 seconds per stack) -> 20 seconds (+20 seconds per stack)
+        * Epic: 15 seconds (+15 seconds per stack) -> 30 seconds (+30 seconds per stack)
+        * Legendary: 30 seconds (+30 seconds per stack) -> 40 seconds (+40 seconds per stack)
+
 * Armor Piercing Rounds:
     * Damage increase applies to bosses
     * Maximum distance for marked enemies: 250
