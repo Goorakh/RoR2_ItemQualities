@@ -115,12 +115,18 @@ namespace ItemQualities.Items
         private static void ChargingState_OnEnter(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-            if (c.TryGotoNext(MoveType.After,
+            int body = 0;
+
+            if (c.TryGotoNext(
+                    x => x.MatchCallOrCallvirt(typeof(TeamComponent), "get_body"),
+                    x => x.MatchStloc(out body)
+            ) &&
+            c.TryGotoNext(MoveType.After,
                     x => x.MatchCallOrCallvirt(typeof(UnityEngine.Object), nameof(UnityEngine.Object.Instantiate))
                 ))
             {
                 c.Emit(OpCodes.Dup);
-                c.Emit(OpCodes.Ldloc, 7);
+                c.Emit(OpCodes.Ldloc, body);
                 c.EmitDelegate<Action<GameObject, CharacterBody>>(addGrowingBuff);
             }
             else
