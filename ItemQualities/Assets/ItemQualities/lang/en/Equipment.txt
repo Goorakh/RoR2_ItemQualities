@@ -284,5 +284,7 @@
 
         "EQUIPMENT_FIREBALLDASH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage and range of detonation for every enemy hit.",
         "EQUIPMENT_FIREBALLDASH_LEGENDARY_DESC": "Turn into a <style=cIsDamage>draconic fireball</style> for <style=cIsDamage>5</style> seconds. Deal <style=cIsDamage>500% damage</style> on impact. Detonates at the end for <style=cIsDamage>800% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>200% damage</style> and <sprite name=\"Quality\"> <style=cIsUtility>2.5m range</style> for every enemy hit.",
+
+        "QUALITY_BUG_BLOCK_DAMAGE_HITMARKER": "MISS!",
     }
 }

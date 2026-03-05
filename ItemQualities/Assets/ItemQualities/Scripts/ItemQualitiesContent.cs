@@ -805,6 +805,8 @@ namespace ItemQualities
             public static BuffQualityGroup FullCrit;
 
             public static BuffQualityGroup LifeSteal;
+
+            public static BuffQualityGroup BugBlock;
         }
 
         public static class Buffs
@@ -841,6 +843,10 @@ namespace ItemQualities
             public static GameObject DuplicatedInteractableEffect;
 
             public static GameObject MultiShopCardTooltipContext;
+
+            public static GameObject BugBlockProcEffect;
+
+            public static GameObject BugOrbEffect;
         }
 
         public static class NetworkedPrefabs

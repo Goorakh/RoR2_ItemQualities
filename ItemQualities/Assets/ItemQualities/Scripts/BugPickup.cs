@@ -15,7 +15,10 @@ namespace ItemQualities
         public GameObject PickupEffect;
 
         [Tooltip("How much duration to add onto the users current wing usage on pickup")]
+        [Min(0)]
         public float JetpackDurationBonus;
+
+        public BuffQualityGroup BuffGroup;
 
         public QualityTier Tier = QualityTier.None;
 
@@ -28,13 +31,25 @@ namespace ItemQualities
                 CharacterBody body = other.GetComponent<CharacterBody>();
                 if (body)
                 {
-                    JetpackController jetpackController = JetpackController.FindJetpackController(body.gameObject);
-                    if (jetpackController)
+                    if (JetpackDurationBonus > 0)
                     {
-                        jetpackController.duration = Mathf.Max(jetpackController.duration, jetpackController.stopwatch) + JetpackDurationBonus;
+                        JetpackController jetpackController = JetpackController.FindJetpackController(body.gameObject);
+                        if (jetpackController)
+                        {
+                            jetpackController.duration = Mathf.Max(jetpackController.duration, jetpackController.stopwatch) + JetpackDurationBonus;
+                            jetpackController.providingAntiGravity = true;
+                            jetpackController.providingFlight = true;
+                        }
                     }
 
-                    // TODO: Do pickup
+                    if (BuffGroup)
+                    {
+                        BuffIndex buffIndex = BuffGroup.GetBuffIndex(Tier);
+                        if (buffIndex != BuffIndex.None)
+                        {
+                            body.AddBuff(buffIndex);
+                        }
+                    }
 
                     body.OnPickup(CharacterBody.PickupClass.Minor);
 

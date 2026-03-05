@@ -1,5 +1,4 @@
 ﻿using RoR2;
-using RoR2.ConVar;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -30,14 +29,10 @@ namespace ItemQualities.Equipments
                     case QualityTier.None:
                         break;
                     case QualityTier.Uncommon:
-                        _pickupSpawnWaitTime = 6f;
-                        break;
                     case QualityTier.Rare:
-                        _pickupSpawnWaitTime = 5f;
-                        break;
-                    case QualityTier.Epic:
                         _pickupSpawnWaitTime = 4f;
                         break;
+                    case QualityTier.Epic:
                     case QualityTier.Legendary:
                         _pickupSpawnWaitTime = 3f;
                         break;
@@ -92,21 +87,24 @@ namespace ItemQualities.Equipments
                 }
             }
 
-            const float MinPickupDistance = 25f;
-            const float MaxPickupDistance = 50f;
+            float sphereCastRadius = Mathf.Max(2f, body.bestFitActualRadius);
 
-            const float MinPickupDistanceSqr = MinPickupDistance * MinPickupDistance;
+            const float MinApproximatePickupDistance = 25f;
+            const float MaxApproximatePickupDistance = 50f;
+
+            const float MinAcceptablePickupDistance = 8f;
+            const float MinAcceptablePickupDistanceSqr = MinAcceptablePickupDistance * MinAcceptablePickupDistance;
 
             const int NumSteps = 4;
 
-            const float StepSizeMin = MinPickupDistance / NumSteps;
-            const float StepSizeMax = MaxPickupDistance / NumSteps;
+            const float StepSizeMin = MinApproximatePickupDistance / NumSteps;
+            const float StepSizeMax = MaxApproximatePickupDistance / NumSteps;
 
 #if DEBUG
             WireMeshBuilder pathMeshBuilder = Configs.Debug.EnableDebugDraw ? new WireMeshBuilder() : null;
 #endif
 
-            const int RetryLimit = 5;
+            const int RetryLimit = 10;
             for (int attemptNumber = 0; attemptNumber < RetryLimit; attemptNumber++)
             {
                 Vector3 currentPosition = body.corePosition;
@@ -128,15 +126,14 @@ namespace ItemQualities.Equipments
                     Vector3 nextStepDirection;
 
                     Ray ray = new Ray(currentPosition, direction);
-                    float radius = body.bestFitActualRadius;
-                    if (Physics.SphereCast(ray, radius, out RaycastHit hit, stepSize, LayerIndex.world.mask, QueryTriggerInteraction.Ignore))
+                    if (Physics.SphereCast(ray, sphereCastRadius, out RaycastHit hit, stepSize, LayerIndex.world.mask, QueryTriggerInteraction.Ignore))
                     {
-                        nextStepPosition = hit.point;
+                        nextStepPosition = hit.point - (ray.direction * sphereCastRadius);
                         nextStepDirection = Vector3.Reflect(direction, hit.normal);
                     }
                     else
                     {
-                        nextStepPosition = ray.GetPoint(stepSize - radius);
+                        nextStepPosition = ray.GetPoint(stepSize - sphereCastRadius);
                         nextStepDirection = direction;
                     }
 
@@ -149,7 +146,7 @@ namespace ItemQualities.Equipments
                 }
 
                 float sqrDistance = (currentPosition - body.corePosition).sqrMagnitude;
-                if (sqrDistance > MinPickupDistanceSqr)
+                if (sqrDistance > MinAcceptablePickupDistanceSqr)
                 {
                     GameObject bugPickupObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.BugPickup, currentPosition, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
 
