@@ -14,14 +14,10 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.EntityStates.GenericCharacterMain.ProcessJump_bool += GenericCharacterMain_ProcessJump_bool;
-
-            IL.RoR2.CharacterMotor.PreMove += ApplyAirControlModifiersPatch;
         }
 
         static void GenericCharacterMain_ProcessJump_bool(ILContext il)
         {
-            ApplyAirControlModifiersPatch(il);
-
             ILCursor c = new ILCursor(il);
 
             VariableDefinition isQuailJumpVar = null;
@@ -107,35 +103,6 @@ namespace ItemQualities.Items
                 {
                     bodyExtraStats.OnQuailJumpAuthority();
                 }
-            }
-        }
-
-        static void ApplyAirControlModifiersPatch(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            int patchCount = 0;
-
-            while (c.TryGotoNext(MoveType.Before,
-                                 x => x.MatchLdfld<CharacterMotor>(nameof(CharacterMotor.airControl))))
-            {
-                c.Emit(OpCodes.Dup);
-
-                c.Index++;
-
-                c.EmitDelegate<Func<CharacterMotor, float, float>>(getAirControl);
-
-                static float getAirControl(CharacterMotor characterMotor, float airControl)
-                {
-                    if (characterMotor && characterMotor.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
-                    {
-                        airControl += bodyExtraStats.AirControlBonus;
-                    }
-
-                    return airControl;
-                }
-
-                patchCount++;
             }
         }
     }

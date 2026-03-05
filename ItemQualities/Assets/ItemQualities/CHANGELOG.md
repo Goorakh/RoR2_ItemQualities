@@ -1,5 +1,17 @@
 ## \{Next Version\}
 
+* Razorwire:
+    * Damage returned:
+        * Uncommon: 10% (+10% per stack) -> 100% (+100% per stack)
+        * Rare: 15% (+15% per stack) -> 200% (+200% per stack)
+        * Epic: 20% (+20% per stack) -> 300% (+300% per stack)
+        * Legendary: 25% (+25% per stack) -> 500% (+500% per stack)
+
+* Wax Quail:
+    * removed extra air control
+    * removed maximum angle to continue jump combo
+    * increased window to continue jump combo slightly: 0.1s -> 0.15s
+
 * Warbanner
     * increase attack speed with time spent in the banner radius
         * Uncommon: +2% attack speed per second, up to 30 (+30 per stack) seconds
