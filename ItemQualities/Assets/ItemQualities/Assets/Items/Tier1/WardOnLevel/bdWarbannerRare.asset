@@ -15,7 +15,7 @@ MonoBehaviour:
   iconPath: Textures/ItemIcons/texNullIcon
   iconSprite: {fileID: 21300000, guid: 9b3325df71d70f04d9240ee45a4950f5, type: 3}
   buffColor: {r: 1, g: 1, b: 1, a: 1}
-  canStack: 0
+  canStack: 1
   eliteDef: {fileID: 0}
   isDebuff: 0
   isDOT: 0

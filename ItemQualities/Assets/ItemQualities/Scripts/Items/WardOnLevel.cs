@@ -78,6 +78,7 @@ namespace ItemQualities.Items
         {
             GlobalEventManager.OnInteractionsGlobal += onInteractionsGlobal;
             IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += WardOnLevelManager_OnCharacterLevelUp;
+            IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter;
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
@@ -102,6 +103,24 @@ namespace ItemQualities.Items
             {
                 c.Emit(OpCodes.Dup);
                 c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Action<GameObject, CharacterBody>>(addGrowingBuff);
+            }
+            else
+            {
+                Log.Error(il.Method.Name + " IL Hook failed!");
+                return;
+            }
+        }
+
+        private static void ChargingState_OnEnter(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+            if (c.TryGotoNext(MoveType.After,
+                    x => x.MatchCallOrCallvirt(typeof(UnityEngine.Object), nameof(UnityEngine.Object.Instantiate))
+                ))
+            {
+                c.Emit(OpCodes.Dup);
+                c.Emit(OpCodes.Ldloc, 7);
                 c.EmitDelegate<Action<GameObject, CharacterBody>>(addGrowingBuff);
             }
             else
