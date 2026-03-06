@@ -1,5 +1,13 @@
 ## \{Next Version\}
 
+* Missile
+    * Increased big missile explosion radius: 3 -> 10
+    * Increased chance for base missile:
+        * Uncommon: 15%
+        * Rare: 20%
+        * Epic: 25%
+        * Legendary: 30%
+
 * Warbanner
     * increase attack speed with time spent in the banner radius
         * Uncommon: +2% attack speed per second, up to 30 (+30 per stack) seconds
