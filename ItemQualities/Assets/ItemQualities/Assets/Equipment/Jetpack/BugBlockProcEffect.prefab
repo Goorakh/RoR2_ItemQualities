@@ -558,7 +558,7 @@ MonoBehaviour:
   parentToReferencedTransform: 1
   noEffectData: 0
   applyScale: 0
-  soundName: Play_item_proc_bear
+  soundName: play_quality_item_bug_block
   disregardZScale: 0
   applyScaleFirst: 0
 --- !u!114 &5228608635884133654

@@ -74,7 +74,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 0.3
+  m_Time: 0.24
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.5
@@ -83,13 +83,22 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
-        inSlope: -0.6759167
-        outSlope: -0.6759167
+        value: 0.1851883
+        inSlope: -0.000015277114
+        outSlope: -0.000015277114
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.33333334
+        outWeight: 0.20385675
+      - serializedVersion: 3
+        time: 1
+        value: 0.13580246
+        inSlope: -0.03931124
+        outSlope: -0.03931124
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0.1570248
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 0
@@ -144,7 +153,6 @@ GameObject:
   - component: {fileID: 5410532614637937539}
   - component: {fileID: 8850985577130906902}
   - component: {fileID: 3699858031695005090}
-  - component: {fileID: 8436954896183913493}
   m_Layer: 0
   m_Name: BugOrbEffect
   m_TagString: Untagged
@@ -187,7 +195,7 @@ MonoBehaviour:
   parentToReferencedTransform: 0
   noEffectData: 0
   applyScale: 0
-  soundName: Play_item_void_critGlasses
+  soundName: play_quality_item_bug_proc
   disregardZScale: 0
   applyScaleFirst: 0
 --- !u!114 &5410532614637937539
@@ -279,31 +287,6 @@ MonoBehaviour:
   targetTrailRenderers:
   - {fileID: 885297245464102341}
   IgnoreDestroy: 0
---- !u!114 &8436954896183913493
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4169543038806600589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 099ecf8d44d7a9644b7beb48d3648467, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FieldAssignments:
-  - _targetObject: {fileID: 5410532614637937539}
-    _targetObjectComponent: {fileID: 0}
-    TargetObjectComponentType:
-      assemblyQualifiedName: 
-    FieldName: endEffect
-    AssetReference:
-      m_AssetGUID: 2200838e6df35344fa79ece46dcfc899
-      m_SubObjectName: 
-      m_SubObjectType: 
-    AssetTypeOverride:
-      assemblyQualifiedName: 
-  _hasLoaded: 0
 --- !u!1 &6195916745586541552
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,7 +411,7 @@ ParticleSystem:
   prewarm: 0
   playOnAwake: 1
   useUnscaledTime: 0
-  autoRandomSeed: 0
+  autoRandomSeed: 1
   startDelay:
     serializedVersion: 2
     minMaxState: 0
@@ -485,7 +468,7 @@ ParticleSystem:
   moveWithTransform: 0
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
-  randomSeed: 1101830744
+  randomSeed: 0
   InitialModule:
     serializedVersion: 3
     enabled: 1
@@ -5172,8 +5155,8 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 0.90906835, b: 0.09803921, a: 1}
-  m_Intensity: 235.46
-  m_Range: 0.38
+  m_Intensity: 20
+  m_Range: 3
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
