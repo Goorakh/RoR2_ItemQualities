@@ -44,7 +44,7 @@ These are mods we recommend you use in combination with Quality, though they are
 * [Properly Persistent Profiles Patch Plugin](https://thunderstore.io/package/Groove_Salad/ProperlyPersistentProfilesPatchPlugin/)
 	* Makes sure your logbook progress is not lost when launching a new profile. **IMPORTANT**: This mod does *not* work retroactively, if you launch the game at any point without it installed, progress will be lost unless manually backed up.
 
-## Contributors
+## Credits
 
 * `Race`: Design
 
@@ -61,6 +61,11 @@ These are mods we recommend you use in combination with Quality, though they are
 * `Lena`: Trailer editing and miscellaneous assets.
 
 * `Wube`: Borrowed quality icons \:)
+
+### Sound attributions
+
+* `220531 Fly buzzing in window, short, R-07 by TRP -- https://freesound.org/s/717567/ -- License: Creative Commons 0`
+* `Buzzing Insect Short.mp3 by FunWithSound -- https://freesound.org/s/390733/ -- License: Creative Commons 0`
 
 ## Contact
 For feedback or bug reports, message `.race` on discord or join the [Risk of Resources discord](https://www.riskofresources.com/discord) and use the Quality Discussion channel!
