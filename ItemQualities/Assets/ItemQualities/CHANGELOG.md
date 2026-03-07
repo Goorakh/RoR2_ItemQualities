@@ -1,5 +1,13 @@
 ## \{Next Version\}
 
+* Missile
+    * Increased big missile explosion radius: 3 -> 10
+    * Increased chance for base missile:
+        * Uncommon: 15%
+        * Rare: 20%
+        * Epic: 25%
+        * Legendary: 30%
+
 * Razorwire:
     * Damage returned:
         * Uncommon: 10% (+10% per stack) -> 100% (+100% per stack)

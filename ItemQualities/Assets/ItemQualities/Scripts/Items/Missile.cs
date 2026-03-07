@@ -68,7 +68,7 @@ namespace ItemQualities.Items
             projectileImpactExplosion.destroyOnWorld = projectileSingleTargetImpact.destroyOnWorld;
             projectileImpactExplosion.blastDamageCoefficient = 1f;
             projectileImpactExplosion.blastProcCoefficient = 1f;
-            projectileImpactExplosion.blastRadius = 3f;
+            projectileImpactExplosion.blastRadius = 10f;
             projectileImpactExplosion.lifetime = float.PositiveInfinity;
 #pragma warning disable CS0618 // Type or member is obsolete
             projectileImpactExplosion.explosionSoundString = projectileSingleTargetImpact.hitSoundString;
@@ -177,6 +177,46 @@ namespace ItemQualities.Items
                 }
 
                 return missilePrefab;
+            }
+
+            c.Index = 0;
+
+            if (c.TryGotoNext(
+                    x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.Missile))
+                ) &&
+                c.TryGotoNext(
+                    x => ItemHooks.MatchCallLocalCheckRoll(x)
+                ) &&
+                c.TryGotoPrev(MoveType.After,
+                    x => x.MatchLdcR4(out _)
+                ))
+            {
+                c.Emit(OpCodes.Ldarg, damageInfoParameter);
+                c.EmitDelegate<Func<float, DamageInfo, float>>(baseMissileChance);
+            }
+            else
+            {
+                Log.Error("IL Hook failed!");
+            }
+
+            static float baseMissileChance(float chance, DamageInfo damageInfo)
+            {
+                GameObject attacker = damageInfo?.attacker;
+                CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
+                Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                if (attackerInventory)
+                {
+                    ItemQualityCounts missile = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Missile);
+                    chance += missile.HighestQuality switch
+                    {
+                        QualityTier.Uncommon => 5,
+                        QualityTier.Rare => 10,
+                        QualityTier.Epic => 15,
+                        QualityTier.Legendary => 20,
+                        _ => 0
+                    };
+                }
+                return chance;
             }
         }
     }
