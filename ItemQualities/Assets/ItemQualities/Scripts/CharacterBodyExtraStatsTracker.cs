@@ -19,6 +19,15 @@ namespace ItemQualities
             }
 
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
+        }
+
+        private static void onServerDamageDealt(DamageReport damageReport)
+        {
+            if (damageReport.attacker && damageReport.attacker.TryGetComponentCached(out CharacterBodyExtraStatsTracker attackerBodyExtraStats))
+            {
+                attackerBodyExtraStats.onDamagedOther(damageReport);
+            }
         }
 
         static void onCharacterDeathGlobal(DamageReport damageReport)
@@ -59,6 +68,8 @@ namespace ItemQualities
         public float ExecuteBossHealthFraction { get; private set; }
 
         public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
+
+        public CharacterBody lastDamaged;
 
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
 
@@ -319,6 +330,11 @@ namespace ItemQualities
             }
 
             OnKilledOther?.Invoke(damageReport);
+        }
+
+        void onDamagedOther(DamageReport damageReport)
+        {
+            lastDamaged = damageReport.victimBody;
         }
 
         void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)
