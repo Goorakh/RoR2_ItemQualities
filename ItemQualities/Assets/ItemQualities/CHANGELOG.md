@@ -1,5 +1,8 @@
 ## \{Next Version\}
 
+* Resonance Disc:
+    * Target the last hit enemy
+
 * Missile
     * Increased big missile explosion radius: 3 -> 10
     * Increased chance for base missile:
