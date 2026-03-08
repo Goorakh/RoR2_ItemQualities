@@ -2,6 +2,7 @@
 
 namespace ItemQualities
 {
+#if UNITY_EDITOR
     public sealed class RotationTest : MonoBehaviour
     {
         public float Pitch;
@@ -16,4 +17,5 @@ namespace ItemQualities
             Gizmos.DrawLine(Vector3.zero, forward);
         }
     }
+#endif
 }
