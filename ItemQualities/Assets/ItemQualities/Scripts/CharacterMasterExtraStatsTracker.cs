@@ -41,7 +41,7 @@ namespace ItemQualities
         public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
 
         public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
-        public event Action<CharacterMasterExtraStatsTracker> BossDamageBonusTicksChanged;
+        public event Action<CharacterMasterExtraStatsTracker> OnBossDamageBonusTicksChanged;
 
         void Awake()
         {
@@ -148,7 +148,7 @@ namespace ItemQualities
 
             if (changed)
             {
-                BossDamageBonusTicksChanged?.Invoke(this);
+                OnBossDamageBonusTicksChanged?.Invoke(this);
             }
         }
     }

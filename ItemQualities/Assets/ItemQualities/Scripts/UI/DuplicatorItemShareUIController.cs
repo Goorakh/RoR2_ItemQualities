@@ -6,7 +6,7 @@ using RoR2.UI;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 
-namespace ItemQualities
+namespace ItemQualities.UI
 {
     public sealed class DuplicatorItemShareUIController : MonoBehaviour
     {

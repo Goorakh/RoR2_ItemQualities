@@ -1,84 +1,46 @@
-using ItemQualities.Items;
-using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.UI;
-using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace ItemQualities
+namespace ItemQualities.UI
 {
     public sealed class BossDamageBonusUI : MonoBehaviour
     {
-        [SystemInitializer]
-        static void Init()
-        {
-            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_UI.HUDSimple_prefab).OnSuccess(hudPrefab =>
-            {
-                hudPrefab.AddComponent<BossDamageBonusUI>();
-            });
-        }
+        public RectTransform MarkersRoot;
+
+        public GameObject MarkerSectionPrefab;
+
+        UIElementAllocator<BossDamageBonusTickController> _tickAllocator;
+
+        int _maxTicksPerSection;
 
         HUD _hud;
-        GameObject _hitlistMarkers;
 
-        CharacterBody _currentTargetBody;
-        GameObject _currentTargetBodyObject;
+        CharacterMaster _targetMaster;
+        CharacterMasterExtraStatsTracker _targetMasterStats;
 
         void Awake()
         {
-            _hud = GetComponent<HUD>();
-        }
+            _hud = GetComponentInParent<HUD>();
 
-        void Start()
-        {
-            Transform bottomRightClusterTransform = GetComponent<ChildLocator>().FindChild("BottomRightCluster");
-            _hitlistMarkers = Instantiate(ItemQualitiesContent.Prefabs.HitlistMarkersUI, bottomRightClusterTransform);
-            _hitlistMarkers.name = "HitlistMarkers";
+            _tickAllocator = new UIElementAllocator<BossDamageBonusTickController>(MarkersRoot, MarkerSectionPrefab);
+
+            _maxTicksPerSection = MarkerSectionPrefab.GetComponent<BossDamageBonusTickController>().NumberSprites.Length;
         }
 
         void OnEnable()
         {
-            setTargetBodyObject(_hud.targetBodyObject);
+            setTargetMaster(_hud.targetMaster);
 
             HUD.onHudTargetChangedGlobal += onHudTargetChangedGlobal;
-            if (_currentTargetBody && _currentTargetBody.master && _currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats)) {
-                masterExtraStats.BossDamageBonusTicksChanged += updateTickVisual;
-            }
         }
 
         void OnDisable()
         {
             HUD.onHudTargetChangedGlobal -= onHudTargetChangedGlobal;
-            if (_currentTargetBody && _currentTargetBody.master && _currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
-            {
-                masterExtraStats.BossDamageBonusTicksChanged -= updateTickVisual;
-            }
-            setTargetBodyObject(null);
-        }
 
-        public void updateTickVisual(CharacterMasterExtraStatsTracker masterExtraStats)
-        {
-            ChildLocator childLocator = _hitlistMarkers.GetComponent<ChildLocator>();
-            if (!childLocator)
-                return;
-
-            for (int i = 0; i < (float)masterExtraStats.BossDamageBonusTicks / 5; i++)
-            {
-                Transform child = childLocator.FindChild(i);
-                child.gameObject.SetActive(true);
-                Image image = child.GetComponent<Image>();
-                Sprite sprite = (masterExtraStats.BossDamageBonusTicks - 5 * i) switch
-                {
-                    1 => ItemQualitiesContent.Sprites.hitlistTick_1,
-                    2 => ItemQualitiesContent.Sprites.hitlistTick_2,
-                    3 => ItemQualitiesContent.Sprites.hitlistTick_3,
-                    4 => ItemQualitiesContent.Sprites.hitlistTick_4,
-                    _ => ItemQualitiesContent.Sprites.hitlistTick_5,
-                };
-                image.sprite = sprite;
-            }
+            setTargetMaster(null);
         }
 
         void onHudTargetChangedGlobal(HUD hud)
@@ -86,24 +48,44 @@ namespace ItemQualities
             if (hud != _hud)
                 return;
 
-            setTargetBodyObject(hud.targetBodyObject);
+            setTargetMaster(hud.targetMaster);
         }
 
-        void setTargetBodyObject(GameObject targetBodyObject)
+        void setTargetMaster(CharacterMaster master)
         {
-            if (targetBodyObject == _currentTargetBodyObject)
+            if (_targetMaster == master)
                 return;
 
-            if (_currentTargetBody && _currentTargetBody.master && _currentTargetBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+            if (_targetMasterStats)
             {
-                masterExtraStats.BossDamageBonusTicksChanged -= updateTickVisual;
+                _targetMasterStats.OnBossDamageBonusTicksChanged -= onBossDamageBonusTicksChanged;
             }
-            _currentTargetBodyObject = targetBodyObject;
-            _currentTargetBody = _currentTargetBodyObject ? _currentTargetBodyObject.GetComponent<CharacterBody>() : null;
-            
-            if (_currentTargetBody && _currentTargetBody.master && _currentTargetBody.master.TryGetComponentCached(out masterExtraStats)) {
-                masterExtraStats.BossDamageBonusTicksChanged += updateTickVisual;
-                updateTickVisual(masterExtraStats);
+
+            _targetMaster = master;
+            _targetMasterStats = master ? master.GetComponentCached<CharacterMasterExtraStatsTracker>() : null;
+
+            if (_targetMasterStats)
+            {
+                _targetMasterStats.OnBossDamageBonusTicksChanged += onBossDamageBonusTicksChanged;
+            }
+
+            refreshTicks();
+        }
+
+        void onBossDamageBonusTicksChanged(CharacterMasterExtraStatsTracker masterExtraStats)
+        {
+            refreshTicks();
+        }
+
+        void refreshTicks()
+        {
+            int sections = _targetMasterStats && _targetMasterStats.BossDamageBonusTicks > 0 ? HGMath.IntDivCeil(_targetMasterStats.BossDamageBonusTicks, _maxTicksPerSection) : 0;
+            _tickAllocator.AllocateElements(sections);
+
+            for (int i = 0; i < sections; i++)
+            {
+                BossDamageBonusTickController markerController = _tickAllocator.elements[i];
+                markerController.DisplayedNumber = Mathf.Min(_maxTicksPerSection, _targetMasterStats.BossDamageBonusTicks - (_maxTicksPerSection * i));
             }
         }
     }

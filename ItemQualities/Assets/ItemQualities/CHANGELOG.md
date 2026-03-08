@@ -1,11 +1,11 @@
 ## \{Next Version\}
 
 * Resonance Disc:
-    * Target the last hit enemy
+    * Now always targets the last hit enemy when charged.
 
 * Missile
     * Increased big missile explosion radius: 3 -> 10
-    * Increased chance for base missile:
+    * Increased chance for missile proc:
         * Uncommon: 15%
         * Rare: 20%
         * Epic: 25%
@@ -19,17 +19,17 @@
         * Legendary: 25% (+25% per stack) -> 500% (+500% per stack)
 
 * Wax Quail:
-    * removed extra air control
-    * removed maximum angle to continue jump combo
-    * increased window to continue jump combo slightly: 0.1s -> 0.15s
+    * Removed air control increase.
+    * Removed maximum angle to continue jump combo.
+    * Increased window to continue jump combo slightly: 0.1s -> 0.15s
 
-* Warbanner
-    * increase attack speed with time spent in the banner radius
+* Warbanner:
+    * Now increases attack speed with time spent in the banner radius
         * Uncommon: +2% attack speed per second, up to 30 (+30 per stack) seconds
         * Rare: +3% attack speed per second, up to 40 (+40 per stack) seconds
         * Epic: +4% attack speed per second, up to 50 (+50 per stack) seconds
         * Legendary: +5% attack speed damage per second, up to 60 (+60 per stack) seconds
-    * temporary banner duration:
+    * Temporary banner duration:
         * Uncommon: 3 (+3 per stack) seconds -> 10 (+10 per stack) seconds
         * Rare: 8 (+8 per stack) seconds -> 20 (+20 per stack) seconds
         * Epic: 15 (+15 per stack) seconds -> 30 (+30 per stack) seconds
