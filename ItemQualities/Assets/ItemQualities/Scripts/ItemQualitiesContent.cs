@@ -760,6 +760,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup DroneBackup;
 
             public static EquipmentQualityGroup GoldGat;
+
+            public static EquipmentQualityGroup Jetpack;
         }
 
         public static class BuffQualityGroups
@@ -806,6 +808,8 @@ namespace ItemQualities
 
             public static BuffQualityGroup LifeSteal;
 
+            public static BuffQualityGroup BugBlock;
+            
             public static BuffQualityGroup Warbanner;
         }
 
@@ -844,6 +848,10 @@ namespace ItemQualities
 
             public static GameObject MultiShopCardTooltipContext;
 
+            public static GameObject BugBlockProcEffect;
+
+            public static GameObject BugOrbEffect;
+            
             public static GameObject HitlistMarkersUI;
         }
 
@@ -878,6 +886,10 @@ namespace ItemQualities
             public static GameObject CleanseQualityAttachment;
 
             public static GameObject QualityCritOnUseAttachment;
+
+            public static GameObject BugPickup;
+
+            public static GameObject BugSwarmController;
         }
 
         public static class ProjectilePrefabs

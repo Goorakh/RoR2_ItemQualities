@@ -1,5 +1,6 @@
 ﻿using HG;
 using ItemQualities.Items;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
@@ -314,6 +315,41 @@ namespace ItemQualities
 
         void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
         {
+            BuffQualityCounts bugBlock = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BugBlock);
+            if (bugBlock.TotalQualityCount > 0 && damageInfo.damage > 0 && !damageInfo.rejected)
+            {
+                bool evade = false;
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                {
+                    // Uncommon: 10%
+                    // Rare: 20%
+                    // Epic: 30%
+                    // Legendary: 40%
+                    float evadeChance = ((int)qualityTier + 1) * 10;
+
+                    if (bugBlock[qualityTier] > 0 && RollUtil.CheckRoll(evadeChance, null, false))
+                    {
+                        evade = true;
+
+                        bugBlock[qualityTier]--;
+                        Body.RemoveBuff(ItemQualitiesContent.BuffQualityGroups.BugBlock.GetBuffIndex(qualityTier));
+                        break;
+                    }
+                }
+
+                if (evade)
+                {
+                    EffectData effectData = new EffectData
+                    {
+                        origin = damageInfo.position
+                    };
+
+                    EffectManager.SpawnEffect(ItemQualitiesContent.Prefabs.BugBlockProcEffect, effectData, true);
+
+                    damageInfo.rejected = true;
+                }
+            }
+
             OnIncomingDamageServer?.Invoke(damageInfo);
         }
 

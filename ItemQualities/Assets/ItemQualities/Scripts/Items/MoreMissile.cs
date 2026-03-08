@@ -19,7 +19,7 @@ namespace ItemQualities.Items
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        static int rollAdditionalMissileCount(CharacterBody attackerBody, bool sureProc)
+        public static int RollAdditionalMissileCount(CharacterBody attackerBody, bool sureProc)
         {
             if (!attackerBody || !attackerBody.inventory)
                 return 0;
@@ -86,7 +86,7 @@ namespace ItemQualities.Items
 
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                int additionalMissileCount = rollAdditionalMissileCount(attackerBody, procChainMask.HasProc(ProcType.SureProc));
+                int additionalMissileCount = RollAdditionalMissileCount(attackerBody, procChainMask.HasProc(ProcType.SureProc));
                 if (additionalMissileCount > 0)
                 {
                     Vector3 initialDirection = missileProjectileInfo.rotation * Vector3.forward;
@@ -141,7 +141,7 @@ namespace ItemQualities.Items
             {
                 if (damageInfo?.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody attackerBody))
                 {
-                    missileCount += rollAdditionalMissileCount(attackerBody, damageInfo.procChainMask.HasProc(ProcType.SureProc));
+                    missileCount += RollAdditionalMissileCount(attackerBody, damageInfo.procChainMask.HasProc(ProcType.SureProc));
                 }
 
                 return missileCount;

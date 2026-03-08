@@ -16,11 +16,16 @@ namespace ItemQualities.Buffs
         public static event BodyBuffGainedOrLostDelegate OnBuffFirstStackGainedGlobal;
         public static event BodyBuffGainedOrLostDelegate OnBuffFinalStackLostGlobal;
 
+        public delegate void BodyBuffCountChangedDelegate(CharacterBody body, BuffIndex buffIndex, int newCount);
+        public static event BodyBuffCountChangedDelegate OnBodyBuffCountChangedGlobal;
+
         static readonly List<CharacterBody> _disableBuffCountHooksForBodies = new List<CharacterBody>();
 
         [SystemInitializer]
         static void Init()
         {
+            On.RoR2.CharacterBody.SetBuffCount += On_CharacterBody_SetBuffCount;
+
             On.RoR2.CharacterBody.GetBuffCount_BuffIndex += CharacterBody_GetBuffCount_BuffIndex;
             On.RoR2.CharacterBody.ClearTimedBuffs_BuffIndex += CharacterBody_ClearTimedBuffs_BuffIndex;
             On.RoR2.CharacterBody.RemoveBuff_BuffIndex += CharacterBody_RemoveBuff_BuffIndex;
@@ -37,6 +42,23 @@ namespace ItemQualities.Buffs
 
             On.RoR2.CharacterBody.OnBuffFirstStackGained += CharacterBody_OnBuffFirstStackGained;
             On.RoR2.CharacterBody.OnBuffFinalStackLost += CharacterBody_OnBuffFinalStackLost;
+        }
+
+        static void On_CharacterBody_SetBuffCount(On.RoR2.CharacterBody.orig_SetBuffCount orig, CharacterBody self, BuffIndex buffType, int newCount)
+        {
+            orig(self, buffType, newCount);
+
+            if (OnBodyBuffCountChangedGlobal != null)
+            {
+                try
+                {
+                    OnBodyBuffCountChangedGlobal(self, buffType, newCount);
+                }
+                catch (Exception e)
+                {
+                    Log.Warning_NoCallerPrefix(e);
+                }
+            }
         }
 
         static void CharacterBody_OnBuffFirstStackGained(On.RoR2.CharacterBody.orig_OnBuffFirstStackGained orig, CharacterBody self, BuffDef buffDef)
