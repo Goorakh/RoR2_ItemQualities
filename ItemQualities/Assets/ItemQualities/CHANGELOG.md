@@ -1,5 +1,61 @@
 ## \{Next Version\}
 
+* Resonance Disc:
+    * Target the last hit enemy
+
+* Missile
+    * Increased big missile explosion radius: 3 -> 10
+    * Increased chance for base missile:
+        * Uncommon: 15%
+        * Rare: 20%
+        * Epic: 25%
+        * Legendary: 30%
+
+* Razorwire:
+    * Damage returned:
+        * Uncommon: 10% (+10% per stack) -> 100% (+100% per stack)
+        * Rare: 15% (+15% per stack) -> 200% (+200% per stack)
+        * Epic: 20% (+20% per stack) -> 300% (+300% per stack)
+        * Legendary: 25% (+25% per stack) -> 500% (+500% per stack)
+
+* Wax Quail:
+    * removed extra air control
+    * removed maximum angle to continue jump combo
+    * increased window to continue jump combo slightly: 0.1s -> 0.15s
+
+* Warbanner
+    * increase attack speed with time spent in the banner radius
+        * Uncommon: +2% attack speed per second, up to 30 (+30 per stack) seconds
+        * Rare: +3% attack speed per second, up to 40 (+40 per stack) seconds
+        * Epic: +4% attack speed per second, up to 50 (+50 per stack) seconds
+        * Legendary: +5% attack speed damage per second, up to 60 (+60 per stack) seconds
+    * temporary banner duration:
+        * Uncommon: 3 (+3 per stack) seconds -> 10 (+10 per stack) seconds
+        * Rare: 8 (+8 per stack) seconds -> 20 (+20 per stack) seconds
+        * Epic: 15 (+15 per stack) seconds -> 30 (+30 per stack) seconds
+        * Legendary: 30 (+30 per stack) seconds -> 40 (+40 per stack) seconds
+
+* Armor Piercing Rounds:
+    * Damage increase applies to bosses
+    * Maximum distance for marked enemies: 250
+    * Added new UI
+    * Enemy mark frequency: 40 seconds
+    * Damage increase per enemy killed:
+        * Uncommon: 1% -> 1% (+1% per stack)
+        * Rare: 1% -> 1.25% (+1.25% per stack)
+        * Epic: 1% -> 1.5% (+1.5% per stack)
+        * Legendary: 1% -> 2% (+2% per stack)
+    * Enemy mark duration:
+        * Uncommon: 10 seconds -> 15 seconds (+5 seconds per stack)
+        * Rare: 10 seconds -> 20 seconds (+10 seconds per stack)
+        * Epic: 10 seconds -> 25 seconds (+15 seconds per stack)
+        * Legendary: 10 seconds -> 30 seconds (+20 seconds per stack)
+    * Maximum ticks:
+        * Uncommon: 15 (+15 per stack) -> 15
+        * Rare: 30 (+30 per stack) -> 30
+        * Epic: 45 (+45 per stack) -> 45
+        * Legendary: 60 (+60 per stack) -> 60
+
 * Ben's Raincoat:
     * Debuff spread radius:
         * Uncommon: 30m (+5m per stack) -> 15m (+15m per stack)

@@ -105,7 +105,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: texTMPSpriteSheet_0
+      name: texQualityIcons_QualityDiamond
       rect:
         serializedVersion: 2
         x: 0
@@ -113,7 +113,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -126,7 +126,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texTMPSpriteSheet_1
+      name: texQualityIcons_Uncommon
       rect:
         serializedVersion: 2
         x: 64
@@ -134,7 +134,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -147,7 +147,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texTMPSpriteSheet_2
+      name: texQualityIcons_Rare
       rect:
         serializedVersion: 2
         x: 128
@@ -155,7 +155,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -168,7 +168,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texTMPSpriteSheet_3
+      name: texQualityIcons_Epic
       rect:
         serializedVersion: 2
         x: 192
@@ -176,7 +176,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -189,7 +189,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texTMPSpriteSheet_4
+      name: texQualityIcons_Legendary
       rect:
         serializedVersion: 2
         x: 256
@@ -197,7 +197,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -210,7 +210,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texTMPSpriteSheet_5
+      name: texQualityIcons_UncommonConsumed
       rect:
         serializedVersion: 2
         x: 64
@@ -218,7 +218,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -231,7 +231,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texTMPSpriteSheet_6
+      name: texQualityIcons_RareConsumed
       rect:
         serializedVersion: 2
         x: 128
@@ -239,7 +239,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -252,7 +252,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texTMPSpriteSheet_7
+      name: texQualityIcons_EpicConsumed
       rect:
         serializedVersion: 2
         x: 192
@@ -260,7 +260,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -273,7 +273,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: texTMPSpriteSheet_8
+      name: texQualityIcons_LegendaryConsumed
       rect:
         serializedVersion: 2
         x: 256
@@ -281,7 +281,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -304,15 +304,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      texTMPSpriteSheet_0: 955084517
-      texTMPSpriteSheet_1: -1715125677
-      texTMPSpriteSheet_2: 1310505188
-      texTMPSpriteSheet_3: 932333613
-      texTMPSpriteSheet_4: 1200068530
-      texTMPSpriteSheet_5: 1129660682
-      texTMPSpriteSheet_6: -997151503
-      texTMPSpriteSheet_7: 931077086
-      texTMPSpriteSheet_8: 1632103838
+      texQualityIcons_Epic: 932333613
+      texQualityIcons_EpicConsumed: 931077086
+      texQualityIcons_Legendary: 1200068530
+      texQualityIcons_LegendaryConsumed: 1632103838
+      texQualityIcons_QualityDiamond: 955084517
+      texQualityIcons_Rare: 1310505188
+      texQualityIcons_RareConsumed: -997151503
+      texQualityIcons_Uncommon: -1715125677
+      texQualityIcons_UncommonConsumed: 1129660682
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

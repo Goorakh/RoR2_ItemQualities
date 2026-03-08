@@ -31,6 +31,9 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetSpeedOnPickupBonus))]
         public int SpeedOnPickupBonus;
 
+        [SyncVar(hook = nameof(hookSetBossDamageBonusTicks))]
+        public int BossDamageBonusTicks;
+
         [SyncVar]
         public int CardStoredInteractableIndex = -1;
 
@@ -38,6 +41,7 @@ namespace ItemQualities
         public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
 
         public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
+        public event Action<CharacterMasterExtraStatsTracker> BossDamageBonusTicksChanged;
 
         void Awake()
         {
@@ -134,6 +138,17 @@ namespace ItemQualities
             if (changed)
             {
                 markBodyStatsDirty();
+            }
+        }
+
+        void hookSetBossDamageBonusTicks(int bossDamageBonusTicks)
+        {
+            bool changed = BossDamageBonusTicks != bossDamageBonusTicks;
+            BossDamageBonusTicks = bossDamageBonusTicks;
+
+            if (changed)
+            {
+                BossDamageBonusTicksChanged?.Invoke(this);
             }
         }
     }
