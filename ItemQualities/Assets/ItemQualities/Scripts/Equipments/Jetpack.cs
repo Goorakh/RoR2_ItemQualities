@@ -102,7 +102,7 @@ namespace ItemQualities.Equipments
                             target = damageReport.victimBody.mainHurtBox,
                             damageValue = damageValue,
                             procChainMask = procChainMask,
-                            procCoefficient = 0.4f,
+                            procCoefficient = 0.2f,
                             isCrit = damageReport.damageInfo.crit,
                             damageColorIndex = _bugColorIndex,
                         });

@@ -95,7 +95,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BugPrefab: {fileID: 6235533270592410290, guid: 856beb7df7e49e34cbe5bcd9c0133769, type: 3}
-  MaxDisplayedBugCount: 100
+  MaxDisplayedBugCount: 30
   OrbitDistanceOffset:
     min: 1
     max: 2.3

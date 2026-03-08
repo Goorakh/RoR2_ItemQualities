@@ -335,6 +335,10 @@ namespace ItemQualities
                 bool evade = false;
                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
+                    // Uncommon: 10%
+                    // Rare: 20%
+                    // Epic: 30%
+                    // Legendary: 40%
                     float evadeChance = ((int)qualityTier + 1) * 10;
 
                     if (bugBlock[qualityTier] > 0 && RollUtil.CheckRoll(evadeChance, null, false))

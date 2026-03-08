@@ -760,6 +760,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup DroneBackup;
 
             public static EquipmentQualityGroup GoldGat;
+
+            public static EquipmentQualityGroup Jetpack;
         }
 
         public static class BuffQualityGroups

@@ -12,7 +12,7 @@ namespace ItemQualities
 
         public float FlyRate = 4f;
 
-        void Start()
+        void OnEnable()
         {
             if (_animator)
             {

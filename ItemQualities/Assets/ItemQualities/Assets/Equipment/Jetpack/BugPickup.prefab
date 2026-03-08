@@ -1110,7 +1110,7 @@ MonoBehaviour:
   BaseObject: {fileID: 4339631983991808167}
   TeamFilter: {fileID: 2975012214738299244}
   PickupEffect: {fileID: 0}
-  JetpackDurationBonus: 3
+  JetpackDurationBonus: 2
   BuffGroup: {fileID: 11400000, guid: 1a7b2e09b80f2c34bbb7b96a63aef790, type: 2}
   Tier: -1
 --- !u!135 &6653850844823544039

@@ -5,6 +5,8 @@ namespace ItemQualities.Orbs
 {
     public sealed class BugOrb : GenericDamageOrb
     {
+        static readonly float _baseSpeed = 60f;
+
         public override GameObject GetOrbEffect()
         {
             return ItemQualitiesContent.Prefabs.BugOrbEffect;
@@ -12,7 +14,7 @@ namespace ItemQualities.Orbs
 
         public override void Begin()
         {
-            speed = 60f;
+            speed = _baseSpeed;
             base.Begin();
         }
     }
