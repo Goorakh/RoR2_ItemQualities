@@ -298,5 +298,17 @@
         "EQUIPMENT_JETPACK_LEGENDARY_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>3</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>200%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>40%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
 
         "QUALITY_BUG_BLOCK_DAMAGE_HITMARKER": "MISS!",
+
+        "EQUIPMENT_PARRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_UNCOMMON_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>50%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_RARE_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>150%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_EPIC_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>300%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_LEGENDARY_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>900%</style> increased damage.",
     }
 }

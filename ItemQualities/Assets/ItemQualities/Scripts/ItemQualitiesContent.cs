@@ -762,6 +762,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup GoldGat;
 
             public static EquipmentQualityGroup Jetpack;
+
+            public static EquipmentQualityGroup Parry;
         }
 
         public static class BuffQualityGroups
@@ -851,6 +853,8 @@ namespace ItemQualities
             public static GameObject BugOrbEffect;
             
             public static GameObject HitlistMarkersUI;
+
+            public static GameObject ParryProjectileDisplayUI;
         }
 
         public static class NetworkedPrefabs
