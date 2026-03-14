@@ -216,8 +216,8 @@ namespace ItemQualities
                     equipment.isBoss = baseEquipment.isBoss;
                     equipment.foodRelated = baseEquipment.foodRelated;
 
-                    equipment.canBeRandomlyTriggered = baseEquipment.canBeRandomlyTriggered;
-                    equipment.enigmaCompatible = baseEquipment.enigmaCompatible;
+                    equipment.canBeRandomlyTriggered &= baseEquipment.canBeRandomlyTriggered;
+                    equipment.enigmaCompatible &= baseEquipment.enigmaCompatible;
 
                     equipment.appearsInSinglePlayer = baseEquipment.appearsInSinglePlayer;
                     equipment.appearsInMultiPlayer = baseEquipment.appearsInMultiPlayer;

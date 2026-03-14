@@ -27,73 +27,108 @@ namespace ItemQualities.Items
             }
 
             VariableDefinition equipmentQualityTiersVar = il.AddVariable<QualityTier[]>();
-            VariableDefinition equipmentQualityIndexVar = il.AddVariable<int>();
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<EquipmentSlot, QualityTier[]>>(getRandomEquipmentQualityTiers);
-            c.Emit(OpCodes.Stloc, equipmentQualityTiersVar);
-
-            static QualityTier[] getRandomEquipmentQualityTiers(EquipmentSlot equipmentSlot)
             {
-                CharacterBody body = equipmentSlot ? equipmentSlot.characterBody : null;
-                Inventory inventory = body ? body.inventory : null;
+                // Setup tiers array
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<EquipmentSlot, QualityTier[]>>(getRandomEquipmentQualityTiers);
+                c.Emit(OpCodes.Stloc, equipmentQualityTiersVar);
 
-                QualityTier[] equipmentQualityTiers = Array.Empty<QualityTier>();
-                if (inventory)
+                static QualityTier[] getRandomEquipmentQualityTiers(EquipmentSlot equipmentSlot)
                 {
-                    ItemQualityCounts randomEquipmentTrigger = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.RandomEquipmentTrigger);
-                    if (randomEquipmentTrigger.TotalQualityCount > 0)
+                    CharacterBody body = equipmentSlot ? equipmentSlot.characterBody : null;
+                    Inventory inventory = body ? body.inventory : null;
+
+                    QualityTier[] equipmentQualityTiers = Array.Empty<QualityTier>();
+                    if (inventory)
                     {
-                        Span<QualityTier> equipmentQualityTiersSpan = stackalloc QualityTier[randomEquipmentTrigger.TotalCount];
-
-                        int equipmentQualityTierIndex = 0;
-                        for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                        ItemQualityCounts randomEquipmentTrigger = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.RandomEquipmentTrigger);
+                        if (randomEquipmentTrigger.TotalQualityCount > 0)
                         {
-                            int tierCount = randomEquipmentTrigger[qualityTier];
-                            if (tierCount > 0)
+                            Span<QualityTier> equipmentQualityTiersSpan = stackalloc QualityTier[randomEquipmentTrigger.TotalCount];
+
+                            int equipmentQualityTierIndex = 0;
+                            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
                             {
-                                equipmentQualityTiersSpan.Slice(equipmentQualityTierIndex, tierCount).Fill(qualityTier);
-                                equipmentQualityTierIndex += tierCount;
+                                int tierCount = randomEquipmentTrigger[qualityTier];
+                                if (tierCount > 0)
+                                {
+                                    equipmentQualityTiersSpan.Slice(equipmentQualityTierIndex, tierCount).Fill(qualityTier);
+                                    equipmentQualityTierIndex += tierCount;
+                                }
                             }
+
+                            equipmentQualityTiers = equipmentQualityTiersSpan.ToArray();
                         }
-
-                        equipmentQualityTiers = equipmentQualityTiersSpan.ToArray();
                     }
-                }
 
-                return equipmentQualityTiers;
+                    return equipmentQualityTiers;
+                }
             }
 
-            c.Emit(OpCodes.Ldc_I4_0);
-            c.Emit(OpCodes.Stloc, equipmentQualityIndexVar);
+            VariableDefinition equipmentQualityIndexVar = il.AddVariable<int>();
+            {
+                // setup tier index
+                c.Emit(OpCodes.Ldc_I4_0);
+                c.Emit(OpCodes.Stloc, equipmentQualityIndexVar);
+            }
 
             c.Goto(foundCursors[1].Next, MoveType.Before); // call EquipmentSlot.PerformEquipmentAction
 
             c.Emit(OpCodes.Ldloc, equipmentQualityTiersVar);
-            c.Emit(OpCodes.Ldloca, equipmentQualityIndexVar);
-            c.EmitDelegate<TryUpgradeEquipmentQualityDelegate>(tryUpgradeEquipmentQuality);
+            c.Emit(OpCodes.Ldloc, equipmentQualityIndexVar);
+            c.EmitDelegate<Func<EquipmentDef, QualityTier[], int, EquipmentDef>>(tryUpgradeEquipmentQuality);
 
-            static EquipmentDef tryUpgradeEquipmentQuality(EquipmentDef equipmentDef, QualityTier[] qualityTiers, ref int qualityTierIndex)
+            static EquipmentDef tryUpgradeEquipmentQuality(EquipmentDef equipmentDef, QualityTier[] qualityTiers, int qualityTierIndex)
             {
                 EquipmentIndex equipmentIndex = equipmentDef ? equipmentDef.equipmentIndex : EquipmentIndex.None;
 
                 if (equipmentIndex != EquipmentIndex.None && qualityTiers.Length > 0)
                 {
                     QualityTier qualityTier = qualityTiers[qualityTierIndex % qualityTiers.Length];
-                    qualityTierIndex++;
 
                     EquipmentIndex qualityEquipmentIndex = QualityCatalog.GetEquipmentIndexOfQuality(equipmentIndex, qualityTier);
                     if (qualityEquipmentIndex != EquipmentIndex.None && qualityEquipmentIndex != equipmentIndex)
                     {
                         equipmentDef = EquipmentCatalog.GetEquipmentDef(qualityEquipmentIndex);
                         equipmentIndex = qualityEquipmentIndex;
+
+                        // Quality equipment blacklisted: pass null to the rest of the code, equipment activation will fail and this equipment will be skipped
+                        if (!equipmentDef.canBeRandomlyTriggered)
+                        {
+                            Log.Debug($"Quality equipment {equipmentDef.name} is not valid for random trigger, skipping");
+
+                            equipmentDef = null;
+                            equipmentIndex = EquipmentIndex.None;
+                        }
+                    }
+                    else
+                    {
+                        // If quality does not exist for this equipment, skip it
+                        equipmentDef = null;
+                        equipmentIndex = EquipmentIndex.None;
                     }
                 }
 
                 return equipmentDef;
             }
+
+            c.Goto(foundCursors[1].Next, MoveType.After); // call EquipmentSlot.PerformEquipmentAction
+
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Ldloca, equipmentQualityIndexVar);
+            c.EmitDelegate<OnEquipmentActionPerformedDelegate>(onEquipmentActionPerformed);
+
+            static void onEquipmentActionPerformed(bool success, ref int qualityTierIndex)
+            {
+                // Only increment the quality tier sequence if the equipment could activate
+                // In other words: Keep trying equipments at the current quality until one is found, *then* move on to the next quality tier
+                if (success)
+                {
+                    qualityTierIndex++;
+                }
+            }
         }
 
-        delegate EquipmentDef TryUpgradeEquipmentQualityDelegate(EquipmentDef equipmentDef, QualityTier[] qualityTiers, ref int qualityTierIndex);
+        delegate void OnEquipmentActionPerformedDelegate(bool success, ref int qualityTierIndex);
     }
 }

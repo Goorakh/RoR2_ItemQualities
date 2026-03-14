@@ -764,6 +764,10 @@ namespace ItemQualities
             public static EquipmentQualityGroup Jetpack;
 
             public static EquipmentQualityGroup Parry;
+            
+            public static EquipmentQualityGroup HealAndRevive;
+
+            public static EquipmentQualityGroup HealAndReviveConsumed;
         }
 
         public static class BuffQualityGroups
