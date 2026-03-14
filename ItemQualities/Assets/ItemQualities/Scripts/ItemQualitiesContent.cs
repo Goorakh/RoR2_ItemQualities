@@ -764,6 +764,10 @@ namespace ItemQualities
             public static EquipmentQualityGroup Jetpack;
 
             public static EquipmentQualityGroup Parry;
+            
+            public static EquipmentQualityGroup HealAndRevive;
+
+            public static EquipmentQualityGroup HealAndReviveConsumed;
         }
 
         public static class BuffQualityGroups
@@ -892,6 +896,8 @@ namespace ItemQualities
             public static GameObject BugPickup;
 
             public static GameObject BugSwarmController;
+
+            public static GameObject HealAndReviveSproutAttachment;
         }
 
         public static class ProjectilePrefabs

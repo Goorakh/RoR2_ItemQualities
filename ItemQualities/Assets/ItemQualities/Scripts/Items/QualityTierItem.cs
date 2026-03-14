@@ -46,7 +46,7 @@ namespace ItemQualities.Items
         {
             string bodyName = orig(bodyObject);
 
-            if (bodyObject.TryGetComponent(out CharacterBody body) && body.inventory)
+            if (bodyObject && bodyObject.TryGetComponent(out CharacterBody body) && body.inventory)
             {
                 ItemQualityCounts qualityTierItems = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier);
                 QualityTier bodyQualityTier = qualityTierItems.HighestQuality;

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egHealAndReviveConsumed
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: b3a4a3d5f1902fd4b8375d4e57a77995
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 98dd08f1bd03f4745a4b3ada7b37ecfb, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: deb1de3ee8fe6604a80227da040d8dcd, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 3f104b0ebe8f84d41a68fbeadc95b0fe, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 270bedcb2b10ecd4fbe3ba2630125325, type: 2}
