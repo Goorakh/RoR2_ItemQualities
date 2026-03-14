@@ -327,5 +327,17 @@
         "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_RARE": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityRare\">",
         "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_EPIC": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityEpic\">",
         "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_LEGENDARY": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityLegendary\">",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>1</style> second.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>2</style> seconds.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>5</style> seconds.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds.",
     }
 }

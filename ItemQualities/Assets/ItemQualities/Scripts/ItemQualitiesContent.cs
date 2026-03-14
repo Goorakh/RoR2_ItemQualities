@@ -896,6 +896,8 @@ namespace ItemQualities
             public static GameObject BugPickup;
 
             public static GameObject BugSwarmController;
+
+            public static GameObject HealAndReviveSproutAttachment;
         }
 
         public static class ProjectilePrefabs
