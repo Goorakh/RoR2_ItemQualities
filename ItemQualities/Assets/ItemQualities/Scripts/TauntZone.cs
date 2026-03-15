@@ -11,6 +11,8 @@ namespace ItemQualities
     [RequireComponent(typeof(TeamFilter))]
     public sealed class TauntZone : MonoBehaviour
     {
+        static SphereSearch _sphereSearch;
+
         public CharacterBody Attacker;
 
         public GameObject Target;
@@ -30,8 +32,6 @@ namespace ItemQualities
         float _tauntTimer;
         float _hitEntitiesListClearTimer;
 
-        SphereSearch _sphereSearch;
-
         List<HealthComponent> _hitEntities;
 
         void Awake()
@@ -40,7 +40,7 @@ namespace ItemQualities
             {
                 _hitEntities = ListPool<HealthComponent>.RentCollection();
 
-                _sphereSearch = new SphereSearch
+                _sphereSearch ??= new SphereSearch
                 {
                     mask = LayerIndex.entityPrecise.mask,
                     queryTriggerInteraction = QueryTriggerInteraction.Ignore
@@ -119,6 +119,9 @@ namespace ItemQualities
                     continue;
 
                 if (body.TryGetComponent(out SetStateOnHurt setStateOnHurt) && !setStateOnHurt.canBeTaunted)
+                    continue;
+
+                if (Attacker && body.GetVisibilityLevel(Attacker) < VisibilityLevel.Revealed)
                     continue;
 
                 if (_hitEntities.Contains(healthComponent))
