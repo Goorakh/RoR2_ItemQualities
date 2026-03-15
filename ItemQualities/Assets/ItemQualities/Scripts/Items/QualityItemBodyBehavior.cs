@@ -24,7 +24,11 @@ namespace ItemQualities.Items
         public CharacterBody Body { get; private set; }
 
         ItemQualityCounts _stacks;
-        public ItemQualityCounts Stacks => _stacks;
+        public ref readonly ItemQualityCounts Stacks
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _stacks;
+        }
 
         protected virtual void Awake()
         {

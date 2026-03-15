@@ -26,7 +26,11 @@ namespace ItemQualities.Buffs
         public CharacterBody Body { get; private set; }
 
         BuffQualityCounts _stacks;
-        public ref readonly BuffQualityCounts Stacks => ref _stacks;
+        public ref readonly BuffQualityCounts Stacks
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _stacks;
+        }
 
         protected virtual void Awake()
         {

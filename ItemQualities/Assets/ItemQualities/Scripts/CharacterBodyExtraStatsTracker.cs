@@ -308,12 +308,10 @@ namespace ItemQualities
         {
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
-            ItemQualityCounts jumpBoost = default;
             if (_body && _body.inventory)
             {
                 executeLowHealthElite = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite);
                 phasing = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
-                jumpBoost = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
             }
 
             ExecuteBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
@@ -345,11 +343,12 @@ namespace ItemQualities
                     // Legendary: 40%
                     float evadeChance = ((int)qualityTier + 1) * 10;
 
-                    if (bugBlock[qualityTier] > 0 && RollUtil.CheckRoll(evadeChance, null, false))
+                    ref int buffCount = ref bugBlock[qualityTier];
+                    if (buffCount > 0 && RollUtil.CheckRoll(evadeChance, _body.master, false))
                     {
                         evade = true;
 
-                        bugBlock[qualityTier]--;
+                        buffCount--;
                         Body.RemoveBuff(ItemQualitiesContent.BuffQualityGroups.BugBlock.GetBuffIndex(qualityTier));
                         break;
                     }
