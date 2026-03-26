@@ -161,7 +161,7 @@ namespace ItemQualities
                     DirectorCard qualityEquipmentBarrelCard = new DirectorCard
                     {
                         spawnCard = ItemQualitiesContent.SpawnCards.QualityEquipmentBarrel,
-                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(equipmentBarrelCard.selectionWeight * 0.35f)),
+                        selectionWeight = Mathf.Max(1, Mathf.RoundToInt(equipmentBarrelCard.selectionWeight * 0.6f)),
                         minimumStageCompletions = equipmentBarrelCard.minimumStageCompletions
                     };
 

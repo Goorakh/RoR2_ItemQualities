@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7e8bb8f80b49aa4397fa17b1653f297, type: 3}
+  m_Name: RampRare
+  m_EditorClassIdentifier: 
+  TextureWidth: 128
+  SegmentHeight: 4
+  Segments:
+  - Name: Rare
+    Gradient:
+      serializedVersion: 2
+      key0: {r: 0.083455704, g: 0, b: 0.3764706, a: 1}
+      key1: {r: 0.3492455, g: 0.09967959, b: 0.6037736, a: 1}
+      key2: {r: 0.2817918, g: 0.21568628, b: 0.6784314, a: 1}
+      key3: {r: 0.31772876, g: 0.5660378, b: 0.47292444, a: 0}
+      key4: {r: 0.31283376, g: 0.6981132, b: 0.5549783, a: 0}
+      key5: {r: 0.3003738, g: 0.7320044, b: 0.8490566, a: 0}
+      key6: {r: 0.40392157, g: 0.98039216, b: 0.8600175, a: 0}
+      key7: {r: 0, g: 0, b: 0, a: 0}
+      ctime0: 0
+      ctime1: 8867
+      ctime2: 20432
+      ctime3: 34695
+      ctime4: 47031
+      ctime5: 57054
+      ctime6: 65535
+      ctime7: 0
+      atime0: 0
+      atime1: 65535
+      atime2: 65535
+      atime3: 0
+      atime4: 0
+      atime5: 0
+      atime6: 0
+      atime7: 0
+      m_Mode: 0
+      m_NumColorKeys: 7
+      m_NumAlphaKeys: 2

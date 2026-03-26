@@ -7,15 +7,11 @@ namespace ItemQualities.Orbs
 {
     public sealed class VoidDeathOrb : Orb
     {
-        public static ModdedProcType VoidDeathOrbProcType { get; private set; } = ModdedProcType.Invalid;
-
         static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalog))]
         static void Init()
         {
-            VoidDeathOrbProcType = ProcTypeAPI.ReserveProcType();
-
             _orbEffectIndex = EffectCatalog.FindEffectIndexFromPrefab(ItemQualitiesContent.Prefabs.VoidDeathOrbEffect);
             if (_orbEffectIndex == EffectIndex.Invalid)
             {
@@ -24,6 +20,10 @@ namespace ItemQualities.Orbs
         }
 
         public GameObject Attacker;
+
+        public ProcChainMask ProcChainMask;
+
+        public bool Crit;
 
         public override void Begin()
         {
@@ -48,13 +48,16 @@ namespace ItemQualities.Orbs
                 HealthComponent victim = target.healthComponent;
                 if (victim)
                 {
-                    ProcChainMask procChainMask = new ProcChainMask();
-                    procChainMask.AddModdedProc(VoidDeathOrbProcType);
+                    ProcChainMask procChainMask = ProcChainMask;
+                    procChainMask.AddModdedProc(ProcTypes.VoidDeathOrbProcType);
 
                     DamageInfo damageInfo = new DamageInfo
                     {
                         damage = 0f,
                         attacker = Attacker,
+                        inflictor = Attacker,
+                        inflictedHurtbox = target,
+                        crit = Crit,
                         procChainMask = procChainMask,
                         procCoefficient = 0f,
                         position = target.transform.position,

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 namespace ItemQualities
@@ -24,11 +25,23 @@ namespace ItemQualities
         [FieldOffset(sizeof(int) * 4)]
         public int LegendaryCount;
 
-        public readonly int TotalCount => BaseItemCount + UncommonCount + RareCount + EpicCount + LegendaryCount;
+        public readonly int TotalCount
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => BaseItemCount + UncommonCount + RareCount + EpicCount + LegendaryCount;
+        }
 
-        public readonly int TotalQualityCount => UncommonCount + RareCount + EpicCount + LegendaryCount;
+        public readonly int TotalQualityCount
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => UncommonCount + RareCount + EpicCount + LegendaryCount;
+        }
 
-        public ref int this[QualityTier qualityTier] => ref _itemCounts[(int)qualityTier + 1];
+        public ref int this[QualityTier qualityTier]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _itemCounts[(int)qualityTier + 1];
+        }
 
         public readonly QualityTier HighestQuality
         {
@@ -131,11 +144,23 @@ namespace ItemQualities
         [FieldOffset(sizeof(int) * 4)]
         public float LegendaryCount;
 
-        public readonly float TotalCount => BaseItemCount + UncommonCount + RareCount + EpicCount + LegendaryCount;
+        public readonly float TotalCount
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => BaseItemCount + UncommonCount + RareCount + EpicCount + LegendaryCount;
+        }
 
-        public readonly float TotalQualityCount => UncommonCount + RareCount + EpicCount + LegendaryCount;
+        public readonly float TotalQualityCount
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => UncommonCount + RareCount + EpicCount + LegendaryCount;
+        }
 
-        public ref float this[QualityTier qualityTier] => ref _itemCounts[(int)qualityTier + 1];
+        public ref float this[QualityTier qualityTier]
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => ref _itemCounts[(int)qualityTier + 1];
+        }
 
         public readonly QualityTier HighestQuality
         {

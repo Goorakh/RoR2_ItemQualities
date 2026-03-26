@@ -3,14 +3,47 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ItemQualities.Equipments
 {
     static class CommandMissile
     {
-        [SystemInitializer]
+        static EquipmentIndex[] _missileEquipments = Array.Empty<EquipmentIndex>();
+
+        [SystemInitializer(typeof(EquipmentCatalog))]
         static void Init()
         {
+            HashSet<EquipmentIndex> missileEquipments = new HashSet<EquipmentIndex>(EquipmentCatalog.equipmentCount);
+            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+            {
+                void tryAddEquipment(EquipmentQualityGroup equipmentGroup)
+                {
+                    if (!equipmentGroup)
+                        return;
+
+                    EquipmentIndex equipmentIndex = equipmentGroup.GetEquipmentIndex(qualityTier);
+                    if (equipmentIndex != EquipmentIndex.None)
+                    {
+                        missileEquipments.Add(equipmentIndex);
+                    }
+                }
+
+                tryAddEquipment(ItemQualitiesContent.EquipmentQualityGroups.CommandMissile);
+
+                if (qualityTier != QualityTier.None)
+                {
+                    tryAddEquipment(ItemQualitiesContent.EquipmentQualityGroups.Jetpack);
+                }
+            }
+
+            if (missileEquipments.Count > 0)
+            {
+                _missileEquipments = missileEquipments.ToArray();
+                Array.Sort(_missileEquipments);
+            }
+
             IL.RoR2.EquipmentSlot.FireCommandMissile += EquipmentSlot_FireCommandMissile;
         }
 
@@ -52,8 +85,8 @@ namespace ItemQualities.Equipments
                             for (uint set = 0; set < equipmentSetCount; set++)
                             {
                                 EquipmentState equipmentState = inventory.GetEquipment(slot, set);
-                                EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentState.equipmentIndex);
-                                if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.CommandMissile.GroupIndex)
+                                if (equipmentState.equipmentIndex != EquipmentIndex.None &&
+                                    Array.BinarySearch(_missileEquipments, equipmentState.equipmentIndex) >= 0)
                                 {
                                     missileItemCount++;
                                 }

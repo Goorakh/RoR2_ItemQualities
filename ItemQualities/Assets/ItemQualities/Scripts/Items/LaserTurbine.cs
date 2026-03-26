@@ -4,6 +4,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -13,6 +14,24 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.LaserTurbineController.OnOwnerKilledOtherServer += LaserTurbineController_OnOwnerKilledOtherServer;
+            On.EntityStates.LaserTurbine.AimState.Update += AimState_Update;
+        }
+
+        private static void AimState_Update(On.EntityStates.LaserTurbine.AimState.orig_Update orig, AimState self)
+        {
+            if (self.ownerBody && self.ownerBody.inventory)
+            {
+                ItemQualityCounts laserTurbine = self.ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.LaserTurbine);
+
+                if (laserTurbine.TotalQualityCount > 0 && self.ownerBody.TryGetComponentCached(out CharacterBodyExtraStatsTracker ownerBodyExtraStats) &&
+                    ownerBodyExtraStats.lastDamaged)
+                {
+                    self.simpleRotateToDirection.targetRotation = Quaternion.LookRotation(ownerBodyExtraStats.lastDamaged.transform.position - self.transform.position);
+                    self.foundTarget = true;
+                }
+            }
+
+            orig(self);
         }
 
         public static float GetExplosionRadius(float baseExplosionRadius, CharacterBody attackerBody)

@@ -96,6 +96,9 @@ namespace ItemQualities
 
         public static void RefreshObjectCollisions(ObjectCollisionManager collisionManager)
         {
+            if (!collisionManager)
+                throw new ArgumentNullException(nameof(collisionManager));
+
             using var _ = SetPool<Collider>.RentCollection(out HashSet<Collider> ignoredColliders);
 
             foreach (IgnoredCollisionsProvider ignoredCollisionsProvider in InstanceTracker.GetInstancesList<IgnoredCollisionsProvider>())

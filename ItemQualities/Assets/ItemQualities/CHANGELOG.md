@@ -1,5 +1,73 @@
 ## \{Next Version\}
 
+* Resonance Disc:
+    * Now always targets the last hit enemy when charged.
+
+* Missile
+    * Increased big missile explosion radius: 3 -> 10
+    * Increased chance for missile proc:
+        * Uncommon: 15%
+        * Rare: 20%
+        * Epic: 25%
+        * Legendary: 30%
+
+* Razorwire:
+    * Damage returned:
+        * Uncommon: 10% (+10% per stack) -> 100% (+100% per stack)
+        * Rare: 15% (+15% per stack) -> 200% (+200% per stack)
+        * Epic: 20% (+20% per stack) -> 300% (+300% per stack)
+        * Legendary: 25% (+25% per stack) -> 500% (+500% per stack)
+
+* Wax Quail:
+    * Removed air control increase.
+    * Removed maximum angle to continue jump combo.
+    * Increased window to continue jump combo slightly: 0.1s -> 0.15s
+
+* Warbanner:
+    * Now increases attack speed with time spent in the banner radius
+        * Uncommon: +2% attack speed per second, up to 30 (+30 per stack) seconds
+        * Rare: +3% attack speed per second, up to 40 (+40 per stack) seconds
+        * Epic: +4% attack speed per second, up to 50 (+50 per stack) seconds
+        * Legendary: +5% attack speed damage per second, up to 60 (+60 per stack) seconds
+    * Temporary banner duration:
+        * Uncommon: 3 (+3 per stack) seconds -> 10 (+10 per stack) seconds
+        * Rare: 8 (+8 per stack) seconds -> 20 (+20 per stack) seconds
+        * Epic: 15 (+15 per stack) seconds -> 30 (+30 per stack) seconds
+        * Legendary: 30 (+30 per stack) seconds -> 40 (+40 per stack) seconds
+
+* Armor Piercing Rounds:
+    * Damage increase applies to bosses
+    * Maximum distance for marked enemies: 250
+    * Added new UI
+    * Enemy mark frequency: 40 seconds
+    * Damage increase per enemy killed:
+        * Uncommon: 1% -> 1% (+1% per stack)
+        * Rare: 1% -> 1.25% (+1.25% per stack)
+        * Epic: 1% -> 1.5% (+1.5% per stack)
+        * Legendary: 1% -> 2% (+2% per stack)
+    * Enemy mark duration:
+        * Uncommon: 10 seconds -> 15 seconds (+5 seconds per stack)
+        * Rare: 10 seconds -> 20 seconds (+10 seconds per stack)
+        * Epic: 10 seconds -> 25 seconds (+15 seconds per stack)
+        * Legendary: 10 seconds -> 30 seconds (+20 seconds per stack)
+    * Maximum ticks:
+        * Uncommon: 15 (+15 per stack) -> 15
+        * Rare: 30 (+30 per stack) -> 30
+        * Epic: 45 (+45 per stack) -> 45
+        * Legendary: 60 (+60 per stack) -> 60
+
+* Ben's Raincoat:
+    * Debuff spread radius:
+        * Uncommon: 30m (+5m per stack) -> 15m (+15m per stack)
+        * Rare: 35m (+10m per stack) -> 25m (+25m per stack)
+        * Epic: 55m (+30m per stack) -> 35m (+35m per stack)
+        * Legendary: 75m (+50m per stack) -> 50m (+50m per stack)
+    * Spread debuff stacks: 1x ->
+        * Uncommon: 2x
+        * Rare: 3x
+        * Epic: 4x
+        * Legendary: 5x
+
 * Faraday Spur:
     * Removed charge speed increase.
     * Charge used per jump: 100% ->
@@ -7,6 +75,19 @@
         * Rare: 50%
         * Epic: 25%
         * Legendary: 10%
+
+* Squid Polyp rework:
+    * Squids have a chance to upgrade on kill, increasing maximum health and damage.
+        * Uncommon: 20%
+        * Rare: 30%
+        * Epic: 40%
+        * Legendary: 50%
+    * Squid base damage:
+        * Uncommon: 110% (+10% per stack) -> 130% (+30% per stack)
+        * Rare: 130% (+30% per stack) -> 140% (+40% per stack)
+        * Epic: 160% (+60% per stack) -> 150% (+50% per stack)
+        * Legendary: 200% (+100% per stack)
+    * Removed base max health and duration increase.
 
 * Roll of Pennies:
     * Fixed bonus gold not spawning when opening a Collector's Barrel.

@@ -1,8 +1,10 @@
 ﻿using HG;
 using ItemQualities.Items;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -19,6 +21,15 @@ namespace ItemQualities
             }
 
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
+        }
+
+        private static void onServerDamageDealt(DamageReport damageReport)
+        {
+            if (damageReport.attacker && damageReport.attacker.TryGetComponentCached(out CharacterBodyExtraStatsTracker attackerBodyExtraStats))
+            {
+                attackerBodyExtraStats.onDamagedOther(damageReport);
+            }
         }
 
         static void onCharacterDeathGlobal(DamageReport damageReport)
@@ -60,9 +71,26 @@ namespace ItemQualities
 
         public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
 
-        public float AirControlBonus { get; private set; } = 1f;
+        public CharacterBody lastDamaged;
 
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
+
+        [SyncVar]
+        public int ParryStoredProjectileIndex = -1;
+
+        public float ParryStoredProjectileDamage;
+
+        public bool ParryStoredProjectileCrit;
+
+        [SyncVar]
+        int _parryStoredProjectileAttackerBodyIndexInt;
+        public BodyIndex ParryStoredProjectileAttackerBodyIndex
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => (BodyIndex)(_parryStoredProjectileAttackerBodyIndexInt - 1);
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            set => _parryStoredProjectileAttackerBodyIndexInt = (int)value + 1;
+        }
 
         [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
         bool _isPerformingQuailJump;
@@ -199,7 +227,7 @@ namespace ItemQualities
 
             if (HasEffectiveAuthority)
             {
-                if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.1f)
+                if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.15f)
                 {
                     QuailJumpComboAuthority = 0;
                 }
@@ -280,12 +308,10 @@ namespace ItemQualities
         {
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
-            ItemQualityCounts jumpBoost = default;
             if (_body && _body.inventory)
             {
                 executeLowHealthElite = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite);
                 phasing = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
-                jumpBoost = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
             }
 
             ExecuteBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
@@ -301,33 +327,46 @@ namespace ItemQualities
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
 
             StealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
-
-            float airControlBonus = 0f;
-
-            if (IsPerformingQuailJump)
-            {
-                switch (jumpBoost.HighestQuality)
-                {
-                    case QualityTier.Uncommon:
-                        airControlBonus += 0.10f;
-                        break;
-                    case QualityTier.Rare:
-                        airControlBonus += 0.20f;
-                        break;
-                    case QualityTier.Epic:
-                        airControlBonus += 0.30f;
-                        break;
-                    case QualityTier.Legendary:
-                        airControlBonus += 0.50f;
-                        break;
-                }
-            }
-
-            AirControlBonus = airControlBonus;
         }
 
         void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
         {
+            BuffQualityCounts bugBlock = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BugBlock);
+            if (bugBlock.TotalQualityCount > 0 && damageInfo.damage > 0 && !damageInfo.rejected)
+            {
+                bool evade = false;
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                {
+                    // Uncommon: 10%
+                    // Rare: 20%
+                    // Epic: 30%
+                    // Legendary: 40%
+                    float evadeChance = ((int)qualityTier + 1) * 10;
+
+                    ref int buffCount = ref bugBlock[qualityTier];
+                    if (buffCount > 0 && RollUtil.CheckRoll(evadeChance, _body.master, false))
+                    {
+                        evade = true;
+
+                        buffCount--;
+                        Body.RemoveBuff(ItemQualitiesContent.BuffQualityGroups.BugBlock.GetBuffIndex(qualityTier));
+                        break;
+                    }
+                }
+
+                if (evade)
+                {
+                    EffectData effectData = new EffectData
+                    {
+                        origin = damageInfo.position
+                    };
+
+                    EffectManager.SpawnEffect(ItemQualitiesContent.Prefabs.BugBlockProcEffect, effectData, true);
+
+                    damageInfo.rejected = true;
+                }
+            }
+
             OnIncomingDamageServer?.Invoke(damageInfo);
         }
 
@@ -344,6 +383,11 @@ namespace ItemQualities
             }
 
             OnKilledOther?.Invoke(damageReport);
+        }
+
+        void onDamagedOther(DamageReport damageReport)
+        {
+            lastDamaged = damageReport.victimBody;
         }
 
         void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)
@@ -396,41 +440,7 @@ namespace ItemQualities
                 return;
             }
 
-            Vector3 jumpVelocity = _body.characterMotor ? _body.characterMotor.velocity : Vector3.zero;
-
-            if (QuailJumpComboAuthority > 0)
-            {
-                Vector3 horizontalJumpVelocity = jumpVelocity;
-                horizontalJumpVelocity.y = 0f;
-
-                Vector3 lastJumpHorizontalVelocity = LastQuailJumpVelocityAuthority;
-                lastJumpHorizontalVelocity.y = 0f;
-
-                bool resetJumpCombo = false;
-                if (horizontalJumpVelocity.sqrMagnitude > 0)
-                {
-                    if (lastJumpHorizontalVelocity.sqrMagnitude > 0)
-                    {
-                        float jumpAngleDiff = Vector3.Angle(horizontalJumpVelocity.normalized, lastJumpHorizontalVelocity.normalized);
-                        if (jumpAngleDiff >= 60f)
-                        {
-                            resetJumpCombo = true;
-                        }
-                    }
-                }
-                else if (lastJumpHorizontalVelocity.sqrMagnitude > 0)
-                {
-                    resetJumpCombo = true;
-                }
-
-                if (resetJumpCombo)
-                {
-                    QuailJumpComboAuthority = 0;
-                }
-            }
-
             IsPerformingQuailJump = true;
-            LastQuailJumpVelocityAuthority = jumpVelocity;
             QuailJumpComboAuthority++;
         }
 

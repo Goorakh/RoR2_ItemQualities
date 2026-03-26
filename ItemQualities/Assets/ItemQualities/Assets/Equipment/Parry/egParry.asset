@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egParry
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: a2a2d15558093a44682cda4a5a493b3a
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 21ba70eaa8fd93340a4cb3e64564402b, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: 42388cc8e26e66e43b6630baa9e4fb05, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 1e14fcdb18c4ea343b68b3e3113fe6b8, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 544789c2dd731b147a828b1f1280e9ae, type: 2}

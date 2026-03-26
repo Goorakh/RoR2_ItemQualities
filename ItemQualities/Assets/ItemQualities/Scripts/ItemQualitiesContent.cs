@@ -430,6 +430,8 @@ namespace ItemQualities
         {
             internal static IReadOnlyCollection<ItemQualityGroup> AllGroups = Array.Empty<ItemQualityGroup>();
 
+            public static ItemQualityGroup QualityTier;
+
             public static ItemQualityGroup Hoof;
 
             public static ItemQualityGroup CritGlasses;
@@ -704,6 +706,10 @@ namespace ItemQualities
         public static class Items
         {
             public static ItemDef DronesDropDynamiteQualityDroneItem;
+
+            public static ItemDef SquidUpgradeChanceOnKill;
+
+            public static ItemDef SquidUpgradeHidden;
         }
 
         public static class EquipmentQualityGroups
@@ -749,6 +755,14 @@ namespace ItemQualities
             public static EquipmentQualityGroup DroneBackup;
 
             public static EquipmentQualityGroup GoldGat;
+
+            public static EquipmentQualityGroup Jetpack;
+
+            public static EquipmentQualityGroup Parry;
+            
+            public static EquipmentQualityGroup HealAndRevive;
+
+            public static EquipmentQualityGroup HealAndReviveConsumed;
         }
 
         public static class BuffQualityGroups
@@ -794,6 +808,10 @@ namespace ItemQualities
             public static BuffQualityGroup FullCrit;
 
             public static BuffQualityGroup LifeSteal;
+
+            public static BuffQualityGroup BugBlock;
+            
+            public static BuffQualityGroup Warbanner;
         }
 
         public static class Buffs
@@ -814,8 +832,6 @@ namespace ItemQualities
 
             public static BuffDef SlugHealth;
 
-            public static BuffDef HitlistDamage;
-
             public static BuffDef MiniBossCooldown;
         }
 
@@ -830,6 +846,14 @@ namespace ItemQualities
             public static GameObject DuplicatedInteractableEffect;
 
             public static GameObject MultiShopCardTooltipContext;
+
+            public static GameObject BugBlockProcEffect;
+
+            public static GameObject BugOrbEffect;
+            
+            public static GameObject HitlistMarkersUI;
+
+            public static GameObject ParryProjectileDisplayUI;
         }
 
         public static class NetworkedPrefabs
@@ -863,6 +887,12 @@ namespace ItemQualities
             public static GameObject CleanseQualityAttachment;
 
             public static GameObject QualityCritOnUseAttachment;
+
+            public static GameObject BugPickup;
+
+            public static GameObject BugSwarmController;
+
+            public static GameObject HealAndReviveSproutAttachment;
         }
 
         public static class ProjectilePrefabs

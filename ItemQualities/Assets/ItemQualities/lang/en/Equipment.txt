@@ -13,12 +13,12 @@
         "EQUIPMENT_BOSSHUNTER_LEGENDARY_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityLegendary\">. Consumed on use.",
         "EQUIPMENT_BOSSHUNTER_LEGENDARY_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityLegendary\"> legendary quality (or <sprite name=\"Quality\"> 4 extra copies of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
 
-        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "<sprite name=\"Quality\"> I like your hat.",
-        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "<sprite name=\"Quality\"> I like your hat.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "Looks <sprite name=\"Quality\"> good on you.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "Looks <sprite name=\"Quality\"> good on you.",
         "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_CHAT": "Ahoy!!",
         
-        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "Oh wow, you look <sprite name=\"Quality\"> great.",
-        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "Oh wow, you look <sprite name=\"Quality\"> great.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "Looks <sprite name=\"Quality\"> great on you.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "Looks <sprite name=\"Quality\"> great on you.",
         "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_CHAT": "Ahoy!!!",
 
         "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP": "Wow, you look <sprite name=\"Quality\"> amazing.",
@@ -284,5 +284,60 @@
 
         "EQUIPMENT_FIREBALLDASH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage and range of detonation for every enemy hit.",
         "EQUIPMENT_FIREBALLDASH_LEGENDARY_DESC": "Turn into a <style=cIsDamage>draconic fireball</style> for <style=cIsDamage>5</style> seconds. Deal <style=cIsDamage>500% damage</style> on impact. Detonates at the end for <style=cIsDamage>800% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>200% damage</style> and <sprite name=\"Quality\"> <style=cIsUtility>2.5m range</style> for every enemy hit.",
+
+        "EQUIPMENT_JETPACK_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Collectible bugs appear while flying that increase flight duration and grants evade chance or deals damage to the next enemy hit.",
+        "EQUIPMENT_JETPACK_UNCOMMON_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>4</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>80%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>10%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
+
+        "EQUIPMENT_JETPACK_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Collectible bugs appear while flying that increase flight duration and grants evade chance or deals damage to the next enemy hit.",
+        "EQUIPMENT_JETPACK_RARE_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>4</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>120%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
+
+        "EQUIPMENT_JETPACK_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Collectible bugs appear while flying that increase flight duration and grants evade chance or deals damage to the next enemy hit.",
+        "EQUIPMENT_JETPACK_EPIC_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>3</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>160%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>30%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
+
+        "EQUIPMENT_JETPACK_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Collectible bugs appear while flying that increase flight duration and grants evade chance or deals damage to the next enemy hit.",
+        "EQUIPMENT_JETPACK_LEGENDARY_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>3</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>200%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>40%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
+
+        "QUALITY_BUG_BLOCK_DAMAGE_HITMARKER": "MISS!",
+
+        "EQUIPMENT_PARRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_UNCOMMON_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>50%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_RARE_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>150%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_EPIC_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>300%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_LEGENDARY_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>900%</style> increased damage.",
+        
+        "EQUIPMENT_HEALANDREVIVE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to uncommon <sprite name=\"QualityUncommon\"> quality upon reviving.",
+        "EQUIPMENT_HEALANDREVIVE_UNCOMMON_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into uncommon <sprite name=\"QualityUncommon\"> quality.",
+        
+        "EQUIPMENT_HEALANDREVIVE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to rare <sprite name=\"QualityRare\"> quality upon reviving.",
+        "EQUIPMENT_HEALANDREVIVE_RARE_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into rare <sprite name=\"QualityRare\"> quality.",
+        
+        "EQUIPMENT_HEALANDREVIVE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to epic <sprite name=\"QualityEpic\"> quality upon reviving.",
+        "EQUIPMENT_HEALANDREVIVE_EPIC_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into epic <sprite name=\"QualityEpic\"> quality.",
+        
+        "EQUIPMENT_HEALANDREVIVE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to legendary <sprite name=\"QualityLegendary\"> quality upon reviving.",
+        "EQUIPMENT_HEALANDREVIVE_LEGENDARY_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into legendary <sprite name=\"QualityLegendary\"> quality.",
+
+        "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_UNCOMMON": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityUncommon\">",
+        "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_RARE": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityRare\">",
+        "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_EPIC": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityEpic\">",
+        "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_LEGENDARY": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityLegendary\">",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>1</style> second.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>2</style> seconds.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>5</style> seconds.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds.",
     }
 }
