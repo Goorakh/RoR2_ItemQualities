@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 3689699790806582633}
   - component: {fileID: 40796934197273486}
   - component: {fileID: 4094406178074641985}
+  - component: {fileID: 7939447860556749002}
   - component: {fileID: 797440837248691239}
   - component: {fileID: 3492361348164455697}
   - component: {fileID: 7395477660523086501}
@@ -266,6 +267,20 @@ MonoBehaviour:
   normalMaxAngleDelta: 90
   shouldOverrideLogbookModel: 0
   logbookOverrideBodyName: 
+--- !u!114 &7939447860556749002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3151459160720197737}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab51059b3a744b34bb4cbc40d5b7fd71, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Colliders:
+  - {fileID: 2245351431046024922}
 --- !u!114 &797440837248691239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,8 +293,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fc61e8404027044bad7b22c9d65ac27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealTarget: {fileID: 0}
+  _healTarget: {fileID: 0}
   DamageToHealingConversionRate: 0.2
+  IgnoredCollisionsProvider: {fileID: 7939447860556749002}
 --- !u!114 &3492361348164455697
 MonoBehaviour:
   m_ObjectHideFlags: 0
