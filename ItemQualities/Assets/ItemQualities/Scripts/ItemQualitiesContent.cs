@@ -825,6 +825,8 @@ namespace ItemQualities
 
             public static BuffDef SprintArmorStrong;
 
+            public static BuffDef SprintArmorDashCooldown;
+
             public static BuffDef HealCritBoost;
 
             public static BuffDef MiniBossMarker;

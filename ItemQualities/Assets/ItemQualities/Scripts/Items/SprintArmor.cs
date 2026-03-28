@@ -47,10 +47,10 @@ namespace ItemQualities.Items
 
             if (sender.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong) && sprintArmor.TotalQualityCount > 0)
             {
-                args.armorAdd += (30 * sprintArmor.UncommonCount) +
-                                 (50 * sprintArmor.RareCount) +
-                                 (75 * sprintArmor.EpicCount) +
-                                 (100 * sprintArmor.LegendaryCount);
+                args.armorAdd += (20 * sprintArmor.UncommonCount) +
+                                 (40 * sprintArmor.RareCount) +
+                                 (60 * sprintArmor.EpicCount) +
+                                 (80 * sprintArmor.LegendaryCount);
             }
         }
     }

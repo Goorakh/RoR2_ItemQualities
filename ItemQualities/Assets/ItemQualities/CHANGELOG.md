@@ -1,5 +1,13 @@
 ## \{Next Version\}
 
+* Rose Buckler:
+    * Double tap forward to do a short dash
+    * Gain armor when dashing into an enemy:
+        * Uncommon: 20 (+20 per stack) for 2 (+2 per stack seconds)
+        * Rare: 40 (+40 per stack) for 4 (+4 per stack seconds)
+        * Epic: 60 (+60 per stack) for 6 (+6 per stack seconds)
+        * Legendary: 80 (+80 per stack) for 8 (+8 per stack seconds)
+
 * Resonance Disc:
     * Now always targets the last hit enemy when charged.
 
