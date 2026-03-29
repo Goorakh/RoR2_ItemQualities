@@ -900,6 +900,8 @@ namespace ItemQualities
             public static GameObject BugSwarmController;
 
             public static GameObject HealAndReviveSproutAttachment;
+
+            public static GameObject SprintArmorDashAttachment;
         }
 
         public static class ProjectilePrefabs
