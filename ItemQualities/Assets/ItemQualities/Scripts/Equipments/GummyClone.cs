@@ -114,10 +114,12 @@ namespace ItemQualities.Equipments
                 {
                     Func<ItemIndex, bool> itemCopyFilter = _qualityItemCopyFilters[(int)gummyCloneQualityTier];
 
-                    ReadOnlyArray<ItemIndex> allBaseQUulityIems = QualityCatalog.GetAllItemsOfQuality(QualityTier.None);
-                    for (int i = 0; i < allBaseQUulityIems.Length; i++)
+                    bool shouldCopyItemCount = gummyCloneQualityTier == QualityTier.Legendary;
+
+                    ReadOnlyArray<ItemIndex> allBaseQualityIems = QualityCatalog.GetAllItemsOfQuality(QualityTier.None);
+                    for (int i = 0; i < allBaseQualityIems.Length; i++)
                     {
-                        ItemIndex itemIndex = allBaseQUulityIems[i];
+                        ItemIndex itemIndex = allBaseQualityIems[i];
 
                         int qualityItemCountAccumulator = 0;
                         float qualityTempItemRawValueAccumulator = 0f;
@@ -141,11 +143,11 @@ namespace ItemQualities.Equipments
                                     {
                                         qualityItemCountAccumulator = 0;
 
-                                        spawnCard.GiveItem(qualityItemIndex);
+                                        spawnCard.GiveItem(qualityItemIndex, shouldCopyItemCount ? qualityItemCountPermanent : 1);
                                     }
                                     else
                                     {
-                                        qualityItemCountAccumulator = qualityItemCountPermanent;
+                                        qualityItemCountAccumulator += qualityItemCountPermanent;
                                     }
                                 }
 
@@ -155,11 +157,11 @@ namespace ItemQualities.Equipments
                                     {
                                         qualityTempItemRawValueAccumulator = 0f;
 
-                                        spawnCard.srcTempItemRawValues[(int)qualityItemIndex] += Mathf.Min(qualityTempItemRawValue, 1f);
+                                        spawnCard.srcTempItemRawValues[(int)qualityItemIndex] += shouldCopyItemCount ? qualityTempItemRawValue : Mathf.Min(qualityTempItemRawValue, 1f);
                                     }
                                     else
                                     {
-                                        qualityTempItemRawValueAccumulator = qualityTempItemRawValue;
+                                        qualityTempItemRawValueAccumulator += qualityTempItemRawValue;
                                     }
                                 }
                             }
@@ -172,7 +174,7 @@ namespace ItemQualities.Equipments
 
                             if (itemCount > 0)
                             {
-                                spawnCard.GiveItem(itemIndex);
+                                spawnCard.GiveItem(itemIndex, shouldCopyItemCount ? itemCount : 1);
                             }
 
                             float tempItemRawValue = ownerBody.inventory.GetTempItemRawValue(itemIndex) + qualityTempItemRawValueAccumulator;
@@ -180,7 +182,7 @@ namespace ItemQualities.Equipments
 
                             if (tempItemRawValue > 0)
                             {
-                                spawnCard.srcTempItemRawValues[(int)itemIndex] += Mathf.Min(tempItemRawValue, 1f);
+                                spawnCard.srcTempItemRawValues[(int)itemIndex] += shouldCopyItemCount ? tempItemRawValue : Mathf.Min(tempItemRawValue, 1f);
                             }
                         }
                     }
@@ -224,9 +226,6 @@ namespace ItemQualities.Equipments
             if (itemDef.ContainsTag(ItemTag.CannotCopy))
                 return false;
 
-            if (itemDef.DoesNotContainTag(ItemTag.Utility))
-                return false;
-
             switch (itemDef.tier)
             {
                 case ItemTier.Tier1:
@@ -246,9 +245,6 @@ namespace ItemQualities.Equipments
                 return false;
 
             if (itemDef.ContainsTag(ItemTag.CannotCopy))
-                return false;
-
-            if (itemDef.DoesNotContainTag(ItemTag.Utility) && itemDef.DoesNotContainTag(ItemTag.Healing))
                 return false;
 
             switch (itemDef.tier)
@@ -271,9 +267,6 @@ namespace ItemQualities.Equipments
                 return false;
 
             if (itemDef.ContainsTag(ItemTag.CannotCopy))
-                return false;
-
-            if (itemDef.DoesNotContainTag(ItemTag.Utility) && itemDef.DoesNotContainTag(ItemTag.Healing) && itemDef.DoesNotContainTag(ItemTag.Damage))
                 return false;
 
             switch (itemDef.tier)
