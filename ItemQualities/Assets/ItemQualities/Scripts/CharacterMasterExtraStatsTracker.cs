@@ -40,7 +40,7 @@ namespace ItemQualities
         public int BossDamageBonusTicks;
 
         [SyncVar]
-        public int CardStoredInteractableIndex = -1;
+        public StoredInteractableInfo CardStoredInteractableInfo = StoredInteractableInfo.None;
 
         readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
 

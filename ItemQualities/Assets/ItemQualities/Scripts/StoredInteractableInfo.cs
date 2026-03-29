@@ -1,0 +1,44 @@
+﻿using System;
+
+namespace ItemQualities
+{
+    public struct StoredInteractableInfo : IEquatable<StoredInteractableInfo>
+    {
+        public static readonly StoredInteractableInfo None = new StoredInteractableInfo { InteractableIndex = -1 };
+
+        public int InteractableIndex;
+
+        public int UpgradeValue;
+
+        public override readonly bool Equals(object obj)
+        {
+            return obj is StoredInteractableInfo info && this.Equals(info);
+        }
+
+        readonly bool IEquatable<StoredInteractableInfo>.Equals(StoredInteractableInfo other)
+        {
+            return Equals(other);
+        }
+
+        public readonly bool Equals(in StoredInteractableInfo other)
+        {
+            return InteractableIndex == other.InteractableIndex &&
+                   UpgradeValue == other.UpgradeValue;
+        }
+
+        public override readonly int GetHashCode()
+        {
+            return HashCode.Combine(InteractableIndex, UpgradeValue);
+        }
+
+        public static bool operator ==(in StoredInteractableInfo left, in StoredInteractableInfo right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(in StoredInteractableInfo left, in StoredInteractableInfo right)
+        {
+            return !left.Equals(right);
+        }
+    }
+}

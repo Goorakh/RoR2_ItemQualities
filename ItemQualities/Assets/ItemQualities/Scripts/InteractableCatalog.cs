@@ -82,28 +82,7 @@ namespace ItemQualities
                         if (prefab.GetComponent<PortalSpawner>() ||
                             prefab.GetComponent<SceneExitController>() ||
                             prefab.GetComponent<HoldoutZoneController>() ||
-                            prefab.GetComponent<GeodeController>() ||
-                            prefab.GetComponent<SpeedOnPickupBarrelInteraction>())
-                        {
-                            return false;
-                        }
-
-                        // Don't allow copying for anything that drops an item for free
-                        if (prefab.GetComponent<ChestBehavior>() ||
-                            prefab.GetComponent<OptionChestBehavior>() ||
-                            prefab.GetComponent<ShopTerminalBehavior>() ||
-                            prefab.GetComponent<PickupDistributorBehavior>())
-                        {
-                            if (!prefab.TryGetComponent(out PurchaseInteraction purchaseInteraction) ||
-                                purchaseInteraction.cost == 0 ||
-                                purchaseInteraction.costType == CostTypeIndex.None)
-                            {
-                                return false;
-                            }
-                        }
-
-                        if (prefab.TryGetComponent(out MultiShopController multiShopController) &&
-                            (multiShopController.baseCost == 0 || multiShopController.costType == CostTypeIndex.None))
+                            prefab.GetComponent<GeodeController>())
                         {
                             return false;
                         }
@@ -152,8 +131,7 @@ namespace ItemQualities
                 }
 
                 overrideCanCopy("GoldshoresBeacon", false);
-
-                overrideCanCopy("Chest1StealthedVariant", true);
+                overrideCanCopy("ShrineColossusAccess", false);
             }
         }
 
@@ -260,11 +238,11 @@ namespace ItemQualities
             }
 
             string interactableName = interactableObject.name;
-            if (interactableName.EndsWith("(Clone)"))
+            if (interactableName.EndsWith("(Clone)", StringComparison.OrdinalIgnoreCase))
                 interactableName = interactableName.Remove(interactableName.Length - 7);
 
             // Interactables that have been placed into a scene may have the 'number-in-parentheses' suffix. eg. "(1)", "(2)", etc
-            interactableName = Regex.Replace(interactableName, @"\([123456789]+\)$", string.Empty);
+            interactableName = Regex.Replace(interactableName, @"\(\d+\)$", string.Empty);
 
             interactableName = interactableName.Trim();
 
@@ -274,6 +252,28 @@ namespace ItemQualities
         public static int FindInteractableIndex(string interactableName)
         {
             return _interactableNameToIndex.GetValueOrDefault(interactableName, -1);
+        }
+
+        [ConCommand(commandName = "quality_list_clonable_interactables")]
+        static void CCListClonableInteractables(ConCommandArgs args)
+        {
+            Debug.Log("=== Clonable Interactables ===");
+            foreach (InteractableDef interactableDef in _interactableDefs)
+            {
+                if (interactableDef.CanCopy)
+                {
+                    Debug.Log(interactableDef.Name);
+                }
+            }
+
+            Debug.Log("=== Non-Clonable Interactables ===");
+            foreach (InteractableDef interactableDef in _interactableDefs)
+            {
+                if (!interactableDef.CanCopy)
+                {
+                    Debug.Log(interactableDef.Name);
+                }
+            }
         }
     }
 }
