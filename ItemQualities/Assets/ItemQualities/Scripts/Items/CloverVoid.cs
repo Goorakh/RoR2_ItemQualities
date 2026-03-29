@@ -186,11 +186,10 @@ namespace ItemQualities.Items
                 ItemQualityCounts upgradeItemQualities = new ItemQualityCounts();
                 upgradeItemQualities[startingQualityTier] = startingItemCount;
 
-                float qualityUpgradeChance = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
-                    (0.10f * cloverVoid.UncommonCount) +
-                    (0.25f * cloverVoid.RareCount) +
-                    (0.35f * cloverVoid.EpicCount) +
-                    (0.50f * cloverVoid.LegendaryCount));
+                float qualityUpgradeChance = (0.10f * cloverVoid.UncommonCount) +
+                                             (0.25f * cloverVoid.RareCount) +
+                                             (0.35f * cloverVoid.EpicCount) +
+                                             (0.50f * cloverVoid.LegendaryCount);
 
                 QualityTier maxUpgradableQualityTier = cloverVoid.HighestQuality - 1;
 
