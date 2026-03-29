@@ -1,5 +1,17 @@
 ## \{Next Version\}
 
+* Warped Echo:
+    * Chance to apply echo on hit:
+        * Uncommon: 1% (+1% per stack)
+        * Rare: 1.5% (+1.5% per stack)
+        * Epic: 2% (+2% per stack)
+        * Legendary: 2.5% (+2.5% per stack)
+    * Repeat on kill effect per echo stack:
+        * Uncommon: 1 time
+        * Rare: 2 times
+        * Epic: 3 times
+        * Legendary: 4 times
+
 * Resonance Disc:
     * Now always targets the last hit enemy when charged.
 
