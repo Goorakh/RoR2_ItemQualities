@@ -53,8 +53,10 @@ namespace ItemQualities.Equipments
                 foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
                 {
                     if (master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats) &&
-                        masterExtraStats.CardStoredInteractableIndex != -1)
+                        masterExtraStats.CardStoredInteractableInfo.InteractableIndex != -1)
                     {
+                        StoredInteractableInfo storedInteractableInfo = masterExtraStats.CardStoredInteractableInfo;
+
                         QualityTier cardQualityTier = QualityTier.None;
 
                         int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
@@ -78,7 +80,7 @@ namespace ItemQualities.Equipments
 
                         if (cardQualityTier > QualityTier.None)
                         {
-                            InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(masterExtraStats.CardStoredInteractableIndex);
+                            InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(storedInteractableInfo.InteractableIndex);
 
                             float spawnChance;
                             switch (cardQualityTier)
@@ -114,7 +116,7 @@ namespace ItemQualities.Equipments
 
                                 DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
 
-                                static void onSpawnedServer(SpawnCard.SpawnResult spawnResult)
+                                void onSpawnedServer(SpawnCard.SpawnResult spawnResult)
                                 {
                                     if (!spawnResult.success || !spawnResult.spawnedInstance)
                                         return;
@@ -125,6 +127,11 @@ namespace ItemQualities.Equipments
                                         {
                                             purchaseInteraction.Networkcost = Run.instance.GetDifficultyScaledCost(purchaseInteraction.cost);
                                         }
+                                    }
+
+                                    if (spawnResult.spawnedInstance.TryGetComponent(out SummonMasterBehavior summonMasterBehavior))
+                                    {
+                                        summonMasterBehavior.NetworkdroneUpgradeCount = storedInteractableInfo.UpgradeValue;
                                     }
 
                                     if (spawnResult.spawnedInstance.TryGetComponent(out InteractableInfoProvider interactableInfo))
@@ -146,7 +153,7 @@ namespace ItemQualities.Equipments
                             Log.Debug($"Spawned {spawnCount}x {interactableDef} for {Util.GetBestMasterName(master)}");
                         }
 
-                        masterExtraStats.CardStoredInteractableIndex = -1;
+                        masterExtraStats.CardStoredInteractableInfo = StoredInteractableInfo.None;
                     }
                 }
             }
@@ -239,17 +246,28 @@ namespace ItemQualities.Equipments
                         self.UpdateTargets(DLC1Content.Equipment.MultiShopCard.equipmentIndex, false);
 
                         GameObject targetObject = self.currentTarget.rootObject;
-                        InteractableInfoProvider targetInteractable = targetObject ? targetObject.GetComponent<InteractableInfoProvider>() : null;
-
-                        if (targetInteractable && targetInteractable.CatalogIndex != masterExtraStats.CardStoredInteractableIndex)
+                        if (targetObject && targetObject.TryGetComponent(out InteractableInfoProvider targetInteractable))
                         {
-                            masterExtraStats.CardStoredInteractableIndex = targetInteractable.CatalogIndex;
+                            StoredInteractableInfo targetInteractableInfo = new StoredInteractableInfo
+                            {
+                                InteractableIndex = targetInteractable.CatalogIndex
+                            };
 
-                            PointSoundManager.EmitSoundServer(ItemQualitiesContent.NetworkSoundEvents.DuplicateInteractable.index, targetInteractable.IndicatorTransform.position);
+                            if (targetObject.TryGetComponent(out SummonMasterBehavior summonMasterBehavior))
+                            {
+                                targetInteractableInfo.UpgradeValue = summonMasterBehavior.droneUpgradeCount;
+                            }
 
-                            Log.Debug($"Stored {InteractableCatalog.GetInteractableDef(targetInteractable.CatalogIndex)} in {Util.GetBestMasterName(self.characterBody.master)}");
+                            if (targetInteractableInfo != masterExtraStats.CardStoredInteractableInfo)
+                            {
+                                masterExtraStats.CardStoredInteractableInfo = targetInteractableInfo;
 
-                            result = true;
+                                PointSoundManager.EmitSoundServer(ItemQualitiesContent.NetworkSoundEvents.DuplicateInteractable.index, targetInteractable.IndicatorTransform.position);
+
+                                Log.Debug($"Stored {InteractableCatalog.GetInteractableDef(targetInteractable.CatalogIndex)} in {Util.GetBestMasterName(self.characterBody.master)}");
+
+                                result = true;
+                            }
                         }
                     }
                 }
@@ -298,7 +316,7 @@ namespace ItemQualities.Equipments
                     {
                         Inventory inventory = equipmentIcon.targetInventory;
                         CharacterMasterExtraStatsTracker masterExtraStats = inventory ? inventory.GetComponentCached<CharacterMasterExtraStatsTracker>() : null;
-                        if (masterExtraStats.CardStoredInteractableIndex != -1)
+                        if (masterExtraStats.CardStoredInteractableInfo.InteractableIndex != -1)
                         {
                             shouldDisplayCardTooltip = true;
                         }

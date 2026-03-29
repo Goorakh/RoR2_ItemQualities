@@ -41,7 +41,11 @@ namespace ItemQualities.UI
             EquipmentIcon equipmentIcon = _context.SourceTooltipProvider ? _context.SourceTooltipProvider.GetComponent<EquipmentIcon>() : null;
             Inventory inventory = equipmentIcon ? equipmentIcon.targetInventory : null;
             CharacterMasterExtraStatsTracker masterStats = inventory ? inventory.GetComponentCached<CharacterMasterExtraStatsTracker>() : null;
-            int storedInteractableIndex = masterStats ? masterStats.CardStoredInteractableIndex : -1;
+
+            StoredInteractableInfo storedInteractableInfo = masterStats ? masterStats.CardStoredInteractableInfo : StoredInteractableInfo.None;
+
+            int storedInteractableIndex = storedInteractableInfo.InteractableIndex;
+            int storedInteractableUpgradeValue = storedInteractableInfo.UpgradeValue;
 
             if (storedInteractableIndex != -1)
             {
@@ -116,6 +120,11 @@ namespace ItemQualities.UI
                 {
                     interactableNameToken = interactableDef.Name;
                     hasName = true;
+                }
+
+                if (storedInteractableUpgradeValue > 0)
+                {
+                    interactableNameToken = Util.GetNameFromUpgradeCount(interactableNameToken, storedInteractableUpgradeValue);
                 }
 
                 if (!hasIcon)
