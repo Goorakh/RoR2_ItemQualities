@@ -121,10 +121,8 @@ namespace ItemQualities.Equipments
         {
             ILCursor c = new ILCursor(il);
 
-            int patchCount = 0;
-
-            while (c.TryGotoNext(MoveType.After,
-                                 x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.FullCrit))))
+            if (c.TryGotoNext(MoveType.After,
+                              x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.FullCrit))))
             {
                 c.Emit(OpCodes.Ldarg_0);
                 c.EmitDelegate<Func<BuffDef, EquipmentSlot, BuffDef>>(getBuff);
@@ -146,17 +144,43 @@ namespace ItemQualities.Equipments
 
                     return buffDef;
                 }
-
-                patchCount++;
-            }
-
-            if (patchCount == 0)
-            {
-                Log.Error("Failed to find patch location");
             }
             else
             {
-                Log.Debug($"Found {patchCount} patch location(s)");
+                Log.Error("Failed to find buff patch location");
+            }
+
+            if (c.TryGotoNext(MoveType.Before,
+                              x => x.MatchCallOrCallvirt(typeof(CharacterBody), nameof(CharacterBody.AddTimedBuff))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, EquipmentSlot, float>>(getDuration);
+
+                static float getDuration(float duration, EquipmentSlot equipmentSlot)
+                {
+                    QualityTier qualityTier = equipmentSlot.GetCurrentEquipmentActionQualityTier();
+                    switch (qualityTier)
+                    {
+                        case QualityTier.Uncommon:
+                            duration += 2f;
+                            break;
+                        case QualityTier.Rare:
+                            duration += 4f;
+                            break;
+                        case QualityTier.Epic:
+                            duration += 6f;
+                            break;
+                        case QualityTier.Legendary:
+                            duration += 8f;
+                            break;
+                    }
+
+                    return duration;
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find duration patch location");
             }
         }
 
