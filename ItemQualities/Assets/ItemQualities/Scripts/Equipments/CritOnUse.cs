@@ -12,7 +12,7 @@ namespace ItemQualities.Equipments
 {
     static class CritOnUse
     {
-        public const float WeakPointRadius = 0.6f;
+        public const float WeakPointRadius = 1.2f;
         public const float WeakPointRadiusSqr = WeakPointRadius * WeakPointRadius;
 
         public static float GetCritMultiplierBonus(QualityTier qualityTier)
