@@ -91,6 +91,8 @@ namespace ItemQualities.Equipments
                             GameObject qualityMolotovDotZoneProjectile = singleImpactExplosion.childrenProjectilePrefab.InstantiateClone(singleImpactExplosion.childrenProjectilePrefab.name + qualityTier.ToString());
                             singleImpactExplosion.childrenProjectilePrefab = qualityMolotovDotZoneProjectile;
 
+                            float lifetime = 0f;
+
                             if (qualityMolotovDotZoneProjectile.TryGetComponent(out ProjectileDotZone dotZone))
                             {
                                 dotZone.damageCoefficient += qualityTier switch
@@ -101,6 +103,8 @@ namespace ItemQualities.Equipments
                                     QualityTier.Legendary => 3.0f,
                                     _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
                                 };
+
+                                lifetime = dotZone.lifetime;
                             }
                             else
                             {
@@ -111,6 +115,18 @@ namespace ItemQualities.Equipments
                             if (dotZoneFX)
                             {
                                 dotZoneFX.transform.localScale *= scaleMult;
+
+                                ObjectScaleCurve dotZoneScaleCurve = dotZoneFX.gameObject.AddComponent<ObjectScaleCurve>();
+                                dotZoneScaleCurve.timeMax = lifetime + 0.5f;
+                                dotZoneScaleCurve.useOverallCurveOnly = true;
+                                dotZoneScaleCurve.overallCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, qualityTier switch
+                                {
+                                    QualityTier.Uncommon => 1.3f,
+                                    QualityTier.Rare => 1.5f,
+                                    QualityTier.Epic => 2f,
+                                    QualityTier.Legendary => 2.5f,
+                                    _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
+                                });
                             }
                             else
                             {
