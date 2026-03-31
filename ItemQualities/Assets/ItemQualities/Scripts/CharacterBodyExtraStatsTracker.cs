@@ -49,7 +49,7 @@ namespace ItemQualities
         MemoizedGetComponentCached<CharacterMasterExtraStatsTracker> _memoizedMasterExtraStatsComponent;
 
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
-        TemporaryVisualEffect _sprintArmorStrongEffectInstance;
+        TemporaryVisualEffect _sprintArmorWeakenEffectInstance;
 
         TemporaryOverlayInstance _healCritBoostOverlay;
 
@@ -418,7 +418,7 @@ namespace ItemQualities
         public void UpdateAllTemporaryVisualEffects()
         {
             updateTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
-            updateTemporaryVisualEffect(ref _sprintArmorStrongEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.radius * 1.5f, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong));
+            updateTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius * 1.2f, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
 
             void updateTemporaryVisualEffect(ref TemporaryVisualEffect temporaryEffect, GameObject effectPrefab, float effectRadius, bool active)
             {

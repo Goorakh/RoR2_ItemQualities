@@ -11,44 +11,18 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.SprintArmor;
         }
 
-        float _activationWindow;
-        bool _heldForward;
+        GameObject _sprintArmorDashObj;
 
-        void FixedUpdate()
+        private void OnEnable()
         {
-            Vector3 moveVector = Body.inputBank.moveVector;
-            Vector3 aimVector = Body.inputBank.aimDirection;
-            aimVector.y = 0;
-            float angleDiff = Vector3.Angle(moveVector.normalized, aimVector);
-
-            if (!Body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown) &&
-            angleDiff < 70 && moveVector.magnitude > 0.2)
-            {
-                if (!_heldForward)
-                {
-                    _heldForward = true;
-                    if (_activationWindow > 0)
-                    {
-                        addDashAttachment();
-                    }
-                    else
-                    {
-                        _activationWindow = 0.2f;
-                    }
-                }
-            }
-            else
-            {
-                _heldForward = false;
-            }
-            _activationWindow -= Time.deltaTime;
+            _sprintArmorDashObj = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.SprintArmorDashAttachment);
+            NetworkedBodyAttachment sprintArmorDashAttachment = _sprintArmorDashObj.GetComponent<NetworkedBodyAttachment>();
+            sprintArmorDashAttachment.AttachToGameObjectAndSpawn(Body.gameObject);
         }
 
-        void addDashAttachment()
+        private void OnDisable()
         {
-            GameObject sprintArmorDashObj = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.SprintArmorDashAttachment);
-            NetworkedBodyAttachment sprintArmorDashAttachment = sprintArmorDashObj.GetComponent<NetworkedBodyAttachment>();
-            sprintArmorDashAttachment.AttachToGameObjectAndSpawn(Body.gameObject);
+            Object.Destroy(_sprintArmorDashObj);
         }
     }
 }

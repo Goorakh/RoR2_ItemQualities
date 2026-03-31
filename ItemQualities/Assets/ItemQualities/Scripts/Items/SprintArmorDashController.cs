@@ -4,7 +4,6 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -18,10 +17,12 @@ namespace ItemQualities.Items
         static readonly SphereSearch _dashSphereSearch = new SphereSearch();
         static readonly List<HurtBox> _dashHurtBoxBuffer = new List<HurtBox>();
         Vector3 _dashDirection;
-        State _state;
-        float _duration;
+        float _timer;
+        bool _heldForward;
+        State _state = State.idle;
 
         enum State {
+            idle,
             startDash,
             dashing,
             endDash
@@ -43,16 +44,17 @@ namespace ItemQualities.Items
         void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
-            _state = State.startDash;
         }
 
         private void FixedUpdate()
         {
             if (!_bodyAttachment || !_bodyAttachment.attachedBody)
                 return;
-            _duration += Time.deltaTime;
-            _bodyAttachment.attachedBody.isSprinting = true;
+            _timer += Time.deltaTime;
             switch (_state) {
+                case State.idle:
+                    idle();
+                    break;
                 case State.startDash:
                     startDash();
                     break;
@@ -65,73 +67,120 @@ namespace ItemQualities.Items
             }
         }
 
+        void switchState(State state)
+        {
+            _state = state;
+            _timer = 0;
+        }
+
+        void idle()
+        {
+            Vector3 moveVector = _bodyAttachment.attachedBody.inputBank.moveVector;
+            Vector3 aimVector = _bodyAttachment.attachedBody.inputBank.aimDirection;
+            aimVector.y = 0;
+            float angleDiff = Vector3.Angle(moveVector.normalized, aimVector);
+
+            if (!_bodyAttachment.attachedBody.HasBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown) &&
+            angleDiff < 70 && moveVector.magnitude > 0.2)
+            {
+                if (!_heldForward)
+                {
+                    _heldForward = true;
+                    if (_timer < 0.2f)
+                    {
+                        switchState(State.startDash);
+                    }
+                    else
+                    {
+                        _timer = 0f;
+                    }
+                }
+            }
+            else
+            {
+                _heldForward = false;
+            }
+        }
+
         void startDash()
         {
-            _state = State.dashing;
+            switchState(State.dashing);
             _dashDirection = _bodyAttachment.attachedBody.inputBank.aimDirection;
 
-            ItemQualityCounts sprintArmor = _bodyAttachment.attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintArmor);
-            float cooldown = sprintArmor.HighestQuality switch
+            if (_bodyAttachment.attachedBody.hasAuthority)
             {
-                QualityTier.Uncommon => 20,
-                QualityTier.Rare => 15,
-                QualityTier.Epic => 10,
-                QualityTier.Legendary => 5,
-                _ => 30,
-            };
-            _bodyAttachment.attachedBody.AddTimedBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown, cooldown);
+                _bodyAttachment.attachedBody.isSprinting = true;
+                ItemQualityCounts sprintArmor = _bodyAttachment.attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintArmor);
+                float cooldown = sprintArmor.HighestQuality switch
+                {
+                    QualityTier.Uncommon => 20,
+                    QualityTier.Rare => 15,
+                    QualityTier.Epic => 10,
+                    QualityTier.Legendary => 5,
+                    _ => 30,
+                };
+                _bodyAttachment.attachedBody.AddTimedBuffAuthority(ItemQualitiesContent.Buffs.SprintArmorDashCooldown.buffIndex, cooldown);
+            }
 
             EffectData effectData = new EffectData();
             effectData.rotation = Util.QuaternionSafeLookRotation(_dashDirection);
             effectData.origin = Util.GetCorePosition(base.gameObject);
-            EffectManager.SpawnEffect(_blinkPrefab, effectData, transmit: true);
+            EffectManager.SpawnEffect(_blinkPrefab, effectData, transmit: false);
         }
 
         void performDash()
         {
-            tryAttack();
-
-            if (_duration < 0.1f)
+            if (_bodyAttachment.attachedBody.hasAuthority)
             {
+                _bodyAttachment.attachedBody.isSprinting = true;
+
                 if (_bodyAttachment.attachedBody.TryGetComponent<IPhysMotor>(out var motor))
                 {
-                    motor.ApplyForceImpulse(
-                    new PhysForceInfo
+                    if (_timer < 0.1f)
                     {
-                        resetVelocity = true,
-                        force = _dashDirection * (Time.deltaTime * _bodyAttachment.attachedBody.moveSpeed * 1000),
-                        ignoreGroundStick = true,
-                        massIsOne = true,
-                    });
-                }
-            } else {
-                if (_bodyAttachment.attachedBody.TryGetComponent<IPhysMotor>(out var motor))
-                {
-                    motor.ApplyForceImpulse(
-                    new PhysForceInfo
+                        motor.ApplyForceImpulse(new PhysForceInfo
+                        {
+                            resetVelocity = true,
+                            force = _dashDirection * (Time.deltaTime * _bodyAttachment.attachedBody.moveSpeed * 1000),
+                            ignoreGroundStick = true,
+                            massIsOne = true,
+                        });
+                    }
+                    else
                     {
-                        resetVelocity = true,
-                        force = _dashDirection * (_bodyAttachment.attachedBody.moveSpeed * 3),
-                        ignoreGroundStick = true,
-                        massIsOne = true,
-                    });
+                        motor.ApplyForceImpulse(new PhysForceInfo
+                        {
+                            resetVelocity = true,
+                            force = _dashDirection * (_bodyAttachment.attachedBody.moveSpeed * 3),
+                            ignoreGroundStick = true,
+                            massIsOne = true,
+                        });
+                    }
                 }
-                _state = State.endDash;
+            }
+            tryAttack();
+            if (_timer > 0.1)
+            {
+                switchState(State.endDash);
             }
         }
 
         void endDash()
         {
-            tryAttack();
-            if (_duration > 0.2f)
+            if (_bodyAttachment.attachedBody.hasAuthority)
             {
-                Destroy(gameObject);
+                _bodyAttachment.attachedBody.isSprinting = true;
             }
+                
+            if (_timer > 0.1f)
+            {
+                switchState(State.idle);
+            }            
+            tryAttack();
         }
 
         void tryAttack()
         {
-            bool hitEnemy = false;
             _dashSphereSearch.origin = Util.GetCorePosition(base.gameObject);
             _dashSphereSearch.mask = LayerIndex.entityPrecise.mask;
             _dashSphereSearch.radius = _bodyAttachment.attachedBody.radius + 3;
@@ -142,7 +191,21 @@ namespace ItemQualities.Items
             _dashSphereSearch.ClearCandidates();
             if (_dashHurtBoxBuffer.Count > 0)
             {
-                hitEnemy = true;
+                switchState(State.idle);
+                if (_bodyAttachment.attachedBody.hasAuthority)
+                {
+                    if (_bodyAttachment.attachedBody.TryGetComponent<IPhysMotor>(out var motor))
+                    {
+                        motor.ApplyForceImpulse(new PhysForceInfo
+                        {
+                            resetVelocity = true,
+                            force = new Vector3(-_dashDirection.x * 20, 20, -_dashDirection.z * 20),
+                            ignoreGroundStick = true,
+                            massIsOne = true,
+                        });
+                    }
+                }
+
                 _dashSphereSearch.radius = _bodyAttachment.attachedBody.radius + 12;
                 _dashHurtBoxBuffer.Clear();
                 _dashSphereSearch.RefreshCandidates();
@@ -155,14 +218,15 @@ namespace ItemQualities.Items
             for (int i = 0; i < _dashHurtBoxBuffer.Count; i++)
             {
                 HurtBox hurtBox = _dashHurtBoxBuffer[i];
-                if (hurtBox && hurtBox.healthComponent && hurtBox.healthComponent.body && !hurtBox.healthComponent.body.isChampion)
+                if (hurtBox && hurtBox.healthComponent && hurtBox.healthComponent.body)
                 {
                     EffectData effectData = new EffectData
                     {
                         origin = hurtBox.transform.position
                     };
-                    EffectManager.SpawnEffect(_hitEffectPrefab, effectData, true);
-                    if (NetworkServer.active)
+                    EffectManager.SpawnEffect(_hitEffectPrefab, effectData, false);
+
+                    if (_bodyAttachment.attachedBody.isServer)
                     {
                         DamageInfo damageInfo = new DamageInfo();
                         damageInfo.damage = 0;
@@ -171,39 +235,36 @@ namespace ItemQualities.Items
                         damageInfo.position = hurtBox.transform.position;
                         damageInfo.crit = false;
                         damageInfo.inflictedHurtbox = hurtBox;
-                        damageInfo.force = _dashDirection * 60;
                         damageInfo.canRejectForce = false;
                         damageInfo.physForceFlags |= PhysForceFlags.ignoreGroundStick;
                         damageInfo.physForceFlags |= PhysForceFlags.disableAirControlUntilCollision;
                         damageInfo.physForceFlags |= PhysForceFlags.massIsOne;
                         damageInfo.physForceFlags |= PhysForceFlags.resetVelocity;
-                        damageInfo.physForceFlags |= PhysForceFlags.respectKnockbackImmuneFlag;
-
+                        if (hurtBox.healthComponent.body.isChampion)
+                        {
+                            damageInfo.force = Vector3.zero;
+                        } else {
+                            damageInfo.force = _dashDirection * 60;
+                        }
+                        hurtBox.healthComponent.TakeDamageForce(damageInfo);
+                        GlobalEventManager.instance.OnHitEnemy(damageInfo, hurtBox.healthComponent.gameObject);
+                        GlobalEventManager.instance.OnHitAll(damageInfo, hurtBox.healthComponent.gameObject);
+                        
                         if (hurtBox.healthComponent.TryGetComponent(out SetStateOnHurt attackerSetStateOnHurt) && attackerSetStateOnHurt.canBeStunned)
                         {
                             attackerSetStateOnHurt.SetStun(1);
                             Crowbar.HandleDelayedHit(_bodyAttachment.attachedBody.gameObject, hurtBox.gameObject);
                         }
-                        hurtBox.healthComponent.TakeDamage(damageInfo);
-                        GlobalEventManager.instance.OnHitEnemy(damageInfo, hurtBox.healthComponent.gameObject);
-                        GlobalEventManager.instance.OnHitAll(damageInfo, hurtBox.healthComponent.gameObject);
+                        ItemQualityCounts sprintArmor = _bodyAttachment.attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintArmor);
+                        float duration = sprintArmor.UncommonCount * 3 +
+                                            sprintArmor.RareCount * 6 +
+                                            sprintArmor.EpicCount * 9 +
+                                            sprintArmor.LegendaryCount * 12;
+                        hurtBox.healthComponent.body.AddTimedBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken, duration);
                     }
                 }
             }
             _dashHurtBoxBuffer.Clear();
-
-            if (hitEnemy)
-            {
-                _bodyAttachment.attachedBody.characterMotor.velocity = new Vector3(-_dashDirection.x * 20, 20, -_dashDirection.z * 20);
-                _bodyAttachment.attachedBody.characterMotor.Motor.ForceUnground();
-                ItemQualityCounts sprintArmor = _bodyAttachment.attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintArmor);
-                float duration = sprintArmor.UncommonCount * 2 +
-                                    sprintArmor.RareCount * 4 +
-                                    sprintArmor.EpicCount * 6 +
-                                    sprintArmor.LegendaryCount * 8;
-                _bodyAttachment.attachedBody.AddTimedBuff(ItemQualitiesContent.Buffs.SprintArmorStrong, duration);
-                Destroy(gameObject);
-            }
         }
     }
 }

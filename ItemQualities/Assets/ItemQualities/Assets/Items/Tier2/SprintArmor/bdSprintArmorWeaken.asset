@@ -10,17 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: -1783169300, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: bdSprintArmorStrong
+  m_Name: bdSprintArmorWeaken
   m_EditorClassIdentifier: 
   iconPath: 
   iconSprite: {fileID: 0}
   buffColor: {r: 1, g: 1, b: 1, a: 1}
   canStack: 0
   eliteDef: {fileID: 0}
-  isDebuff: 0
+  isDebuff: 1
   isDOT: 0
-  ignoreGrowthNectar: 0
-  isCooldown: 0
+  ignoreGrowthNectar: 1
+  isCooldown: 1
   isHidden: 1
   flags: 0
+  stackingDisplayMethod: 0
   startSfx: {fileID: 0}
