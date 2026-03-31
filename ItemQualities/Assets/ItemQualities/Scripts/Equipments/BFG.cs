@@ -90,6 +90,27 @@ namespace ItemQualities.Equipments
                         Log.Warning($"Expected ProjectileProximityBeamController component on {qualityProjectilePrefab}");
                     }
 
+                    ProjectileSimple projectileSimple = qualityProjectilePrefab.GetComponent<ProjectileSimple>();
+                    projectileSimple.updateAfterFiring = true;
+
+                    ProjectileSteerTowardTarget projectileSteerTowardTarget = qualityProjectilePrefab.AddComponent<ProjectileSteerTowardTarget>();
+                    projectileSteerTowardTarget.rotationSpeed = qualityTier switch
+                    {
+                        QualityTier.Uncommon => 10f,
+                        QualityTier.Rare => 15f,
+                        QualityTier.Epic => 25f,
+                        QualityTier.Legendary => 30f,
+                        _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
+                    };
+
+                    ProjectileDirectionalTargetFinder projectileDirectionalTargetFinder = qualityProjectilePrefab.AddComponent<ProjectileDirectionalTargetFinder>();
+                    projectileDirectionalTargetFinder.lookRange = 600f;
+                    projectileDirectionalTargetFinder.lookCone = 180f;
+                    projectileDirectionalTargetFinder.targetSearchInterval = 1f;
+                    projectileDirectionalTargetFinder.onlySearchIfNoTarget = true;
+                    projectileDirectionalTargetFinder.allowTargetLoss = false;
+                    projectileDirectionalTargetFinder.testLoS = true;
+
                     _qualityProjectilePrefabs[(int)qualityTier] = qualityProjectilePrefab;
                 }
 
@@ -167,6 +188,33 @@ namespace ItemQualities.Equipments
                 }
 
                 return prefab;
+            }
+
+            Instruction fireBfgProjectileStartInstruction = c.Next;
+
+            if (c.TryGotoNext(MoveType.Before,
+                              x => x.MatchCallOrCallvirt<ProjectileManager>(nameof(ProjectileManager.FireProjectileWithoutDamageType))) &&
+                c.TryGotoPrev(MoveType.After,
+                              x => x.MatchLdnull()) && c.IsAfter(fireBfgProjectileStartInstruction))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<GameObject, EquipmentSlot, GameObject>>(getTarget);
+
+                static GameObject getTarget(GameObject target, EquipmentSlot equipmentSlot)
+                {
+                    if (equipmentSlot &&
+                        equipmentSlot.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats) &&
+                        bodyExtraStats.LastHitBody)
+                    {
+                        target = bodyExtraStats.LastHitBody.gameObject;
+                    }
+
+                    return target;
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find target patch location");
             }
         }
     }
