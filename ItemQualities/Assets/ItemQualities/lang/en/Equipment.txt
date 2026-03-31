@@ -29,17 +29,17 @@
         "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_DESC": "You look <sprite name=\"Quality\"> fucking incredible.",
         "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_CHAT": "AHOY!!!!!",
 
-        "EQUIPMENT_RECYCLE_UNCOMMON_PICKUP": "Transform an <sprite name=\"QualityUncommon\"> uncommon or lower quality Item or Equipment into a different one. Can only recycle once.",
-        "EQUIPMENT_RECYCLE_UNCOMMON_DESC": "<style=cIsUtility>Transform</style> an <sprite name=\"QualityUncommon\"> uncommon or lower quality Item or Equipment into a different one. <style=cIsUtility>Can only be converted into the same tier one time</style>.",
+        "EQUIPMENT_RECYCLE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items and Equipments.",
+        "EQUIPMENT_RECYCLE_UNCOMMON_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items and Equipments. All items and equipments above uncommon <sprite name=\"QualityUncommon\"> quality are recycled into uncommon <sprite name=\"QualityUncommon\"> quality.",
 
-        "EQUIPMENT_RECYCLE_RARE_PICKUP": "Transform a <sprite name=\"QualityRare\"> rare or lower quality Item or Equipment into a different one. Can only recycle once.",
-        "EQUIPMENT_RECYCLE_RARE_DESC": "<style=cIsUtility>Transform</style> a <sprite name=\"QualityRare\"> rare or lower quality Item or Equipment into a different one. <style=cIsUtility>Can only be converted into the same tier one time</style>.",
+        "EQUIPMENT_RECYCLE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items and Equipments.",
+        "EQUIPMENT_RECYCLE_RARE_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items and Equipments. All items and equipments above rare <sprite name=\"QualityRare\"> quality are recycled into rare <sprite name=\"QualityRare\"> quality.",
 
-        "EQUIPMENT_RECYCLE_EPIC_PICKUP": "Transform a <sprite name=\"QualityEpic\"> epic or lower quality Item or Equipment into a different one. Can only recycle once.",
-        "EQUIPMENT_RECYCLE_EPIC_DESC": "<style=cIsUtility>Transform</style> a <sprite name=\"QualityEpic\"> epic or lower quality Item or Equipment into a different one. <style=cIsUtility>Can only be converted into the same tier one time</style>.",
+        "EQUIPMENT_RECYCLE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items and Equipments.",
+        "EQUIPMENT_RECYCLE_EPIC_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items and Equipments. All items and equipments above epic <sprite name=\"QualityEpic\"> quality are recycled into epic <sprite name=\"QualityEpic\"> quality.",
 
-        "EQUIPMENT_RECYCLE_LEGENDARY_PICKUP": "Transform a <sprite name=\"QualityLegendary\"> legendary or lower quality Item or Equipment into a different one. Can only recycle once.",
-        "EQUIPMENT_RECYCLE_LEGENDARY_DESC": "<style=cIsUtility>Transform</style> a <sprite name=\"QualityLegendary\"> legendary or lower quality Item or Equipment into a different one. <style=cIsUtility>Can only be converted into the same tier one time</style>.",
+        "EQUIPMENT_RECYCLE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items and Equipments.",
+        "EQUIPMENT_RECYCLE_LEGENDARY_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items and Equipments.",
         
         "EQUIPMENT_CLEANSE_UNCOMMON_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 1 second.",
         "EQUIPMENT_CLEANSE_UNCOMMON_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>1 second</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
