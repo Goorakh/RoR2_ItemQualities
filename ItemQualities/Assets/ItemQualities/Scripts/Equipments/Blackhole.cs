@@ -43,23 +43,28 @@ namespace ItemQualities.Equipments
                 {
                     float rangeIncrease;
                     float durationIncrease;
+                    float strengthMultiplier;
                     switch (qualityTier)
                     {
                         case QualityTier.Uncommon:
                             rangeIncrease = 10f;
                             durationIncrease = 4f;
+                            strengthMultiplier = 3f;
                             break;
                         case QualityTier.Rare:
                             rangeIncrease = 25f;
                             durationIncrease = 8f;
+                            strengthMultiplier = 5f;
                             break;
                         case QualityTier.Epic:
                             rangeIncrease = 40f;
                             durationIncrease = 15f;
+                            strengthMultiplier = 8f;
                             break;
                         case QualityTier.Legendary:
                             rangeIncrease = 60f;
                             durationIncrease = 25f;
+                            strengthMultiplier = 10f;
                             break;
                         default:
                             throw new NotImplementedException($"Quality tier {qualityTier} is not implemented");
@@ -72,6 +77,7 @@ namespace ItemQualities.Equipments
 
                     RadialForce qualityRadialForce = qualityGravSphereProjectilePrefab.GetComponent<RadialForce>();
                     qualityRadialForce.radius += rangeIncrease;
+                    qualityRadialForce.forceMagnitude *= strengthMultiplier;
 
                     Transform sphereTransform = qualityGravSphereProjectilePrefab.transform.Find("Sphere");
                     if (sphereTransform && sphereTransform.TryGetComponent(out ObjectScaleCurve sphereScaleCurve))

@@ -189,17 +189,17 @@
         "EQUIPMENT_BFG_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
         "EQUIPMENT_BFG_LEGENDARY_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 60m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 45m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
         
-        "EQUIPMENT_BLACKHOLE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size and duration.",
-        "EQUIPMENT_BLACKHOLE_UNCOMMON_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 40m into its center</style>. Lasts <sprite name=\"Quality\"> 14 seconds.",
+        "EQUIPMENT_BLACKHOLE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
+        "EQUIPMENT_BLACKHOLE_UNCOMMON_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 40m into its center</style>. Lasts <sprite name=\"Quality\"> 14 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>.",
         
-        "EQUIPMENT_BLACKHOLE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size and duration.",
-        "EQUIPMENT_BLACKHOLE_RARE_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 55m into its center</style>. Lasts <sprite name=\"Quality\"> 18 seconds.",
+        "EQUIPMENT_BLACKHOLE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
+        "EQUIPMENT_BLACKHOLE_RARE_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 55m into its center</style>. Lasts <sprite name=\"Quality\"> 18 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>400%</style>.",
         
-        "EQUIPMENT_BLACKHOLE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size and duration.",
-        "EQUIPMENT_BLACKHOLE_EPIC_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 70m into its center</style>. Lasts <sprite name=\"Quality\"> 25 seconds.",
+        "EQUIPMENT_BLACKHOLE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
+        "EQUIPMENT_BLACKHOLE_EPIC_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 70m into its center</style>. Lasts <sprite name=\"Quality\"> 25 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>700%</style>.",
         
-        "EQUIPMENT_BLACKHOLE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size and duration.",
-        "EQUIPMENT_BLACKHOLE_LEGENDARY_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 90m into its center</style>. Lasts <sprite name=\"Quality\"> 35 seconds.",
+        "EQUIPMENT_BLACKHOLE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
+        "EQUIPMENT_BLACKHOLE_LEGENDARY_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 90m into its center</style>. Lasts <sprite name=\"Quality\"> 35 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>900%</style>.",
         
         "EQUIPMENT_SCANNER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> A free cloaked chest will appear every stage.",
         "EQUIPMENT_SCANNER_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> 1 cloaked chest will appear every stage, containing a quality <sprite name=\"Quality\"> item.",
