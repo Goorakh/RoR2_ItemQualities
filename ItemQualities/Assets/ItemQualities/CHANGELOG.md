@@ -101,6 +101,9 @@
         * Legendary: 200% (+100% per stack)
     * Removed base max health and duration increase.
 
+* Delicate Watch:
+    * No longer counts parried damage as a hit
+
 * Roll of Pennies:
     * Fixed bonus gold not spawning when opening a Collector's Barrel.
 
