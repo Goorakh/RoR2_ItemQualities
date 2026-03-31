@@ -427,7 +427,10 @@ namespace ItemQualities
 
         void onIncomingDamageServer(DamageInfo damageInfo)
         {
-            if (damageInfo.damage > 0f && !damageInfo.delayedDamageSecondHalf && (damageInfo.damageType & DamageType.DoT) == 0)
+            if (damageInfo.damage > 0f &&
+                !damageInfo.delayedDamageSecondHalf &&
+                (damageInfo.damageType & DamageType.DoT) == 0 &&
+                !damageInfo.IsParried())
             {
                 _stageIncomingDamageInstanceCountServer++;
                 OnStageDamageInstancesTakenCountChangedServer?.Invoke(this);
