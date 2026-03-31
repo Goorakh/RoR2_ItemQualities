@@ -71,7 +71,7 @@ namespace ItemQualities
 
         public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
 
-        public CharacterBody lastDamaged;
+        public CharacterBody LastHitBody { get; private set; }
 
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
 
@@ -387,7 +387,7 @@ namespace ItemQualities
 
         void onDamagedOther(DamageReport damageReport)
         {
-            lastDamaged = damageReport.victimBody;
+            LastHitBody = damageReport.victimBody;
         }
 
         void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)

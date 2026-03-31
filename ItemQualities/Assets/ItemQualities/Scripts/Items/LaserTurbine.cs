@@ -24,9 +24,9 @@ namespace ItemQualities.Items
                 ItemQualityCounts laserTurbine = self.ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.LaserTurbine);
 
                 if (laserTurbine.TotalQualityCount > 0 && self.ownerBody.TryGetComponentCached(out CharacterBodyExtraStatsTracker ownerBodyExtraStats) &&
-                    ownerBodyExtraStats.lastDamaged)
+                    ownerBodyExtraStats.LastHitBody)
                 {
-                    self.simpleRotateToDirection.targetRotation = Quaternion.LookRotation(ownerBodyExtraStats.lastDamaged.transform.position - self.transform.position);
+                    self.simpleRotateToDirection.targetRotation = Quaternion.LookRotation(ownerBodyExtraStats.LastHitBody.transform.position - self.transform.position);
                     self.foundTarget = true;
                 }
             }
