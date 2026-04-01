@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 8959544430209769735}
   - component: {fileID: 7283734855881019072}
   - component: {fileID: -6245243620427888965}
-  - component: {fileID: -2988536133549063922}
+  - component: {fileID: 5671909982598359383}
+  - component: {fileID: 1580871802470397799}
   m_Layer: 0
   m_Name: SprintArmorDashAttachment
   m_TagString: Untagged
@@ -66,7 +67,7 @@ MonoBehaviour:
     i14: 0
     i15: 0
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &-6245243620427888965
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,8 +82,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shouldParentToAttachedBody: 1
   resetRotationWhenAttached: 0
-  forceHostAuthority: 1
---- !u!114 &-2988536133549063922
+  forceHostAuthority: 0
+--- !u!114 &5671909982598359383
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -91,6 +92,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 6355130148565444063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 07832b4a557c45d45b53dd47d6cc6151, type: 3}
+  m_Script: {fileID: 1297580292, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customName: SprintArmorDashStateMachine
+  initialStateType:
+    _typeName: EntityStates.SprintArmorDash.SprintArmorDashBaseState, ItemQualities,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  mainStateType:
+    _typeName: EntityStates.SprintArmorDash.SprintArmorDashBaseState, ItemQualities,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+  debug: 0
+--- !u!114 &1580871802470397799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6355130148565444063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1918207524, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateMachines:
+  - {fileID: 5671909982598359383}
