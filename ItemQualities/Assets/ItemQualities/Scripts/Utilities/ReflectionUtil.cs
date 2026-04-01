@@ -6,6 +6,8 @@ namespace ItemQualities.Utilities
 {
     public static class ReflectionUtil
     {
+        public const BindingFlags AllFlags = (BindingFlags)(-1);
+
         public static MethodInfo FindImplicitConverter<TFrom, TTo>()
         {
             return FindImplicitConverter(typeof(TFrom), typeof(TTo));
