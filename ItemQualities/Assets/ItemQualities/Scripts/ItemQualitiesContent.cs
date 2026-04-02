@@ -770,6 +770,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup HealAndReviveConsumed;
 
             public static EquipmentQualityGroup Fruit;
+
+            public static EquipmentQualityGroup Gateway;
         }
 
         public static class BuffQualityGroups
@@ -908,6 +910,8 @@ namespace ItemQualities
             public static GameObject HealAndReviveSproutAttachment;
 
             public static GameObject SprintArmorDashAttachment;
+
+            public static GameObject GatewayQualityAttachment;
         }
 
         public static class ProjectilePrefabs
