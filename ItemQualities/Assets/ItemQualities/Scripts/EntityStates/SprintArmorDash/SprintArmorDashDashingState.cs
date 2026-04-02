@@ -16,6 +16,7 @@ namespace EntityStates.SprintArmorDash
         static readonly SphereSearch _dashSphereSearch = new SphereSearch();
         static readonly List<HurtBox> _dashHurtBoxBuffer = new List<HurtBox>();
         static GameObject _blinkPrefab;
+        IPhysMotor _motor;
 
         [SystemInitializer]
         static void Init()
@@ -33,8 +34,8 @@ namespace EntityStates.SprintArmorDash
             if (!networkedBodyAttachment || !networkedBodyAttachment.attachedBody)
                 return;
             _attachedBody = networkedBodyAttachment.attachedBody;
-
             _dashDirection = _attachedBody.inputBank.aimDirection;
+            _motor = _attachedBody.GetComponent<IPhysMotor>();
 
             if (base.isAuthority)
             {
@@ -61,15 +62,17 @@ namespace EntityStates.SprintArmorDash
         public override void FixedUpdate()
         {
             base.FixedUpdate();
+            if (!_attachedBody) 
+                return;
             if (base.isAuthority)
             {
                 _attachedBody.isSprinting = true;
 
-                if (_attachedBody.TryGetComponent<IPhysMotor>(out var motor))
+                if (_motor != null)
                 {
                     if (base.fixedAge < 0.1f)
                     {
-                        motor.ApplyForceImpulse(new PhysForceInfo
+                        _motor.ApplyForceImpulse(new PhysForceInfo
                         {
                             resetVelocity = true,
                             force = _dashDirection * (Time.deltaTime * _attachedBody.moveSpeed * 1000),
@@ -79,7 +82,7 @@ namespace EntityStates.SprintArmorDash
                     } else if (!_stoppedDash)
                     {
                         _stoppedDash = true;
-                        motor.ApplyForceImpulse(new PhysForceInfo
+                        _motor.ApplyForceImpulse(new PhysForceInfo
                         {
                             resetVelocity = true,
                             force = _dashDirection * (_attachedBody.moveSpeed * 3),

@@ -108,7 +108,7 @@ namespace EntityStates.SprintArmorDash
                         }
                         else
                         {
-                            damageInfo.force = dashDirection * 60;
+                            damageInfo.force = dashDirection * 50;
                         }
                         hurtBox.healthComponent.TakeDamageForce(damageInfo);
                         GlobalEventManager.instance.OnHitEnemy(damageInfo, hurtBox.healthComponent.gameObject);
