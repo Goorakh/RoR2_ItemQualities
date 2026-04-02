@@ -339,5 +339,17 @@
         
         "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
         "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds.",
+        
+        "EQUIPMENT_FRUIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
+        "EQUIPMENT_FRUIT_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>5%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>25%</style>.",
+        
+        "EQUIPMENT_FRUIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
+        "EQUIPMENT_FRUIT_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>10%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>75%</style>.",
+        
+        "EQUIPMENT_FRUIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
+        "EQUIPMENT_FRUIT_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>20%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>.",
+        
+        "EQUIPMENT_FRUIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
+        "EQUIPMENT_FRUIT_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>25%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>.",
     }
 }
