@@ -109,8 +109,12 @@
         * Legendary: 200% (+100% per stack)
     * Removed base max health and duration increase.
 
+* Rusted Key & Encrusted Key:
+    * Fixed temporary keys not being used when opening a lockbox.
+
 * Delicate Watch:
     * No longer counts parried damage as a hit
+    * Fixed incorrect numbers in description of uncommon watch.
 
 * Roll of Pennies:
     * Fixed bonus gold not spawning when opening a Collector's Barrel.
@@ -120,9 +124,6 @@
 
 * Ghor's Tome:
     * Fixed money buff not being set on pickup.
-
-* Delicate Watch:
-    * Fixed incorrect numbers in description of uncommon watch.
 
 ## 0.6.1
 
