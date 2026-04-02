@@ -825,7 +825,9 @@ namespace ItemQualities
         {
             public static BuffDef BossStun;
 
-            public static BuffDef SprintArmorStrong;
+            public static BuffDef SprintArmorWeaken;
+
+            public static BuffDef SprintArmorDashCooldown;
 
             public static BuffDef HealCritBoost;
 
@@ -900,6 +902,8 @@ namespace ItemQualities
             public static GameObject BugSwarmController;
 
             public static GameObject HealAndReviveSproutAttachment;
+
+            public static GameObject SprintArmorDashAttachment;
         }
 
         public static class ProjectilePrefabs

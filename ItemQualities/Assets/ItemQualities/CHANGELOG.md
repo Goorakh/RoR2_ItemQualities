@@ -1,5 +1,13 @@
 ## \{Next Version\}
 
+* Rose Buckler:
+    * Double tap forward to do a short dash
+    * Dash into enemies to weaken them:
+        * Uncommon: 3 seconds (+3 seconds per stack)
+        * Rare: 6 seconds (+6 seconds per stack)
+        * Epic: 9 seconds (+9 seconds per stack)
+        * Legendary: 12 seconds (+12 seconds per stack)
+
 * Warped Echo:
     * Chance to apply echo on hit:
         * Uncommon: 1% (+1% per stack)

@@ -5,6 +5,7 @@ using R2API;
 using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -21,6 +22,31 @@ namespace ItemQualities.Items
             bucklerDefenseLoad.OnSuccess(bucklerDefense =>
             {
                 BucklerDefenseBigPrefab = bucklerDefense.InstantiateClone("BucklerDefenseBig", false);
+
+                Transform meshHolder = BucklerDefenseBigPrefab.transform.Find("MeshHolder");
+                Dictionary<Material, Material> materialCache = new Dictionary<Material, Material>();
+                for (int i = 0; i < meshHolder.childCount; i++)
+                {
+                    Transform child = meshHolder.GetChild(i);
+                    if (child && child.TryGetComponent(out MeshRenderer meshRenderer))
+                    {
+                        Material material = meshRenderer.sharedMaterial;
+                        if (material)
+                        {
+                            if (!materialCache.TryGetValue(material, out Material redMaterial))
+                            {
+                                redMaterial = new Material(material);
+                                redMaterial.name = $"{material.name}_Red";
+
+                                redMaterial.SetColor(ShaderProperties._TintColor, new Color(0.9f, 0f, 0f));
+                                redMaterial.SetColor(ShaderProperties._Color, new Color(0.9f, 0f, 0f));
+                                materialCache.Add(material, redMaterial);
+                            }
+
+                            meshRenderer.sharedMaterial = redMaterial;
+                        }
+                    }
+                }
 
                 RotateObject rotateObject = BucklerDefenseBigPrefab.GetComponentInChildren<RotateObject>(true);
                 if (rotateObject)
@@ -45,12 +71,11 @@ namespace ItemQualities.Items
 
             ItemQualityCounts sprintArmor = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintArmor);
 
-            if (sender.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong) && sprintArmor.TotalQualityCount > 0)
+            if (sender.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken))
             {
-                args.armorAdd += (30 * sprintArmor.UncommonCount) +
-                                 (50 * sprintArmor.RareCount) +
-                                 (75 * sprintArmor.EpicCount) +
-                                 (100 * sprintArmor.LegendaryCount);
+                args.armorAdd -= 20;
+                args.damageTotalMult *= 0.6f;
+                args.moveSpeedTotalMult *= 0.6f;
             }
         }
     }
