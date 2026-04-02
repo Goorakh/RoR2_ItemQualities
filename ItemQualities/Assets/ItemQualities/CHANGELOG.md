@@ -8,6 +8,18 @@
         * Epic: 9 seconds (+9 seconds per stack)
         * Legendary: 12 seconds (+12 seconds per stack)
 
+* Warped Echo:
+    * Chance to apply echo on hit:
+        * Uncommon: 1% (+1% per stack)
+        * Rare: 1.5% (+1.5% per stack)
+        * Epic: 2% (+2% per stack)
+        * Legendary: 2.5% (+2.5% per stack)
+    * Repeat on kill effect per echo stack:
+        * Uncommon: 1 time
+        * Rare: 2 times
+        * Epic: 3 times
+        * Legendary: 4 times
+
 * Resonance Disc:
     * Now always targets the last hit enemy when charged.
 
@@ -96,6 +108,9 @@
         * Epic: 160% (+60% per stack) -> 150% (+50% per stack)
         * Legendary: 200% (+100% per stack)
     * Removed base max health and duration increase.
+
+* Delicate Watch:
+    * No longer counts parried damage as a hit
 
 * Roll of Pennies:
     * Fixed bonus gold not spawning when opening a Collector's Barrel.

@@ -1,18 +1,122 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using HG;
+using ItemQualities.ContentManagement;
+using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using MonoMod.RuntimeDetour;
+using MonoMod.Utils;
+using R2API;
 using RoR2;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
+using System.Collections;
+using System.Reflection;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
     static class Saw
     {
+        static readonly GameObject[] _qualitySawProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+
+        [ContentInitializer]
+        static IEnumerator LoadContent(ContentIntializerArgs args)
+        {
+            AsyncOperationHandle<GameObject> sawProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Saw.Sawmerang_prefab);
+            sawProjectileLoad.OnSuccess(sawProjectilePrefab =>
+            {
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                {
+                    GameObject qualitySawProjectilePrefab = sawProjectilePrefab.InstantiateClone(sawProjectilePrefab.name + qualityTier.ToString());
+
+                    BoomerangProjectileQualityController qualityController = qualitySawProjectilePrefab.EnsureComponent<BoomerangProjectileQualityController>();
+                    qualityController.HitPauseDuration = qualityTier switch
+                    {
+                        QualityTier.Uncommon => 2f,
+                        QualityTier.Rare => 4f,
+                        QualityTier.Epic => 8f,
+                        QualityTier.Legendary => 10f,
+                        _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
+                    };
+
+                    _qualitySawProjectilePrefabs[(int)qualityTier] = qualitySawProjectilePrefab;
+                }
+            });
+
+            return sawProjectileLoad.AsProgressCoroutine(args.ProgressReceiver);
+        }
+
         [SystemInitializer]
         static void Init()
         {
             IL.RoR2.EquipmentSlot.FireSaw += EquipmentSlot_FireSaw;
+
+            MethodInfo fireSawMethod = typeof(EquipmentSlot).GetMethod(nameof(EquipmentSlot.FireSaw), ReflectionUtil.AllFlags);
+            if (fireSawMethod != null)
+            {
+                using DynamicMethodDefinition dmd = new DynamicMethodDefinition(fireSawMethod);
+                using ILContext il = new ILContext(dmd.Definition);
+                ILCursor c = new ILCursor(il);
+
+                MethodReference fireSingleSawMethodRef = null;
+                if (!c.TryGotoNext(MoveType.Before,
+                                   x => x.MatchCallOrCallvirt(out fireSingleSawMethodRef) && fireSingleSawMethodRef != null && fireSingleSawMethodRef.Name.StartsWith("<FireSaw>g__FireSingleSaw|")))
+                {
+                    Log.Error("Failed to find FireSaw FireSingleSaw local method");
+                }
+                else
+                {
+                    MethodBase fireSingleSawMethod;
+                    try
+                    {
+                        fireSingleSawMethod = fireSingleSawMethodRef?.ResolveReflection();
+                    }
+                    catch (Exception)
+                    {
+                        fireSingleSawMethod = null;
+                    }
+
+                    if (fireSingleSawMethod == null)
+                    {
+                        Log.Error("Failed to resolve FireSaw FireSingleSaw local method");
+                    }
+                    else
+                    {
+                        new ILHook(fireSingleSawMethod, EquipmentSlot_FireSaw_FireSingleSaw);
+                    }
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find EquipmentSlot.FireSaw method");
+            }
+        }
+
+        static void EquipmentSlot_FireSaw_FireSingleSaw(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdstr("Prefabs/Projectiles/Sawmerang"),
+                               x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load))))
+            {
+                Log.Error("Failed to find saw projectile prefab patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Func<GameObject, EquipmentSlot, GameObject>>(getProjectilePrefab);
+
+            static GameObject getProjectilePrefab(GameObject prefab, EquipmentSlot equipmentSlot)
+            {
+                QualityTier qualityTier = equipmentSlot.GetCurrentEquipmentActionQualityTier();
+                GameObject qualityPrefab = ArrayUtils.GetSafe(_qualitySawProjectilePrefabs, (int)qualityTier);
+
+                return qualityPrefab ? qualityPrefab : prefab;
+            }
         }
 
         static void EquipmentSlot_FireSaw(ILContext il)

@@ -1,10 +1,6 @@
 ﻿using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
-using R2API;
 using RoR2;
-using System;
-using System.Collections;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -13,70 +9,43 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            On.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        static void HealthComponent_TakeDamageProcess(On.RoR2.HealthComponent.orig_TakeDamageProcess orig, HealthComponent self, DamageInfo damageInfo)
+        private static void onCharacterDeathGlobal(DamageReport report)
         {
-            try
+            if (!report.victimBody)
+                return;
+            BuffQualityCounts delayedDamageDebuff = report.victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff);
+            int numProcs =  delayedDamageDebuff.UncommonCount +
+                            delayedDamageDebuff.RareCount * 2 +
+                            delayedDamageDebuff.EpicCount * 3 +
+                            delayedDamageDebuff.LegendaryCount * 4;
+            report.victimBody.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff);
+            for (int i = 0; i < numProcs; i++)
             {
-                CharacterBody victimBody = self ? self.body : null;
-                CharacterMaster victimMaster = victimBody ? victimBody.master : null;
-                Inventory victimInventory = victimBody ? victimBody.inventory : null;
+                GlobalEventManager.instance.OnCharacterDeath(report);
+            }
+        }
 
-                if (victimInventory)
+        private static void onServerDamageDealt(DamageReport report)
+        {
+            if (!report.attackerBody || !report.attackerBody.inventory || !report.victimBody)
+                return;
+            ItemQualityCounts delayedDamage = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DelayedDamage);
+
+            if (delayedDamage.TotalQualityCount > 0)
+            {
+                float chance =  delayedDamage.UncommonCount * 1f +
+                                delayedDamage.RareCount * 1.5f +
+                                delayedDamage.EpicCount * 2f +
+                                delayedDamage.LegendaryCount * 2.5f;
+
+                if (RollUtil.CheckRoll(chance, report.attackerMaster, report.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
                 {
-                    ItemQualityCounts delayedDamage = victimInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DelayedDamage);
-
-                    if (delayedDamage.TotalQualityCount > 0 &&
-                        !damageInfo.rejected &&
-                        damageInfo.delayedDamageSecondHalf &&
-                        !damageInfo.damageType.HasModdedDamageType(DamageTypes.ProcOnly))
-                    {
-                        float repeatProcsChance = (30f * delayedDamage.UncommonCount) +
-                                                  (60f * delayedDamage.RareCount) +
-                                                  (100f * delayedDamage.EpicCount) +
-                                                  (150f * delayedDamage.LegendaryCount);
-
-                        int repeatProcsCount = RollUtil.GetOverflowRoll(repeatProcsChance, victimMaster, false);
-                        if (repeatProcsCount > 0)
-                        {
-                            DamageInfo[] repeatDamageInfos = new DamageInfo[repeatProcsCount];
-                            for (int i = 0; i < repeatDamageInfos.Length; i++)
-                            {
-                                DamageInfo repeatDamageInfo = damageInfo.ShallowCopy();
-                                repeatDamageInfo.delayedDamageSecondHalf = true;
-                                repeatDamageInfo.firstHitOfDelayedDamageSecondHalf = false;
-                                repeatDamageInfos[i] = repeatDamageInfo;
-                            }
-
-                            self.StartCoroutine(inflictRepeatProcs(self, repeatDamageInfos));
-                        }
-                    }
+                    report.victimBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff.GetBuffDef(delayedDamage.HighestQuality));
                 }
-            }
-            catch (Exception e)
-            {
-                Log.Error("Failed to execute repeat damage hook: " + e);
-            }
-
-            orig(self, damageInfo);
-        }
-
-        static IEnumerator inflictRepeatProcs(HealthComponent victim, DamageInfo[] repeatDamageInfos)
-        {
-            const float TotalDelay = 0.3f;
-
-            foreach (DamageInfo repeatDamageInfo in repeatDamageInfos)
-            {
-                yield return new WaitForSeconds(TotalDelay / repeatDamageInfos.Length);
-
-                if (!victim)
-                    break;
-
-                repeatDamageInfo.damageType |= DamageType.BypassBlock | DamageType.Silent;
-                repeatDamageInfo.damageType.AddModdedDamageType(DamageTypes.ProcOnly);
-                victim.TakeDamage(repeatDamageInfo);
             }
         }
     }

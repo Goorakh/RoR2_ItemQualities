@@ -817,6 +817,8 @@ namespace ItemQualities
             public static BuffQualityGroup BugBlock;
             
             public static BuffQualityGroup Warbanner;
+
+            public static BuffQualityGroup DelayedDamageDebuff;
         }
 
         public static class Buffs

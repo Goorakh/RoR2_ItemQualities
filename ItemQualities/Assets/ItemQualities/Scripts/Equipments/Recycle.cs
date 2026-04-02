@@ -35,7 +35,10 @@ namespace ItemQualities.Equipments
                     if (isRecycled)
                         return true;
 
-                    if (pickupController && QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex) > equipmentSlot.GetActiveEquipmentQualityTier())
+                    bool pickupIsQuality = pickupController && QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex) > QualityTier.None;
+                    bool recyclerIsQuality = equipmentSlot.GetActiveEquipmentQualityTier() > QualityTier.None;
+
+                    if (pickupIsQuality && !recyclerIsQuality)
                         return true;
 
                     return false;
@@ -74,7 +77,10 @@ namespace ItemQualities.Equipments
                     if (isRecycled)
                         return true;
 
-                    if (pickupController && QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex) > equipmentSlot.GetCurrentEquipmentActionQualityTier())
+                    bool pickupIsQuality = pickupController && QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex) > QualityTier.None;
+                    bool recyclerIsQuality = equipmentSlot.GetCurrentEquipmentActionQualityTier() > QualityTier.None;
+
+                    if (pickupIsQuality && !recyclerIsQuality)
                         return true;
 
                     return false;
@@ -85,11 +91,37 @@ namespace ItemQualities.Equipments
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.Error("Failed to find recyclable patch location");
             }
             else
             {
-                Log.Debug($"Found {patchCount} patch location(s)");
+                Log.Debug($"Found {patchCount} recyclable patch location(s)");
+            }
+
+            c.Goto(0);
+
+            if (c.TryGotoNext(MoveType.Before,
+                              x => x.MatchCallOrCallvirt(typeof(PickupTransmutationManager), nameof(PickupTransmutationManager.GetAvailableGroupFromPickupIndex))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<PickupIndex, EquipmentSlot, PickupIndex>>(getPickupIndex);
+
+                static PickupIndex getPickupIndex(PickupIndex pickupIndex, EquipmentSlot equipmentSlot)
+                {
+                    QualityTier qualityTier = QualityCatalog.GetQualityTier(pickupIndex);
+                    QualityTier equipmentQualityTier = equipmentSlot.GetCurrentEquipmentActionQualityTier();
+                    if (qualityTier > equipmentQualityTier)
+                    {
+                        pickupIndex = QualityCatalog.GetPickupIndexOfQuality(pickupIndex, equipmentQualityTier);
+                        qualityTier = equipmentQualityTier;
+                    }
+
+                    return pickupIndex;
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find pickup group patch location");
             }
         }
     }
