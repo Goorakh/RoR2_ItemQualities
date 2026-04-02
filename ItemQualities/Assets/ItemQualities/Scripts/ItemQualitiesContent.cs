@@ -768,6 +768,8 @@ namespace ItemQualities
             public static EquipmentQualityGroup HealAndRevive;
 
             public static EquipmentQualityGroup HealAndReviveConsumed;
+
+            public static EquipmentQualityGroup Fruit;
         }
 
         public static class BuffQualityGroups
