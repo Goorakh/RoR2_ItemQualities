@@ -840,6 +840,8 @@ namespace ItemQualities
             public static BuffDef SlugHealth;
 
             public static BuffDef MiniBossCooldown;
+
+            public static BuffDef LifeStealSpeed;
         }
 
         public static class Prefabs
