@@ -25,7 +25,7 @@ namespace EntityStates.QuestVolatileBattery
             AsyncOperationHandle<GameObject> VolatileBatteryPreDetLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryPreDetonation_prefab);
             VolatileBatteryPreDetLoad.OnSuccess(VolatileBatteryPreDetPrefab =>
             {
-                qualityBatteryPreDet = VolatileBatteryPreDetPrefab.InstantiateClone("QualityVolatileBatteryPreDet");
+                qualityBatteryPreDet = VolatileBatteryPreDetPrefab.InstantiateClone("QualityVolatileBatteryPreDet", false);
                 GameObject.Destroy(qualityBatteryPreDet.GetComponent<LoopSound>());
                 GameObject.Destroy(qualityBatteryPreDet.GetComponent<ShakeEmitter>());
                 GameObject.Destroy(qualityBatteryPreDet.transform.Find("PP").gameObject);
@@ -50,8 +50,6 @@ namespace EntityStates.QuestVolatileBattery
         public override void OnEnter()
         {
             base.OnEnter();
-            if (!NetworkServer.active)
-                return;
             _vfxInstance = UnityEngine.Object.Instantiate(qualityBatteryPreDet, networkedBodyAttachment.attachedBody.transform);
             _vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
             _vfxInstance.transform.localScale = Vector3.one * networkedBodyAttachment.attachedBody.bestFitActualRadius;

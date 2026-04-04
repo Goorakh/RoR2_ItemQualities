@@ -13,6 +13,7 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
@@ -35,10 +36,10 @@ namespace ItemQualities.Equipments
             AsyncOperationHandle<GameObject> QuestVolatileBatteryAttachmentLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.QuestVolatileBatteryAttachment_prefab);
             QuestVolatileBatteryAttachmentLoad.OnSuccess(QuestVolatileBatteryAttachmentPrefab =>
             {
-                _qualityVolatileBatteryAttachment = QuestVolatileBatteryAttachmentPrefab.InstantiateClone("QualityVolatileBatteryAttachment");
-                _qualityVolatileBatteryAttachment.AddComponent<QualityCheck>();
+                _qualityVolatileBatteryAttachment = QuestVolatileBatteryAttachmentPrefab.InstantiateClone("QualityVolatileBatteryAttachment", true);
+                _qualityVolatileBatteryAttachment.AddComponent<QualityTierContext>();
                 _qualityVolatileBatteryAttachment.AddComponent<GenericOwnership>();
-                args.ContentPack.prefabs.Add(_qualityVolatileBatteryAttachment);
+                args.ContentPack.networkedObjectPrefabs.Add(_qualityVolatileBatteryAttachment);
             });
 
             return QuestVolatileBatteryAttachmentLoad.AsProgressCoroutine(args.ProgressReceiver);
@@ -48,17 +49,20 @@ namespace ItemQualities.Equipments
         {
             orig(ref context);
 
-            EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(context.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
-            EquipmentQualityGroupIndex equipmentGroup = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
-            if (QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None &&
-            equipmentGroup == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex)
+            if (NetworkServer.active)
             {
-                GameObject prefab = GameObject.Instantiate(_qualityVolatileBatteryAttachment);
-                NetworkedBodyAttachment bodyAttachment = prefab.GetComponent<NetworkedBodyAttachment>();
-                bodyAttachment.AttachToGameObjectAndSpawn(context.controller.gameObject);
-                prefab.GetComponent<EntityStateMachine>().SetState(new QuestVolatileBatteryPickup());
-                prefab.GetComponent<GenericOwnership>().ownerObject = context.body.gameObject;
-                prefab.GetComponent<QualityCheck>().qualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
+                EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(context.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
+                EquipmentQualityGroupIndex equipmentGroup = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
+                if (QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None &&
+                equipmentGroup == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex)
+                {
+                    GameObject prefab = GameObject.Instantiate(_qualityVolatileBatteryAttachment);
+                    NetworkedBodyAttachment bodyAttachment = prefab.GetComponent<NetworkedBodyAttachment>();
+                    bodyAttachment.AttachToGameObjectAndSpawn(context.controller.gameObject);
+                    prefab.GetComponent<EntityStateMachine>().SetState(new QuestVolatileBatteryPickup());
+                    prefab.GetComponent<GenericOwnership>().ownerObject = context.body.gameObject;
+                    prefab.GetComponent<QualityTierContext>().QualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
+                }
             }
         }
 
@@ -111,24 +115,23 @@ namespace ItemQualities.Equipments
                 GameObject targetObject = self.currentTarget.rootObject;
                 if (targetObject)
                 {
-                    self.UpdateTargets(RoR2Content.Equipment.QuestVolatileBattery.equipmentIndex, false);
-                    GameObject prefab = GameObject.Instantiate(_qualityVolatileBatteryAttachment);
-                    NetworkedBodyAttachment bodyAttachment = prefab.GetComponent<NetworkedBodyAttachment>();
-                    bodyAttachment.AttachToGameObjectAndSpawn(targetObject);
-                    QualityCheck qualityCheck = prefab.GetComponent<QualityCheck>();
-                    qualityCheck.qualityTier = self.GetCurrentEquipmentActionQualityTier();
-                    prefab.GetComponent<GenericOwnership>().ownerObject = self.gameObject;
-                    prefab.GetComponent<EntityStateMachine>().SetState(new QuestVolatileBatteryQualityMonitor());
+                    if (NetworkServer.active)
+                    {
+                        self.UpdateTargets(RoR2Content.Equipment.QuestVolatileBattery.equipmentIndex, false);
+                        GameObject prefab = GameObject.Instantiate(_qualityVolatileBatteryAttachment);
+                        NetworkedBodyAttachment bodyAttachment = prefab.GetComponent<NetworkedBodyAttachment>();
+                        bodyAttachment.AttachToGameObjectAndSpawn(targetObject);
+                        QualityTierContext qualityTierContext = prefab.GetComponent<QualityTierContext>();
+                        qualityTierContext.QualityTier = self.GetCurrentEquipmentActionQualityTier();
+                        prefab.GetComponent<GenericOwnership>().ownerObject = self.gameObject;
+                        prefab.GetComponent<EntityStateMachine>().SetState(new QuestVolatileBatteryQualityMonitor());
+                    }
+                    
                     result = true;
                 }
             }
 
             return result;
         }
-    }
-
-    public class QualityCheck : MonoBehaviour
-    {
-        public QualityTier qualityTier;
     }
 }

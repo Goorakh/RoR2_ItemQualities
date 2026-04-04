@@ -1,5 +1,4 @@
 using ItemQualities;
-using ItemQualities.Equipments;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -38,7 +37,7 @@ namespace EntityStates.QuestVolatileBattery
         public override void OnEnter()
         {
             base.OnEnter();
-            if (!vfxPrefab)
+            if (!vfxPrefab || !networkedBodyAttachment.attachedBody)
             {
                 return;
             }
@@ -78,50 +77,57 @@ namespace EntityStates.QuestVolatileBattery
 
         public void Detonate()
         {
-            if ((bool)base.networkedBodyAttachment.attachedBody)
+            QualityTierContext qualityTierContext = GetComponent<QualityTierContext>();
+            if (!qualityTierContext || qualityTierContext.QualityTier <= QualityTier.None)
+                return;
+            GenericOwnership ownership = GetComponent<GenericOwnership>();
+            if (!ownership || !ownership.ownerObject)
+                return;
+            CharacterBody ownerBody = ownership.ownerObject.GetComponent<CharacterBody>();
+            if (!ownerBody)
+                return;
+
+            Vector3 corePosition = Vector3.zero;
+            if (base.networkedBodyAttachment.attachedBody)
             {
-                QualityCheck qualityCheck = GetComponent<QualityCheck>();
-                if (!qualityCheck || qualityCheck.qualityTier <= QualityTier.None)
-                    return;
-                GenericOwnership ownership = GetComponent<GenericOwnership>();
-                if (!ownership || !ownership.ownerObject)
-                    return;
-                CharacterBody ownerBody = ownership.ownerObject.GetComponent<CharacterBody>();
-                if (!ownerBody)
-                    return;
+                corePosition = base.networkedBodyAttachment.attachedBody.corePosition;
+            } else {
+                corePosition = base.transform.position;
+            }
+            float damageMul = qualityTierContext.QualityTier switch
+            {
+                QualityTier.Uncommon => 20,
+                QualityTier.Rare => 30,
+                QualityTier.Epic => 40,
+                QualityTier.Legendary => 50,
+                _ => 0
+            };
+            EffectManager.SpawnEffect(explosionEffectPrefab, new EffectData
+            {
+                origin = corePosition,
+                scale = explosionRadius
+            }, transmit: true);
 
-                Vector3 corePosition = base.networkedBodyAttachment.attachedBody.corePosition;
-                float damageMul = qualityCheck.qualityTier switch
-                {
-                    QualityTier.Uncommon => 20,
-                    QualityTier.Rare => 30,
-                    QualityTier.Epic => 40,
-                    QualityTier.Legendary => 50,
-                    _ => 0
-                };
-                EffectManager.SpawnEffect(explosionEffectPrefab, new EffectData
-                {
-                    origin = corePosition,
-                    scale = explosionRadius
-                }, transmit: true);
-
-                BlastAttack blastAttack = new BlastAttack();
-                blastAttack.position = corePosition + UnityEngine.Random.onUnitSphere;
-                blastAttack.radius = explosionRadius;
-                blastAttack.falloffModel = BlastAttack.FalloffModel.None;
-                blastAttack.attacker = ownerBody.gameObject;
-                blastAttack.inflictor = ownerBody.gameObject;
-                blastAttack.damageColorIndex = DamageColorIndex.Item;
-                blastAttack.baseDamage = ownerBody.baseDamage * damageMul;
-                blastAttack.baseForce = 5000f;
-                blastAttack.bonusForce = Vector3.zero;
-                blastAttack.attackerFiltering = AttackerFiltering.AlwaysHit;
-                blastAttack.crit = false;
-                blastAttack.procChainMask = default(ProcChainMask);
-                blastAttack.procCoefficient = 1f;
-                blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
-                blastAttack.Fire();
-                GameObject.Destroy(base.gameObject);
+            BlastAttack blastAttack = new BlastAttack();
+            blastAttack.position = corePosition + UnityEngine.Random.onUnitSphere;
+            blastAttack.radius = explosionRadius;
+            blastAttack.falloffModel = BlastAttack.FalloffModel.None;
+            blastAttack.attacker = ownerBody.gameObject;
+            blastAttack.inflictor = ownerBody.gameObject;
+            blastAttack.damageColorIndex = DamageColorIndex.Item;
+            blastAttack.baseDamage = ownerBody.baseDamage * damageMul;
+            blastAttack.baseForce = 5000f;
+            blastAttack.bonusForce = Vector3.zero;
+            blastAttack.attackerFiltering = AttackerFiltering.AlwaysHit;
+            blastAttack.crit = false;
+            blastAttack.procChainMask = default(ProcChainMask);
+            blastAttack.procCoefficient = 1f;
+            blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
+            blastAttack.Fire();
+            GameObject.Destroy(base.gameObject);
+            if (outer.state is QuestVolatileBatteryPickup)
+            {
+                GameObject.Destroy(base.transform.parent.gameObject);
             }
         }
     }
@@ -134,9 +140,12 @@ namespace EntityStates.QuestVolatileBattery
         {
             base.OnEnter();
             _pickupController = transform.parent.GetComponent<GenericPickupController>();
-            GameObject instance = _pickupController.pickupDisplay.modelRenderer.gameObject;
-            _vfxInstance = UnityEngine.Object.Instantiate(vfxPrefab, instance.transform);
-            _vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            if (_pickupController)
+            {
+                GameObject instance = _pickupController.pickupDisplay.modelRenderer.gameObject;
+                _vfxInstance = UnityEngine.Object.Instantiate(vfxPrefab, instance.transform);
+                _vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            }
         }
 
         public override void FixedUpdate()
