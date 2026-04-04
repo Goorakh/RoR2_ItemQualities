@@ -2,17 +2,20 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.Audio;
-using RoR2BepInExPack.GameAssetPaths.Version_1_39_0;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class DropPodQualityController : MonoBehaviour
+    public class DropPodQualityController : NetworkBehaviour
     {
         static Xoroshiro128Plus _rng;
         bool appliedQuality;
         bool hidQuality;
+
+        GenericPickupController _pickupController;
+        Transform _qualityPickupDisplay;
 
         [SystemInitializer]
         static void Init()
@@ -27,48 +30,47 @@ namespace ItemQualities
 
         public void FixedUpdate()
         {
-            if (appliedQuality && hidQuality)
+            if (!getWorldPickupAndController())
                 return;
-            ChildLocator childLocator = transform.Find("Base/mdlEscapePod").GetComponent<ChildLocator>();
-            if (!childLocator)
-                return;
-            Transform batteryAttachmentPoint = childLocator.FindChild("BatteryAttachmentPoint");
-            if (!batteryAttachmentPoint)
-                return;
-            Transform worldPickup = batteryAttachmentPoint.Find("QuestVolatileBatteryWorldPickup(Clone)");
-            if (!worldPickup)
-                return;
-            GenericPickupController pickupController = worldPickup.GetComponent<GenericPickupController>();
-            if (!pickupController || pickupController.pickup == null)
-                return;
-
-            if (NetworkServer.active)
+            if (NetworkServer.active && !appliedQuality)
             {
-                if (!appliedQuality)
-                {
-                    appliedQuality = true;
-                    _rng = new Xoroshiro128Plus(Run.instance.treasureRng.nextUlong);
-                    pickupController.pickup = pickupController.pickup.WithPickupIndex(DropTableQualityHandler.RollQuality(pickupController.pickup.pickupIndex, _rng, new PickupRollInfo(null, TeamIndex.Player)));
-                }
-            } else {
                 appliedQuality = true;
+                _rng = new Xoroshiro128Plus(Run.instance.treasureRng.nextUlong);
+                _pickupController.pickup = _pickupController.pickup.WithPickupIndex(DropTableQualityHandler.RollQuality(_pickupController.pickup.pickupIndex, _rng, new PickupRollInfo(null, TeamIndex.Player)));
             }
 
-            if (QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex) > QualityTier.None)
+            if (!hidQuality)
             {
-                Transform qualityPickupDisplay = worldPickup.Find("PickupDisplay/QualityPickupDisplay(Clone)");
-                if (qualityPickupDisplay)
+                if (_qualityPickupDisplay)
                 {
-                    qualityPickupDisplay.gameObject.SetActive(false);
+                    _qualityPickupDisplay.gameObject.SetActive(false);
                     hidQuality = true;
                 }
             }
-            else
-            {
-                hidQuality = true;
-            }
+        }
 
-            
+        bool getWorldPickupAndController()
+        {
+            if (_pickupController && _qualityPickupDisplay)
+                return true;
+            ChildLocator childLocator = transform.Find("Base/mdlEscapePod").GetComponent<ChildLocator>();
+            if (!childLocator)
+                return false;
+            Transform batteryAttachmentPoint = childLocator.FindChild("BatteryAttachmentPoint");
+            if (!batteryAttachmentPoint)
+                return false;
+            Transform worldPickup = batteryAttachmentPoint.Find("QuestVolatileBatteryWorldPickup(Clone)");
+            if (!worldPickup)
+                return false;
+            _pickupController = worldPickup.GetComponent<GenericPickupController>();
+            if (!_pickupController)
+                return false;
+            _qualityPickupDisplay = worldPickup.Find("PickupDisplay/QualityPickupDisplay(Clone)");
+            if (_qualityPickupDisplay)
+            {
+                return true;
+            }
+            return false;
         }
 
         private static void Opening_OnEnter(On.EntityStates.SurvivorPod.BatteryPanel.Opening.orig_OnEnter orig, EntityStates.SurvivorPod.BatteryPanel.Opening self)
@@ -86,22 +88,26 @@ namespace ItemQualities
             GenericPickupController pickupController = worldPickup.GetComponent<GenericPickupController>();
             if (!pickupController || pickupController.pickup == null)
                 return;
-
-            EffectData effectData = new EffectData
-            {
-                origin = worldPickup.position,
-                rotation = worldPickup.rotation
-            };
-
+            
             Transform qualityPickupDisplay = worldPickup.Find("PickupDisplay/QualityPickupDisplay(Clone)");
             if (qualityPickupDisplay)
             {
                 qualityPickupDisplay.gameObject.SetActive(true);
             }
+            
+            EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(pickupController.pickup.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
+            if (QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None)
+            {
+                EffectData effectData = new EffectData
+                {
+                    origin = worldPickup.position,
+                    rotation = worldPickup.rotation
+                };
 
-            QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex));
-            EffectManager.SpawnEffect(qualityTierDef.ChestOpenEffectPrefab, effectData, false);
-            PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSoundEventName, worldPickup.position);
+                QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex));
+                EffectManager.SpawnEffect(qualityTierDef.ChestOpenEffectPrefab, effectData, false);
+                PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSoundEventName, worldPickup.position);
+            }
         }
     }
 }

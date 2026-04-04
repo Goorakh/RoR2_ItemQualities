@@ -1,6 +1,4 @@
-using EntityStates;
 using EntityStates.QuestVolatileBattery;
-using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
@@ -59,9 +57,9 @@ namespace ItemQualities.Equipments
                     GameObject prefab = GameObject.Instantiate(_qualityVolatileBatteryAttachment);
                     NetworkedBodyAttachment bodyAttachment = prefab.GetComponent<NetworkedBodyAttachment>();
                     bodyAttachment.AttachToGameObjectAndSpawn(context.controller.gameObject);
-                    prefab.GetComponent<EntityStateMachine>().SetState(new QuestVolatileBatteryPickup());
-                    prefab.GetComponent<GenericOwnership>().ownerObject = context.body.gameObject;
                     prefab.GetComponent<QualityTierContext>().QualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
+                    prefab.GetComponent<GenericOwnership>().ownerObject = context.body.gameObject;
+                    prefab.GetComponent<EntityStateMachine>().SetState(new QuestVolatileBatteryPickup());
                 }
             }
         }
