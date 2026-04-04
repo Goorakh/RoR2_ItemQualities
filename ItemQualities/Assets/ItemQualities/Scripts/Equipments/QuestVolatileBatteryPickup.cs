@@ -103,7 +103,7 @@ namespace ItemQualities
             {
                 blastAttack.attacker = ownerBody.gameObject;
                 blastAttack.inflictor = ownerBody.gameObject;
-                blastAttack.baseDamage = ownerBody.baseDamage * damageMul;
+                blastAttack.baseDamage = ownerBody.damage * damageMul;
                 blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
             } else {
                 blastAttack.baseDamage = (Run.instance.ambientLevelFloor * 2 + 10) * damageMul;

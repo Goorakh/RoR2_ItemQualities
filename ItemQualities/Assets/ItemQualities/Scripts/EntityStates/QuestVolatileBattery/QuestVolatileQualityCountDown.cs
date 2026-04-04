@@ -115,7 +115,7 @@ namespace EntityStates.QuestVolatileBattery
             blastAttack.attacker = ownerBody.gameObject;
             blastAttack.inflictor = ownerBody.gameObject;
             blastAttack.damageColorIndex = DamageColorIndex.Item;
-            blastAttack.baseDamage = ownerBody.baseDamage * damageMul;
+            blastAttack.baseDamage = ownerBody.damage * damageMul;
             blastAttack.baseForce = 5000f;
             blastAttack.bonusForce = Vector3.zero;
             blastAttack.attackerFiltering = AttackerFiltering.AlwaysHit;
