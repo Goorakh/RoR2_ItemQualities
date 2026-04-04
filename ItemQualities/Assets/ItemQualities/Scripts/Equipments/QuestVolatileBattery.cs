@@ -1,4 +1,5 @@
 using EntityStates.QuestVolatileBattery;
+using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
@@ -25,12 +26,15 @@ namespace ItemQualities.Equipments
         {
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
-            On.RoR2.EquipmentDef.AttemptGrant += AttemptGrant;
+            On.RoR2.GenericPickupController.OnInteractionBegin += GenericPickupController_OnInteractionBegin;
+            On.RoR2.GenericPickupController.OnEnable += GenericPickupController_OnEnable;
         }
 
         [ContentInitializer]
         static IEnumerator LoadContent(ContentIntializerArgs args)
         {
+            ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
+
             AsyncOperationHandle<GameObject> QuestVolatileBatteryAttachmentLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.QuestVolatileBatteryAttachment_prefab);
             QuestVolatileBatteryAttachmentLoad.OnSuccess(QuestVolatileBatteryAttachmentPrefab =>
             {
@@ -39,31 +43,42 @@ namespace ItemQualities.Equipments
                 _qualityVolatileBatteryAttachment.AddComponent<GenericOwnership>();
                 args.ContentPack.networkedObjectPrefabs.Add(_qualityVolatileBatteryAttachment);
             });
+            coroutine.Add(QuestVolatileBatteryAttachmentLoad);
 
-            return QuestVolatileBatteryAttachmentLoad.AsProgressCoroutine(args.ProgressReceiver);
+            return coroutine;
         }
 
-        private static void AttemptGrant(On.RoR2.EquipmentDef.orig_AttemptGrant orig, ref PickupDef.GrantContext context)
+        private static void GenericPickupController_OnEnable(On.RoR2.GenericPickupController.orig_OnEnable orig, GenericPickupController self)
         {
-            orig(ref context);
+            orig(self);
+            if (!self.transform.parent)
+            {
+                pickupAddExplosion(self.pickup.pickupIndex, self.transform);
+            }
+        }
 
+        private static void GenericPickupController_OnInteractionBegin(On.RoR2.GenericPickupController.orig_OnInteractionBegin orig, GenericPickupController self, Interactor activator)
+        {
+            orig(self, activator);
+            pickupAddExplosion(self.pickup.pickupIndex, self.transform, activator.gameObject);
+        }
+
+        static void pickupAddExplosion(PickupIndex pickupIndex, Transform parent, GameObject owner = null)
+        {
             if (NetworkServer.active)
             {
-                EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(context.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
+                EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
                 EquipmentQualityGroupIndex equipmentGroup = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
                 if (QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None &&
                 equipmentGroup == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex)
                 {
-                    GameObject prefab = GameObject.Instantiate(_qualityVolatileBatteryAttachment);
-                    NetworkedBodyAttachment bodyAttachment = prefab.GetComponent<NetworkedBodyAttachment>();
-                    bodyAttachment.AttachToGameObjectAndSpawn(context.controller.gameObject);
+                    GameObject prefab = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.QuestVolatileBatteryPickup, parent);
                     prefab.GetComponent<QualityTierContext>().QualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
-                    prefab.GetComponent<GenericOwnership>().ownerObject = context.body.gameObject;
-                    prefab.GetComponent<EntityStateMachine>().SetState(new QuestVolatileBatteryPickup());
+                    prefab.GetComponent<GenericOwnership>().ownerObject = owner;
+                    NetworkServer.Spawn(prefab);
                 }
             }
         }
-
 
         static void EquipmentSlot_UpdateTargets(ILContext il)
         {

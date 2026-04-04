@@ -902,6 +902,8 @@ namespace ItemQualities
             public static GameObject BugSwarmController;
 
             public static GameObject HealAndReviveSproutAttachment;
+
+            public static GameObject QuestVolatileBatteryPickup;
         }
 
         public static class ProjectilePrefabs

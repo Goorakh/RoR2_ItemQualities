@@ -125,41 +125,6 @@ namespace EntityStates.QuestVolatileBattery
             blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
             blastAttack.Fire();
             GameObject.Destroy(base.gameObject);
-            if (outer.state is QuestVolatileBatteryPickup)
-            {
-                GameObject.Destroy(base.transform.parent.gameObject);
-            }
-        }
-    }
-
-    public class QuestVolatileBatteryPickup : QuestVolatileBatteryQualityCountDown
-    {
-        GenericPickupController _pickupController;
-
-        public override void OnEnter()
-        {
-            base.OnEnter();
-            _pickupController = transform.parent.GetComponent<GenericPickupController>();
-            if (_pickupController)
-            {
-                GameObject instance = _pickupController.pickupDisplay.modelRenderer.gameObject;
-                _vfxInstance = UnityEngine.Object.Instantiate(vfxPrefab, instance.transform);
-                _vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            }
-        }
-
-        public override void FixedUpdate()
-        {
-            base.FixedUpdate();
-
-            if (!_pickupController || !_pickupController.pickup.isValid)
-                return;
-            EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(_pickupController.pickup.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
-            if (QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex) != ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex ||
-                QualityCatalog.GetQualityTier(equipmentIndex) <= QualityTier.None)
-            {
-                GameObject.Destroy(base.gameObject);
-            }
         }
     }
 }
