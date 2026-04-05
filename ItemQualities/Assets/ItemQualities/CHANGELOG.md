@@ -8,6 +8,13 @@
         * Epic: 9 seconds (+9 seconds per stack)
         * Legendary: 12 seconds (+12 seconds per stack)
 
+* Prayer Beads:
+    * Monster level reduction:
+        * Uncommon: 5 -> 2
+        * Rare: 7 -> 4
+        * Epic: 10 -> 6
+        * Legendary: 15 -> 8
+
 * Warped Echo:
     * Chance to apply echo on hit:
         * Uncommon: 1% (+1% per stack)

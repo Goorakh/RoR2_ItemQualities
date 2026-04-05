@@ -113,10 +113,10 @@ namespace ItemQualities.Items
                                        (3 * beadsSpent.EpicCount) +
                                        (5 * beadsSpent.LegendaryCount);
 
-                int ambientLevelPenalty = (5 * beadsSpent.UncommonCount) +
-                                          (7 * beadsSpent.RareCount) +
-                                          (10 * beadsSpent.EpicCount) +
-                                          (15 * beadsSpent.LegendaryCount);
+                int ambientLevelPenalty = (2 * beadsSpent.UncommonCount) +
+                                          (4 * beadsSpent.RareCount) +
+                                          (6 * beadsSpent.EpicCount) +
+                                          (8 * beadsSpent.LegendaryCount);
 
                 if (playerLevelBonus > 0)
                 {
