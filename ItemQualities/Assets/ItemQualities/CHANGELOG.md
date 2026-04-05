@@ -53,7 +53,7 @@
 * Resonance Disc:
     * Now always targets the last hit enemy when charged.
 
-* Missile
+* AtG Missile Mk. 1
     * Increased big missile explosion radius: 3 -> 10
     * Increased chance for missile proc:
         * Uncommon: 15%
@@ -140,7 +140,7 @@
     * Removed base max health and duration increase.
 
 * Rusted Key & Encrusted Key:
-    * Fixed temporary keys not being used when opening a lockbox.
+    * Fixed temporary quality keys not being used when opening a lockbox.
 
 * Delicate Watch:
     * No longer counts parried damage as a hit
