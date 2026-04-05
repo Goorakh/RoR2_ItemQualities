@@ -147,19 +147,24 @@ namespace ItemQualities.Equipments
             return result;
         }
 
-        public static void Detonate(GameObject gameObject, bool isPickup, GameObject parenttest = null)
+        public static void Detonate(GameObject victimObject, bool isPickup)
         {
             if (!NetworkServer.active)
                 return;
-            QualityTierContext qualityTierContext = gameObject.GetComponent<QualityTierContext>();
+
+            QualityTierContext qualityTierContext = victimObject.GetComponent<QualityTierContext>();
             if (!qualityTierContext || qualityTierContext.QualityTier <= QualityTier.None)
                 return;
+
             CharacterBody ownerBody = null;
-            GenericOwnership ownership = gameObject.GetComponent<GenericOwnership>();
+            GenericOwnership ownership = victimObject.GetComponent<GenericOwnership>();
             if (ownership && ownership.ownerObject)
             {
                 ownerBody = ownership.ownerObject.GetComponent<CharacterBody>();
             }
+
+            CharacterBody victimBody = victimObject.GetComponent<CharacterBody>();
+            GenericPickupController victimPickupController = victimObject.GetComponent<GenericPickupController>();
 
             float damageMul = qualityTierContext.QualityTier switch
             {
@@ -169,21 +174,32 @@ namespace ItemQualities.Equipments
                 QualityTier.Legendary => 50,
                 _ => 0
             };
+
             if (isPickup)
             {
                 damageMul *= 10;
+            }
+
+            Vector3 explosionPosition = victimObject.transform.position;
+            if (victimBody)
+            {
+                explosionPosition = victimBody.corePosition;
+            }
+            else if (victimPickupController && victimPickupController.pickupDisplay)
+            {
+                explosionPosition = victimPickupController.pickupDisplay.transform.position;
             }
 
             float explosionRadius = ExplodeOnDeath.GetExplosionRadius(30f, ownerBody);
 
             EffectManager.SpawnEffect(_explosionEffectPrefab, new EffectData
             {
-                origin = gameObject.transform.position,
+                origin = explosionPosition,
                 scale = explosionRadius,
             }, transmit: true);
 
             BlastAttack blastAttack = new BlastAttack();
-            blastAttack.position = gameObject.transform.position + UnityEngine.Random.onUnitSphere;
+            blastAttack.position = explosionPosition + UnityEngine.Random.onUnitSphere;
             blastAttack.falloffModel = BlastAttack.FalloffModel.None;
             if (ownerBody)
             {
@@ -209,9 +225,9 @@ namespace ItemQualities.Equipments
             blastAttack.Fire();
             if (isPickup)
             {
-                GameObject.Destroy(gameObject.transform.parent.gameObject);
+                GameObject.Destroy(victimObject.transform.parent.gameObject);
             } else {
-                GameObject.Destroy(gameObject);
+                GameObject.Destroy(victimObject);
             }
         }
     }
