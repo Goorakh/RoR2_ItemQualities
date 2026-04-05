@@ -340,16 +340,16 @@
         "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
         "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds.",
 
-        "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Give an enemy a Fuel Array, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
         "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>2000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 75 second cooldown.",
 
-        "EQUIPMENT_QUESTVOLATILEBATTERY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Give an enemy a Fuel Array, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
         "EQUIPMENT_QUESTVOLATILEBATTERY_RARE_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>3000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 60 second cooldown.",
 
-        "EQUIPMENT_QUESTVOLATILEBATTERY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Give an enemy a Fuel Array, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
         "EQUIPMENT_QUESTVOLATILEBATTERY_EPIC_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>4000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 45 second cooldown.",
 
-        "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Give an enemy a Fuel Array, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
         "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>5000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 30 second cooldown.",
     }
 }

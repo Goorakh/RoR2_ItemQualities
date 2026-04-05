@@ -1,6 +1,8 @@
 using EntityStates.QuestVolatileBattery;
+using HG;
 using HG.Coroutines;
 using ItemQualities.ContentManagement;
+using ItemQualities.Items;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
@@ -20,14 +22,19 @@ namespace ItemQualities.Equipments
     static class QuestVolatileBattery
     {
         static GameObject _qualityVolatileBatteryAttachment;
+        static GameObject _explosionEffectPrefab;
 
         [SystemInitializer]
         static void Init()
         {
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
-            On.RoR2.GenericPickupController.OnInteractionBegin += GenericPickupController_OnInteractionBegin;
-            On.RoR2.GenericPickupController.OnEnable += GenericPickupController_OnEnable;
+            On.RoR2.GenericPickupController.Start += GenericPickupController_Start;
+
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryExplosion_prefab).OnSuccess(VolatileBatteryExplosion =>
+            {
+                _explosionEffectPrefab = VolatileBatteryExplosion;
+            });
         }
 
         [ContentInitializer]
@@ -48,34 +55,27 @@ namespace ItemQualities.Equipments
             return coroutine;
         }
 
-        private static void GenericPickupController_OnEnable(On.RoR2.GenericPickupController.orig_OnEnable orig, GenericPickupController self)
+        private static void GenericPickupController_Start(On.RoR2.GenericPickupController.orig_Start orig, GenericPickupController self)
         {
-            orig(self);
-            if (!self.transform.parent)
+            if (!self.transform.parent && NetworkServer.active)
             {
-                pickupAddExplosion(self.pickup.pickupIndex, self.transform);
+                if (!self.transform.Find("QuestVolatileBatteryPickup(Clone)"))
+                {
+                    GameObject prefab = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.QuestVolatileBatteryPickup, self.transform);
+                    NetworkServer.Spawn(prefab);
+                }
             }
         }
 
         private static void GenericPickupController_OnInteractionBegin(On.RoR2.GenericPickupController.orig_OnInteractionBegin orig, GenericPickupController self, Interactor activator)
         {
             orig(self, activator);
-            pickupAddExplosion(self.pickup.pickupIndex, self.transform, activator.gameObject);
-        }
-
-        static void pickupAddExplosion(PickupIndex pickupIndex, Transform parent, GameObject owner = null)
-        {
-            if (NetworkServer.active)
+            Transform questVolatileBatteryPickup = self.transform.Find("QuestVolatileBatteryPickup(Clone)");
+            if (questVolatileBatteryPickup)
             {
-                EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
-                EquipmentQualityGroupIndex equipmentGroup = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
-                if (QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None &&
-                equipmentGroup == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex)
+                if (questVolatileBatteryPickup.TryGetComponent<GenericOwnership>(out GenericOwnership ownership))
                 {
-                    GameObject prefab = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.QuestVolatileBatteryPickup, parent);
-                    prefab.GetComponent<QualityTierContext>().QualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
-                    prefab.GetComponent<GenericOwnership>().ownerObject = owner;
-                    NetworkServer.Spawn(prefab);
+                    ownership.ownerObject = activator.gameObject;
                 }
             }
         }
@@ -145,6 +145,72 @@ namespace ItemQualities.Equipments
             }
 
             return result;
+        }
+
+        public static void Detonate(GameObject gameObject, bool isPickup, GameObject parenttest = null)
+        {
+            if (!NetworkServer.active)
+                return;
+            QualityTierContext qualityTierContext = gameObject.GetComponent<QualityTierContext>();
+            if (!qualityTierContext || qualityTierContext.QualityTier <= QualityTier.None)
+                return;
+            CharacterBody ownerBody = null;
+            GenericOwnership ownership = gameObject.GetComponent<GenericOwnership>();
+            if (ownership && ownership.ownerObject)
+            {
+                ownerBody = ownership.ownerObject.GetComponent<CharacterBody>();
+            }
+
+            float damageMul = qualityTierContext.QualityTier switch
+            {
+                QualityTier.Uncommon => 20,
+                QualityTier.Rare => 30,
+                QualityTier.Epic => 40,
+                QualityTier.Legendary => 50,
+                _ => 0
+            };
+            if (isPickup)
+            {
+                damageMul *= 10;
+            }
+            
+            EffectManager.SpawnEffect(_explosionEffectPrefab, new EffectData
+            {
+                origin = gameObject.transform.position,
+                scale = 30,
+            }, transmit: true);
+
+            BlastAttack blastAttack = new BlastAttack();
+            blastAttack.position = gameObject.transform.position + UnityEngine.Random.onUnitSphere;
+            blastAttack.falloffModel = BlastAttack.FalloffModel.None;
+            if (ownerBody)
+            {
+                blastAttack.attacker = ownerBody.gameObject;
+                blastAttack.inflictor = ownerBody.gameObject;
+                blastAttack.baseDamage = ownerBody.damage * damageMul;
+                blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
+                blastAttack.radius = ExplodeOnDeath.GetExplosionRadius(30, ownerBody);
+                blastAttack.crit = ownerBody.RollCrit();
+            }
+            else
+            {
+                blastAttack.baseDamage = (Run.instance.ambientLevelFloor * 2 + 10) * damageMul;
+                blastAttack.radius = 30;
+                blastAttack.crit = false;
+            }
+            blastAttack.damageColorIndex = DamageColorIndex.Item;
+            blastAttack.baseForce = 5000f;
+            blastAttack.bonusForce = Vector3.zero;
+            blastAttack.attackerFiltering = AttackerFiltering.AlwaysHit;
+            blastAttack.procChainMask = default(ProcChainMask);
+            blastAttack.procCoefficient = 1f;
+            blastAttack.Fire();
+            if (isPickup)
+            {
+                GameObject.Destroy(gameObject.transform.parent.gameObject);
+            } else {
+                GameObject.Destroy(gameObject);
+            }
         }
     }
 }

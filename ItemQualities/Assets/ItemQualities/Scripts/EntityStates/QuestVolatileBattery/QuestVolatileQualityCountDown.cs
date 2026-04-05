@@ -1,4 +1,3 @@
-using ItemQualities;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -14,12 +13,10 @@ namespace EntityStates.QuestVolatileBattery
         public static float duration;
         public static float explosionRadius;
 
-        protected GameObject _vfxInstance;
+        GameObject _vfxInstance;
 
         [NonSerialized]
         public static GameObject vfxPrefab;
-        [NonSerialized]
-        public static GameObject explosionEffectPrefab;
 
         [SystemInitializer]
         static void Init()
@@ -27,10 +24,6 @@ namespace EntityStates.QuestVolatileBattery
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryPreDetonation_prefab).OnSuccess(VolatileBatteryPreDetonation =>
             {
                 vfxPrefab = VolatileBatteryPreDetonation;
-            });
-            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryExplosion_prefab).OnSuccess(VolatileBatteryExplosion =>
-            {
-                explosionEffectPrefab = VolatileBatteryExplosion;
             });
         }
 
@@ -71,60 +64,8 @@ namespace EntityStates.QuestVolatileBattery
         {
             if (base.fixedAge >= duration)
             {
-                Detonate();
+                ItemQualities.Equipments.QuestVolatileBattery.Detonate(base.gameObject, false);
             }
-        }
-
-        public void Detonate()
-        {
-            QualityTierContext qualityTierContext = GetComponent<QualityTierContext>();
-            if (!qualityTierContext || qualityTierContext.QualityTier <= QualityTier.None)
-                return;
-            GenericOwnership ownership = GetComponent<GenericOwnership>();
-            if (!ownership || !ownership.ownerObject)
-                return;
-            CharacterBody ownerBody = ownership.ownerObject.GetComponent<CharacterBody>();
-            if (!ownerBody)
-                return;
-
-            Vector3 corePosition = Vector3.zero;
-            if (base.networkedBodyAttachment.attachedBody)
-            {
-                corePosition = base.networkedBodyAttachment.attachedBody.corePosition;
-            } else {
-                corePosition = base.transform.position;
-            }
-            float damageMul = qualityTierContext.QualityTier switch
-            {
-                QualityTier.Uncommon => 20,
-                QualityTier.Rare => 30,
-                QualityTier.Epic => 40,
-                QualityTier.Legendary => 50,
-                _ => 0
-            };
-            EffectManager.SpawnEffect(explosionEffectPrefab, new EffectData
-            {
-                origin = corePosition,
-                scale = explosionRadius
-            }, transmit: true);
-
-            BlastAttack blastAttack = new BlastAttack();
-            blastAttack.position = corePosition + UnityEngine.Random.onUnitSphere;
-            blastAttack.radius = explosionRadius;
-            blastAttack.falloffModel = BlastAttack.FalloffModel.None;
-            blastAttack.attacker = ownerBody.gameObject;
-            blastAttack.inflictor = ownerBody.gameObject;
-            blastAttack.damageColorIndex = DamageColorIndex.Item;
-            blastAttack.baseDamage = ownerBody.damage * damageMul;
-            blastAttack.baseForce = 5000f;
-            blastAttack.bonusForce = Vector3.zero;
-            blastAttack.attackerFiltering = AttackerFiltering.AlwaysHit;
-            blastAttack.crit = false;
-            blastAttack.procChainMask = default(ProcChainMask);
-            blastAttack.procCoefficient = 1f;
-            blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
-            blastAttack.Fire();
-            GameObject.Destroy(base.gameObject);
         }
     }
 }

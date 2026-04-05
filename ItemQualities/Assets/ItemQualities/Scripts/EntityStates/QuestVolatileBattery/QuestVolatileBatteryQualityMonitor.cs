@@ -26,16 +26,52 @@ namespace EntityStates.QuestVolatileBattery
             VolatileBatteryPreDetLoad.OnSuccess(VolatileBatteryPreDetPrefab =>
             {
                 qualityBatteryPreDet = VolatileBatteryPreDetPrefab.InstantiateClone("QualityVolatileBatteryPreDet", false);
-                GameObject.Destroy(qualityBatteryPreDet.GetComponent<LoopSound>());
-                GameObject.Destroy(qualityBatteryPreDet.GetComponent<ShakeEmitter>());
-                GameObject.Destroy(qualityBatteryPreDet.transform.Find("PP").gameObject);
-                GameObject.Destroy(qualityBatteryPreDet.transform.Find("LightShafts").gameObject);
-                GameObject.Destroy(qualityBatteryPreDet.transform.Find("Pulse").gameObject);
-                GameObject.Destroy(qualityBatteryPreDet.transform.Find("Lightning").gameObject);
-                GameObject.Destroy(qualityBatteryPreDet.transform.Find("Flames").gameObject);
-                GameObject.Destroy(qualityBatteryPreDet.transform.Find("ShakeEmitter").gameObject);
-                GameObject.Destroy(qualityBatteryPreDet.transform.Find("Mesh Pulse").gameObject);
-                if (qualityBatteryPreDet.transform.Find("Sparks, Trail").TryGetComponent<ParticleSystem>(out ParticleSystem particleSystem))
+                
+                if (qualityBatteryPreDet.TryGetComponent<ShakeEmitter>(out ShakeEmitter shakeEmitter))
+                {
+                    GameObject.Destroy(shakeEmitter);
+                }
+                if (qualityBatteryPreDet.TryGetComponent<LoopSound>(out LoopSound loopSound))
+                {
+                    GameObject.Destroy(loopSound);
+                }
+                Transform PP = qualityBatteryPreDet.transform.Find("PP");
+                if (PP)
+                {
+                    GameObject.Destroy(PP.gameObject);
+                }
+                Transform LightShafts = qualityBatteryPreDet.transform.Find("LightShafts");
+                if (LightShafts)
+                {
+                    GameObject.Destroy(LightShafts.gameObject);
+                }
+                Transform Pulse = qualityBatteryPreDet.transform.Find("Pulse");
+                if (Pulse)
+                {
+                    GameObject.Destroy(Pulse.gameObject);
+                }
+                Transform Lightning = qualityBatteryPreDet.transform.Find("Lightning");
+                if (Lightning)
+                {
+                    GameObject.Destroy(Pulse.gameObject);
+                }
+                Transform Flames = qualityBatteryPreDet.transform.Find("Flames");
+                if (Flames)
+                {
+                    GameObject.Destroy(Pulse.gameObject);
+                }
+                Transform ShakeEmitter = qualityBatteryPreDet.transform.Find("ShakeEmitter");
+                if (ShakeEmitter)
+                {
+                    GameObject.Destroy(Pulse.gameObject);
+                }
+                Transform Mesh_Pulse = qualityBatteryPreDet.transform.Find("Mesh Pulse");
+                if (Mesh_Pulse)
+                {
+                    GameObject.Destroy(Pulse.gameObject);
+                }
+                Transform Sparks_Trail = qualityBatteryPreDet.transform.Find("Sparks, Trail");
+                if (Sparks_Trail && Sparks_Trail.TryGetComponent<ParticleSystem>(out ParticleSystem particleSystem))
                 {
                     ParticleSystem.MainModule main = particleSystem.main;
                     main.simulationSpeed = 0.5f;

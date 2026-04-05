@@ -8,9 +8,8 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class DropPodQualityController : NetworkBehaviour
+    public class DropPodQualityController : MonoBehaviour
     {
-        static Xoroshiro128Plus _rng;
         bool appliedQuality;
         bool hidQuality;
 
@@ -35,8 +34,8 @@ namespace ItemQualities
             if (NetworkServer.active && !appliedQuality)
             {
                 appliedQuality = true;
-                _rng = new Xoroshiro128Plus(Run.instance.treasureRng.nextUlong);
-                _pickupController.pickup = _pickupController.pickup.WithPickupIndex(DropTableQualityHandler.RollQuality(_pickupController.pickup.pickupIndex, _rng, new PickupRollInfo(null, TeamIndex.Player)));
+                Xoroshiro128Plus rng = new Xoroshiro128Plus(Run.instance.treasureRng.nextUlong);
+                _pickupController.pickup = _pickupController.pickup.WithPickupIndex(DropTableQualityHandler.RollQuality(_pickupController.pickup.pickupIndex, rng, new PickupRollInfo(null, TeamIndex.Player)));
             }
 
             if (!hidQuality)
@@ -53,10 +52,10 @@ namespace ItemQualities
         {
             if (_pickupController && _qualityPickupDisplay)
                 return true;
-            ChildLocator childLocator = transform.Find("Base/mdlEscapePod").GetComponent<ChildLocator>();
-            if (!childLocator)
+            ModelLocator modelLocator = GetComponent<ModelLocator>();
+            if (!modelLocator)
                 return false;
-            Transform batteryAttachmentPoint = childLocator.FindChild("BatteryAttachmentPoint");
+            Transform batteryAttachmentPoint = modelLocator.modelChildLocator.FindChild("BatteryAttachmentPoint");
             if (!batteryAttachmentPoint)
                 return false;
             Transform worldPickup = batteryAttachmentPoint.Find("QuestVolatileBatteryWorldPickup(Clone)");
@@ -76,6 +75,8 @@ namespace ItemQualities
         private static void Opening_OnEnter(On.EntityStates.SurvivorPod.BatteryPanel.Opening.orig_OnEnter orig, EntityStates.SurvivorPod.BatteryPanel.Opening self)
         {
             orig(self);
+            if (!self.podInfo.podAnimator)
+                return;
             ChildLocator childLocator = self.podInfo.podAnimator.GetComponent<ChildLocator>();
             if (!childLocator)
                 return;

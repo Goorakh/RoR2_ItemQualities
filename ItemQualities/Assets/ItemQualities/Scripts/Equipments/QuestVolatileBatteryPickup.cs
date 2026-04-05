@@ -7,12 +7,12 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class QuestVolatileBatteryPickup : MonoBehaviour
+    public class QuestVolatileBatteryPickup : NetworkBehaviour
     {
         GenericPickupController _pickupController;
+        QualityTierContext _qualityTierContext;
 
         static GameObject _vfxPrefab;
-        static GameObject _explosionEffectPrefab;
         GameObject _vfxInstance;
         float _timer;
 
@@ -23,100 +23,49 @@ namespace ItemQualities
             {
                 _vfxPrefab = VolatileBatteryPreDetonation;
             });
-            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryExplosion_prefab).OnSuccess(VolatileBatteryExplosion =>
-            {
-                _explosionEffectPrefab = VolatileBatteryExplosion;
-            });
         }
 
-        void Begin()
+        bool Begin()
         {
             if (!transform.parent)
-                return;
-            _pickupController = transform.parent.GetComponent<GenericPickupController>();
-            if (_pickupController)
+                return false;
+            if (_pickupController && _qualityTierContext)
             {
-                GameObject instance = _pickupController.pickupDisplay.modelRenderer.gameObject;
-                _vfxInstance = UnityEngine.Object.Instantiate(_vfxPrefab, instance.transform);
-                _vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                return true;
             }
+            _pickupController = transform.parent.GetComponent<GenericPickupController>();
+            if (!_pickupController || !_pickupController.pickup.isValid)
+                return false;
+            _qualityTierContext = GetComponent<QualityTierContext>();
+            if (!_qualityTierContext)
+                return false;
+            return true;
         }
 
         private void FixedUpdate()
         {
-            _timer += Time.deltaTime;
-            if (!_pickupController)
-            {
-                Begin();
-            }
-            if (!_pickupController || !_pickupController.pickup.isValid)
+            if (!Begin())
                 return;
-            EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(_pickupController.pickup.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
-            if (QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex) != ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex ||
-                QualityCatalog.GetQualityTier(equipmentIndex) <= QualityTier.None)
+            _timer += Time.deltaTime;
+
+            if (!_vfxInstance)
             {
-                GameObject.Destroy(base.gameObject);
+                _timer = 0;
+                EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(_pickupController.pickup.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
+                if (QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex) == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex &&
+                    QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None)
+                {
+                    GetComponent<QualityTierContext>().QualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
+                    GameObject displayParent = _pickupController.pickupDisplay.modelRenderer.gameObject;
+                    _vfxInstance = UnityEngine.Object.Instantiate(_vfxPrefab, displayParent.transform);
+                    _vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                }
             }
 
             if (_timer >= 3f)
             {
-                Detonate();
+                Equipments.QuestVolatileBattery.Detonate(base.gameObject, true);
             }
-        }
-
-        public void Detonate()
-        {
-            if (!NetworkServer.active) 
-                return;
-            QualityTierContext qualityTierContext = GetComponent<QualityTierContext>();
-            if (!qualityTierContext || qualityTierContext.QualityTier <= QualityTier.None)
-                return;
-            CharacterBody ownerBody = null;
-            GenericOwnership ownership = GetComponent<GenericOwnership>();
-            if (ownership && ownership.ownerObject)
-            {
-                ownerBody = ownership.ownerObject.GetComponent<CharacterBody>();
-            }
-
-            Vector3 corePosition = Vector3.zero;
-            corePosition = base.transform.position;
-            float damageMul = qualityTierContext.QualityTier switch
-            {
-                QualityTier.Uncommon => 20,
-                QualityTier.Rare => 30,
-                QualityTier.Epic => 40,
-                QualityTier.Legendary => 50,
-                _ => 0
-            };
-            damageMul *= 10;
-            EffectManager.SpawnEffect(_explosionEffectPrefab, new EffectData
-            {
-                origin = corePosition,
-                scale = 30
-            }, transmit: true);
-
-            BlastAttack blastAttack = new BlastAttack();
-            blastAttack.position = corePosition + UnityEngine.Random.onUnitSphere;
-            blastAttack.radius = 30;
-            blastAttack.falloffModel = BlastAttack.FalloffModel.None;
-            if (ownerBody)
-            {
-                blastAttack.attacker = ownerBody.gameObject;
-                blastAttack.inflictor = ownerBody.gameObject;
-                blastAttack.baseDamage = ownerBody.damage * damageMul;
-                blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
-            } else {
-                blastAttack.baseDamage = (Run.instance.ambientLevelFloor * 2 + 10) * damageMul;
-            }
-            blastAttack.damageColorIndex = DamageColorIndex.Item;
-            blastAttack.baseForce = 5000f;
-            blastAttack.bonusForce = Vector3.zero;
-            blastAttack.attackerFiltering = AttackerFiltering.AlwaysHit;
-            blastAttack.crit = false;
-            blastAttack.procChainMask = default(ProcChainMask);
-            blastAttack.procCoefficient = 1f;
-            blastAttack.Fire();
-            GameObject.Destroy(base.transform.parent.gameObject);
         }
     }
 }
