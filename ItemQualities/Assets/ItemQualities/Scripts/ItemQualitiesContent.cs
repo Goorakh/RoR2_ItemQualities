@@ -769,6 +769,8 @@ namespace ItemQualities
 
             public static EquipmentQualityGroup HealAndReviveConsumed;
 
+            public static EquipmentQualityGroup QuestVolatileBattery;
+            
             public static EquipmentQualityGroup Fruit;
 
             public static EquipmentQualityGroup Gateway;
@@ -909,6 +911,8 @@ namespace ItemQualities
 
             public static GameObject HealAndReviveSproutAttachment;
 
+            public static GameObject QuestVolatileBatteryPickup;
+            
             public static GameObject SprintArmorDashAttachment;
 
             public static GameObject GatewayQualityAttachment;
