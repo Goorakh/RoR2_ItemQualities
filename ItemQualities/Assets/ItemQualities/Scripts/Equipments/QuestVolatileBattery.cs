@@ -173,11 +173,13 @@ namespace ItemQualities.Equipments
             {
                 damageMul *= 10;
             }
-            
+
+            float explosionRadius = ExplodeOnDeath.GetExplosionRadius(30f, ownerBody);
+
             EffectManager.SpawnEffect(_explosionEffectPrefab, new EffectData
             {
                 origin = gameObject.transform.position,
-                scale = 30,
+                scale = explosionRadius,
             }, transmit: true);
 
             BlastAttack blastAttack = new BlastAttack();
@@ -189,13 +191,13 @@ namespace ItemQualities.Equipments
                 blastAttack.inflictor = ownerBody.gameObject;
                 blastAttack.baseDamage = ownerBody.damage * damageMul;
                 blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
-                blastAttack.radius = ExplodeOnDeath.GetExplosionRadius(30, ownerBody);
+                blastAttack.radius = explosionRadius;
                 blastAttack.crit = ownerBody.RollCrit();
             }
             else
             {
                 blastAttack.baseDamage = (Run.instance.ambientLevelFloor * 2 + 10) * damageMul;
-                blastAttack.radius = 30;
+                blastAttack.radius = explosionRadius;
                 blastAttack.crit = false;
             }
             blastAttack.damageColorIndex = DamageColorIndex.Item;
