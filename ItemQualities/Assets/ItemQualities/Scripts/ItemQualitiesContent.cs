@@ -770,6 +770,10 @@ namespace ItemQualities
             public static EquipmentQualityGroup HealAndReviveConsumed;
 
             public static EquipmentQualityGroup QuestVolatileBattery;
+            
+            public static EquipmentQualityGroup Fruit;
+
+            public static EquipmentQualityGroup Gateway;
         }
 
         public static class BuffQualityGroups
@@ -827,7 +831,9 @@ namespace ItemQualities
         {
             public static BuffDef BossStun;
 
-            public static BuffDef SprintArmorStrong;
+            public static BuffDef SprintArmorWeaken;
+
+            public static BuffDef SprintArmorDashCooldown;
 
             public static BuffDef HealCritBoost;
 
@@ -842,6 +848,8 @@ namespace ItemQualities
             public static BuffDef SlugHealth;
 
             public static BuffDef MiniBossCooldown;
+
+            public static BuffDef LifeStealSpeed;
         }
 
         public static class Prefabs
@@ -904,6 +912,10 @@ namespace ItemQualities
             public static GameObject HealAndReviveSproutAttachment;
 
             public static GameObject QuestVolatileBatteryPickup;
+            
+            public static GameObject SprintArmorDashAttachment;
+
+            public static GameObject GatewayQualityAttachment;
         }
 
         public static class ProjectilePrefabs

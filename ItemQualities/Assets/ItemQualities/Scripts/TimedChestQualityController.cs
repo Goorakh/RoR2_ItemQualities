@@ -1,4 +1,5 @@
 ﻿using HG;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
@@ -116,7 +117,7 @@ namespace ItemQualities
 
         void rollQualityServer()
         {
-            _pickupController.pickup = _pickupController.pickup.WithPickupIndex(DropTableQualityHandler.RollQuality(_pickupController.pickup.pickupIndex, _rng, new PickupRollInfo(null, TeamIndex.Player)));
+            _pickupController.pickup = _pickupController.pickup.WithQualityTier(DropTableQualityHandler.RollQualityTier(_rng, new PickupRollInfo(null, TeamIndex.Player)));
             Log.Debug($"{Util.GetGameObjectHierarchyName(gameObject)}: Rolled quality for pickup ({QualityCatalog.GetQualityTier(_pickupController.pickup.pickupIndex)})");
         }
 

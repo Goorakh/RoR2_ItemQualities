@@ -3,6 +3,7 @@ using ItemQualities.Items;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
+using RoR2.DirectionalSearch;
 using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -49,7 +50,7 @@ namespace ItemQualities
         MemoizedGetComponentCached<CharacterMasterExtraStatsTracker> _memoizedMasterExtraStatsComponent;
 
         TemporaryVisualEffect _qualityDeathMarkEffectInstance;
-        TemporaryVisualEffect _sprintArmorStrongEffectInstance;
+        TemporaryVisualEffect _sprintArmorWeakenEffectInstance;
 
         TemporaryOverlayInstance _healCritBoostOverlay;
 
@@ -118,6 +119,8 @@ namespace ItemQualities
 
         public float CurrentMedkitProcTimeSinceLastHit { get; set; } = 0f;
 
+        public float LeechBuffReserveFraction { get; set; } = 0f;
+
         public int EliteKillCount { get; private set; } = 0;
 
         public float WeakPointCritMultiplierBonusServer { get; set; }
@@ -150,6 +153,17 @@ namespace ItemQualities
             }
         }
 
+        float _gatewayTeleportCooldown;
+        Indicator _qualityGatewayPickupTargetIndicator;
+        GatewayQualityPickupController _currentGatewayPickupTargetAuthority;
+        static readonly GatewayQualityPickupSearch _sharedGatewayPickupTargetSearch = new GatewayQualityPickupSearch
+        {
+            minDistanceFilter = 2f,
+            maxAngleFilter = 10f,
+            filterByLoS = true,
+            sortMode = SortMode.Angle
+        };
+
         public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _memoizedMasterExtraStatsComponent.Get(_body.masterObject);
 
         public event Action<DamageInfo> OnIncomingDamageServer;
@@ -172,7 +186,20 @@ namespace ItemQualities
 
         void OnDestroy()
         {
+            if (_qualityGatewayPickupTargetIndicator != null)
+            {
+                _qualityGatewayPickupTargetIndicator.active = false;
+            }
+
             ComponentCache.Remove(gameObject, this);
+        }
+
+        void Start()
+        {
+            if (HasEffectiveAuthority)
+            {
+                _qualityGatewayPickupTargetIndicator = new Indicator(gameObject, Equipments.Gateway.QualityGatewayPickupTargetIndicatorPrefab);
+            }
         }
 
         void OnEnable()
@@ -234,6 +261,61 @@ namespace ItemQualities
             }
 
             updateOverlays();
+        }
+
+        void Update()
+        {
+            if (HasEffectiveAuthority)
+            {
+                if (_gatewayTeleportCooldown > 0)
+                {
+                    _gatewayTeleportCooldown -= Time.deltaTime;
+                }
+
+                updateTargets();
+
+                if (_currentGatewayPickupTargetAuthority && Body.inputBank && Body.inputBank.interact.justPressed)
+                {
+                    _currentGatewayPickupTargetAuthority.OnInteractAuthority(Body);
+                    _gatewayTeleportCooldown = 0.3f;
+                }
+            }
+        }
+
+        void updateTargets()
+        {
+            if (!Body.inputBank)
+                return;
+
+            Ray aimRay = CameraRigController.ModifyAimRayIfApplicable(Body.inputBank.GetAimRay(), gameObject, out _);
+
+            _currentGatewayPickupTargetAuthority = null;
+            if (_gatewayTeleportCooldown <= 0f)
+            {
+                _sharedGatewayPickupTargetSearch.searchOrigin = aimRay.origin;
+                _sharedGatewayPickupTargetSearch.searchDirection = aimRay.direction;
+                _sharedGatewayPickupTargetSearch.teamIndex = Body.teamComponent.teamIndex;
+
+                _currentGatewayPickupTargetAuthority = _sharedGatewayPickupTargetSearch.SearchCandidatesForSingleTarget(InstanceTracker.GetInstancesList<GatewayQualityPickupController>());
+            }
+
+            bool hasGatewayPickupTarget = _currentGatewayPickupTargetAuthority;
+
+            Transform gatewayPickupTargetTransform = null;
+            if (hasGatewayPickupTarget)
+            {
+                if (_currentGatewayPickupTargetAuthority.CoreTransform)
+                {
+                    gatewayPickupTargetTransform = _currentGatewayPickupTargetAuthority.CoreTransform;
+                }
+                else
+                {
+                    gatewayPickupTargetTransform = _currentGatewayPickupTargetAuthority.transform;
+                }
+            }
+
+            _qualityGatewayPickupTargetIndicator.active = hasGatewayPickupTarget;
+            _qualityGatewayPickupTargetIndicator.targetTransform = gatewayPickupTargetTransform;
         }
 
         void refreshModelReference(Transform modelTransform)
@@ -418,7 +500,7 @@ namespace ItemQualities
         public void UpdateAllTemporaryVisualEffects()
         {
             updateTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
-            updateTemporaryVisualEffect(ref _sprintArmorStrongEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.radius * 1.5f, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorStrong));
+            updateTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
 
             void updateTemporaryVisualEffect(ref TemporaryVisualEffect temporaryEffect, GameObject effectPrefab, float effectRadius, bool active)
             {

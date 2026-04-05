@@ -1,16 +1,18 @@
 ﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
 using RoR2;
 using System;
+using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Buffs
 {
     static class LifeSteal
     {
+        public const float LifeStealSpeedDuration = 60f;
+
         [SystemInitializer]
         static void Init()
         {
@@ -18,7 +20,8 @@ namespace ItemQualities.Buffs
             BuffHooks.OnBuffFinalStackLostGlobal += onBuffFinalStackLostGlobal;
 
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
-            IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
+
+            HealthComponent.onCharacterHealServer += onCharacterHealServer;
         }
 
         static void onBuffFirstStackGainedGlobal(CharacterBody body, BuffDef buffDef)
@@ -47,6 +50,8 @@ namespace ItemQualities.Buffs
                     body.ClearTimedBuffsRaw(qualityBuffIndex);
                 }
             }
+
+            body.ClearTimedBuffs(ItemQualitiesContent.Buffs.LifeStealSpeed);
         }
         
         static void onBuffFinalStackLostGlobal(CharacterBody body, BuffDef buffDef)
@@ -68,6 +73,19 @@ namespace ItemQualities.Buffs
                 {
                     return;
                 }
+            }
+
+            foreach (CharacterBody.TimedBuff timedBuff in body.timedBuffs)
+            {
+                if (timedBuff.buffIndex == ItemQualitiesContent.Buffs.LifeStealSpeed.buffIndex)
+                {
+                    timedBuff.timer = Mathf.Max(timedBuff.timer, LifeStealSpeedDuration);
+                }
+            }
+
+            if (body.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
+            {
+                bodyExtraStats.LeechBuffReserveFraction = 0f;
             }
         }
 
@@ -111,89 +129,71 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void HealthComponent_Heal(ILContext il)
+        static void onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
         {
-            if (!il.Method.TryFindParameter<ProcChainMask>(out ParameterDefinition procChainMaskParameter))
+            QualityTier lifeStealQualityTier = QualityTier.None;
+            for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
             {
-                Log.Error("Failed to find ProcChainMask parameter");
-                return;
-            }
-
-            ILCursor c = new ILCursor(il);
-
-            ILLabel barrierOnOverhealEndLabel = null;
-            if (!c.TryGotoNext(MoveType.Before,
-                               x => x.MatchLdarg(0),
-                               x => x.MatchLdflda<HealthComponent>(nameof(HealthComponent.itemCounts)),
-                               x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.itemCounts.barrierOnOverHeal)),
-                               x => x.MatchLdcI4(0),
-                               x => x.MatchBle(out barrierOnOverhealEndLabel)))
-            {
-                Log.Error("Failed to find aegis check location");
-                return;
-            }
-
-            VariableDefinition overhealAmountVar = null;
-            if (!c.TryGotoPrev(MoveType.Before,
-                               x => x.MatchLdloc<float>(il, out overhealAmountVar),
-                               x => x.MatchLdcR4(0),
-                               x => x.MatchBleUn(out ILLabel label) && barrierOnOverhealEndLabel.Target == label.Target))
-            {
-                Log.Error("Failed to find overheal check location");
-                return;
-            }
-
-            c.Goto(barrierOnOverhealEndLabel.Target, MoveType.AfterLabel);
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldarg, procChainMaskParameter);
-            c.Emit(OpCodes.Ldloc, overhealAmountVar);
-            c.EmitDelegate<Action<HealthComponent, ProcChainMask, float>>(handleOverheal);
-
-            static void handleOverheal(HealthComponent healthComponent, ProcChainMask procChainMask, float overhealAmount)
-            {
-                if (!healthComponent || overhealAmount <= 0)
-                    return;
-
-                QualityTier lifeStealQualityTier = QualityTier.None;
-                for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
+                if (procChainMask.HasModdedProc(ProcTypes.LifeStealOverhealProcTypes[(int)qualityTier]))
                 {
-                    if (procChainMask.HasModdedProc(ProcTypes.LifeStealOverhealProcTypes[(int)qualityTier]))
+                    lifeStealQualityTier = qualityTier;
+                    break;
+                }
+            }
+
+            if (lifeStealQualityTier == QualityTier.None)
+                return;
+
+            // How much healing is required to grant each speed buff, 1.0 is 100% hp healed
+            const float HealFractionPerSpeedBuff = 0.08f;
+            const float SpeedBuffsPerFullHeal = 1f / HealFractionPerSpeedBuff;
+
+            int maxSpeedBuffCount;
+            switch (lifeStealQualityTier)
+            {
+                case QualityTier.Uncommon:
+                    maxSpeedBuffCount = 50;
+                    break;
+                case QualityTier.Rare:
+                    maxSpeedBuffCount = 100;
+                    break;
+                case QualityTier.Epic:
+                    maxSpeedBuffCount = 150;
+                    break;
+                case QualityTier.Legendary:
+                    maxSpeedBuffCount = 250;
+                    break;
+                default:
+                    Log.Warning($"Quality tier {lifeStealQualityTier} is not implemented");
+                    maxSpeedBuffCount = 0;
+                    break;
+            }
+
+            if (healthComponent.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
+            {
+                int currentSpeedBuffCount = healthComponent.body.GetBuffCount(ItemQualitiesContent.Buffs.LifeStealSpeed);
+
+                int maxBuffsToAdd = Mathf.Max(0, maxSpeedBuffCount - currentSpeedBuffCount);
+
+                float healFraction = amount / healthComponent.fullHealth;
+
+                float buffsToAdd = Mathf.Min(maxBuffsToAdd, bodyExtraStats.LeechBuffReserveFraction + (SpeedBuffsPerFullHeal * healFraction));
+
+                foreach (CharacterBody.TimedBuff timedBuff in healthComponent.body.timedBuffs)
+                {
+                    if (timedBuff.buffIndex == ItemQualitiesContent.Buffs.LifeStealSpeed.buffIndex)
                     {
-                        lifeStealQualityTier = qualityTier;
-                        break;
+                        timedBuff.timer = Mathf.Max(timedBuff.timer, LifeStealSpeedDuration);
                     }
                 }
 
-                if (lifeStealQualityTier == QualityTier.None)
-                    return;
-
-                float barrierConversionRate;
-                switch (lifeStealQualityTier)
+                for (int i = 0; i < (int)buffsToAdd; i++)
                 {
-                    case QualityTier.Uncommon:
-                        barrierConversionRate = 0.8f;
-                        break;
-                    case QualityTier.Rare:
-                        barrierConversionRate = 1.0f;
-                        break;
-                    case QualityTier.Epic:
-                        barrierConversionRate = 1.4f;
-                        break;
-                    case QualityTier.Legendary:
-                        barrierConversionRate = 2.0f;
-                        break;
-                    default:
-                        barrierConversionRate = 0f;
-                        Log.Warning($"Quality tier {lifeStealQualityTier} is not implemented");
-                        break;
+                    healthComponent.body.AddTimedBuff(ItemQualitiesContent.Buffs.LifeStealSpeed, LifeStealSpeedDuration);
                 }
 
-                float barrierAmount = overhealAmount * barrierConversionRate;
-                if (barrierAmount > 0f)
-                {
-                    healthComponent.AddBarrier(barrierAmount);
-                }
+                // Add fractional component into reserve so healing is never wasted when it doesnt reach a full buff stack at once
+                bodyExtraStats.LeechBuffReserveFraction = buffsToAdd - (int)buffsToAdd;
             }
         }
     }

@@ -91,6 +91,18 @@ namespace ItemQualities
             return _tierSelection.Evaluate(rng.nextNormalizedFloat);
         }
 
+        public static QualityTier RollQualityTier(Xoroshiro128Plus rng, PickupRollInfo rollInfo)
+        {
+            QualityTier currentQualityTier = QualityTier.None;
+
+            for (int i = rollInfo.Luck; i >= 0; i--)
+            {
+                currentQualityTier = QualityCatalog.Max(currentQualityTier, rollQuality(rng));
+            }
+
+            return currentQualityTier;
+        }
+
         static PickupIndex tryUpgradeQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, CharacterMaster master = null, Func<PickupIndex, bool> isPickupAllowedFunc = null)
         {
             rng = new Xoroshiro128Plus(rng.nextUlong);

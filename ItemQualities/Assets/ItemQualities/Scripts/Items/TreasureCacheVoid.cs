@@ -21,7 +21,7 @@ namespace ItemQualities.Items
             if (!activatorInventory)
                 return;
 
-            ItemQualityCounts treasureCache = activatorInventory.GetItemCountsPermanent(ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid);
+            ItemQualityCounts treasureCache = activatorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid);
             for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier > QualityTier.None; qualityTier--)
             {
                 if (treasureCache[qualityTier] >= cost)
