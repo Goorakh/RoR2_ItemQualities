@@ -3,7 +3,9 @@ using ItemQualities.Items;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
+using RoR2.DirectionalSearch;
 using System;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -43,6 +45,14 @@ namespace ItemQualities
         NetworkIdentity _netIdentity;
 
         CharacterBody _body;
+        Interactor _interactor;
+        InteractionDriver _interactionDriver;
+
+        GenericMemoizer<UnityObjectWrapperKey<GameObject>, IInteractable> _memoizedCurrentInteractable = new GenericMemoizer<UnityObjectWrapperKey<GameObject>, IInteractable>(static (in UnityObjectWrapperKey<GameObject> gameObjectWrapper) =>
+        {
+            GameObject gameObject = gameObjectWrapper;
+            return gameObject ? gameObject.GetComponent<IInteractable>() : null;
+        });
 
         CharacterModel _cachedCharacterModel;
 
@@ -152,6 +162,15 @@ namespace ItemQualities
             }
         }
 
+        Indicator _qualityGatewayPickupTargetIndicator;
+        GatewayQualityPickupController _currentGatewayPickupTargetAuthority;
+        static readonly GatewayQualityPickupSearch _sharedGatewayPickupTargetSearch = new GatewayQualityPickupSearch
+        {
+            maxAngleFilter = 10f,
+            filterByLoS = true,
+            sortMode = SortMode.Angle
+        };
+
         public CharacterMasterExtraStatsTracker MasterExtraStatsTracker => _memoizedMasterExtraStatsComponent.Get(_body.masterObject);
 
         public event Action<DamageInfo> OnIncomingDamageServer;
@@ -169,12 +188,28 @@ namespace ItemQualities
             _netIdentity = GetComponent<NetworkIdentity>();
             _body = GetComponent<CharacterBody>();
 
+            _interactor = GetComponent<Interactor>();
+            _interactionDriver = GetComponent<InteractionDriver>();
+
             ComponentCache.Add(gameObject, this);
         }
 
         void OnDestroy()
         {
+            if (_qualityGatewayPickupTargetIndicator != null)
+            {
+                _qualityGatewayPickupTargetIndicator.active = false;
+            }
+
             ComponentCache.Remove(gameObject, this);
+        }
+
+        void Start()
+        {
+            if (HasEffectiveAuthority)
+            {
+                _qualityGatewayPickupTargetIndicator = new Indicator(gameObject, Equipments.Gateway.QualityGatewayPickupTargetIndicatorPrefab);
+            }
         }
 
         void OnEnable()
@@ -236,6 +271,69 @@ namespace ItemQualities
             }
 
             updateOverlays();
+        }
+
+        void Update()
+        {
+            if (HasEffectiveAuthority)
+            {
+                updateTargets();
+
+                if (_currentGatewayPickupTargetAuthority && Body.inputBank && Body.inputBank.interact.down)
+                {
+                    _currentGatewayPickupTargetAuthority.OnInteractAuthority(Body);
+                }
+            }
+        }
+
+        void updateTargets()
+        {
+            if (!Body.inputBank)
+                return;
+
+            // Any interactable should have priority over the gateway pickup, so just dont search for one if we have an interactable highlighted
+
+            bool hasValidInteractable = false;
+            if (_interactionDriver && _interactionDriver.currentInteractable)
+            {
+                IInteractable interactable = _memoizedCurrentInteractable.Evaluate(_interactionDriver.currentInteractable);
+                if (interactable != null &&
+                    ((MonoBehaviour)interactable).isActiveAndEnabled &&
+                    interactable.GetInteractability(_interactor) >= Interactability.Available)
+                {
+                    hasValidInteractable = true;
+                }
+            }
+
+            _currentGatewayPickupTargetAuthority = null;
+            if (!hasValidInteractable)
+            {
+                Ray aimRay = CameraRigController.ModifyAimRayIfApplicable(Body.inputBank.GetAimRay(), gameObject, out _);
+
+                _sharedGatewayPickupTargetSearch.searchOrigin = aimRay.origin;
+                _sharedGatewayPickupTargetSearch.searchDirection = aimRay.direction;
+                _sharedGatewayPickupTargetSearch.teamIndex = Body.teamComponent.teamIndex;
+
+                _currentGatewayPickupTargetAuthority = _sharedGatewayPickupTargetSearch.SearchCandidatesForSingleTarget(InstanceTracker.GetInstancesList<GatewayQualityPickupController>());
+            }
+
+            bool hasGatewayPickupTarget = _currentGatewayPickupTargetAuthority;
+
+            Transform gatewayPickupTargetTransform = null;
+            if (hasGatewayPickupTarget)
+            {
+                if (_currentGatewayPickupTargetAuthority.CoreTransform)
+                {
+                    gatewayPickupTargetTransform = _currentGatewayPickupTargetAuthority.CoreTransform;
+                }
+                else
+                {
+                    gatewayPickupTargetTransform = _currentGatewayPickupTargetAuthority.transform;
+                }
+            }
+
+            _qualityGatewayPickupTargetIndicator.active = hasGatewayPickupTarget;
+            _qualityGatewayPickupTargetIndicator.targetTransform = gatewayPickupTargetTransform;
         }
 
         void refreshModelReference(Transform modelTransform)

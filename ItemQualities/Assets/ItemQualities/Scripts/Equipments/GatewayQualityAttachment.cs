@@ -65,7 +65,15 @@ namespace ItemQualities.Equipments
                 DestroyOnTimer destroyOnTimer = _gatewayPickupPrefab.EnsureComponent<DestroyOnTimer>();
                 destroyOnTimer.duration = 60f;
 
-                _gatewayPickupPrefab.AddComponent<GatewayQualityPickupController>();
+                GatewayQualityPickupController pickupController = _gatewayPickupPrefab.AddComponent<GatewayQualityPickupController>();
+
+                Transform coreTransform = new GameObject("CorePosition").transform;
+                coreTransform.SetParent(_gatewayPickupPrefab.transform);
+                coreTransform.SetLocalPositionAndRotation(new Vector3(0f, 1.3f, 0f), Quaternion.identity);
+
+                pickupController.CoreTransform = coreTransform;
+
+                args.ContentPack.networkedObjectPrefabs.Add(_gatewayPickupPrefab);
             });
 
             return elusiveAntlersPickupLoad.AsProgressCoroutine(args.ProgressReceiver);
@@ -168,33 +176,22 @@ namespace ItemQualities.Equipments
             }
 
             Vector3 bodyForward = _attachedBody.transform.forward;
-            if (_attachedBodyMotor != null && _attachedBodyMotor.velocityAuthority.sqrMagnitude > Mathf.Epsilon)
+            if (_attachedBody.characterDirection)
             {
-                bodyForward = _attachedBodyMotor.velocityAuthority.normalized;
-            }
-            else if (_attachedBody.characterDirection)
-            {
-                if (_attachedBody.characterDirection.moveVector.sqrMagnitude > Mathf.Epsilon)
-                {
-                    bodyForward = _attachedBody.characterDirection.moveVector.normalized;
-                }
-                else
-                {
-                    bodyForward = _attachedBody.characterDirection.forward;
-                }
+                bodyForward = _attachedBody.characterDirection.forward;
             }
 
             Vector3 spawnDirection = Quaternion.Euler(Random.Range(-30f, 30f), Random.Range(-45f, 45f), 0f) * bodyForward.XAZ(0f).normalized;
 
             const float MinDistance = 50f;
-            const float MaxDistance = 150f;
+            const float MaxDistance = 100f;
 
             float approximateDistance = Random.Range(MinDistance, MaxDistance);
 
             Vector3 approximateSpawnPosition = _attachedBody.corePosition + (spawnDirection * approximateDistance);
             if (SceneInfo.instance.groundNodes)
             {
-                NodeGraph.NodeIndex spawnNodeIndex = SceneInfo.instance.groundNodes.FindClosestNode(approximateSpawnPosition, _attachedBody.hullClassification, approximateDistance / 2f);
+                NodeGraph.NodeIndex spawnNodeIndex = SceneInfo.instance.groundNodes.FindClosestNode(approximateSpawnPosition, _attachedBody.hullClassification, approximateDistance / 3f);
                 if (SceneInfo.instance.groundNodes.GetNodePosition(spawnNodeIndex, out Vector3 nodePosition))
                 {
                     pickupPosition = nodePosition;

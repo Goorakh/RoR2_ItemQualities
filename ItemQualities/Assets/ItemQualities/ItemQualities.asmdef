@@ -38,6 +38,7 @@
         "R2API.Execute.dll",
         "R2API.Sound.dll",
         "R2API.Items.dll",
+        "R2API.Networking.dll",
         "MMHOOK_RoR2.dll",
         "Newtonsoft.Json.dll",
         "AK.Wwise.Unity.MonoBehaviour.dll",
