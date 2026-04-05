@@ -17,9 +17,9 @@
 
 * Bison Steak
     * Health gained per teleporter:
-        * Uncommon: 25 -> 35
-        * Rare: 50 -> 75
-        * Epic: 100 -> 150
+        * Uncommon: 25 (+25 per stack) -> 35 (+35 per stack)
+        * Rare: 50 (+50 per stack) -> 75 (+75 per stack)
+        * Epic: 100 (+100 per stack) -> 150 (+150 per stack)
         * Legendary: Unchanged
 
 * Pocket I.C.B.M.:
