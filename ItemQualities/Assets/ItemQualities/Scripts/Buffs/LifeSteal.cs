@@ -145,7 +145,7 @@ namespace ItemQualities.Buffs
                 return;
 
             // How much healing is required to grant each speed buff, 1.0 is 100% hp healed
-            const float HealFractionPerSpeedBuff = 0.08f;
+            const float HealFractionPerSpeedBuff = 0.05f;
             const float SpeedBuffsPerFullHeal = 1f / HealFractionPerSpeedBuff;
 
             int maxSpeedBuffCount;
