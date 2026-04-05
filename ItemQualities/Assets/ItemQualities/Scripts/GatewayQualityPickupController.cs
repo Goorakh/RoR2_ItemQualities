@@ -1,4 +1,5 @@
-﻿using ItemQualities.Networking;
+﻿using HG;
+using ItemQualities.Networking;
 using R2API.Networking;
 using R2API.Networking.Interfaces;
 using RoR2;
@@ -14,9 +15,9 @@ namespace ItemQualities
 
         public Transform CoreTransform;
 
-        bool _hasTeleportedAuthority;
+        bool _hasTeleported;
 
-        public bool IsAvailable => !_hasTeleportedAuthority;
+        public bool IsAvailable => !_hasTeleported;
 
         void Awake()
         {
@@ -35,20 +36,35 @@ namespace ItemQualities
 
         public void OnInteractAuthority(CharacterBody body)
         {
-            if (_hasTeleportedAuthority)
+            if (_hasTeleported)
                 return;
+
+            if (body.TryGetComponent(out IPhysMotor motor))
+            {
+                motor.velocityAuthority = motor.velocityAuthority.XAZ(0f);
+            }
+
+            Vector3 teleportPosition = transform.position;
 
             TeleportHelper.TeleportBody(new TeleportHelper.TeleportBodyArgs
             {
                 body = body,
                 forceOutOfVehicle = true,
                 resetStateMachines = false,
-                targetPosition = transform.position,
+                targetPosition = teleportPosition,
                 targetRotation = body.transform.rotation,
-                teleportMinions = true
             });
 
-            _hasTeleportedAuthority = true;
+            GameObject teleportEffectPrefab = Run.instance.GetTeleportEffectPrefab(body.gameObject);
+            if (teleportEffectPrefab)
+            {
+                EffectManager.SpawnEffect(teleportEffectPrefab, new EffectData
+                {
+                    origin = teleportPosition
+                }, true);
+            }
+
+            _hasTeleported = true;
 
             if (NetworkServer.active)
             {

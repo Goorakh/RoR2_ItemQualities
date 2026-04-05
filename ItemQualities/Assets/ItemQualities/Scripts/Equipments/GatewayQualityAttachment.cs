@@ -98,17 +98,11 @@ namespace ItemQualities.Equipments
             _ => float.PositiveInfinity
         };
 
-        public int MaxPickups => QualityTier switch
-        {
-            QualityTier.Uncommon => 3,
-            QualityTier.Rare => 6,
-            QualityTier.Epic => 9,
-            QualityTier.Legendary => 15,
-            _ => 0
-        };
+        public const int MaxPickups = 30;
 
         [SyncVar]
         bool _pickupLimitReached;
+        public bool PickupLimitReached => _pickupLimitReached;
 
         int _numActivePickupsServer;
 
@@ -144,7 +138,7 @@ namespace ItemQualities.Equipments
                     if (!_pickupLimitReached)
                     {
                         bool foundAnyPosition = false;
-                        for (int i = 0; i < 5; i++)
+                        for (int i = 0; i < 10; i++)
                         {
                             if (tryGetNextPickupPositionAuthority(out Vector3 pickupPosition))
                             {
@@ -175,16 +169,12 @@ namespace ItemQualities.Equipments
                 return false;
             }
 
-            Vector3 bodyForward = _attachedBody.transform.forward;
-            if (_attachedBody.characterDirection)
-            {
-                bodyForward = _attachedBody.characterDirection.forward;
-            }
+            Vector3 bodyForward = _attachedBody.inputBank.aimDirection;
 
-            Vector3 spawnDirection = Quaternion.Euler(Random.Range(-30f, 30f), Random.Range(-45f, 45f), 0f) * bodyForward.XAZ(0f).normalized;
+            Vector3 spawnDirection = Quaternion.Euler(Random.Range(-20f, 20f), Random.Range(-35f, 35f), 0f) * bodyForward.XAZ(0f).normalized;
 
-            const float MinDistance = 50f;
-            const float MaxDistance = 100f;
+            const float MinDistance = 40f;
+            const float MaxDistance = 120f;
 
             float approximateDistance = Random.Range(MinDistance, MaxDistance);
 
@@ -226,21 +216,34 @@ namespace ItemQualities.Equipments
             if (_pickupLimitReached)
                 return null;
 
-            GameObject pickupObj = Instantiate(_gatewayPickupPrefab, pickupPosition, Quaternion.identity);
+            GameObject pickupObj = SpawnPickup(pickupPosition, _attachedBody);
 
-            if (_attachedBody)
-            {
-                pickupObj.GetComponent<TeamFilter>().teamIndex = _attachedBody.teamComponent.teamIndex;
-            }
+            RegisterPickupServer(pickupObj);
 
-            NetworkServer.Spawn(pickupObj);
+            return pickupObj;
+        }
 
+        [Server]
+        public void RegisterPickupServer(GameObject pickupObject)
+        {
             _numActivePickupsServer++;
 
-            OnDestroyCallback.AddCallback(pickupObj, _ =>
+            OnDestroyCallback.AddCallback(pickupObject, _ =>
             {
                 _numActivePickupsServer--;
             });
+        }
+
+        public static GameObject SpawnPickup(Vector3 pickupPosition, CharacterBody ownerBody)
+        {
+            GameObject pickupObj = Instantiate(_gatewayPickupPrefab, pickupPosition, Quaternion.identity);
+
+            if (ownerBody)
+            {
+                pickupObj.GetComponent<TeamFilter>().teamIndex = ownerBody.teamComponent.teamIndex;
+            }
+
+            NetworkServer.Spawn(pickupObj);
 
             return pickupObj;
         }
