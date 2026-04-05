@@ -15,6 +15,13 @@
         * Epic: 10 -> 6
         * Legendary: 15 -> 8
 
+* Bison Steak
+    * Health gained per teleporter:
+        * Uncommon: 25 -> 35
+        * Rare: 50 -> 75
+        * Epic: 100 -> 150
+        * Legendary: Unchanged
+
 * Warped Echo:
     * Chance to apply echo on hit:
         * Uncommon: 1% (+1% per stack)
