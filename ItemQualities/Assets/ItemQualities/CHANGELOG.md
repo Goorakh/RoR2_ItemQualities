@@ -22,6 +22,13 @@
         * Epic: 100 -> 150
         * Legendary: Unchanged
 
+* Pocket I.C.B.M.:
+    * Extra missile chance:
+        * Uncommon: 40% (+40% per stack) -> 50% (+50% per stack)
+        * Rare: 75% (+75% per stack) -> 1 guaranteed (+1 per stack)
+        * Epic: 1 guaranteed (+1 per stack) -> 1 guaranteed (+1 per stack) + 50% for additional (+50% per stack)
+        * Legendary: 1 guaranteed (+1 per stack) + 50% for additional (+50% per stack) -> 2 guaranteed (+2 per stack) + 50% for additional (+50% per stack)
+
 * Warped Echo:
     * Chance to apply echo on hit:
         * Uncommon: 1% (+1% per stack)

@@ -28,10 +28,10 @@ namespace ItemQualities.Items
             if (moreMissile.TotalQualityCount <= 0)
                 return 0;
 
-            float moreMissileChance = (40f * moreMissile.UncommonCount) +
-                                      (75f * moreMissile.RareCount) +
-                                      (100f * moreMissile.EpicCount) +
-                                      (150f * moreMissile.LegendaryCount);
+            float moreMissileChance = (50f * moreMissile.UncommonCount) +
+                                      (100f * moreMissile.RareCount) +
+                                      (150f * moreMissile.EpicCount) +
+                                      (250f * moreMissile.LegendaryCount);
 
             return RollUtil.GetOverflowRoll(moreMissileChance, attackerBody.master, sureProc);
         }
