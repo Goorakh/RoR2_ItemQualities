@@ -351,5 +351,17 @@
         
         "EQUIPMENT_FRUIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
         "EQUIPMENT_FRUIT_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>25%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>.",
+        
+        "EQUIPMENT_GATEWAY_UNCOMMON_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 2 orbs around you immediately.",
+        "EQUIPMENT_GATEWAY_UNCOMMON_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>2</style> orbs around you immediately.",
+        
+        "EQUIPMENT_GATEWAY_RARE_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 4 orbs around you immediately.",
+        "EQUIPMENT_GATEWAY_RARE_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>8</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>4</style> orbs around you immediately.",
+        
+        "EQUIPMENT_GATEWAY_EPIC_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 8 orbs around you immediately.",
+        "EQUIPMENT_GATEWAY_EPIC_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>6</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>8</style> orbs around you immediately.",
+        
+        "EQUIPMENT_GATEWAY_LEGENDARY_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 16 orbs around you immediately.",
+        "EQUIPMENT_GATEWAY_LEGENDARY_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>4</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>16</style> orbs around you immediately.",
     }
 }
