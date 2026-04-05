@@ -19,7 +19,7 @@ namespace ItemQualities.Items
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        static int rollAdditionalMissileCount(CharacterBody attackerBody, bool sureProc)
+        public static int RollAdditionalMissileCount(CharacterBody attackerBody, bool sureProc)
         {
             if (!attackerBody || !attackerBody.inventory)
                 return 0;
@@ -28,10 +28,10 @@ namespace ItemQualities.Items
             if (moreMissile.TotalQualityCount <= 0)
                 return 0;
 
-            float moreMissileChance = (40f * moreMissile.UncommonCount) +
-                                      (75f * moreMissile.RareCount) +
-                                      (100f * moreMissile.EpicCount) +
-                                      (150f * moreMissile.LegendaryCount);
+            float moreMissileChance = (50f * moreMissile.UncommonCount) +
+                                      (100f * moreMissile.RareCount) +
+                                      (150f * moreMissile.EpicCount) +
+                                      (250f * moreMissile.LegendaryCount);
 
             return RollUtil.GetOverflowRoll(moreMissileChance, attackerBody.master, sureProc);
         }
@@ -86,7 +86,7 @@ namespace ItemQualities.Items
 
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
 
-                int additionalMissileCount = rollAdditionalMissileCount(attackerBody, procChainMask.HasProc(ProcType.SureProc));
+                int additionalMissileCount = RollAdditionalMissileCount(attackerBody, procChainMask.HasProc(ProcType.SureProc));
                 if (additionalMissileCount > 0)
                 {
                     Vector3 initialDirection = missileProjectileInfo.rotation * Vector3.forward;
@@ -141,7 +141,7 @@ namespace ItemQualities.Items
             {
                 if (damageInfo?.attacker && damageInfo.attacker.TryGetComponent(out CharacterBody attackerBody))
                 {
-                    missileCount += rollAdditionalMissileCount(attackerBody, damageInfo.procChainMask.HasProc(ProcType.SureProc));
+                    missileCount += RollAdditionalMissileCount(attackerBody, damageInfo.procChainMask.HasProc(ProcType.SureProc));
                 }
 
                 return missileCount;

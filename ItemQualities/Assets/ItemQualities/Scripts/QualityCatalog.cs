@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -21,14 +22,17 @@ namespace ItemQualities
         static ItemQualityGroup[] _allItemQualityGroups = Array.Empty<ItemQualityGroup>();
         static QualityTier[] _itemIndexToQuality = Array.Empty<QualityTier>();
         static ItemQualityGroupIndex[] _itemIndexToQualityGroupIndex = Array.Empty<ItemQualityGroupIndex>();
+        static readonly ReadOnlyArray<ItemIndex>[] _itemsByQualityTier = new ReadOnlyArray<ItemIndex>[(int)QualityTier.Count + 1];
 
         static EquipmentQualityGroup[] _allEquipmentQualityGroups = Array.Empty<EquipmentQualityGroup>();
         static QualityTier[] _equipmentIndexToQuality = Array.Empty<QualityTier>();
         static EquipmentQualityGroupIndex[] _equipmentIndexToQualityGroupIndex = Array.Empty<EquipmentQualityGroupIndex>();
+        static readonly ReadOnlyArray<EquipmentIndex>[] _equipmentsByQualityTier = new ReadOnlyArray<EquipmentIndex>[(int)QualityTier.Count + 1];
 
         static BuffQualityGroup[] _allBuffQualityGroups = Array.Empty<BuffQualityGroup>();
         static QualityTier[] _buffIndexToQuality = Array.Empty<QualityTier>();
         static BuffQualityGroupIndex[] _buffIndexToQualityGroupIndex = Array.Empty<BuffQualityGroupIndex>();
+        static readonly ReadOnlyArray<BuffIndex>[] _buffsByQualityTier = new ReadOnlyArray<BuffIndex>[(int)QualityTier.Count + 1];
 
         public static int ItemQualityGroupCount => _allItemQualityGroups.Length;
 
@@ -180,10 +184,6 @@ namespace ItemQualities
 
                     baseAssetsParallelLoadCoroutine.Add(baseItemLoad);
                 }
-                else
-                {
-                    Log.Error($"No base item defined for quality group '{itemQualityGroup.name}'");
-                }
             }
 
             for (int i = 0; i < _allEquipmentQualityGroups.Length; i++)
@@ -328,6 +328,58 @@ namespace ItemQualities
 
             yield return baseAssetsParallelLoadCoroutine;
 
+            List<ItemIndex>[] itemsByQuality = new List<ItemIndex>[(int)QualityTier.Count + 1];
+            List<EquipmentIndex>[] equipmentsByQuality = new List<EquipmentIndex>[(int)QualityTier.Count + 1];
+            List<BuffIndex>[] buffsByQuality = new List<BuffIndex>[(int)QualityTier.Count + 1];
+
+            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+            {
+                List<ItemIndex> items = ListPool<ItemIndex>.RentCollection();
+                items.EnsureCapacity(ItemCatalog.itemCount / ((int)QualityTier.Count + 1));
+                itemsByQuality[(int)qualityTier + 1] = items;
+
+                List<EquipmentIndex> equipments = ListPool<EquipmentIndex>.RentCollection();
+                items.EnsureCapacity(EquipmentCatalog.equipmentCount / ((int)QualityTier.Count + 1));
+                equipmentsByQuality[(int)qualityTier + 1] = equipments;
+
+                List<BuffIndex> buffs = ListPool<BuffIndex>.RentCollection();
+                buffs.EnsureCapacity(BuffCatalog.buffCount / ((int)QualityTier.Count + 1));
+                buffsByQuality[(int)qualityTier + 1] = buffs;
+            }
+
+            for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
+            {
+                itemsByQuality[(int)GetQualityTier(itemIndex) + 1].Add(itemIndex);
+            }
+
+            for (EquipmentIndex equipmentIndex = 0; (int)equipmentIndex < EquipmentCatalog.equipmentCount; equipmentIndex++)
+            {
+                equipmentsByQuality[(int)GetQualityTier(equipmentIndex) + 1].Add(equipmentIndex);
+            }
+
+            for (BuffIndex buffIndex = 0; (int)buffIndex < BuffCatalog.buffCount; buffIndex++)
+            {
+                buffsByQuality[(int)GetQualityTier(buffIndex) + 1].Add(buffIndex);
+            }
+
+            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+            {
+                List<ItemIndex> items = itemsByQuality[(int)qualityTier + 1];
+                _itemsByQualityTier[(int)qualityTier + 1] = items.Count > 0 ? items.ToArray() : Array.Empty<ItemIndex>();
+
+                ListPool<ItemIndex>.ReturnCollection(items);
+
+                List<EquipmentIndex> equipments = equipmentsByQuality[(int)qualityTier + 1];
+                _equipmentsByQualityTier[(int)qualityTier + 1] = equipments.Count > 0 ? equipments.ToArray() : Array.Empty<EquipmentIndex>();
+
+                ListPool<EquipmentIndex>.ReturnCollection(equipments);
+
+                List<BuffIndex> buffs = buffsByQuality[(int)qualityTier + 1];
+                _buffsByQualityTier[(int)qualityTier + 1] = buffs.Count > 0 ? buffs.ToArray() : Array.Empty<BuffIndex>();
+
+                ListPool<BuffIndex>.ReturnCollection(buffs);
+            }
+
             List<Language> tempLoadedLanguages = new List<Language>();
             ParallelCoroutine languagesLoad = new ParallelCoroutine();
 
@@ -390,10 +442,7 @@ namespace ItemQualities
             {
                 ItemDef baseItem = ItemCatalog.GetItemDef(itemQualityGroup.BaseItemIndex);
                 if (!baseItem)
-                {
-                    Log.Error($"Invalid base item in group {itemQualityGroup}");
                     continue;
-                }
 
                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
@@ -630,6 +679,24 @@ namespace ItemQualities
             PickupIndex scrapPickupIndex = PickupCatalog.FindScrapIndexForItemTier(scrappingPickupDef.itemTier);
 
             return GetPickupIndexOfQuality(scrapPickupIndex, GetQualityTier(scrappingPickupIndex));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyArray<ItemIndex> GetAllItemsOfQuality(QualityTier qualityTier)
+        {
+            return _itemsByQualityTier[(int)qualityTier + 1];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyArray<EquipmentIndex> GetAllEquipmentsOfQuality(QualityTier qualityTier)
+        {
+            return _equipmentsByQualityTier[(int)qualityTier + 1];
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ReadOnlyArray<BuffIndex> GetAllBuffsOfQuality(QualityTier qualityTier)
+        {
+            return _buffsByQualityTier[(int)qualityTier + 1];
         }
 
         public static QualityTier Max(QualityTier a, QualityTier b)

@@ -11,6 +11,11 @@ namespace ItemQualities
     {
         static readonly List<IgnoreXpChunk> _ignoreXpChunks = new List<IgnoreXpChunk>();
 
+        static readonly IComparer<IgnoreXpChunk> _xpChunkExpirationTimeComparer = Comparer<IgnoreXpChunk>.Create((a, b) =>
+        {
+            return a.ExpirationTime.CompareTo(b.ExpirationTime);
+        });
+
         [SystemInitializer]
         static void Init()
         {
@@ -28,10 +33,7 @@ namespace ItemQualities
             }
 
             IgnoreXpChunk chunk = new IgnoreXpChunk(amount, Run.FixedTimeStamp.now + duration);
-            int chunkIndex = _ignoreXpChunks.BinarySearch(chunk, Comparer<IgnoreXpChunk>.Create((a, b) =>
-            {
-                return a.ExpirationTime.CompareTo(b.ExpirationTime);
-            }));
+            int chunkIndex = _ignoreXpChunks.BinarySearch(chunk, _xpChunkExpirationTimeComparer);
 
             if (chunkIndex < 0)
             {
@@ -44,6 +46,7 @@ namespace ItemQualities
         static void onRunDestroyGlobal(Run run)
         {
             _ignoreXpChunks.Clear();
+            Run.onRunDestroyGlobal -= onRunDestroyGlobal;
         }
 
         static void TeamManager_GiveTeamExperience(ILContext il)

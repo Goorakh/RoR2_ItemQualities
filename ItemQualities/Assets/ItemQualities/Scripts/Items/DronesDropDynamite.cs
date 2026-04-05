@@ -7,7 +7,7 @@ using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 using RoR2.Projectile;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Collections;
 using System.Collections.Generic;

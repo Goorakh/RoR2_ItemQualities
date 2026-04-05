@@ -1,6 +1,5 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
-using Mono.Collections.Generic;
 using MonoMod.Cil;
 using MonoMod.Utils;
 using System;
@@ -359,35 +358,42 @@ namespace ItemQualities.Utilities.Extensions
                 return $"IL_{instruction.Offset:x4}";
             }
 
-            StringBuilder stringBuilder = new StringBuilder();
+            StringBuilder stringBuilder = HG.StringBuilderPool.RentStringBuilder();
 
-            stringBuilder.Append(formatLabel(instruction))
-                         .Append(": ")
-                         .Append(instruction.OpCode.Name);
-
-            if (instruction.Operand != null)
+            try
             {
-                stringBuilder.Append(' ');
+                stringBuilder.Append(formatLabel(instruction))
+                             .Append(": ")
+                             .Append(instruction.OpCode.Name);
 
-                switch (instruction.Operand)
+                if (instruction.Operand != null)
                 {
-                    case Instruction instructionOperand:
-                        stringBuilder.Append(formatLabel(instructionOperand));
-                        break;
-                    case IEnumerable<Instruction> instructionsOperand:
+                    stringBuilder.Append(' ');
 
-                        stringBuilder.Append('[')
-                                     .Append(string.Join(", ", instructionsOperand.Select(formatLabel)))
-                                     .Append(']');
+                    switch (instruction.Operand)
+                    {
+                        case Instruction instructionOperand:
+                            stringBuilder.Append(formatLabel(instructionOperand));
+                            break;
+                        case IEnumerable<Instruction> instructionsOperand:
 
-                        break;
-                    default:
-                        stringBuilder.Append(instruction.Operand);
-                        break;
+                            stringBuilder.Append('[')
+                                         .Append(string.Join(", ", instructionsOperand.Select(formatLabel)))
+                                         .Append(']');
+
+                            break;
+                        default:
+                            stringBuilder.Append(instruction.Operand);
+                            break;
+                    }
                 }
-            }
 
-            return stringBuilder.ToString();
+                return stringBuilder.ToString();
+            }
+            finally
+            {
+                HG.StringBuilderPool.ReturnStringBuilder(stringBuilder);
+            }
         }
 
         /// <summary>
@@ -550,45 +556,6 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
-        static bool matchLocalIndex(int localIndex, Type variableType, ILContext ilContext)
-        {
-            if (variableType is null)
-                throw new ArgumentNullException(nameof(variableType));
-
-            if (ilContext is null)
-                throw new ArgumentNullException(nameof(ilContext));
-
-            if (ilContext.Method == null || !ilContext.Method.HasBody)
-                return false;
-
-            Collection<VariableDefinition> methodVariables = ilContext.Method.Body.Variables;
-            return localIndex < methodVariables.Count && methodVariables[localIndex].VariableType.Is(variableType);
-        }
-
-        public static bool MatchLdloc(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
-        {
-            if (instruction is null)
-                throw new ArgumentNullException(nameof(instruction));
-
-            return instruction.MatchLdloc(out localIndex) && matchLocalIndex(localIndex, variableType, ilContext);
-        }
-
-        public static bool MatchLdloca(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
-        {
-            if (instruction is null)
-                throw new ArgumentNullException(nameof(instruction));
-
-            return instruction.MatchLdloca(out localIndex) && matchLocalIndex(localIndex, variableType, ilContext);
-        }
-
-        public static bool MatchStloc(this Instruction instruction, Type variableType, ILContext ilContext, out int localIndex)
-        {
-            if (instruction is null)
-                throw new ArgumentNullException(nameof(instruction));
-
-            return instruction.MatchStloc(out localIndex) && matchLocalIndex(localIndex, variableType, ilContext);
-        }
-
         public static bool MatchAny(this Instruction instr, out Instruction instruction)
         {
             instruction = instr;
@@ -600,5 +567,436 @@ namespace ItemQualities.Utilities.Extensions
             MethodInfo implicitConverterMethod = ReflectionUtil.FindImplicitConverter<TFrom, TTo>();
             return implicitConverterMethod != null && instruction.MatchCallOrCallvirt(implicitConverterMethod);
         }
+
+        public static bool MatchOpEquality<T>(this Instruction instruction)
+        {
+            return MatchOpEquality<T, T>(instruction);
+        }
+
+        public static bool MatchOpEquality<T1, T2>(this Instruction instruction)
+        {
+            MethodInfo equalityMethod = ReflectionUtil.FindEqualityOperator<T1, T2>();
+            return equalityMethod != null && instruction.MatchCallOrCallvirt(equalityMethod);
+        }
+
+        #region MatchLdloc
+        public static bool MatchLdloc(this Instruction instruction, ILContext il, out VariableDefinition variableDefinition)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            if (il.Method?.Body?.Variables == null)
+            {
+                Log.Error($"Attempting to match ldloc instruction on method without a body: {il.Method.FullName}");
+                variableDefinition = null;
+                return false;
+            }
+
+            if (instruction.MatchLdloc(out int variableIndex))
+            {
+                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex);
+                return variableDefinition != null;
+            }
+
+            variableDefinition = null;
+            return false;
+        }
+
+        public static bool MatchLdloc(this Instruction instruction, Type variableType, ILContext il, out VariableDefinition variableDefinition)
+        {
+            if (variableType is null)
+                throw new ArgumentNullException(nameof(variableType));
+
+            return instruction.MatchLdloc(il, out variableDefinition) && variableDefinition.VariableType.Is(variableType);
+        }
+
+        public static bool MatchLdloc<TVariable>(this Instruction instruction, ILContext il, out VariableDefinition variableDefinition)
+        {
+            return instruction.MatchLdloc(il, out variableDefinition) && variableDefinition.VariableType.Is(typeof(TVariable));
+        }
+
+        public static bool MatchLdloc(this Instruction instruction, VariableDefinition variableDefinition)
+        {
+            return instruction.MatchLdloc(variableDefinition.Index);
+        }
+        #endregion
+
+        #region MatchLdloca
+        public static bool MatchLdloca(this Instruction instruction, ILContext il, out VariableDefinition variableDefinition)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            if (il.Method?.Body?.Variables == null)
+            {
+                Log.Error($"Attempting to match ldloca instruction on method without a body: {il.Method.FullName}");
+                variableDefinition = null;
+                return false;
+            }
+
+            if (instruction.MatchLdloca(out int variableIndex))
+            {
+                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex);
+                return variableDefinition != null;
+            }
+
+            variableDefinition = null;
+            return false;
+        }
+
+        public static bool MatchLdloca(this Instruction instruction, Type variableType, ILContext il, out VariableDefinition variableDefinition)
+        {
+            if (variableType is null)
+                throw new ArgumentNullException(nameof(variableType));
+
+            return instruction.MatchLdloca(il, out variableDefinition) && variableDefinition.VariableType.Is(variableType);
+        }
+
+        public static bool MatchLdloca<TVariable>(this Instruction instruction, ILContext il, out VariableDefinition variableDefinition)
+        {
+            return instruction.MatchLdloca(il, out variableDefinition) && variableDefinition.VariableType.Is(typeof(TVariable));
+        }
+
+        public static bool MatchLdloca(this Instruction instruction, VariableDefinition variableDefinition)
+        {
+            return instruction.MatchLdloca(variableDefinition.Index);
+        }
+        #endregion
+
+        #region MatchStloc
+        public static bool MatchStloc(this Instruction instruction, ILContext il, out VariableDefinition variableDefinition)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            if (il.Method?.Body?.Variables == null)
+            {
+                Log.Error($"Attempting to match stloc instruction on method without a body: {il.Method.FullName}");
+                variableDefinition = null;
+                return false;
+            }
+
+            if (instruction.MatchStloc(out int variableIndex))
+            {
+                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex);
+                return variableDefinition != null;
+            }
+
+            variableDefinition = null;
+            return false;
+        }
+
+        public static bool MatchStloc(this Instruction instruction, Type variableType, ILContext il, out VariableDefinition variableDefinition)
+        {
+            if (variableType is null)
+                throw new ArgumentNullException(nameof(variableType));
+
+            return instruction.MatchStloc(il, out variableDefinition) && variableDefinition.VariableType.Is(variableType);
+        }
+
+        public static bool MatchStloc<TVariable>(this Instruction instruction, ILContext il, out VariableDefinition variableDefinition)
+        {
+            return instruction.MatchStloc(il, out variableDefinition) && variableDefinition.VariableType.Is(typeof(TVariable));
+        }
+
+        public static bool MatchStloc(this Instruction instruction, VariableDefinition variableDefinition)
+        {
+            return instruction.MatchStloc(variableDefinition.Index);
+        }
+        #endregion
+
+        #region MatchLdarg
+        public static bool MatchLdarg(this Instruction instruction, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            if (instruction.MatchLdarg(out int parameterIndex))
+            {
+                parameter = il.Method.Parameters.GetSafe(parameterIndex);
+                return parameter != null;
+            }
+
+            parameter = null;
+            return false;
+        }
+
+        public static bool MatchLdarg(this Instruction instruction, Type parameterType, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (parameterType is null)
+                throw new ArgumentNullException(nameof(parameterType));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarg(il, out parameter) && parameter.ParameterType.Is(parameterType) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchLdarg(this Instruction instruction, Type parameterType, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (parameterType is null)
+                throw new ArgumentNullException(nameof(parameterType));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarg(il, out parameter) && parameter.ParameterType.Is(parameterType);
+        }
+
+        public static bool MatchLdarg(this Instruction instruction, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarg(il, out parameter) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchLdarg<TParameter>(this Instruction instruction, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarg(il, out parameter) && parameter.ParameterType.Is(typeof(TParameter)) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchLdarg<TParameter>(this Instruction instruction, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarg(il, out parameter) && parameter.ParameterType.Is(typeof(TParameter));
+        }
+
+        public static bool MatchLdarg(this Instruction instruction, ParameterDefinition parameterDefinition)
+        {
+            return instruction.MatchLdarg(parameterDefinition.Sequence);
+        }
+        #endregion
+
+        #region MatchStarg
+        public static bool MatchStarg(this Instruction instruction, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            if (instruction.MatchStarg(out int parameterIndex))
+            {
+                parameter = il.Method.Parameters.GetSafe(parameterIndex);
+                return parameter != null;
+            }
+
+            parameter = null;
+            return false;
+        }
+
+        public static bool MatchStarg(this Instruction instruction, Type parameterType, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (parameterType is null)
+                throw new ArgumentNullException(nameof(parameterType));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchStarg(il, out parameter) && parameter.ParameterType.Is(parameterType) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchStarg(this Instruction instruction, Type parameterType, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (parameterType is null)
+                throw new ArgumentNullException(nameof(parameterType));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchStarg(il, out parameter) && parameter.ParameterType.Is(parameterType);
+        }
+
+        public static bool MatchStarg(this Instruction instruction, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchStarg(il, out parameter) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchStarg<TParameter>(this Instruction instruction, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchStarg(il, out parameter) && parameter.ParameterType.Is(typeof(TParameter)) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchStarg<TParameter>(this Instruction instruction, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchStarg(il, out parameter) && parameter.ParameterType.Is(typeof(TParameter));
+        }
+
+        public static bool MatchStarg(this Instruction instruction, ParameterDefinition parameterDefinition)
+        {
+            return instruction.MatchStarg(parameterDefinition.Sequence);
+        }
+        #endregion
+
+        #region MatchLdarga
+        public static bool MatchLdarga(this Instruction instruction, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            if (instruction.MatchLdarga(out int parameterIndex))
+            {
+                parameter = il.Method.Parameters.GetSafe(parameterIndex);
+                return parameter != null;
+            }
+
+            parameter = null;
+            return false;
+        }
+
+        public static bool MatchLdarga(this Instruction instruction, Type parameterType, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (parameterType is null)
+                throw new ArgumentNullException(nameof(parameterType));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarga(il, out parameter) && parameter.ParameterType.Is(parameterType) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchLdarga(this Instruction instruction, Type parameterType, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (parameterType is null)
+                throw new ArgumentNullException(nameof(parameterType));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarga(il, out parameter) && parameter.ParameterType.Is(parameterType);
+        }
+
+        public static bool MatchLdarga(this Instruction instruction, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarga(il, out parameter) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchLdarga<TParameter>(this Instruction instruction, string parameterName, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentException($"'{nameof(parameterName)}' cannot be null or empty.", nameof(parameterName));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarga(il, out parameter) && parameter.ParameterType.Is(typeof(TParameter)) && string.Equals(parameter.Name, parameterName);
+        }
+
+        public static bool MatchLdarga<TParameter>(this Instruction instruction, ILContext il, out ParameterDefinition parameter)
+        {
+            if (instruction is null)
+                throw new ArgumentNullException(nameof(instruction));
+
+            if (il is null)
+                throw new ArgumentNullException(nameof(il));
+
+            return instruction.MatchLdarga(il, out parameter) && parameter.ParameterType.Is(typeof(TParameter));
+        }
+
+        public static bool MatchLdarga(this Instruction instruction, ParameterDefinition parameterDefinition)
+        {
+            return instruction.MatchLdarga(parameterDefinition.Sequence);
+        }
+        #endregion
     }
 }

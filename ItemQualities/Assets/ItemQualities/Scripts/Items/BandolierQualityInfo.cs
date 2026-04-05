@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class BandolierQualityInfo : NetworkBehaviour
+    public sealed class BandolierQualityInfo : NetworkBehaviour
     {
         [SystemInitializer]
         static void Init()

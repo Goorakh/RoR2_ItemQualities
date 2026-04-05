@@ -8,6 +8,8 @@ Quality items stack in both their quality effect and as another instance of the 
 
 Qualities of the same item all increase the same stat, and stack together. Stats that are changed with quality are marked with a blue diamond icon in item descriptions.
 
+Quality stats that are non-stacking only apply the stat of the highest quality of that item in your inventory.
+
 #
 
 Quality items have a small chance to drop from any regular item source, and always drop from Quality chest variants.
@@ -34,7 +36,7 @@ Includes a 25% increased difficulty scaling to balance out the more powerful on-
 
 #
 
-This mod is in beta, Quality equipments, boss items, and other features will be added at some point in the future.
+This mod is in beta, Quality boss items and other features will be added at some point in the future.
 
 ## Recommended mods
 These are mods we recommend you use in combination with Quality, though they are not required.
@@ -42,23 +44,28 @@ These are mods we recommend you use in combination with Quality, though they are
 * [Properly Persistent Profiles Patch Plugin](https://thunderstore.io/package/Groove_Salad/ProperlyPersistentProfilesPatchPlugin/)
 	* Makes sure your logbook progress is not lost when launching a new profile. **IMPORTANT**: This mod does *not* work retroactively, if you launch the game at any point without it installed, progress will be lost unless manually backed up.
 
-## Contributors
+## Credits
 
 * `Race`: Design
 
 * `Gorakh`: Code + Design
 
-* `0n_x`, `OrphanTaint`, `Lawlzee`, and `Judgy`: Code.
+* `0n_x`, `OrphanTaint`, and `Lawlzee`: Code.
 
 * `TheTimesweeper`, `TullyVin`: Models
 
-* `Sivelos`: VFX
+* `Sivelos`: Quality item drop VFX
 
-* `Hyleo`: SFX
+* `Hyleo`: Quality item drop SFX
 
 * `Lena`: Trailer editing and miscellaneous assets.
 
 * `Wube`: Borrowed quality icons \:)
+
+### Sound attributions
+
+* `220531 Fly buzzing in window, short, R-07 by TRP -- https://freesound.org/s/717567/ -- License: Creative Commons 0`
+* `Buzzing Insect Short.mp3 by FunWithSound -- https://freesound.org/s/390733/ -- License: Creative Commons 0`
 
 ## Contact
 For feedback or bug reports, message `.race` on discord or join the [Risk of Resources discord](https://www.riskofresources.com/discord) and use the Quality Discussion channel!

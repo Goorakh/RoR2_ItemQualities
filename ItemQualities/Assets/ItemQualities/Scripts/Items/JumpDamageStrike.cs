@@ -14,8 +14,6 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.Items.JumpDamageStrikeBodyBehavior.DischargeEffects += JumpDamageStrikeBodyBehavior_DischargeEffects;
-
-            IL.RoR2.Items.JumpDamageStrikeBodyBehavior.UpdateCharge += JumpDamageStrikeBodyBehavior_UpdateCharge;
         }
 
         static void JumpDamageStrikeBodyBehavior_DischargeEffects(ILContext il)
@@ -25,94 +23,89 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.baseDamage))))
             {
-                Log.Error("Failed to find patch location");
-                return;
+                Log.Error("Failed to find damage patch location");
             }
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<float, JumpDamageStrikeBodyBehavior, float>>(getBlastDamage);
-
-            static float getBlastDamage(float blastDamage, JumpDamageStrikeBodyBehavior jumpDamageStrikeBodyBehavior)
+            else
             {
-                CharacterBody body = jumpDamageStrikeBodyBehavior ? jumpDamageStrikeBodyBehavior.body : null;
-                if (body && body.inventory)
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<float, JumpDamageStrikeBodyBehavior, float>>(getBlastDamage);
+
+                static float getBlastDamage(float blastDamage, JumpDamageStrikeBodyBehavior jumpDamageStrikeBodyBehavior)
                 {
-                    ItemQualityCounts jumpDamageStrike = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpDamageStrike);
-                    if (jumpDamageStrike.TotalQualityCount > 0)
+                    CharacterBody body = jumpDamageStrikeBodyBehavior ? jumpDamageStrikeBodyBehavior.body : null;
+                    if (body && body.inventory)
                     {
-                        float damageCoefficientPerMoveSpeedIncreaseCoefficient = (1.5f * jumpDamageStrike.UncommonCount) +
-                                                                                 (2.5f * jumpDamageStrike.RareCount) +
-                                                                                 (3.5f * jumpDamageStrike.EpicCount) +
-                                                                                 (5.0f * jumpDamageStrike.LegendaryCount);
+                        ItemQualityCounts jumpDamageStrike = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpDamageStrike);
+                        if (jumpDamageStrike.TotalQualityCount > 0)
+                        {
+                            float damageCoefficientPerMoveSpeedIncreaseCoefficient = (1.5f * jumpDamageStrike.UncommonCount) +
+                                                                                     (2.5f * jumpDamageStrike.RareCount) +
+                                                                                     (3.5f * jumpDamageStrike.EpicCount) +
+                                                                                     (5.0f * jumpDamageStrike.LegendaryCount);
 
-                        float currentMoveSpeedIncreaseCoefficient = body.baseMoveSpeed > 0 ? Mathf.Max(0f, (body.moveSpeed / body.baseMoveSpeed) - 1f) : 0f;
+                            float currentMoveSpeedIncreaseCoefficient = body.baseMoveSpeed > 0 ? Mathf.Max(0f, (body.moveSpeed / body.baseMoveSpeed) - 1f) : 0f;
 
-                        float damageCoefficient = damageCoefficientPerMoveSpeedIncreaseCoefficient * currentMoveSpeedIncreaseCoefficient;
-                        blastDamage += damageCoefficient * body.damage;
+                            float damageCoefficient = damageCoefficientPerMoveSpeedIncreaseCoefficient * currentMoveSpeedIncreaseCoefficient;
+                            blastDamage += damageCoefficient * body.damage;
+                        }
                     }
+
+                    return blastDamage;
                 }
-
-                return blastDamage;
-            }
-        }
-
-        static void JumpDamageStrikeBodyBehavior_UpdateCharge(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld<JumpDamageStrikeBodyBehavior>(nameof(JumpDamageStrikeBodyBehavior.minDistancePerCharge)),
-                               x => x.MatchLdsfld<JumpDamageStrikeBodyBehavior>(nameof(JumpDamageStrikeBodyBehavior.maxDistancePerCharge)),
-                               x => x.MatchCallOrCallvirt<Mathf>(nameof(Mathf.Lerp))))
-            {
-                Log.Error("Failed to find patch location");
-                return;
             }
 
-            c.Goto(foundCursors[2].Next, MoveType.After);
+            c.Goto(0);
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<float, JumpDamageStrikeBodyBehavior, float>>(getDistancePerCharge);
-
-            static float getDistancePerCharge(float baseDistancePerCharge, JumpDamageStrikeBodyBehavior jumpDamageStrikeBodyBehavior)
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.SetBuffCount))))
             {
-                float distancePerCharge = baseDistancePerCharge;
+                Log.Error("Failed to find charge decrease patch location");
+            }
+            else
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<int, JumpDamageStrikeBodyBehavior, int>>(getBuffCountAfterDischarge);
 
-                if (jumpDamageStrikeBodyBehavior && jumpDamageStrikeBodyBehavior.body && jumpDamageStrikeBodyBehavior.body.inventory)
+                static int getBuffCountAfterDischarge(int newBuffCount, JumpDamageStrikeBodyBehavior jumpDamageStrikeBodyBehavior)
                 {
-                    ItemQualityCounts jumpDamageStrike = jumpDamageStrikeBodyBehavior.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpDamageStrike);
-
-                    float chargeSpeed;
-                    switch (jumpDamageStrike.HighestQuality)
+                    CharacterBody body = jumpDamageStrikeBodyBehavior ? jumpDamageStrikeBodyBehavior.body : null;
+                    if (body && body.inventory)
                     {
-                        case QualityTier.None:
-                            chargeSpeed = 1f;
-                            break;
-                        case QualityTier.Uncommon:
-                            chargeSpeed = 1.25f;
-                            break;
-                        case QualityTier.Rare:
-                            chargeSpeed = 1.50f;
-                            break;
-                        case QualityTier.Epic:
-                            chargeSpeed = 1.75f;
-                            break;
-                        case QualityTier.Legendary:
-                            chargeSpeed = 2f;
-                            break;
-                        default:
-                            chargeSpeed = 1f;
-                            Log.Error($"Quality tier {jumpDamageStrike.HighestQuality} is not implemented");
-                            break;
+                        ItemQualityCounts jumpDamageStrike = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpDamageStrike);
+
+                        int maxChargeToConsume;
+                        switch (jumpDamageStrike.HighestQuality)
+                        {
+                            case QualityTier.None:
+                                maxChargeToConsume = int.MaxValue;
+                                break;
+                            case QualityTier.Uncommon:
+                                maxChargeToConsume = 75;
+                                break;
+                            case QualityTier.Rare:
+                                maxChargeToConsume = 50;
+                                break;
+                            case QualityTier.Epic:
+                                maxChargeToConsume = 25;
+                                break;
+                            case QualityTier.Legendary:
+                                maxChargeToConsume = 10;
+                                break;
+                            default:
+                                Log.Error($"Quality tier {jumpDamageStrike.HighestQuality} is not implemented");
+                                maxChargeToConsume = int.MaxValue;
+                                break;
+                        }
+
+                        int currentBuffCount = body.GetBuffCount(DLC3Content.Buffs.JumpDamageStrikeCharge);
+                        if (currentBuffCount > maxChargeToConsume)
+                        {
+                            newBuffCount = currentBuffCount - maxChargeToConsume;
+                        }
                     }
 
-                    if (chargeSpeed > 1f)
-                    {
-                        distancePerCharge /= chargeSpeed;
-                    }
+                    return newBuffCount;
                 }
-
-                return distancePerCharge;
             }
         }
     }

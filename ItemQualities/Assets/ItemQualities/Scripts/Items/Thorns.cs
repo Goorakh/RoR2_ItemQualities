@@ -19,10 +19,10 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int damageReportLocalIndex = -1;
+            VariableDefinition damageReportVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchNewobj<DamageReport>(),
-                               x => x.MatchStloc(typeof(DamageReport), il, out damageReportLocalIndex),
+                               x => x.MatchStloc(typeof(DamageReport), il, out damageReportVar),
                                x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.thorns)),
                                x => x.MatchStfld<LightningOrb>(nameof(LightningOrb.damageValue))))
             {
@@ -32,7 +32,7 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[3].Next, MoveType.AfterLabel);
 
-            c.Emit(OpCodes.Ldloc, damageReportLocalIndex);
+            c.Emit(OpCodes.Ldloc, damageReportVar);
             c.EmitDelegate<Func<float, DamageReport, float>>(getThornsDamage);
 
             static float getThornsDamage(float thornsDamage, DamageReport damageReport)
@@ -43,10 +43,10 @@ namespace ItemQualities.Items
                     ItemQualityCounts thorns = victimInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Thorns);
                     if (thorns.TotalQualityCount > 0)
                     {
-                        float returnDamageCoefficient = (0.10f * thorns.UncommonCount) +
-                                                        (0.15f * thorns.RareCount) +
-                                                        (0.20f * thorns.EpicCount) +
-                                                        (0.25f * thorns.LegendaryCount);
+                        float returnDamageCoefficient = (1f * thorns.UncommonCount) +
+                                                        (2f * thorns.RareCount) +
+                                                        (3f * thorns.EpicCount) +
+                                                        (5f * thorns.LegendaryCount);
 
                         thornsDamage += returnDamageCoefficient * damageReport.damageDealt;
                     }

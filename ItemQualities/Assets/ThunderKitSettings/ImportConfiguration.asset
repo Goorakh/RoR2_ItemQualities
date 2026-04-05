@@ -269,6 +269,14 @@ MonoBehaviour:
     - BepInExPack
     - R2API_Core
     - HookGenPatcher
+  - submoduleName: R2API_Buffs
+    description: R2API_Buffs
+    dependedncyID: RiskofThunder-R2API_Buffs
+    shouldInstall: 1
+    isHardDependency: 0
+    dependencies:
+    - R2API_Core
+    - HookGenPatcher
   - submoduleName: R2API_CharacterBody
     description: R2API_CharacterBody
     dependedncyID: RiskofThunder-R2API_CharacterBody
@@ -356,7 +364,7 @@ MonoBehaviour:
     description: R2API_Execute
     dependedncyID: RiskofThunder-R2API_Execute
     shouldInstall: 1
-    isHardDependency: 0
+    isHardDependency: 1
     dependencies:
     - BepInExPack
     - R2API_Core

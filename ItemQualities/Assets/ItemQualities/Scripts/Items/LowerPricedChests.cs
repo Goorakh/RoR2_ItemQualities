@@ -68,15 +68,15 @@ namespace ItemQualities.Items
             c.Emit(OpCodes.Newobj, typeof(QualitySaleStarState).GetConstructor(Array.Empty<Type>()));
             c.Emit(OpCodes.Stloc, saleStarStateVar);
 
-            int saleStarItemTransformationVarIndex = -1;
-            int saleStarItemTransformationResultVarIndex = -1;
+            VariableDefinition saleStarItemTransformationVar = null;
+            VariableDefinition saleStarItemTransformationResultVar = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdfld<PurchaseInteraction>(nameof(PurchaseInteraction.saleStarCompatible))) ||
                 !c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out saleStarItemTransformationVarIndex),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out saleStarItemTransformationVar),
                                x => x.MatchLdloc(typeof(CharacterBody), il, out _),
                                x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory)),
-                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation.TryTransformResult), il, out saleStarItemTransformationResultVarIndex),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation.TryTransformResult), il, out saleStarItemTransformationResultVar),
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
                 Log.Error("Failed to find sale star proc patch location");
@@ -84,8 +84,8 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldarg, interactorParameter);
-            c.Emit(OpCodes.Ldloca, saleStarItemTransformationVarIndex);
-            c.Emit(OpCodes.Ldloca, saleStarItemTransformationResultVarIndex);
+            c.Emit(OpCodes.Ldloca, saleStarItemTransformationVar);
+            c.Emit(OpCodes.Ldloca, saleStarItemTransformationResultVar);
             c.Emit(OpCodes.Ldloc, saleStarStateVar);
             c.EmitDelegate<ConsumeQualitySaleStarsDelegate>(consumeQualitySaleStars);
 

@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: qdLegendary
   m_EditorClassIdentifier: 
   qualityTier: 3
+  modifierToken: QUALITY_LEGENDARY_MODIFIER
+  consumedModifierToken: QUALITY_LEGENDARY_CONSUMED_MODIFIER
   color: {r: 1, g: 0.5882353, b: 0, a: 1}
+  colorRampTexture: {fileID: 2800000, guid: c9c1bf4c0ce525244ab22dafae7e5e4a, type: 3}
   icon: {fileID: 1200068530, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   consumedIcon: {fileID: 1632103838, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   ChestOpenEffectPrefab: {fileID: 7506171118075166119, guid: 105f98aad2011534da6995e4bb0fc421, type: 3}

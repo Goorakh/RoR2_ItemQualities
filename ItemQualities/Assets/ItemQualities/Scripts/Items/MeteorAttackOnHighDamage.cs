@@ -106,11 +106,11 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int meteorImpactEffectDataVariableIndex = -1;
+            VariableDefinition meteorImpactEffectDataVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdfld<MeteorAttackOnHighDamageBodyBehavior>(nameof(MeteorAttackOnHighDamageBodyBehavior.shouldSpawnMeteorStrikeVFX)),
                                x => x.MatchNewobj<EffectData>(),
-                               x => x.MatchStloc(typeof(EffectData), il, out meteorImpactEffectDataVariableIndex),
+                               x => x.MatchStloc(typeof(EffectData), il, out meteorImpactEffectDataVar),
                                x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SpawnEffect))))
             {
                 Log.Error("Failed to find patch location");
@@ -119,7 +119,7 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[3].Next, MoveType.Before); // call EffectManager.SpawnEffect
 
-            c.Emit(OpCodes.Ldloc, meteorImpactEffectDataVariableIndex);
+            c.Emit(OpCodes.Ldloc, meteorImpactEffectDataVar);
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Action<EffectData, MeteorAttackOnHighDamageBodyBehavior>>(handleQualityMeteorImpactEffectData);
 

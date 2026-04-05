@@ -27,13 +27,13 @@ namespace ItemQualities.Items
                                       x => x.MatchLdloc(out localsVar),
                                       x => x.MatchLdfld(out startingItemDefLocalsField) && startingItemDefLocalsField?.Name == "startingItemDef"))
             {
-                int tier2DropListVarIndex = -1;
+                VariableDefinition tier2DropListVar = null;
                 if (c.TryGotoNext(MoveType.After,
                                   x => x.MatchLdfld<Run>(nameof(Run.availableTier2DropList)),
                                   x => x.MatchNewobj<List<PickupIndex>>(),
-                                  x => x.MatchStloc(typeof(List<PickupIndex>), il, out tier2DropListVarIndex)))
+                                  x => x.MatchStloc(typeof(List<PickupIndex>), il, out tier2DropListVar)))
                 {
-                    patchDropList(tier2DropListVarIndex, "tier2");
+                    patchDropList(tier2DropListVar, "tier2");
                 }
                 else
                 {
@@ -42,20 +42,20 @@ namespace ItemQualities.Items
 
                 c.Index = 0;
 
-                int tier3DropListVarIndex = -1;
+                VariableDefinition tier3DropListVar = null;
                 if (c.TryGotoNext(MoveType.After,
                                   x => x.MatchLdfld<Run>(nameof(Run.availableTier3DropList)),
                                   x => x.MatchNewobj<List<PickupIndex>>(),
-                                  x => x.MatchStloc(typeof(List<PickupIndex>), il, out tier3DropListVarIndex)))
+                                  x => x.MatchStloc(typeof(List<PickupIndex>), il, out tier3DropListVar)))
                 {
-                    patchDropList(tier3DropListVarIndex, "tier3");
+                    patchDropList(tier3DropListVar, "tier3");
                 }
                 else
                 {
                     Log.Error("Failed to find tier3 droplist variable");
                 }
 
-                void patchDropList(int tierDropListVarIndex, string name)
+                void patchDropList(VariableDefinition tierDropListVar, string name)
                 {
                     VariableDefinition tierDropListsByQualityVar = il.AddVariable<List<PickupIndex>[]>();
 
@@ -66,7 +66,7 @@ namespace ItemQualities.Items
                     {
                         c.Emit(OpCodes.Dup);
                         c.Emit(OpCodes.Ldc_I4, (int)qualityTier);
-                        c.Emit(OpCodes.Ldloc, tierDropListVarIndex);
+                        c.Emit(OpCodes.Ldloc, tierDropListVar);
                         c.Emit(OpCodes.Ldc_I4, (int)qualityTier);
                         c.EmitDelegate<Func<List<PickupIndex>, QualityTier, List<PickupIndex>>>(getQualityPickupsList);
                         c.Emit(OpCodes.Stelem_Ref);
@@ -92,7 +92,7 @@ namespace ItemQualities.Items
                     c.Emit(OpCodes.Stloc, tierDropListsByQualityVar);
 
                     if (c.TryGotoNext(MoveType.After,
-                                      x => x.MatchLdloc(tierDropListVarIndex),
+                                      x => x.MatchLdloc(tierDropListVar),
                                       x => x.MatchStloc(typeof(List<PickupIndex>), il, out _)))
                     {
                         c.Index--;
@@ -130,10 +130,10 @@ namespace ItemQualities.Items
 
             c.Index = 0;
 
-            int upgradableItemListVarIndex = -1;
+            VariableDefinition upgradableItemListVar = null;
             if (!c.TryFindNext(out _,
                                x => x.MatchLdfld<Inventory>(nameof(Inventory.itemAcquisitionOrder)),
-                               x => x.MatchStloc(typeof(List<ItemIndex>), il, out upgradableItemListVarIndex)))
+                               x => x.MatchStloc(typeof(List<ItemIndex>), il, out upgradableItemListVar)))
             {
                 Log.Error("Failed to find upgradableItems list variable");
             }
@@ -145,9 +145,9 @@ namespace ItemQualities.Items
                 return;
             }
 
-            int itemTransformationLocalIndex = -1;
+            VariableDefinition itemTransformationVar = null;
             if (!c.TryFindPrev(out _,
-                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationLocalIndex),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationVar),
                                x => x.MatchInitobj<Inventory.ItemTransformation>()))
             {
                 Log.Fatal("Failed to find ItemTransformation variable");
@@ -155,11 +155,11 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, itemTransformationLocalIndex);
+            c.Emit(OpCodes.Ldloc, itemTransformationVar);
 
-            if (upgradableItemListVarIndex != -1)
+            if (upgradableItemListVar != null)
             {
-                c.Emit(OpCodes.Ldloc, upgradableItemListVarIndex);
+                c.Emit(OpCodes.Ldloc, upgradableItemListVar);
             }
             else
             {
@@ -186,11 +186,10 @@ namespace ItemQualities.Items
                 ItemQualityCounts upgradeItemQualities = new ItemQualityCounts();
                 upgradeItemQualities[startingQualityTier] = startingItemCount;
 
-                float qualityUpgradeChance = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
-                    (0.10f * cloverVoid.UncommonCount) +
-                    (0.25f * cloverVoid.RareCount) +
-                    (0.35f * cloverVoid.EpicCount) +
-                    (0.50f * cloverVoid.LegendaryCount));
+                float qualityUpgradeChance = (0.10f * cloverVoid.UncommonCount) +
+                                             (0.25f * cloverVoid.RareCount) +
+                                             (0.35f * cloverVoid.EpicCount) +
+                                             (0.50f * cloverVoid.LegendaryCount);
 
                 QualityTier maxUpgradableQualityTier = cloverVoid.HighestQuality - 1;
 

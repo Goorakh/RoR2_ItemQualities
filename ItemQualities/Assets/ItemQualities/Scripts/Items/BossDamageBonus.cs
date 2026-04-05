@@ -23,18 +23,29 @@ namespace ItemQualities.Items
 
             if (report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
             {
-                ItemQualityCounts bossDamageBonus = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
-
-                int maxHitlistBonus = (15 * bossDamageBonus.UncommonCount) +
-                                      (30 * bossDamageBonus.RareCount) +
-                                      (45 * bossDamageBonus.EpicCount) +
-                                      (60 * bossDamageBonus.LegendaryCount);
-
-                if (report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.HitlistDamage) < maxHitlistBonus)
-                {
-                    report.attackerBody.AddBuff(ItemQualitiesContent.Buffs.HitlistDamage);
+                applyTicks(report.attackerBody);
+                CharacterBody owner = report.attackerBody.GetOwnerBody();
+                if (owner) {
+                    applyTicks(owner);
                 }
             }
+        }
+
+        static void applyTicks(CharacterBody attacker) {
+            ItemQualityCounts bossDamageBonus = attacker.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
+
+            int maxHitlistBonus = bossDamageBonus.HighestQuality switch
+            {
+                QualityTier.Uncommon => 15,
+                QualityTier.Rare => 30,
+                QualityTier.Epic => 45,
+                QualityTier.Legendary => 60,
+                _ => 0,
+            };
+
+            if (!attacker.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+                return;
+            masterExtraStats.BossDamageBonusTicks = Math.Min(masterExtraStats.BossDamageBonusTicks + 1, maxHitlistBonus);
         }
 
         static void HealthComponent_TakeDamageProcess(ILContext il)
@@ -76,11 +87,11 @@ namespace ItemQualities.Items
 
             static bool isMiniBoss(bool isBoss, HealthComponent victim, DamageInfo damageInfo)
             {
-                if (isBoss)
-                    return false;
-
                 if (!victim || !victim.body)
                     return false;
+
+                if (isBoss)
+                    return true;
 
                 CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
                 Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
@@ -102,7 +113,15 @@ namespace ItemQualities.Items
                 if (isMiniBoss)
                 {
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
-                    damageMultiplier = attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.HitlistDamage) * 0.01f;
+                    if (attackerBody && attackerBody.master && attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats)) {
+                        ItemQualityCounts bossDamageBonus = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
+
+                        damageMultiplier +=  masterExtraStats.BossDamageBonusTicks * (
+                                            bossDamageBonus.UncommonCount * 0.01f +
+                                            bossDamageBonus.EpicCount * 0.0125f +
+                                            bossDamageBonus.RareCount * 0.015f +
+                                            bossDamageBonus.LegendaryCount * 0.02f);
+                    }
                 }
 
                 return damageMultiplier;

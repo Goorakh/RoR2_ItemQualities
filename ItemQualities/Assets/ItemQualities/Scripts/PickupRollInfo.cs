@@ -40,7 +40,11 @@ namespace ItemQualities
                     }
                 }
 
-                clover += teamInventoryCloverCounts;
+                bool hasAnyTeamInventoryClovers = teamInventoryCloverCounts.TotalQualityCount > 0;
+                if (hasAnyTeamInventoryClovers)
+                {
+                    clover += teamInventoryCloverCounts;
+                }
 
                 foreach (CharacterMaster teammateMaster in CharacterMaster.readOnlyInstancesList)
                 {
@@ -59,7 +63,19 @@ namespace ItemQualities
                             continue;
                     }
 
-                    clover += teammateMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Clover) - teamInventoryCloverCounts;
+                    ItemQualityCounts teammateCloverCounts = teammateMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Clover);
+                    if (hasAnyTeamInventoryClovers)
+                    {
+                        for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                        {
+                            if (teammateCloverCounts[qualityTier] >= teamInventoryCloverCounts[qualityTier])
+                            {
+                                teamInventoryCloverCounts[qualityTier] -= teamInventoryCloverCounts[qualityTier];
+                            }
+                        }
+                    }
+
+                    clover += teammateCloverCounts;
                 }
             }
 

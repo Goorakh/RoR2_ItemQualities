@@ -286,18 +286,18 @@ namespace ItemQualities
         {
             ILCursor c = new ILCursor(il);
 
-            int allRecipesEnumeratorLocalIndex = -1;
-            int recipeEntryLocalIndex = -1;
+            VariableDefinition allRecipesEnumeratorVar = null;
+            VariableDefinition recipeEntryVar = null;
 
             bool recipeEntryLocalIndexMatchSuccess =
                 c.TryGotoNext(MoveType.After,
                               x => x.MatchLdsfld(typeof(CraftableCatalog), nameof(CraftableCatalog.allRecipes)),
                               x => x.MatchCallOrCallvirt(out MethodReference m) && m?.Name == nameof(IEnumerable.GetEnumerator),
-                              x => x.MatchStloc(out allRecipesEnumeratorLocalIndex))
+                              x => x.MatchStloc(il, out allRecipesEnumeratorVar))
                 && c.TryGotoNext(MoveType.After,
-                                 x => x.MatchLdloca(allRecipesEnumeratorLocalIndex),
+                                 x => x.MatchLdloca(allRecipesEnumeratorVar),
                                  x => x.MatchCallOrCallvirt(out MethodReference m) && m?.Name == "get_" + nameof(IEnumerator.Current),
-                                 x => x.MatchStloc(typeof(CraftableCatalog.RecipeEntry), il, out recipeEntryLocalIndex));
+                                 x => x.MatchStloc(typeof(CraftableCatalog.RecipeEntry), il, out recipeEntryVar));
 
             if (!recipeEntryLocalIndexMatchSuccess)
             {
@@ -305,18 +305,18 @@ namespace ItemQualities
                 return;
             }
 
-            int allPickupsEnumeratorLocalIndex = -1;
-            int pickupDefLocalIndex = -1;
+            VariableDefinition allPickupsEnumeratorVar = null;
+            VariableDefinition pickupDefVar = null;
 
             bool pickupDefLocalIndexMatchSuccess =
                 c.TryGotoNext(MoveType.After,
                               x => x.MatchLdloc(out _),
                               x => x.MatchCallOrCallvirt(out MethodReference m) && m?.Name == nameof(IEnumerable.GetEnumerator),
-                              x => x.MatchStloc(out allPickupsEnumeratorLocalIndex))
+                              x => x.MatchStloc(il, out allPickupsEnumeratorVar))
                 && c.TryGotoNext(MoveType.After,
-                                 x => x.MatchLdloc(allPickupsEnumeratorLocalIndex),
+                                 x => x.MatchLdloc(allPickupsEnumeratorVar),
                                  x => x.MatchCallOrCallvirt(out MethodReference m) && m?.Name == "get_" + nameof(IEnumerator.Current),
-                                 x => x.MatchStloc(typeof(PickupDef), il, out pickupDefLocalIndex));
+                                 x => x.MatchStloc(typeof(PickupDef), il, out pickupDefVar));
 
             if (!pickupDefLocalIndexMatchSuccess)
             {
@@ -333,8 +333,8 @@ namespace ItemQualities
                 return;
             }
 
-            c.Emit(OpCodes.Ldloc, pickupDefLocalIndex);
-            c.Emit(OpCodes.Ldloc, recipeEntryLocalIndex);
+            c.Emit(OpCodes.Ldloc, pickupDefVar);
+            c.Emit(OpCodes.Ldloc, recipeEntryVar);
             c.EmitDelegate<Func<PickupDef, CraftableCatalog.RecipeEntry, bool>>(allowIngredient);
             c.Emit(OpCodes.Brfalse, ingredientInvalidLabel);
 

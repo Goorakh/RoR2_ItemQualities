@@ -41,16 +41,16 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int watchItemTransformationVarIndex = -1;
-            int watchItemTransformationResultVarIndex = -1;
+            VariableDefinition watchItemTransformationVar = null;
+            VariableDefinition watchItemTransformationResultVar = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.fragileDamageBonus))) ||
                 !c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out watchItemTransformationVarIndex),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out watchItemTransformationVar),
                                x => x.MatchLdarg(0),
                                x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.body)),
                                x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.inventory)),
-                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation.TryTransformResult), il, out watchItemTransformationResultVarIndex),
+                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation.TryTransformResult), il, out watchItemTransformationResultVar),
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
                 Log.Error("Failed to find patch location");
@@ -58,8 +58,8 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloca, watchItemTransformationVarIndex);
-            c.Emit(OpCodes.Ldloca, watchItemTransformationResultVarIndex);
+            c.Emit(OpCodes.Ldloca, watchItemTransformationVar);
+            c.Emit(OpCodes.Ldloca, watchItemTransformationResultVar);
             c.EmitDelegate<ConsumeQualityWatchesDelegate>(consumeQualityWatches);
 
             static bool consumeQualityWatches(bool result, HealthComponent healthComponent, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult)

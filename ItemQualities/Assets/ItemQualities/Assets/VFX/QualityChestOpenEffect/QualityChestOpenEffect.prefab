@@ -40,13 +40,13 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 290951599886461589}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 10
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
-  m_Range: 10
+  m_Intensity: 2
+  m_Range: 5
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -113,33 +113,24 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 38.50124
-      outSlope: 38.50124
+      inSlope: 77.658005
+      outSlope: 77.658005
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.067217246
+      outWeight: 0.04536621
     - serializedVersion: 3
-      time: 0.061988063
-      value: 0.9343666
-      inSlope: 0.5337523
-      outSlope: 0.5337523
+      time: 0.032231927
+      value: 0.89315706
+      inSlope: -0.004328817
+      outSlope: -0.004328817
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.36265054
+      outWeight: 0.1697453
     - serializedVersion: 3
-      time: 0.5
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 136
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.7562756
-      value: 0.80558723
+      time: 0.7983288
+      value: 0.49737495
       inSlope: -1.8839718
       outSlope: -1.8839718
       tangentMode: 0
@@ -158,7 +149,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  timeMax: 2
+  timeMax: 1.5
   loop: 0
   randomStart: 0
   enableNegativeLights: 0
@@ -14803,5 +14794,5 @@ MonoBehaviour:
   m_Script: {fileID: 1788389205, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  duration: 1
+  duration: 1.5
   resetAgeOnDisable: 1

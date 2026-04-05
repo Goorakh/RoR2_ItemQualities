@@ -21,7 +21,7 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            int extraStatsOnLevelUpItemCountVar = -1;
+            VariableDefinition extraStatsOnLevelUpItemCountVar = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdsfld(typeof(DLC2Content.Items), nameof(DLC2Content.Items.ExtraStatsOnLevelUp)),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountPermanent)),
@@ -113,10 +113,10 @@ namespace ItemQualities.Items
                                        (3 * beadsSpent.EpicCount) +
                                        (5 * beadsSpent.LegendaryCount);
 
-                int ambientLevelPenalty = (5 * beadsSpent.UncommonCount) +
-                                          (7 * beadsSpent.RareCount) +
-                                          (10 * beadsSpent.EpicCount) +
-                                          (15 * beadsSpent.LegendaryCount);
+                int ambientLevelPenalty = (2 * beadsSpent.UncommonCount) +
+                                          (4 * beadsSpent.RareCount) +
+                                          (6 * beadsSpent.EpicCount) +
+                                          (8 * beadsSpent.LegendaryCount);
 
                 if (playerLevelBonus > 0)
                 {

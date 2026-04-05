@@ -67,16 +67,16 @@ namespace ItemQualities.Items
                 }
             }
 
-            int effectiveItemCountVarIndex = -1;
+            VariableDefinition effectiveItemCountVar = null;
             if (!c.TryFindPrev(out foundCursors,
-                               x => x.MatchLdloc(typeof(int), il, out effectiveItemCountVarIndex)))
+                               x => x.MatchLdloc(typeof(int), il, out effectiveItemCountVar)))
             {
                 Log.Error("Failed to find effectiveItemCount variable");
                 return;
             }
 
             if (!c.TryFindPrev(out foundCursors,
-                               x => x.MatchStloc(effectiveItemCountVarIndex),
+                               x => x.MatchStloc(effectiveItemCountVar),
                                x => x.MatchCall(typeof(Math), nameof(Math.Clamp)),
                                x => x.MatchCallOrCallvirt<Inventory>("get_" + nameof(Inventory.inventoryDisabled))))
             {
@@ -86,12 +86,12 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[0].Next, MoveType.After);
 
-            c.Emit(OpCodes.Ldloc, effectiveItemCountVarIndex);
+            c.Emit(OpCodes.Ldloc, effectiveItemCountVar);
             c.Emit(OpCodes.Ldarg_0);
             c.Emit(OpCodes.Ldarg, itemIndexParameter);
             c.EmitDelegate<Func<Inventory, ItemIndex, int>>(getEffectiveItemCountFromQualities);
             c.Emit(OpCodes.Add);
-            c.Emit(OpCodes.Stloc, effectiveItemCountVarIndex);
+            c.Emit(OpCodes.Stloc, effectiveItemCountVar);
 
             static int getEffectiveItemCountFromQualities(Inventory inventory, ItemIndex itemIndex)
             {
@@ -151,10 +151,10 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int itemIndexVarIndex = -1;
+            VariableDefinition itemIndexVar = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdarg(inventoryParameter.Sequence),
-                               x => x.MatchLdloc(typeof(ItemIndex), il, out itemIndexVarIndex),
+                               x => x.MatchLdloc(typeof(ItemIndex), il, out itemIndexVar),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.CalculateEffectiveItemStacks))))
             {
                 Log.Error("Failed to find patch location");
@@ -162,7 +162,7 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldarg, inventoryParameter);
-            c.Emit(OpCodes.Ldloc, itemIndexVarIndex);
+            c.Emit(OpCodes.Ldloc, itemIndexVar);
             c.EmitDelegate<Func<int, Inventory, ItemIndex, int>>(getItemCountWithQualities);
 
             static int getItemCountWithQualities(int itemCount, Inventory inventory, ItemIndex itemIndex)
@@ -190,17 +190,17 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int damageValueLocalIndex = -1;
+            VariableDefinition damageValueVar = null;
             if (!c.TryGotoNext(x => x.MatchLdfld<TeamDef>(nameof(TeamDef.friendlyFireScaling))) ||
                 !c.TryGotoPrev(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.damage))) ||
                 !c.TryGotoNext(MoveType.After,
-                               x => x.MatchStloc(typeof(float), il, out damageValueLocalIndex)))
+                               x => x.MatchStloc(typeof(float), il, out damageValueVar)))
             {
                 Log.Error("Failed to find patch location");
                 return;
             }
 
-            c.Emit(OpCodes.Ldloca, damageValueLocalIndex);
+            c.Emit(OpCodes.Ldloca, damageValueVar);
             c.Emit(OpCodes.Ldarg, damageInfoParameter);
             c.EmitDelegate<ModifyDamageDelegate>(invokeModifyDamage);
 

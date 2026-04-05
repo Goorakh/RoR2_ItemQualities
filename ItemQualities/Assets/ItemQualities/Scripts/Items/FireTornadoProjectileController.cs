@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    public class FireTornadoProjectileController : NetworkBehaviour
+    public sealed class FireTornadoProjectileController : NetworkBehaviour
     {
         [SyncVar]
         float _overrideLifetime = -1f;

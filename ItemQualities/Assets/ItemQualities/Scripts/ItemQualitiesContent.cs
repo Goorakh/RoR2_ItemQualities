@@ -98,8 +98,10 @@ namespace ItemQualities
 
             populateTypeFields(typeof(Sprites), _contentPack.sprites);
 
-            populateTypeFields(typeof(TMP_SpriteAssets), _contentPack.spriteAssets, fieldName => "tmpspr");
+            populateTypeFields(typeof(TMP_SpriteAssets), _contentPack.spriteAssets, fieldName => "tmpspr" + fieldName);
             TMP_SpriteAssets.AllSpriteAssets = new ReadOnlyCollection<TMP_SpriteAsset>(_contentPack.spriteAssets.ToArray());
+
+            populateTypeFields(typeof(NetworkSoundEvents), _contentPack.networkSoundEventDefs, fieldName => "nse" + fieldName);
 
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -192,6 +194,8 @@ namespace ItemQualities
 
             List<Sprite> spritesList = new List<Sprite>();
 
+            List<NetworkSoundEventDef> networkSoundEventsList = new List<NetworkSoundEventDef>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -270,6 +274,9 @@ namespace ItemQualities
                     case Sprite sprite:
                         spritesList.Add(sprite);
                         break;
+                    case NetworkSoundEventDef networkSoundEventDef:
+                        networkSoundEventsList.Add(networkSoundEventDef);
+                        break;
                 }
             }
 
@@ -309,6 +316,8 @@ namespace ItemQualities
             _contentPack.textures.Add(texturesList.ToArray());
 
             _contentPack.sprites.Add(spritesList.ToArray());
+
+            _contentPack.networkSoundEventDefs.Add(networkSoundEventsList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -425,6 +434,8 @@ namespace ItemQualities
         public static class ItemQualityGroups
         {
             internal static IReadOnlyCollection<ItemQualityGroup> AllGroups = Array.Empty<ItemQualityGroup>();
+
+            public static ItemQualityGroup QualityTier;
 
             public static ItemQualityGroup Hoof;
 
@@ -700,13 +711,69 @@ namespace ItemQualities
         public static class Items
         {
             public static ItemDef DronesDropDynamiteQualityDroneItem;
+
+            public static ItemDef SquidUpgradeChanceOnKill;
+
+            public static ItemDef SquidUpgradeHidden;
         }
 
         public static class EquipmentQualityGroups
         {
             internal static IReadOnlyCollection<EquipmentQualityGroup> AllGroups = Array.Empty<EquipmentQualityGroup>();
 
+            public static EquipmentQualityGroup BossHunter;
+
             public static EquipmentQualityGroup BossHunterConsumed;
+
+            public static EquipmentQualityGroup Recycle;
+
+            public static EquipmentQualityGroup VendingMachine;
+
+            public static EquipmentQualityGroup CommandMissile;
+
+            public static EquipmentQualityGroup MultiShopCard;
+
+            public static EquipmentQualityGroup DeathProjectile;
+
+            public static EquipmentQualityGroup PassiveHealing;
+
+            public static EquipmentQualityGroup GummyClone;
+
+            public static EquipmentQualityGroup TeamWarCry;
+
+            public static EquipmentQualityGroup GainArmor;
+
+            public static EquipmentQualityGroup CritOnUse;
+
+            public static EquipmentQualityGroup BFG;
+
+            public static EquipmentQualityGroup Blackhole;
+
+            public static EquipmentQualityGroup Scanner;
+
+            public static EquipmentQualityGroup Lightning;
+
+            public static EquipmentQualityGroup Saw;
+
+            public static EquipmentQualityGroup LifestealOnHit;
+
+            public static EquipmentQualityGroup DroneBackup;
+
+            public static EquipmentQualityGroup GoldGat;
+
+            public static EquipmentQualityGroup Jetpack;
+
+            public static EquipmentQualityGroup Parry;
+            
+            public static EquipmentQualityGroup HealAndRevive;
+
+            public static EquipmentQualityGroup HealAndReviveConsumed;
+
+            public static EquipmentQualityGroup QuestVolatileBattery;
+            
+            public static EquipmentQualityGroup Fruit;
+
+            public static EquipmentQualityGroup Gateway;
         }
 
         public static class BuffQualityGroups
@@ -746,13 +813,27 @@ namespace ItemQualities
             public static BuffQualityGroup ShieldBoosterBuff;
 
             public static BuffQualityGroup MultikillWarCryBuff;
+
+            public static BuffQualityGroup TeamWarCry;
+
+            public static BuffQualityGroup FullCrit;
+
+            public static BuffQualityGroup LifeSteal;
+
+            public static BuffQualityGroup BugBlock;
+            
+            public static BuffQualityGroup Warbanner;
+
+            public static BuffQualityGroup DelayedDamageDebuff;
         }
 
         public static class Buffs
         {
             public static BuffDef BossStun;
 
-            public static BuffDef SprintArmorStrong;
+            public static BuffDef SprintArmorWeaken;
+
+            public static BuffDef SprintArmorDashCooldown;
 
             public static BuffDef HealCritBoost;
 
@@ -766,9 +847,9 @@ namespace ItemQualities
 
             public static BuffDef SlugHealth;
 
-            public static BuffDef HitlistDamage;
-
             public static BuffDef MiniBossCooldown;
+
+            public static BuffDef LifeStealSpeed;
         }
 
         public static class Prefabs
@@ -778,6 +859,18 @@ namespace ItemQualities
             public static GameObject DeathMarkQualityEffect;
 
             public static GameObject VoidDeathOrbEffect;
+
+            public static GameObject DuplicatedInteractableEffect;
+
+            public static GameObject MultiShopCardTooltipContext;
+
+            public static GameObject BugBlockProcEffect;
+
+            public static GameObject BugOrbEffect;
+            
+            public static GameObject HitlistMarkersUI;
+
+            public static GameObject ParryProjectileDisplayUI;
         }
 
         public static class NetworkedPrefabs
@@ -807,6 +900,22 @@ namespace ItemQualities
             public static GameObject DuplicatorQualityAttachment;
 
             public static GameObject DroneShootableAttachment;
+
+            public static GameObject CleanseQualityAttachment;
+
+            public static GameObject QualityCritOnUseAttachment;
+
+            public static GameObject BugPickup;
+
+            public static GameObject BugSwarmController;
+
+            public static GameObject HealAndReviveSproutAttachment;
+
+            public static GameObject QuestVolatileBatteryPickup;
+            
+            public static GameObject SprintArmorDashAttachment;
+
+            public static GameObject GatewayQualityAttachment;
         }
 
         public static class ProjectilePrefabs
@@ -841,6 +950,9 @@ namespace ItemQualities
 
             [TargetAssetName("iscQualityDuplicatorWild")]
             public static InteractableSpawnCard QualityDuplicatorWild;
+
+            [TargetAssetName("iscChest2Stealthed")]
+            public static InteractableSpawnCard Chest2Stealthed;
         }
 
         public static class Sprites
@@ -852,6 +964,11 @@ namespace ItemQualities
         public static class TMP_SpriteAssets
         {
             internal static IReadOnlyCollection<TMP_SpriteAsset> AllSpriteAssets = Array.Empty<TMP_SpriteAsset>();
+        }
+
+        public static class NetworkSoundEvents
+        {
+            public static NetworkSoundEventDef DuplicateInteractable;
         }
     }
 }

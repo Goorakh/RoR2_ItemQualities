@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egPassiveHealing
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: 97d489e6e655df6418679b52cba497eb
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 0d9930b9f148a1049811b183618ea419, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: 838f04df421218549a6ae17de823057f, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 613528b385c21d2449ab8c94b75d8ec7, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: af90e738a6a277a42ac193e0ec8d1a25, type: 2}

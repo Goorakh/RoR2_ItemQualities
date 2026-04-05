@@ -142,7 +142,7 @@ namespace ItemQualities.ContentManagement
             }
         }
 
-        class ParallelCoroutineGroup : IEnumerator
+        sealed class ParallelCoroutineGroup : IEnumerator
         {
             readonly HashSet<Type> _initializedTypes = new HashSet<Type>();
             readonly ParallelProgressCoroutine _combinedCoroutine;

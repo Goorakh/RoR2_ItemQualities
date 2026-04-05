@@ -73,17 +73,17 @@ namespace ItemQualities
             c.EmitDelegate<Func<AnimationEvent, ExplosionInfoIndex>>(GetExplosionIndex);
             c.Emit(OpCodes.Stloc, explosionInfoIndexVar);
 
-            int effectDataLocalIndex = -1;
+            VariableDefinition effectDataVar = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchNewobj<EffectData>(),
-                               x => x.MatchStloc(typeof(EffectData), il, out effectDataLocalIndex)))
+                               x => x.MatchStloc(typeof(EffectData), il, out effectDataVar)))
             {
                 Log.Error("Failed to find patch location");
                 return;
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, effectDataLocalIndex);
+            c.Emit(OpCodes.Ldloc, effectDataVar);
             c.Emit(OpCodes.Ldloc, explosionInfoIndexVar);
             c.EmitDelegate<Action<AnimationEvents, EffectData, ExplosionInfoIndex>>(tryApplyExplosionScale);
 

@@ -3,7 +3,7 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.Audio;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -78,52 +78,24 @@ namespace ItemQualities
             if (!qualityTierDef)
                 return;
 
-            ChestBehavior chest = _dropletController.createPickupInfo.chest;
-
-            Transform effectSpawnTransform = null;
-            int effectSpawnTransformChildIndex = -1;
-            if (chest && chest.TryGetComponent(out ModelLocator modelLocator))
-            {
-                ChildLocator chestModelChildLocator = modelLocator.modelChildLocator;
-                if (chestModelChildLocator)
-                {
-                    effectSpawnTransformChildIndex = chestModelChildLocator.FindChildIndex("BurstCenter");
-                    effectSpawnTransform = chestModelChildLocator.FindChild(effectSpawnTransformChildIndex);
-                }
-            }
-
             EffectData effectData = new EffectData
             {
-                origin = effectSpawnTransform ? effectSpawnTransform.position : _dropletController.createPickupInfo.position,
+                origin = _dropletController.createPickupInfo.position,
             };
 
-            if (effectSpawnTransformChildIndex != -1)
+            Vector3 velocity = Vector3.zero;
+            if (TryGetComponent(out Rigidbody rigidbody))
             {
-                if (chest)
-                {
-                    effectData.SetChildLocatorTransformReference(chest.gameObject, effectSpawnTransformChildIndex);
-                }
-                else
-                {
-                    Log.Warning("Missing entity object for effect child locator transform reference");
-                }
+                velocity = rigidbody.velocity;
+            }
+
+            if (velocity.sqrMagnitude > 0f)
+            {
+                effectData.rotation = Quaternion.FromToRotation(Vector3.up, velocity.normalized);
             }
             else
             {
-                Vector3 velocity = Vector3.zero;
-                if (TryGetComponent(out Rigidbody rigidbody))
-                {
-                    velocity = rigidbody.velocity;
-                }
-
-                if (velocity.sqrMagnitude > 0f)
-                {
-                    effectData.rotation = Quaternion.FromToRotation(Vector3.up, velocity.normalized);
-                }
-                else
-                {
-                    effectData.rotation = _dropletController.createPickupInfo.rotation;
-                }
+                effectData.rotation = _dropletController.createPickupInfo.rotation;
             }
 
             EffectManager.SpawnEffect(qualityTierDef.ChestOpenEffectPrefab, effectData, true);

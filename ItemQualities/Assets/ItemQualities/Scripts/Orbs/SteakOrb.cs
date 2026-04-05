@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ItemQualities.Orbs
 {
-    public class SteakOrb : Orb
+    public sealed class SteakOrb : Orb
     {
         static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
 

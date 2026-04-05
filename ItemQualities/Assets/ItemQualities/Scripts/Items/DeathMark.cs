@@ -167,9 +167,9 @@ namespace ItemQualities.Items
 
             Instruction addTimedBuffCallInstruction = c.Prev;
 
-            int debuffCountLocalIndex = -1;
+            VariableDefinition debuffCountVar = null;
             if (!c.TryFindPrev(out foundCursors,
-                               x => x.MatchLdloc(typeof(int), il, out debuffCountLocalIndex),
+                               x => x.MatchLdloc(typeof(int), il, out debuffCountVar),
                                x => x.MatchLdcI4(4),
                                x => x.MatchBlt(out _)))
             {
@@ -179,7 +179,7 @@ namespace ItemQualities.Items
 
             c.Goto(addTimedBuffCallInstruction, MoveType.After);
 
-            c.Emit(OpCodes.Ldloc, debuffCountLocalIndex);
+            c.Emit(OpCodes.Ldloc, debuffCountVar);
             c.Emit(OpCodes.Ldarg, attackerMasterParameter);
             c.Emit(OpCodes.Ldarg, victimBodyParameter);
             c.EmitDelegate<Action<int, CharacterMaster, CharacterBody>>(tryQualityDeathMarkProc);

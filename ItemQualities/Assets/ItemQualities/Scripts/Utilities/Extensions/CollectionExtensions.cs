@@ -36,5 +36,13 @@ namespace ItemQualities.Utilities.Extensions
         {
             namedAssetCollection.Add(new T[] { value });
         }
+
+        public static T GetSafe<T>(this IList<T> list, int index, T defaultValue = default)
+        {
+            if (list is null)
+                throw new ArgumentNullException(nameof(list));
+
+            return (uint)index < list.Count ? list[index] : defaultValue;
+        }
     }
 }

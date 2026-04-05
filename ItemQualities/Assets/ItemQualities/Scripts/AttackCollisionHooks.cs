@@ -62,10 +62,10 @@ namespace ItemQualities
         {
             ILCursor c = new ILCursor(il);
 
-            int hurtBoxVarIndex = -1;
+            VariableDefinition hurtBoxVar = null;
             ILLabel hurtBoxInvalidLabel = null;
             if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdloc(typeof(HurtBox), il, out hurtBoxVarIndex),
+                               x => x.MatchLdloc(typeof(HurtBox), il, out hurtBoxVar),
                                x => x.MatchImplicitConversion<UnityEngine.Object, bool>(),
                                x => x.MatchBrfalse(out hurtBoxInvalidLabel)))
             {
@@ -74,7 +74,7 @@ namespace ItemQualities
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, hurtBoxVarIndex);
+            c.Emit(OpCodes.Ldloc, hurtBoxVar);
             c.EmitDelegate<Func<BlastAttack, HurtBox, bool>>(attackerIgnoresCollisionWith);
             c.Emit(OpCodes.Brtrue, hurtBoxInvalidLabel);
 

@@ -24,7 +24,7 @@ namespace ItemQualities.Items
                 return;
 
             if ((damageReport.damageInfo.damageType & DamageType.VoidDeath) == 0 ||
-                damageReport.damageInfo.procChainMask.HasModdedProc(VoidDeathOrb.VoidDeathOrbProcType))
+                damageReport.damageInfo.procChainMask.HasModdedProc(ProcTypes.VoidDeathOrbProcType))
             {
                 return;
             }
@@ -55,36 +55,31 @@ namespace ItemQualities.Items
                 sphereSearch.FilterCandidatesByHurtBoxTeam(TeamMask.GetEnemyTeams(damageReport.attackerTeamIndex));
                 sphereSearch.FilterCandidatesByDistinctHurtBoxEntities();
 
-                List<HurtBox> targetHurtBoxes = ListPool<HurtBox>.RentCollection();
-                try
-                {
-                    sphereSearch.GetHurtBoxes(targetHurtBoxes);
+                using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> targetHurtBoxes);
+                sphereSearch.GetHurtBoxes(targetHurtBoxes);
 
-                    foreach (HurtBox hurtBox in targetHurtBoxes)
+                foreach (HurtBox hurtBox in targetHurtBoxes)
+                {
+                    if (hurtBox &&
+                        hurtBox.healthComponent &&
+                        hurtBox.healthComponent.alive &&
+                        hurtBox.healthComponent.gameObject != damageReport.attacker &&
+                        hurtBox.healthComponent != damageReport.victim &&
+                        hurtBox.healthComponent.body &&
+                        !hurtBox.healthComponent.body.isBoss &&
+                        (hurtBox.healthComponent.body.bodyFlags & CharacterBody.BodyFlags.ImmuneToVoidDeath) == 0)
                     {
-                        if (hurtBox &&
-                            hurtBox.healthComponent &&
-                            hurtBox.healthComponent.alive &&
-                            hurtBox.healthComponent.gameObject != damageReport.attacker &&
-                            hurtBox.healthComponent != damageReport.victim &&
-                            hurtBox.healthComponent.body &&
-                            !hurtBox.healthComponent.body.isBoss &&
-                            (hurtBox.healthComponent.body.bodyFlags & CharacterBody.BodyFlags.ImmuneToVoidDeath) == 0)
+                        VoidDeathOrb orb = new VoidDeathOrb
                         {
-                            VoidDeathOrb orb = new VoidDeathOrb
-                            {
-                                target = hurtBox,
-                                origin = damageReport.victimBody ? damageReport.victimBody.corePosition : damageReport.damageInfo.position,
-                                Attacker = damageReport.attacker,
-                            };
+                            target = hurtBox,
+                            origin = damageReport.victimBody ? damageReport.victimBody.corePosition : damageReport.damageInfo.position,
+                            Attacker = damageReport.attacker,
+                            ProcChainMask = damageReport.damageInfo.procChainMask,
+                            Crit = damageReport.damageInfo.crit,
+                        };
 
-                            OrbManager.instance.AddOrb(orb);
-                        }
+                        OrbManager.instance.AddOrb(orb);
                     }
-                }
-                finally
-                {
-                    targetHurtBoxes = ListPool<HurtBox>.ReturnCollection(targetHurtBoxes);
                 }
             }
         }

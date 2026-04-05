@@ -42,9 +42,9 @@ namespace ItemQualities.Items
 
                 if (flatHealth.TotalQualityCount > 0)
                 {
-                    float steakBonus = (25f * flatHealth.UncommonCount) +
-                                       (50f * flatHealth.RareCount) +
-                                       (100f * flatHealth.EpicCount) +
+                    float steakBonus = (35f * flatHealth.UncommonCount) +
+                                       (75f * flatHealth.RareCount) +
+                                       (150f * flatHealth.EpicCount) +
                                        (250f * flatHealth.LegendaryCount);
 
                     if (steakBonus > 0f)

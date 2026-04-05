@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egSaw
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: 94d9022a7ab277549b85f1a633651555
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: 53e336d1785eddc43b7b322d7ac4713f, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: a1b433993c3f89141ba754d9019751b6, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: fd1f35a668c6698448d51055a2fd44e0, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 3676313da7ff2674f9ef4250f70be768, type: 2}

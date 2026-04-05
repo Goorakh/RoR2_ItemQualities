@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b84a7ecea3032f46b69ce07519836ca, type: 3}
+  m_Name: egFruit
+  m_EditorClassIdentifier: 
+  BaseEquipmentReference:
+    m_AssetGUID: c3098e2e4e6068b4faa78bcd952a1424
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseEquipment: {fileID: 0}
+  _uncommonEquipment: {fileID: 11400000, guid: ee83408279a777b4f81ec88e2612759b, type: 2}
+  _rareEquipment: {fileID: 11400000, guid: e6e23875b4fa8c841ae958a2c0a13b98, type: 2}
+  _epicEquipment: {fileID: 11400000, guid: 320862039186202419f542738f636b17, type: 2}
+  _legendaryEquipment: {fileID: 11400000, guid: 2f96931d908cff941ba337325fe75dcc, type: 2}

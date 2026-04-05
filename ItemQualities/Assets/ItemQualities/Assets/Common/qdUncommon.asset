@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: qdUncommon
   m_EditorClassIdentifier: 
   qualityTier: 0
+  modifierToken: QUALITY_UNCOMMON_MODIFIER
+  consumedModifierToken: QUALITY_UNCOMMON_CONSUMED_MODIFIER
   color: {r: 0.24705884, g: 0.92549026, b: 0.34509805, a: 1}
+  colorRampTexture: {fileID: 2800000, guid: 0525e653d1c5fbe40845fc67ddf09e21, type: 3}
   icon: {fileID: -1715125677, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   consumedIcon: {fileID: 1129660682, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   ChestOpenEffectPrefab: {fileID: 2973721444907822655, guid: c62269ea4ad6e82459d9b0bd43faa57e, type: 3}

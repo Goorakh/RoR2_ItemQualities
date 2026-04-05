@@ -1,20 +1,379 @@
 ﻿{
-	strings:
-	{
-		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_CHAT": "Ahoy!!",
-		
-		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_CHAT": "Ahoy!!!",
+    strings:
+    {
+        "EQUIPMENT_BOSSHUNTER_UNCOMMON_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityUncommon\">. Consumed on use.",
+        "EQUIPMENT_BOSSHUNTER_UNCOMMON_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityUncommon\"> uncommon quality (or <sprite name=\"Quality\"> 1 extra copy of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
+        
+        "EQUIPMENT_BOSSHUNTER_RARE_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityRare\">. Consumed on use.",
+        "EQUIPMENT_BOSSHUNTER_RARE_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityRare\"> rare quality (or <sprite name=\"Quality\"> 2 extra copies of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
+        
+        "EQUIPMENT_BOSSHUNTER_EPIC_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityEpic\">. Consumed on use.",
+        "EQUIPMENT_BOSSHUNTER_EPIC_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityEpic\"> epic quality (or <sprite name=\"Quality\"> 3 extra copies of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
+        
+        "EQUIPMENT_BOSSHUNTER_LEGENDARY_PICKUP" : "Execute a large monster and claim its <style=cIsDamage>trophy</style> <sprite name=\"QualityLegendary\">. Consumed on use.",
+        "EQUIPMENT_BOSSHUNTER_LEGENDARY_DESC" : "<style=cIsDamage>Execute</style> any enemy capable of spawning a <style=cIsDamage>unique reward</style>, and it will drop that <style=cIsDamage>item</style>, with <sprite name=\"QualityLegendary\"> legendary quality (or <sprite name=\"Quality\"> 4 extra copies of the item, if quality does not exist for it). Equipment is <style=cIsUtility>consumed</style> on use.",
 
-		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>300%</style>",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>300%</style>",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_CHAT": "Ahoy!!!!",
-		
-		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_PICKUP": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>500%</style>",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_DESC": "{0}\nIncreases <style=cIsUtility>enthusiasm</style> by <sprite name=\"Quality\"> <style=cIsUtility>500%</style>",
-		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_CHAT": "AHOY!!!!!",
-	}
+        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "Looks <sprite name=\"Quality\"> good on you.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "Looks <sprite name=\"Quality\"> good on you.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_CHAT": "Ahoy!!",
+        
+        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "Looks <sprite name=\"Quality\"> great on you.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "Looks <sprite name=\"Quality\"> great on you.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_RARE_CHAT": "Ahoy!!!",
+
+        "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP": "Wow, you look <sprite name=\"Quality\"> amazing.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_DESC": "Wow, you look <sprite name=\"Quality\"> amazing.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_CHAT": "Ahoy!!!!",
+        
+        "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_PICKUP": "You look <sprite name=\"Quality\"> fucking incredible.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_DESC": "You look <sprite name=\"Quality\"> fucking incredible.",
+        "EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_CHAT": "AHOY!!!!!",
+
+        "EQUIPMENT_RECYCLE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items and Equipments.",
+        "EQUIPMENT_RECYCLE_UNCOMMON_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items and Equipments. All items and equipments above uncommon <sprite name=\"QualityUncommon\"> quality are recycled into uncommon <sprite name=\"QualityUncommon\"> quality.",
+
+        "EQUIPMENT_RECYCLE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items and Equipments.",
+        "EQUIPMENT_RECYCLE_RARE_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items and Equipments. All items and equipments above rare <sprite name=\"QualityRare\"> quality are recycled into rare <sprite name=\"QualityRare\"> quality.",
+
+        "EQUIPMENT_RECYCLE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items and Equipments.",
+        "EQUIPMENT_RECYCLE_EPIC_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items and Equipments. All items and equipments above epic <sprite name=\"QualityEpic\"> quality are recycled into epic <sprite name=\"QualityEpic\"> quality.",
+
+        "EQUIPMENT_RECYCLE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items and Equipments.",
+        "EQUIPMENT_RECYCLE_LEGENDARY_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items and Equipments.",
+        
+        "EQUIPMENT_CLEANSE_UNCOMMON_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 1 second.",
+        "EQUIPMENT_CLEANSE_UNCOMMON_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>1 second</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+        
+        "EQUIPMENT_CLEANSE_RARE_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 2 seconds.",
+        "EQUIPMENT_CLEANSE_RARE_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>2 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+        
+        "EQUIPMENT_CLEANSE_EPIC_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 4 seconds.",
+        "EQUIPMENT_CLEANSE_EPIC_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>4 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+        
+        "EQUIPMENT_CLEANSE_LEGENDARY_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 5 seconds.",
+        "EQUIPMENT_CLEANSE_LEGENDARY_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+
+        "EQUIPMENT_VENDINGMACHINE_UNCOMMON_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 15 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_UNCOMMON_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>15 seconds for free</style>.",
+
+        "EQUIPMENT_VENDINGMACHINE_RARE_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 8 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_RARE_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>8 seconds for free</style>.",
+
+        "EQUIPMENT_VENDINGMACHINE_EPIC_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 4 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_EPIC_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>4 seconds for free</style>.",
+
+        "EQUIPMENT_VENDINGMACHINE_LEGENDARY_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every second for free.",
+        "EQUIPMENT_VENDINGMACHINE_LEGENDARY_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>second for free</style>.",
+        
+        "EQUIPMENT_COMMANDMISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
+        "EQUIPMENT_COMMANDMISSILE_UNCOMMON_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>2</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
+        
+        "EQUIPMENT_COMMANDMISSILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
+        "EQUIPMENT_COMMANDMISSILE_RARE_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>5</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
+        
+        "EQUIPMENT_COMMANDMISSILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
+        "EQUIPMENT_COMMANDMISSILE_EPIC_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>8</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
+        
+        "EQUIPMENT_COMMANDMISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
+        "EQUIPMENT_COMMANDMISSILE_LEGENDARY_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>12</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
+        
+        "EQUIPMENT_MULTISHOPCARD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_UNCOMMON_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> instance of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        
+        "EQUIPMENT_MULTISHOPCARD_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_RARE_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> (<sprite name=\"Quality\"> <style=cIsUtility>30%</style> chance for <style=cIsUtility>2</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        
+        "EQUIPMENT_MULTISHOPCARD_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_EPIC_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> (<sprite name=\"Quality\"> <style=cIsUtility>80%</style> chance for <style=cIsUtility>2</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        
+        "EQUIPMENT_MULTISHOPCARD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates 2 instances of the stored interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_LEGENDARY_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>2</style> (<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance for <style=cIsUtility>3</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+
+        "EQUIPMENT_DEATHPROJECTILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
+        "EQUIPMENT_DEATHPROJECTILE_UNCOMMON_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>9</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>5%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
+
+        "EQUIPMENT_DEATHPROJECTILE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
+        "EQUIPMENT_DEATHPROJECTILE_RARE_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>11</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>10%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
+
+        "EQUIPMENT_DEATHPROJECTILE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
+        "EQUIPMENT_DEATHPROJECTILE_EPIC_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>13</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
+
+        "EQUIPMENT_DEATHPROJECTILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
+        "EQUIPMENT_DEATHPROJECTILE_LEGENDARY_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>16</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>33%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
+        
+        "EQUIPMENT_PASSIVEHEALING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an ally to teleport it to you and create a ghost in its place.",
+        "EQUIPMENT_PASSIVEHEALING_UNCOMMON_DESC": "Gain a Woodsprite follower that heals a friendly target for <style=cIsHealing>10% of their maximum health</style> instantly, then <style=cIsHealing>1.5% of your maximum health</style> every second. Activating the equipment assigns a new target, or yourself if there are no targets available.\nActivating the equipment on an ally <style=cIsUtility>teleports</style> it to you, and creates a <style=cIsDamage>ghost</style> in its original place with <style=cIsDamage>200% damage</style> and lasts for <sprite name=\"Quality\"> <style=cIsUtility>15 seconds</style>. Can have a maximum of <sprite name=\"Quality\"> <style=cIsUtility>1</style> ghost at a time.",
+        
+        "EQUIPMENT_PASSIVEHEALING_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an ally to teleport it to you and create a ghost in its place.",
+        "EQUIPMENT_PASSIVEHEALING_RARE_DESC": "Gain a Woodsprite follower that heals a friendly target for <style=cIsHealing>10% of their maximum health</style> instantly, then <style=cIsHealing>1.5% of your maximum health</style> every second. Activating the equipment assigns a new target, or yourself if there are no targets available.\nActivating the equipment on an ally <style=cIsUtility>teleports</style> it to you, and creates a <style=cIsDamage>ghost</style> in its original place with <style=cIsDamage>200% damage</style> and lasts for <sprite name=\"Quality\"> <style=cIsUtility>20 seconds</style>. Can have a maximum of <sprite name=\"Quality\"> <style=cIsUtility>2</style> ghosts at a time.",
+        
+        "EQUIPMENT_PASSIVEHEALING_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an ally to teleport it to you and create a ghost in its place.",
+        "EQUIPMENT_PASSIVEHEALING_EPIC_DESC": "Gain a Woodsprite follower that heals a friendly target for <style=cIsHealing>10% of their maximum health</style> instantly, then <style=cIsHealing>1.5% of your maximum health</style> every second. Activating the equipment assigns a new target, or yourself if there are no targets available.\nActivating the equipment on an ally <style=cIsUtility>teleports</style> it to you, and creates a <style=cIsDamage>ghost</style> in its original place with <style=cIsDamage>200% damage</style> and lasts for <sprite name=\"Quality\"> <style=cIsUtility>40 seconds</style>. Can have a maximum of <sprite name=\"Quality\"> <style=cIsUtility>3</style> ghosts at a time.",
+        
+        "EQUIPMENT_PASSIVEHEALING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an ally to teleport it to you and create a ghost in its place.",
+        "EQUIPMENT_PASSIVEHEALING_LEGENDARY_DESC": "Gain a Woodsprite follower that heals a friendly target for <style=cIsHealing>10% of their maximum health</style> instantly, then <style=cIsHealing>1.5% of your maximum health</style> every second. Activating the equipment assigns a new target, or yourself if there are no targets available.\nActivating the equipment on an ally <style=cIsUtility>teleports</style> it to you, and creates a <style=cIsDamage>ghost</style> in its original place with <style=cIsDamage>200% damage</style> and lasts for <sprite name=\"Quality\"> <style=cIsUtility>60 seconds</style>. Can have a maximum of <sprite name=\"Quality\"> <style=cIsUtility>5</style> ghosts at a time.",
+        
+        "EQUIPMENT_GUMMYCLONE_UNCOMMON_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
+        "EQUIPMENT_GUMMYCLONE_UNCOMMON_DESC": "{0}\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White tier items, up to <sprite name=\"QualityUncommon\"> uncommon quality.",
+        
+        "EQUIPMENT_GUMMYCLONE_RARE_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
+        "EQUIPMENT_GUMMYCLONE_RARE_DESC": "{0}\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White and <style=cIsHealing>Green</style> tier items, up to <sprite name=\"QualityRare\"> rare quality.",
+        
+        "EQUIPMENT_GUMMYCLONE_EPIC_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
+        "EQUIPMENT_GUMMYCLONE_EPIC_DESC": "{0}\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White, <style=cIsHealing>Green</style>, and <style=cIsHealth>Red</style> tier items, up to <sprite name=\"QualityEpic\"> epic quality.",
+        
+        "EQUIPMENT_GUMMYCLONE_LEGENDARY_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits your items.",
+        "EQUIPMENT_GUMMYCLONE_LEGENDARY_DESC": "{0}\nThe clone inherits <sprite name=\"Quality\"> <style=cIsUtility>all</style> your items.",
+        
+        "EQUIPMENT_TEAMWARCRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
+        "EQUIPMENT_TEAMWARCRY_UNCOMMON_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>2 seconds</style> while the frenzy is active.",
+        
+        "EQUIPMENT_TEAMWARCRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
+        "EQUIPMENT_TEAMWARCRY_RARE_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style> while the frenzy is active.",
+        
+        "EQUIPMENT_TEAMWARCRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
+        "EQUIPMENT_TEAMWARCRY_EPIC_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>8 seconds</style> while the frenzy is active.",
+        
+        "EQUIPMENT_TEAMWARCRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
+        "EQUIPMENT_TEAMWARCRY_LEGENDARY_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>15 seconds</style> while the frenzy is active.",
+
+        "EQUIPMENT_GAINARMOR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
+        "EQUIPMENT_GAINARMOR_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+30 armor</style>.",
+
+        "EQUIPMENT_GAINARMOR_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
+        "EQUIPMENT_GAINARMOR_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+60 armor</style>.",
+
+        "EQUIPMENT_GAINARMOR_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
+        "EQUIPMENT_GAINARMOR_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+100 armor</style>.",
+
+        "EQUIPMENT_GAINARMOR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
+        "EQUIPMENT_GAINARMOR_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+150 armor</style>.",
+        
+        "EQUIPMENT_MOLOTOV_UNCOMMON_NAME": "Molotov (7-Pack) <sprite name=\"QualityUncommon\">",
+        "EQUIPMENT_MOLOTOV_UNCOMMON_PICKUP": "Throw <sprite name=\"Quality\"> 7 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
+        "EQUIPMENT_MOLOTOV_UNCOMMON_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>7</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>250% damage per second</style>. Increases molotov size by <sprite name=\"Quality\"> <style=cIsDamage>70%</style> over time.",
+        
+        "EQUIPMENT_MOLOTOV_RARE_NAME": "Molotov (8-Pack) <sprite name=\"QualityRare\">",
+        "EQUIPMENT_MOLOTOV_RARE_PICKUP": "Throw <sprite name=\"Quality\"> 8 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
+        "EQUIPMENT_MOLOTOV_RARE_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>8</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>300% damage per second</style>. Increases molotov size by <sprite name=\"Quality\"> <style=cIsDamage>140%</style> over time.",
+        
+        "EQUIPMENT_MOLOTOV_EPIC_NAME": "Molotov (9-Pack) <sprite name=\"QualityEpic\">",
+        "EQUIPMENT_MOLOTOV_EPIC_PICKUP": "Throw <sprite name=\"Quality\"> 9 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
+        "EQUIPMENT_MOLOTOV_EPIC_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>9</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>400% damage per second</style>. Increases molotov size by <sprite name=\"Quality\"> <style=cIsDamage>300%</style> over time.",
+        
+        "EQUIPMENT_MOLOTOV_LEGENDARY_NAME": "Molotov (10-Pack) <sprite name=\"QualityLegendary\">",
+        "EQUIPMENT_MOLOTOV_LEGENDARY_PICKUP": "Throw <sprite name=\"Quality\"> 10 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
+        "EQUIPMENT_MOLOTOV_LEGENDARY_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>10</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>500% damage per second</style>. Increases molotov size by <sprite name=\"Quality\"> <style=cIsDamage>650%</style> over time.",
+        
+        "EQUIPMENT_CRITONUSE_UNCOMMON_PICKUP": "Gain 100% Critical Strike Chance for <sprite name=\"Quality\"> 10 seconds.\nReveals weak-spots on all enemies for <sprite name=\"Quality\"> 10 seconds.",
+        "EQUIPMENT_CRITONUSE_UNCOMMON_DESC": "Gain <style=cIsDamage>+100% Critical Strike Chance</style> for <sprite name=\"Quality\"> 10 seconds.\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for <sprite name=\"Quality\"> 10 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+50% critical strike damage</style>.",
+        
+        "EQUIPMENT_CRITONUSE_RARE_PICKUP": "Gain 100% Critical Strike Chance for <sprite name=\"Quality\"> 12 seconds.\nReveals weak-spots on all enemies for <sprite name=\"Quality\"> 12 seconds.",
+        "EQUIPMENT_CRITONUSE_RARE_DESC": "Gain <style=cIsDamage>+100% Critical Strike Chance</style> for <sprite name=\"Quality\"> 12 seconds.\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for <sprite name=\"Quality\"> 12 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+100% critical strike damage</style>.",
+        
+        "EQUIPMENT_CRITONUSE_EPIC_PICKUP": "Gain 100% Critical Strike Chance for <sprite name=\"Quality\"> 14 seconds.\nReveals weak-spots on all enemies for <sprite name=\"Quality\"> 14 seconds.",
+        "EQUIPMENT_CRITONUSE_EPIC_DESC": "Gain <style=cIsDamage>+100% Critical Strike Chance</style> for <sprite name=\"Quality\"> 14 seconds.\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for <sprite name=\"Quality\"> 14 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+150% critical strike damage</style>.",
+        
+        "EQUIPMENT_CRITONUSE_LEGENDARY_PICKUP": "Gain 100% Critical Strike Chance for <sprite name=\"Quality\"> 16 seconds.\nReveals weak-spots on all enemies for <sprite name=\"Quality\"> 16 seconds.",
+        "EQUIPMENT_CRITONUSE_LEGENDARY_DESC": "Gain <style=cIsDamage>+100% Critical Strike Chance</style> for <sprite name=\"Quality\"> 16 seconds.\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for <sprite name=\"Quality\"> 16 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+250% critical strike damage</style>.",
+        
+        "EQUIPMENT_BFG_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
+        "EQUIPMENT_BFG_UNCOMMON_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 40m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 25m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
+        
+        "EQUIPMENT_BFG_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
+        "EQUIPMENT_BFG_RARE_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 45m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 30m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
+        
+        "EQUIPMENT_BFG_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
+        "EQUIPMENT_BFG_EPIC_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 55m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 40m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
+        
+        "EQUIPMENT_BFG_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
+        "EQUIPMENT_BFG_LEGENDARY_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 60m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 45m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
+        
+        "EQUIPMENT_BLACKHOLE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
+        "EQUIPMENT_BLACKHOLE_UNCOMMON_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 40m into its center</style>. Lasts <sprite name=\"Quality\"> 14 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>.",
+        
+        "EQUIPMENT_BLACKHOLE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
+        "EQUIPMENT_BLACKHOLE_RARE_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 55m into its center</style>. Lasts <sprite name=\"Quality\"> 18 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>400%</style>.",
+        
+        "EQUIPMENT_BLACKHOLE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
+        "EQUIPMENT_BLACKHOLE_EPIC_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 70m into its center</style>. Lasts <sprite name=\"Quality\"> 25 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>700%</style>.",
+        
+        "EQUIPMENT_BLACKHOLE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
+        "EQUIPMENT_BLACKHOLE_LEGENDARY_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 90m into its center</style>. Lasts <sprite name=\"Quality\"> 35 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>900%</style>.",
+        
+        "EQUIPMENT_SCANNER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> A free cloaked chest will appear every stage.",
+        "EQUIPMENT_SCANNER_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> 1 cloaked chest will appear every stage, containing a quality <sprite name=\"Quality\"> item.",
+        
+        "EQUIPMENT_SCANNER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> 2 free cloaked chests will appear every stage.",
+        "EQUIPMENT_SCANNER_RARE_DESC": "{0}\n<sprite name=\"Quality\"> 2 cloaked chests will appear every stage, each containing a quality <sprite name=\"Quality\"> item.",
+        
+        "EQUIPMENT_SCANNER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> A large cloaked chest will appear every stage.",
+        "EQUIPMENT_SCANNER_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> A large cloaked chest will appear every stage, containing a quality <sprite name=\"Quality\"> item.",
+        
+        "EQUIPMENT_SCANNER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> 2 large cloaked chests will appear every stage.",
+        "EQUIPMENT_SCANNER_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> 2 large cloaked chests will appear every stage, each containing a quality <sprite name=\"Quality\"> item.",
+        
+        "EQUIPMENT_LIGHTNING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> 50% chance to strike twice.",
+        "EQUIPMENT_LIGHTNING_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> chance to <style=cIsDamage>strike</style> twice.",
+        
+        "EQUIPMENT_LIGHTNING_RARE_PICKUP": "Call down <sprite name=\"Quality\"> 2 lightning strikes on a targeted monster.\n<sprite name=\"Quality\"> 20% chance to strike 3 times.",
+        "EQUIPMENT_LIGHTNING_RARE_DESC": "Call down <sprite name=\"Quality\"> 2 lightning strikes on a targeted monster, each dealing <style=cIsDamage>3000% damage</style> and <style=cIsDamage>stunning</style> nearby monsters.\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance to <style=cIsDamage>strike</style> 3 times.",
+        
+        "EQUIPMENT_LIGHTNING_EPIC_PICKUP": "Call down <sprite name=\"Quality\"> 3 lightning strikes on a targeted monster.\n<sprite name=\"Quality\"> 20% chance to strike 4 times.",
+        "EQUIPMENT_LIGHTNING_EPIC_DESC": "Call down <sprite name=\"Quality\"> 3 lightning strikes on a targeted monster, each dealing <style=cIsDamage>3000% damage</style> and <style=cIsDamage>stunning</style> nearby monsters.\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance to <style=cIsDamage>strike</style> 4 times.",
+        
+        "EQUIPMENT_LIGHTNING_LEGENDARY_PICKUP": "Call down <sprite name=\"Quality\"> 5 lightning strikes on a targeted monster.",
+        "EQUIPMENT_LIGHTNING_LEGENDARY_DESC": "Call down <sprite name=\"Quality\"> 5 lightning strikes on a targeted monster, each dealing <style=cIsDamage>3000% damage</style> and <style=cIsDamage>stunning</style> nearby monsters.",
+
+        "EQUIPMENT_SAW_UNCOMMON_PICKUP": "Throw a fan of <sprite name=\"Quality\"> 4 buzzing saws that <sprite name=\"Quality\"> linger before returning to you.",
+        "EQUIPMENT_SAW_UNCOMMON_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>four large saw blades</style> that slice through enemies for <style=cIsDamage>3x400%</style> damage. Also deals an additional <style=cIsDamage>3x100% damage per second</style> while <style=cIsDamage>bleeding</style> enemies. <style=cIsUtility>Lingers</style> for <sprite name=\"Quality\"> <style=cIsUtility>2 seconds</style> before returning. Can <style=cIsDamage>strike</style> enemies again on the way back.",
+
+        "EQUIPMENT_SAW_RARE_PICKUP": "Throw a fan of <sprite name=\"Quality\"> 5 buzzing saws that <sprite name=\"Quality\"> linger before returning to you.",
+        "EQUIPMENT_SAW_RARE_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>five large saw blades</style> that slice through enemies for <style=cIsDamage>3x400%</style> damage. Also deals an additional <style=cIsDamage>3x100% damage per second</style> while <style=cIsDamage>bleeding</style> enemies. <style=cIsUtility>Lingers</style> for <sprite name=\"Quality\"> <style=cIsUtility>4 seconds</style> before returning. Can <style=cIsDamage>strike</style> enemies again on the way back.",
+
+        "EQUIPMENT_SAW_EPIC_PICKUP": "Throw a fan of <sprite name=\"Quality\"> 6 buzzing saws that <sprite name=\"Quality\"> linger before returning to you.",
+        "EQUIPMENT_SAW_EPIC_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>six large saw blades</style> that slice through enemies for <style=cIsDamage>3x400%</style> damage. Also deals an additional <style=cIsDamage>3x100% damage per second</style> while <style=cIsDamage>bleeding</style> enemies. <style=cIsUtility>Lingers</style> for <sprite name=\"Quality\"> <style=cIsUtility>8 seconds</style> before returning. Can <style=cIsDamage>strike</style> enemies again on the way back.",
+
+        "EQUIPMENT_SAW_LEGENDARY_PICKUP": "Throw a fan of <sprite name=\"Quality\"> 8 buzzing saws that <sprite name=\"Quality\"> linger before returning to you.",
+        "EQUIPMENT_SAW_LEGENDARY_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>eight large saw blades</style> that slice through enemies for <style=cIsDamage>3x400%</style> damage. Also deals an additional <style=cIsDamage>3x100% damage per second</style> while <style=cIsDamage>bleeding</style> enemies. <style=cIsUtility>Lingers</style> for <sprite name=\"Quality\"> <style=cIsUtility>10 seconds</style> before returning. Can <style=cIsDamage>strike</style> enemies again on the way back.",
+
+        "EQUIPMENT_LIFESTEALONHIT_UNCOMMON_PICKUP": "Heal for a percentage of the damage you deal for <sprite name=\"Quality\"> 10 seconds.\n<sprite name=\"Quality\"> Healing increases movement speed.",
+        "EQUIPMENT_LIFESTEALONHIT_UNCOMMON_DESC": "<style=cIsHealing>Heal</style> for <style=cIsHealing>20%</style> of the <style=cIsDamage>damage</style> you deal. Lasts <sprite name=\"Quality\"> <style=cIsHealing>10</style> seconds. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>1%</style> for every <style=cIsHealing>8%</style> of your maximum health <style=cIsHealing>healed</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>50%</style> movement speed, lasts <style=cIsUtility>60</style> seconds or until next activation.",
+
+        "EQUIPMENT_LIFESTEALONHIT_RARE_PICKUP": "Heal for a percentage of the damage you deal for <sprite name=\"Quality\"> 12 seconds.\n<sprite name=\"Quality\"> Healing increases movement speeded health is turned into increased movement speed for 60 seconds.",
+        "EQUIPMENT_LIFESTEALONHIT_RARE_DESC": "<style=cIsHealing>Heal</style> for <style=cIsHealing>20%</style> of the <style=cIsDamage>damage</style> you deal. Lasts <sprite name=\"Quality\"> <style=cIsHealing>10</style> seconds. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>1%</style> for every <style=cIsHealing>8%</style> of your maximum health <style=cIsHealing>healed</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>100%</style> movement speed, lasts <style=cIsUtility>60</style> seconds or until next activation.",
+
+        "EQUIPMENT_LIFESTEALONHIT_EPIC_PICKUP": "Heal for a percentage of the damage you deal for <sprite name=\"Quality\"> 16 seconds.\n<sprite name=\"Quality\"> Healing increases movement speeded health is turned into increased movement speed for 60 seconds.",
+        "EQUIPMENT_LIFESTEALONHIT_EPIC_DESC": "<style=cIsHealing>Heal</style> for <style=cIsHealing>20%</style> of the <style=cIsDamage>damage</style> you deal. Lasts <sprite name=\"Quality\"> <style=cIsHealing>10</style> seconds. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>1%</style> for every <style=cIsHealing>8%</style> of your maximum health <style=cIsHealing>healed</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>150%</style> movement speed, lasts <style=cIsUtility>60</style> seconds or until next activation.",
+
+        "EQUIPMENT_LIFESTEALONHIT_LEGENDARY_PICKUP": "Heal for a percentage of the damage you deal for <sprite name=\"Quality\"> 25 seconds.\n<sprite name=\"Quality\"> Healing increases movement speed.",
+        "EQUIPMENT_LIFESTEALONHIT_LEGENDARY_DESC": "<style=cIsHealing>Heal</style> for <style=cIsHealing>20%</style> of the <style=cIsDamage>damage</style> you deal. Lasts <sprite name=\"Quality\"> <style=cIsHealing>10</style> seconds. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>1%</style> for every <style=cIsHealing>8%</style> of your maximum health <style=cIsHealing>healed</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>250%</style> movement speed, lasts <style=cIsUtility>60</style> seconds or until next activation.",
+        
+        "EQUIPMENT_DRONEBACKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
+        "EQUIPMENT_DRONEBACKUP_UNCOMMON_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>5 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        
+        "EQUIPMENT_DRONEBACKUP_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
+        "EQUIPMENT_DRONEBACKUP_RARE_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>6 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        
+        "EQUIPMENT_DRONEBACKUP_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
+        "EQUIPMENT_DRONEBACKUP_EPIC_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>7 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        
+        "EQUIPMENT_DRONEBACKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
+        "EQUIPMENT_DRONEBACKUP_LEGENDARY_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>8 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        
+        "EQUIPMENT_GOLDGAT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_UNCOMMON_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>20%</style>.",
+        
+        "EQUIPMENT_GOLDGAT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_RARE_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>40%</style>.",
+        
+        "EQUIPMENT_GOLDGAT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_EPIC_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>80%</style>.",
+        
+        "EQUIPMENT_GOLDGAT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_LEGENDARY_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>150%</style>.",
+
+        "EQUIPMENT_FIREBALLDASH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage and range of detonation for every enemy hit.",
+        "EQUIPMENT_FIREBALLDASH_UNCOMMON_DESC": "Turn into a <style=cIsDamage>draconic fireball</style> for <style=cIsDamage>5</style> seconds. Deal <style=cIsDamage>500% damage</style> on impact. Detonates at the end for <style=cIsDamage>800% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>20% damage</style> and <sprite name=\"Quality\"> <style=cIsUtility>0.5m range</style> for every enemy hit.",
+
+        "EQUIPMENT_FIREBALLDASH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage and range of detonation for every enemy hit.",
+        "EQUIPMENT_FIREBALLDASH_RARE_DESC": "Turn into a <style=cIsDamage>draconic fireball</style> for <style=cIsDamage>5</style> seconds. Deal <style=cIsDamage>500% damage</style> on impact. Detonates at the end for <style=cIsDamage>800% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>50% damage</style> and <sprite name=\"Quality\"> <style=cIsUtility>1m range</style> for every enemy hit.",
+
+        "EQUIPMENT_FIREBALLDASH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage and range of detonation for every enemy hit.",
+        "EQUIPMENT_FIREBALLDASH_EPIC_DESC": "Turn into a <style=cIsDamage>draconic fireball</style> for <style=cIsDamage>5</style> seconds. Deal <style=cIsDamage>500% damage</style> on impact. Detonates at the end for <style=cIsDamage>800% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>100% damage</style> and <sprite name=\"Quality\"> <style=cIsUtility>1.5m range</style> for every enemy hit.",
+
+        "EQUIPMENT_FIREBALLDASH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage and range of detonation for every enemy hit.",
+        "EQUIPMENT_FIREBALLDASH_LEGENDARY_DESC": "Turn into a <style=cIsDamage>draconic fireball</style> for <style=cIsDamage>5</style> seconds. Deal <style=cIsDamage>500% damage</style> on impact. Detonates at the end for <style=cIsDamage>800% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>200% damage</style> and <sprite name=\"Quality\"> <style=cIsUtility>2.5m range</style> for every enemy hit.",
+
+        "EQUIPMENT_JETPACK_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Collectible bugs appear while flying that increase flight duration and grants evade chance or deals damage to the next enemy hit.",
+        "EQUIPMENT_JETPACK_UNCOMMON_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>4</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>80%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>10%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
+
+        "EQUIPMENT_JETPACK_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Collectible bugs appear while flying that increase flight duration and grants evade chance or deals damage to the next enemy hit.",
+        "EQUIPMENT_JETPACK_RARE_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>4</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>120%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
+
+        "EQUIPMENT_JETPACK_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Collectible bugs appear while flying that increase flight duration and grants evade chance or deals damage to the next enemy hit.",
+        "EQUIPMENT_JETPACK_EPIC_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>3</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>160%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>30%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
+
+        "EQUIPMENT_JETPACK_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Collectible bugs appear while flying that increase flight duration and grants evade chance or deals damage to the next enemy hit.",
+        "EQUIPMENT_JETPACK_LEGENDARY_DESC": "{0}\nWhile flying, a bug appears nearby every <sprite name=\"Quality\"> <style=cIsUtility>3</style> seconds, collecting a bug increases <style=cIsUtility>flight duration</style> by <style=cIsUtility>2</style> seconds. While you have at least one bug, hitting an enemy spends one bug and fires a <style=cIsDamage>bug missile</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>200%</style> TOTAL damage. Collected bugs also give a <sprite name=\"Quality\"> <style=cIsUtility>40%</style> chance to <style=cIsUtility>evade</style> damage, spending one bug for every successful evade.",
+
+        "QUALITY_BUG_BLOCK_DAMAGE_HITMARKER": "MISS!",
+
+        "EQUIPMENT_PARRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_UNCOMMON_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>50%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_RARE_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>150%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_EPIC_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>300%</style> increased damage.",
+
+        "EQUIPMENT_PARRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
+        "EQUIPMENT_PARRY_LEGENDARY_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>900%</style> increased damage.",
+        
+        "EQUIPMENT_HEALANDREVIVE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to uncommon <sprite name=\"QualityUncommon\"> quality upon reviving.",
+        "EQUIPMENT_HEALANDREVIVE_UNCOMMON_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into uncommon <sprite name=\"QualityUncommon\"> quality.",
+        
+        "EQUIPMENT_HEALANDREVIVE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to rare <sprite name=\"QualityRare\"> quality upon reviving.",
+        "EQUIPMENT_HEALANDREVIVE_RARE_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into rare <sprite name=\"QualityRare\"> quality.",
+        
+        "EQUIPMENT_HEALANDREVIVE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to epic <sprite name=\"QualityEpic\"> quality upon reviving.",
+        "EQUIPMENT_HEALANDREVIVE_EPIC_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into epic <sprite name=\"QualityEpic\"> quality.",
+        
+        "EQUIPMENT_HEALANDREVIVE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to legendary <sprite name=\"QualityLegendary\"> quality upon reviving.",
+        "EQUIPMENT_HEALANDREVIVE_LEGENDARY_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into legendary <sprite name=\"QualityLegendary\"> quality.",
+
+        "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_UNCOMMON": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityUncommon\">",
+        "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_RARE": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityRare\">",
+        "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_EPIC": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityEpic\">",
+        "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_LEGENDARY": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityLegendary\">",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>1</style> second.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>2</style> seconds.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>5</style> seconds.",
+        
+        "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds.",
+
+        "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>2000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 75 second cooldown.",
+
+        "EQUIPMENT_QUESTVOLATILEBATTERY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_RARE_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>3000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 60 second cooldown.",
+
+        "EQUIPMENT_QUESTVOLATILEBATTERY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_EPIC_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>4000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 45 second cooldown.",
+
+        "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>5000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 30 second cooldown.",
+        
+        "EQUIPMENT_FRUIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
+        "EQUIPMENT_FRUIT_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>5%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>25%</style>.",
+        
+        "EQUIPMENT_FRUIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
+        "EQUIPMENT_FRUIT_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>10%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>75%</style>.",
+        
+        "EQUIPMENT_FRUIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
+        "EQUIPMENT_FRUIT_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>20%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>.",
+        
+        "EQUIPMENT_FRUIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
+        "EQUIPMENT_FRUIT_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>25%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>.",
+        
+        "EQUIPMENT_GATEWAY_UNCOMMON_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 2 orbs around you immediately.",
+        "EQUIPMENT_GATEWAY_UNCOMMON_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>2</style> orbs around you immediately.",
+        
+        "EQUIPMENT_GATEWAY_RARE_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 4 orbs around you immediately.",
+        "EQUIPMENT_GATEWAY_RARE_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>8</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>4</style> orbs around you immediately.",
+        
+        "EQUIPMENT_GATEWAY_EPIC_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 8 orbs around you immediately.",
+        "EQUIPMENT_GATEWAY_EPIC_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>6</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>8</style> orbs around you immediately.",
+        
+        "EQUIPMENT_GATEWAY_LEGENDARY_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 16 orbs around you immediately.",
+        "EQUIPMENT_GATEWAY_LEGENDARY_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>4</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>16</style> orbs around you immediately.",
+    }
 }

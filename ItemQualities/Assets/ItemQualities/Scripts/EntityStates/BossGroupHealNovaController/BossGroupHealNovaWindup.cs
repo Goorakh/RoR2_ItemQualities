@@ -3,7 +3,7 @@ using RoR2;
 
 namespace EntityStates.BossGroupHealNovaController
 {
-    public class BossGroupHealNovaWindup : EntityState
+    public sealed class BossGroupHealNovaWindup : EntityState
     {
         static EffectIndex _chargeEffectIndex = EffectIndex.Invalid;
 

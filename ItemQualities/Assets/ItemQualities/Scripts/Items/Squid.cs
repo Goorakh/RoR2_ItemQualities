@@ -1,7 +1,9 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
 using System;
 using UnityEngine;
@@ -14,6 +16,83 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
+
+            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+
+            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+
+            //AddressableUtil.LoadAssetAsync<Material>(RoR2_Base_Squid.matSquidTurret_mat).OnSuccess(squidMaterial =>
+            //{
+            //    squidMaterial.SetFloat(ShaderProperties._EmPower, 0);
+            //});
+        }
+
+        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            if (!sender.inventory)
+                return;
+
+            int squidUpgradeCount = sender.inventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeHidden);
+            if (squidUpgradeCount > 0)
+            {
+                args.healthMultAdd += squidUpgradeCount;
+                args.damageMultAdd += squidUpgradeCount;
+                args.allSkills.cooldownMultiplier *= Mathf.Pow(1.0f - 0.2f, squidUpgradeCount);
+            }
+        }
+
+        static void onCharacterDeathGlobal(DamageReport damageReport)
+        {
+            CharacterMaster attackerMaster = damageReport?.attackerMaster;
+            if (!attackerMaster)
+                return;
+
+            Inventory attackerInventory = attackerMaster.inventory;
+            if (!attackerInventory)
+                return;
+
+            int squidUpgradeOnKillCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill);
+            if (squidUpgradeOnKillCount == 0)
+                return;
+            
+            int maxUpgradeLevel = Mathf.Min(squidUpgradeOnKillCount, (int)QualityTier.Count);
+
+            int upgradeCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeHidden);
+            if (upgradeCount < maxUpgradeLevel &&
+                RollUtil.CheckRoll(10 + (squidUpgradeOnKillCount * 10), attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+            {
+                QualityTier currentQualityTier = (QualityTier)upgradeCount - 1;
+
+                bool upgradeSuccessful;
+                if (currentQualityTier != QualityTier.None)
+                {
+                    Inventory.ItemTransformation upgradeTransformation = new Inventory.ItemTransformation
+                    {
+                        originalItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier),
+                        newItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier + 1),
+                        minToTransform = 1,
+                        maxToTransform = 1,
+                        transformationType = ItemTransformationTypeIndex.None
+                    };
+
+                    upgradeSuccessful = upgradeTransformation.TryTransform(attackerInventory, out _);
+                }
+                else
+                {
+                    attackerInventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.UncommonItemIndex);
+                    upgradeSuccessful = true;
+                }
+
+                if (upgradeSuccessful)
+                {
+                    attackerInventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeHidden);
+
+                    if (attackerInventory.GetItemCountEffective(RoR2Content.Items.HealthDecay) > 0)
+                    {
+                        attackerInventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, 10);
+                    }
+                }
+            }
         }
 
         static void GlobalEventManager_OnInteractionBegin(ILContext il)
@@ -26,11 +105,11 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            int squidDirectorSpawnRequestLocalIndex = -1;
+            VariableDefinition squidDirectorSpawnRequestVar = null;
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.Squid)),
                                x => x.MatchNewobj<DirectorSpawnRequest>(),
-                               x => x.MatchStloc(typeof(DirectorSpawnRequest), il, out squidDirectorSpawnRequestLocalIndex),
+                               x => x.MatchStloc(typeof(DirectorSpawnRequest), il, out squidDirectorSpawnRequestVar),
                                x => x.MatchStfld<DirectorSpawnRequest>(nameof(DirectorSpawnRequest.onSpawnedServer))))
             {
                 Log.Error("Failed to find patch location");
@@ -39,7 +118,7 @@ namespace ItemQualities.Items
 
             c.Goto(foundCursors[3].Next, MoveType.After);
 
-            c.Emit(OpCodes.Ldloc, squidDirectorSpawnRequestLocalIndex);
+            c.Emit(OpCodes.Ldloc, squidDirectorSpawnRequestVar);
             c.Emit(OpCodes.Ldarg, interactorParameter);
             c.EmitDelegate<Action<DirectorSpawnRequest, Interactor>>(handleQualitySquid);
 
@@ -63,35 +142,16 @@ namespace ItemQualities.Items
 
                         if (result.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster) && spawnedMaster.inventory)
                         {
-                            int boostHpCount = (2 * squid.UncommonCount) +
-                                               (4 * squid.RareCount) +
-                                               (8 * squid.EpicCount) +
-                                               (15 * squid.LegendaryCount);
+                            spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill, (int)squid.HighestQuality + 1);
 
-                            int boostDamageCount = (1 * squid.UncommonCount) +
-                                                   (3 * squid.RareCount) +
-                                                   (6 * squid.EpicCount) +
-                                                   (10 * squid.LegendaryCount);
+                            int boostDamageCount = (3 * squid.UncommonCount) +
+                                                   (4 * squid.RareCount) +
+                                                   (5 * squid.EpicCount) +
+                                                   (6 * squid.LegendaryCount);
 
                             if (boostDamageCount > 0)
                             {
                                 spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostDamage, boostDamageCount);
-                            }
-
-                            if (boostHpCount > 0)
-                            {
-                                spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostHp, boostHpCount);
-
-                                float hpBoostPercent = boostHpCount * 0.1f;
-                                int healthDecayDuration = spawnedMaster.inventory.GetItemCountPermanent(RoR2Content.Items.HealthDecay);
-                                if (healthDecayDuration > 0)
-                                {
-                                    int newHealthDecayDuration = Mathf.RoundToInt(healthDecayDuration * (1f + hpBoostPercent));
-                                    if (newHealthDecayDuration > healthDecayDuration)
-                                    {
-                                        spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, newHealthDecayDuration - healthDecayDuration);
-                                    }
-                                }
                             }
                         }
                     };

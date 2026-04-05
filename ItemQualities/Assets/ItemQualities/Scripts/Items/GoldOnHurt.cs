@@ -1,6 +1,6 @@
 ﻿using ItemQualities.Utilities.Extensions;
 using RoR2;
-using RoR2BepInExPack.GameAssetPaths.Version_1_35_0;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
@@ -35,7 +35,7 @@ namespace ItemQualities.Items
             ItemQualityCounts goldOnHurt = interactorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.GoldOnHurt);
             if (goldOnHurt.TotalQualityCount > 0)
             {
-                if (interactable is BarrelInteraction barrelInteraction)
+                if (interactable is BarrelInteraction || interactable is SpeedOnPickupBarrelInteraction)
                 {
                     if (_goldPackPrefab)
                     {

@@ -43,6 +43,9 @@ namespace ItemQualities
         [SerializeField]
         BuffDef _legendaryBuff;
 
+        [Tooltip("If set, all quality buffs in this group will be treated as an instance of the base buff by the game.")]
+        public bool InheritBaseBuffBehavior = true;
+
         [HideInInspector]
         [NonSerialized]
         public BuffIndex BaseBuffIndex = BuffIndex.None;

@@ -40,18 +40,21 @@ namespace ItemQualities.Items
             {
                 ItemQualityCounts attackSpeedOnCrit = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit);
 
-                QualityTier highestAttackSpeedOnCritQuality = attackSpeedOnCrit.HighestQuality;
-
-                BuffIndex qualityAttackSpeedOnCritBuffIndex = ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.GetBuffIndex(highestAttackSpeedOnCritQuality);
-
-                int maxStacks = (40 * attackSpeedOnCrit.UncommonCount) +
-                                (45 * attackSpeedOnCrit.RareCount) +
-                                (60 * attackSpeedOnCrit.EpicCount) +
-                                (75 * attackSpeedOnCrit.LegendaryCount);
-
-                if (damageReport.attackerBody.GetBuffCount(qualityAttackSpeedOnCritBuffIndex) < maxStacks)
+                if (attackSpeedOnCrit.TotalQualityCount > 0)
                 {
-                    damageReport.attackerBody.AddBuff(qualityAttackSpeedOnCritBuffIndex);
+                    QualityTier highestAttackSpeedOnCritQuality = attackSpeedOnCrit.HighestQuality;
+
+                    BuffIndex qualityAttackSpeedOnCritBuffIndex = ItemQualitiesContent.BuffQualityGroups.AttackSpeedOnCrit.GetBuffIndex(highestAttackSpeedOnCritQuality);
+
+                    int maxStacks = (40 * attackSpeedOnCrit.UncommonCount) +
+                                    (45 * attackSpeedOnCrit.RareCount) +
+                                    (60 * attackSpeedOnCrit.EpicCount) +
+                                    (75 * attackSpeedOnCrit.LegendaryCount);
+
+                    if (damageReport.attackerBody.GetBuffCount(qualityAttackSpeedOnCritBuffIndex) < maxStacks)
+                    {
+                        damageReport.attackerBody.AddBuff(qualityAttackSpeedOnCritBuffIndex);
+                    }
                 }
             }
         }

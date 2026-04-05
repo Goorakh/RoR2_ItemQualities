@@ -12,6 +12,8 @@ namespace ItemQualities
         [SyncVar]
         bool _opened;
 
+        public bool IsOpened => _opened;
+
         void OnEnable()
         {
             InstanceTracker.Add(this);
@@ -82,6 +84,12 @@ namespace ItemQualities
                                      (10 * speedOnPickup.LegendaryCount);
 
                     pickupComponent.BuffStacks = buffStacks;
+                }
+                
+                GravitatePickup gravitatePickup = pickupObj.GetComponentInChildren<GravitatePickup>();
+                if (gravitatePickup)
+                {
+                    gravitatePickup.ForceGravitate(activatorBody.GetComponent<Collider>());
                 }
 
                 NetworkServer.Spawn(pickupObj);

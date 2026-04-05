@@ -5,7 +5,7 @@ using UnityEngine;
 namespace ItemQualities
 {
     [RequireComponent(typeof(ProjectileController))]
-    public class ScaleProjectileGhostDurationsToLifetime : MonoBehaviour
+    public sealed class ScaleProjectileGhostDurationsToLifetime : MonoBehaviour
     {
         ProjectileController _projectileController;
 

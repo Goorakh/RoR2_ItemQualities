@@ -49,6 +49,12 @@ namespace ItemQualities.Items
             }
         }
 
+        protected override void OnStacksChanged()
+        {
+            base.OnStacksChanged();
+            refreshBuff();
+        }
+
         void refreshBuff()
         {
             ItemQualityCounts bonusGoldPackOnKill = Stacks;

@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public class ShurikenProjectileController : MonoBehaviour
+    public sealed class ShurikenProjectileController : MonoBehaviour
     {
         void Awake()
         {
