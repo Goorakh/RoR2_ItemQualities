@@ -1,4 +1,6 @@
-## \{Next Version\}
+## 0.7.0
+
+* Added quality equipments
 
 * Rose Buckler:
     * Double tap forward to do a short dash

@@ -36,7 +36,7 @@ Includes a 25% increased difficulty scaling to balance out the more powerful on-
 
 #
 
-This mod is in beta, Quality equipments, boss items, and other features will be added at some point in the future.
+This mod is in beta, Quality boss items and other features will be added at some point in the future.
 
 ## Recommended mods
 These are mods we recommend you use in combination with Quality, though they are not required.
