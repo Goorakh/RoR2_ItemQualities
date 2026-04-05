@@ -35,7 +35,7 @@ MonoBehaviour:
   - <ManifestPluginStaging>
   Author: Gorakh
   Name: Quality
-  Description: Adds quality variants of most items. Open Beta Release.
+  Description: Equipments Update. Adds quality variants of items. Open Beta Release.
   Version: 0.7.0
   Dependencies:
   - {fileID: 11400000, guid: 184f0fdf3edcd6bad171410f4e0fd947, type: 2}
