@@ -29,6 +29,13 @@
         * Epic: 1 guaranteed (+1 per stack) -> 1 guaranteed (+1 per stack) + 50% for additional (+50% per stack)
         * Legendary: 1 guaranteed (+1 per stack) + 50% for additional (+50% per stack) -> 2 guaranteed (+2 per stack) + 50% for additional (+50% per stack)
 
+* Electric Boomerang:
+    * Bounce chance:
+        * Uncommon: 30% (+30% per stack) -> 75% (+75% per stack)
+        * Rare: 50% (+50% per stack) -> 1 guaranteed (+1 per stack) + 50% for additional (+50% per stack)
+        * Epic: 80% (+80% per stack) -> 3 guaranteed (+3 per stack)
+        * Legendary: 1 guaranteed (+1 per stack) -> 5 guaranteed (+5 per stack)
+
 * Warped Echo:
     * Chance to apply echo on hit:
         * Uncommon: 1% (+1% per stack)

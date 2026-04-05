@@ -64,10 +64,10 @@ namespace ItemQualities.Items
 
                     if (stunAndPierce.TotalQualityCount > 0)
                     {
-                        float bounceChance = (30f * stunAndPierce.UncommonCount) +
-                                             (50f * stunAndPierce.RareCount) +
-                                             (80f * stunAndPierce.EpicCount) +
-                                             (100f * stunAndPierce.LegendaryCount);
+                        float bounceChance = (75f * stunAndPierce.UncommonCount) +
+                                             (150f * stunAndPierce.RareCount) +
+                                             (300f * stunAndPierce.EpicCount) +
+                                             (500f * stunAndPierce.LegendaryCount);
 
                         _bouncesRemaining = RollUtil.GetOverflowRoll(bounceChance, ownerBody.master, projectileController.procChainMask.HasProc(ProcType.SureProc));
                     }
