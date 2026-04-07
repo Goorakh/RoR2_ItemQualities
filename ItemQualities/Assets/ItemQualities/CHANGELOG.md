@@ -1,3 +1,8 @@
+## 0.7.1
+
+* Super Massive Leech:
+    * Fixed incorrect values in descriptions.
+
 ## 0.7.0
 
 * Added quality equipments
