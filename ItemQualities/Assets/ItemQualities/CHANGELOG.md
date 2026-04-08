@@ -14,6 +14,13 @@
         * Epic: +100% -> +350%
         * Legendary: +200% -> +500%
 
+* Molotov:
+    * Burn area expansion amount:
+        * Uncommon: +70% -> +140%
+        * Rare: +140% -> +300%
+        * Epic: +300% -> +650%
+        * Legendary: +650% -> +1100%
+
 * Gnarled Woodsprite:
     * Fixed quality effect not working properly when used on non-host players.
     * Fixed ghosts being able to revive and becoming permanent.

@@ -34,10 +34,10 @@ namespace ItemQualities.Equipments
 
                     float scaleMult = qualityTier switch
                     {
-                        QualityTier.Uncommon => 1.3f,
-                        QualityTier.Rare => 1.6f,
-                        QualityTier.Epic => 2.0f,
-                        QualityTier.Legendary => 3.0f,
+                        QualityTier.Uncommon => 1.6f,
+                        QualityTier.Rare => 2.0f,
+                        QualityTier.Epic => 3.0f,
+                        QualityTier.Legendary => 4.0f,
                         _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
                     };
 
@@ -121,10 +121,10 @@ namespace ItemQualities.Equipments
                                 dotZoneScaleCurve.useOverallCurveOnly = true;
                                 dotZoneScaleCurve.overallCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, qualityTier switch
                                 {
-                                    QualityTier.Uncommon => 1.3f,
-                                    QualityTier.Rare => 1.5f,
-                                    QualityTier.Epic => 2f,
-                                    QualityTier.Legendary => 2.5f,
+                                    QualityTier.Uncommon => 1.5f,
+                                    QualityTier.Rare => 2f,
+                                    QualityTier.Epic => 2.5f,
+                                    QualityTier.Legendary => 3f,
                                     _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
                                 });
                             }
