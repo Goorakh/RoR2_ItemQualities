@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ItemQualities.Equipments
 {
@@ -25,7 +26,10 @@ namespace ItemQualities.Equipments
 
         static void onRunStartGlobal(Run run)
         {
-            _rng = new Xoroshiro128Plus(run.runRNG.nextUlong);
+            if (NetworkServer.active)
+            {
+                _rng = new Xoroshiro128Plus(run.runRNG.nextUlong);
+            }
         }
 
         static void onRevivedServer(CharacterMaster master, QualityTier qualityTier)

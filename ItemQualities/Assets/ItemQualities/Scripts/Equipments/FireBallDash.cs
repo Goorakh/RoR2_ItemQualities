@@ -58,6 +58,8 @@ namespace ItemQualities.Equipments
 
                     _qualityVehiclePrefabs[(int)qualityTier] = qualityFireballVehiclePrefab;
                 }
+
+                args.ContentPack.networkedObjectPrefabs.Add(_qualityVehiclePrefabs);
             });
 
             return fireballVehicleLoad.AsProgressCoroutine(args.ProgressReceiver);

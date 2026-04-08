@@ -43,7 +43,7 @@ namespace ItemQualities.Equipments
 
                     if (qualityMolotovClusterProjectile.TryGetComponent(out ProjectileController clusterProjectileController))
                     {
-                        clusterProjectileController.ghostPrefab = clusterProjectileController.ghostPrefab.InstantiateClone(clusterProjectileController.ghostPrefab.name + qualityTier.ToString());
+                        clusterProjectileController.ghostPrefab = clusterProjectileController.ghostPrefab.InstantiateClone(clusterProjectileController.ghostPrefab.name + qualityTier.ToString(), false);
                         clusterProjectileController.ghostPrefab.transform.localScale *= scaleMult;
                     }
                     else
@@ -69,7 +69,7 @@ namespace ItemQualities.Equipments
 
                         if (qualityMolotovSingleProjectile.TryGetComponent(out ProjectileController singleProjectileController))
                         {
-                            singleProjectileController.ghostPrefab = singleProjectileController.ghostPrefab.InstantiateClone(singleProjectileController.ghostPrefab.name + qualityTier.ToString());
+                            singleProjectileController.ghostPrefab = singleProjectileController.ghostPrefab.InstantiateClone(singleProjectileController.ghostPrefab.name + qualityTier.ToString(), false);
                             singleProjectileController.ghostPrefab.transform.localScale *= scaleMult;
                         }
                         else
