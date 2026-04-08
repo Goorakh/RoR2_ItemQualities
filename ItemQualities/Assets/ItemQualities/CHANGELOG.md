@@ -1,6 +1,7 @@
 ## 0.7.1
 
 * Milky Chrysalis:
+    * Removed duration increase when collecting a bug.
     * Bugs gained per pickup: 1 ->
         * Uncommon: 2
         * Rare: 3
