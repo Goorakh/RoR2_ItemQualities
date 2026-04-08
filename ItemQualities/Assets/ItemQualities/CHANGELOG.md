@@ -1,5 +1,8 @@
 ## 0.7.1
 
+* Rose Buckler:
+    * Fixed dash triggering immediately when gaining the item while moving.
+
 * Milky Chrysalis:
     * Removed duration increase when collecting a bug.
     * Bugs gained per pickup: 1 ->

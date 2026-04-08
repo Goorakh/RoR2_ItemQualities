@@ -11,18 +11,20 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.SprintArmor;
         }
 
-        GameObject _sprintArmorDashObj;
+        GameObject _sprintArmorDashAttachment;
 
-        private void OnEnable()
+        void OnEnable()
         {
-            _sprintArmorDashObj = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.SprintArmorDashAttachment);
-            NetworkedBodyAttachment sprintArmorDashAttachment = _sprintArmorDashObj.GetComponent<NetworkedBodyAttachment>();
+            _sprintArmorDashAttachment = Instantiate(ItemQualitiesContent.NetworkedPrefabs.SprintArmorDashAttachment);
+            NetworkedBodyAttachment sprintArmorDashAttachment = _sprintArmorDashAttachment.GetComponent<NetworkedBodyAttachment>();
             sprintArmorDashAttachment.AttachToGameObjectAndSpawn(Body.gameObject);
         }
 
-        private void OnDisable()
+        void OnDisable()
         {
-            Object.Destroy(_sprintArmorDashObj);
+            Destroy(_sprintArmorDashAttachment);
+
+            Body.ClearTimedBuffs(ItemQualitiesContent.Buffs.SprintArmorDashCooldown);
         }
     }
 }
