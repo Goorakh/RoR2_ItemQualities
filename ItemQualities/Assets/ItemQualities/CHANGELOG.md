@@ -1,5 +1,12 @@
 ## 0.7.1
 
+* Milky Chrysalis:
+    * Bugs gained per pickup: 1 ->
+        * Uncommon: 2
+        * Rare: 3
+        * Epic: 4
+        * Legendary: 5
+
 * Gnarled Woodsprite:
     * Fixed quality effect not working properly when used on non-host players.
     * Fixed ghosts being able to revive and becoming permanent.
