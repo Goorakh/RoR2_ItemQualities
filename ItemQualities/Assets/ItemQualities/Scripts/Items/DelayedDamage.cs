@@ -1,5 +1,6 @@
 ﻿using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -27,9 +28,16 @@ namespace ItemQualities.Items
 
             report.victimBody.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff);
 
-            for (int i = 0; i < repeatCount; i++)
+            if (repeatCount > 0)
             {
-                GlobalEventManager.instance.OnCharacterDeath(report);
+                report.damageInfo.damageType.AddModdedDamageType(DamageTypes.DontDoItemDropsPrettyPlease);
+
+                for (int i = 0; i < repeatCount; i++)
+                {
+                    GlobalEventManager.instance.OnCharacterDeath(report);
+                }
+
+                report.damageInfo.damageType.RemoveModdedDamageType(DamageTypes.DontDoItemDropsPrettyPlease);
             }
         }
 

@@ -140,78 +140,105 @@ namespace ItemQualities.Equipments
         {
             ILCursor c = new ILCursor(il);
 
-            if (!c.TryGotoNext(MoveType.After,
+            if (c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<DeathProjectileComponent>(nameof(DeathProjectileComponent.SpawnTickEffect))))
             {
-                Log.Error("Failed to find patch location");
-                return;
-            }
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Action<DeathProjectileComponent>>(onTick);
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Action<DeathProjectileComponent>>(onTick);
-
-            static void onTick(DeathProjectileComponent deathProjectileComponent)
-            {
-                if (_validEliteBuffIndices.Length == 0)
-                    return;
-
-                if (!deathProjectileComponent)
-                    return;
-
-                if (!deathProjectileComponent.healthComponent || !deathProjectileComponent.healthComponent.body)
-                    return;
-
-                if (!deathProjectileComponent.projectileController)
-                    return;
-
-                if (deathProjectileComponent.TryGetComponentCached(out QualityTierContext qualityTierContext))
+                static void onTick(DeathProjectileComponent deathProjectileComponent)
                 {
-                    float eliteChance;
+                    if (_validEliteBuffIndices.Length == 0)
+                        return;
 
-                    QualityTier qualityTier = qualityTierContext.QualityTier;
-                    switch (qualityTier)
+                    if (!deathProjectileComponent)
+                        return;
+
+                    if (!deathProjectileComponent.healthComponent || !deathProjectileComponent.healthComponent.body)
+                        return;
+
+                    if (!deathProjectileComponent.projectileController)
+                        return;
+
+                    if (deathProjectileComponent.TryGetComponentCached(out QualityTierContext qualityTierContext))
                     {
-                        case QualityTier.None:
-                            eliteChance = 0f;
-                            break;
-                        case QualityTier.Uncommon:
-                            eliteChance = 5f;
-                            break;
-                        case QualityTier.Rare:
-                            eliteChance = 10f;
-                            break;
-                        case QualityTier.Epic:
-                            eliteChance = 20f;
-                            break;
-                        case QualityTier.Legendary:
-                            eliteChance = 33f;
-                            break;
-                        default:
-                            eliteChance = 0f;
-                            Log.Warning($"Quality tier {qualityTier} is not implemented");
-                            break;
-                    }
+                        float eliteChance;
 
-                    if (eliteChance > 0f)
-                    {
-                        CharacterBody ownerBody = deathProjectileComponent.projectileController.owner ? deathProjectileComponent.projectileController.owner.GetComponent<CharacterBody>() : null;
-                        CharacterMaster ownerMaster = ownerBody ? ownerBody.master : null;
-
-                        bool sureProc = deathProjectileComponent.projectileController.procChainMask.HasProc(ProcType.SureProc);
-                        
-                        if (RollUtil.CheckRoll(eliteChance, ownerMaster, sureProc))
+                        QualityTier qualityTier = qualityTierContext.QualityTier;
+                        switch (qualityTier)
                         {
-                            BuffIndex eliteBuffIndex = RoR2Application.rng.NextElementUniform(_validEliteBuffIndices);
+                            case QualityTier.None:
+                                eliteChance = 0f;
+                                break;
+                            case QualityTier.Uncommon:
+                                eliteChance = 5f;
+                                break;
+                            case QualityTier.Rare:
+                                eliteChance = 10f;
+                                break;
+                            case QualityTier.Epic:
+                                eliteChance = 20f;
+                                break;
+                            case QualityTier.Legendary:
+                                eliteChance = 33f;
+                                break;
+                            default:
+                                eliteChance = 0f;
+                                Log.Warning($"Quality tier {qualityTier} is not implemented");
+                                break;
+                        }
 
-                            Log.Debug($"Selected elite buff {BuffCatalog.GetBuffDef(eliteBuffIndex)}");
+                        if (eliteChance > 0f)
+                        {
+                            CharacterBody ownerBody = deathProjectileComponent.projectileController.owner ? deathProjectileComponent.projectileController.owner.GetComponent<CharacterBody>() : null;
+                            CharacterMaster ownerMaster = ownerBody ? ownerBody.master : null;
 
-                            deathProjectileComponent.healthComponent.body.AddTimedBuff(eliteBuffIndex, 0.5f);
+                            bool sureProc = deathProjectileComponent.projectileController.procChainMask.HasProc(ProcType.SureProc);
 
-                            // Need to do immediate stats recalc for the buff to apply in time for the death event
-                            deathProjectileComponent.healthComponent.body.RecalculateStats();
+                            if (RollUtil.CheckRoll(eliteChance, ownerMaster, sureProc))
+                            {
+                                BuffIndex eliteBuffIndex = RoR2Application.rng.NextElementUniform(_validEliteBuffIndices);
+
+                                Log.Debug($"Selected elite buff {BuffCatalog.GetBuffDef(eliteBuffIndex)}");
+
+                                deathProjectileComponent.healthComponent.body.AddTimedBuff(eliteBuffIndex, 0.5f);
+
+                                // Need to do immediate stats recalc for the buff to apply in time for the death event
+                                deathProjectileComponent.healthComponent.body.RecalculateStats();
+                            }
                         }
                     }
                 }
+            }
+            else
+            {
+                Log.Error("Failed to find elite buff patch location");
+            }
+
+            c.Goto(0, MoveType.Before);
+
+            VariableDefinition damageReportVar = null;
+            if (c.TryGotoNext(MoveType.Before,
+                              x => x.MatchLdsfld<GlobalEventManager>(nameof(GlobalEventManager.instance)),
+                              x => x.MatchLdloc<DamageReport>(il, out damageReportVar),
+                              x => x.MatchCallOrCallvirt<GlobalEventManager>(nameof(GlobalEventManager.OnCharacterDeath))))
+            {
+                c.Emit(OpCodes.Ldarg_0);
+                c.Emit(OpCodes.Ldloc, damageReportVar);
+                c.EmitDelegate<Action<DeathProjectileComponent, DamageReport>>(modifyDeathReport);
+                
+                static void modifyDeathReport(DeathProjectileComponent deathProjectileComponent, DamageReport damageReport)
+                {
+                    QualityTier qualityTier = QualityTierContext.GetQualityTier(deathProjectileComponent.gameObject);
+                    if (qualityTier != QualityTier.None)
+                    {
+                        damageReport.damageInfo.damageType.AddModdedDamageType(DamageTypes.DontDoItemDropsPrettyPlease);
+                    }
+                }
+            }
+            else
+            {
+                Log.Error("Failed to find damage report patch location");
             }
         }
     }

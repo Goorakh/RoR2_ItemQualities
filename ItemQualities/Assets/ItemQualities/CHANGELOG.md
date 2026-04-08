@@ -1,5 +1,11 @@
 ## 0.7.1
 
+* Forgive Me Please:
+    * Fixed Sonorous Whispers being able to drop items from the doll.
+
+* Warped Echo:
+    * Fixed Sonorous Whispers drops being repeated.
+
 * Rose Buckler:
     * Fixed dash triggering immediately when gaining the item while moving.
 
