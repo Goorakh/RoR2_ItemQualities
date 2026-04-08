@@ -715,6 +715,8 @@ namespace ItemQualities
             public static ItemDef SquidUpgradeChanceOnKill;
 
             public static ItemDef SquidUpgradeHidden;
+
+            public static ItemDef TrueKillOnTimer;
         }
 
         public static class EquipmentQualityGroups
