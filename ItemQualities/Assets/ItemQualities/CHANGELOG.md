@@ -1,8 +1,8 @@
 ## 0.7.1
 
-* Gnarled Woodsprite
-    * Fixed ghosts being able to revive and becoming permanent
-    * Fixed ghosts' spawned minions being permanent
+* Gnarled Woodsprite:
+    * Fixed ghosts being able to revive and becoming permanent.
+    * Fixed ghosts' spawned minions being permanent.
 
 * Super Massive Leech:
     * Fixed incorrect values in descriptions.
