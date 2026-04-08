@@ -1,5 +1,27 @@
 ## 0.7.1
 
+* Milky Chrysalis:
+    * Removed duration increase when collecting a bug.
+    * Bugs gained per pickup: 1 ->
+        * Uncommon: 2
+        * Rare: 3
+        * Epic: 4
+        * Legendary: 5
+
+* Volcanic Egg:
+    * Explosion damage bonus per enemy hit:
+        * Uncommon: +20% -> +300%
+        * Rare: +50% -> +450%
+        * Epic: +100% -> 650%
+        * Legendary: +200% -> +850%
+
+* Molotov:
+    * Burn area expansion amount:
+        * Uncommon: +70% -> +140%
+        * Rare: +140% -> +300%
+        * Epic: +300% -> +650%
+        * Legendary: +650% -> +1100%
+
 * Gnarled Woodsprite:
     * Fixed quality effect not working properly when used on non-host players.
     * Fixed ghosts being able to revive and becoming permanent.
