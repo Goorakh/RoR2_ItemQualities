@@ -8,7 +8,7 @@
 * Recycler:
     * Fixed recycle indicator not showing for non-host players.
 
-* Volcanic Egg
+* Volcanic Egg:
     * Fixed quality effect not working when used by non-host players.
 
 * Super Massive Leech:
