@@ -7,6 +7,13 @@
         * Epic: 4
         * Legendary: 5
 
+* Volcanic Egg:
+    * Explosion damage bonus per enemy hit:
+        * Uncommon: +20% -> +100%
+        * Rare: +50% -> +200%
+        * Epic: +100% -> +350%
+        * Legendary: +200% -> +500%
+
 * Gnarled Woodsprite:
     * Fixed quality effect not working properly when used on non-host players.
     * Fixed ghosts being able to revive and becoming permanent.

@@ -31,19 +31,19 @@ namespace ItemQualities.Equipments
                     switch (qualityTier)
                     {
                         case QualityTier.Uncommon:
-                            blastDamageCoefficientBonusPerHit = 0.2f;
+                            blastDamageCoefficientBonusPerHit = 1.0f;
                             blastRadiusBonusPerHit = 0.5f;
                             break;
                         case QualityTier.Rare:
-                            blastDamageCoefficientBonusPerHit = 0.5f;
+                            blastDamageCoefficientBonusPerHit = 2.0f;
                             blastRadiusBonusPerHit = 1.0f;
                             break;
                         case QualityTier.Epic:
-                            blastDamageCoefficientBonusPerHit = 1.0f;
+                            blastDamageCoefficientBonusPerHit = 3.5f;
                             blastRadiusBonusPerHit = 1.5f;
                             break;
                         case QualityTier.Legendary:
-                            blastDamageCoefficientBonusPerHit = 2.0f;
+                            blastDamageCoefficientBonusPerHit = 5.0f;
                             blastRadiusBonusPerHit = 2.5f;
                             break;
                         default:
