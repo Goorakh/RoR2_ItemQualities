@@ -1,8 +1,15 @@
 ## 0.7.1
 
 * Gnarled Woodsprite:
+    * Fixed quality effect not working properly when used on non-host players.
     * Fixed ghosts being able to revive and becoming permanent.
     * Fixed ghosts' spawned minions being permanent.
+
+* Recycler:
+    * Fixed recycle indicator not showing for non-host players.
+
+* Volcanic Egg
+    * Fixed quality effect not working when used by non-host players.
 
 * Super Massive Leech:
     * Fixed incorrect values in descriptions.
