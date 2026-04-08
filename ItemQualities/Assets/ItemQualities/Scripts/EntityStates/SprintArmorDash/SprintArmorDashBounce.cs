@@ -55,16 +55,15 @@ namespace EntityStates.SprintArmorDash
 
             if (base.isAuthority)
             {
-                if (_attachedBody.TryGetComponent<IPhysMotor>(out var motor))
+                IPhysMotor motor = _attachedBody.characterMotor ? _attachedBody.characterMotor : _attachedBody.GetComponent<IPhysMotor>();
+                motor?.ApplyForceImpulse(new PhysForceInfo
                 {
-                    motor.ApplyForceImpulse(new PhysForceInfo
-                    {
-                        resetVelocity = true,
-                        force = new Vector3(-dashDirection.x * 20, 20, -dashDirection.z * 20),
-                        ignoreGroundStick = true,
-                        massIsOne = true,
-                    });
-                }
+                    resetVelocity = true,
+                    force = new Vector3(-dashDirection.x * 20, 20, -dashDirection.z * 20),
+                    ignoreGroundStick = true,
+                    massIsOne = true,
+                });
+
                 outer.SetNextStateToMain();
             }
 

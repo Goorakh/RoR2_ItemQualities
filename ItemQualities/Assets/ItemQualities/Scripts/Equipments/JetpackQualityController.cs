@@ -70,8 +70,10 @@ namespace ItemQualities.Equipments
             if (!body)
                 return;
 
+            IPhysMotor bodyMotor = body.characterMotor ? body.characterMotor : body.GetComponent<IPhysMotor>();
+
             Vector3 bodyForward = body.transform.forward;
-            if (body.TryGetComponent(out IPhysMotor bodyMotor) && bodyMotor.velocity.sqrMagnitude > Mathf.Epsilon)
+            if (bodyMotor != null && bodyMotor.velocity.sqrMagnitude > Mathf.Epsilon)
             {
                 bodyForward = bodyMotor.velocity.normalized;
             }

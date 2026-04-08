@@ -39,9 +39,10 @@ namespace ItemQualities
             if (_hasTeleported)
                 return;
 
-            if (body.TryGetComponent(out IPhysMotor motor))
+            IPhysMotor bodyMotor = body.characterMotor ? body.characterMotor : body.GetComponent<IPhysMotor>();
+            if (bodyMotor != null)
             {
-                motor.velocityAuthority = motor.velocityAuthority.XAZ(0f);
+                bodyMotor.velocityAuthority = bodyMotor.velocityAuthority.XAZ(0f);
             }
 
             Vector3 teleportPosition = transform.position;

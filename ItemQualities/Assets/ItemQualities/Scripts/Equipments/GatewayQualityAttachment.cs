@@ -109,7 +109,6 @@ namespace ItemQualities.Equipments
         float _spawnTimer;
 
         CharacterBody _attachedBody;
-        IPhysMotor _attachedBodyMotor;
 
         void OnEnable()
         {
@@ -251,7 +250,6 @@ namespace ItemQualities.Equipments
         void INetworkedBodyAttachmentListener.OnAttachedBodyDiscovered(NetworkedBodyAttachment networkedBodyAttachment, CharacterBody attachedBody)
         {
             _attachedBody = attachedBody;
-            _attachedBodyMotor = _attachedBody ? _attachedBody.GetComponent<IPhysMotor>() : null;
         }
 
         public static GatewayQualityAttachment FindAttachmentForBody(CharacterBody body)

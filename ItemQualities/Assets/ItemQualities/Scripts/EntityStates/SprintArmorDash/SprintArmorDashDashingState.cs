@@ -35,7 +35,7 @@ namespace EntityStates.SprintArmorDash
                 return;
             _attachedBody = networkedBodyAttachment.attachedBody;
             _dashDirection = _attachedBody.inputBank.aimDirection;
-            _motor = _attachedBody.GetComponent<IPhysMotor>();
+            _motor = _attachedBody.characterMotor ? _attachedBody.characterMotor : _attachedBody.GetComponent<IPhysMotor>();
 
             if (base.isAuthority)
             {
