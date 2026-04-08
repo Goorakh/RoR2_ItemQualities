@@ -190,13 +190,22 @@ namespace ItemQualities.Equipments
                 teleportDirectionHorizontal.y = 0f;
                 teleportDirectionHorizontal.Normalize();
 
-                TeleportHelper.TeleportBody(new TeleportHelper.TeleportBodyArgs
+                TeleportHelper.TeleportBodyArgs targetBodyTeleportArgs = new TeleportHelper.TeleportBodyArgs
                 {
                     body = targetBody,
                     forceOutOfVehicle = true,
                     resetStateMachines = false,
                     targetPosition = teleportTargetPosition,
-                });
+                };
+
+                if (targetBody.hasEffectiveAuthority)
+                {
+                    TeleportHelper.TeleportBody(targetBodyTeleportArgs);
+                }
+                else
+                {
+                    targetBody.CallRpcTeleportWithLocalAuthority(targetBodyTeleportArgs);
+                }
 
                 IPhysMotor targetMotor = targetBody.characterMotor ? targetBody.characterMotor : targetBody.GetComponent<IPhysMotor>();
                 if (targetMotor is null or PseudoCharacterMotor ||

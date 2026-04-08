@@ -23,7 +23,7 @@ namespace ItemQualities.Equipments
             AsyncOperationHandle<GameObject> lightningIndicatorLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Lightning.LightningIndicator_prefab);
             lightningIndicatorLoad.OnSuccess(lightningIndicatorPrefab =>
             {
-                QualityGatewayPickupTargetIndicatorPrefab = lightningIndicatorPrefab.InstantiateClone("QualityGatewayPickupIndicator");
+                QualityGatewayPickupTargetIndicatorPrefab = lightningIndicatorPrefab.InstantiateClone("QualityGatewayPickupIndicator", false);
 
                 InputBindingDisplayController inputBindingDisplayController = QualityGatewayPickupTargetIndicatorPrefab.GetComponentInChildren<InputBindingDisplayController>();
                 if (inputBindingDisplayController)
