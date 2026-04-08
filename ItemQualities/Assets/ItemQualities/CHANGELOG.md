@@ -10,10 +10,10 @@
 
 * Volcanic Egg:
     * Explosion damage bonus per enemy hit:
-        * Uncommon: +20% -> +100%
-        * Rare: +50% -> +200%
-        * Epic: +100% -> +350%
-        * Legendary: +200% -> +500%
+        * Uncommon: +20% -> +300%
+        * Rare: +50% -> +450%
+        * Epic: +100% -> 650%
+        * Legendary: +200% -> +850%
 
 * Molotov:
     * Burn area expansion amount:
