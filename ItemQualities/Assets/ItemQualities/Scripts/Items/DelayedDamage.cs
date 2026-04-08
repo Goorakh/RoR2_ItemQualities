@@ -1,5 +1,6 @@
 ﻿using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
 
 namespace ItemQualities.Items
@@ -17,15 +18,26 @@ namespace ItemQualities.Items
         {
             if (!report.victimBody)
                 return;
+
             BuffQualityCounts delayedDamageDebuff = report.victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff);
-            int numProcs =  delayedDamageDebuff.UncommonCount +
-                            delayedDamageDebuff.RareCount * 2 +
-                            delayedDamageDebuff.EpicCount * 3 +
-                            delayedDamageDebuff.LegendaryCount * 4;
+
+            int repeatCount = (delayedDamageDebuff.UncommonCount * 1) +
+                              (delayedDamageDebuff.RareCount * 2) +
+                              (delayedDamageDebuff.EpicCount * 3) +
+                              (delayedDamageDebuff.LegendaryCount * 4);
+
             report.victimBody.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff);
-            for (int i = 0; i < numProcs; i++)
+
+            if (repeatCount > 0)
             {
-                GlobalEventManager.instance.OnCharacterDeath(report);
+                report.damageInfo.damageType.AddModdedDamageType(DamageTypes.DontDoItemDropsPrettyPlease);
+
+                for (int i = 0; i < repeatCount; i++)
+                {
+                    GlobalEventManager.instance.OnCharacterDeath(report);
+                }
+
+                report.damageInfo.damageType.RemoveModdedDamageType(DamageTypes.DontDoItemDropsPrettyPlease);
             }
         }
 
@@ -33,16 +45,17 @@ namespace ItemQualities.Items
         {
             if (!report.attackerBody || !report.attackerBody.inventory || !report.victimBody)
                 return;
+
             ItemQualityCounts delayedDamage = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DelayedDamage);
 
             if (delayedDamage.TotalQualityCount > 0)
             {
-                float chance =  delayedDamage.UncommonCount * 1f +
-                                delayedDamage.RareCount * 1.5f +
-                                delayedDamage.EpicCount * 2f +
-                                delayedDamage.LegendaryCount * 2.5f;
+                float chance = (delayedDamage.UncommonCount * 1f) +
+                               (delayedDamage.RareCount * 1.5f) +
+                               (delayedDamage.EpicCount * 2f) +
+                               (delayedDamage.LegendaryCount * 2.5f);
 
-                if (RollUtil.CheckRoll(chance, report.attackerMaster, report.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+                if (RollUtil.CheckRoll(chance * report.damageInfo.procCoefficient, report.attackerMaster, report.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
                 {
                     report.victimBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff.GetBuffDef(delayedDamage.HighestQuality));
                 }

@@ -48,11 +48,13 @@ namespace EntityStates.FriendUnit
 
             if (isAuthority)
             {
+                CharacterBody punterBody = Punter ? Punter.GetComponent<CharacterBody>() : null;
+
                 BullseyeSearch bullseyeSearch = new BullseyeSearch
                 {
                     searchOrigin = AimRay.origin,
                     searchDirection = AimRay.direction,
-                    viewer = Punter ? Punter.GetComponent<CharacterBody>() : null,
+                    viewer = punterBody,
                     filterByLoS = true,
                     filterByDistinctEntity = true,
                     maxAngleFilter = MaxLockOnAngle,
@@ -64,8 +66,14 @@ namespace EntityStates.FriendUnit
 
                 bullseyeSearch.RefreshCandidates();
 
+                IPhysMotor punterMotor = null;
+                if (punterBody)
+                {
+                    punterMotor = punterBody.characterMotor ? punterBody.characterMotor : punterBody.GetComponent<IPhysMotor>();
+                }
+
                 Vector3 punterVelocity = Vector3.zero;
-                if (Punter && Punter.TryGetComponent(out IPhysMotor punterMotor))
+                if (punterMotor != null)
                 {
                     punterVelocity = punterMotor.velocity;
                 }

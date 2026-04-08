@@ -31,19 +31,19 @@ namespace ItemQualities.Equipments
                     switch (qualityTier)
                     {
                         case QualityTier.Uncommon:
-                            blastDamageCoefficientBonusPerHit = 0.2f;
+                            blastDamageCoefficientBonusPerHit = 3.0f;
                             blastRadiusBonusPerHit = 0.5f;
                             break;
                         case QualityTier.Rare:
-                            blastDamageCoefficientBonusPerHit = 0.5f;
+                            blastDamageCoefficientBonusPerHit = 4.5f;
                             blastRadiusBonusPerHit = 1.0f;
                             break;
                         case QualityTier.Epic:
-                            blastDamageCoefficientBonusPerHit = 1.0f;
+                            blastDamageCoefficientBonusPerHit = 6.5f;
                             blastRadiusBonusPerHit = 1.5f;
                             break;
                         case QualityTier.Legendary:
-                            blastDamageCoefficientBonusPerHit = 2.0f;
+                            blastDamageCoefficientBonusPerHit = 8.5f;
                             blastRadiusBonusPerHit = 2.5f;
                             break;
                         default:
@@ -58,6 +58,8 @@ namespace ItemQualities.Equipments
 
                     _qualityVehiclePrefabs[(int)qualityTier] = qualityFireballVehiclePrefab;
                 }
+
+                args.ContentPack.networkedObjectPrefabs.Add(_qualityVehiclePrefabs);
             });
 
             return fireballVehicleLoad.AsProgressCoroutine(args.ProgressReceiver);

@@ -14,20 +14,20 @@ namespace ItemQualities
     {
         public static DamageAPI.ModdedDamageType Frost6s { get; private set; }
 
-        public static DamageAPI.ModdedDamageType ProcOnly { get; private set; }
-
         public static DamageAPI.ModdedDamageType ForceAddToSharedSuffering { get; private set; }
+
+        public static DamageAPI.ModdedDamageType DontDoItemDropsPrettyPlease { get; private set; }
 
         [SystemInitializer]
         static void Init()
         {
             Frost6s = DamageAPI.ReserveDamageType();
-            ProcOnly = DamageAPI.ReserveDamageType();
             ForceAddToSharedSuffering = DamageAPI.ReserveDamageType();
+            DontDoItemDropsPrettyPlease = DamageAPI.ReserveDamageType();
 
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
 
-            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess_ProcOnlyPatch;
+            IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
         }
 
         static void onServerDamageDealt(DamageReport damageReport)
@@ -70,47 +70,37 @@ namespace ItemQualities
             }
         }
 
-        static void HealthComponent_TakeDamageProcess_ProcOnlyPatch(ILContext il)
+        static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
-            if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
+            if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.Error("Failed to find DamageReport parameter");
                 return;
             }
 
             ILCursor c = new ILCursor(il);
 
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.PermanentCurse)),
-                               x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.TakeDamageForce))))
+            ILLabel afterSonorousLabel = null;
+            if (c.TryGotoNext(MoveType.AfterLabel,
+                              x => x.MatchLdloc(out _), // attackerMaster
+                              x => x.MatchCallOrCallvirt<CharacterMaster>("get_" + nameof(CharacterMaster.inventory)),
+                              x => x.MatchLdsfld(typeof(DLC2Content.Items), nameof(DLC2Content.Items.ItemDropChanceOnKill)),
+                              x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective)),
+                              x => x.MatchLdcI4(0),
+                              x => x.MatchBle(out afterSonorousLabel)))
             {
-                Log.Error("Failed to find patch end location");
-                return;
+                c.Emit(OpCodes.Ldarg, damageReportParameter);
+                c.EmitDelegate<Func<DamageReport, bool>>(allowSonorousDrop);
+                c.Emit(OpCodes.Brfalse, afterSonorousLabel);
+
+                static bool allowSonorousDrop(DamageReport damageReport)
+                {
+                    return !damageReport.damageInfo.damageType.HasModdedDamageType(DontDoItemDropsPrettyPlease);
+                }
             }
-
-            c.Goto(foundCursors[0].Next, MoveType.Before); // ldsfld RoR2Content.Buffs.PermanentCurse
-
-            ILLabel startHurtBlockLabel = default;
-            if (!c.TryGotoPrev(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.delayedDamageSecondHalf))) ||
-                !c.TryGotoNext(x => x.MatchBrtrue(out startHurtBlockLabel)))
+            else
             {
-                Log.Error("Failed to find patch start location");
-                return;
-            }
-
-            c.Goto(foundCursors[1].Next, MoveType.After); // call HealthComponent.TakeDamageForce
-            c.MoveAfterLabels();
-            ILLabel endHurtBlockLabel = c.MarkLabel();
-
-            c.Goto(startHurtBlockLabel.Target, MoveType.AfterLabel);
-
-            c.Emit(OpCodes.Ldarg, damageInfoParameter);
-            c.EmitDelegate<Func<DamageInfo, bool>>(shouldDealDamage);
-            c.Emit(OpCodes.Brfalse, endHurtBlockLabel);
-
-            static bool shouldDealDamage(DamageInfo damageInfo)
-            {
-                return damageInfo == null || !damageInfo.HasModdedDamageType(ProcOnly);
+                Log.Error("Failed to find sonorous disable patch location");
             }
         }
     }

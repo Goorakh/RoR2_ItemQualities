@@ -81,7 +81,7 @@ namespace ItemQualities.Items
             if (forceDownCount <= 0)
                 return;
 
-            IPhysMotor victimMotor = damageReport.victim.GetComponent<IPhysMotor>();
+            IPhysMotor victimMotor = damageReport.victimBody.characterMotor ? damageReport.victimBody.characterMotor : damageReport.victimBody.GetComponent<IPhysMotor>();
             if (victimMotor is PseudoCharacterMotor)
                 return;
 

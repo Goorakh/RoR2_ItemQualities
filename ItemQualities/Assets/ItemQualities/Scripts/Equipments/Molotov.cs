@@ -34,16 +34,16 @@ namespace ItemQualities.Equipments
 
                     float scaleMult = qualityTier switch
                     {
-                        QualityTier.Uncommon => 1.3f,
-                        QualityTier.Rare => 1.6f,
-                        QualityTier.Epic => 2.0f,
-                        QualityTier.Legendary => 3.0f,
+                        QualityTier.Uncommon => 1.6f,
+                        QualityTier.Rare => 2.0f,
+                        QualityTier.Epic => 3.0f,
+                        QualityTier.Legendary => 4.0f,
                         _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
                     };
 
                     if (qualityMolotovClusterProjectile.TryGetComponent(out ProjectileController clusterProjectileController))
                     {
-                        clusterProjectileController.ghostPrefab = clusterProjectileController.ghostPrefab.InstantiateClone(clusterProjectileController.ghostPrefab.name + qualityTier.ToString());
+                        clusterProjectileController.ghostPrefab = clusterProjectileController.ghostPrefab.InstantiateClone(clusterProjectileController.ghostPrefab.name + qualityTier.ToString(), false);
                         clusterProjectileController.ghostPrefab.transform.localScale *= scaleMult;
                     }
                     else
@@ -69,7 +69,7 @@ namespace ItemQualities.Equipments
 
                         if (qualityMolotovSingleProjectile.TryGetComponent(out ProjectileController singleProjectileController))
                         {
-                            singleProjectileController.ghostPrefab = singleProjectileController.ghostPrefab.InstantiateClone(singleProjectileController.ghostPrefab.name + qualityTier.ToString());
+                            singleProjectileController.ghostPrefab = singleProjectileController.ghostPrefab.InstantiateClone(singleProjectileController.ghostPrefab.name + qualityTier.ToString(), false);
                             singleProjectileController.ghostPrefab.transform.localScale *= scaleMult;
                         }
                         else
@@ -121,10 +121,10 @@ namespace ItemQualities.Equipments
                                 dotZoneScaleCurve.useOverallCurveOnly = true;
                                 dotZoneScaleCurve.overallCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, qualityTier switch
                                 {
-                                    QualityTier.Uncommon => 1.3f,
-                                    QualityTier.Rare => 1.5f,
-                                    QualityTier.Epic => 2f,
-                                    QualityTier.Legendary => 2.5f,
+                                    QualityTier.Uncommon => 1.5f,
+                                    QualityTier.Rare => 2f,
+                                    QualityTier.Epic => 2.5f,
+                                    QualityTier.Legendary => 3f,
                                     _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
                                 });
                             }

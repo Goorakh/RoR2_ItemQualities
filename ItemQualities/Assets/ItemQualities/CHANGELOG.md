@@ -1,3 +1,48 @@
+## 0.7.1
+
+* Forgive Me Please:
+    * Fixed Sonorous Whispers being able to drop items from the doll.
+
+* Warped Echo:
+    * Fixed Sonorous Whispers drops being repeated.
+
+* Rose Buckler:
+    * Fixed dash triggering immediately when gaining the item while moving.
+
+* Milky Chrysalis:
+    * Removed duration increase when collecting a bug.
+    * Bugs gained per pickup: 1 ->
+        * Uncommon: 2
+        * Rare: 3
+        * Epic: 4
+        * Legendary: 5
+
+* Volcanic Egg:
+    * Fixed quality effect not working when used by non-host players.
+    * Explosion damage bonus per enemy hit:
+        * Uncommon: +20% -> +300%
+        * Rare: +50% -> +450%
+        * Epic: +100% -> 650%
+        * Legendary: +200% -> +850%
+
+* Molotov:
+    * Burn area expansion amount:
+        * Uncommon: +70% -> +140%
+        * Rare: +140% -> +300%
+        * Epic: +300% -> +650%
+        * Legendary: +650% -> +1100%
+
+* Gnarled Woodsprite:
+    * Fixed quality effect not working properly when used on non-host players.
+    * Fixed ghosts being able to revive and becoming permanent.
+    * Fixed ghosts' spawned minions being permanent.
+
+* Recycler:
+    * Fixed recycle indicator not showing for non-host players.
+
+* Super Massive Leech:
+    * Fixed incorrect values in descriptions.
+
 ## 0.7.0
 
 * Added quality equipments

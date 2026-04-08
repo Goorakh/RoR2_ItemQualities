@@ -11,7 +11,9 @@ namespace ItemQualities.Equipments
     {
         NetworkedBodyAttachment _bodyAttachment;
 
-        float _pickupSpawnWaitTime;
+        int _bugsPerPickup;
+
+        float _pickupSpawnInterval;
         float _pickupSpawnTimer;
 
         QualityTier _activeQualityTier = QualityTier.None;
@@ -29,12 +31,20 @@ namespace ItemQualities.Equipments
                     case QualityTier.None:
                         break;
                     case QualityTier.Uncommon:
+                        _bugsPerPickup = 2;
+                        _pickupSpawnInterval = 4f;
+                        break;
                     case QualityTier.Rare:
-                        _pickupSpawnWaitTime = 4f;
+                        _bugsPerPickup = 3;
+                        _pickupSpawnInterval = 4f;
                         break;
                     case QualityTier.Epic:
+                        _bugsPerPickup = 4;
+                        _pickupSpawnInterval = 3f;
+                        break;
                     case QualityTier.Legendary:
-                        _pickupSpawnWaitTime = 3f;
+                        _bugsPerPickup = 5;
+                        _pickupSpawnInterval = 3f;
                         break;
                     default:
                         Log.Warning($"Quality tier {_activeQualityTier} is not implemented");
@@ -54,7 +64,7 @@ namespace ItemQualities.Equipments
                 return;
 
             _pickupSpawnTimer += Time.fixedDeltaTime;
-            if (_pickupSpawnTimer >= _pickupSpawnWaitTime)
+            if (_pickupSpawnTimer >= _pickupSpawnInterval)
             {
                 _pickupSpawnTimer = 0f;
                 trySpawnNearbyPickup();
@@ -70,8 +80,10 @@ namespace ItemQualities.Equipments
             if (!body)
                 return;
 
+            IPhysMotor bodyMotor = body.characterMotor ? body.characterMotor : body.GetComponent<IPhysMotor>();
+
             Vector3 bodyForward = body.transform.forward;
-            if (body.TryGetComponent(out IPhysMotor bodyMotor) && bodyMotor.velocity.sqrMagnitude > Mathf.Epsilon)
+            if (bodyMotor != null && bodyMotor.velocity.sqrMagnitude > Mathf.Epsilon)
             {
                 bodyForward = bodyMotor.velocity.normalized;
             }
@@ -148,15 +160,18 @@ namespace ItemQualities.Equipments
                 float sqrDistance = (currentPosition - body.corePosition).sqrMagnitude;
                 if (sqrDistance > MinAcceptablePickupDistanceSqr)
                 {
-                    GameObject bugPickupObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.BugPickup, currentPosition, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
+                    for (int i = 0; i < _bugsPerPickup; i++)
+                    {
+                        GameObject bugPickupObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.BugPickup, currentPosition, Quaternion.Euler(0f, Random.Range(0f, 360f), 0f));
 
-                    TeamFilter teamFilter = bugPickupObj.GetComponent<TeamFilter>();
-                    teamFilter.teamIndex = body.teamComponent.teamIndex;
+                        TeamFilter teamFilter = bugPickupObj.GetComponent<TeamFilter>();
+                        teamFilter.teamIndex = body.teamComponent.teamIndex;
 
-                    BugPickup bugPickup = bugPickupObj.GetComponentInChildren<BugPickup>();
-                    bugPickup.Tier = _activeQualityTier;
+                        BugPickup bugPickup = bugPickupObj.GetComponentInChildren<BugPickup>();
+                        bugPickup.Tier = _activeQualityTier;
 
-                    NetworkServer.Spawn(bugPickupObj);
+                        NetworkServer.Spawn(bugPickupObj);
+                    }
 
                     break;
                 }
@@ -166,7 +181,7 @@ namespace ItemQualities.Equipments
             if (pathMeshBuilder != null)
             {
                 DebugOverlay.MeshDrawer pathMeshDrawer = DebugOverlay.GetMeshDrawer();
-                pathMeshDrawer.gameObject.AddComponent<DestroyOnTimer>().duration = _pickupSpawnWaitTime;
+                pathMeshDrawer.gameObject.AddComponent<DestroyOnTimer>().duration = _pickupSpawnInterval;
 
                 pathMeshDrawer.mesh = pathMeshBuilder.GenerateMesh();
             }

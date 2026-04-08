@@ -95,13 +95,13 @@ MonoBehaviour:
   m_Script: {fileID: 1297580292, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  customName: SprintArmorDashStateMachine
+  customName: 
   initialStateType:
-    _typeName: EntityStates.SprintArmorDash.SprintArmorDashBaseState, ItemQualities,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    _typeName: EntityStates.SprintArmorDash.SprintArmorDashIdle, ItemQualities, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   mainStateType:
-    _typeName: EntityStates.SprintArmorDash.SprintArmorDashBaseState, ItemQualities,
-      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    _typeName: EntityStates.SprintArmorDash.SprintArmorDashIdle, ItemQualities, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
   debug: 0
 --- !u!114 &1580871802470397799
 MonoBehaviour:
