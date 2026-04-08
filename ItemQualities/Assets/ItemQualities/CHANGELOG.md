@@ -18,6 +18,7 @@
         * Legendary: 5
 
 * Volcanic Egg:
+    * Fixed quality effect not working when used by non-host players.
     * Explosion damage bonus per enemy hit:
         * Uncommon: +20% -> +300%
         * Rare: +50% -> +450%
@@ -38,9 +39,6 @@
 
 * Recycler:
     * Fixed recycle indicator not showing for non-host players.
-
-* Volcanic Egg:
-    * Fixed quality effect not working when used by non-host players.
 
 * Super Massive Leech:
     * Fixed incorrect values in descriptions.
