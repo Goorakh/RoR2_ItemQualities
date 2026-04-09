@@ -1,3 +1,12 @@
+## 0.7.2
+
+* Goobo Jr.:
+    * Goobo clones no longer copy equipment.
+
+* Fixed Volcanic Egg descriptions.
+
+* Fixed Super Massive Leech descriptions
+
 ## 0.7.1
 
 * Forgive Me Please:
