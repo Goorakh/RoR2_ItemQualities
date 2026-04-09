@@ -186,30 +186,6 @@ namespace ItemQualities.Equipments
                             }
                         }
                     }
-
-                    int equipmentSlotCount = ownerBody.inventory.GetEquipmentSlotCount();
-                    Array.Resize(ref spawnCard.srcEquipment, equipmentSlotCount);
-
-                    for (uint slot = 0; slot < equipmentSlotCount; slot++)
-                    {
-                        int equipmentSetCount = ownerBody.inventory.GetEquipmentSetCount(slot);
-
-                        Array.Resize(ref spawnCard.srcEquipment[slot], equipmentSetCount);
-
-                        for (uint set = 0; set < equipmentSetCount; set++)
-                        {
-                            EquipmentIndex equipmentIndex = ownerBody.inventory.GetEquipment(slot, set).equipmentIndex;
-                            QualityTier equipmentQualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
-
-                            if (equipmentQualityTier > gummyCloneQualityTier)
-                            {
-                                equipmentIndex = QualityCatalog.GetEquipmentIndexOfQuality(equipmentIndex, gummyCloneQualityTier);
-                                equipmentQualityTier = gummyCloneQualityTier;
-                            }
-
-                            spawnCard.srcEquipment[slot][set] = equipmentIndex;
-                        }
-                    }
                 }
             }
         }
