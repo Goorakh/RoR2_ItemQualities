@@ -462,7 +462,7 @@ namespace ItemQualities
                 {
                     int barNum = (int)(healthComponent.barrier / healthComponent.fullBarrier) - (over ? 0 : 1);
                     overBarrierBarInfo.sprite = ItemQualitiesContent.Sprites.barrierBar;
-                    overBarrierBarInfo.color = QualityCatalog.GetQualityTierDef((QualityTier) ((barNum - 1) % 4)).color;
+                    overBarrierBarInfo.color = QualityCatalog.GetQualityTierDef((QualityTier) ((barNum - 1) % (int) QualityTier.Count)).color;
                     overBarrierBarInfo.normalizedXMax = Math.Min((healthComponent.barrier / healthComponent.fullBarrier) - barNum, 1f - healthBarValues.curseFraction);
                     overBarrierBarInfo.enabled = true;
                     if (!over)
