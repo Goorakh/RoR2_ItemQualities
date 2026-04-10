@@ -17,6 +17,37 @@ namespace ItemQualities.Items
             }
 
             EquipmentSlot.onServerEquipmentActivated += onServerEquipmentActivated;
+            On.RoR2.HealthComponent.AddBarrier += HealthComponent_AddBarrier;
+            On.RoR2.HealthComponent.AddCharge += HealthComponent_AddCharge;
+        }
+
+        private static void HealthComponent_AddCharge(On.RoR2.HealthComponent.orig_AddCharge orig, HealthComponent self, float value)
+        {
+            float defaultMax = self.body.maxBarrier;
+            self.body.maxBarrier = getMaxBarrier(self.body);
+            orig(self, value);
+            self.body.maxBarrier = defaultMax;
+        }
+
+        private static void HealthComponent_AddBarrier(On.RoR2.HealthComponent.orig_AddBarrier orig, HealthComponent self, float value)
+        {
+            float defaultMax = self.body.maxBarrier;
+            self.body.maxBarrier = getMaxBarrier(self.body);
+            orig(self, value);
+            self.body.maxBarrier = defaultMax;
+        }
+
+        static float getMaxBarrier(CharacterBody body)
+        {
+            if (!body.inventory)
+                return body.maxBarrier;
+            ItemQualityCounts barrierOnCooldown = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BarrierOnCooldown);
+            float maxBarrier = body.maxBarrier *
+                                (barrierOnCooldown.UncommonCount * 0.3f +
+                                barrierOnCooldown.RareCount * 0.6f +
+                                barrierOnCooldown.EpicCount * 1f +
+                                barrierOnCooldown.LegendaryCount * 1.5f + 1);
+            return maxBarrier;
         }
 
         static void onServerEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
@@ -34,10 +65,10 @@ namespace ItemQualities.Items
             {
                 float baseCooldown = EquipmentCatalog.GetEquipmentDef(equipmentIndex).cooldown;
 
-                float barrierFractionPerSecondCooldown = (0.005f * barrierOnCooldown.UncommonCount) +
-                                                         (0.010f * barrierOnCooldown.RareCount) +
-                                                         (0.030f * barrierOnCooldown.EpicCount) +
-                                                         (0.050f * barrierOnCooldown.LegendaryCount);
+                float barrierFractionPerSecondCooldown = (0.01f * barrierOnCooldown.UncommonCount) +
+                                                         (0.02f * barrierOnCooldown.RareCount) +
+                                                         (0.03f * barrierOnCooldown.EpicCount) +
+                                                         (0.04f * barrierOnCooldown.LegendaryCount);
 
                 activatorBody.healthComponent.AddBarrier(activatorBody.healthComponent.fullCombinedHealth * baseCooldown * barrierFractionPerSecondCooldown);
 
