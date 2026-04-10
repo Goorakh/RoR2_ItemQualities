@@ -452,9 +452,9 @@ namespace ItemQualities
                 }
             }
 
-            HealthBar.BarInfo barrierBarInfoUnder = test(false);
-            HealthBar.BarInfo barrierBarInfoOver = test(true);
-            HealthBar.BarInfo test(bool over)
+            HealthBar.BarInfo barrierBarInfoUnder = addBarrierBar(false);
+            HealthBar.BarInfo barrierBarInfoOver = addBarrierBar(true);
+            HealthBar.BarInfo addBarrierBar(bool over)
             {
                 HealthBar.BarInfo overBarrierBarInfo = barrierBarInfoTemplate;
                 overBarrierBarInfo.enabled = false;
