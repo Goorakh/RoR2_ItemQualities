@@ -1423,17 +1423,17 @@
         "ITEM_SCRAP_QUALITY_PICKUP": "Does nothing. Can be used in <sprite name=\"Quality\"> Quality 3D Printers.",
         "ITEM_SCRAP_QUALITY_DESC": "Does nothing. Can be used in <sprite name=\"Quality\"> Quality 3D Printers.",
 
-        "ITEM_BARRIERONCOOLDOWN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
-        "ITEM_BARRIERONCOOLDOWN_UNCOMMON_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>0.5% <style=cStack>(+0.5% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        "ITEM_BARRIERONCOOLDOWN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment and increase max barrier.",
+        "ITEM_BARRIERONCOOLDOWN_UNCOMMON_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>1% <style=cStack>(+1% per stack)</style></style> of your maximum health per second of the equipment's base cooldown. Increase <style=cIsHealing>max barrier</style> by <sprite name=\"Quality\"> <style=cIsHealing>30% <style=cStack>(+30% per stack)</style></style>.",
 
-        "ITEM_BARRIERONCOOLDOWN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
-        "ITEM_BARRIERONCOOLDOWN_RARE_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>1% <style=cStack>(+1% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        "ITEM_BARRIERONCOOLDOWN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment and increase max barrier.",
+        "ITEM_BARRIERONCOOLDOWN_RARE_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>2% <style=cStack>(+2% per stack)</style></style> of your maximum health per second of the equipment's base cooldown. Increase <style=cIsHealing>max barrier</style> by <sprite name=\"Quality\"> <style=cIsHealing>60% <style=cStack>(+60% per stack)</style></style>.",
 
-        "ITEM_BARRIERONCOOLDOWN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
-        "ITEM_BARRIERONCOOLDOWN_EPIC_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>3% <style=cStack>(+3% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        "ITEM_BARRIERONCOOLDOWN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment and increase max barrier.",
+        "ITEM_BARRIERONCOOLDOWN_EPIC_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>3% <style=cStack>(+3% per stack)</style></style> of your maximum health per second of the equipment's base cooldown. Increase <style=cIsHealing>max barrier</style> by <sprite name=\"Quality\"> <style=cIsHealing>100% <style=cStack>(+100% per stack)</style></style>.",
 
-        "ITEM_BARRIERONCOOLDOWN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
-        "ITEM_BARRIERONCOOLDOWN_LEGENDARY_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        "ITEM_BARRIERONCOOLDOWN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment and increase max barrier.",
+        "ITEM_BARRIERONCOOLDOWN_LEGENDARY_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>4% <style=cStack>(+4% per stack)</style></style> of your maximum health per second of the equipment's base cooldown. Increase <style=cIsHealing>max barrier</style> by <sprite name=\"Quality\"> <style=cIsHealing>150% <style=cStack>(+150% per stack)</style></style>.",
         
         "ITEM_SPEEDONPICKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> A golden barrel granting permanent increase to all stats will appear on each stage.",
         "ITEM_SPEEDONPICKUP_UNCOMMON_DESC": "{0}\nA <style=cIsDamage>golden barrel</style> will appear on each stage, containing a pickup that increases <style=cIsUtility>all stats</style> by <sprite name=\"Quality\"> <style=cIsUtility>3% <style=cStack>(+3% per stack)</style></style> <style=cIsUtility>permanently</style>.",
