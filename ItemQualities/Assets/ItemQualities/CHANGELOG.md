@@ -12,6 +12,9 @@
         * Epic: 3% (+3% per stack) -> 3% (+3% per stack)
         * Legendary: 5% (+5% per stack) -> 4% (+4% per stack)
 
+* Squid Polyp:
+    * Fixed squids not changing size for non-host players.
+
 ## 0.7.2
 
 * Goobo Jr.:
