@@ -12,6 +12,8 @@
         * Epic: 3% (+3% per stack) -> 3% (+3% per stack)
         * Legendary: 5% (+5% per stack) -> 4% (+4% per stack)
 
+* Drifter Salvage & Junk Drones can no longer drop quality temporary items.
+
 * Squid Polyp:
     * Fixed squids not changing size for non-host players.
 
