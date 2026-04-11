@@ -15,6 +15,9 @@
 * Squid Polyp:
     * Fixed squids not changing size for non-host players.
 
+* Executive Card:
+    * Fixed being able to copy Scavenger Bags.
+
 ## 0.7.2
 
 * Goobo Jr.:

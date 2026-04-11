@@ -132,6 +132,8 @@ namespace ItemQualities
 
                 overrideCanCopy("GoldshoresBeacon", false);
                 overrideCanCopy("ShrineColossusAccess", false);
+                overrideCanCopy("ScavBackpack", false);
+                overrideCanCopy("ScavLunarBackpack", false);
             }
         }
 
