@@ -15,6 +15,9 @@
 * Super Massive Leech:
     * Movement speed is now increased by any healing received while leech is active, and not just leeched health.
 
+* Goobo Jr.:
+    * Clones are now upgraded to the appropriate quality tier.
+
 * Drifter Salvage & Junk Drones can no longer drop quality temporary items.
 
 * Squid Polyp:
