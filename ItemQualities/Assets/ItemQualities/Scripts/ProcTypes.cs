@@ -13,8 +13,6 @@ namespace ItemQualities
 
         public static ModdedProcType Bug { get; private set; } = ModdedProcType.Invalid;
 
-        public static readonly ModdedProcType[] LifeStealOverhealProcTypes = new ModdedProcType[(int)QualityTier.Count];
-
         [SystemInitializer]
         static void Init()
         {
@@ -22,11 +20,6 @@ namespace ItemQualities
             Immobilize = ProcTypeAPI.ReserveProcType();
             VoidDeathOrbProcType = ProcTypeAPI.ReserveProcType();
             Bug = ProcTypeAPI.ReserveProcType();
-
-            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-            {
-                LifeStealOverhealProcTypes[(int)qualityTier] = ProcTypeAPI.ReserveProcType();
-            }
         }
     }
 }
