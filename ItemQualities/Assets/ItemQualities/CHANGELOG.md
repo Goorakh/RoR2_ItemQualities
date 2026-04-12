@@ -12,6 +12,9 @@
         * Epic: 3% (+3% per stack) -> 3% (+3% per stack)
         * Legendary: 5% (+5% per stack) -> 4% (+4% per stack)
 
+* Super Massive Leech:
+    * Movement speed is now increased by any healing received while leech is active, and not just leeched health.
+
 * Drifter Salvage & Junk Drones can no longer drop quality temporary items.
 
 * Squid Polyp:
