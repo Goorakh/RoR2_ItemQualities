@@ -1,11 +1,11 @@
 ## <Next Version>
 
 * Eclipse Lite:
-    * Increase max barrier
-        * Uncommon: 30% (+30% per stack)
-        * Rare: 60% (+60% per stack)
-        * Epic: 100% (+100% per stack)
-        * Legendary: 150% (+150% per stack)
+    * Now increases max barrier capacity:
+        * Uncommon: +30% (+30% per stack)
+        * Rare: +60% (+60% per stack)
+        * Epic: +100% (+100% per stack)
+        * Legendary: +150% (+150% per stack)
     * Barrier gain on equipment use per second cooldown:
         * Uncommon: 0.5% (+0.5% per stack) -> 1% (+1% per stack)
         * Rare: 1% (+1% per stack) -> 2% (+2% per stack)
