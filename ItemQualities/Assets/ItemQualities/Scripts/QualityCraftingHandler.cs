@@ -27,8 +27,7 @@ namespace ItemQualities
 
             On.RoR2.CraftableCatalog.Init += CraftableCatalog_Init;
 
-            IL.RoR2.CraftableCatalog.SetCraftableDefs += IL_CraftableCatalog_SetCraftableDefs;
-            On.RoR2.CraftableCatalog.SetCraftableDefs += On_CraftableCatalog_SetCraftableDefs;
+            IL.RoR2.CraftableCatalog.SetCraftableDefs += CraftableCatalog_SetCraftableDefs;
         }
 
         static void CraftableCatalog_Init(On.RoR2.CraftableCatalog.orig_Init orig)
@@ -335,7 +334,7 @@ namespace ItemQualities
             return null;
         }
 
-        static void IL_CraftableCatalog_SetCraftableDefs(ILContext il)
+        static void CraftableCatalog_SetCraftableDefs(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -411,28 +410,6 @@ namespace ItemQualities
 
                 return true;
             }
-        }
-
-        static void On_CraftableCatalog_SetCraftableDefs(On.RoR2.CraftableCatalog.orig_SetCraftableDefs orig, CraftableDef[] newCraftableDefs)
-        {
-            orig(newCraftableDefs);
-
-            // HACK: Because some ingredients are denied above, this can cause the catalog to leave a null entry because it doesn't handle the case where no ingredient is valid.
-            // Search through all recipes and clean up any nulls left by the catalog init.
-            //foreach (CraftableCatalog.RecipeEntry recipeEntry in CraftableCatalog.GetAllRecipes())
-            //{
-            //    if (recipeEntry.possibleIngredients == null)
-            //    {
-            //        recipeEntry.possibleIngredients = Array.Empty<CraftableCatalog.IngredientSlotEntry>();
-            //        continue;
-            //    }
-
-            //    for (int i = 0; i < recipeEntry.possibleIngredients.Length; i++)
-            //    {
-            //        recipeEntry.possibleIngredients[i] ??= new CraftableCatalog.IngredientSlotEntry(i);
-            //        recipeEntry.possibleIngredients[i].pickups ??= Array.Empty<PickupIndex>();
-            //    }
-            //}
         }
     }
 }
