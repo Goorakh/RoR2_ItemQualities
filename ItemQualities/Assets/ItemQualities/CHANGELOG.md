@@ -19,6 +19,9 @@
 * Super Massive Leech:
     * Movement speed is now increased by any healing received while leech is active, and not just leeched health.
 
+* Disposable Missile Launcher:
+    * Placing the missile launcher in an equipment drone will now transfer the extra missile count to the drone.
+
 * Goobo Jr.:
     * Clones are now upgraded to the appropriate quality tier.
 

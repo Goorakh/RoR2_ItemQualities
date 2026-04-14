@@ -60,38 +60,19 @@ namespace ItemQualities.Equipments
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<int, EquipmentSlot, int>>(getMissileCount);
+            c.EmitDelegate<Func<int, EquipmentSlot, int>>(getMissileProjectileCount);
 
-            static int getMissileCount(int missileCount, EquipmentSlot equipmentSlot)
+            static int getMissileProjectileCount(int missileCount, EquipmentSlot equipmentSlot)
             {
                 QualityTier qualityTier = equipmentSlot ? equipmentSlot.GetCurrentEquipmentActionQualityTier() : QualityTier.None;
                 if (qualityTier > QualityTier.None)
                 {
                     CharacterBody body = equipmentSlot.characterBody;
-                    Inventory inventory = body ? body.inventory : null;
-
-                    if (body && inventory)
+                    if (body && body.master)
                     {
-                        int missileItemCount = 0;
-                        foreach (ItemIndex itemIndex in ItemCatalog.GetItemsWithTag(ItemTags.MissileRelated))
-                        {
-                            missileItemCount += inventory.CalculateEffectiveItemStacks(itemIndex);
-                        }
+                        int masterMissileCount = getMissileCount(body.master);
 
-                        int equipmentSlotCount = inventory.GetEquipmentSlotCount();
-                        for (uint slot = 0; slot < equipmentSlotCount; slot++)
-                        {
-                            int equipmentSetCount = inventory.GetEquipmentSetCount(slot);
-                            for (uint set = 0; set < equipmentSetCount; set++)
-                            {
-                                EquipmentState equipmentState = inventory.GetEquipment(slot, set);
-                                if (equipmentState.equipmentIndex != EquipmentIndex.None &&
-                                    Array.BinarySearch(_missileEquipments, equipmentState.equipmentIndex) >= 0)
-                                {
-                                    missileItemCount++;
-                                }
-                            }
-                        }
+                        Log.Debug($"Missile count for {Util.GetBestBodyName(body.gameObject)}: {masterMissileCount}");
 
                         int missileBonusPerMissileItem;
                         switch (qualityTier)
@@ -114,12 +95,47 @@ namespace ItemQualities.Equipments
                                 break;
                         }
 
-                        missileCount += missileItemCount * missileBonusPerMissileItem;
+                        missileCount += masterMissileCount * missileBonusPerMissileItem;
                     }
                 }
 
                 return missileCount;
             }
+        }
+
+        static int getMissileCount(CharacterMaster master)
+        {
+            int missileItemCount = 0;
+
+            if (!master.inventory.inventoryDisabled)
+            {
+                foreach (ItemIndex itemIndex in ItemCatalog.GetItemsWithTag(ItemTags.MissileRelated))
+                {
+                    missileItemCount += master.inventory.GetItemCountEffective(itemIndex);
+                }
+
+                int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
+                for (uint slot = 0; slot < equipmentSlotCount; slot++)
+                {
+                    int equipmentSetCount = master.inventory.GetEquipmentSetCount(slot);
+                    for (uint set = 0; set < equipmentSetCount; set++)
+                    {
+                        EquipmentState equipmentState = master.inventory.GetEquipment(slot, set);
+                        if (equipmentState.equipmentIndex != EquipmentIndex.None &&
+                            Array.BinarySearch(_missileEquipments, equipmentState.equipmentIndex) >= 0)
+                        {
+                            missileItemCount++;
+                        }
+                    }
+                }
+            }
+
+            if (master && master.minionOwnership.ownerMaster)
+            {
+                missileItemCount += getMissileCount(master.minionOwnership.ownerMaster);
+            }
+
+            return missileItemCount;
         }
     }
 }
