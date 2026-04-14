@@ -1,5 +1,10 @@
 ## <Next Version>
 
+* Crafting:
+    * Fixed missing recipes for some items + qualities combinations.
+    * Combining a quality item with a common item will now give a common result (previously did not result in anything).
+    * For recipes with a result without qualities (such as meal items), any combination of quality ingredients can now be used to craft them.
+
 * Eclipse Lite:
     * Now increases max barrier capacity:
         * Uncommon: +30% (+30% per stack)
