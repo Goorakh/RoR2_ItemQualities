@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities;
+﻿using HG;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -17,7 +18,7 @@ namespace ItemQualities
 {
     static class QualityCraftingHandler
     {
-        static CraftableDef[] _qualityCraftableDefs = Array.Empty<CraftableDef>();
+        static readonly HashSet<CraftableDef> _qualityCraftableDefs = new HashSet<CraftableDef>();
 
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
         static void Init()
@@ -25,7 +26,9 @@ namespace ItemQualities
             SystemInitializerInjector.InjectDependency(typeof(CraftableCatalog), typeof(QualityCatalog));
 
             On.RoR2.CraftableCatalog.Init += CraftableCatalog_Init;
-            IL.RoR2.CraftableCatalog.SetCraftableDefs += CraftableCatalog_SetCraftableDefs;
+
+            IL.RoR2.CraftableCatalog.SetCraftableDefs += IL_CraftableCatalog_SetCraftableDefs;
+            On.RoR2.CraftableCatalog.SetCraftableDefs += On_CraftableCatalog_SetCraftableDefs;
         }
 
         static void CraftableCatalog_Init(On.RoR2.CraftableCatalog.orig_Init orig)
@@ -38,14 +41,14 @@ namespace ItemQualities
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
-            if (_qualityCraftableDefs.Length > 0)
+            if (_qualityCraftableDefs.Count > 0)
             {
                 foreach (CraftableDef qualityCraftableDef in _qualityCraftableDefs)
                 {
                     CraftableDef.Destroy(qualityCraftableDef);
                 }
 
-                _qualityCraftableDefs = Array.Empty<CraftableDef>();
+                _qualityCraftableDefs.Clear();
             }
 
             // Would be nice to just append these to the content pack directly,
@@ -54,6 +57,12 @@ namespace ItemQualities
 
             List<CraftableDef> qualityCraftableDefs = new List<CraftableDef>(allCraftableDefs.Length * (int)QualityTier.Count);
             int totalRecipeCount = 0;
+
+            Span<List<Recipe>> qualityRecipesByResultQuality = new List<Recipe>[(int)QualityTier.Count + 1];
+            foreach (ref List<Recipe> recipes in qualityRecipesByResultQuality)
+            {
+                recipes = new List<Recipe>();
+            }
 
             foreach (CraftableDef craftableDef in allCraftableDefs)
             {
@@ -65,19 +74,28 @@ namespace ItemQualities
                 if (!resultPickupIndex.isValid)
                     continue;
 
-                Span<List<Recipe>> qualityRecipiesByResultQuality = new List<Recipe>[(int)QualityTier.Count];
+                foreach (ref readonly List<Recipe> recipes in qualityRecipesByResultQuality)
+                {
+                    recipes.Clear();
+                }
+
+                HashSet<PickupIndex[]> allRecipeCombinations = new HashSet<PickupIndex[]>(UnorderedCollectionComparer<PickupIndex>.Default);
 
                 foreach (Recipe recipe in craftableDef.recipes)
                 {
-                    int ingredientSlotCount = recipe?.ingredients != null ? recipe.ingredients.Length : 0;
-                    if (ingredientSlotCount == 0)
+                    if (recipe?.ingredients == null)
                         continue;
 
-                    Span<PickupIndex[]> possibleIngredientsBySlot = new PickupIndex[ingredientSlotCount][];
+                    int ingredientsCount = recipe.ingredients.Length;
+                    if (ingredientsCount == 0)
+                        continue;
+
+                    // Contains all (including quality) pickup indices of ingredients that can be used for each slot in this recipe
+                    Span<PickupIndex[]> possibleIngredientsBySlot = new PickupIndex[ingredientsCount][];
 
                     bool allSlotsHaveIngredients = true;
 
-                    for (int i = 0; i < ingredientSlotCount; i++)
+                    for (int i = 0; i < ingredientsCount; i++)
                     {
                         RecipeIngredient ingredient = recipe.ingredients[i];
 
@@ -94,39 +112,19 @@ namespace ItemQualities
                             }
                         }
 
-                        HashSet<PickupIndex> validIngredients = new HashSet<PickupIndex>();
+                        using var _ = SetPool<PickupIndex>.RentCollection(out HashSet<PickupIndex> possibleIngredients);
 
                         foreach (PickupIndex ingredientPickupIndex in PickupCatalog.allPickupIndices)
                         {
-                            QualityTier ingredientQualityTier = QualityCatalog.GetQualityTier(ingredientPickupIndex);
-                            if (ingredientQualityTier > QualityTier.None)
+                            if (ingredient.Validate(QualityCatalog.GetPickupIndexOfQuality(ingredientPickupIndex, QualityTier.None)))
                             {
-                                PickupIndex baseIngredientPickupIndex = QualityCatalog.GetPickupIndexOfQuality(ingredientPickupIndex, QualityTier.None);
-
-                                if (ingredient.Validate(baseIngredientPickupIndex))
-                                {
-                                    validIngredients.Add(ingredientPickupIndex);
-                                }
+                                possibleIngredients.Add(ingredientPickupIndex);
                             }
                         }
 
-                        if (validIngredients.Count > 0)
+                        if (possibleIngredients.Count > 0)
                         {
-                            PickupIndex[] validIngredientsArray = validIngredients.ToArray();
-
-                            int orderedIndex = possibleIngredientsBySlot.BinarySearch(validIngredientsArray, CollectionComparer.SizeDescending);
-                            if (orderedIndex < 0)
-                            {
-                                orderedIndex = ~orderedIndex;
-                            }
-
-                            if (orderedIndex < possibleIngredientsBySlot.Length - 1 && possibleIngredientsBySlot[orderedIndex] != null)
-                            {
-                                // Shift all smaller elements forward in the array (discard last element, since it will always be unassigned because of the ordering)
-                                possibleIngredientsBySlot.Slice(orderedIndex, possibleIngredientsBySlot.Length - orderedIndex - 1).CopyTo(possibleIngredientsBySlot.Slice(orderedIndex + 1));
-                            }
-
-                            possibleIngredientsBySlot[orderedIndex] = validIngredientsArray;
+                            possibleIngredientsBySlot[i] = possibleIngredients.ToArray();
                         }
                         else
                         {
@@ -138,102 +136,107 @@ namespace ItemQualities
                     if (!allSlotsHaveIngredients)
                         continue;
 
-                    Span<int> slotIngredientIndices = stackalloc int[ingredientSlotCount];
+                    allRecipeCombinations.Clear();
 
-                    bool hasVisitedAllIngredientPermutations;
+                    Span<int> ingredientIndices = stackalloc int[ingredientsCount];
+                    bool hasRecordedAllRecipeCombinations;
                     do
                     {
-                        int totalIngredientsQualityTierValues = 0;
-
-                        Span<PickupIndex> permutationIngredients = stackalloc PickupIndex[ingredientSlotCount];
-                        for (int i = 0; i < ingredientSlotCount; i++)
+                        PickupIndex[] recipeIngredients = new PickupIndex[ingredientsCount];
+                        for (int slot = 0; slot < ingredientsCount; slot++)
                         {
-                            PickupIndex ingredientPickupIndex = possibleIngredientsBySlot[i][slotIngredientIndices[i]];
-                            permutationIngredients[i] = ingredientPickupIndex;
-                            totalIngredientsQualityTierValues += (int)QualityCatalog.GetQualityTier(ingredientPickupIndex);
+                            int ingredientIndex = ingredientIndices[slot];
+                            recipeIngredients[slot] = possibleIngredientsBySlot[slot][ingredientIndex];
                         }
 
-                        QualityTier resultQualityTier = (QualityTier)(totalIngredientsQualityTierValues / (float)ingredientSlotCount);
-                        if (resultQualityTier > QualityTier.None && resultQualityTier < QualityTier.Count)
+                        allRecipeCombinations.Add(recipeIngredients);
+
+                        bool incrementedIngredientIndex = false;
+                        for (int slot = 0; slot < ingredientsCount; slot++)
                         {
-                            bool allIngredientsValid = true;
+                            ref int ingredientIndex = ref ingredientIndices[slot];
 
-                            Span<RecipeIngredient> ingredients = new RecipeIngredient[ingredientSlotCount];
-                            for (int i = 0; i < ingredientSlotCount; i++)
+                            if (ingredientIndex < possibleIngredientsBySlot[slot].Length - 1)
                             {
-                                UnityEngine.Object ingredientPickup = getPickupDefObject(permutationIngredients[i]);
-                                if (!ingredientPickup)
-                                {
-                                    Log.Warning($"Failed to find pickup object for {permutationIngredients[i]}");
-                                    allIngredientsValid = false;
-                                    break;
-                                }
-
-                                ingredients[i] = new RecipeIngredient
-                                {
-                                    type = IngredientTypeIndex.AssetReference,
-                                    pickup = ingredientPickup
-                                };
-                            }
-
-                            if (allIngredientsValid)
-                            {
-                                List<Recipe> qualityRecipes = qualityRecipiesByResultQuality[(int)resultQualityTier] ??= new List<Recipe>();
-
-                                qualityRecipes.Add(new Recipe
-                                {
-                                    ingredients = ingredients.ToArray(),
-                                    amountToDrop = recipe.amountToDrop,
-                                    priority = recipe.priority,
-                                });
-                            }
-                        }
-
-                        bool successfullyIncrementedIndex = false;
-                        for (int i = 0; i < ingredientSlotCount; i++)
-                        {
-                            if (slotIngredientIndices[i] < possibleIngredientsBySlot[i].Length - 1)
-                            {
-                                slotIngredientIndices[i]++;
-
-                                if (i > 0)
-                                {
-                                    // For sequences with maximum values sorted in descending order, setting the previous values to the new incremented value like this skips all (unordered) duplicate pairs.
-
-                                    // Table of all elements iterated over for an input where the maximum value of the first element is 3, and the maximum of the second is 2. '---' indicates a permutation skipped by this method (duplicate):
-                                    // 0 0
-                                    // 1 0
-                                    // 2 0
-                                    // 3 0
-                                    // 0 1 ---
-                                    // 1 1
-                                    // 2 1
-                                    // 3 1
-                                    // 0 2 ---
-                                    // 1 2 ---
-                                    // 2 2
-                                    // 3 2
-
-                                    slotIngredientIndices.Slice(0, i).Fill(slotIngredientIndices[i]);
-                                }
-
-                                successfullyIncrementedIndex = true;
-
+                                ingredientIndex++;
+                                incrementedIngredientIndex = true;
                                 break;
                             }
+                            else
+                            {
+                                ingredientIndex = 0;
+                            }
                         }
 
-                        hasVisitedAllIngredientPermutations = !successfullyIncrementedIndex;
-                    } while (!hasVisitedAllIngredientPermutations);
+                        hasRecordedAllRecipeCombinations = !incrementedIngredientIndex;
+                    } while (!hasRecordedAllRecipeCombinations);
+
+                    foreach (PickupIndex[] ingredients in allRecipeCombinations)
+                    {
+                        int averageIngredientQualityValue = 0;
+                        int numQualityIngredients = 0;
+
+                        foreach (PickupIndex ingredientPickupIndex in ingredients)
+                        {
+                            QualityTier qualityTier = QualityCatalog.GetQualityTier(ingredientPickupIndex);
+                            if (qualityTier != QualityTier.None)
+                            {
+                                averageIngredientQualityValue += (int)qualityTier;
+                                numQualityIngredients++;
+                            }
+                        }
+
+                        // result should be:
+                        // when all ingredients quality:
+                        // * average quality rounded down
+                        // when not all ingredients quality (but at least 1 is):
+                        // * common result
+                        // when no ingredients quality:
+                        // * ignore
+
+                        if (numQualityIngredients == 0)
+                            continue;
+
+                        bool allIngredientsQuality = numQualityIngredients == ingredients.Length;
+                        QualityTier averageIngredientQualityTier = (QualityTier)(averageIngredientQualityValue / numQualityIngredients);
+
+                        QualityTier resultQualityTier = allIngredientsQuality ? averageIngredientQualityTier : QualityTier.None;
+
+                        // If the result quality does not exist, fall back to base item result, no matter the ingredients
+                        if (QualityCatalog.GetPickupIndexOfQuality(resultPickupIndex, resultQualityTier) == resultPickupIndex)
+                        {
+                            resultQualityTier = QualityTier.None;
+                        }
+
+                        Recipe qualityRecipe = new Recipe
+                        {
+                            amountToDrop = recipe.amountToDrop,
+                            priority = recipe.priority,
+                            ingredients = new RecipeIngredient[ingredients.Length],
+                        };
+
+                        for (int i = 0; i < ingredients.Length; i++)
+                        {
+                            qualityRecipe.ingredients[i] = new RecipeIngredient
+                            {
+                                pickup = getPickupDefObject(ingredients[i]),
+                                type = IngredientTypeIndex.AssetReference,
+                                forbiddenTags = Array.Empty<ItemTag>(),
+                                requiredTags = Array.Empty<ItemTag>(),
+                            };
+                        }
+
+                        qualityRecipesByResultQuality[(int)resultQualityTier + 1].Add(qualityRecipe);
+                    }
                 }
 
-                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
                 {
-                    List<Recipe> qualityRecipes = qualityRecipiesByResultQuality[(int)qualityTier];
-                    if (qualityRecipes != null && qualityRecipes.Count > 0)
+                    ref readonly List<Recipe> qualityRecipes = ref qualityRecipesByResultQuality[(int)qualityTier + 1];
+                    if (qualityRecipes.Count > 0)
                     {
                         PickupIndex qualityResultPickupIndex = QualityCatalog.GetPickupIndexOfQuality(resultPickupIndex, qualityTier);
-                        if (resultPickupIndex != qualityResultPickupIndex)
+                        if (qualityTier == QualityTier.None || resultPickupIndex != qualityResultPickupIndex)
                         {
                             UnityEngine.Object qualityResultPickupDefObject = getPickupDefObject(qualityResultPickupIndex);
                             if (qualityResultPickupDefObject)
@@ -254,14 +257,64 @@ namespace ItemQualities
 
             if (qualityCraftableDefs.Count > 0)
             {
-                _qualityCraftableDefs = qualityCraftableDefs.ToArray();
+                _qualityCraftableDefs.UnionWith(qualityCraftableDefs);
 
                 int baseCraftableDefsCount = allCraftableDefs.Length;
                 Array.Resize(ref allCraftableDefs, baseCraftableDefsCount + qualityCraftableDefs.Count);
                 qualityCraftableDefs.CopyTo(allCraftableDefs, baseCraftableDefsCount);
             }
 
+            _qualityCraftableDefs.TrimExcess();
+
             Log.Debug($"Added {qualityCraftableDefs.Count} quality CraftableDef(s) (total {totalRecipeCount} recipe(s)) ({stopwatch.Elapsed.TotalMilliseconds:F0}ms)");
+
+#if DEBUG
+            // Quality craft recipes logging
+
+            var sb = new System.Text.StringBuilder();
+
+            foreach (CraftableDef craftableDef in _qualityCraftableDefs)
+            {
+                List<PickupIndex[]> allValidIngredientCombinations = new List<PickupIndex[]>();
+
+                foreach (Recipe recipe in craftableDef.recipes)
+                {
+                    PickupIndex[] combination = new PickupIndex[recipe.ingredients.Length];
+                    for (int i = 0; i < recipe.ingredients.Length; i++)
+                    {
+                        RecipeIngredient ingredient = recipe.ingredients[i];
+
+                        PickupIndex ingredientPickupIndex = PickupIndex.none;
+                        if (ingredient.pickup is ItemDef itemDef)
+                        {
+                            ingredientPickupIndex = PickupCatalog.FindPickupIndex(itemDef.itemIndex);
+                        }
+                        else if (ingredient.pickup is EquipmentDef equipmentDef)
+                        {
+                            ingredientPickupIndex = PickupCatalog.FindPickupIndex(equipmentDef.equipmentIndex);
+                        }
+
+                        combination[i] = ingredientPickupIndex;
+                    }
+
+                    allValidIngredientCombinations.Add(combination);
+                }
+
+                sb.AppendLine($"{craftableDef.name} ({craftableDef.GetPickupDefFromResult()?.pickupIndex ?? PickupIndex.none}):");
+                
+                foreach (PickupIndex[] ingredients in allValidIngredientCombinations)
+                {
+                    sb.AppendLine("\t" + string.Join(" + ", ingredients));
+                }
+
+                sb.AppendLine();
+            }
+
+            if (sb.Length > 0)
+            {
+                Log.Debug_NoCallerPrefix(sb);
+            }
+#endif
         }
 
         static UnityEngine.Object getPickupDefObject(PickupIndex pickupIndex)
@@ -282,7 +335,7 @@ namespace ItemQualities
             return null;
         }
 
-        static void CraftableCatalog_SetCraftableDefs(ILContext il)
+        static void IL_CraftableCatalog_SetCraftableDefs(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -344,10 +397,42 @@ namespace ItemQualities
                     return true;
 
                 bool ingredientIsQuality = QualityCatalog.GetQualityTier(ingredientPickup.pickupIndex) != QualityTier.None;
-                bool recipeIsQuality = QualityCatalog.GetQualityTier(recipeEntry.result) != QualityTier.None;
+                bool resultIsQuality = QualityCatalog.GetQualityTier(recipeEntry.result) != QualityTier.None;
+                bool recipeHasQuality = ingredientIsQuality || resultIsQuality;
 
-                return ingredientIsQuality == recipeIsQuality;
+                // If recipe contains quality items or result: Only allow if it's one of our defined recipes
+                // If recipe contains no quality: Allow
+                bool ingredientAllowed = !recipeHasQuality || _qualityCraftableDefs.Contains(recipeEntry.recipe.craftableDef);
+                if (!ingredientAllowed)
+                {
+                    Log.Debug($"Not allowing ingredient {ingredientPickup.pickupIndex} for recipe {recipeEntry.recipe.craftableDef.name}[{recipeEntry.recipe.indexInCraftableDef}]");
+                    return false;
+                }
+
+                return true;
             }
+        }
+
+        static void On_CraftableCatalog_SetCraftableDefs(On.RoR2.CraftableCatalog.orig_SetCraftableDefs orig, CraftableDef[] newCraftableDefs)
+        {
+            orig(newCraftableDefs);
+
+            // HACK: Because some ingredients are denied above, this can cause the catalog to leave a null entry because it doesn't handle the case where no ingredient is valid.
+            // Search through all recipes and clean up any nulls left by the catalog init.
+            //foreach (CraftableCatalog.RecipeEntry recipeEntry in CraftableCatalog.GetAllRecipes())
+            //{
+            //    if (recipeEntry.possibleIngredients == null)
+            //    {
+            //        recipeEntry.possibleIngredients = Array.Empty<CraftableCatalog.IngredientSlotEntry>();
+            //        continue;
+            //    }
+
+            //    for (int i = 0; i < recipeEntry.possibleIngredients.Length; i++)
+            //    {
+            //        recipeEntry.possibleIngredients[i] ??= new CraftableCatalog.IngredientSlotEntry(i);
+            //        recipeEntry.possibleIngredients[i].pickups ??= Array.Empty<PickupIndex>();
+            //    }
+            //}
         }
     }
 }
