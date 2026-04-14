@@ -27,6 +27,9 @@
 * Executive Card:
     * Fixed being able to copy Scavenger Bags.
 
+* Seed of Life:
+    * Fixed being able to upgrade scrap (regenerating scrap can still be upgraded).
+
 ## 0.7.2
 
 * Goobo Jr.:
