@@ -91,7 +91,7 @@ namespace ItemQualities
             return _tierSelection.Evaluate(rng.nextNormalizedFloat);
         }
 
-        public static QualityTier RollQualityTier(Xoroshiro128Plus rng, PickupRollInfo rollInfo)
+        public static QualityTier RollQualityTier(Xoroshiro128Plus rng, in PickupRollInfo rollInfo)
         {
             QualityTier currentQualityTier = QualityTier.None;
 
@@ -115,7 +115,7 @@ namespace ItemQualities
             return RollQuality(pickupIndex, rng, rollInfo, isPickupAllowedFunc);
         }
 
-        public static PickupIndex RollQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, PickupRollInfo rollInfo, Func<PickupIndex, bool> isPickupAllowedFunc = null)
+        public static PickupIndex RollQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, in PickupRollInfo rollInfo, Func<PickupIndex, bool> isPickupAllowedFunc = null)
         {
             if (!rollInfo.IsPlayerAffiliation)
             {
@@ -178,7 +178,7 @@ namespace ItemQualities
                             isItemCost = true;
                             break;
                         default:
-                            isItemCost |= CustomCostTypeIndex.IsQualityItemCostType(purchaseInteraction.costType);
+                            isItemCost = CustomCostTypeIndex.IsQualityItemCostType(purchaseInteraction.costType);
                             break;
                     }
                 }
