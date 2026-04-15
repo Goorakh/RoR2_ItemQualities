@@ -17,6 +17,10 @@
         * Epic: 3% (+3% per stack) -> 3% (+3% per stack)
         * Legendary: 5% (+5% per stack) -> 4% (+4% per stack)
 
+* Foreign Fruit:
+    * Added a cap to temporary health amount.
+    * Fixed temporary health being counted when determining max health %, causing temporary health to increase exponentially as the equipment was used repeatedly.
+
 * Squid Polyp:
     * Fixed squids not changing size for non-host players.
     * Fixed squids not being able to increase duration on kill after upgrading to max.
