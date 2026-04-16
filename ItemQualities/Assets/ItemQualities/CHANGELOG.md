@@ -21,6 +21,9 @@
     * Added a cap to temporary health amount.
     * Fixed temporary health being counted when determining max health %, causing temporary health to increase exponentially as the equipment was used repeatedly.
 
+* Eccentric Vase:
+    * Highlighted interactables are now prioritized over teleporting to an orb.
+
 * Squid Polyp:
     * Fixed squids not changing size for non-host players.
     * Fixed squids not being able to increase duration on kill after upgrading to max.

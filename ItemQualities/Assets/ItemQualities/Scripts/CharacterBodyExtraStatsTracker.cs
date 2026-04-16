@@ -44,6 +44,11 @@ namespace ItemQualities
         NetworkIdentity _netIdentity;
 
         CharacterBody _body;
+        Interactor _interactor;
+        InteractionDriver _interactionDriver;
+
+        GameObject _currentInteractableObject;
+        IInteractable _currentInteractable;
 
         CharacterModel _cachedCharacterModel;
 
@@ -180,6 +185,8 @@ namespace ItemQualities
         {
             _netIdentity = GetComponent<NetworkIdentity>();
             _body = GetComponent<CharacterBody>();
+            _interactor = GetComponent<Interactor>();
+            _interactionDriver = GetComponent<InteractionDriver>();
 
             ComponentCache.Add(gameObject, this);
         }
@@ -287,10 +294,21 @@ namespace ItemQualities
             if (!Body.inputBank)
                 return;
 
+            if (_interactionDriver && _currentInteractableObject != _interactionDriver.currentInteractable)
+            {
+                _currentInteractableObject = _interactionDriver.currentInteractable;
+                _currentInteractable = _currentInteractableObject ? _currentInteractableObject.GetComponent<IInteractable>() : null;
+            }
+
+            bool hasSelectedInteractable = (_currentInteractable as MonoBehaviour) != null &&
+                                           _currentInteractable.GetInteractability(_interactor) > Interactability.Disabled;
+
+            bool isOnInteractCooldown = _interactionDriver && _interactionDriver.interactableCooldown > 0f;
+
             Ray aimRay = CameraRigController.ModifyAimRayIfApplicable(Body.inputBank.GetAimRay(), gameObject, out _);
 
             _currentGatewayPickupTargetAuthority = null;
-            if (_gatewayTeleportCooldown <= 0f)
+            if (_gatewayTeleportCooldown <= 0f && !(hasSelectedInteractable || isOnInteractCooldown))
             {
                 _sharedGatewayPickupTargetSearch.searchOrigin = aimRay.origin;
                 _sharedGatewayPickupTargetSearch.searchDirection = aimRay.direction;
