@@ -2,6 +2,7 @@
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API.Utils;
 using RoR2;
 using System;
 
@@ -13,6 +14,39 @@ namespace ItemQualities.Items
         static void Init()
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
+            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+        }
+
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
+        {
+            Inventory attackerInventory = damageReport?.attackerBody ? damageReport.attackerBody.inventory : null;
+
+            if (attackerInventory && attackerInventory.currentEquipmentIndex != EquipmentIndex.None)
+            {
+                ItemQualityCounts talisman = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Talisman);
+
+                if (talisman.TotalQualityCount > 0 && damageReport.victimIsChampion)
+                {
+                    int amount = (talisman.UncommonCount) +
+                                (talisman.RareCount * 2) +
+                                (talisman.EpicCount * 3) +
+                                (talisman.LegendaryCount * 4);
+
+                    EquipmentState equipment = attackerInventory.GetActiveEquipment();
+                    byte charges = HGMath.ByteSafeAdd(equipment.charges, (byte)Math.Min(amount, 255));
+                    
+                    Run.FixedTimeStamp chargeFinishTime;
+                    if (charges > 1 + attackerInventory.GetItemCountEffective(RoR2Content.Items.EquipmentMagazine))
+                    {
+                        chargeFinishTime = Run.FixedTimeStamp.positiveInfinity;
+                    } else {
+                        chargeFinishTime = equipment.chargeFinishTime;
+                    }
+
+                    attackerInventory.SetEquipment(new EquipmentState(equipment.equipmentIndex, chargeFinishTime, charges), attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
+                    attackerInventory.GetFieldValue<Action>("onEquipmentExternalRestockServer")?.Invoke();
+                }
+            }
         }
 
         static void GlobalEventManager_OnCharacterDeath(ILContext il)
@@ -54,7 +88,7 @@ namespace ItemQualities.Items
                         {
                             float cooldownReductionFraction = 0f;
 
-                            if (damageReport.victimIsElite || damageReport.victimIsChampion)
+                            if (damageReport.victimIsElite)
                             {
                                 cooldownReductionFraction += (0.05f * talisman.UncommonCount) +
                                                              (0.10f * talisman.RareCount) +

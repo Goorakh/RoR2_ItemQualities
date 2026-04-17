@@ -1,3 +1,20 @@
+## <Next Version>
+
+* Will-o'-the-wisp:
+    * increased radius:
+        * Uncommon: 15% (+15% per stack) -> 20% (+20% per stack)
+        * Rare: 25% (+25% per stack) -> 40% (+40% per stack)
+        * Epic: 50% (+50% per stack) -> 70% (+70% per stack)
+        * Legendary: 70% (+70% per stack) -> 100% (+100% per stack)
+
+* Soulbound Catalyst:
+    * Large monster kills no longer get extra cooldown reduction
+    * Large monster kills grant temporary equipment charges:
+        * Uncommon: 1 (+1 per stack)
+        * Rare: 2 (+2 per stack)
+        * Epic: 3 (+3 per stack)
+        * Legendary: 4 (+4 per stack)
+
 ## 0.7.2
 
 * Goobo Jr.:
