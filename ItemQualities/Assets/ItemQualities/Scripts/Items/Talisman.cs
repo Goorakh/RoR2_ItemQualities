@@ -36,7 +36,8 @@ namespace ItemQualities.Items
                     byte charges = HGMath.ByteSafeAdd(equipment.charges, (byte)Math.Min(amount, 255));
                     
                     Run.FixedTimeStamp chargeFinishTime;
-                    if (charges > 1 + attackerInventory.GetItemCountEffective(RoR2Content.Items.EquipmentMagazine))
+                    
+                    if (charges > attackerInventory.GetEquipmentSlotMaxCharges())
                     {
                         chargeFinishTime = Run.FixedTimeStamp.positiveInfinity;
                     } else {

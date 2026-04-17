@@ -1156,16 +1156,16 @@
         "ITEM_ITEMDROPCHANCEONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase chance for higher rarity items.",
         "ITEM_ITEMDROPCHANCEONKILL_LEGENDARY_DESC": "{0}\nIncreases dropped item rarity odds by <sprite name=\"Quality\"> (<style=cIsHealing>40%</style>/<style=cIsHealth>6%</style>) <style=cStack>(+<style=cIsHealing>40%</style>/<style=cIsHealth>6%</style> per stack)</style>",
 
-        "ITEM_TALISMAN_UNCOMMON_PICKUP": "Kills reduce equipment cooldown. <sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
-        "ITEM_TALISMAN_UNCOMMON_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>1 <style=cStack>(+1 per stack)</style> temporary equipment charges</style>.",
+        "ITEM_TALISMAN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
+        "ITEM_TALISMAN_UNCOMMON_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>1 <style=cStack>(+1 per stack)</style> temporary equipment charge</style>.",
 
-        "ITEM_TALISMAN_RARE_PICKUP": "Kills reduce equipment cooldown. <sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
+        "ITEM_TALISMAN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
         "ITEM_TALISMAN_RARE_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>2 <style=cStack>(+2 per stack)</style> temporary equipment charges</style>.",
 
-        "ITEM_TALISMAN_EPIC_PICKUP": "Kills reduce equipment cooldown. <sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
+        "ITEM_TALISMAN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
         "ITEM_TALISMAN_EPIC_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>3 <style=cStack>(+3 per stack)</style> temporary equipment charges</style>.",
 
-        "ITEM_TALISMAN_LEGENDARY_PICKUP": "Kills reduce equipment cooldown. <sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
+        "ITEM_TALISMAN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
         "ITEM_TALISMAN_LEGENDARY_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>33%</style> <style=cStack>(+33% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>4 <style=cStack>(+4 per stack)</style> temporary equipment charges</style>.",
     
         "ITEM_DRONEWEAPONS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase capacity for Col. Dronemans.",
