@@ -38,6 +38,9 @@
 * Disposable Missile Launcher:
     * Placing the missile launcher in an equipment drone will now transfer the extra missile count to the drone.
 
+* Bandolier:
+    * Fixed being able to give charges to certain skills that do not use charges to activate.
+
 * Goobo Jr.:
     * Clones are now upgraded to the appropriate quality tier.
 

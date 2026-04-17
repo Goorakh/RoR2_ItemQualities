@@ -66,6 +66,7 @@ namespace ItemQualities.Items
                 if (genericSkill &&
                     genericSkill.skillDef &&
                     genericSkill.baseRechargeInterval > 0f &&
+                    genericSkill.skillDef.stockToConsume > 0 &&
                     !genericSkill.skillDef.dontAllowPastMaxStocks)
                 {
                     skills.Add(genericSkill);
