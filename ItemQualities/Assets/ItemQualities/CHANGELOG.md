@@ -17,6 +17,21 @@
         * Epic: 3% (+3% per stack) -> 3% (+3% per stack)
         * Legendary: 5% (+5% per stack) -> 4% (+4% per stack)
 
+* Will-o'-the-wisp:
+    * Explosion radius increase:
+        * Uncommon: 15% (+15% per stack) -> 20% (+20% per stack)
+        * Rare: 25% (+25% per stack) -> 40% (+40% per stack)
+        * Epic: 50% (+50% per stack) -> 70% (+70% per stack)
+        * Legendary: 70% (+70% per stack) -> 100% (+100% per stack)
+
+* Soulbound Catalyst:
+    * Large monster kills no longer get extra cooldown reduction
+    * Large monster kills grant temporary equipment charges:
+        * Uncommon: 1 (+1 per stack)
+        * Rare: 2 (+2 per stack)
+        * Epic: 3 (+3 per stack)
+        * Legendary: 4 (+4 per stack)
+
 * Foreign Fruit:
     * Added a cap to temporary health amount.
     * Fixed temporary health being counted when determining max health %, causing temporary health to increase exponentially as the equipment was used repeatedly.
