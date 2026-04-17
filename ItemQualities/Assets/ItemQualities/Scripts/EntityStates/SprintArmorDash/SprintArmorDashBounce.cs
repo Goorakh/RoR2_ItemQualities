@@ -77,7 +77,7 @@ namespace EntityStates.SprintArmorDash
             {
                 using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> hurtBoxes);
 
-                _dashSphereSearch.origin = characterBody.corePosition;
+                _dashSphereSearch.origin = _attachedBody.corePosition;
                 _dashSphereSearch.mask = LayerIndex.entityPrecise.mask;
                 _dashSphereSearch.radius = _attachedBody.radius + 12;
                 _dashSphereSearch.RefreshCandidates();
