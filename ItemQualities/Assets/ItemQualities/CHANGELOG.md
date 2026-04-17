@@ -21,6 +21,10 @@
     * Added a cap to temporary health amount.
     * Fixed temporary health being counted when determining max health %, causing temporary health to increase exponentially as the equipment was used repeatedly.
 
+* Backup Magazine:
+    * Fixed being able to spam loader grapple to gain all charges back. The refresh now rolls when the grapple hits.
+    * Fixed refresh not working on Railgunner.
+
 * Eccentric Vase:
     * Highlighted interactables are now prioritized over teleporting to an orb.
 
