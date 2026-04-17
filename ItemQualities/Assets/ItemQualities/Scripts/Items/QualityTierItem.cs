@@ -40,6 +40,26 @@ namespace ItemQualities.Items
             {
                 Log.Error("Failed to find CharacterModel.UpdateMaterials method");
             }
+
+            MasterSummon.onServerMasterSummonGlobal += onServerMasterSummonGlobal;
+        }
+
+        static void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
+        {
+            if (!summonReport.summonMasterInstance || !summonReport.summonMasterInstance.inventory)
+                return;
+
+            GameObject summonerBodyObject = summonReport.masterSummon?.summonerBodyObject;
+            CharacterBody summonerBody = summonerBodyObject ? summonerBodyObject.GetComponent<CharacterBody>() : null;
+            if (!summonerBody || !summonerBody.inventory)
+                return;
+
+            ItemQualityCounts qualityTierCounts = summonReport.masterSummon.summonerBodyObject.GetComponent<CharacterBody>().inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier);
+            QualityTier summonerQualityTier = qualityTierCounts.HighestQuality;
+            if (summonerQualityTier != QualityTier.None)
+            {
+                summonReport.summonMasterInstance.inventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(summonerQualityTier));
+            }
         }
 
         static string Util_GetBestBodyName(On.RoR2.Util.orig_GetBestBodyName orig, GameObject bodyObject)

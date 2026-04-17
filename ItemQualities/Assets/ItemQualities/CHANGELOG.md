@@ -1,7 +1,24 @@
 ## <Next Version>
 
+* Crafting:
+    * Fixed missing recipes for some items + qualities combinations.
+    * Combining a quality item with a common item will now give a common result (previously did not result in anything).
+    * For recipes with a result without qualities (such as meal items), any combination of quality ingredients can now be used to craft them.
+
+* Eclipse Lite:
+    * Now increases max barrier capacity:
+        * Uncommon: +30% (+30% per stack)
+        * Rare: +60% (+60% per stack)
+        * Epic: +100% (+100% per stack)
+        * Legendary: +150% (+150% per stack)
+    * Barrier gain on equipment use per second cooldown:
+        * Uncommon: 0.5% (+0.5% per stack) -> 1% (+1% per stack)
+        * Rare: 1% (+1% per stack) -> 2% (+2% per stack)
+        * Epic: 3% (+3% per stack) -> 3% (+3% per stack)
+        * Legendary: 5% (+5% per stack) -> 4% (+4% per stack)
+
 * Will-o'-the-wisp:
-    * increased radius:
+    * Explosion radius increase:
         * Uncommon: 15% (+15% per stack) -> 20% (+20% per stack)
         * Rare: 25% (+25% per stack) -> 40% (+40% per stack)
         * Epic: 50% (+50% per stack) -> 70% (+70% per stack)
@@ -14,6 +31,44 @@
         * Rare: 2 (+2 per stack)
         * Epic: 3 (+3 per stack)
         * Legendary: 4 (+4 per stack)
+
+* Foreign Fruit:
+    * Added a cap to temporary health amount.
+    * Fixed temporary health being counted when determining max health %, causing temporary health to increase exponentially as the equipment was used repeatedly.
+
+* Rode Buckler:
+    * Fixed dash not dealing damage.
+
+* Backup Magazine:
+    * Fixed being able to spam loader grapple to gain all charges back. The refresh now rolls when the grapple hits.
+    * Fixed refresh not working on Railgunner.
+
+* Eccentric Vase:
+    * Highlighted interactables are now prioritized over teleporting to an orb.
+
+* Squid Polyp:
+    * Fixed squids not changing size for non-host players.
+    * Fixed squids not being able to increase duration on kill after upgrading to max.
+
+* Super Massive Leech:
+    * Movement speed is now increased by any healing received while leech is active, and not just leeched health.
+
+* Disposable Missile Launcher:
+    * Placing the missile launcher in an equipment drone will now transfer the extra missile count to the drone.
+
+* Bandolier:
+    * Fixed being able to give charges to certain skills that do not use charges to activate.
+
+* Goobo Jr.:
+    * Clones are now upgraded to the appropriate quality tier.
+
+* Drifter Salvage & Junk Drones can no longer drop quality temporary items.
+
+* Executive Card:
+    * Fixed being able to copy Scavenger Bags.
+
+* Seed of Life:
+    * Fixed being able to upgrade scrap (regenerating scrap can still be upgraded).
 
 ## 0.7.2
 

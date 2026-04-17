@@ -107,6 +107,8 @@ namespace ItemQualities.Equipments
                 if (gummyCloneQualityTier == QualityTier.None)
                     return;
 
+                spawnCard.GiveItem(ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(gummyCloneQualityTier));
+
                 if (gummyCloneProjectile.TryGetComponent(out ProjectileController projectileController) &&
                     projectileController.owner &&
                     projectileController.owner.TryGetComponent(out CharacterBody ownerBody) &&

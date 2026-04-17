@@ -238,6 +238,9 @@ namespace ItemQualities
                 if (itemDef.isConsumed)
                     return false;
 
+                if (itemDef.ContainsTag(ItemTag.Scrap))
+                    return false;
+
                 QualityTier qualityTier = QualityCatalog.GetQualityTier(itemIndex);
                 if (qualityTier >= targetQualityTier) // Item is already upgraded past the target tier
                     return false;

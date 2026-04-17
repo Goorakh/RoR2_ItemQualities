@@ -114,10 +114,10 @@ namespace ItemQualities.Buffs
                         continue;
                     }
 
-                    // Add to every set this usage is a subset of
+                    // Place this behavior in the lists such that we can quickly find it again just by using the full flags value as an index into an array
                     for (QualityBuffBehaviorUsageFlags usageFlags = (QualityBuffBehaviorUsageFlags)1; usageFlags <= QualityBuffBehaviorUsageFlags.All; usageFlags++)
                     {
-                        if ((usageFlags & buffBehaviorUsage) == buffBehaviorUsage)
+                        if ((usageFlags & buffBehaviorUsage) != 0)
                         {
                             List<QualityGroupBehaviorInfo> qualityGroupBehaviors = qualityGroupBehaviorsByUsageLookup[(int)usageFlags - 1];
                             qualityGroupBehaviors.Add(new QualityGroupBehaviorInfo(targetBuffGroup.GroupIndex, qualityBuffBehaviorType));
@@ -169,6 +169,8 @@ namespace ItemQualities.Buffs
                         }
                     }
                 }
+
+                Log.Debug($"({usageFlags}) behaviors: [{string.Join(", ", qualityGroupBehaviors.Select(b => b.BehaviorType.Name))}]");
             }
 
             Log.Debug($"Collected {numRegisteredBehaviors} quality buff behavior type(s)");

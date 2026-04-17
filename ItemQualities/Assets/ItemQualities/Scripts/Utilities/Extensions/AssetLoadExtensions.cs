@@ -11,32 +11,32 @@ namespace ItemQualities.Utilities.Extensions
 {
     internal static class AssetLoadExtensions
     {
-        public static void OnSuccess<T>(this AsyncOperationHandle<T> handle, Action<T> onSuccess)
+        static class AsyncOperationHandleStaticData<T>
+        {
+            public static readonly PropertyInfo LocationNamePropertyInfo = typeof(AsyncOperationHandle<T>).GetProperty("LocationName", BindingFlags.NonPublic | BindingFlags.Instance);
+        }
+
+        public static void OnSuccess<T>(this in AsyncOperationHandle<T> handle, Action<T> onSuccess)
         {
 #if DEBUG
             System.Diagnostics.StackTrace stackTrace = new();
 #endif
 
-            void onCompleted(AsyncOperationHandle<T> handle)
+            void handleCompleted(in AsyncOperationHandle<T> handle)
             {
                 if (handle.Status != AsyncOperationStatus.Succeeded)
                 {
-                    string locationName = "???";
-
-                    PropertyInfo locationNameProp = handle.GetType().GetProperty("LocationName", BindingFlags.NonPublic | BindingFlags.Instance);
-                    if (locationNameProp != null)
+                    string locationName = AsyncOperationHandleStaticData<T>.LocationNamePropertyInfo?.GetValue(handle) as string;
+                    if (string.IsNullOrEmpty(locationName))
                     {
-                        try
+                        locationName = handle.DebugName;
+                        if (string.IsNullOrEmpty(locationName))
                         {
-                            locationName = (string)locationNameProp.GetValue(handle);
-                        }
-                        catch (Exception e)
-                        {
-                            Log.Error_NoCallerPrefix($"Failed to get value of LocationName property: {e}");
+                            locationName = $"Unknown handle ({typeof(T).FullName})";
                         }
                     }
 
-                    Log.Error($"Failed to load asset '{locationName}'"
+                    Log.Error($"Failed to load asset from location/handle: '{locationName}'"
 #if DEBUG
                         + $". {stackTrace}"
 #endif
@@ -50,11 +50,17 @@ namespace ItemQualities.Utilities.Extensions
 
             if (handle.IsDone)
             {
-                onCompleted(handle);
-                return;
+                handleCompleted(handle);
             }
+            else
+            {
+                handle.Completed += onCompleted;
 
-            handle.Completed += onCompleted;
+                void onCompleted(AsyncOperationHandle<T> handle)
+                {
+                    handleCompleted(handle);
+                }
+            }
         }
 
         public static IEnumerator AsProgressCoroutine(this AsyncOperation asyncOperation, IProgress<float> progressReceiver)
@@ -102,7 +108,7 @@ namespace ItemQualities.Utilities.Extensions
             parallelProgressCoroutine.Add(asyncOperation.AsProgressCoroutine(progressReceiver), progressReceiver);
         }
 
-        public static bool AssertLoaded(this AsyncOperationHandle asyncOperation, string assetName = null, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        public static bool AssertLoaded(this in AsyncOperationHandle asyncOperation, string assetName = null, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             if (!asyncOperation.IsValid() || asyncOperation.Status != AsyncOperationStatus.Succeeded || asyncOperation.Result == null)
             {
@@ -113,7 +119,7 @@ namespace ItemQualities.Utilities.Extensions
             return true;
         }
 
-        public static bool AssertLoaded<T>(this AsyncOperationHandle<T> asyncOperation, string assetName = null, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        public static bool AssertLoaded<T>(this in AsyncOperationHandle<T> asyncOperation, string assetName = null, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             if (!asyncOperation.IsValid() || asyncOperation.Status != AsyncOperationStatus.Succeeded || asyncOperation.Result == null)
             {

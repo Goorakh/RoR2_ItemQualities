@@ -20,11 +20,6 @@ namespace ItemQualities.Items
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
 
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
-
-            //AddressableUtil.LoadAssetAsync<Material>(RoR2_Base_Squid.matSquidTurret_mat).OnSuccess(squidMaterial =>
-            //{
-            //    squidMaterial.SetFloat(ShaderProperties._EmPower, 0);
-            //});
         }
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
@@ -58,39 +53,42 @@ namespace ItemQualities.Items
             int maxUpgradeLevel = Mathf.Min(squidUpgradeOnKillCount, (int)QualityTier.Count);
 
             int upgradeCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeHidden);
-            if (upgradeCount < maxUpgradeLevel &&
-                RollUtil.CheckRoll(10 + (squidUpgradeOnKillCount * 10), attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+            if (RollUtil.CheckRoll(10 + (squidUpgradeOnKillCount * 10), attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
-                QualityTier currentQualityTier = (QualityTier)upgradeCount - 1;
-
-                bool upgradeSuccessful;
-                if (currentQualityTier != QualityTier.None)
+                if (upgradeCount < maxUpgradeLevel)
                 {
-                    Inventory.ItemTransformation upgradeTransformation = new Inventory.ItemTransformation
+                    QualityTier currentQualityTier = (QualityTier)upgradeCount - 1;
+
+                    bool upgradeSuccessful;
+                    if (currentQualityTier != QualityTier.None)
                     {
-                        originalItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier),
-                        newItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier + 1),
-                        minToTransform = 1,
-                        maxToTransform = 1,
-                        transformationType = ItemTransformationTypeIndex.None
-                    };
+                        Inventory.ItemTransformation upgradeTransformation = new Inventory.ItemTransformation
+                        {
+                            originalItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier),
+                            newItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(currentQualityTier + 1),
+                            allowWhenDisabled = true,
+                            minToTransform = 1,
+                            maxToTransform = 1,
+                            transformationType = ItemTransformationTypeIndex.None
+                        };
 
-                    upgradeSuccessful = upgradeTransformation.TryTransform(attackerInventory, out _);
-                }
-                else
-                {
-                    attackerInventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.UncommonItemIndex);
-                    upgradeSuccessful = true;
-                }
-
-                if (upgradeSuccessful)
-                {
-                    attackerInventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeHidden);
-
-                    if (attackerInventory.GetItemCountEffective(RoR2Content.Items.HealthDecay) > 0)
-                    {
-                        attackerInventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, 10);
+                        upgradeSuccessful = upgradeTransformation.TryTransform(attackerInventory, out _);
                     }
+                    else
+                    {
+                        attackerInventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.UncommonItemIndex);
+                        upgradeSuccessful = true;
+                    }
+
+                    if (upgradeSuccessful)
+                    {
+                        attackerInventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeHidden);
+                    }
+                }
+
+                if (attackerInventory.GetItemCountEffective(RoR2Content.Items.HealthDecay) > 0)
+                {
+                    attackerInventory.GiveItemPermanent(RoR2Content.Items.HealthDecay, 10);
                 }
             }
         }

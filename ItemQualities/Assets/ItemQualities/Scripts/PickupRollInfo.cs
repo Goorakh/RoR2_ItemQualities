@@ -5,11 +5,11 @@ namespace ItemQualities
 {
     public readonly struct PickupRollInfo
     {
-        public readonly CharacterMaster Master { get; }
+        public readonly CharacterMaster Master;
 
-        public readonly TeamIndex TeamAffiliation { get; }
+        public readonly TeamIndex TeamAffiliation;
 
-        public readonly int Luck { get; }
+        public readonly int Luck;
 
         public readonly bool IsPlayerAffiliation => TeamAffiliation == TeamIndex.Player || (Master && Master.playerCharacterMasterController);
 
@@ -70,7 +70,7 @@ namespace ItemQualities
                         {
                             if (teammateCloverCounts[qualityTier] >= teamInventoryCloverCounts[qualityTier])
                             {
-                                teamInventoryCloverCounts[qualityTier] -= teamInventoryCloverCounts[qualityTier];
+                                teammateCloverCounts[qualityTier] -= teamInventoryCloverCounts[qualityTier];
                             }
                         }
                     }
