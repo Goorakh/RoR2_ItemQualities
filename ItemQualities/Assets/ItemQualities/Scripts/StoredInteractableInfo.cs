@@ -31,6 +31,11 @@ namespace ItemQualities
             return HashCode.Combine(InteractableIndex, UpgradeValue);
         }
 
+        public override readonly string ToString()
+        {
+            return $"{InteractableCatalog.GetInteractableDef(InteractableIndex)?.Name ?? "None"} (T{UpgradeValue + 1})";
+        }
+
         public static bool operator ==(in StoredInteractableInfo left, in StoredInteractableInfo right)
         {
             return left.Equals(right);

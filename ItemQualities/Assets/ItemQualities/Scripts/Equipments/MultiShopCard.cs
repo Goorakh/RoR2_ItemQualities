@@ -41,6 +41,8 @@ namespace ItemQualities.Equipments
 
             IL.RoR2.UI.EquipmentIcon.SetDisplayData += EquipmentIcon_SetDisplayData;
 
+            IL.RoR2.SummonMasterBehavior.OnEquipmentSpentOnPurchase += SummonMasterBehavior_OnEquipmentSpentOnPurchase;
+
             SceneDirector.onPostPopulateSceneServer += onPostPopulateSceneServer;
         }
 
@@ -264,7 +266,7 @@ namespace ItemQualities.Equipments
 
                                 PointSoundManager.EmitSoundServer(ItemQualitiesContent.NetworkSoundEvents.DuplicateInteractable.index, targetInteractable.IndicatorTransform.position);
 
-                                Log.Debug($"Stored {InteractableCatalog.GetInteractableDef(targetInteractable.CatalogIndex)} in {Util.GetBestMasterName(self.characterBody.master)}");
+                                Log.Debug($"Stored {targetInteractableInfo} in {Util.GetBestMasterName(self.characterBody.master)}");
 
                                 result = true;
                             }
@@ -315,10 +317,12 @@ namespace ItemQualities.Equipments
                         QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex) == ItemQualitiesContent.EquipmentQualityGroups.MultiShopCard.GroupIndex)
                     {
                         Inventory inventory = equipmentIcon.targetInventory;
-                        CharacterMasterExtraStatsTracker masterExtraStats = inventory ? inventory.GetComponentCached<CharacterMasterExtraStatsTracker>() : null;
-                        if (masterExtraStats.CardStoredInteractableInfo.InteractableIndex != -1)
+                        if (inventory && inventory.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
                         {
-                            shouldDisplayCardTooltip = true;
+                            if (masterExtraStats.CardStoredInteractableInfo.InteractableIndex != -1)
+                            {
+                                shouldDisplayCardTooltip = true;
+                            }
                         }
                     }
                 }
@@ -335,6 +339,60 @@ namespace ItemQualities.Equipments
                         equipmentIcon.tooltipProvider.extraUIDisplayPrefab = null;
                     }
                 }
+            }
+        }
+
+        static void SummonMasterBehavior_OnEquipmentSpentOnPurchase(ILContext il)
+        {
+            if (!il.Method.TryFindParameter<Interactor>(out ParameterDefinition interactorParameter))
+            {
+                Log.Error("Failed to find interactor parameter");
+                return;
+            }
+
+            if (!il.Method.TryFindParameter<EquipmentIndex>(out ParameterDefinition equipmentIndexParameter))
+            {
+                Log.Error("Failed to find equipmentIndex parameter");
+                return;
+            }
+
+            ILCursor c = new ILCursor(il);
+
+            VariableDefinition summonedMasterVar = null;
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchCallOrCallvirt<SummonMasterBehavior>(nameof(SummonMasterBehavior.OpenSummonReturnMaster)),
+                               x => x.MatchStloc(il, out summonedMasterVar)))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg, interactorParameter);
+            c.Emit(OpCodes.Ldloc, summonedMasterVar);
+            c.Emit(OpCodes.Ldarg, equipmentIndexParameter);
+            c.EmitDelegate<Action<Interactor, CharacterMaster, EquipmentIndex>>(tryTransferQualityData);
+
+            static void tryTransferQualityData(Interactor interactor, CharacterMaster summonedMaster, EquipmentIndex equipmentIndex)
+            {
+                if (!interactor || !summonedMaster)
+                    return;
+
+                if (QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex) != ItemQualitiesContent.EquipmentQualityGroups.MultiShopCard.GroupIndex)
+                    return;
+
+                if (!summonedMaster.TryGetComponentCached(out CharacterMasterExtraStatsTracker summonedMasterStats))
+                    return;
+
+                CharacterBody interactorBody = interactor.GetComponent<CharacterBody>();
+                CharacterMaster interactorMaster = interactorBody ? interactorBody.master : null;
+
+                if (!interactorMaster || !interactorMaster.TryGetComponentCached(out CharacterMasterExtraStatsTracker interactorMasterStats))
+                    return;
+
+                summonedMasterStats.CardStoredInteractableInfo = interactorMasterStats.CardStoredInteractableInfo;
+                interactorMasterStats.CardStoredInteractableInfo = StoredInteractableInfo.None;
+
+                Log.Debug($"Transferred interactable info {summonedMasterStats.CardStoredInteractableInfo} to summoned master {summonedMaster}");
             }
         }
     }

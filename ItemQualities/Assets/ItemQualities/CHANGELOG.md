@@ -66,6 +66,7 @@
 
 * Executive Card:
     * Fixed being able to copy Scavenger Bags.
+    * Giving the equipment to a drone will now transfer your stored interactable to it.
 
 * Seed of Life:
     * Fixed being able to upgrade scrap (regenerating scrap can still be upgraded).
