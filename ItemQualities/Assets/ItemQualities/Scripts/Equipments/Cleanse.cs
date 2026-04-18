@@ -7,10 +7,21 @@ namespace ItemQualities.Equipments
 {
     static class Cleanse
     {
-        [SystemInitializer]
+        [SystemInitializer(typeof(BuffCatalog))]
         static void Init()
         {
             On.RoR2.EquipmentSlot.FireCleanse += EquipmentSlot_FireCleanse;
+
+            BuffDef voidFogStackCooldown = BuffCatalog.GetBuffDef(BuffCatalog.FindBuffIndex("bdVoidFogStackCooldown"));
+            if (voidFogStackCooldown)
+            {
+                // Prevent blast shower from cleansing hidden cooldown marker for ramping damage
+                voidFogStackCooldown.isCooldown = false;
+            }
+            else
+            {
+                Log.Warning("Failed to find bdVoidFogStackCooldown");
+            }
         }
 
         static bool EquipmentSlot_FireCleanse(On.RoR2.EquipmentSlot.orig_FireCleanse orig, EquipmentSlot self)

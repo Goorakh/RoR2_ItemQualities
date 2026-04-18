@@ -232,7 +232,7 @@ namespace ItemQualities.Equipments
                     QualityTier qualityTier = QualityTierContext.GetQualityTier(deathProjectileComponent.gameObject);
                     if (qualityTier != QualityTier.None)
                     {
-                        damageReport.damageInfo.damageType.AddModdedDamageType(DamageTypes.DontDoItemDropsPrettyPlease);
+                        damageReport.damageInfo.damageType.AddModdedDamageType(DamageTypes.BypassDrops);
                     }
                 }
             }

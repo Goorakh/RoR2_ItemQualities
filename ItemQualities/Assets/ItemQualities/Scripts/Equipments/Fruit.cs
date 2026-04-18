@@ -92,9 +92,14 @@ namespace ItemQualities.Equipments
 
                     if (temporaryHealthFraction > 0f)
                     {
-                        int temporaryHealthAmount = Mathf.Max(1, (int)(self.healthComponent.fullHealth * temporaryHealthFraction));
+                        int temporaryHealth = self.characterBody.GetBuffCount(ItemQualitiesContent.Buffs.SlugHealth);
+                        float fullRealHealth = self.healthComponent.fullHealth - temporaryHealth;
+                        float maxTemporaryHealthAmount = fullRealHealth * 0.5f; // max temp hp at half of real hp (1:3 ratio)
 
-                        for (int i = 0; i < temporaryHealthAmount; i++)
+                        float maxTemporaryHealthToAdd = Mathf.Max(0, maxTemporaryHealthAmount - temporaryHealth);
+                        float desiredTemporaryHealthToAdd = Mathf.Max(1, self.healthComponent.fullHealth * temporaryHealthFraction);
+                        int temporaryHealthAmountToAdd = Mathf.CeilToInt(Mathf.Min(maxTemporaryHealthToAdd, desiredTemporaryHealthToAdd));
+                        for (int i = 0; i < temporaryHealthAmountToAdd; i++)
                         {
                             self.characterBody.AddBuff(ItemQualitiesContent.Buffs.SlugHealth);
                         }

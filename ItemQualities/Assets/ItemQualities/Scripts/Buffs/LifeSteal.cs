@@ -1,9 +1,6 @@
 ﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using R2API;
 using RoR2;
-using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -18,8 +15,6 @@ namespace ItemQualities.Buffs
         {
             BuffHooks.OnBuffFirstStackGainedGlobal += onBuffFirstStackGainedGlobal;
             BuffHooks.OnBuffFinalStackLostGlobal += onBuffFinalStackLostGlobal;
-
-            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
 
             HealthComponent.onCharacterHealServer += onCharacterHealServer;
         }
@@ -89,58 +84,11 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            VariableDefinition attackerBodyVar = null;
-            ILLabel lifeStealEndLabel = null;
-            if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdloc<CharacterBody>(il, out attackerBodyVar),
-                               x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.LifeSteal)),
-                               x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.HasBuff)),
-                               x => x.MatchBrfalse(out lifeStealEndLabel)))
-            {
-                Log.Error("Failed to find lifesteal buff check location");
-                return;
-            }
-
-            if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.procChainMask)))
-                || !c.IsBefore(lifeStealEndLabel.Target))
-            {
-                Log.Error("Failed to find heal proc patch location");
-                return;
-            }
-
-            c.Emit(OpCodes.Ldloc, attackerBodyVar);
-            c.EmitDelegate<Func<ProcChainMask, CharacterBody, ProcChainMask>>(getHealProcChainMask);
-
-            static ProcChainMask getHealProcChainMask(ProcChainMask procChainMask, CharacterBody attackerBody)
-            {
-                BuffQualityCounts lifeSteal = attackerBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.LifeSteal);
-                QualityTier lifeStealQuality = lifeSteal.HighestQuality;
-                if (lifeStealQuality > QualityTier.None)
-                {
-                    procChainMask.AddModdedProc(ProcTypes.LifeStealOverhealProcTypes[(int)lifeStealQuality]);
-                }
-
-                return procChainMask;
-            }
-        }
-
         static void onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
         {
-            QualityTier lifeStealQualityTier = QualityTier.None;
-            for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
-            {
-                if (procChainMask.HasModdedProc(ProcTypes.LifeStealOverhealProcTypes[(int)qualityTier]))
-                {
-                    lifeStealQualityTier = qualityTier;
-                    break;
-                }
-            }
+            BuffQualityCounts lifeSteal = healthComponent.body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.LifeSteal);
 
+            QualityTier lifeStealQualityTier = lifeSteal.HighestQuality;
             if (lifeStealQualityTier == QualityTier.None)
                 return;
 

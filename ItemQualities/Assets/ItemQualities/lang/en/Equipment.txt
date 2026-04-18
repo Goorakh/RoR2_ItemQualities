@@ -113,17 +113,17 @@
         "EQUIPMENT_PASSIVEHEALING_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an ally to teleport it to you and create a ghost in its place.",
         "EQUIPMENT_PASSIVEHEALING_LEGENDARY_DESC": "Gain a Woodsprite follower that heals a friendly target for <style=cIsHealing>10% of their maximum health</style> instantly, then <style=cIsHealing>1.5% of your maximum health</style> every second. Activating the equipment assigns a new target, or yourself if there are no targets available.\nActivating the equipment on an ally <style=cIsUtility>teleports</style> it to you, and creates a <style=cIsDamage>ghost</style> in its original place with <style=cIsDamage>200% damage</style> and lasts for <sprite name=\"Quality\"> <style=cIsUtility>60 seconds</style>. Can have a maximum of <sprite name=\"Quality\"> <style=cIsUtility>5</style> ghosts at a time.",
         
-        "EQUIPMENT_GUMMYCLONE_UNCOMMON_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
-        "EQUIPMENT_GUMMYCLONE_UNCOMMON_DESC": "{0}\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White tier items, up to <sprite name=\"QualityUncommon\"> uncommon quality.",
+        "EQUIPMENT_GUMMYCLONE_UNCOMMON_PICKUP": "Create a clone <sprite name=\"QualityUncommon\"> of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
+        "EQUIPMENT_GUMMYCLONE_UNCOMMON_DESC": "Spawn a gummy clone <sprite name=\"QualityUncommon\"> that has <style=cIsDamage>300% damage</style> and <style=cIsHealing>300% health</style>. Expires in <style=cIsUtility>30</style> seconds.\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White tier items, up to <sprite name=\"QualityUncommon\"> uncommon quality.",
         
-        "EQUIPMENT_GUMMYCLONE_RARE_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
-        "EQUIPMENT_GUMMYCLONE_RARE_DESC": "{0}\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White and <style=cIsHealing>Green</style> tier items, up to <sprite name=\"QualityRare\"> rare quality.",
+        "EQUIPMENT_GUMMYCLONE_RARE_PICKUP": "Create a clone <sprite name=\"QualityRare\"> of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
+        "EQUIPMENT_GUMMYCLONE_RARE_DESC": "Spawn a gummy clone <sprite name=\"QualityRare\"> that has <style=cIsDamage>300% damage</style> and <style=cIsHealing>300% health</style>. Expires in <style=cIsUtility>30</style> seconds.\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White and <style=cIsHealing>Green</style> tier items, up to <sprite name=\"QualityRare\"> rare quality.",
         
-        "EQUIPMENT_GUMMYCLONE_EPIC_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
-        "EQUIPMENT_GUMMYCLONE_EPIC_DESC": "{0}\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White, <style=cIsHealing>Green</style>, and <style=cIsHealth>Red</style> tier items, up to <sprite name=\"QualityEpic\"> epic quality.",
+        "EQUIPMENT_GUMMYCLONE_EPIC_PICKUP": "Create a clone <sprite name=\"QualityEpic\"> of you for 30 seconds that <sprite name=\"Quality\"> inherits some of your items.",
+        "EQUIPMENT_GUMMYCLONE_EPIC_DESC": "Spawn a gummy clone <sprite name=\"QualityEpic\"> that has <style=cIsDamage>300% damage</style> and <style=cIsHealing>300% health</style>. Expires in <style=cIsUtility>30</style> seconds.\nThe clone inherits the <sprite name=\"Quality\"> <style=cIsUtility>first stack</style> of all your <sprite name=\"Quality\"> White, <style=cIsHealing>Green</style>, and <style=cIsHealth>Red</style> tier items, up to <sprite name=\"QualityEpic\"> epic quality.",
         
-        "EQUIPMENT_GUMMYCLONE_LEGENDARY_PICKUP": "Create a clone of you for 30 seconds that <sprite name=\"Quality\"> inherits your items.",
-        "EQUIPMENT_GUMMYCLONE_LEGENDARY_DESC": "{0}\nThe clone inherits <sprite name=\"Quality\"> <style=cIsUtility>all</style> your items.",
+        "EQUIPMENT_GUMMYCLONE_LEGENDARY_PICKUP": "Create a clone <sprite name=\"QualityLegendary\"> of you for 30 seconds that <sprite name=\"Quality\"> inherits your items.",
+        "EQUIPMENT_GUMMYCLONE_LEGENDARY_DESC": "Spawn a gummy clone <sprite name=\"QualityLegendary\"> that has <style=cIsDamage>300% damage</style> and <style=cIsHealing>300% health</style>. Expires in <style=cIsUtility>30</style> seconds.\nThe clone inherits <sprite name=\"Quality\"> <style=cIsUtility>all</style> your items.",
         
         "EQUIPMENT_TEAMWARCRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Resets and reduces skill cooldowns for all allies.",
         "EQUIPMENT_TEAMWARCRY_UNCOMMON_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>2 seconds</style> while the frenzy is active.",
@@ -138,16 +138,16 @@
         "EQUIPMENT_TEAMWARCRY_LEGENDARY_DESC": "{0}\nUpon activation, <style=cIsUtility>reset all skill cooldowns</style> for you and your allies, and reduce all <style=cIsUtility>skill cooldowns</style> by <sprite name=\"Quality\"> <style=cIsUtility>15 seconds</style> while the frenzy is active.",
 
         "EQUIPMENT_GAINARMOR_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
-        "EQUIPMENT_GAINARMOR_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+30 armor</style>.",
+        "EQUIPMENT_GAINARMOR_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> <style=cShrine>always</style> gives <sprite name=\"Quality\"> <style=cIsHealing>+30 armor</style> while held.",
 
         "EQUIPMENT_GAINARMOR_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
-        "EQUIPMENT_GAINARMOR_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+60 armor</style>.",
+        "EQUIPMENT_GAINARMOR_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> <style=cShrine>always</style> gives <sprite name=\"Quality\"> <style=cIsHealing>+60 armor</style> while held.",
 
         "EQUIPMENT_GAINARMOR_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
-        "EQUIPMENT_GAINARMOR_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+100 armor</style>.",
+        "EQUIPMENT_GAINARMOR_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> <style=cShrine>always</style> gives <sprite name=\"Quality\"> <style=cIsHealing>+100 armor</style> while held.",
 
         "EQUIPMENT_GAINARMOR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain barrier on activate, all barrier always grants armor.",
-        "EQUIPMENT_GAINARMOR_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> always gives <sprite name=\"Quality\"> <style=cIsHealing>+150 armor</style>.",
+        "EQUIPMENT_GAINARMOR_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>barrier</style> equal to <style=cIsHealing>20%</style> of your <style=cIsHealing>maximum health</style>. All <style=cIsHealing>barrier</style> <style=cShrine>always</style> gives <sprite name=\"Quality\"> <style=cIsHealing>+150 armor</style> while held.",
         
         "EQUIPMENT_MOLOTOV_UNCOMMON_NAME": "Molotov (7-Pack) <sprite name=\"QualityUncommon\">",
         "EQUIPMENT_MOLOTOV_UNCOMMON_PICKUP": "Throw <sprite name=\"Quality\"> 7 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
@@ -312,16 +312,16 @@
         "EQUIPMENT_PARRY_LEGENDARY_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>900%</style> increased damage.",
         
         "EQUIPMENT_HEALANDREVIVE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to uncommon <sprite name=\"QualityUncommon\"> quality upon reviving.",
-        "EQUIPMENT_HEALANDREVIVE_UNCOMMON_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into uncommon <sprite name=\"QualityUncommon\"> quality.",
+        "EQUIPMENT_HEALANDREVIVE_UNCOMMON_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade all instances of a random item into uncommon <sprite name=\"QualityUncommon\"> quality for the rest of the run.",
         
         "EQUIPMENT_HEALANDREVIVE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to rare <sprite name=\"QualityRare\"> quality upon reviving.",
-        "EQUIPMENT_HEALANDREVIVE_RARE_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into rare <sprite name=\"QualityRare\"> quality.",
+        "EQUIPMENT_HEALANDREVIVE_RARE_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade all instances of a random item into rare <sprite name=\"QualityRare\"> quality for the rest of the run.",
         
         "EQUIPMENT_HEALANDREVIVE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to epic <sprite name=\"QualityEpic\"> quality upon reviving.",
-        "EQUIPMENT_HEALANDREVIVE_EPIC_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into epic <sprite name=\"QualityEpic\"> quality.",
+        "EQUIPMENT_HEALANDREVIVE_EPIC_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade all instances of a random item into epic <sprite name=\"QualityEpic\"> quality for the rest of the run.",
         
         "EQUIPMENT_HEALANDREVIVE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to legendary <sprite name=\"QualityLegendary\"> quality upon reviving.",
-        "EQUIPMENT_HEALANDREVIVE_LEGENDARY_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade a random item into legendary <sprite name=\"QualityLegendary\"> quality.",
+        "EQUIPMENT_HEALANDREVIVE_LEGENDARY_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade all instances of a random item into legendary <sprite name=\"QualityLegendary\"> quality for the rest of the run.",
 
         "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_UNCOMMON": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityUncommon\">",
         "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_RARE": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityRare\">",
@@ -353,16 +353,16 @@
         "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>5000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 30 second cooldown.",
         
         "EQUIPMENT_FRUIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
-        "EQUIPMENT_FRUIT_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>5%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>25%</style>.",
+        "EQUIPMENT_FRUIT_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>5%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>, up to a maximum of <style=cIsHealing>50% temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>25%</style>.",
         
         "EQUIPMENT_FRUIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
-        "EQUIPMENT_FRUIT_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>10%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>75%</style>.",
+        "EQUIPMENT_FRUIT_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>10%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>, up to a maximum of <style=cIsHealing>50% temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>75%</style>.",
         
         "EQUIPMENT_FRUIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
-        "EQUIPMENT_FRUIT_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>20%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>.",
+        "EQUIPMENT_FRUIT_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>20%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>, up to a maximum of <style=cIsHealing>50% temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>100%</style>.",
         
         "EQUIPMENT_FRUIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
-        "EQUIPMENT_FRUIT_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>25%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>.",
+        "EQUIPMENT_FRUIT_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>25%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>, up to a maximum of <style=cIsHealing>50% temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>.",
         
         "EQUIPMENT_GATEWAY_UNCOMMON_PICKUP" : "{0}\n<sprite name=\"Quality\"> Spawn quantum orbs nearby, pressing 'Interact' while looking at an orb teleports you to it. Placing the tunnel creates 2 orbs around you immediately.",
         "EQUIPMENT_GATEWAY_UNCOMMON_DESC" : "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds, spawn a <style=cIsUtility>quantum orb</style> in front of you, pressing 'Interact' while looking at an orb <style=cIsUtility>teleports</style> you to it. Placing the tunnel creates <sprite name=\"Quality\"> <style=cIsUtility>2</style> orbs around you immediately.",

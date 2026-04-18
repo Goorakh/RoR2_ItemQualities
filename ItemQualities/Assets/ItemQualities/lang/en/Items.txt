@@ -1156,17 +1156,17 @@
         "ITEM_ITEMDROPCHANCEONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase chance for higher rarity items.",
         "ITEM_ITEMDROPCHANCEONKILL_LEGENDARY_DESC": "{0}\nIncreases dropped item rarity odds by <sprite name=\"Quality\"> (<style=cIsHealing>40%</style>/<style=cIsHealth>6%</style>) <style=cStack>(+<style=cIsHealing>40%</style>/<style=cIsHealth>6%</style> per stack)</style>",
 
-        "ITEM_TALISMAN_UNCOMMON_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
-        "ITEM_TALISMAN_UNCOMMON_DESC": "{0}\nElite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> of total equipment cooldown.",
+        "ITEM_TALISMAN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
+        "ITEM_TALISMAN_UNCOMMON_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>5%</style> <style=cStack>(+5% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>1 <style=cStack>(+1 per stack)</style> temporary equipment charge</style>.",
 
-        "ITEM_TALISMAN_RARE_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
-        "ITEM_TALISMAN_RARE_DESC": "{0}\nElite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> of total equipment cooldown.",
+        "ITEM_TALISMAN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
+        "ITEM_TALISMAN_RARE_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>2 <style=cStack>(+2 per stack)</style> temporary equipment charges</style>.",
 
-        "ITEM_TALISMAN_EPIC_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
-        "ITEM_TALISMAN_EPIC_DESC": "{0}\nElite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> of total equipment cooldown.",
+        "ITEM_TALISMAN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
+        "ITEM_TALISMAN_EPIC_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>3 <style=cStack>(+3 per stack)</style> temporary equipment charges</style>.",
 
-        "ITEM_TALISMAN_LEGENDARY_PICKUP": "Kills <sprite name=\"Quality\"> reduce equipment cooldown.",
-        "ITEM_TALISMAN_LEGENDARY_DESC": "{0}\nElite or large monster kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>33%</style> <style=cStack>(+33% per stack)</style> of total equipment cooldown.",
+        "ITEM_TALISMAN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase cooldown reduction on elite kill. Large monster kills grant temporary equipment charges",
+        "ITEM_TALISMAN_LEGENDARY_DESC": "{0}\nElite kills reduce <style=cIsUtility>equipment cooldown</style> by an additional <sprite name=\"Quality\"> <style=cIsUtility>33%</style> <style=cStack>(+33% per stack)</style> of total equipment cooldown. Large monster kills grant <sprite name=\"Quality\"> <style=cIsUtility>4 <style=cStack>(+4 per stack)</style> temporary equipment charges</style>.",
     
         "ITEM_DRONEWEAPONS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase capacity for Col. Dronemans.",
         "ITEM_DRONEWEAPONS_UNCOMMON_DESC" : "Gain <sprite name=\"Quality\"> <style=cIsDamage>2 <style=cStack>(+2 per stack)</style> Col. Dronemans</style>, that <style=cIsUtility>respawn</style> after <sprite name=\"Quality\"> <style=cIsUtility>120 seconds</style>. \nDrones gain <style=cIsDamage>+25%</style> <style=cStack>(+25% per stack)</style> attack speed and cooldown reduction. \nDrones gain <style=cIsDamage>10%</style> chance to fire a <style=cIsDamage>missile</style> on hit, dealing <style=cIsDamage>150%</style> TOTAL damage. \nDrones gain an <style=cIsDamage>automatic chain gun</style> that deals <style=cIsDamage>6x50%</style> damage, bouncing to <style=cIsDamage>2</style> enemies.",
@@ -1423,17 +1423,17 @@
         "ITEM_SCRAP_QUALITY_PICKUP": "Does nothing. Can be used in <sprite name=\"Quality\"> Quality 3D Printers.",
         "ITEM_SCRAP_QUALITY_DESC": "Does nothing. Can be used in <sprite name=\"Quality\"> Quality 3D Printers.",
 
-        "ITEM_BARRIERONCOOLDOWN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
-        "ITEM_BARRIERONCOOLDOWN_UNCOMMON_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>0.5% <style=cStack>(+0.5% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        "ITEM_BARRIERONCOOLDOWN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment and increase max barrier.",
+        "ITEM_BARRIERONCOOLDOWN_UNCOMMON_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>1% <style=cStack>(+1% per stack)</style></style> of your maximum health per second of the equipment's base cooldown. Increase <style=cIsHealing>max barrier</style> by <sprite name=\"Quality\"> <style=cIsHealing>30% <style=cStack>(+30% per stack)</style></style>.",
 
-        "ITEM_BARRIERONCOOLDOWN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
-        "ITEM_BARRIERONCOOLDOWN_RARE_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>1% <style=cStack>(+1% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        "ITEM_BARRIERONCOOLDOWN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment and increase max barrier.",
+        "ITEM_BARRIERONCOOLDOWN_RARE_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>2% <style=cStack>(+2% per stack)</style></style> of your maximum health per second of the equipment's base cooldown. Increase <style=cIsHealing>max barrier</style> by <sprite name=\"Quality\"> <style=cIsHealing>60% <style=cStack>(+60% per stack)</style></style>.",
 
-        "ITEM_BARRIERONCOOLDOWN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
-        "ITEM_BARRIERONCOOLDOWN_EPIC_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>3% <style=cStack>(+3% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        "ITEM_BARRIERONCOOLDOWN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment and increase max barrier.",
+        "ITEM_BARRIERONCOOLDOWN_EPIC_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>3% <style=cStack>(+3% per stack)</style></style> of your maximum health per second of the equipment's base cooldown. Increase <style=cIsHealing>max barrier</style> by <sprite name=\"Quality\"> <style=cIsHealing>100% <style=cStack>(+100% per stack)</style></style>.",
 
-        "ITEM_BARRIERONCOOLDOWN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment.",
-        "ITEM_BARRIERONCOOLDOWN_LEGENDARY_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>5% <style=cStack>(+5% per stack)</style></style> of your maximum health per second of the equipment's base cooldown.",
+        "ITEM_BARRIERONCOOLDOWN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Gain a small temporary barrier when using an equipment and increase max barrier.",
+        "ITEM_BARRIERONCOOLDOWN_LEGENDARY_DESC": "{0}\nWhen using an equipment, gain a <style=cIsDamage>temporary barrier</style> for <sprite name=\"Quality\"> <style=cIsHealing>4% <style=cStack>(+4% per stack)</style></style> of your maximum health per second of the equipment's base cooldown. Increase <style=cIsHealing>max barrier</style> by <sprite name=\"Quality\"> <style=cIsHealing>150% <style=cStack>(+150% per stack)</style></style>.",
         
         "ITEM_SPEEDONPICKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> A golden barrel granting permanent increase to all stats will appear on each stage.",
         "ITEM_SPEEDONPICKUP_UNCOMMON_DESC": "{0}\nA <style=cIsDamage>golden barrel</style> will appear on each stage, containing a pickup that increases <style=cIsUtility>all stats</style> by <sprite name=\"Quality\"> <style=cIsUtility>3% <style=cStack>(+3% per stack)</style></style> <style=cIsUtility>permanently</style>.",
@@ -1468,16 +1468,16 @@
         "ITEM_DUPLICATOR_LEGENDARY_DESC": "{0}\nAll <style=cIsTemporary>temporary items</style> are shared with your allies for <sprite name=\"Quality\"> <style=cIsUtility>150% <style=cStack>(+150% per stack)</style></style> of the <style=cIsTemporary>temporary item duration</style>.",
 
         "ITEM_EXPLODEONDEATH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_UNCOMMON_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>15% <style=cStack>(+15% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_UNCOMMON_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>20% <style=cStack>(+20% per stack)</style></style>.",
 
         "ITEM_EXPLODEONDEATH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_RARE_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>25% <style=cStack>(+25% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_RARE_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>40% <style=cStack>(+40% per stack)</style></style>.",
 
         "ITEM_EXPLODEONDEATH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_EPIC_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>50% <style=cStack>(+50% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_EPIC_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>70% <style=cStack>(+70% per stack)</style></style>.",
 
         "ITEM_EXPLODEONDEATH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_LEGENDARY_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>75% <style=cStack>(+75% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_LEGENDARY_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>100% <style=cStack>(+100% per stack)</style></style>.",
 
         "ITEM_DRONESDROPDYNAMITE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> All your drones explode by absorbing damage.",
         "ITEM_DRONESDROPDYNAMITE_UNCOMMON_DESC": "{0}\nAll drones absorb <sprite name=\"Quality\"> <style=cIsDamage>50%</style> of damage when hit, up to a maximum of <sprite name=\"Quality\"> <style=cIsDamage>500% <style=cStack>(+100% per stack)</style></style> base damage. After a short delay, the drone explodes for all absorbed damage in a radius of up to <sprite name=\"Quality\"> <style=cIsDamage>20m <style=cStack>(+5m per stack)</style></style>.",

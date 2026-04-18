@@ -20,6 +20,7 @@ namespace ItemQualities.Items
 
         Collider _collider;
         CameraTargetParams _cameraTargetParams;
+        Interactor _interactor;
 
         Transform _modelScaleTransform;
         Transform _modelOffsetTransform;
@@ -30,6 +31,7 @@ namespace ItemQualities.Items
         {
             _collider = GetComponent<Collider>();
             _cameraTargetParams = GetComponent<CameraTargetParams>();
+            _interactor = GetComponent<Interactor>();
 
             ModelLocator modelLocator = Body.modelLocator;
             if (modelLocator)
@@ -37,7 +39,11 @@ namespace ItemQualities.Items
                 _modelScaleTransform = modelLocator.modelTransform;
 
                 Transform modelOffsetTransform = null;
-                if (modelLocator.modelParentTransform)
+                if (modelLocator.modelTransform && modelLocator.modelTransform.parent && modelLocator.modelTransform.parent != Body.transform)
+                {
+                    modelOffsetTransform = modelLocator.modelTransform.parent;
+                }
+                else if (modelLocator.modelParentTransform)
                 {
                     modelOffsetTransform = modelLocator.modelParentTransform;
                 }
@@ -46,7 +52,7 @@ namespace ItemQualities.Items
                     modelOffsetTransform = _modelScaleTransform;
                 }
 
-                if (modelOffsetTransform != Body.transform)
+                if (modelOffsetTransform && modelOffsetTransform != Body.transform && modelOffsetTransform.parent)
                 {
                     _modelOffsetTransform = modelOffsetTransform;
                 }
@@ -122,6 +128,11 @@ namespace ItemQualities.Items
             if (_cameraTargetParams && _cameraTargetParams.cameraPivotTransform && _cameraTargetParams.cameraPivotTransform != Body.transform)
             {
                 _cameraTargetParams.cameraPivotTransform.localPosition *= scaleMult;
+            }
+
+            if (_interactor)
+            {
+                _interactor.maxInteractionDistance *= scaleMult;
             }
         }
     }

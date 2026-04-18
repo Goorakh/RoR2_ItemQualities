@@ -112,10 +112,10 @@ namespace ItemQualities.Items
                         continue;
                     }
 
-                    // Add to every set this usage is a subset of
+                    // Place this behavior in the lists such that we can quickly find it again just by using the full flags value as an index into an array
                     for (QualityItemBehaviorUsageFlags usageFlags = (QualityItemBehaviorUsageFlags)1; usageFlags <= QualityItemBehaviorUsageFlags.All; usageFlags++)
                     {
-                        if ((usageFlags & itemBehaviorUsage) == itemBehaviorUsage)
+                        if ((usageFlags & itemBehaviorUsage) != 0)
                         {
                             List<QualityGroupBehaviorInfo> qualityGroupBehaviors = qualityGroupBehaviorsByUsageLookup[(int)usageFlags - 1];
                             qualityGroupBehaviors.Add(new QualityGroupBehaviorInfo(targetItemGroup.GroupIndex, qualityItemBehaviorType));
@@ -151,6 +151,8 @@ namespace ItemQualities.Items
 
                 _behaviorCollectionsLookup[i] = new QualityGroupBehaviorCollection(qualityGroupBehaviors, behaviorsArrayPool);
                 numRegisteredBehaviors += qualityGroupBehaviors.Length;
+
+                Log.Debug($"({usageFlags}) behaviors: [{string.Join(", ", qualityGroupBehaviors.Select(b => b.BehaviorType.Name))}]");
             }
 
             Log.Debug($"Collected {numRegisteredBehaviors} quality item behavior type(s)");
@@ -193,7 +195,8 @@ namespace ItemQualities.Items
 
         static void onBodyStartGlobal(CharacterBody body)
         {
-            if (body.inventory && !_bodyQualityBehaviorInfoLookup.ContainsKey(body))
+            // if body has an inventory OR is waiting on a master link
+            if ((body.inventory || !body.masterObjectId.IsEmpty()) && !_bodyQualityBehaviorInfoLookup.ContainsKey(body))
             {
                 int behaviorCollectionIndex = getBehaviorCollectionIndex(body);
                 if (ArrayUtils.IsInBounds(_behaviorCollectionsLookup, behaviorCollectionIndex))
@@ -221,10 +224,25 @@ namespace ItemQualities.Items
 
         static void onBodyInventoryChangedGlobal(CharacterBody body)
         {
-            if (_bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
+            if (!_bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
             {
-                refreshBodyQualityBehaviors(body, behaviorInfo);
+                int behaviorCollectionIndex = getBehaviorCollectionIndex(body);
+                if (!ArrayUtils.IsInBounds(_behaviorCollectionsLookup, behaviorCollectionIndex))
+                    return;
+
+                ref readonly QualityGroupBehaviorCollection behaviorCollection = ref _behaviorCollectionsLookup[behaviorCollectionIndex];
+                if (behaviorCollection.Behaviors.Length == 0)
+                    return;
+
+                Log.Debug($"{Util.GetBestBodyName(body.gameObject)} does not have behavior info during inventory update, creating behaviors now");
+
+                QualityItemBodyBehavior[] qualityItemBehaviors = behaviorCollection.BehaviorsArrayPool.Request();
+                behaviorInfo = new BodyBehaviorInfo(qualityItemBehaviors, behaviorCollectionIndex);
+
+                _bodyQualityBehaviorInfoLookup.Add(body, behaviorInfo);
             }
+
+            refreshBodyQualityBehaviors(body, behaviorInfo);
         }
 
         static void refreshBodyQualityBehaviors(CharacterBody body, BodyBehaviorInfo bodyBehaviorInfo)

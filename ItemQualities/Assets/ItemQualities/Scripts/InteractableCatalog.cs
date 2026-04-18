@@ -82,7 +82,8 @@ namespace ItemQualities
                         if (prefab.GetComponent<PortalSpawner>() ||
                             prefab.GetComponent<SceneExitController>() ||
                             prefab.GetComponent<HoldoutZoneController>() ||
-                            prefab.GetComponent<GeodeController>())
+                            prefab.GetComponent<GeodeController>() ||
+                            prefab.GetComponent<ShrineColossusAccessBehavior>())
                         {
                             return false;
                         }
@@ -131,7 +132,8 @@ namespace ItemQualities
                 }
 
                 overrideCanCopy("GoldshoresBeacon", false);
-                overrideCanCopy("ShrineColossusAccess", false);
+                overrideCanCopy("ScavBackpack", false);
+                overrideCanCopy("ScavLunarBackpack", false);
             }
         }
 

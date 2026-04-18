@@ -14,22 +14,26 @@ namespace ItemQualities.Buffs
 
         static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender)
+            if (!sender || !sender.inventory)
                 return;
 
             BuffQualityCounts energized = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.Energized);
+            ItemQualityCounts energizedOnEquipmentUse = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse);
             if (energized.TotalQualityCount > 0)
             {
-                // Includes +70% from normal warhorn
-                float bonusAttackSpeed = (0.1f * energized.UncommonCount) +
-                                         (0.3f * energized.RareCount) +
-                                         (0.6f * energized.EpicCount) +
-                                         (1.0f * energized.LegendaryCount);
+                if (energizedOnEquipmentUse.TotalQualityCount == 0)
+                    energizedOnEquipmentUse.UncommonCount = 1;
 
-                float cooldownReduction = 0.1f + (0.1f * energized.UncommonCount) +
-                                                 (0.3f * energized.RareCount) +
-                                                 (0.5f * energized.EpicCount) +
-                                                 (0.9f * energized.LegendaryCount);
+                // Includes +70% from normal warhorn
+                float bonusAttackSpeed = (0.1f * energizedOnEquipmentUse.UncommonCount) +
+                                         (0.3f * energizedOnEquipmentUse.RareCount) +
+                                         (0.6f * energizedOnEquipmentUse.EpicCount) +
+                                         (1.0f * energizedOnEquipmentUse.LegendaryCount);
+
+                float cooldownReduction = 0.1f + (0.1f * energizedOnEquipmentUse.UncommonCount) +
+                                                 (0.3f * energizedOnEquipmentUse.RareCount) +
+                                                 (0.5f * energizedOnEquipmentUse.EpicCount) +
+                                                 (0.9f * energizedOnEquipmentUse.LegendaryCount);
 
                 args.attackSpeedMultAdd += bonusAttackSpeed;
                 args.allSkills.cooldownReductionMultAdd += cooldownReduction;

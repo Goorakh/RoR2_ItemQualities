@@ -57,7 +57,7 @@ namespace ItemQualities.ContentManagement
                 throw new ArgumentNullException(nameof(baseEquipment));
 
             EquipmentQualityGroup equipmentQualityGroup = ScriptableObject.CreateInstance<EquipmentQualityGroup>();
-            equipmentQualityGroup.name = "ig" + baseEquipment.name;
+            equipmentQualityGroup.name = "eg" + baseEquipment.name;
             equipmentQualityGroup.BaseEquipment = baseEquipment;
 
             _equipmentQualityGroups.Add(equipmentQualityGroup);
@@ -71,7 +71,7 @@ namespace ItemQualities.ContentManagement
                 throw new ArgumentException("Base equipment reference must be a valid asset key", nameof(baseEquipmentReference));
 
             EquipmentQualityGroup equipmentQualityGroup = ScriptableObject.CreateInstance<EquipmentQualityGroup>();
-            equipmentQualityGroup.name = "ig" + baseEquipmentReference.RuntimeKey;
+            equipmentQualityGroup.name = "eg" + baseEquipmentReference.RuntimeKey;
             equipmentQualityGroup.BaseEquipmentReference = baseEquipmentReference;
 
             _equipmentQualityGroups.Add(equipmentQualityGroup);
@@ -85,7 +85,7 @@ namespace ItemQualities.ContentManagement
                 throw new ArgumentNullException(nameof(baseBuff));
 
             BuffQualityGroup buffQualityGroup = ScriptableObject.CreateInstance<BuffQualityGroup>();
-            buffQualityGroup.name = "ig" + baseBuff.name;
+            buffQualityGroup.name = "bg" + baseBuff.name;
             buffQualityGroup.BaseBuff = baseBuff;
 
             _buffQualityGroups.Add(buffQualityGroup);
@@ -99,7 +99,7 @@ namespace ItemQualities.ContentManagement
                 throw new ArgumentException("Base buff reference must be a valid asset key", nameof(baseBuffReference));
 
             BuffQualityGroup buffQualityGroup = ScriptableObject.CreateInstance<BuffQualityGroup>();
-            buffQualityGroup.name = "ig" + baseBuffReference.RuntimeKey;
+            buffQualityGroup.name = "bg" + baseBuffReference.RuntimeKey;
             buffQualityGroup.BaseBuffReference = baseBuffReference;
 
             _buffQualityGroups.Add(buffQualityGroup);
