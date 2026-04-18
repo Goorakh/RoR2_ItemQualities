@@ -46,12 +46,24 @@
 * Warhorn:
     * Fixed quality effect not stacking.
 
+* Warped Echo:
+    * Fixed elite death effects being repeated:
+        * Glacial Explosion
+        * Malchite Turret
+        * Mending healing orb
+        * Voidtouched infestor
+    * Fixed effects from artifacts being repeated:
+        * Soul
+        * Spite
+        * Vengeance
+        * Sacrifice
+
 * Eccentric Vase:
     * Highlighted interactables are now prioritized over teleporting to an orb.
 
 * Squid Polyp:
     * Fixed squids not changing size for non-host players.
-    * Fixed squids not being able to increase duration on kill after upgrading to max.
+    * Fixed squids not increasing duration on kill after upgrading to max.
 
 * Super Massive Leech:
     * Movement speed is now increased by any healing received while leech is active, and not just leeched health.

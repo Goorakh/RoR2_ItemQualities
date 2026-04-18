@@ -30,14 +30,14 @@ namespace ItemQualities.Items
 
             if (repeatCount > 0)
             {
-                report.damageInfo.damageType.AddModdedDamageType(DamageTypes.DontDoItemDropsPrettyPlease);
+                report.damageInfo.damageType.AddModdedDamageType(DamageTypes.Echo);
 
                 for (int i = 0; i < repeatCount; i++)
                 {
                     GlobalEventManager.instance.OnCharacterDeath(report);
                 }
 
-                report.damageInfo.damageType.RemoveModdedDamageType(DamageTypes.DontDoItemDropsPrettyPlease);
+                report.damageInfo.damageType.RemoveModdedDamageType(DamageTypes.Echo);
             }
         }
 
