@@ -75,6 +75,9 @@
 * Disposable Missile Launcher:
     * Placing the missile launcher in an equipment drone will now transfer the extra missile count to the drone.
 
+* Blast Shower:
+    * Fixed Void Fields fog damage increasing rapidly when used inside it.
+
 * Bandolier:
     * Fixed being able to give charges to certain skills that do not use charges to activate.
 
