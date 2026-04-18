@@ -43,6 +43,9 @@
     * Fixed being able to spam loader grapple to gain all charges back. The refresh now rolls when the grapple hits.
     * Fixed refresh not working on Railgunner.
 
+* Warhorn:
+    * Fixed quality effect not stacking.
+
 * Eccentric Vase:
     * Highlighted interactables are now prioritized over teleporting to an orb.
 
