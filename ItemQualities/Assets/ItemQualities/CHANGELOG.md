@@ -1,4 +1,8 @@
-## <Next Version>
+## 0.7.4
+
+* Fix changelog.
+
+## 0.7.3
 
 * Crafting:
     * Fixed missing recipes for some items + qualities combinations.
