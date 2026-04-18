@@ -173,6 +173,12 @@ namespace ItemQualities
                                // We don't actually care if an item of X quality is not defined, we just want to find any valid item
                                (highestAcceptedQualityItemIndex == ItemIndex.None || !filter(highestAcceptedQualityItemIndex)))
                         {
+                            if (highestAcceptedQualityTier == QualityTier.None)
+                            {
+                                highestAcceptedQualityItemIndex = ItemIndex.None;
+                                break;
+                            }
+
                             highestAcceptedQualityTier--;
                             highestAcceptedQualityItemIndex = itemGroup.GetItemIndex(highestAcceptedQualityTier);
                         }
