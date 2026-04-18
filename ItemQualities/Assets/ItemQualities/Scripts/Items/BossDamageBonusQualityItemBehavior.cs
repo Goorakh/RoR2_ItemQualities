@@ -12,29 +12,33 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.BossDamageBonus;
         }
 
-        float _updateMiniBossTimer = 60f;
+        float _updateMiniBossTimer = 0f;
 
         void FixedUpdate()
         {
-            _updateMiniBossTimer += Time.fixedDeltaTime;
+            _updateMiniBossTimer -= Time.fixedDeltaTime;
 
-            ItemQualityCounts bossDamageBonus = Stacks;
-
-            float markDuration =    bossDamageBonus.UncommonCount * 5 +
-                                    bossDamageBonus.RareCount * 10 +
-                                    bossDamageBonus.EpicCount * 15 +
-                                    bossDamageBonus.LegendaryCount * 20 + 10;
-
-
-            if (_updateMiniBossTimer >= 40)
+            if (_updateMiniBossTimer <= 0f)
             {
-                _updateMiniBossTimer = 0f;
                 CharacterBody miniboss = findBestMiniBoss();
-                if (miniboss) {
-                    MinibossManager minibossManager = miniboss.gameObject.AddComponent<MinibossManager>();
+                if (miniboss)
+                {
+                    ref readonly ItemQualityCounts bossDamageBonus = ref Stacks;
+
+                    float markDuration = 10 + (bossDamageBonus.UncommonCount * 5) +
+                                              (bossDamageBonus.RareCount * 10) +
+                                              (bossDamageBonus.EpicCount * 15) +
+                                              (bossDamageBonus.LegendaryCount * 20);
+
+                    MinibossController minibossManager = miniboss.gameObject.AddComponent<MinibossController>();
                     minibossManager.duration = markDuration;
-                } else {
-                    _updateMiniBossTimer = 39f;
+
+                    _updateMiniBossTimer = 40f;
+                }
+                else
+                {
+                    // Retry in 1 second if we failed to find any miniboss to avoid wasting the cooldown
+                    _updateMiniBossTimer = 1f;
                 }
             }
         }
@@ -49,72 +53,76 @@ namespace ItemQualities.Items
             {
                 if (teamMask.HasTeam(teamIndex))
                 {
-                    highestHealthBody = getMiniBossOfTeam(teamIndex, Body, highestHealthBody);
-                }
-            }
-
-            return highestHealthBody;
-        }
-
-        static CharacterBody getMiniBossOfTeam(TeamIndex teamIndex, CharacterBody playerBody, CharacterBody highestHealthBody)
-        {
-            foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(teamIndex))
-            {
-                CharacterBody body = teamComponent.body;
-                if (!body || !body.healthComponent || !body.healthComponent.alive || body.HasBuff(ItemQualitiesContent.Buffs.MiniBossCooldown) || body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
-                {
-                    continue;
-                }
-
-                if (!highestHealthBody || body.healthComponent.fullCombinedHealth > highestHealthBody.healthComponent.fullCombinedHealth)
-                {
-                    if (!body.isBoss && Vector3.Distance(playerBody.transform.position, body.transform.position) < 250)
+                    foreach (TeamComponent teamComponent in TeamComponent.GetTeamMembers(teamIndex))
                     {
-                        highestHealthBody = body;
+                        CharacterBody body = teamComponent.body;
+                        if (!body || !body.healthComponent || !body.healthComponent.alive)
+                            continue;
+
+                        if (body.isBoss)
+                            continue;
+
+                        if (body.HasBuff(ItemQualitiesContent.Buffs.MiniBossCooldown) || body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
+                            continue;
+
+                        // Exclude masterless stuff, this gets rid of damageable things that arent necessarily enemies, like projectiles or scorcher puddles
+                        if ((body.bodyFlags & CharacterBody.BodyFlags.Masterless) != 0 || !body.master)
+                            continue;
+
+                        float sqrDistance = (Body.corePosition - body.corePosition).sqrMagnitude;
+                        if (sqrDistance >= 250f * 250f)
+                            continue;
+
+                        if (!highestHealthBody || body.healthComponent.fullCombinedHealth > highestHealthBody.healthComponent.fullCombinedHealth)
+                        {
+                            highestHealthBody = body;
+                        }
                     }
                 }
             }
 
             return highestHealthBody;
         }
-    }
 
-    public class MinibossManager : MonoBehaviour
-    {
-        public float duration;
-
-        CharacterBody _body;
-        GameObject _miniBossBodyAttachmentObj;
-        float _timer;
-
-        private void Awake()
+        sealed class MinibossController : MonoBehaviour
         {
-            _body = GetComponent<CharacterBody>();
+            public float duration;
 
-            Log.Debug($"New miniboss: {Util.GetBestBodyName(gameObject)}");
+            CharacterBody _body;
+            GameObject _miniBossBodyAttachmentObj;
+            float _timer;
 
-            _body.AddBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
-            _body.AddTimedBuff(ItemQualitiesContent.Buffs.MiniBossCooldown, 90);
+            private void Awake()
+            {
+                _body = GetComponent<CharacterBody>();
 
-            _miniBossBodyAttachmentObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.MiniBossBodyAttachment);
+                Log.Debug($"New miniboss: {Util.GetBestBodyName(gameObject)}");
 
-            NetworkedBodyAttachment miniBossAttachment = _miniBossBodyAttachmentObj.GetComponent<NetworkedBodyAttachment>();
-            miniBossAttachment.AttachToGameObjectAndSpawn(gameObject);
-        }
+                _body.AddBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
+                _body.AddTimedBuff(ItemQualitiesContent.Buffs.MiniBossCooldown, 90);
 
-        private void FixedUpdate()
-        {
-            _timer += Time.deltaTime;
-            if (_timer > duration) {
-                Destroy(this);
+                _miniBossBodyAttachmentObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.MiniBossBodyAttachment);
+
+                NetworkedBodyAttachment miniBossAttachment = _miniBossBodyAttachmentObj.GetComponent<NetworkedBodyAttachment>();
+                miniBossAttachment.AttachToGameObjectAndSpawn(gameObject);
             }
-        }
 
-        private void OnDisable()
-        {
-            _body.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
-            Destroy(_miniBossBodyAttachmentObj, 0.5f);
-            _miniBossBodyAttachmentObj = null;
+            private void OnDestroy()
+            {
+                _body.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
+                Destroy(_miniBossBodyAttachmentObj);
+                _miniBossBodyAttachmentObj = null;
+            }
+
+            private void FixedUpdate()
+            {
+                _timer += Time.fixedDeltaTime;
+
+                if (_timer > duration || !_body || !_body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
+                {
+                    Destroy(this);
+                }
+            }
         }
     }
 }

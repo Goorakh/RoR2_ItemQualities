@@ -36,6 +36,9 @@
     * Added a cap to temporary health amount.
     * Fixed temporary health being counted when determining max health %, causing temporary health to increase exponentially as the equipment was used repeatedly.
 
+* Armor Piercing Rounds:
+    * Fixed being able to mark certain non-enemies as targets (scorcher puddles, heat vents, etc).
+
 * Rose Buckler:
     * Fixed dash not dealing damage.
 
