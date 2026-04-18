@@ -68,6 +68,10 @@
 * Super Massive Leech:
     * Movement speed is now increased by any healing received while leech is active, and not just leeched health.
 
+* Executive Card:
+    * Fixed being able to copy Scavenger Bags.
+    * Giving the equipment to a drone will now transfer your stored interactable to it.
+
 * Disposable Missile Launcher:
     * Placing the missile launcher in an equipment drone will now transfer the extra missile count to the drone.
 
@@ -77,11 +81,7 @@
 * Goobo Jr.:
     * Clones are now upgraded to the appropriate quality tier.
 
-* Drifter Salvage & Junk Drones can no longer drop quality temporary items.
-
-* Executive Card:
-    * Fixed being able to copy Scavenger Bags.
-    * Giving the equipment to a drone will now transfer your stored interactable to it.
+* Drifter Salvage & Upgraded Junk Drones can no longer drop quality temporary items.
 
 * Seed of Life:
     * Fixed being able to upgrade scrap (regenerating scrap can still be upgraded).
