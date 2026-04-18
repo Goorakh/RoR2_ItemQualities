@@ -36,7 +36,7 @@
     * Added a cap to temporary health amount.
     * Fixed temporary health being counted when determining max health %, causing temporary health to increase exponentially as the equipment was used repeatedly.
 
-* Rode Buckler:
+* Rose Buckler:
     * Fixed dash not dealing damage.
 
 * Backup Magazine:
