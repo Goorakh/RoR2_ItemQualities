@@ -24,16 +24,15 @@ namespace ItemQualities
             if (patcherInfo.Manipulator == null)
                 throw new ArgumentException($"Patcher info must provide an il manipulator");
 
-            if (_patchers.Count == 0)
-            {
-                RoR2Application.onLoad += onLoad;
-            }
-
             _patchers.Add(patcherInfo);
 
             if (RoR2Application.loadFinished)
             {
                 executePatchers();
+            }
+            else if (_patchers.Count == 1)
+            {
+                RoR2Application.onLoad += onLoad;
             }
         }
 
