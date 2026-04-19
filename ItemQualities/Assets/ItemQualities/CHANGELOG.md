@@ -1,3 +1,8 @@
+## <Next Version>
+
+* Backup Magazine:
+    * Fixed refresh not working for Operator swarm.
+
 ## 0.7.4
 
 * Fix changelog.

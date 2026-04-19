@@ -69,13 +69,13 @@ namespace ItemQualities.Items
         void OnEnable()
         {
             Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
-            SecondarySkillMagazine.OnSkillUsedIndirectAuthority += onSkillUsedIndirectAuthority;
+            SkillHooks.OnSkillUsedIndirectAuthority += onSkillUsedIndirectAuthority;
         }
 
         void OnDisable()
         {
             Body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
-            SecondarySkillMagazine.OnSkillUsedIndirectAuthority -= onSkillUsedIndirectAuthority;
+            SkillHooks.OnSkillUsedIndirectAuthority -= onSkillUsedIndirectAuthority;
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)

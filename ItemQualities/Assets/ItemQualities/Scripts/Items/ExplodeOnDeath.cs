@@ -7,8 +7,6 @@ using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
-using MonoMod.Utils;
 using RoR2;
 using RoR2.ContentManagement;
 using RoR2.Items;
@@ -1233,77 +1231,11 @@ namespace ItemQualities.Items
             IL.RoR2.Projectile.LunarStakesLightningController.FireLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
             IL.RoR2.Projectile.LunarStakesLightningController.FireLastLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
 
-            RoR2Application.onLoad += onLoad;
-        }
-
-        static void onLoad()
-        {
-            HashSet<Type> allEntityStateTypes = new HashSet<Type>(EntityStateCatalog.stateIndexToType.Length);
-
-            for (int i = 0; i < EntityStateCatalog.stateIndexToType.Length; i++)
+            EntityStatePatcher.AddPatcher(new EntityStatePatcher.PatcherInfo
             {
-                Type stateType = EntityStateCatalog.stateIndexToType[i];
-                while (stateType != null && typeof(EntityState).IsAssignableFrom(stateType) && allEntityStateTypes.Add(stateType))
-                {
-                    stateType = stateType.BaseType;
-                }
-            }
-
-            int numAppliedHooks = 0;
-
-            if (allEntityStateTypes.Count > 0)
-            {
-                ILContext.Manipulator manipulator = getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
-
-                foreach (Type stateType in allEntityStateTypes)
-                {
-                    try
-                    {
-                        if (stateType.Assembly == Assembly.GetExecutingAssembly())
-                            continue;
-
-                        foreach (MethodInfo method in stateType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-                        {
-                            ILHook hook = null;
-                            try
-                            {
-                                // The IsGenericMethod call sometimes causes a crash if accessed on a method where an assembly reference can't be resolved,
-                                // the DeclaringType getter throws an exception instead, so do that first to catch it before trying to check IsGenericMethod
-                                _ = method.DeclaringType;
-                                if (method.IsGenericMethod || method.GetMethodBody() == null)
-                                    continue;
-
-                                using DynamicMethodDefinition dmd = new DynamicMethodDefinition(method);
-                                using ILContext il = new ILContext(dmd.Definition);
-
-                                if (matchSetupBlastAttack(il))
-                                {
-                                    hook = new ILHook(method, manipulator, new ILHookConfig { ManualApply = true });
-                                    hook.Apply();
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Log.Warning($"Failed to apply attack radius hook to {method.DeclaringType.FullName}.{method.Name} ({stateType.Assembly.FullName}): {e.Message}");
-
-                                hook?.Dispose();
-                                hook = null;
-                            }
-
-                            if (hook != null)
-                            {
-                                numAppliedHooks++;
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Warning($"Failed to scan type for attack radius hooks: {stateType.FullName} ({stateType.Assembly.FullName}): {e.Message}");
-                    }
-                }
-            }
-
-            Log.Debug($"Applied {numAppliedHooks} attack radius method hook(s)");
+                Manipulator = getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody),
+                ShouldApplyPredicate = matchSetupBlastAttack,
+            });
         }
 
         static bool matchLoadValue(Instruction x, out Instruction instruction)
