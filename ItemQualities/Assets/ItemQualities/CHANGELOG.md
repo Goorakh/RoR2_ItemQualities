@@ -1,5 +1,8 @@
 ## <Next Version>
 
+* Eclipse Lite:
+    * Fixed overflow barrier not displaying correctly with curse.
+
 * Backup Magazine:
     * Fixed refresh not working for Operator swarm.
 

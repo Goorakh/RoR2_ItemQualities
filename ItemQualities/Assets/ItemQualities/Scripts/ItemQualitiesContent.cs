@@ -961,8 +961,6 @@ namespace ItemQualities
         {
             [TargetAssetName("icon")]
             public static Sprite ModIcon;
-
-            public static Sprite barrierBar;
         }
 
         public static class TMP_SpriteAssets

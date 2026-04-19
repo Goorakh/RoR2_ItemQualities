@@ -17,6 +17,7 @@ namespace ItemQualities.Items
             }
 
             EquipmentSlot.onServerEquipmentActivated += onServerEquipmentActivated;
+
             On.RoR2.HealthComponent.AddBarrier += HealthComponent_AddBarrier;
             On.RoR2.HealthComponent.AddCharge += HealthComponent_AddCharge;
         }
@@ -25,28 +26,49 @@ namespace ItemQualities.Items
         {
             float defaultMax = self.body.maxBarrier;
             self.body.maxBarrier = getMaxBarrier(self.body);
-            orig(self, value);
-            self.body.maxBarrier = defaultMax;
+            try
+            {
+                orig(self, value);
+            }
+            finally
+            {
+                self.body.maxBarrier = defaultMax;
+            }
         }
 
         private static void HealthComponent_AddBarrier(On.RoR2.HealthComponent.orig_AddBarrier orig, HealthComponent self, float value)
         {
             float defaultMax = self.body.maxBarrier;
             self.body.maxBarrier = getMaxBarrier(self.body);
-            orig(self, value);
-            self.body.maxBarrier = defaultMax;
+            try
+            {
+                orig(self, value);
+            }
+            finally
+            {
+                self.body.maxBarrier = defaultMax;
+            }
         }
 
         static float getMaxBarrier(CharacterBody body)
         {
-            if (!body.inventory)
-                return body.maxBarrier;
-            ItemQualityCounts barrierOnCooldown = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BarrierOnCooldown);
-            float maxBarrier = body.maxBarrier *
-                                (barrierOnCooldown.UncommonCount * 0.3f +
-                                barrierOnCooldown.RareCount * 0.6f +
-                                barrierOnCooldown.EpicCount * 1f +
-                                barrierOnCooldown.LegendaryCount * 1.5f + 1);
+            float maxBarrier = body.maxBarrier;
+
+            if (body.inventory)
+            {
+                ItemQualityCounts barrierOnCooldown = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BarrierOnCooldown);
+
+                float barrierMultAdd = (barrierOnCooldown.UncommonCount * 0.3f) +
+                                       (barrierOnCooldown.RareCount * 0.6f) +
+                                       (barrierOnCooldown.EpicCount * 1f) +
+                                       (barrierOnCooldown.LegendaryCount * 1.5f);
+
+                if (barrierMultAdd > 0f)
+                {
+                    maxBarrier *= 1f + barrierMultAdd;
+                }
+            }
+
             return maxBarrier;
         }
 
