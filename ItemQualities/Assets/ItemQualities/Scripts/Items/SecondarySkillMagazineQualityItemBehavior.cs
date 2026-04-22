@@ -38,7 +38,7 @@ namespace ItemQualities.Items
             HashSet<int> otherSkillIndicesToRestock = new HashSet<int>();
             tryAddSkillByName("SnipeHeavy", otherSkillIndicesToRestock);
 
-            static void tryAddSkillByName(string name, ICollection<int> skillIndices)
+            static void tryAddSkillByName(string name, HashSet<int> skillIndices)
             {
                 int skillIndex = SkillCatalog.FindSkillIndexByName(name);
                 if (skillIndex != -1)

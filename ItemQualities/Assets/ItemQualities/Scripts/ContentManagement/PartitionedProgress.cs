@@ -3,20 +3,21 @@ using System.Collections.Generic;
 
 namespace ItemQualities.ContentManagement
 {
-    internal sealed class PartitionedProgress
+    internal sealed class PartitionedProgress<TReceiver>
+        where TReceiver : IProgress<float>
     {
-        readonly IProgress<float> _progressReceiver;
+        readonly TReceiver _progressReceiver;
 
         readonly List<ProgressPartition> _partitions = new List<ProgressPartition>();
 
         public float Progress { get; private set; }
 
-        public PartitionedProgress(IProgress<float> receiver)
+        public PartitionedProgress(TReceiver receiver)
         {
             _progressReceiver = receiver;
         }
 
-        public IProgress<float> AddPartition(float weight = 1f)
+        public ProgressPartition AddPartition(float weight = 1f)
         {
             ProgressPartition partition = new ProgressPartition(weight);
             partition.OnReport += onPartitionReport;
@@ -24,9 +25,9 @@ namespace ItemQualities.ContentManagement
             return partition;
         }
 
-        public IProgress<float>[] AddPartitions(int count, float weight = 1f)
+        public ProgressPartition[] AddPartitions(int count, float weight = 1f)
         {
-            IProgress<float>[] partitions = new IProgress<float>[count];
+            ProgressPartition[] partitions = new ProgressPartition[count];
             for (int i = 0; i < count; i++)
             {
                 partitions[i] = AddPartition(weight);
@@ -61,25 +62,25 @@ namespace ItemQualities.ContentManagement
             recalculateProgress();
             _progressReceiver.Report(Progress);
         }
+    }
 
-        sealed class ProgressPartition : IProgress<float>
+    internal sealed class ProgressPartition : IProgress<float>
+    {
+        public event Action<float> OnReport;
+
+        public float Value { get; private set; }
+
+        public float Weight { get; }
+
+        public ProgressPartition(float weight = 1f)
         {
-            public event Action<float> OnReport;
+            Weight = weight;
+        }
 
-            public float Value { get; private set; }
-
-            public float Weight { get; }
-
-            public ProgressPartition(float weight = 1f)
-            {
-                Weight = weight;
-            }
-
-            public void Report(float value)
-            {
-                Value = value;
-                OnReport?.Invoke(value);
-            }
+        public void Report(float value)
+        {
+            Value = value;
+            OnReport?.Invoke(value);
         }
     }
 }

@@ -25,7 +25,8 @@ namespace ItemQualities.ContentManagement
             Dependencies = dependencies;
         }
 
-        public static IEnumerator RunContentInitializers(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+        public static IEnumerator RunContentInitializers<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
+            where TProgress : IProgress<float>
         {
             List<(IEnumerator coroutine, ReadableProgress<float> progress)> contentInitializersSequence = new();
 
@@ -125,8 +126,8 @@ namespace ItemQualities.ContentManagement
 
             Log.Debug($"Content initializers separated into {contentInitializerGroups.Count} group(s):\n{string.Join("\n", contentInitializerGroups.Select(g => $"[{string.Join(", ", g.InitializedTypes.Select(t => t.FullName))}]"))}");
 
-            PartitionedProgress partitionedProgress = new PartitionedProgress(progressReceiver);
-            IProgress<float>[] initializerGroupProgressReceivers = partitionedProgress.AddPartitions(contentInitializersSequence.Count);
+            PartitionedProgress<TProgress> partitionedProgress = new PartitionedProgress<TProgress>(progressReceiver);
+            ProgressPartition[] initializerGroupProgressReceivers = partitionedProgress.AddPartitions(contentInitializersSequence.Count);
 
             for (int i = 0; i < contentInitializersSequence.Count; i++)
             {

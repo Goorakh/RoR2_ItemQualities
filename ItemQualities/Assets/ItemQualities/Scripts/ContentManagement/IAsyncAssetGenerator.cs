@@ -5,6 +5,7 @@ namespace ItemQualities.ContentManagement
 {
     internal interface IAsyncAssetGenerator
     {
-        IEnumerator GenerateAssetsAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver = null);
+        IEnumerator GenerateAssetsAsync<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver = default)
+            where TProgress : IProgress<float>;
     }
 }

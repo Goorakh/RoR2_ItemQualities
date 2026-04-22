@@ -21,7 +21,7 @@ namespace ItemQualities.Items
         {
             HashSet<SceneIndex> convertScrapOnEntrySceneIncides = new HashSet<SceneIndex>();
 
-            static void tryAddSceneIndexByName(string sceneName, ICollection<SceneIndex> sceneIndicesList)
+            static void tryAddSceneIndexByName(string sceneName, HashSet<SceneIndex> sceneIndicesList)
             {
                 SceneIndex sceneIndex = SceneCatalog.FindSceneIndex(sceneName);
                 if (sceneIndex != SceneIndex.Invalid)

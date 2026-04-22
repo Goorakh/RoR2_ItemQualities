@@ -1,5 +1,6 @@
 ﻿using HG;
 using HG.Coroutines;
+using ItemQualities.Extensions;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
@@ -45,7 +46,7 @@ namespace ItemQualities
         [SystemInitializer(typeof(ItemCatalog), typeof(EquipmentCatalog), typeof(BuffCatalog))]
         static IEnumerator Init()
         {
-            yield return SetQualityGroups(ItemQualitiesContent.QualityTiers.AllQualityTiers,
+            yield return setQualityGroups(ItemQualitiesContent.QualityTiers.AllQualityTiers,
                                           ItemQualitiesContent.ItemQualityGroups.AllGroups,
                                           ItemQualitiesContent.EquipmentQualityGroups.AllGroups,
                                           ItemQualitiesContent.BuffQualityGroups.AllGroups);
@@ -53,13 +54,22 @@ namespace ItemQualities
             Availability.MakeAvailable();
         }
 
-        static IEnumerator SetQualityGroups(IReadOnlyCollection<QualityTierDef> qualityTierDefs,
-                                            IReadOnlyCollection<ItemQualityGroup> itemQualityGroups,
-                                            IReadOnlyCollection<EquipmentQualityGroup> equipmentQualityGroups,
-                                            IReadOnlyCollection<BuffQualityGroup> buffQualityGroups)
+        static IEnumerator setQualityGroups<TListQualityTierDefs,
+                                            TListItemQualityGroups,
+                                            TListEquipmentQualityGroups,
+                                            TListBuffQualityGroups>
+                                           (TListQualityTierDefs qualityTierDefs,
+                                            TListItemQualityGroups itemQualityGroups,
+                                            TListEquipmentQualityGroups equipmentQualityGroups,
+                                            TListBuffQualityGroups buffQualityGroups)
+            where TListQualityTierDefs : IList<QualityTierDef>
+            where TListItemQualityGroups : IList<ItemQualityGroup>
+            where TListEquipmentQualityGroups : IList<EquipmentQualityGroup>
+            where TListBuffQualityGroups : IList<BuffQualityGroup>
         {
-            foreach (QualityTierDef qualityTierDef in qualityTierDefs)
+            for (int i = 0; i < qualityTierDefs.Count; i++)
             {
+                QualityTierDef qualityTierDef = qualityTierDefs[i];
                 _qualityTierDefs[(int)qualityTierDef.qualityTier] = qualityTierDef;
             }
 
@@ -68,19 +78,8 @@ namespace ItemQualities
                 itemQualityGroup.GroupIndex = ItemQualityGroupIndex.Invalid;
             }
 
-            static void sortUnityObjectsByName(UnityEngine.Object[] array, StringComparison stringComparison = StringComparison.Ordinal)
-            {
-                string[] keys = new string[array.Length];
-                for (int i = 0; i < array.Length; i++)
-                {
-                    keys[i] = array[i].name;
-                }
-
-                Array.Sort(keys, array, StringComparer.FromComparison(stringComparison));
-            }
-
             _allItemQualityGroups = itemQualityGroups.ToArray();
-            sortUnityObjectsByName(_allItemQualityGroups);
+            UnityUtils.SortObjectsByName(_allBuffQualityGroups, StringComparer.Ordinal);
 
             Array.Resize(ref _itemIndexToQuality, ItemCatalog.itemCount);
             Array.Fill(_itemIndexToQuality, QualityTier.None);
@@ -94,7 +93,7 @@ namespace ItemQualities
             }
 
             _allEquipmentQualityGroups = equipmentQualityGroups.ToArray();
-            sortUnityObjectsByName(_allEquipmentQualityGroups);
+            UnityUtils.SortObjectsByName(_allEquipmentQualityGroups, StringComparer.Ordinal);
 
             Array.Resize(ref _equipmentIndexToQuality, EquipmentCatalog.equipmentCount);
             Array.Fill(_equipmentIndexToQuality, QualityTier.None);
@@ -108,7 +107,7 @@ namespace ItemQualities
             }
 
             _allBuffQualityGroups = buffQualityGroups.ToArray();
-            sortUnityObjectsByName(_allBuffQualityGroups);
+            UnityUtils.SortObjectsByName(_allBuffQualityGroups, StringComparer.Ordinal);
 
             Array.Resize(ref _buffIndexToQuality, BuffCatalog.buffCount);
             Array.Fill(_buffIndexToQuality, QualityTier.None);

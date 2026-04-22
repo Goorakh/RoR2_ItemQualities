@@ -34,7 +34,7 @@ namespace ItemQualities.Utilities
 
             foreach (T item in a)
             {
-                int index = remainingElementsB.IndexOf(item, ElementComparer);
+                int index = remainingElementsB.IndexOf<T, List<T>>(item, ElementComparer);
                 if (index == -1)
                     return false;
 

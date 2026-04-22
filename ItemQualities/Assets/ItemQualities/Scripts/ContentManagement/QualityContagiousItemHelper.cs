@@ -26,7 +26,8 @@ namespace ItemQualities.ContentManagement
         readonly Dictionary<ItemDef, ItemQualityGroup> _baseItemToGroupLookup = new Dictionary<ItemDef, ItemQualityGroup>();
         readonly List<AssetReferenceT<ItemDef>> _itemDefReferences = new List<AssetReferenceT<ItemDef>>();
 
-        IEnumerator initialize(ExtendedContentPack contentPack, IProgress<float> progessReceiver)
+        IEnumerator initialize<TProgress>(ExtendedContentPack contentPack, TProgress progessReceiver)
+            where TProgress : IProgress<float>
         {
             ParallelProgressCoroutine initializeCoroutine = new ParallelProgressCoroutine(progessReceiver);
 
@@ -63,7 +64,8 @@ namespace ItemQualities.ContentManagement
             return initializeCoroutine;
         }
 
-        public IEnumerator Step(ExtendedContentPack contentPack, GetContentPackAsyncArgs args, IProgress<float> progessReceiver)
+        public IEnumerator Step<TProgress>(ExtendedContentPack contentPack, GetContentPackAsyncArgs args, TProgress progessReceiver)
+            where TProgress : IProgress<float>
         {
             if (_completedSteps == 0)
             {

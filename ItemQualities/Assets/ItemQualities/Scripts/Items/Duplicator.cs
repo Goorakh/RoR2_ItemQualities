@@ -16,7 +16,7 @@ namespace ItemQualities.Items
 
             addItemGroup(DLC3Content.Items.Duplicator.itemIndex, allyShareBlacklist);
 
-            static void addItemGroup(ItemIndex itemIndex, ICollection<ItemIndex> itemCollection)
+            static void addItemGroup(ItemIndex itemIndex, HashSet<ItemIndex> itemCollection)
             {
                 if (itemIndex == ItemIndex.None)
                     return;
