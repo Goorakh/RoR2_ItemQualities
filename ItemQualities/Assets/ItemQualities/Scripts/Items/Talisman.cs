@@ -1,8 +1,8 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API.Utils;
 using RoR2;
 using System;
 
@@ -10,9 +10,13 @@ namespace ItemQualities.Items
 {
     static class Talisman
     {
+        static Action<Inventory> _invokeInventoryOnEquipmentExternalRestockServer;
+
         [SystemInitializer]
         static void Init()
         {
+            _invokeInventoryOnEquipmentExternalRestockServer = EventUtils.GetInvokeMethodDelegate<Action<Inventory>>(typeof(Inventory), nameof(Inventory.onEquipmentExternalRestockServer));
+
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
@@ -45,7 +49,7 @@ namespace ItemQualities.Items
                     }
 
                     attackerInventory.SetEquipment(new EquipmentState(equipment.equipmentIndex, chargeFinishTime, charges), attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
-                    attackerInventory.GetFieldValue<Action>("onEquipmentExternalRestockServer")?.Invoke();
+                    _invokeInventoryOnEquipmentExternalRestockServer?.Invoke(attackerInventory);
                 }
             }
         }
