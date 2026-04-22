@@ -55,7 +55,7 @@
     * Fixed being able to mark certain non-enemies as targets (scorcher puddles, heat vents, etc).
 
 * Rose Buckler:
-    * Fixed dash not dealing damage.
+    * Fixed dash not applying weaken.
 
 * Backup Magazine:
     * Fixed being able to spam loader grapple to gain all charges back. The refresh now rolls when the grapple hits.
