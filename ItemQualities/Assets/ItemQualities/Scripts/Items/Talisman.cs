@@ -5,6 +5,7 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
+using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -23,6 +24,9 @@ namespace ItemQualities.Items
 
         private static void onCharacterDeathGlobal(DamageReport damageReport)
         {
+            if (!NetworkServer.active)
+                return;
+
             Inventory attackerInventory = damageReport?.attackerBody ? damageReport.attackerBody.inventory : null;
 
             if (attackerInventory && attackerInventory.currentEquipmentIndex != EquipmentIndex.None)
@@ -31,24 +35,20 @@ namespace ItemQualities.Items
 
                 if (talisman.TotalQualityCount > 0 && damageReport.victimIsChampion)
                 {
-                    int amount = (talisman.UncommonCount) +
-                                (talisman.RareCount * 2) +
-                                (talisman.EpicCount * 3) +
-                                (talisman.LegendaryCount * 4);
-
-                    EquipmentState equipment = attackerInventory.GetActiveEquipment();
-                    byte charges = HGMath.ByteSafeAdd(equipment.charges, (byte)Math.Min(amount, 255));
+                    int temporaryCharges = (talisman.UncommonCount * 1) +
+                                           (talisman.RareCount * 2) +
+                                           (talisman.EpicCount * 3) +
+                                           (talisman.LegendaryCount * 4);
                     
-                    Run.FixedTimeStamp chargeFinishTime;
+                    EquipmentState equipmentState = attackerInventory.GetEquipment(attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
+                    equipmentState.charges = HGMath.ByteSafeAdd(equipmentState.charges, (byte)Math.Min(temporaryCharges, byte.MaxValue));
                     
-                    if (charges > attackerInventory.GetEquipmentSlotMaxCharges())
+                    if (equipmentState.charges > attackerInventory.GetEquipmentSlotMaxCharges())
                     {
-                        chargeFinishTime = Run.FixedTimeStamp.positiveInfinity;
-                    } else {
-                        chargeFinishTime = equipment.chargeFinishTime;
+                        equipmentState.chargeFinishTime = Run.FixedTimeStamp.positiveInfinity;
                     }
 
-                    attackerInventory.SetEquipment(new EquipmentState(equipment.equipmentIndex, chargeFinishTime, charges), attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
+                    attackerInventory.SetEquipment(equipmentState, attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
                     _invokeInventoryOnEquipmentExternalRestockServer?.Invoke(attackerInventory);
                 }
             }

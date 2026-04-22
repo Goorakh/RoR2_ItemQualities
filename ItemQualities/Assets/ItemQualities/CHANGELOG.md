@@ -1,5 +1,8 @@
 ## <Next Version>
 
+* Soulbound Catalyst:
+    * Fixed item removing quality status of equipment on kill.
+
 * Eclipse Lite:
     * Fixed overflow barrier not displaying correctly with curse.
 
