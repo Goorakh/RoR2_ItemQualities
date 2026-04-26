@@ -1,5 +1,8 @@
 ## <Next Version>
 
+* Recycler:
+    * Can now reroll quality printers.
+
 * Soulbound Catalyst:
     * Fixed item removing quality status of equipment on kill.
 
