@@ -21,7 +21,7 @@ namespace ItemQualities.Equipments
         static readonly GameObject[] _qualityMolotovClusterProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> molotovClusterProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_Molotov.MolotovClusterProjectile_prefab);
             molotovClusterProjectileLoad.OnSuccess(molotovClusterProjectilePrefab =>

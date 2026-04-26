@@ -18,7 +18,7 @@ namespace ItemQualities.Equipments
         static InteractableSpawnCard _iscChest1Stealthed;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> chest2LoadHandle = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Chest2.Chest2_prefab);
             AsyncOperationHandle<Material> cloakedMaterialLoadHandle = AddressableUtil.LoadAssetAsync<Material>(RoR2_Base_Common.matCloakedEffect_mat);

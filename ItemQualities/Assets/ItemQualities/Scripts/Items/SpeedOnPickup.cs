@@ -18,7 +18,7 @@ namespace ItemQualities.Items
         static InteractableSpawnCard _iscSpeedOnPickupBarrel;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> barrelLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Barrel1.Barrel1_prefab);
             AsyncOperationHandle<Sprite> barrelIconLoad = AddressableUtil.LoadAssetAsync<Sprite>(RoR2_Base_Common_MiscIcons.texBarrelIcon_png);

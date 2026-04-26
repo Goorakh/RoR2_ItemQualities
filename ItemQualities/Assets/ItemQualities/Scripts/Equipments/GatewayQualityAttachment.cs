@@ -23,7 +23,7 @@ namespace ItemQualities.Equipments
         static GameObject _gatewayPickupPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> elusiveAntlersPickupLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC2_Items_SpeedBoostPickup.ElusiveAntlersPickup_prefab);
             elusiveAntlersPickupLoad.OnSuccess(elusiveAntlersPickupPrefab =>

@@ -21,7 +21,7 @@ namespace ItemQualities.Items
         static GameObject _missileBigProjectilePrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> missileProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Common.MissileProjectile_prefab);
             AsyncOperationHandle<GameObject> missileGhostLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Common.MissileGhost_prefab);

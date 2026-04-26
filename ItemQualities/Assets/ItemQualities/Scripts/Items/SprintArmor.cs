@@ -16,7 +16,7 @@ namespace ItemQualities.Items
         public static GameObject BucklerDefenseBigPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> bucklerDefenseLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_SprintArmor.BucklerDefense_prefab);
             bucklerDefenseLoad.OnSuccess(bucklerDefense =>

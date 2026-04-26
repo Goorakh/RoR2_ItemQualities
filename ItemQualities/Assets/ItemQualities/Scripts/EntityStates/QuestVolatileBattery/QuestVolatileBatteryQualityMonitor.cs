@@ -20,7 +20,7 @@ namespace EntityStates.QuestVolatileBattery
         GameObject _vfxInstance;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> VolatileBatteryPreDetLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryPreDetonation_prefab);
             VolatileBatteryPreDetLoad.OnSuccess(VolatileBatteryPreDetPrefab =>

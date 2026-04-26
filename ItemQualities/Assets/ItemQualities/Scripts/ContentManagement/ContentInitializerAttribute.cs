@@ -45,7 +45,7 @@ namespace ItemQualities.ContentManagement
 
                     MethodInfo method = attribute.target;
                     ParameterInfo[] methodParameters = method.GetParameters();
-                    if (methodParameters.Length != 1 || methodParameters[0].ParameterType != typeof(ContentIntializerArgs))
+                    if (methodParameters.Length != 1 || methodParameters[0].ParameterType != typeof(ContentInitializerArgs))
                     {
                         Log.Error($"Invalid parameters for Content Initializer method {method.DeclaringType.FullName}.{method.Name}");
                         attributes.RemoveAt(i);
@@ -74,9 +74,9 @@ namespace ItemQualities.ContentManagement
                     if (initializerDependencies.Count == 0)
                     {
                         ReadableProgress<float> contentInitializerProgress = new ReadableProgress<float>();
-                        ContentIntializerArgs contentIntializerArgs = new ContentIntializerArgs(contentPack, contentInitializerProgress);
+                        ContentInitializerArgs contentIntializerArgs = new ContentInitializerArgs(contentPack, contentInitializerProgress);
 
-                        static IEnumerator runInitializerCoroutine(MethodInfo method, ContentIntializerArgs contentIntializerArgs)
+                        static IEnumerator runInitializerCoroutine(MethodInfo method, ContentInitializerArgs contentIntializerArgs)
                         {
                             object returnValue = method.Invoke(null, new object[] { contentIntializerArgs });
                             if (returnValue is IEnumerator enumerator)

@@ -20,7 +20,7 @@ namespace ItemQualities.Items
         static GameObject _wardTemporaryPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> warbannerWardLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_WardOnLevel.WarbannerWard_prefab);
             warbannerWardLoad.OnSuccess(warbannerWard =>

@@ -2,13 +2,13 @@
 
 namespace ItemQualities.ContentManagement
 {
-    internal sealed class ContentIntializerArgs
+    internal sealed class ContentInitializerArgs
     {
         public ExtendedContentPack ContentPack { get; }
 
         public ReadableProgress<float> ProgressReceiver { get; }
 
-        public ContentIntializerArgs(ExtendedContentPack contentPack, ReadableProgress<float> progressReceiver)
+        public ContentInitializerArgs(ExtendedContentPack contentPack, ReadableProgress<float> progressReceiver)
         {
             ContentPack = contentPack;
             ProgressReceiver = progressReceiver;

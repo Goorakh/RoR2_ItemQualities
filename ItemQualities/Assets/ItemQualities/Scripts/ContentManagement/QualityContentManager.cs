@@ -33,7 +33,7 @@ namespace ItemQualities.ContentManagement
         static bool _hasCollectedLoadCoroutines = false;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             if (loadContentInternal == null)
             {

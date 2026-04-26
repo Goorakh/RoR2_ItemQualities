@@ -20,7 +20,7 @@ namespace ItemQualities.Equipments
         static readonly GameObject[] _qualityVendingMachineProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> vendingMachineProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_VendingMachine.VendingMachineProjectile_prefab);
             vendingMachineProjectileLoad.OnSuccess(vendingMachineProjectilePrefab =>

@@ -21,7 +21,7 @@ namespace ItemQualities.Items
         static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> icicleAuraLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Icicle.IcicleAura_prefab);
 
