@@ -49,7 +49,8 @@ namespace ItemQualities
 
             defaultRadius = MathF.Round(defaultRadius, 1);
 
-            Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew(effectPrefab);
+            Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew
+                <Dictionary<GameObject, Dictionary<int, EffectDef>>, GameObject, Dictionary<int, EffectDef>>(effectPrefab);
 
             int dictionaryKey = (int)(defaultRadius * 10);
             if (scaledPrefabsCache.TryGetValue(dictionaryKey, out EffectDef cachedScaledEffectDef))

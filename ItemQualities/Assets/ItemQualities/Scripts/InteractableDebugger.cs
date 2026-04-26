@@ -165,7 +165,7 @@ namespace ItemQualities
                     resultBuilder.Append(sb);
                 }
 
-                Log.Info(resultBuilder);
+                Log.Info(resultBuilder.ToString());
             }
 
             void onPostPopulateSceneServer(SceneDirector sceneDirector)

@@ -119,7 +119,7 @@ namespace ItemQualities.ContentManagement
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
             }
 
             current = null;
@@ -135,7 +135,7 @@ namespace ItemQualities.ContentManagement
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
                 coroutine = null;
             }
 

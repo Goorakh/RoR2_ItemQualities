@@ -168,7 +168,7 @@ namespace ItemQualities
             }
             catch (Exception e)
             {
-                Log.Warning_NoCallerPrefix(e);
+                Log.Warning_NoCallerPrefix(e.ToString());
             }
         }
 

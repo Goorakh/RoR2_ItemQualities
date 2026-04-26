@@ -56,7 +56,7 @@ namespace ItemQualities.Buffs
                 }
                 catch (Exception e)
                 {
-                    Log.Warning_NoCallerPrefix(e);
+                    Log.Warning_NoCallerPrefix(e.ToString());
                 }
             }
         }
@@ -133,7 +133,7 @@ namespace ItemQualities.Buffs
                 }
                 catch (Exception e)
                 {
-                    Log.Warning_NoCallerPrefix(e);
+                    Log.Warning_NoCallerPrefix(e.ToString());
                 }
             }
 
@@ -171,7 +171,7 @@ namespace ItemQualities.Buffs
             }
             catch (Exception e)
             {
-                Log.Warning_NoCallerPrefix(e);
+                Log.Warning_NoCallerPrefix(e.ToString());
             }
         }
 
@@ -204,7 +204,7 @@ namespace ItemQualities.Buffs
                 }
                 catch (Exception e)
                 {
-                    Log.Warning_NoCallerPrefix(e);
+                    Log.Warning_NoCallerPrefix(e.ToString());
                 }
             }
 
@@ -248,7 +248,7 @@ namespace ItemQualities.Buffs
             }
             catch (Exception e)
             {
-                Log.Warning_NoCallerPrefix(e);
+                Log.Warning_NoCallerPrefix(e.ToString());
             }
 
             using (new DisableBuffCountHooksScope(self))

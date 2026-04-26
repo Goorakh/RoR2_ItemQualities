@@ -95,7 +95,7 @@ namespace ItemQualities
             ObjectPurchaseContext.PurchaseResults payCostResults = purchaseContext.Results;
 
             using var _ = ListPool<UniquePickup>.RentCollection(out List<UniquePickup> pickupsSpentOnPurchase);
-            pickupsSpentOnPurchase.EnsureCapacity(payCostResults.ItemStacksTaken.Length + payCostResults.EquipmentTaken.Length);
+            ListUtils.EnsureCapacity(pickupsSpentOnPurchase, payCostResults.ItemStacksTaken.Length + payCostResults.EquipmentTaken.Length);
 
             foreach (Inventory.ItemAndStackValues itemStackValues in payCostResults.ItemStacksTaken)
             {

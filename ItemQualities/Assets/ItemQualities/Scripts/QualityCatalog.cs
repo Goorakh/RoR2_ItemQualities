@@ -8,6 +8,7 @@ using RoR2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEditor;
@@ -54,18 +55,10 @@ namespace ItemQualities
             Availability.MakeAvailable();
         }
 
-        static IEnumerator setQualityGroups<TListQualityTierDefs,
-                                            TListItemQualityGroups,
-                                            TListEquipmentQualityGroups,
-                                            TListBuffQualityGroups>
-                                           (TListQualityTierDefs qualityTierDefs,
-                                            TListItemQualityGroups itemQualityGroups,
-                                            TListEquipmentQualityGroups equipmentQualityGroups,
-                                            TListBuffQualityGroups buffQualityGroups)
-            where TListQualityTierDefs : IList<QualityTierDef>
-            where TListItemQualityGroups : IList<ItemQualityGroup>
-            where TListEquipmentQualityGroups : IList<EquipmentQualityGroup>
-            where TListBuffQualityGroups : IList<BuffQualityGroup>
+        static IEnumerator setQualityGroups(ReadOnlyCollection<QualityTierDef> qualityTierDefs,
+                                            ReadOnlyCollection<ItemQualityGroup> itemQualityGroups,
+                                            ReadOnlyCollection<EquipmentQualityGroup> equipmentQualityGroups,
+                                            ReadOnlyCollection<BuffQualityGroup> buffQualityGroups)
         {
             for (int i = 0; i < qualityTierDefs.Count; i++)
             {
@@ -334,15 +327,15 @@ namespace ItemQualities
             for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
             {
                 List<ItemIndex> items = ListPool<ItemIndex>.RentCollection();
-                items.EnsureCapacity(ItemCatalog.itemCount / ((int)QualityTier.Count + 1));
+                ListUtils.EnsureCapacity(items, ItemCatalog.itemCount / ((int)QualityTier.Count + 1));
                 itemsByQuality[(int)qualityTier + 1] = items;
 
                 List<EquipmentIndex> equipments = ListPool<EquipmentIndex>.RentCollection();
-                items.EnsureCapacity(EquipmentCatalog.equipmentCount / ((int)QualityTier.Count + 1));
+                ListUtils.EnsureCapacity(equipments, EquipmentCatalog.equipmentCount / ((int)QualityTier.Count + 1));
                 equipmentsByQuality[(int)qualityTier + 1] = equipments;
 
                 List<BuffIndex> buffs = ListPool<BuffIndex>.RentCollection();
-                buffs.EnsureCapacity(BuffCatalog.buffCount / ((int)QualityTier.Count + 1));
+                ListUtils.EnsureCapacity(buffs, BuffCatalog.buffCount / ((int)QualityTier.Count + 1));
                 buffsByQuality[(int)qualityTier + 1] = buffs;
             }
 

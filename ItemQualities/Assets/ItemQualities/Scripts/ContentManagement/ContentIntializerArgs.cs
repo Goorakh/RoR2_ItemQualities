@@ -1,4 +1,4 @@
-﻿using System;
+﻿using HG;
 
 namespace ItemQualities.ContentManagement
 {
@@ -6,9 +6,9 @@ namespace ItemQualities.ContentManagement
     {
         public ExtendedContentPack ContentPack { get; }
 
-        public IProgress<float> ProgressReceiver { get; }
+        public ReadableProgress<float> ProgressReceiver { get; }
 
-        public ContentIntializerArgs(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+        public ContentIntializerArgs(ExtendedContentPack contentPack, ReadableProgress<float> progressReceiver)
         {
             ContentPack = contentPack;
             ProgressReceiver = progressReceiver;

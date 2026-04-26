@@ -1,18 +1,13 @@
 ﻿using HG;
-using ItemQualities.Utilities.Extensions;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ItemQualities.Utilities
 {
-    public sealed class UnorderedCollectionComparer<T> : IEqualityComparer<IEnumerable<T>>
+    public sealed class UnorderedCollectionComparer<T, TCollection> : EqualityComparer<TCollection>
+        where TCollection : ICollection<T>
     {
-        public static UnorderedCollectionComparer<T> Default { get; } = new UnorderedCollectionComparer<T>();
-
-        public IEqualityComparer<T> ElementComparer { get; set; } = EqualityComparer<T>.Default;
-
-        public bool Equals(IEnumerable<T> a, IEnumerable<T> b)
+        public override bool Equals(TCollection a, TCollection b)
         {
             if ((a == null) != (b == null))
                 return false;
@@ -24,27 +19,25 @@ namespace ItemQualities.Utilities
             if (ReferenceEquals(a, b))
                 return true;
 
-            int collectionSize = a.Count();
-            if (collectionSize != b.Count())
+            if (a.Count != b.Count)
                 return false;
 
             using var _ = ListPool<T>.RentCollection(out List<T> remainingElementsB);
-            remainingElementsB.EnsureCapacity(collectionSize);
             remainingElementsB.AddRange(b);
 
             foreach (T item in a)
             {
-                int index = remainingElementsB.IndexOf<T, List<T>>(item, ElementComparer);
+                int index = remainingElementsB.IndexOf(item);
                 if (index == -1)
                     return false;
 
                 remainingElementsB.RemoveAt(index);
             }
 
-            return true;
+            return remainingElementsB.Count == 0;
         }
 
-        public int GetHashCode(IEnumerable<T> collection)
+        public override int GetHashCode(TCollection collection)
         {
             if (collection == null)
                 return 0;
@@ -52,7 +45,7 @@ namespace ItemQualities.Utilities
             HashCode hashCode = new HashCode();
             foreach (T item in collection)
             {
-                hashCode.Add(item, ElementComparer);
+                hashCode.Add(item);
             }
 
             return hashCode.ToHashCode();

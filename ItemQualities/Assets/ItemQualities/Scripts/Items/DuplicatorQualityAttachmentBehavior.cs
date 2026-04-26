@@ -83,7 +83,7 @@ namespace ItemQualities.Items
                     MinionOwnership.MinionGroup minionGroup = MinionOwnership.MinionGroup.FindGroup(_attachedMaster.netId);
                     if (minionGroup != null)
                     {
-                        _cachedMinionInventories.EnsureCapacity(minionGroup.memberCount);
+                        ListUtils.EnsureCapacity(_cachedMinionInventories, minionGroup.memberCount);
 
                         for (int i = 0; i < minionGroup.memberCount; i++)
                         {

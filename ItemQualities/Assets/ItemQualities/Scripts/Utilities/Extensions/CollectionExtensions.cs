@@ -1,38 +1,42 @@
 ﻿using RoR2.ContentManagement;
-using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace ItemQualities.Utilities.Extensions
 {
     internal static class CollectionExtensions
     {
-        public static void EnsureCapacity<T>(this List<T> list, int capacity)
+        static class SharedSingleElementArray<T>
         {
-            if (list is null)
-                throw new ArgumentNullException(nameof(list));
-
-            if (list.Capacity < capacity)
-            {
-                list.Capacity = capacity;
-            }
+            public static readonly T[] Array = new T[1];
         }
 
         public static void Add<T>(this NamedAssetCollection<T> namedAssetCollection, T value)
         {
-            namedAssetCollection.Add(new T[] { value });
+            // OPTIMIZATION: Use shared array for passing info into collection to avoid allocations.
+            // This is reliant on the fact that .Add() does not store a reference to the array and simply copies elements from it.
+            ref readonly T[] array = ref SharedSingleElementArray<T>.Array;
+            array[0] = value;
+            try
+            {
+                namedAssetCollection.Add(array);
+            }
+            finally
+            {
+                array[0] = default(T);
+            }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetSafe<T, TList>(this TList list, int index, in T defaultValue = default)
             where TList : IList<T>
         {
-            if (list is null)
-                throw new ArgumentNullException(nameof(list));
-
-            return (uint)index < list.Count ? list[index] : defaultValue;
+            return list != null && (uint)index < list.Count ? list[index] : defaultValue;
         }
 
-        public static int IndexOf<T, TList>(this IList<T> list, T item, IEqualityComparer<T> equalityComparer)
+        public static int IndexOf<T, TList, TComparer>(this TList list, T item, TComparer equalityComparer)
             where TList : IList<T>
+            where TComparer : IEqualityComparer<T>
         {
             for (int i = 0; i < list.Count; i++)
             {
@@ -45,8 +49,9 @@ namespace ItemQualities.Utilities.Extensions
             return -1;
         }
 
-        public static int LastIndexOf<T, TList>(this IList<T> list, T item, IEqualityComparer<T> equalityComparer)
+        public static int LastIndexOf<T, TList, TComparer>(this TList list, T item, TComparer equalityComparer)
             where TList : IList<T>
+            where TComparer : IEqualityComparer<T>
         {
             for (int i = list.Count - 1; i >= 0; i--)
             {

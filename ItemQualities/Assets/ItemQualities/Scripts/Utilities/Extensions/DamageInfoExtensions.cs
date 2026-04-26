@@ -17,7 +17,7 @@ namespace ItemQualities.Utilities.Extensions
         {
             orig(self, damageInfo);
 
-            DamageInfoData damageInfoData = _damageInfoDataLookup.GetOrAddNew(damageInfo);
+            DamageInfoData damageInfoData = _damageInfoDataLookup.GetOrCreateValue(damageInfo);
             damageInfoData.Parried = true;
         }
 

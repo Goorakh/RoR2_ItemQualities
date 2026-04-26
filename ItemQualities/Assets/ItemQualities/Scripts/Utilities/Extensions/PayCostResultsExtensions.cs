@@ -18,7 +18,7 @@ namespace ItemQualities.Utilities.Extensions
                 On.RoR2.CostTypeDef.PayCostResults.Clear += PayCostResults_Clear;
             }
 
-            return _extraDataTable.GetOrAddNew(payCostResults);
+            return _extraDataTable.GetOrCreateValue(payCostResults);
         }
 
         public static void SetUsedSaleStars(this CostTypeDef.PayCostResults payCostResults, ItemQualityCounts usedSaleStarCounts)
