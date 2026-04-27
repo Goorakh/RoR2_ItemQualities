@@ -6,6 +6,9 @@
 * Soulbound Catalyst:
     * Fixed item removing quality status of equipment on kill.
 
+* Rose Buckler:
+    * Cooldown now displays time remaining until it ends.
+
 * Eclipse Lite:
     * Fixed overflow barrier not displaying correctly with curse.
 

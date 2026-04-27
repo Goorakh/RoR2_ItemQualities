@@ -2,10 +2,8 @@ using HG;
 using ItemQualities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.Networking;
 
 namespace EntityStates.SprintArmorDash
@@ -14,7 +12,7 @@ namespace EntityStates.SprintArmorDash
     {
         static readonly SphereSearch _dashSphereSearch = new SphereSearch();
 
-        static GameObject _blinkPrefab;
+        static EffectIndex _blinkEffectIndex;
 
         CharacterBody _attachedBody;
         IPhysMotor _motor;
@@ -22,13 +20,14 @@ namespace EntityStates.SprintArmorDash
         Vector3 _dashDirection;
         bool _stoppedDash;
 
-        [SystemInitializer]
+        [SystemInitializer(typeof(EffectCatalogUtils))]
         static void Init()
         {
-            Addressables.LoadAssetAsync<GameObject>(RoR2_Base_Huntress.HuntressBlinkEffect_prefab).OnSuccess(prefab =>
+            _blinkEffectIndex = EffectCatalogUtils.FindEffectIndex("HuntressBlinkEffect");
+            if (_blinkEffectIndex == EffectIndex.Invalid)
             {
-                _blinkPrefab = prefab;
-            });
+                Log.Warning("Failed to find blink effect index");
+            }
         }
 
         public override void OnEnter()
@@ -52,7 +51,7 @@ namespace EntityStates.SprintArmorDash
             {
                 ItemQualityCounts sprintArmor = _attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintArmor);
 
-                float cooldown = sprintArmor.HighestQuality switch
+                int cooldown = sprintArmor.HighestQuality switch
                 {
                     QualityTier.Uncommon => 20,
                     QualityTier.Rare => 15,
@@ -61,27 +60,55 @@ namespace EntityStates.SprintArmorDash
                     _ => 30,
                 };
 
-                _attachedBody.AddTimedBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown.buffIndex, cooldown);
-                _attachedBody.AddTimedBuff(JunkContent.Buffs.IgnoreFallDamage.buffIndex, 0.3f);
+                for (int i = 0; i < cooldown; i++)
+                {
+                    _attachedBody.AddTimedBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown, i);
+                }
+
+                _attachedBody.AddBuff(JunkContent.Buffs.IgnoreFallDamage);
             }
 
             EffectData effectData = new EffectData();
             effectData.rotation = Util.QuaternionSafeLookRotation(_dashDirection);
             effectData.origin = _attachedBody.corePosition;
-            EffectManager.SpawnEffect(_blinkPrefab, effectData, transmit: false);
+            EffectManager.SpawnEffect(_blinkEffectIndex, effectData, transmit: false);
+        }
+
+        public override void OnExit()
+        {
+            if (NetworkServer.active)
+            {
+                if (_attachedBody)
+                {
+                    _attachedBody.RemoveBuff(JunkContent.Buffs.IgnoreFallDamage);
+                    _attachedBody.AddTimedBuff(JunkContent.Buffs.IgnoreFallDamage, 0.2f);
+                }
+            }
+
+            base.OnExit();
         }
 
         public override void FixedUpdate()
         {
             base.FixedUpdate();
 
-            if (!_attachedBody) 
-                return;
+            if (!_attachedBody)
+            {
+                if (isAuthority)
+                {
+                    outer.SetNextStateToMain();
+                }
 
-            if (isAuthority)
+                return;
+            }
+
+            if (NetworkServer.active)
             {
                 _attachedBody.isSprinting = true;
+            }
 
+            if (_attachedBody.hasEffectiveAuthority)
+            {
                 if (_motor != null)
                 {
                     if (fixedAge < 0.1f)
@@ -106,7 +133,10 @@ namespace EntityStates.SprintArmorDash
                         });
                     }
                 }
+            }
 
+            if (isAuthority)
+            {
                 if (fixedAge > 0.2f)
                 {
                     outer.SetNextStateToMain();
