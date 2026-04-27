@@ -1,4 +1,4 @@
-## <Next Version>
+## 0.7.5
 
 * Recycler:
     * Can now reroll quality printers.
