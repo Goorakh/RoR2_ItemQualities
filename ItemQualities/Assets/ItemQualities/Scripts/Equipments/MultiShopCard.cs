@@ -276,7 +276,7 @@ namespace ItemQualities.Equipments
             }
             catch (Exception e)
             {
-                Log.Warning_NoCallerPrefix(e);
+                Log.Warning_NoCallerPrefix(e.ToString());
             }
 
             return result;

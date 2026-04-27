@@ -33,7 +33,7 @@ namespace ItemQualities.ContentManagement
         static bool _hasCollectedLoadCoroutines = false;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             if (loadContentInternal == null)
             {
@@ -41,9 +41,9 @@ namespace ItemQualities.ContentManagement
                 yield break;
             }
 
-            PartitionedProgress totalProgress = new PartitionedProgress(args.ProgressReceiver);
-            IProgress<float> loadContentProgress = totalProgress.AddPartition();
-            IProgress<float> generateAssetsProgress = totalProgress.AddPartition();
+            PartitionedProgress<IProgress<float>> totalProgress = new PartitionedProgress<IProgress<float>>(args.ProgressReceiver);
+            ProgressPartition loadContentProgress = totalProgress.AddPartition();
+            ProgressPartition generateAssetsProgress = totalProgress.AddPartition();
 
             ParallelProgressCoroutine loadContentCoroutine = new ParallelProgressCoroutine(loadContentProgress);
 
@@ -119,7 +119,7 @@ namespace ItemQualities.ContentManagement
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
             }
 
             current = null;
@@ -135,7 +135,7 @@ namespace ItemQualities.ContentManagement
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
                 coroutine = null;
             }
 

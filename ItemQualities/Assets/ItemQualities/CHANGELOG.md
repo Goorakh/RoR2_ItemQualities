@@ -1,3 +1,20 @@
+## 0.7.5
+
+* Recycler:
+    * Can now reroll quality printers.
+
+* Soulbound Catalyst:
+    * Fixed item removing quality status of equipment on kill.
+
+* Rose Buckler:
+    * Cooldown now displays time remaining until it ends.
+
+* Eclipse Lite:
+    * Fixed overflow barrier not displaying correctly with curse.
+
+* Backup Magazine:
+    * Fixed refresh not working for Operator swarm.
+
 ## 0.7.4
 
 * Fix changelog.
@@ -44,7 +61,7 @@
     * Fixed being able to mark certain non-enemies as targets (scorcher puddles, heat vents, etc).
 
 * Rose Buckler:
-    * Fixed dash not dealing damage.
+    * Fixed dash not applying weaken.
 
 * Backup Magazine:
     * Fixed being able to spam loader grapple to gain all charges back. The refresh now rolls when the grapple hits.

@@ -14,7 +14,7 @@ namespace ItemQualities
     public sealed class DelayedHealPackController : NetworkBehaviour
     {
         [ContentInitializer]
-        static IEnumerator Init(ContentIntializerArgs args)
+        static IEnumerator Init(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> healPackLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Tooth.HealPack_prefab);
             healPackLoad.OnSuccess(healPackPrefab =>

@@ -25,7 +25,8 @@ namespace ItemQualities.ContentManagement
             Dependencies = dependencies;
         }
 
-        public static IEnumerator RunContentInitializers(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+        public static IEnumerator RunContentInitializers<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
+            where TProgress : IProgress<float>
         {
             List<(IEnumerator coroutine, ReadableProgress<float> progress)> contentInitializersSequence = new();
 
@@ -44,7 +45,7 @@ namespace ItemQualities.ContentManagement
 
                     MethodInfo method = attribute.target;
                     ParameterInfo[] methodParameters = method.GetParameters();
-                    if (methodParameters.Length != 1 || methodParameters[0].ParameterType != typeof(ContentIntializerArgs))
+                    if (methodParameters.Length != 1 || methodParameters[0].ParameterType != typeof(ContentInitializerArgs))
                     {
                         Log.Error($"Invalid parameters for Content Initializer method {method.DeclaringType.FullName}.{method.Name}");
                         attributes.RemoveAt(i);
@@ -73,9 +74,9 @@ namespace ItemQualities.ContentManagement
                     if (initializerDependencies.Count == 0)
                     {
                         ReadableProgress<float> contentInitializerProgress = new ReadableProgress<float>();
-                        ContentIntializerArgs contentIntializerArgs = new ContentIntializerArgs(contentPack, contentInitializerProgress);
+                        ContentInitializerArgs contentIntializerArgs = new ContentInitializerArgs(contentPack, contentInitializerProgress);
 
-                        static IEnumerator runInitializerCoroutine(MethodInfo method, ContentIntializerArgs contentIntializerArgs)
+                        static IEnumerator runInitializerCoroutine(MethodInfo method, ContentInitializerArgs contentIntializerArgs)
                         {
                             object returnValue = method.Invoke(null, new object[] { contentIntializerArgs });
                             if (returnValue is IEnumerator enumerator)
@@ -125,8 +126,8 @@ namespace ItemQualities.ContentManagement
 
             Log.Debug($"Content initializers separated into {contentInitializerGroups.Count} group(s):\n{string.Join("\n", contentInitializerGroups.Select(g => $"[{string.Join(", ", g.InitializedTypes.Select(t => t.FullName))}]"))}");
 
-            PartitionedProgress partitionedProgress = new PartitionedProgress(progressReceiver);
-            IProgress<float>[] initializerGroupProgressReceivers = partitionedProgress.AddPartitions(contentInitializersSequence.Count);
+            PartitionedProgress<TProgress> partitionedProgress = new PartitionedProgress<TProgress>(progressReceiver);
+            ProgressPartition[] initializerGroupProgressReceivers = partitionedProgress.AddPartitions(contentInitializersSequence.Count);
 
             for (int i = 0; i < contentInitializersSequence.Count; i++)
             {

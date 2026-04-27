@@ -78,7 +78,7 @@ namespace ItemQualities
                     recipes.Clear();
                 }
 
-                HashSet<PickupIndex[]> allRecipeCombinations = new HashSet<PickupIndex[]>(UnorderedCollectionComparer<PickupIndex>.Default);
+                HashSet<PickupIndex[]> allRecipeCombinations = new HashSet<PickupIndex[]>(UnorderedCollectionComparer<PickupIndex, PickupIndex[]>.Default);
 
                 foreach (Recipe recipe in craftableDef.recipes)
                 {
@@ -311,7 +311,7 @@ namespace ItemQualities
 
             if (sb.Length > 0)
             {
-                Log.Debug_NoCallerPrefix(sb);
+                Log.Debug_NoCallerPrefix(sb.ToString());
             }
 #endif
         }

@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using System;
 using UnityEngine;
 
 namespace ItemQualities
@@ -26,6 +27,8 @@ namespace ItemQualities
             }
         }
 
+        public static event Action<InteractableInfoProvider> OnCatalogedInteractableStartGlobal;
+
         void Awake()
         {
             SpecialObjectAttributes = GetComponent<SpecialObjectAttributes>();
@@ -41,6 +44,18 @@ namespace ItemQualities
         void OnDisable()
         {
             InstanceTracker.Remove(this);
+        }
+
+        void Start()
+        {
+            if (CatalogIndex != -1)
+            {
+                OnCatalogedInteractableStartGlobal?.Invoke(this);
+            }
+            else
+            {
+                Log.Warning($"Failed to resolve interactable catalog index for {Util.GetGameObjectHierarchyName(gameObject)}");
+            }
         }
     }
 }

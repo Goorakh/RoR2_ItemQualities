@@ -41,7 +41,7 @@ namespace ItemQualities
             _logSource = logSource;
         }
 
-        static StringBuilder buildCallerLogString(string callerPath, string callerMemberName, int callerLineNumber, object data)
+        static StringBuilder buildCallerLogString(string callerPath, string callerMemberName, int callerLineNumber, string data)
         {
             return _sharedStringBuilder.Clear()
                                        .Append(callerPath, _cachedCallerPathPrefixLength, callerPath.Length - _cachedCallerPathPrefixLength)
@@ -51,7 +51,7 @@ namespace ItemQualities
         }
 
         [Conditional("DEBUG")]
-        internal static void Debug(object data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        internal static void Debug(string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             lock (_logLock)
             {
@@ -60,7 +60,7 @@ namespace ItemQualities
         }
 
         [Conditional("DEBUG")]
-        internal static void Debug_NoCallerPrefix(object data)
+        internal static void Debug_NoCallerPrefix(string data)
         {
             lock (_logLock)
             {
@@ -68,7 +68,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Error(object data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        internal static void Error(string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             lock (_logLock)
             {
@@ -76,7 +76,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Error_NoCallerPrefix(object data)
+        internal static void Error_NoCallerPrefix(string data)
         {
             lock (_logLock)
             {
@@ -84,7 +84,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Fatal(object data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        internal static void Fatal(string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             lock (_logLock)
             {
@@ -92,7 +92,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Fatal_NoCallerPrefix(object data)
+        internal static void Fatal_NoCallerPrefix(string data)
         {
             lock (_logLock)
             {
@@ -100,7 +100,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Info(object data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        internal static void Info(string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             lock (_logLock)
             {
@@ -108,7 +108,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Info_NoCallerPrefix(object data)
+        internal static void Info_NoCallerPrefix(string data)
         {
             lock (_logLock)
             {
@@ -116,7 +116,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Message(object data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        internal static void Message(string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             lock (_logLock)
             {
@@ -124,7 +124,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Message_NoCallerPrefix(object data)
+        internal static void Message_NoCallerPrefix(string data)
         {
             lock (_logLock)
             {
@@ -132,7 +132,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Warning(object data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        internal static void Warning(string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             lock (_logLock)
             {
@@ -140,7 +140,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void Warning_NoCallerPrefix(object data)
+        internal static void Warning_NoCallerPrefix(string data)
         {
             lock (_logLock)
             {
@@ -148,7 +148,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void LogType(LogLevel level, object data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        internal static void LogType(LogLevel level, string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
 #if !DEBUG
             if ((level & LogLevel.Debug) != 0)
@@ -161,7 +161,7 @@ namespace ItemQualities
             }
         }
 
-        internal static void LogType_NoCallerPrefix(LogLevel level, object data)
+        internal static void LogType_NoCallerPrefix(LogLevel level, string data)
         {
 #if !DEBUG
             if ((level & LogLevel.Debug) != 0)

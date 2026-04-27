@@ -19,7 +19,7 @@ namespace ItemQualities.Equipments
         static readonly GameObject[] _qualityVehiclePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> fireballVehicleLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_FireBallDash.FireballVehicle_prefab);
             fireballVehicleLoad.OnSuccess(fireballVehiclePrefab =>

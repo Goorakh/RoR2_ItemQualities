@@ -20,7 +20,7 @@ namespace ItemQualities.Equipments
         static readonly GameObject[] _qualityProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> gravSphereProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Blackhole.GravSphere_prefab);
             gravSphereProjectileLoad.OnSuccess(gravSphereProjectilePrefab =>

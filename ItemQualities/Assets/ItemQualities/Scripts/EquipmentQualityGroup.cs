@@ -137,7 +137,7 @@ namespace ItemQualities
             }
         }
 
-        IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
+        IEnumerator IAsyncContentLoadCallback.OnContentLoad<TProgress>(TProgress progressReceiver)
         {
             if (BaseEquipment)
             {
@@ -232,7 +232,8 @@ namespace ItemQualities
             }
         }
 
-        internal IEnumerator GenerateRuntimeAssetsAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver = null)
+        internal IEnumerator GenerateRuntimeAssetsAsync<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver = default)
+            where TProgress : IProgress<float>
         {
             if (BaseEquipment)
             {

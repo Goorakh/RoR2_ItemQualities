@@ -50,7 +50,6 @@ namespace ItemQualities
             try
             {
                 using var _2 = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> sortedItemsInGroup);
-                sortedItemsInGroup.EnsureCapacity((int)QualityTier.Count + 1);
 
                 for (int i = 0; i < tempItemAcquisitionOrder.Count; i++)
                 {
@@ -71,7 +70,7 @@ namespace ItemQualities
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
                 return;
             }
 
@@ -95,7 +94,6 @@ namespace ItemQualities
             try
             {
                 using var _2 = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> sortedItemsInGroup);
-                sortedItemsInGroup.EnsureCapacity((int)QualityTier.Count + 1);
 
                 extractAndSortAllItemsInGroup(itemGroupIndex, 0, tempItemAcquisitionOrder, sortedItemsInGroup, out int groupStartIndex);
                 if (sortedItemsInGroup.Count > 0)
@@ -107,7 +105,7 @@ namespace ItemQualities
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
                 return;
             }
 

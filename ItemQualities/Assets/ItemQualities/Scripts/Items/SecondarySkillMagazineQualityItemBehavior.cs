@@ -38,7 +38,7 @@ namespace ItemQualities.Items
             HashSet<int> otherSkillIndicesToRestock = new HashSet<int>();
             tryAddSkillByName("SnipeHeavy", otherSkillIndicesToRestock);
 
-            static void tryAddSkillByName(string name, ICollection<int> skillIndices)
+            static void tryAddSkillByName(string name, HashSet<int> skillIndices)
             {
                 int skillIndex = SkillCatalog.FindSkillIndexByName(name);
                 if (skillIndex != -1)
@@ -69,13 +69,13 @@ namespace ItemQualities.Items
         void OnEnable()
         {
             Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
-            SecondarySkillMagazine.OnSkillUsedIndirectAuthority += onSkillUsedIndirectAuthority;
+            SkillHooks.OnSkillUsedIndirectAuthority += onSkillUsedIndirectAuthority;
         }
 
         void OnDisable()
         {
             Body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
-            SecondarySkillMagazine.OnSkillUsedIndirectAuthority -= onSkillUsedIndirectAuthority;
+            SkillHooks.OnSkillUsedIndirectAuthority -= onSkillUsedIndirectAuthority;
         }
 
         void onSkillActivatedAuthority(GenericSkill skill)

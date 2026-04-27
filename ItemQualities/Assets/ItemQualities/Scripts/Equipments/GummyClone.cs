@@ -28,7 +28,7 @@ namespace ItemQualities.Equipments
         };
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> gummyCloneProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_GummyClone.GummyCloneProjectile_prefab);
             gummyCloneProjectileLoad.OnSuccess(gummyCloneProjectilePrefab =>

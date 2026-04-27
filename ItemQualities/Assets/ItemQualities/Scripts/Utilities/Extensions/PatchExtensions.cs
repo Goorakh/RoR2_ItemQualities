@@ -597,7 +597,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (instruction.MatchLdloc(out int variableIndex))
             {
-                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex);
+                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex, default(VariableDefinition));
                 return variableDefinition != null;
             }
 
@@ -642,7 +642,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (instruction.MatchLdloca(out int variableIndex))
             {
-                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex);
+                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex, default(VariableDefinition));
                 return variableDefinition != null;
             }
 
@@ -687,7 +687,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (instruction.MatchStloc(out int variableIndex))
             {
-                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex);
+                variableDefinition = il.Method.Body.Variables.GetSafe(variableIndex, default(VariableDefinition));
                 return variableDefinition != null;
             }
 
@@ -725,7 +725,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (instruction.MatchLdarg(out int parameterIndex))
             {
-                parameter = il.Method.Parameters.GetSafe(parameterIndex);
+                parameter = il.Method.Parameters.GetSafe(parameterIndex, default(ParameterDefinition));
                 return parameter != null;
             }
 
@@ -820,7 +820,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (instruction.MatchStarg(out int parameterIndex))
             {
-                parameter = il.Method.Parameters.GetSafe(parameterIndex);
+                parameter = il.Method.Parameters.GetSafe(parameterIndex, default(ParameterDefinition));
                 return parameter != null;
             }
 
@@ -915,7 +915,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (instruction.MatchLdarga(out int parameterIndex))
             {
-                parameter = il.Method.Parameters.GetSafe(parameterIndex);
+                parameter = il.Method.Parameters.GetSafe(parameterIndex, default(ParameterDefinition));
                 return parameter != null;
             }
 

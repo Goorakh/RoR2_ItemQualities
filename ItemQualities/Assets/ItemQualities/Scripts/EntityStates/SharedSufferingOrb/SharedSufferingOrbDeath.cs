@@ -18,7 +18,7 @@ namespace EntityStates.SharedSufferingOrb
         static GameObject _deathEffectPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> timeCrystalDeathLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_WeeklyRun.TimeCrystalDeath_prefab);
             timeCrystalDeathLoad.OnSuccess(timeCrystalDeath =>

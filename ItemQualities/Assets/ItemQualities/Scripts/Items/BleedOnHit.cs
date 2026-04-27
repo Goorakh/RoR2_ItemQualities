@@ -35,7 +35,7 @@ namespace ItemQualities.Items
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
             }
 
             orig(ref inflictDotInfo);

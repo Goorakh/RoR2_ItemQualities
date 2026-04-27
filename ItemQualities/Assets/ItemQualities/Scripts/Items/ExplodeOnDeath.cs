@@ -7,8 +7,6 @@ using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
-using MonoMod.Utils;
 using RoR2;
 using RoR2.ContentManagement;
 using RoR2.Items;
@@ -108,11 +106,12 @@ namespace ItemQualities.Items
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
 
-            static IEnumerator banditSmokeBombScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator banditSmokeBombScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<GameObject> smokeBombPrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Bandit2.Bandit2SmokeBomb_prefab);
                 AsyncOperationHandle<EntityStateConfiguration> stealthModeConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Bandit2.EntityStates_Bandit2_StealthMode_asset);
@@ -142,7 +141,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> banditSmokeBombProgress = new ReadableProgress<float>();
             coroutine.Add(banditSmokeBombScaleFixAsync(banditSmokeBombProgress), banditSmokeBombProgress);
 
-            static IEnumerator lightningStrikeImpactScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator lightningStrikeImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Lightning.LightningStrikeImpact_prefab);
 
@@ -161,7 +161,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> lightningStrikeImpactProgress = new ReadableProgress<float>();
             coroutine.Add(lightningStrikeImpactScaleFixAsync(lightningStrikeImpactProgress), lightningStrikeImpactProgress);
 
-            static IEnumerator simpleLightningStrikeImpactScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator simpleLightningStrikeImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_LightningStrikeOnHit.SimpleLightningStrikeImpact_prefab);
 
@@ -180,7 +181,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> simpleLightningStrikeImpactProgress = new ReadableProgress<float>();
             coroutine.Add(simpleLightningStrikeImpactScaleFixAsync(simpleLightningStrikeImpactProgress), simpleLightningStrikeImpactProgress);
 
-            static IEnumerator meteorStormScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator meteorStormScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<GameObject> meteorStormLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Meteor.MeteorStorm_prefab);
 
@@ -229,7 +231,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> meteorStormProgress = new ReadableProgress<float>();
             coroutine.Add(meteorStormScaleFixAsync(meteorStormProgress), meteorStormProgress);
 
-            static IEnumerator brotherFistSlamScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator brotherFistSlamScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<EntityStateConfiguration> brotherFistSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Brother.EntityStates_BrotherMonster_FistSlam_asset);
 
@@ -261,7 +264,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> brotherFistSlamProgress = new ReadableProgress<float>();
             coroutine.Add(brotherFistSlamScaleFixAsync(brotherFistSlamProgress), brotherFistSlamProgress);
 
-            static IEnumerator brotherWeaponSlamScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator brotherWeaponSlamScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<EntityStateConfiguration> brotherWeaponSlamConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Brother.EntityStates_BrotherMonster_WeaponSlam_asset);
 
@@ -293,7 +297,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> brotherWeaponSlamProgress = new ReadableProgress<float>();
             coroutine.Add(brotherWeaponSlamScaleFixAsync(brotherWeaponSlamProgress), brotherWeaponSlamProgress);
 
-            static IEnumerator falseSonBossPrimarySlamScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+            static IEnumerator falseSonBossPrimarySlamScaleFixAsync<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AssetReferenceT<AnimationClip> falseSonBossPrimarySlamClipReference = new AssetReferenceT<AnimationClip>(RoR2_DLC2_FalseSon.AS_FalseSon_PrimarySlam_fbx_FSArmature_BossPrimarySlam_);
                 AsyncOperationHandle<AnimationClip> falseSonBossPrimarySlamClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(falseSonBossPrimarySlamClipReference);
@@ -366,7 +371,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> falseSonBossPrimarySlamProgress = new ReadableProgress<float>();
             coroutine.Add(falseSonBossPrimarySlamScaleFixAsync(args.ContentPack, falseSonBossPrimarySlamProgress), falseSonBossPrimarySlamProgress);
 
-            static IEnumerator falseSonBossPrimeDevastatorScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+            static IEnumerator falseSonBossPrimeDevastatorScaleFixAsync<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AssetReferenceT<AnimationClip> falseSonBossPrimeDevastatorClipReference = new AssetReferenceT<AnimationClip>(RoR2_DLC2_FalseSon.AS_FalseSonBoss_PrimeDevastator_fbx_FSArmature_BossPrimaryDevastator_);
                 AsyncOperationHandle<AnimationClip> falseSonBossPrimeDevastatorClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(falseSonBossPrimeDevastatorClipReference);
@@ -435,7 +441,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> falseSonBossPrimeDevastatorProgress = new ReadableProgress<float>();
             coroutine.Add(falseSonBossPrimeDevastatorScaleFixAsync(args.ContentPack, falseSonBossPrimeDevastatorProgress), falseSonBossPrimeDevastatorProgress);
 
-            static IEnumerator golemClapScaleFixAsync(ExtendedContentPack contentPack, IProgress<float> progressReceiver)
+            static IEnumerator golemClapScaleFixAsync<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AssetReferenceT<AnimationClip> golemClapClipReference = new AssetReferenceT<AnimationClip>(RoR2_Base_Golem.mdlGolem_fbx_GolemArmature_Smack_);
                 AsyncOperationHandle<AnimationClip> golemClapClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(golemClapClipReference);
@@ -504,7 +511,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> golemClapProgress = new ReadableProgress<float>();
             coroutine.Add(golemClapScaleFixAsync(args.ContentPack, golemClapProgress), golemClapProgress);
 
-            static IEnumerator golemLaserScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator golemLaserScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<EntityStateConfiguration> golemLaserConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_Golem.EntityStates_GolemMonster_FireLaser_asset);
 
@@ -536,7 +544,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> golemLaserProgress = new ReadableProgress<float>();
             coroutine.Add(golemLaserScaleFixAsync(golemLaserProgress), golemLaserProgress);
 
-            static IEnumerator halcyoniteTriLaserScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator halcyoniteTriLaserScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<EntityStateConfiguration> halcyoniteTriLaserConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_DLC2_Halcyonite.EntityStates_HalcyoniteMonster_TriLaser_asset);
 
@@ -568,7 +577,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> halcyoniteTriLaserProgress = new ReadableProgress<float>();
             coroutine.Add(halcyoniteTriLaserScaleFixAsync(halcyoniteTriLaserProgress), halcyoniteTriLaserProgress);
 
-            static IEnumerator impBossBlinkScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator impBossBlinkScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<EntityStateConfiguration> impBossBlinkConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2_Base_ImpBoss.EntityStates_ImpBossMonster_BlinkState_asset);
 
@@ -623,7 +633,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> impBossBlinkProgress = new ReadableProgress<float>();
             coroutine.Add(impBossBlinkScaleFixAsync(impBossBlinkProgress), impBossBlinkProgress);
 
-            static IEnumerator impBossGroundPoundScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator impBossGroundPoundScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<EntityStateConfiguration> impBossGroundPoundConfigurationLoad = AddressableUtil.LoadTempAssetAsync<EntityStateConfiguration>(RoR2_Base_ImpBoss.EntityStates_ImpBossMonster_GroundPound_asset);
 
@@ -655,7 +666,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> impBossGroundPoundProgress = new ReadableProgress<float>();
             coroutine.Add(impBossGroundPoundScaleFixAsync(impBossGroundPoundProgress), impBossGroundPoundProgress);
 
-            static IEnumerator parentGroundSlamScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator parentGroundSlamScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AssetReferenceT<AnimationClip> parentGroundSlamClipReference = new AssetReferenceT<AnimationClip>(RoR2_Base_Parent.mdlParent_fbx_ParentArmature_Slam_);
                 AsyncOperationHandle<AnimationClip> parentGroundSlamClipLoad = AssetAsyncReferenceManager<AnimationClip>.LoadAsset(parentGroundSlamClipReference);
@@ -719,7 +731,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> parentGroundSlamProgress = new ReadableProgress<float>();
             coroutine.Add(parentGroundSlamScaleFixAsync(parentGroundSlamProgress), parentGroundSlamProgress);
 
-            static IEnumerator mageFlyUpBlinkScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator mageFlyUpBlinkScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AsyncOperationHandle<EntityStateConfiguration> mageFlyUpStateConfigurationLoad = AddressableUtil.LoadAssetAsync<EntityStateConfiguration>(RoR2_Base_Mage.EntityStates_Mage_FlyUpState_asset);
 
@@ -751,7 +764,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> mageFlyUpBlinkProgress = new ReadableProgress<float>();
             coroutine.Add(mageFlyUpBlinkScaleFixAsync(mageFlyUpBlinkProgress), mageFlyUpBlinkProgress);
 
-            static IEnumerator junkCubeDamageImpactScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator junkCubeDamageImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AssetReferenceT<EntityStateConfiguration>[] junkCubeDamageConfigurationReferences = new AssetReferenceT<EntityStateConfiguration>[]
                 {
@@ -825,7 +839,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> junkCubeDamageImpactProgress = new ReadableProgress<float>();
             coroutine.Add(junkCubeDamageImpactScaleFixAsync(junkCubeDamageImpactProgress), junkCubeDamageImpactProgress);
 
-            static IEnumerator junkCubeLaunchedImpactScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator junkCubeLaunchedImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AssetReferenceT<EntityStateConfiguration> junkCubeLaunchedConfigurationReference = new AssetReferenceT<EntityStateConfiguration>(RoR2_DLC3_Drifter.EntityStates_JunkCube_Launched_asset);
                 AsyncOperationHandle<EntityStateConfiguration> junkCubeLaunchedConfigurationLoad = AssetAsyncReferenceManager<EntityStateConfiguration>.LoadAsset(junkCubeLaunchedConfigurationReference);
@@ -874,7 +889,8 @@ namespace ItemQualities.Items
             ReadableProgress<float> junkCubeLaunchedImpactProgress = new ReadableProgress<float>();
             coroutine.Add(junkCubeLaunchedImpactScaleFixAsync(junkCubeLaunchedImpactProgress), junkCubeLaunchedImpactProgress);
 
-            static IEnumerator junkCubeDeathImpactScaleFixAsync(IProgress<float> progressReceiver)
+            static IEnumerator junkCubeDeathImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
+                where TProgress : IProgress<float>
             {
                 AssetReferenceT<EntityStateConfiguration>[] junkCubeDeathConfigurationReferences = new AssetReferenceT<EntityStateConfiguration>[]
                 {
@@ -1233,77 +1249,11 @@ namespace ItemQualities.Items
             IL.RoR2.Projectile.LunarStakesLightningController.FireLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
             IL.RoR2.Projectile.LunarStakesLightningController.FireLastLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
 
-            RoR2Application.onLoad += onLoad;
-        }
-
-        static void onLoad()
-        {
-            HashSet<Type> allEntityStateTypes = new HashSet<Type>(EntityStateCatalog.stateIndexToType.Length);
-
-            for (int i = 0; i < EntityStateCatalog.stateIndexToType.Length; i++)
+            EntityStatePatcher.AddPatcher(new EntityStatePatcher.PatcherInfo
             {
-                Type stateType = EntityStateCatalog.stateIndexToType[i];
-                while (stateType != null && typeof(EntityState).IsAssignableFrom(stateType) && allEntityStateTypes.Add(stateType))
-                {
-                    stateType = stateType.BaseType;
-                }
-            }
-
-            int numAppliedHooks = 0;
-
-            if (allEntityStateTypes.Count > 0)
-            {
-                ILContext.Manipulator manipulator = getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
-
-                foreach (Type stateType in allEntityStateTypes)
-                {
-                    try
-                    {
-                        if (stateType.Assembly == Assembly.GetExecutingAssembly())
-                            continue;
-
-                        foreach (MethodInfo method in stateType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly))
-                        {
-                            ILHook hook = null;
-                            try
-                            {
-                                // The IsGenericMethod call sometimes causes a crash if accessed on a method where an assembly reference can't be resolved,
-                                // the DeclaringType getter throws an exception instead, so do that first to catch it before trying to check IsGenericMethod
-                                _ = method.DeclaringType;
-                                if (method.IsGenericMethod || method.GetMethodBody() == null)
-                                    continue;
-
-                                using DynamicMethodDefinition dmd = new DynamicMethodDefinition(method);
-                                using ILContext il = new ILContext(dmd.Definition);
-
-                                if (matchSetupBlastAttack(il))
-                                {
-                                    hook = new ILHook(method, manipulator, new ILHookConfig { ManualApply = true });
-                                    hook.Apply();
-                                }
-                            }
-                            catch (Exception e)
-                            {
-                                Log.Warning($"Failed to apply attack radius hook to {method.DeclaringType.FullName}.{method.Name} ({stateType.Assembly.FullName}): {e.Message}");
-
-                                hook?.Dispose();
-                                hook = null;
-                            }
-
-                            if (hook != null)
-                            {
-                                numAppliedHooks++;
-                            }
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Warning($"Failed to scan type for attack radius hooks: {stateType.FullName} ({stateType.Assembly.FullName}): {e.Message}");
-                    }
-                }
-            }
-
-            Log.Debug($"Applied {numAppliedHooks} attack radius method hook(s)");
+                Manipulator = getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody),
+                ShouldApplyPredicate = matchSetupBlastAttack,
+            });
         }
 
         static bool matchLoadValue(Instruction x, out Instruction instruction)
@@ -1601,7 +1551,7 @@ namespace ItemQualities.Items
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
             }
         }
 
@@ -1616,7 +1566,7 @@ namespace ItemQualities.Items
             }
             catch (Exception e)
             {
-                Log.Error_NoCallerPrefix(e);
+                Log.Error_NoCallerPrefix(e.ToString());
             }
 
             orig(self);

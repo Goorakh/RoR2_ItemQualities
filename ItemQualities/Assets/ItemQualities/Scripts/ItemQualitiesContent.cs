@@ -1,6 +1,7 @@
 using HG;
 using HG.Coroutines;
 using ItemQualities.ContentManagement;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.ContentManagement;
@@ -47,9 +48,9 @@ namespace ItemQualities
 
         public IEnumerator LoadStaticContentAsync(LoadStaticContentAsyncArgs args)
         {
-            PartitionedProgress partitionedProgress = new PartitionedProgress(args.progressReceiver);
-            IProgress<float> loadContentProgress = partitionedProgress.AddPartition(1f);
-            IProgress<float> finalizeContentProgress = partitionedProgress.AddPartition(1f);
+            PartitionedProgress<IProgress<float>> partitionedProgress = new PartitionedProgress<IProgress<float>>(args.progressReceiver);
+            ProgressPartition loadContentProgress = partitionedProgress.AddPartition(1f);
+            ProgressPartition finalizeContentProgress = partitionedProgress.AddPartition(1f);
 
             ParallelProgressCoroutine loadContentCoroutine = new ParallelProgressCoroutine(loadContentProgress);
 
@@ -106,7 +107,8 @@ namespace ItemQualities
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        IEnumerator loadAssetBundleContentAsync(IProgress<float> progressReceiver)
+        IEnumerator loadAssetBundleContentAsync<TProgress>(TProgress progressReceiver)
+            where TProgress : IProgress<float>
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -116,10 +118,10 @@ namespace ItemQualities
                 throw new FileNotFoundException("Could not find ItemQualities assetbundle file");
             }
 
-            PartitionedProgress totalProgress = new PartitionedProgress(progressReceiver);
-            IProgress<float> loadAssetBundleProgress = totalProgress.AddPartition(0.5f);
-            IProgress<float> loadAssetsProgress = totalProgress.AddPartition();
-            IProgress<float> generateAssetsProgress = totalProgress.AddPartition();
+            PartitionedProgress<TProgress> totalProgress = new PartitionedProgress<TProgress>(progressReceiver);
+            ProgressPartition loadAssetBundleProgress = totalProgress.AddPartition(0.5f);
+            ProgressPartition loadAssetsProgress = totalProgress.AddPartition();
+            ProgressPartition generateAssetsProgress = totalProgress.AddPartition();
 
             AssetBundleCreateRequest assetBundleLoad = AssetBundle.LoadFromFileAsync(assetBundleLocation);
             yield return assetBundleLoad.AsProgressCoroutine(loadAssetBundleProgress);
@@ -322,7 +324,8 @@ namespace ItemQualities
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        IEnumerator runContentLoadCallbacks(IProgress<float> progressReceiver)
+        IEnumerator runContentLoadCallbacks<TProgress>(TProgress progressReceiver)
+            where TProgress : IProgress<float>
         {
             ParallelProgressCoroutine callbackParallelCoroutine = new ParallelProgressCoroutine(progressReceiver);
 
@@ -423,7 +426,7 @@ namespace ItemQualities
 
         public static class QualityTiers
         {
-            internal static IReadOnlyCollection<QualityTierDef> AllQualityTiers = Array.Empty<QualityTierDef>();
+            internal static ReadOnlyCollection<QualityTierDef> AllQualityTiers = Empty<QualityTierDef>.ReadOnlyCollection;
 
             public static QualityTierDef Uncommon;
             public static QualityTierDef Rare;
@@ -433,7 +436,7 @@ namespace ItemQualities
 
         public static class ItemQualityGroups
         {
-            internal static IReadOnlyCollection<ItemQualityGroup> AllGroups = Array.Empty<ItemQualityGroup>();
+            internal static ReadOnlyCollection<ItemQualityGroup> AllGroups = Empty<ItemQualityGroup>.ReadOnlyCollection;
 
             public static ItemQualityGroup QualityTier;
 
@@ -721,7 +724,7 @@ namespace ItemQualities
 
         public static class EquipmentQualityGroups
         {
-            internal static IReadOnlyCollection<EquipmentQualityGroup> AllGroups = Array.Empty<EquipmentQualityGroup>();
+            internal static ReadOnlyCollection<EquipmentQualityGroup> AllGroups = Empty<EquipmentQualityGroup>.ReadOnlyCollection;
 
             public static EquipmentQualityGroup BossHunter;
 
@@ -780,7 +783,7 @@ namespace ItemQualities
 
         public static class BuffQualityGroups
         {
-            internal static IReadOnlyCollection<BuffQualityGroup> AllGroups = Array.Empty<BuffQualityGroup>();
+            internal static ReadOnlyCollection<BuffQualityGroup> AllGroups = Empty<BuffQualityGroup>.ReadOnlyCollection;
 
             public static BuffQualityGroup DeathMark;
 
@@ -918,6 +921,8 @@ namespace ItemQualities
             public static GameObject SprintArmorDashAttachment;
 
             public static GameObject GatewayQualityAttachment;
+
+            public static GameObject RecyclableObjectAttachment;
         }
 
         public static class ProjectilePrefabs
@@ -961,13 +966,11 @@ namespace ItemQualities
         {
             [TargetAssetName("icon")]
             public static Sprite ModIcon;
-
-            public static Sprite barrierBar;
         }
 
         public static class TMP_SpriteAssets
         {
-            internal static IReadOnlyCollection<TMP_SpriteAsset> AllSpriteAssets = Array.Empty<TMP_SpriteAsset>();
+            internal static ReadOnlyCollection<TMP_SpriteAsset> AllSpriteAssets = Empty<TMP_SpriteAsset>.ReadOnlyCollection;
         }
 
         public static class NetworkSoundEvents

@@ -28,7 +28,7 @@ namespace ItemQualities
         static readonly GameObject[] _qualityUpgradeTransformationNotificationPrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> genericTransformationNotificationPanelLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_UI.GenericTransformationNotificationPanel_prefab);
             genericTransformationNotificationPanelLoad.OnSuccess(genericTransformationNotificationPanelPrefab =>

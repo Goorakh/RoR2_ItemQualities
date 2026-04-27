@@ -83,7 +83,7 @@ namespace ItemQualities.Equipments
 
                 CharacterMaster master = equipmentSlot.characterBody ? equipmentSlot.characterBody.master : null;
 
-                LightningOrbQualityInfo qualityInfo = _lightningOrbQualityInfoLookup.GetOrAddNew(lightningStrikeOrb);
+                LightningOrbQualityInfo qualityInfo = _lightningOrbQualityInfoLookup.GetOrCreateValue(lightningStrikeOrb);
                 qualityInfo.QualityTier = qualityTier;
                 qualityInfo.BouncesRemaining = RollUtil.GetOverflowRoll(bounceChance, master, false);
             }

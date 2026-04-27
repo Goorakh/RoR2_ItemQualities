@@ -31,19 +31,20 @@ namespace ItemQualities
             {
                 Log.Warning($"{Util.GetGameObjectHierarchyName(gameObject)}: Addressable references were not assigned to prefab during init, loading assets now");
 
-                IEnumerator assignFieldsOperation = AssignFieldsAsync();
+                IEnumerator assignFieldsOperation = AssignFieldsAsync<IProgress<float>>();
                 while (assignFieldsOperation.MoveNext())
                 {
                 }
             }
         }
 
-        IEnumerator IAsyncContentLoadCallback.OnContentLoad(IProgress<float> progressReceiver)
+        IEnumerator IAsyncContentLoadCallback.OnContentLoad<TProgress>(TProgress progressReceiver)
         {
             return AssignFieldsAsync(progressReceiver);
         }
 
-        public IEnumerator AssignFieldsAsync(IProgress<float> progressReceiver = null)
+        public IEnumerator AssignFieldsAsync<TProgress>(TProgress progressReceiver = default)
+            where TProgress : IProgress<float>
         {
             if (FieldAssignments.Length > 0)
             {
@@ -63,7 +64,7 @@ namespace ItemQualities
                     ParallelCoroutine parallelCoroutine = new ParallelCoroutine();
                     foreach (ComponentFieldAddressableAssignment componentFieldAssignment in FieldAssignments)
                     {
-                        parallelCoroutine.Add(assignComponentFieldAsync(componentFieldAssignment));
+                        parallelCoroutine.Add(assignComponentFieldAsync<IProgress<float>>(componentFieldAssignment));
                     }
 
                     yield return parallelCoroutine;
@@ -74,7 +75,8 @@ namespace ItemQualities
             enabled = false;
         }
 
-        IEnumerator assignComponentFieldAsync(ComponentFieldAddressableAssignment componentFieldAssignment, IProgress<float> progressReceiver = null)
+        IEnumerator assignComponentFieldAsync<TProgress>(ComponentFieldAddressableAssignment componentFieldAssignment, TProgress progressReceiver = default)
+            where TProgress : IProgress<float>
         {
             if (!componentFieldAssignment.TargetObject)
                 yield break;

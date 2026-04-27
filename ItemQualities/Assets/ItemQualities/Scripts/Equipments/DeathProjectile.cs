@@ -25,7 +25,7 @@ namespace ItemQualities.Equipments
         static BuffIndex[] _validEliteBuffIndices = Array.Empty<BuffIndex>();
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> deathProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_DeathProjectile.DeathProjectile_prefab);
             deathProjectileLoad.OnSuccess(deathProjectilePrefab =>

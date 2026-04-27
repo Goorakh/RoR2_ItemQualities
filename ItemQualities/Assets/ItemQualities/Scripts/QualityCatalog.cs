@@ -1,5 +1,6 @@
 ﻿using HG;
 using HG.Coroutines;
+using ItemQualities.Extensions;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
@@ -7,6 +8,7 @@ using RoR2;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEditor;
@@ -45,7 +47,7 @@ namespace ItemQualities
         [SystemInitializer(typeof(ItemCatalog), typeof(EquipmentCatalog), typeof(BuffCatalog))]
         static IEnumerator Init()
         {
-            yield return SetQualityGroups(ItemQualitiesContent.QualityTiers.AllQualityTiers,
+            yield return setQualityGroups(ItemQualitiesContent.QualityTiers.AllQualityTiers,
                                           ItemQualitiesContent.ItemQualityGroups.AllGroups,
                                           ItemQualitiesContent.EquipmentQualityGroups.AllGroups,
                                           ItemQualitiesContent.BuffQualityGroups.AllGroups);
@@ -53,13 +55,14 @@ namespace ItemQualities
             Availability.MakeAvailable();
         }
 
-        static IEnumerator SetQualityGroups(IReadOnlyCollection<QualityTierDef> qualityTierDefs,
-                                            IReadOnlyCollection<ItemQualityGroup> itemQualityGroups,
-                                            IReadOnlyCollection<EquipmentQualityGroup> equipmentQualityGroups,
-                                            IReadOnlyCollection<BuffQualityGroup> buffQualityGroups)
+        static IEnumerator setQualityGroups(ReadOnlyCollection<QualityTierDef> qualityTierDefs,
+                                            ReadOnlyCollection<ItemQualityGroup> itemQualityGroups,
+                                            ReadOnlyCollection<EquipmentQualityGroup> equipmentQualityGroups,
+                                            ReadOnlyCollection<BuffQualityGroup> buffQualityGroups)
         {
-            foreach (QualityTierDef qualityTierDef in qualityTierDefs)
+            for (int i = 0; i < qualityTierDefs.Count; i++)
             {
+                QualityTierDef qualityTierDef = qualityTierDefs[i];
                 _qualityTierDefs[(int)qualityTierDef.qualityTier] = qualityTierDef;
             }
 
@@ -68,19 +71,8 @@ namespace ItemQualities
                 itemQualityGroup.GroupIndex = ItemQualityGroupIndex.Invalid;
             }
 
-            static void sortUnityObjectsByName(UnityEngine.Object[] array, StringComparison stringComparison = StringComparison.Ordinal)
-            {
-                string[] keys = new string[array.Length];
-                for (int i = 0; i < array.Length; i++)
-                {
-                    keys[i] = array[i].name;
-                }
-
-                Array.Sort(keys, array, StringComparer.FromComparison(stringComparison));
-            }
-
             _allItemQualityGroups = itemQualityGroups.ToArray();
-            sortUnityObjectsByName(_allItemQualityGroups);
+            UnityUtils.SortObjectsByName(_allBuffQualityGroups, StringComparer.Ordinal);
 
             Array.Resize(ref _itemIndexToQuality, ItemCatalog.itemCount);
             Array.Fill(_itemIndexToQuality, QualityTier.None);
@@ -94,7 +86,7 @@ namespace ItemQualities
             }
 
             _allEquipmentQualityGroups = equipmentQualityGroups.ToArray();
-            sortUnityObjectsByName(_allEquipmentQualityGroups);
+            UnityUtils.SortObjectsByName(_allEquipmentQualityGroups, StringComparer.Ordinal);
 
             Array.Resize(ref _equipmentIndexToQuality, EquipmentCatalog.equipmentCount);
             Array.Fill(_equipmentIndexToQuality, QualityTier.None);
@@ -108,7 +100,7 @@ namespace ItemQualities
             }
 
             _allBuffQualityGroups = buffQualityGroups.ToArray();
-            sortUnityObjectsByName(_allBuffQualityGroups);
+            UnityUtils.SortObjectsByName(_allBuffQualityGroups, StringComparer.Ordinal);
 
             Array.Resize(ref _buffIndexToQuality, BuffCatalog.buffCount);
             Array.Fill(_buffIndexToQuality, QualityTier.None);
@@ -335,15 +327,15 @@ namespace ItemQualities
             for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
             {
                 List<ItemIndex> items = ListPool<ItemIndex>.RentCollection();
-                items.EnsureCapacity(ItemCatalog.itemCount / ((int)QualityTier.Count + 1));
+                ListUtils.EnsureCapacity(items, ItemCatalog.itemCount / ((int)QualityTier.Count + 1));
                 itemsByQuality[(int)qualityTier + 1] = items;
 
                 List<EquipmentIndex> equipments = ListPool<EquipmentIndex>.RentCollection();
-                items.EnsureCapacity(EquipmentCatalog.equipmentCount / ((int)QualityTier.Count + 1));
+                ListUtils.EnsureCapacity(equipments, EquipmentCatalog.equipmentCount / ((int)QualityTier.Count + 1));
                 equipmentsByQuality[(int)qualityTier + 1] = equipments;
 
                 List<BuffIndex> buffs = ListPool<BuffIndex>.RentCollection();
-                buffs.EnsureCapacity(BuffCatalog.buffCount / ((int)QualityTier.Count + 1));
+                ListUtils.EnsureCapacity(buffs, BuffCatalog.buffCount / ((int)QualityTier.Count + 1));
                 buffsByQuality[(int)qualityTier + 1] = buffs;
             }
 

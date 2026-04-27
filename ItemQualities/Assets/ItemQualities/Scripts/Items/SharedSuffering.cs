@@ -40,7 +40,7 @@ namespace ItemQualities.Items
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> timeCrystalBodyLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_WeeklyRun.TimeCrystalBody_prefab);
             AsyncOperationHandle<GameObject> minorConstructOnKillProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_MinorConstructOnKill.MinorConstructOnKillProjectile_prefab);

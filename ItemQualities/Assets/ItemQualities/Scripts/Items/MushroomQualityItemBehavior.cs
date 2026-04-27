@@ -37,7 +37,7 @@ namespace ItemQualities.Items
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> bubbleShieldLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Engi.EngiBubbleShield_prefab);
             AsyncOperationHandle<GameObject> engiBodyLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Engi.EngiBody_prefab);

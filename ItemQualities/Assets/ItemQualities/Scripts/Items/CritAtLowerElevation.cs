@@ -15,7 +15,7 @@ namespace ItemQualities.Items
         static GameObject _forceDownEffectPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> critAtLowerElevationFullEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_Items_CritAtLowerElevation.CritAtLowerElevationFullEffect_prefab);
             critAtLowerElevationFullEffectLoad.OnSuccess(critAtLowerElevationFullEffect =>

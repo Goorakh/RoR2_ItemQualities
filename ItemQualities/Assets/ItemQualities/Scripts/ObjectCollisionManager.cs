@@ -110,7 +110,7 @@ namespace ItemQualities
 
             using var _ = ListPool<Collider>.RentCollection(out List<Collider> previousIgnoredColliders);
 
-            previousIgnoredColliders.EnsureCapacity(_ignoringCollisionsWith.Count);
+            ListUtils.EnsureCapacity(previousIgnoredColliders, _ignoringCollisionsWith.Count);
             foreach (Collider collider in _ignoringCollisionsWith)
             {
                 previousIgnoredColliders.Add(collider);

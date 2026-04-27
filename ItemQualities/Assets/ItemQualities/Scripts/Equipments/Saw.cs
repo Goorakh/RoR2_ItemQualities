@@ -23,7 +23,7 @@ namespace ItemQualities.Equipments
         static readonly GameObject[] _qualitySawProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> sawProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Saw.Sawmerang_prefab);
             sawProjectileLoad.OnSuccess(sawProjectilePrefab =>

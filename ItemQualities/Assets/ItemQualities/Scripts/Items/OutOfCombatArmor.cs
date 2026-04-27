@@ -30,7 +30,7 @@ namespace ItemQualities.Items
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> igniteOnKillExplosionLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_IgniteOnKill.IgniteExplosionVFX_prefab);
 

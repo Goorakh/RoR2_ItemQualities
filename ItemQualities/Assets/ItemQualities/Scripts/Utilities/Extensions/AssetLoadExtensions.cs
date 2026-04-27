@@ -63,7 +63,8 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
-        public static IEnumerator AsProgressCoroutine(this AsyncOperation asyncOperation, IProgress<float> progressReceiver)
+        public static IEnumerator AsProgressCoroutine<TProgress>(this AsyncOperation asyncOperation, TProgress progressReceiver)
+            where TProgress : IProgress<float>
         {
             while (!asyncOperation.isDone)
             {
@@ -72,7 +73,8 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
-        public static IEnumerator AsProgressCoroutine(this AsyncOperationHandle asyncOperation, IProgress<float> progressReceiver)
+        public static IEnumerator AsProgressCoroutine<TProgress>(this AsyncOperationHandle asyncOperation, TProgress progressReceiver)
+            where TProgress : IProgress<float>
         {
             while (!asyncOperation.IsDone)
             {
@@ -81,7 +83,8 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
-        public static IEnumerator AsProgressCoroutine<T>(this AsyncOperationHandle<T> asyncOperation, IProgress<float> progressReceiver)
+        public static IEnumerator AsProgressCoroutine<T, TProgress>(this AsyncOperationHandle<T> asyncOperation, TProgress progressReceiver)
+            where TProgress : IProgress<float>
         {
             while (!asyncOperation.IsDone)
             {

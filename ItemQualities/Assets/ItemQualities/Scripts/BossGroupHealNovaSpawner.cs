@@ -19,7 +19,7 @@ namespace ItemQualities
         static GameObject _pulsePrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> novaPulseLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_TPHealingNova.TeleporterHealNovaPulse_prefab);
             novaPulseLoad.OnSuccess(novaPulse =>

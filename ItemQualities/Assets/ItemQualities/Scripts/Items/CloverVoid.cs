@@ -211,7 +211,7 @@ namespace ItemQualities.Items
 
                     if (master.cloverVoidRng.nextNormalizedFloat < qualityUpgradeChance)
                     {
-                        QualityTier qualityTierToUpgrade = upgradableItemQualityTiers.GetAndRemoveAt<QualityTier>(0);
+                        QualityTier qualityTierToUpgrade = ListUtils.Take(upgradableItemQualityTiers, 0);
                         QualityTier upgradedQualityTier = qualityTierToUpgrade + 1;
 
                         upgradeItemQualities[qualityTierToUpgrade]--;

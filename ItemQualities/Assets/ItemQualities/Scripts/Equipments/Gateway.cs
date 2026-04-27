@@ -18,7 +18,7 @@ namespace ItemQualities.Equipments
         public static GameObject QualityGatewayPickupTargetIndicatorPrefab { get; private set; }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> lightningIndicatorLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Lightning.LightningIndicator_prefab);
             lightningIndicatorLoad.OnSuccess(lightningIndicatorPrefab =>

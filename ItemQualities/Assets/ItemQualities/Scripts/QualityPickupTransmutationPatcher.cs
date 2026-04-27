@@ -28,7 +28,7 @@ namespace ItemQualities
 
             foreach (PickupIndex[] pickupGroup in PickupTransmutationManager.pickupGroups)
             {
-                pickupsBuffer.EnsureCapacity(pickupGroup.Length);
+                ListUtils.EnsureCapacity(pickupsBuffer, pickupGroup.Length);
 
                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {

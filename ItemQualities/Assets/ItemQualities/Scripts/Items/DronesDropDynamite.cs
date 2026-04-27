@@ -20,7 +20,7 @@ namespace ItemQualities.Items
     static class DronesDropDynamite
     {
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> droneBallDotZoneLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_Drone_Tech.DroneBallDotZone_prefab);
             AsyncOperationHandle<GameObject> droneTechBodyLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_Drone_Tech.DroneTechBody_prefab);

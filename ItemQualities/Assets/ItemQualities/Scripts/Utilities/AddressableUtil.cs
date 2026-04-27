@@ -15,24 +15,19 @@ namespace ItemQualities.Utilities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncOperationHandle<T> LoadTempAssetAsync<T>(string assetKey) where T : UnityEngine.Object
         {
-            return LoadTempAssetAsync(new AssetReferenceT<T>(assetKey));
+            return AssetAsyncReferenceManager<T>.LoadAsset(new AssetReferenceT<T>(assetKey), AsyncReferenceHandleUnloadType.Preload);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncOperationHandle<T> LoadTempAssetAsync<T>(AssetReferenceT<T> assetReference) where T : UnityEngine.Object
         {
-            AsyncOperationHandle<T> loadHandle = AssetAsyncReferenceManager<T>.LoadAsset(assetReference);
-            loadHandle.Completed += handle =>
-            {
-                AssetAsyncReferenceManager<T>.UnloadAsset(assetReference);
-            };
-
-            return loadHandle;
+            return AssetAsyncReferenceManager<T>.LoadAsset(assetReference, AsyncReferenceHandleUnloadType.Preload);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncOperationHandle<T> LoadAssetAsync<T>(string assetKey, AsyncReferenceHandleUnloadType unloadType = AsyncReferenceHandleUnloadType.AtWill) where T : UnityEngine.Object
         {
-            return LoadAssetAsync(new AssetReferenceT<T>(assetKey), unloadType);
+            return AssetAsyncReferenceManager<T>.LoadAsset(new AssetReferenceT<T>(assetKey), unloadType);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

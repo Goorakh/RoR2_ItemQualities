@@ -21,7 +21,7 @@ namespace ItemQualities.Items
         static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> icicleAuraLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Icicle.IcicleAura_prefab);
 
@@ -132,6 +132,7 @@ namespace ItemQualities.Items
             // Gas also ignites the enemy you killed, so needs to check for greater 1 instead
             if (damageReport.victimBody.GetBuffCount(RoR2Content.Buffs.OnFire) > 1 ||
                 damageReport.victimBody.GetBuffCount(DLC1Content.Buffs.StrongerBurn) > 1 ||
+                damageReport.victimBody.HasBuff(RoR2Content.Buffs.AffixRed) ||
                 (victimDotController && victimDotController.HasDotActive(DotController.DotIndex.Helfire)))
             {
                 _icicleAura.OnOwnerKillOther();

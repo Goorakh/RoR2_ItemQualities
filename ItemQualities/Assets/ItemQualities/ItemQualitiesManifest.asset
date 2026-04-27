@@ -36,7 +36,7 @@ MonoBehaviour:
   Author: Gorakh
   Name: Quality
   Description: Equipments Update. Adds quality variants of items. Open Beta Release.
-  Version: 0.7.4
+  Version: 0.7.5
   Dependencies:
   - {fileID: 11400000, guid: 184f0fdf3edcd6bad171410f4e0fd947, type: 2}
   - {fileID: 11400000, guid: 19f404b4f1d413a691a8b0edda7faba9, type: 2}

@@ -28,7 +28,7 @@ namespace ItemQualities.Items
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentIntializerArgs args)
+        static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> featherEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Feather.FeatherEffect_prefab);
 

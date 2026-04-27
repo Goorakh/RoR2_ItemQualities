@@ -306,7 +306,7 @@ namespace ItemQualities
             {
                 WeightedSelection<ItemIndex> itemSelection = new WeightedSelection<ItemIndex>();
 
-                void addDropListToSelection(IList<PickupIndex> dropList, float weight)
+                void addDropListToSelection(List<PickupIndex> dropList, float weight)
                 {
                     foreach (PickupIndex pickupIndex in dropList)
                     {

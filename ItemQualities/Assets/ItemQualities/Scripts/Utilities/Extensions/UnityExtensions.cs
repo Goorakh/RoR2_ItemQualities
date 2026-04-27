@@ -1,8 +1,11 @@
 ﻿using System;
-using System.Reflection;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
+
+#if !UNITY_EDITOR
+using System.Reflection;
+#endif
 
 namespace ItemQualities.Utilities.Extensions
 {
