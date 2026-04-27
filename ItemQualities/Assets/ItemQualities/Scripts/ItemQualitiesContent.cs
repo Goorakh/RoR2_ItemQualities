@@ -921,6 +921,8 @@ namespace ItemQualities
             public static GameObject SprintArmorDashAttachment;
 
             public static GameObject GatewayQualityAttachment;
+
+            public static GameObject RecyclableObjectAttachment;
         }
 
         public static class ProjectilePrefabs
