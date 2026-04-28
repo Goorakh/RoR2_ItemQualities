@@ -1,3 +1,8 @@
+## <Next Version>
+
+* Armor Piercing Rounds:
+    * Marks no longer disappear sometimes when losing and regaining the item.
+
 ## 0.7.5
 
 * Recycler:

@@ -1,4 +1,6 @@
-﻿using ItemQualities.ModCompatibility;
+﻿using HG;
+using ItemQualities.ModCompatibility;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using UnityEngine;
 
@@ -20,8 +22,8 @@ namespace ItemQualities.Items
 
             if (_updateMiniBossTimer <= 0f)
             {
-                CharacterBody miniboss = findBestMiniBoss();
-                if (miniboss)
+                CharacterBody minibossBody = findBestMiniBoss();
+                if (minibossBody)
                 {
                     ref readonly ItemQualityCounts bossDamageBonus = ref Stacks;
 
@@ -30,8 +32,12 @@ namespace ItemQualities.Items
                                               (bossDamageBonus.EpicCount * 15) +
                                               (bossDamageBonus.LegendaryCount * 20);
 
-                    MinibossController minibossManager = miniboss.gameObject.AddComponent<MinibossController>();
-                    minibossManager.duration = markDuration;
+                    minibossBody.AddTimedBuff(ItemQualitiesContent.Buffs.MiniBossMarker, markDuration);
+                    minibossBody.AddTimedBuff(ItemQualitiesContent.Buffs.MiniBossCooldown, 90);
+
+                    minibossBody.gameObject.EnsureComponent<MinibossController>();
+
+                    Log.Debug($"New miniboss: {Util.GetBestBodyName(minibossBody.gameObject)}");
 
                     _updateMiniBossTimer = 40f;
                 }
@@ -84,43 +90,68 @@ namespace ItemQualities.Items
             return highestHealthBody;
         }
 
-        sealed class MinibossController : MonoBehaviour
+        sealed class MinibossController : MonoBehaviour, IOnTakeDamageServerReceiver
         {
-            public float duration;
-
             CharacterBody _body;
             GameObject _miniBossBodyAttachmentObj;
-            float _timer;
 
-            private void Awake()
+            void Awake()
             {
                 _body = GetComponent<CharacterBody>();
-
-                Log.Debug($"New miniboss: {Util.GetBestBodyName(gameObject)}");
-
-                _body.AddBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
-                _body.AddTimedBuff(ItemQualitiesContent.Buffs.MiniBossCooldown, 90);
-
+                
                 _miniBossBodyAttachmentObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.MiniBossBodyAttachment);
 
                 NetworkedBodyAttachment miniBossAttachment = _miniBossBodyAttachmentObj.GetComponent<NetworkedBodyAttachment>();
                 miniBossAttachment.AttachToGameObjectAndSpawn(gameObject);
             }
 
-            private void OnDestroy()
+            void OnEnable()
             {
-                _body.RemoveBuff(ItemQualitiesContent.Buffs.MiniBossMarker);
+                if (_body && _body.healthComponent)
+                {
+                    _body.healthComponent.AddOnTakeDamageServerReceiver(this);
+                }
+            }
+
+            void OnDisable()
+            {
+                if (_body && _body.healthComponent)
+                {
+                    _body.healthComponent.RemoveOnTakeDamageServerReceiver(this);
+                }
+            }
+
+            void OnDestroy()
+            {
+                if (_body)
+                {
+                    _body.ClearTimedBuffs(ItemQualitiesContent.Buffs.MiniBossMarker);
+                }
+
                 Destroy(_miniBossBodyAttachmentObj);
                 _miniBossBodyAttachmentObj = null;
             }
 
-            private void FixedUpdate()
+            void FixedUpdate()
             {
-                _timer += Time.fixedDeltaTime;
-
-                if (_timer > duration || !_body || !_body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
+                if (!_body ||
+                    !_body.healthComponent ||
+                    !_body.healthComponent.alive ||
+                    !_body.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
                 {
                     Destroy(this);
+                }
+            }
+
+            void IOnTakeDamageServerReceiver.OnTakeDamageServer(DamageReport damageReport)
+            {
+                // If the miniboss is almost killed by someone with qapr, allow the duration to extend slightly.
+                // Missing the kill by less than a second after focusing it feels bad.
+                if (damageReport.attackerMaster &&
+                    damageReport.attackerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus).TotalQualityCount > 0 &&
+                    _body.healthComponent.combinedHealthFraction < 0.1f)
+                {
+                    _body.ExtendTimedBuffIfPresent(ItemQualitiesContent.Buffs.MiniBossMarker, 1f, 3f);
                 }
             }
         }
