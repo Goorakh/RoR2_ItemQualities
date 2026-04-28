@@ -1,5 +1,6 @@
 ﻿using HG;
 using HG.Coroutines;
+using ItemQualities.Utilities.Extensions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -71,20 +72,17 @@ namespace ItemQualities.ContentManagement
 
             foreach (ItemQualityGroup itemGroup in itemQualityGroups)
             {
-                ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
-                generateAssetsCoroutine.Add(itemGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
+                generateAssetsCoroutine.AddProgressCoroutine(itemGroup.GenerateRuntimeAssetsAsync, args.ContentPack);
             }
 
             foreach (EquipmentQualityGroup equipmentGroup in equipmentQualityGroups)
             {
-                ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
-                generateAssetsCoroutine.Add(equipmentGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
+                generateAssetsCoroutine.AddProgressCoroutine(equipmentGroup.GenerateRuntimeAssetsAsync, args.ContentPack);
             }
 
             foreach (BuffQualityGroup buffGroup in buffQualityGroups)
             {
-                ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
-                generateAssetsCoroutine.Add(buffGroup.GenerateRuntimeAssetsAsync(args.ContentPack, progressReceiver), progressReceiver);
+                generateAssetsCoroutine.AddProgressCoroutine(buffGroup.GenerateRuntimeAssetsAsync, args.ContentPack);
             }
 
             yield return generateAssetsCoroutine;

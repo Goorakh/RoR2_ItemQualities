@@ -53,21 +53,15 @@ namespace ItemQualities
             ProgressPartition finalizeContentProgress = partitionedProgress.AddPartition(1f);
 
             ParallelProgressCoroutine loadContentCoroutine = new ParallelProgressCoroutine(loadContentProgress);
-
-            ReadableProgress<float> loadAssetBundleProgress = new ReadableProgress<float>();
-            loadContentCoroutine.Add(loadAssetBundleContentAsync(loadAssetBundleProgress), loadAssetBundleProgress);
-
-            ReadableProgress<float> contentInitializersProgress = new ReadableProgress<float>();
-            loadContentCoroutine.Add(ContentInitializerAttribute.RunContentInitializers(_contentPack, contentInitializersProgress), contentInitializersProgress);
+            loadContentCoroutine.AddProgressCoroutine(loadAssetBundleContentAsync);
+            loadContentCoroutine.AddProgressCoroutine(ContentInitializerAttribute.RunContentInitializers, _contentPack);
 
             yield return loadContentCoroutine;
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             ParallelProgressCoroutine finalizeContentCoroutine = new ParallelProgressCoroutine(finalizeContentProgress);
-
-            ReadableProgress<float> contentLoadCallbacksProgress = new ReadableProgress<float>();
-            finalizeContentCoroutine.Add(runContentLoadCallbacks(contentLoadCallbacksProgress), contentLoadCallbacksProgress);
+            finalizeContentCoroutine.AddProgressCoroutine(runContentLoadCallbacks);
 
             yield return finalizeContentCoroutine;
 
@@ -145,16 +139,14 @@ namespace ItemQualities
             {
                 if (asset is IAsyncAssetGenerator asyncAssetGenerator)
                 {
-                    ReadableProgress<float> generateProgress = new ReadableProgress<float>();
-                    generateAssetsCoroutine.Add(asyncAssetGenerator.GenerateAssetsAsync(_contentPack, generateProgress), generateProgress);
+                    generateAssetsCoroutine.AddProgressCoroutine(asyncAssetGenerator.GenerateAssetsAsync, _contentPack);
                 }
 
                 if (asset is GameObject gameObject)
                 {
                     foreach (IAsyncAssetGenerator asyncAssetGeneratorComponent in gameObject.GetComponentsInChildren<IAsyncAssetGenerator>(true))
                     {
-                        ReadableProgress<float> generateProgress = new ReadableProgress<float>();
-                        generateAssetsCoroutine.Add(asyncAssetGeneratorComponent.GenerateAssetsAsync(_contentPack, generateProgress), generateProgress);
+                        generateAssetsCoroutine.AddProgressCoroutine(asyncAssetGeneratorComponent.GenerateAssetsAsync, _contentPack);
                     }
                 }
             }
@@ -335,8 +327,7 @@ namespace ItemQualities
                 {
                     foreach (IAsyncContentLoadCallback asyncContentLoadCallback in gameObject.GetComponentsInChildren<IAsyncContentLoadCallback>(true))
                     {
-                        ReadableProgress<float> callbackProgress = new ReadableProgress<float>();
-                        callbackParallelCoroutine.Add(asyncContentLoadCallback.OnContentLoad(callbackProgress), callbackProgress);
+                        callbackParallelCoroutine.AddProgressCoroutine(asyncContentLoadCallback.OnContentLoad);
                     }
 
                     foreach (IContentLoadCallback contentLoadCallback in gameObject.GetComponentsInChildren<IContentLoadCallback>(true))
@@ -348,8 +339,7 @@ namespace ItemQualities
                 {
                     if (asset is IAsyncContentLoadCallback asyncContentLoadCallback)
                     {
-                        ReadableProgress<float> callbackProgress = new ReadableProgress<float>();
-                        callbackParallelCoroutine.Add(asyncContentLoadCallback.OnContentLoad(callbackProgress), callbackProgress);
+                        callbackParallelCoroutine.AddProgressCoroutine(asyncContentLoadCallback.OnContentLoad);
                     }
 
                     if (asset is IContentLoadCallback contentLoadCallback)

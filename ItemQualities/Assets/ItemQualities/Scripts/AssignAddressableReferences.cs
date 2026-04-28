@@ -53,8 +53,7 @@ namespace ItemQualities
                     ParallelProgressCoroutine parallelCoroutine = new ParallelProgressCoroutine(progressReceiver);
                     foreach (ComponentFieldAddressableAssignment componentFieldAssignment in FieldAssignments)
                     {
-                        ReadableProgress<float> coroutineProgress = new ReadableProgress<float>();
-                        parallelCoroutine.Add(assignComponentFieldAsync(componentFieldAssignment, coroutineProgress), coroutineProgress);
+                        parallelCoroutine.AddProgressCoroutine(assignComponentFieldAsync, componentFieldAssignment);
                     }
 
                     yield return parallelCoroutine;
