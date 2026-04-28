@@ -57,7 +57,7 @@ namespace ItemQualities.Items
 
         void refreshBuff()
         {
-            ItemQualityCounts bonusGoldPackOnKill = Stacks;
+            ref readonly ItemQualityCounts bonusGoldPackOnKill = ref Stacks;
 
             int maxBuffCount = (20 * bonusGoldPackOnKill.UncommonCount) +
                                (40 * bonusGoldPackOnKill.RareCount) +

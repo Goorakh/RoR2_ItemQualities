@@ -71,7 +71,7 @@ namespace ItemQualities.Items
             setStack(Stacks);
         }
 
-        void setStack(ItemQualityCounts newStack)
+        void setStack(in ItemQualityCounts newStack)
         {
             if (_previousStack == newStack)
                 return;

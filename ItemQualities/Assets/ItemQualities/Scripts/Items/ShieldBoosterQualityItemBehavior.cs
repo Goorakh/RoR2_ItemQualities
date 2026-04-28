@@ -89,7 +89,7 @@ namespace ItemQualities.Items
 
         void updateBuffCount()
         {
-            ItemQualityCounts shieldBooster = Stacks;
+            ref readonly ItemQualityCounts shieldBooster = ref Stacks;
 
             int currentBuffCount = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff).TotalQualityCount;
             int targetBuffCount = Mathf.CeilToInt(_boosterFraction * 100f);

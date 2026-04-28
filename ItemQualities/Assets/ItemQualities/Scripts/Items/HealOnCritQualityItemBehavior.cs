@@ -40,7 +40,7 @@ namespace ItemQualities.Items
 
         void updateAccumulatedHealing()
         {
-            ItemQualityCounts healOnCrit = Stacks;
+            ref readonly ItemQualityCounts healOnCrit = ref Stacks;
             if (healOnCrit.TotalQualityCount == 0)
                 return;
 

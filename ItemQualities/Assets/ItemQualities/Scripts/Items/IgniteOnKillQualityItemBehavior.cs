@@ -143,7 +143,7 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            ItemQualityCounts igniteOnKill = Stacks;
+            ref readonly ItemQualityCounts igniteOnKill = ref Stacks;
 
             _icicleAura.icicleDamageCoefficientPerTick = (1 * igniteOnKill.UncommonCount) +
                                                          (2 * igniteOnKill.RareCount) +

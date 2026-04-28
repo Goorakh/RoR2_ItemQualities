@@ -51,7 +51,7 @@ namespace ItemQualities.Items
         {
             if (Body.inputBank.skill3.justPressed && Body.skillLocator && skill && skill == Body.skillLocator.utility)
             {
-                ItemQualityCounts utilitySkillMagazine = Stacks;
+                ref readonly ItemQualityCounts utilitySkillMagazine = ref Stacks;
 
                 float cooldownRefundWindow = 0.1f;
                 float cooldownReductionWindow = cooldownRefundWindow + 0.2f;
