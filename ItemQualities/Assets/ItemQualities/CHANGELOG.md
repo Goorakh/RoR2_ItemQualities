@@ -3,6 +3,12 @@
 * Armor Piercing Rounds:
     * Marks no longer disappear sometimes when losing and regaining the item.
 
+* Razorwire:
+    * Fixed bonus damage being reduced by armor.
+    
+* Newly Hatched Zoea:
+    * Allies now spawn with the appropriate quality tier.
+
 ## 0.7.5
 
 * Recycler:
