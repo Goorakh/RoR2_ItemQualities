@@ -313,17 +313,17 @@
         "ITEM_TREASURECACHE_LEGENDARY_PICKUP": "Gain access to a Rusty Lockbox that contains a <sprite name=\"QualityLegendary\"> legendary quality item.",
         "ITEM_TREASURECACHE_LEGENDARY_DESC": "A <style=cIsUtility>hidden cache</style> containing a <sprite name=\"QualityLegendary\"> legendary quality item (<style=cIsHealing>80%</style>/<style=cIsHealth>20%</style>) will appear in a random location <style=cIsUtility>on each stage</style>. Opening the cache <style=cIsUtility>consumes</style> this item.",
 
-        "ITEM_FLATHEALTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Charging a Teleporter permanently increases your maximum health by 35.",
-        "ITEM_FLATHEALTH_UNCOMMON_DESC": "{0}\nFully charging a <style=cIsUtility>Teleporter</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>35</style> <style=cStack>(+35 per stack)</style>.",
+        "ITEM_FLATHEALTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Defeating a boss or stage objective permanently increases your maximum health by 35.",
+        "ITEM_FLATHEALTH_UNCOMMON_DESC": "{0}\nDefeating a <style=cDeath>Boss</style> or completing a <style=cIsUtility>Stage's main objective</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>35</style> <style=cStack>(+35 per stack)</style>.",
 
-        "ITEM_FLATHEALTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Charging a Teleporter permanently increases your maximum health by 75.",
-        "ITEM_FLATHEALTH_RARE_DESC": "{0}\nFully charging a <style=cIsUtility>Teleporter</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>75</style> <style=cStack>(+75 per stack)</style>.",
+        "ITEM_FLATHEALTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Defeating a boss or stage objective permanently increases your maximum health by 75.",
+        "ITEM_FLATHEALTH_RARE_DESC": "{0}\nDefeating a <style=cDeath>Boss</style> or completing a <style=cIsUtility>Stage's main objective</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>75</style> <style=cStack>(+75 per stack)</style>.",
 
-        "ITEM_FLATHEALTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Charging a Teleporter permanently increases your maximum health by 150.",
-        "ITEM_FLATHEALTH_EPIC_DESC": "{0}\nFully charging a <style=cIsUtility>Teleporter</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>150</style> <style=cStack>(+150 per stack)</style>.",
+        "ITEM_FLATHEALTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Defeating a boss or stage objective permanently increases your maximum health by 150.",
+        "ITEM_FLATHEALTH_EPIC_DESC": "{0}\nDefeating a <style=cDeath>Boss</style> or completing a <style=cIsUtility>Stage's main objective</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>150</style> <style=cStack>(+150 per stack)</style>.",
 
-        "ITEM_FLATHEALTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Charging a Teleporter permanently increases your maximum health by 250.",
-        "ITEM_FLATHEALTH_LEGENDARY_DESC": "{0}\nFully charging a <style=cIsUtility>Teleporter</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>250</style> <style=cStack>(+250 per stack)</style>.",
+        "ITEM_FLATHEALTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Defeating a boss or stage objective permanently increases your maximum health by 250.",
+        "ITEM_FLATHEALTH_LEGENDARY_DESC": "{0}\nDefeating a <style=cDeath>Boss</style> or completing a <style=cIsUtility>Stage's main objective</style> permanently increases your <style=cIsHealing>maximum health</style> by <sprite name=\"Quality\"> <style=cIsHealing>250</style> <style=cStack>(+250 per stack)</style>.",
 
         "ITEM_STICKYBOMB_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bomb damage and size.",
         "ITEM_STICKYBOMB_UNCOMMON_DESC": "<style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> chance on hit to attach a <style=cIsDamage>bomb</style> to an enemy, detonating for <sprite name=\"Quality\"> <style=cIsDamage>230%</style> <style=cStack>(+50% per stack)</style> TOTAL damage. Increases size of bombs by <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style>.",

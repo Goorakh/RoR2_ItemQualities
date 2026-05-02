@@ -1,5 +1,8 @@
 ## <Next Version>
 
+* Bison Steak:
+    * Now increases health for every boss or main stage objective completed. Health values unchanged.
+
 * Armor Piercing Rounds:
     * Marks no longer disappear sometimes when losing and regaining the item.
 
