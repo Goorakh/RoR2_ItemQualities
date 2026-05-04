@@ -1,5 +1,9 @@
 ## <Next Version>
 
+* Gnarled Woodsprite:
+    * Fixed ghost drones being usable in drone combiners and scrappers.
+    * Fixed ghost drones not being the same tier as the drone being cloned.
+
 * Bison Steak:
     * Now increases health for every boss or main stage objective completed. Health values unchanged.
 
