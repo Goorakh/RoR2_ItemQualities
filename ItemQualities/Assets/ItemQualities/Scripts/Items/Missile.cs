@@ -209,10 +209,10 @@ namespace ItemQualities.Items
                     ItemQualityCounts missile = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Missile);
                     chance += missile.HighestQuality switch
                     {
-                        QualityTier.Uncommon => 5,
-                        QualityTier.Rare => 10,
-                        QualityTier.Epic => 15,
-                        QualityTier.Legendary => 20,
+                        QualityTier.Uncommon => 2,
+                        QualityTier.Rare => 4,
+                        QualityTier.Epic => 6,
+                        QualityTier.Legendary => 10,
                         _ => 0
                     };
                 }
