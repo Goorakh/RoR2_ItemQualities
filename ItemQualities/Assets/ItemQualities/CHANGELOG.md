@@ -1,5 +1,18 @@
 ## <Next Version>
 
+* Tougher Times
+    * Ignores Blocks that come from hidden invincibility
+    * Added maximum invincibility time:
+        * Uncommon: 3 (+3 per stack) seconds
+        * Rare: 6 (+6 per stack) seconds
+        * Epic: 9 (+9 per stack) seconds
+        * Legendary: 12 (+12 per stack) seconds
+    * Block duration per 10% damage blocked:
+        * Uncommon: 0.1 (+0.1 per stack) seconds -> 0.2 (+0.2 per stack) seconds
+        * Rare: 0.5 (+0.5 per stack) seconds -> 0.5 (+0.5 per stack) seconds
+        * Epic: 1.5 (+1.5 per stack) seconds -> 1 (+1 per stack) seconds
+        * Legendary: 2.5 (+2.5 per stack) seconds -> 1.5 (+1.5 per stack) seconds
+
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.
     * Fixed ghost drones not being the same tier as the drone being cloned.

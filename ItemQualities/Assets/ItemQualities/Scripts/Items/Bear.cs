@@ -57,18 +57,24 @@ namespace ItemQualities.Items
                 if (bear.TotalQualityCount > 0 && damageInfo.rejected)
                 {
                     bool isInvincible = body.HasBuff(RoR2Content.Buffs.Immune) ||
-                                        body.HasBuff(DLC2Content.Buffs.SojournVehicle);
+                                        body.HasBuff(DLC2Content.Buffs.SojournVehicle) ||
+                                        body.HasBuff(RoR2Content.Buffs.HiddenInvincibility);
 
                     if (!isInvincible || damageInfo.IsParried())
                     {
                         float damageFraction = damageInfo.damage / body.healthComponent.fullCombinedHealth;
 
-                        float invincibilityDurationPerPercentDamage = (0.01f * bear.UncommonCount) +
+                        float invincibilityDurationPerPercentDamage = (0.02f * bear.UncommonCount) +
                                                                       (0.05f * bear.RareCount) +
-                                                                      (0.15f * bear.EpicCount) +
-                                                                      (0.25f * bear.LegendaryCount);
+                                                                      (0.1f * bear.EpicCount) +
+                                                                      (0.15f * bear.LegendaryCount);
 
-                        float invincibilityDuration = damageFraction * 100f * invincibilityDurationPerPercentDamage;
+                        int maxDuration =   (3 * bear.UncommonCount) +
+                                            (6 * bear.RareCount) +
+                                            (9 * bear.EpicCount) +
+                                            (12 * bear.LegendaryCount);
+
+                        float invincibilityDuration = Math.Min(damageFraction * 100f * invincibilityDurationPerPercentDamage, maxDuration);
                         if (invincibilityDuration >= 1f / 30f)
                         {
                             body.AddTimedBuff(RoR2Content.Buffs.Immune, invincibilityDuration);
