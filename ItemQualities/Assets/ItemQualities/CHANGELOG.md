@@ -1,11 +1,11 @@
 ## <Next Version>
 
-*  	AtG Missile Mk. 1:
-    * Nerfed base missile chance:
-        * Uncommon: 12%
-        * Rare: 14%
-        * Epic: 16%
-        * Legendary: 20%
+* AtG Missile Mk. 1:
+    * Base missile chance:
+        * Uncommon: 15% -> 12%
+        * Rare: 20% -> 14%
+        * Epic: 25% -> 16%
+        * Legendary: 30% -> 20%
 
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.
