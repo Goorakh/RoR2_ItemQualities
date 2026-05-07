@@ -2,7 +2,7 @@
 
 * Tougher Times
     * No longer counts blocks from i-frames.
-    * Block duration per 10% damage blocked:
+    * Invincibility duration per 10% damage blocked:
         * Uncommon: 0.1s (+0.1s per stack) -> 0.2s (+0.2s per stack)
         * Rare: 0.5s (+0.5s per stack) -> 0.5s (+0.5s per stack)
         * Epic: 1.5s (+1.5s per stack) -> 1s (+1s per stack)
