@@ -107,7 +107,7 @@ namespace ItemQualities
 
                 QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(QualityCatalog.GetQualityTier(pickupController.pickup.pickupIndex));
                 EffectManager.SpawnEffect(qualityTierDef.ChestOpenEffectPrefab, effectData, false);
-                PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSoundEventName, worldPickup.position);
+                PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSound.akId, worldPickup.position);
             }
         }
     }
