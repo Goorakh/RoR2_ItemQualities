@@ -23,6 +23,9 @@
 * Newly Hatched Zoea:
     * Allies now spawn with the appropriate quality tier.
 
+* Fuel Array:
+    * Not telling you.
+
 ## 0.7.5
 
 * Recycler:

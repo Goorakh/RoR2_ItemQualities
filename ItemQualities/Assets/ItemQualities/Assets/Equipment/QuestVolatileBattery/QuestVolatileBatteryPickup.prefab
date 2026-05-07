@@ -10,10 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 3208048284328294058}
   - component: {fileID: -124031409703831581}
+  - component: {fileID: 3384199074011794061}
   - component: {fileID: 4809229844237977886}
   - component: {fileID: 5686241670974297393}
   - component: {fileID: -3688578768631636365}
-  - component: {fileID: 3384199074011794061}
+  - component: {fileID: -2969524138468529524}
+  - component: {fileID: 6461773486778712276}
   m_Layer: 0
   m_Name: QuestVolatileBatteryPickup
   m_TagString: Untagged
@@ -69,6 +71,18 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &3384199074011794061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5208055418590876794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -312301487, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4809229844237977886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,8 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72b8a973591339844bcd30e344fb848c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  parent: {fileID: 0}
---- !u!114 &3384199074011794061
+--- !u!114 &-2969524138468529524
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -116,6 +129,28 @@ MonoBehaviour:
   m_GameObject: {fileID: 5208055418590876794}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -312301487, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Script: {fileID: 1297580292, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  customName: 
+  initialStateType:
+    _typeName: ItemQualities.QuestVolatileBatteryPickup+Idle, ItemQualities, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  mainStateType:
+    _typeName: ItemQualities.QuestVolatileBatteryPickup+Idle, ItemQualities, Version=0.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+  debug: 0
+--- !u!114 &6461773486778712276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5208055418590876794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 1918207524, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stateMachines:
+  - {fileID: -2969524138468529524}

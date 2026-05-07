@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RoR2;
+using UnityEngine;
 
 namespace ItemQualities
 {
@@ -21,8 +22,8 @@ namespace ItemQualities
 
         public GameObject ChestOpenEffectPrefab;
 
-        public string pickupDropSoundEventName = string.Empty;
+        public NetworkSoundEventDef pickupDropSound;
 
-        public string pickupLandSoundEventName = string.Empty;
+        public NetworkSoundEventDef pickupLandSound;
     }
 }

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 89795172, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: EntityStates..QuestVolatileBattery.QualityMonitor
+  m_Name: ItemQualities.QuestVolatileBatteryPickup+Idle
   m_EditorClassIdentifier: 
   targetType:
-    assemblyQualifiedName: EntityStates.QuestVolatileBattery.QuestVolatileBatteryQualityMonitor,
-      ItemQualities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
+    assemblyQualifiedName: ItemQualities.QuestVolatileBatteryPickup+Idle, ItemQualities,
+      Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   serializedFieldsCollection:
     serializedFields: []
