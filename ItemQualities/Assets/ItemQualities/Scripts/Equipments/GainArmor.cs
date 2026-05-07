@@ -16,7 +16,7 @@ namespace ItemQualities.Equipments
 
         static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
-            if (!sender.inventory)
+            if (!sender.inventory || sender.inventory.GetEquipmentDisabled())
                 return;
 
             if (sender.healthComponent.barrier > 0f)
