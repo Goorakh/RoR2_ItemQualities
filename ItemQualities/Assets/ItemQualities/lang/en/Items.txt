@@ -1108,17 +1108,17 @@
         "ITEM_BOSSDAMAGEBONUS_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Periodically mark a strong monster, killing a marked monster permanently increases damage dealt against marked monsters and bosses.",
         "ITEM_BOSSDAMAGEBONUS_LEGENDARY_DESC": "{0}\nEvery <style=cIsUtility>40 seconds</style>, <style=cIsDamage>mark a strong non boss monster</style> for <sprite name=\"Quality\"> <style=cIsUtility>30 seconds <style=cStack>(+20 seconds per stack)</style></style>, killing a marked monster <style=cIsDamage>permanently increases your damage</style> against marked enemies and bosses by <sprite name=\"Quality\"> <style=cIsDamage>2% <style=cStack>(+2% per stack)</style></style> up to <sprite name=\"Quality\"> <style=cIsDamage>60 times</style>.",
 
-        "ITEM_PERMANENTDEBUFFONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Apply more stacks with higher damage",
-        "ITEM_PERMANENTDEBUFFONHIT_UNCOMMON_DESC": "{0}\nFor every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by an additional <sprite name=\"Quality\"> <style=cIsDamage>2</style> <style=cStack>(+2 per stack)</style> permanently.",
+        "ITEM_PERMANENTDEBUFFONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply Venom, dealing more damage with each dot effect applied",
+        "ITEM_PERMANENTDEBUFFONHIT_UNCOMMON_DESC": "{0}\n <sprite name=\"Quality\"> <style=cIsDamage>2% chance</style> to apply <style=cIsDamage>Venom</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>50% <style=cStack>(+50% per stack)</style></style> damage per second for 10 seconds for every <style=cIsDamage>dot effect</style> applied.",
 
-        "ITEM_PERMANENTDEBUFFONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Apply more stacks with higher damage",
-        "ITEM_PERMANENTDEBUFFONHIT_RARE_DESC": "{0}\nFor every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by an additional <sprite name=\"Quality\"> <style=cIsDamage>4</style> <style=cStack>(+4 per stack)</style> permanently.",
+        "ITEM_PERMANENTDEBUFFONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply Venom, dealing more damage with each dot effect applied",
+        "ITEM_PERMANENTDEBUFFONHIT_RARE_DESC": "{0}\n <sprite name=\"Quality\"> <style=cIsDamage>3% chance</style> to apply <style=cIsDamage>Venom</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>100% <style=cStack>(+100% per stack)</style></style> damage per second for 10 seconds for every <style=cIsDamage>dot effect</style> applied.",
 
-        "ITEM_PERMANENTDEBUFFONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Apply more stacks with higher damage",
-        "ITEM_PERMANENTDEBUFFONHIT_EPIC_DESC": "{0}\nFor every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by an additional <sprite name=\"Quality\"> <style=cIsDamage>6</style> <style=cStack>(+6 per stack)</style> permanently.",
+        "ITEM_PERMANENTDEBUFFONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply Venom, dealing more damage with each dot effect applied",
+        "ITEM_PERMANENTDEBUFFONHIT_EPIC_DESC": "{0}\n <sprite name=\"Quality\"> <style=cIsDamage>4% chance</style> to apply <style=cIsDamage>Venom</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>150% <style=cStack>(+150% per stack)</style></style> damage per second for 10 seconds for every <style=cIsDamage>dot effect</style> applied.",
 
-        "ITEM_PERMANENTDEBUFFONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Apply more stacks with higher damage",
-        "ITEM_PERMANENTDEBUFFONHIT_LEGENDARY_DESC": "{0}\nFor every <style=cIsDamage>400% damage dealt</style>, reduce <style=cIsDamage>armor</style> by an additional <sprite name=\"Quality\"> <style=cIsDamage>10</style> <style=cStack>(+10 per stack)</style> permanently.",
+        "ITEM_PERMANENTDEBUFFONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply Venom, dealing more damage with each dot effect applied",
+        "ITEM_PERMANENTDEBUFFONHIT_LEGENDARY_DESC": "{0}\n <sprite name=\"Quality\"> <style=cIsDamage>5% chance</style> to apply <style=cIsDamage>Venom</style>, dealing <sprite name=\"Quality\"> <style=cIsDamage>200% <style=cStack>(+200% per stack)</style></style> damage per second for 10 seconds for every <style=cIsDamage>dot effect</style> applied.",
         
         "ITEM_SPEEDBOOSTPICKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Picking up an orb while at maximum capacity grants temporary invisibility.",
         "ITEM_SPEEDBOOSTPICKUP_UNCOMMON_DESC": "{0}\nPicking up an orb while at <style=cIsUtility>6+</style> stacks or at <style=cIsUtility>maximum capacity</style> grants <style=cIsUtility>invisibility</style> for <sprite name=\"Quality\"> <style=cIsUtility>1</style> <style=cStack>(+1 per stack)</style> second(s).",

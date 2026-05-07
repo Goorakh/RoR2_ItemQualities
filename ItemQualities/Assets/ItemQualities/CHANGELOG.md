@@ -1,5 +1,17 @@
 ## <Next Version>
 
+* Symbiotic Scorpion
+    * Chance on hit to apply venom for 10 seconds:
+        * Uncommon: 2%
+        * Rare: 3%
+        * Epic: 4%
+        * Legendary: 5%
+    * Venom deals damage every second for every dot effect applied
+        * Uncommon: 50% (+50% per stack)
+        * Rare: 100% (+100% per stack)
+        * Epic: 150% (+150% per stack)
+        * Legendary: 200% (+200% per stack)
+
 * Tougher Times
     * No longer counts blocks from i-frames.
     * Invincibility duration per 10% damage blocked:
