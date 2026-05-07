@@ -65,9 +65,9 @@ namespace ItemQualities
         void OnDestroy()
         {
             QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(PickupQualityTier);
-            if (qualityTierDef && !string.IsNullOrEmpty(qualityTierDef.pickupLandSoundEventName))
+            if (qualityTierDef && qualityTierDef.pickupLandSound)
             {
-                PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSoundEventName, transform.position);
+                PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSound.akId, transform.position);
             }
         }
 

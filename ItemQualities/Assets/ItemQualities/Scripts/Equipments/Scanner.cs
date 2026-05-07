@@ -124,7 +124,7 @@ namespace ItemQualities.Equipments
 
                 foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
                 {
-                    if (master.inventory)
+                    if (master.inventory && !master.inventory.GetEquipmentDisabled())
                     {
                         int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
                         for (uint slot = 0; slot < equipmentSlotCount; slot++)

@@ -699,6 +699,8 @@ namespace ItemQualities
             public static ItemQualityGroup JumpDamageStrike;
 
             public static ItemQualityGroup ShockNearby;
+
+            public static ItemQualityGroup TreebotBuddy;
         }
 
         public static class Items

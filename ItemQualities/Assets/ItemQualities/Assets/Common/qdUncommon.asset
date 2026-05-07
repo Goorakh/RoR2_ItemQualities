@@ -20,5 +20,5 @@ MonoBehaviour:
   icon: {fileID: -1715125677, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   consumedIcon: {fileID: 1129660682, guid: 227c6511dbc04584487beeb3021957e4, type: 3}
   ChestOpenEffectPrefab: {fileID: 2973721444907822655, guid: c62269ea4ad6e82459d9b0bd43faa57e, type: 3}
-  pickupDropSoundEventName: play_quality_item_pop_uncommon
-  pickupLandSoundEventName: play_quality_item_land_uncommon
+  pickupDropSound: {fileID: 11400000, guid: 7cc8d32972258c0488bbe831944a5f74, type: 2}
+  pickupLandSound: {fileID: 11400000, guid: 3c2a7b6bc77c55e47a0928fe334b65ed, type: 2}

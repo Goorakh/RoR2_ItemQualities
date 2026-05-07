@@ -1,17 +1,24 @@
 ## <Next Version>
 
 * Tougher Times
-    * Ignores Blocks that come from hidden invincibility
-    * Added maximum invincibility time:
-        * Uncommon: 3 (+3 per stack) seconds
-        * Rare: 6 (+6 per stack) seconds
-        * Epic: 9 (+9 per stack) seconds
-        * Legendary: 12 (+12 per stack) seconds
+    * No longer counts blocks from i-frames.
     * Block duration per 10% damage blocked:
-        * Uncommon: 0.1 (+0.1 per stack) seconds -> 0.2 (+0.2 per stack) seconds
-        * Rare: 0.5 (+0.5 per stack) seconds -> 0.5 (+0.5 per stack) seconds
-        * Epic: 1.5 (+1.5 per stack) seconds -> 1 (+1 per stack) seconds
-        * Legendary: 2.5 (+2.5 per stack) seconds -> 1.5 (+1.5 per stack) seconds
+        * Uncommon: 0.1s (+0.1s per stack) -> 0.2s (+0.2s per stack)
+        * Rare: 0.5s (+0.5s per stack) -> 0.5s (+0.5s per stack)
+        * Epic: 1.5s (+1.5s per stack) -> 1s (+1s per stack)
+        * Legendary: 2.5s (+2.5s per stack) -> 1.5s (+1.5s per stack)
+    * Added maximum invincibility time:
+        * Uncommon: 3s (+3s per stack)
+        * Rare: 6s (+6s per stack)
+        * Epic: 9s (+9s per stack)
+        * Legendary: 12s (+12s per stack)
+
+* AtG Missile Mk. 1:
+    * Base missile chance:
+        * Uncommon: 15% -> 12%
+        * Rare: 20% -> 14%
+        * Epic: 25% -> 16%
+        * Legendary: 30% -> 20%
 
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.
@@ -28,6 +35,9 @@
     
 * Newly Hatched Zoea:
     * Allies now spawn with the appropriate quality tier.
+
+* Fuel Array:
+    * Not telling you.
 
 ## 0.7.5
 
