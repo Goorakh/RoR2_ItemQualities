@@ -21,6 +21,7 @@ namespace ItemQualities
     [BepInDependency(R2API.DeployableAPI.PluginGUID)]
     [BepInDependency(R2API.ExecuteAPI.PluginGUID)]
     [BepInDependency(R2API.SoundAPI.PluginGUID)]
+    [BepInDependency(R2API.DotAPI.PluginGUID)]
     [BepInDependency(R2API.ItemAPI.PluginGUID)]
     [BepInDependency(R2API.Networking.NetworkingAPI.PluginGUID)]
     [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]

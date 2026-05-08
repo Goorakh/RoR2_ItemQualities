@@ -6,7 +6,7 @@
         * Rare: 3%
         * Epic: 4%
         * Legendary: 5%
-    * Venom deals damage every second for every dot effect applied
+    * Venom deals damage every second for every damage over time effect applied
         * Uncommon: 50% (+50% per stack)
         * Rare: 100% (+100% per stack)
         * Epic: 150% (+150% per stack)
