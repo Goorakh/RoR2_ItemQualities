@@ -132,7 +132,7 @@ namespace EntityStates.SprintArmorDash
                             attackerSetStateOnHurt.canBeStunned)
                         {
                             attackerSetStateOnHurt.SetStun(1);
-                            Crowbar.HandleDelayedHit(_attachedBody.gameObject, hurtBox.gameObject);
+                            StunChanceOnHit.OnImmobilize(_attachedBody, hurtBox.healthComponent.body);
                         }
 
                         ItemQualityCounts sprintArmor = _attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SprintArmor);

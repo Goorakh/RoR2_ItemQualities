@@ -822,6 +822,8 @@ namespace ItemQualities
             public static BuffQualityGroup Warbanner;
 
             public static BuffQualityGroup DelayedDamageDebuff;
+
+            public static BuffQualityGroup CrowbarCharge;
         }
 
         public static class Buffs
@@ -849,6 +851,8 @@ namespace ItemQualities
             public static BuffDef LifeStealSpeed;
 
             public static BuffDef ScorpionVenom;
+            
+            public static BuffDef Immobilized;
         }
 
         public static class Prefabs
