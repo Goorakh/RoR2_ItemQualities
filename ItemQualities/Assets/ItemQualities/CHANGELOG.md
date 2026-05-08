@@ -19,6 +19,13 @@
         * Rare: 20% -> 14%
         * Epic: 25% -> 16%
         * Legendary: 30% -> 20%
+        
+* Crowbar:
+    * Every 10th high-damage hit deals more damage.
+
+* Stun Grenade:
+    * Changed to Crowbar's previous effect.
+    * Fixed immobilizing forces (Primordial Cube, Void Band, etc) not counting as immobilized.
 
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.

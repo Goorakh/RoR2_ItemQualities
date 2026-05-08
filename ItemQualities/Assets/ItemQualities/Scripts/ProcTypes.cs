@@ -13,6 +13,8 @@ namespace ItemQualities
 
         public static ModdedProcType Bug { get; private set; } = ModdedProcType.Invalid;
 
+        public static ModdedProcType Crowbar { get; private set; } = ModdedProcType.Invalid;
+
         [SystemInitializer]
         static void Init()
         {
@@ -20,6 +22,7 @@ namespace ItemQualities
             Immobilize = ProcTypeAPI.ReserveProcType();
             VoidDeathOrbProcType = ProcTypeAPI.ReserveProcType();
             Bug = ProcTypeAPI.ReserveProcType();
+            Crowbar = ProcTypeAPI.ReserveProcType();
         }
     }
 }
