@@ -12,6 +12,7 @@
 
 * Stun Grenade:
     * Changed to Crowbar's previous effect.
+    * Fixed immobilizing forces (Primordial Cube, Void Band, etc) not counting as immobilized.
 
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.

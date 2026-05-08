@@ -849,6 +849,8 @@ namespace ItemQualities
             public static BuffDef MiniBossCooldown;
 
             public static BuffDef LifeStealSpeed;
+
+            public static BuffDef Immobilized;
         }
 
         public static class Prefabs

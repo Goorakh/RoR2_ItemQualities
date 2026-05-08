@@ -7,6 +7,7 @@ using R2API;
 using RoR2;
 using System;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -18,6 +19,18 @@ namespace ItemQualities.Items
             IL.RoR2.SetStateOnHurt.OnTakeDamageServer += SetStateOnHurt_OnTakeDamageServer;
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
+
+            On.RoR2.RadialForce.ApplyPullToHurtBox += RadialForce_ApplyPullToHurtBox;
+        }
+
+        private static void RadialForce_ApplyPullToHurtBox(On.RoR2.RadialForce.orig_ApplyPullToHurtBox orig, RadialForce self, HurtBox hurtBox)
+        {
+            orig(self, hurtBox);
+
+            if (NetworkServer.active && hurtBox && hurtBox.healthComponent && hurtBox.healthComponent.body)
+            {
+                hurtBox.healthComponent.body.AddTimedBuff(ItemQualitiesContent.Buffs.Immobilized, 0.2f);
+            }
         }
 
         private static DelayedHitHandler onImmobilizeInternal(CharacterBody attacker, CharacterBody victim)
@@ -50,7 +63,8 @@ namespace ItemQualities.Items
 
             if (body)
             {
-                if (body.HasBuff(RoR2Content.Buffs.Entangle) ||
+                if (body.HasBuff(ItemQualitiesContent.Buffs.Immobilized) ||
+                    body.HasBuff(RoR2Content.Buffs.Entangle) ||
                     body.HasBuff(RoR2Content.Buffs.Nullified) ||
                     body.HasBuff(RoR2Content.Buffs.LunarSecondaryRoot) ||
                     body.HasBuff(DLC3Content.Buffs.VultureRoot) ||
