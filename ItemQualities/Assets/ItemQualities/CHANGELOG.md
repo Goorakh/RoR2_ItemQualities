@@ -6,6 +6,12 @@
         * Rare: 20% -> 14%
         * Epic: 25% -> 16%
         * Legendary: 30% -> 20%
+        
+* Crowbar:
+    * Every 10th high-damage hit deals more damage.
+
+* Stun Grenade:
+    * Changed to Crowbar's previous effect.
 
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.
