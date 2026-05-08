@@ -850,6 +850,8 @@ namespace ItemQualities
 
             public static BuffDef LifeStealSpeed;
 
+            public static BuffDef ScorpionVenom;
+            
             public static BuffDef Immobilized;
         }
 
