@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igBoostDamageVoid
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseItem: {fileID: 0}
+  _uncommonItem: {fileID: 11400000, guid: 5957651265a66144896286bfa773bd48, type: 2}
+  _rareItem: {fileID: 11400000, guid: ad23d726764054a4dbb8a831310ce63d, type: 2}
+  _epicItem: {fileID: 11400000, guid: 27911a8fb5eecfe4b91fb7125d120c6e, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 54b635ba729bd2b49b98f3015308c41e, type: 2}
