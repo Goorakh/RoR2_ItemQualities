@@ -51,7 +51,10 @@
 
 * Razorwire:
     * Fixed bonus damage being reduced by armor.
-    
+
+* Lysate Cell:
+    * Fixed bonus damage not applying to Engineer Turrets.
+
 * Newly Hatched Zoea:
     * Allies now spawn with the appropriate quality tier.
 

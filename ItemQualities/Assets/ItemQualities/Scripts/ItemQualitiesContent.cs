@@ -634,6 +634,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup EquipmentMagazineVoid;
 
+            public static ItemQualityGroup BoostDamageVoid;
+
             public static ItemQualityGroup IgniteOnKill;
             
             public static ItemQualityGroup BleedOnHitVoid;

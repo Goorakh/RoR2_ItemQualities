@@ -53,6 +53,27 @@ namespace ItemQualities.Utilities.Extensions
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GiveItemsPermanent(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex, in ItemQualityCounts counts)
+        {
+            inventory.GiveItemsPermanent(QualityCatalog.GetItemQualityGroup(itemGroupIndex), counts);
+        }
+
+        public static void GiveItemsPermanent(this Inventory inventory, ItemQualityGroup itemGroup, in ItemQualityCounts counts)
+        {
+            if (!inventory)
+                throw new ArgumentNullException(nameof(inventory));
+
+            if (!itemGroup)
+                return;
+
+            inventory.GiveItemPermanent(itemGroup.BaseItemIndex, counts.BaseItemCount);
+            inventory.GiveItemPermanent(itemGroup.UncommonItemIndex, counts.UncommonCount);
+            inventory.GiveItemPermanent(itemGroup.RareItemIndex, counts.RareCount);
+            inventory.GiveItemPermanent(itemGroup.EpicItemIndex, counts.EpicCount);
+            inventory.GiveItemPermanent(itemGroup.LegendaryItemIndex, counts.LegendaryCount);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ItemQualityCounts GetItemCountsTemp(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             return inventory.GetItemCountsTemp(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
@@ -119,6 +140,27 @@ namespace ItemQualities.Utilities.Extensions
             float legendaryRawValue = inventory.GetTempItemRawValue(itemGroup.LegendaryItemIndex);
 
             return new TempItemQualityCounts(baseRawValue, uncommonRawValue, rareRawValue, epicRawValue, legendaryRawValue);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GiveItemsTemp(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex, in TempItemQualityCounts counts)
+        {
+            inventory.GiveItemsTemp(QualityCatalog.GetItemQualityGroup(itemGroupIndex), counts);
+        }
+
+        public static void GiveItemsTemp(this Inventory inventory, ItemQualityGroup itemGroup, in TempItemQualityCounts counts)
+        {
+            if (!inventory)
+                throw new ArgumentNullException(nameof(inventory));
+
+            if (!itemGroup)
+                return;
+
+            inventory.GiveItemTemp(itemGroup.BaseItemIndex, counts.BaseItemCount);
+            inventory.GiveItemTemp(itemGroup.UncommonItemIndex, counts.UncommonCount);
+            inventory.GiveItemTemp(itemGroup.RareItemIndex, counts.RareCount);
+            inventory.GiveItemTemp(itemGroup.EpicItemIndex, counts.EpicCount);
+            inventory.GiveItemTemp(itemGroup.LegendaryItemIndex, counts.LegendaryCount);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
