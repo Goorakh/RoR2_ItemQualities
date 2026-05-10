@@ -1562,5 +1562,17 @@
 
         "ITEM_SHOCKNEARBY_LEGENDARY_PICKUP": "Shock all nearby enemies every <sprite name=\"Quality\"> 5 seconds.",
         "ITEM_SHOCKNEARBY_LEGENDARY_DESC": "Fire out <style=cIsDamage>lightning</style> that hits <style=cIsDamage>3</style> <style=cStack>(+2 per stack)</style> enemies for <style=cIsDamage>200%</style> base damage every <sprite name=\"Quality\"> <style=cIsDamage>0.25s <style=cStack>(-50% per stack)</style></style>. The Tesla Coil switches off every <sprite name=\"Quality\"> <style=cIsDamage>5 <style=cStack>(-50% per stack)</style> seconds</style>.",
+        
+        "ITEM_MINORCONSTRUCTONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Nearby allies gain a shield bubble.",
+        "ITEM_MINORCONSTRUCTONKILL_UNCOMMON_DESC": "{0}\nGive a <style=cIsUtility>shield bubble</style> to <sprite name=\"Quality\"> <style=cIsUtility>10</style> nearby allies within <sprite name=\"Quality\"> <style=cIsUtility>30m <style=cStack>(+30m per stack)</style></style>. Shield bubbles grant <style=cIsHealing>100 armor</style> and break upon taking damage, recharges after <sprite name=\"Quality\"> <style=cIsUtility>8</style> seconds.",
+        
+        "ITEM_MINORCONSTRUCTONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Nearby allies gain a shield bubble.",
+        "ITEM_MINORCONSTRUCTONKILL_RARE_DESC": "{0}\nGive a <style=cIsUtility>shield bubble</style> to <sprite name=\"Quality\"> <style=cIsUtility>20</style> nearby allies within <sprite name=\"Quality\"> <style=cIsUtility>60m <style=cStack>(+60m per stack)</style></style>. Shield bubbles grant <style=cIsHealing>100 armor</style> and break upon taking damage, recharges after <sprite name=\"Quality\"> <style=cIsUtility>4</style> seconds.",
+        
+        "ITEM_MINORCONSTRUCTONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Nearby allies gain a shield bubble.",
+        "ITEM_MINORCONSTRUCTONKILL_EPIC_DESC": "{0}\nGive a <style=cIsUtility>shield bubble</style> to <sprite name=\"Quality\"> <style=cIsUtility>35</style> nearby allies within <sprite name=\"Quality\"> <style=cIsUtility>100m <style=cStack>(+100m per stack)</style></style>. Shield bubbles grant <style=cIsHealing>100 armor</style> and break upon taking damage, recharges after <sprite name=\"Quality\"> <style=cIsUtility>2</style> seconds.",
+        
+        "ITEM_MINORCONSTRUCTONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Nearby allies gain a shield bubble.",
+        "ITEM_MINORCONSTRUCTONKILL_LEGENDARY_DESC": "{0}\nGive a <style=cIsUtility>shield bubble</style> to <sprite name=\"Quality\"> <style=cIsUtility>all</style> allies within <sprite name=\"Quality\"> <style=cIsUtility>300m <style=cStack>(+300m per stack)</style></style>. Shield bubbles grant <style=cIsHealing>100 armor</style> and break upon taking damage, recharges after <sprite name=\"Quality\"> <style=cIsUtility>1</style> second.",
     }
 }

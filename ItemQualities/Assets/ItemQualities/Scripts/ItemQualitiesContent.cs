@@ -703,6 +703,10 @@ namespace ItemQualities
             public static ItemQualityGroup ShockNearby;
 
             public static ItemQualityGroup TreebotBuddy;
+
+            public static ItemQualityGroup MinorConstructOnKill;
+
+            public static ItemQualityGroup ConstructBubble;
         }
 
         public static class Items
@@ -855,6 +859,10 @@ namespace ItemQualities
             public static BuffDef ScorpionVenom;
             
             public static BuffDef Immobilized;
+
+            public static BuffDef ConstructBubble;
+
+            public static BuffDef ConstructBubbleCooldown;
         }
 
         public static class Prefabs
@@ -876,6 +884,8 @@ namespace ItemQualities
             public static GameObject HitlistMarkersUI;
 
             public static GameObject ParryProjectileDisplayUI;
+
+            public static GameObject MinorConstructBubbleEffect;
         }
 
         public static class NetworkedPrefabs
@@ -923,6 +933,8 @@ namespace ItemQualities
             public static GameObject GatewayQualityAttachment;
 
             public static GameObject RecyclableObjectAttachment;
+
+            public static GameObject QualityMinorConstructOnKillAttachment;
         }
 
         public static class ProjectilePrefabs
