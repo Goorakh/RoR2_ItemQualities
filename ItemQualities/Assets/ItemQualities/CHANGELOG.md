@@ -61,6 +61,9 @@
 * Newly Hatched Zoea:
     * Allies now spawn with the appropriate quality tier.
 
+* Eccentric Vase:
+    * Added maximum teleport distance (1000m, same as vase placement)
+
 * Fuel Array:
     * Not telling you.
 
