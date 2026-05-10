@@ -33,14 +33,7 @@ namespace ItemQualities.Equipments
                     GameObject qualitySawProjectilePrefab = sawProjectilePrefab.InstantiateClone(sawProjectilePrefab.name + qualityTier.ToString());
 
                     BoomerangProjectileQualityController qualityController = qualitySawProjectilePrefab.EnsureComponent<BoomerangProjectileQualityController>();
-                    qualityController.HitPauseDuration = qualityTier switch
-                    {
-                        QualityTier.Uncommon => 2f,
-                        QualityTier.Rare => 4f,
-                        QualityTier.Epic => 8f,
-                        QualityTier.Legendary => 10f,
-                        _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
-                    };
+                    qualityController.HitPauseDuration = 1f;
 
                     _qualitySawProjectilePrefabs[(int)qualityTier] = qualitySawProjectilePrefab;
                 }

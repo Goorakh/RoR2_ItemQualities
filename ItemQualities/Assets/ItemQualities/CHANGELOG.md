@@ -39,6 +39,9 @@
     * Changed to Crowbar's previous effect.
     * Fixed immobilizing forces (Primordial Cube, Void Band, etc) not counting as immobilized.
 
+* Sawmerang:
+    * Linger duration changed to 1 second for all qualities.
+
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.
     * Fixed ghost drones not being the same tier as the drone being cloned.
