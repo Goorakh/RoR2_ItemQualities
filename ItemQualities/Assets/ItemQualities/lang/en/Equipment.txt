@@ -41,17 +41,17 @@
         "EQUIPMENT_RECYCLE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Can transform quality Items, Equipments, and Printers.",
         "EQUIPMENT_RECYCLE_LEGENDARY_DESC": "{0}\nCan transform <sprite name=\"Quality\"> quality Items, Equipments, and Printers.",
         
-        "EQUIPMENT_CLEANSE_UNCOMMON_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 1 second.",
-        "EQUIPMENT_CLEANSE_UNCOMMON_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>1 second</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+        "EQUIPMENT_CLEANSE_UNCOMMON_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 2 seconds.",
+        "EQUIPMENT_CLEANSE_UNCOMMON_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>2 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
         
-        "EQUIPMENT_CLEANSE_RARE_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 2 seconds.",
-        "EQUIPMENT_CLEANSE_RARE_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>2 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+        "EQUIPMENT_CLEANSE_RARE_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 3 seconds.",
+        "EQUIPMENT_CLEANSE_RARE_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>3 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
         
-        "EQUIPMENT_CLEANSE_EPIC_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 4 seconds.",
-        "EQUIPMENT_CLEANSE_EPIC_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>4 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+        "EQUIPMENT_CLEANSE_EPIC_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 5 seconds.",
+        "EQUIPMENT_CLEANSE_EPIC_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
         
-        "EQUIPMENT_CLEANSE_LEGENDARY_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 5 seconds.",
-        "EQUIPMENT_CLEANSE_LEGENDARY_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>5 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
+        "EQUIPMENT_CLEANSE_LEGENDARY_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 6 seconds.",
+        "EQUIPMENT_CLEANSE_LEGENDARY_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>6 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
 
         "EQUIPMENT_VENDINGMACHINE_UNCOMMON_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 15 seconds for free.",
         "EQUIPMENT_VENDINGMACHINE_UNCOMMON_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>15 seconds for free</style>.",
