@@ -12,6 +12,13 @@
         * Epic: 150% (+150% per stack)
         * Legendary: 200% (+200% per stack)
 
+* Crowbar:
+    * Every 10th high-damage hit deals more damage.
+
+* Stun Grenade:
+    * Changed to Crowbar's previous effect.
+    * Fixed immobilizing forces (Primordial Cube, Void Band, etc) not counting as immobilized.
+
 * Tougher Times
     * No longer counts blocks from i-frames.
     * Invincibility duration per 10% damage blocked:
@@ -39,15 +46,22 @@
         * Epic: 4 -> 12
         * Legendary: 5 -> 15
 
-* Crowbar:
-    * Every 10th high-damage hit deals more damage.
-
-* Stun Grenade:
-    * Changed to Crowbar's previous effect.
-    * Fixed immobilizing forces (Primordial Cube, Void Band, etc) not counting as immobilized.
+* Blast Shower:
+    * Cleanse duration:
+        * Uncommon: 1s -> 2s
+        * Rare: 2s -> 3s
+        * Epic: 4s -> 5s
+        * Legendary: 5s -> 6s
 
 * Sawmerang:
     * Linger duration changed to 1 second for all qualities.
+
+* Infusion:
+    * Health gained per boss kill:
+        * Uncommon: 5 -> 10
+        * Rare: 15 -> 20
+        * Epic: 30 -> 35
+        * Legendary: 50 -> 55
 
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.
