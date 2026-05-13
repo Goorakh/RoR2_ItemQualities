@@ -848,6 +848,8 @@ namespace ItemQualities
 
             public static BuffDef SlugHealth;
 
+            public static BuffDef FruitTempHealth;
+
             public static BuffDef MiniBossCooldown;
 
             public static BuffDef LifeStealSpeed;

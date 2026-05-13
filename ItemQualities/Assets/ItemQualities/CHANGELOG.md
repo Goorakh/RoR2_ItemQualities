@@ -49,6 +49,9 @@
 * Bison Steak:
     * Now increases health for every boss or main stage objective completed. Health values unchanged.
 
+* Foreign Fruit:
+    * Fixed Cautious Slug affecting Foreign Fruit maximum temporary health, and vice versa.
+
 * Armor Piercing Rounds:
     * Marks no longer disappear sometimes when losing and regaining the item.
 
