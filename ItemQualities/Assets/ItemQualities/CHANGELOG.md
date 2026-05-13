@@ -32,6 +32,13 @@
         * Epic: 25% -> 16%
         * Legendary: 30% -> 20%
         
+* Ben's Raincoat:
+    * Reflected debuff count:
+        * Uncommon: 2 -> 5
+        * Rare: 3 -> 8
+        * Epic: 4 -> 12
+        * Legendary: 5 -> 15
+
 * Crowbar:
     * Every 10th high-damage hit deals more damage.
 
