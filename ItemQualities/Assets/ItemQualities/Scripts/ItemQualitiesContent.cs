@@ -707,6 +707,8 @@ namespace ItemQualities
             public static ItemQualityGroup MinorConstructOnKill;
 
             public static ItemQualityGroup ConstructBubble;
+
+            public static ItemQualityGroup TitanGoldDuringTP;
         }
 
         public static class Items
