@@ -1,4 +1,4 @@
-## <Next Version>
+## 0.7.6 Changes:
 
 * Symbiotic Scorpion
     * Chance on hit to apply venom for 10 seconds:
