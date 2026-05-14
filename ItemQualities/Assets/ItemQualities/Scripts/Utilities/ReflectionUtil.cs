@@ -137,22 +137,24 @@ namespace ItemQualities.Utilities
 
         public static MethodInfo FindEqualityOperator(Type typeA, Type typeB)
         {
-            const BindingFlags ConverterMethodFlags = BindingFlags.Static | BindingFlags.Public;
+            const BindingFlags OperatorMethodFlags = BindingFlags.Static | BindingFlags.Public;
 
-            foreach (MethodInfo converterMethod in typeA.GetMethods(ConverterMethodFlags)
-                                                        .Concat(typeB.GetMethods(ConverterMethodFlags))
+            foreach (MethodInfo converterMethod in typeA.GetMethods(OperatorMethodFlags)
+                                                        .Concat(typeB.GetMethods(OperatorMethodFlags))
                                                         .Where(m => m.IsSpecialName && m.Name == "op_Equality"))
             {
                 if (converterMethod.ReturnType != typeof(bool))
                     continue;
 
                 ParameterInfo[] parameters = converterMethod.GetParameters();
-                if (parameters.Length != 2 ||
-                    (parameters[0].ParameterType != typeA && parameters[0].ParameterType != typeB) ||
-                    (parameters[1].ParameterType != typeA && parameters[1].ParameterType != typeB))
-                {
+                if (parameters.Length != 2)
                     continue;
-                }
+
+                bool parametersMatch = (parameters[0].ParameterType == typeA && parameters[0].ParameterType == typeB) ||
+                                       (parameters[1].ParameterType == typeA && parameters[1].ParameterType == typeB);
+
+                if (!parametersMatch)
+                    continue;
 
                 return converterMethod;
             }
