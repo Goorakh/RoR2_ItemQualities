@@ -68,7 +68,12 @@
     * Fixed ghost drones not being the same tier as the drone being cloned.
 
 * Bison Steak:
-    * Now increases health for every boss or main stage objective completed. Health values unchanged.
+    * Now increases health for every boss or main stage objective completed.
+    * Health per boss or stage objective:
+        * Uncommon: 35 -> 40
+        * Rare: 75 -> 80
+        * Epic: 150 -> 130
+        * Legendary: 250 -> 200
 
 * Foreign Fruit:
     * Fixed Cautious Slug affecting Foreign Fruit maximum temporary health, and vice versa.
