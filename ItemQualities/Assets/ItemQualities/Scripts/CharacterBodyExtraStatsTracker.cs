@@ -164,6 +164,7 @@ namespace ItemQualities
         static readonly GatewayQualityPickupSearch _sharedGatewayPickupTargetSearch = new GatewayQualityPickupSearch
         {
             minDistanceFilter = 2f,
+            maxDistanceFilter = 1000f,
             maxAngleFilter = 10f,
             filterByLoS = true,
             sortMode = SortMode.Angle

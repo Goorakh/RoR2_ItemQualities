@@ -58,12 +58,15 @@ namespace ItemQualities.Items
         {
             orig(self, spawnResult);
 
-            CharacterBody body = self ? self.body : null;
-            Inventory inventory = body ? body.inventory : null;
-            if (!inventory)
+            if (!spawnResult.success || !spawnResult.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster))
                 return;
 
-            ItemQualityCounts voidMegaCrabItem = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem);
+            CharacterBody summonerBody = self ? self.body : null;
+            Inventory summonerInventory = summonerBody ? summonerBody.inventory : null;
+            if (!summonerInventory)
+                return;
+
+            ItemQualityCounts voidMegaCrabItem = summonerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.VoidMegaCrabItem);
             if (voidMegaCrabItem.TotalQualityCount > 0)
             {
                 int damageBoostAmount = (3 * voidMegaCrabItem.UncommonCount) +
@@ -71,10 +74,8 @@ namespace ItemQualities.Items
                                         (7 * voidMegaCrabItem.EpicCount) +
                                         (10 * voidMegaCrabItem.LegendaryCount);
 
-                if (spawnResult.spawnedInstance && spawnResult.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster) && spawnedMaster.inventory)
-                {
-                    spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostDamage, damageBoostAmount);
-                }
+                spawnedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostDamage, damageBoostAmount);
+                spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(voidMegaCrabItem.HighestQuality));
             }
         }
     }

@@ -16,23 +16,25 @@ namespace ItemQualities.Items
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        private static void onCharacterDeathGlobal(DamageReport report)
+        static void onCharacterDeathGlobal(DamageReport report)
         {
-            if (!report.attackerBody || !report.attackerBody.inventory || !report.victimBody)
-                return;
-
-            if (report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
+            if (report.victimBody && report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
             {
-                applyTicks(report.attackerBody);
-                CharacterBody owner = report.attackerBody.GetOwnerBody();
-                if (owner) {
-                    applyTicks(owner);
+                if (report.attackerBody)
+                {
+                    applyTicks(report.attackerMaster);
+                }
+
+                if (report.attackerOwnerMaster)
+                {
+                    applyTicks(report.attackerOwnerMaster);
                 }
             }
         }
 
-        static void applyTicks(CharacterBody attacker) {
-            ItemQualityCounts bossDamageBonus = attacker.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
+        static void applyTicks(CharacterMaster attackerMaster)
+        {
+            ItemQualityCounts bossDamageBonus = attackerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
 
             int maxHitlistBonus = bossDamageBonus.HighestQuality switch
             {
@@ -43,9 +45,13 @@ namespace ItemQualities.Items
                 _ => 0,
             };
 
-            if (!attacker.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+            if (!attackerMaster.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
                 return;
-            masterExtraStats.BossDamageBonusTicks = Math.Min(masterExtraStats.BossDamageBonusTicks + 1, maxHitlistBonus);
+
+            if (masterExtraStats.BossDamageBonusTicks < maxHitlistBonus)
+            {
+                masterExtraStats.BossDamageBonusTicks++;
+            }
         }
 
         static void HealthComponent_TakeDamageProcess(ILContext il)

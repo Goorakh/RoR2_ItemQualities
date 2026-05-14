@@ -53,21 +53,15 @@ namespace ItemQualities
             ProgressPartition finalizeContentProgress = partitionedProgress.AddPartition(1f);
 
             ParallelProgressCoroutine loadContentCoroutine = new ParallelProgressCoroutine(loadContentProgress);
-
-            ReadableProgress<float> loadAssetBundleProgress = new ReadableProgress<float>();
-            loadContentCoroutine.Add(loadAssetBundleContentAsync(loadAssetBundleProgress), loadAssetBundleProgress);
-
-            ReadableProgress<float> contentInitializersProgress = new ReadableProgress<float>();
-            loadContentCoroutine.Add(ContentInitializerAttribute.RunContentInitializers(_contentPack, contentInitializersProgress), contentInitializersProgress);
+            loadContentCoroutine.AddProgressCoroutine(loadAssetBundleContentAsync);
+            loadContentCoroutine.AddProgressCoroutine(ContentInitializerAttribute.RunContentInitializers, _contentPack);
 
             yield return loadContentCoroutine;
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 
             ParallelProgressCoroutine finalizeContentCoroutine = new ParallelProgressCoroutine(finalizeContentProgress);
-
-            ReadableProgress<float> contentLoadCallbacksProgress = new ReadableProgress<float>();
-            finalizeContentCoroutine.Add(runContentLoadCallbacks(contentLoadCallbacksProgress), contentLoadCallbacksProgress);
+            finalizeContentCoroutine.AddProgressCoroutine(runContentLoadCallbacks);
 
             yield return finalizeContentCoroutine;
 
@@ -145,16 +139,14 @@ namespace ItemQualities
             {
                 if (asset is IAsyncAssetGenerator asyncAssetGenerator)
                 {
-                    ReadableProgress<float> generateProgress = new ReadableProgress<float>();
-                    generateAssetsCoroutine.Add(asyncAssetGenerator.GenerateAssetsAsync(_contentPack, generateProgress), generateProgress);
+                    generateAssetsCoroutine.AddProgressCoroutine(asyncAssetGenerator.GenerateAssetsAsync, _contentPack);
                 }
 
                 if (asset is GameObject gameObject)
                 {
                     foreach (IAsyncAssetGenerator asyncAssetGeneratorComponent in gameObject.GetComponentsInChildren<IAsyncAssetGenerator>(true))
                     {
-                        ReadableProgress<float> generateProgress = new ReadableProgress<float>();
-                        generateAssetsCoroutine.Add(asyncAssetGeneratorComponent.GenerateAssetsAsync(_contentPack, generateProgress), generateProgress);
+                        generateAssetsCoroutine.AddProgressCoroutine(asyncAssetGeneratorComponent.GenerateAssetsAsync, _contentPack);
                     }
                 }
             }
@@ -335,8 +327,7 @@ namespace ItemQualities
                 {
                     foreach (IAsyncContentLoadCallback asyncContentLoadCallback in gameObject.GetComponentsInChildren<IAsyncContentLoadCallback>(true))
                     {
-                        ReadableProgress<float> callbackProgress = new ReadableProgress<float>();
-                        callbackParallelCoroutine.Add(asyncContentLoadCallback.OnContentLoad(callbackProgress), callbackProgress);
+                        callbackParallelCoroutine.AddProgressCoroutine(asyncContentLoadCallback.OnContentLoad);
                     }
 
                     foreach (IContentLoadCallback contentLoadCallback in gameObject.GetComponentsInChildren<IContentLoadCallback>(true))
@@ -348,8 +339,7 @@ namespace ItemQualities
                 {
                     if (asset is IAsyncContentLoadCallback asyncContentLoadCallback)
                     {
-                        ReadableProgress<float> callbackProgress = new ReadableProgress<float>();
-                        callbackParallelCoroutine.Add(asyncContentLoadCallback.OnContentLoad(callbackProgress), callbackProgress);
+                        callbackParallelCoroutine.AddProgressCoroutine(asyncContentLoadCallback.OnContentLoad);
                     }
 
                     if (asset is IContentLoadCallback contentLoadCallback)
@@ -644,6 +634,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup EquipmentMagazineVoid;
 
+            public static ItemQualityGroup BoostDamageVoid;
+
             public static ItemQualityGroup IgniteOnKill;
             
             public static ItemQualityGroup BleedOnHitVoid;
@@ -709,6 +701,8 @@ namespace ItemQualities
             public static ItemQualityGroup JumpDamageStrike;
 
             public static ItemQualityGroup ShockNearby;
+
+            public static ItemQualityGroup TreebotBuddy;
         }
 
         public static class Items
@@ -830,6 +824,8 @@ namespace ItemQualities
             public static BuffQualityGroup Warbanner;
 
             public static BuffQualityGroup DelayedDamageDebuff;
+
+            public static BuffQualityGroup CrowbarCharge;
         }
 
         public static class Buffs
@@ -852,9 +848,15 @@ namespace ItemQualities
 
             public static BuffDef SlugHealth;
 
+            public static BuffDef FruitTempHealth;
+
             public static BuffDef MiniBossCooldown;
 
             public static BuffDef LifeStealSpeed;
+
+            public static BuffDef ScorpionVenom;
+            
+            public static BuffDef Immobilized;
         }
 
         public static class Prefabs

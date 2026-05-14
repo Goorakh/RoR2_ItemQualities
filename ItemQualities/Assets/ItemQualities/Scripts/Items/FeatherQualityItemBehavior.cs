@@ -37,7 +37,7 @@ namespace ItemQualities.Items
             if (report.attackerBody != Body || (Body.characterMotor && Body.characterMotor.isGrounded))
                 return;
 
-            ItemQualityCounts feather = Stacks;
+            ref readonly ItemQualityCounts feather = ref Stacks;
 
             int maxJumps = (feather.UncommonCount * 2) +
                            (feather.RareCount * 4) +

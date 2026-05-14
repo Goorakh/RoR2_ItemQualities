@@ -1,293 +1,133 @@
-﻿using EntityStates;
-using EntityStates.Vehicles;
+﻿using ItemQualities.ContentManagement;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using R2API;
 using RoR2;
-using System;
+using RoR2BepInExPack.GameAssetPathsBetter;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class Crowbar
+    internal static class Crowbar
     {
+        private static GameObject _impactEffectPrefab;
+
+        [ContentInitializer]
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
+        {
+            AsyncOperationHandle<GameObject> iceRingExplosionLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_ElementalRings.IceRingExplosion_prefab);
+            iceRingExplosionLoad.OnSuccess(iceRingExplosionPrefab =>
+            {
+                _impactEffectPrefab = iceRingExplosionPrefab.InstantiateClone("CrowbarExplosion", false);
+
+                Transform iceMesh = _impactEffectPrefab.transform.Find("IceMesh");
+                if (iceMesh && iceMesh.TryGetComponent(out ParticleSystemRenderer iceMeshRenderer))
+                {
+                    Material iceMeshMaterial = new Material(iceMeshRenderer.sharedMaterial);
+                    iceMeshMaterial.color = new Color32(0xA8, 0xA1, 0x94, 0xFF);
+                    iceMeshRenderer.sharedMaterial = iceMeshMaterial;
+                }
+
+                Transform chunks = _impactEffectPrefab.transform.Find("Chunks");
+                if (chunks && chunks.TryGetComponent(out ParticleSystem chunksParticleSystem))
+                {
+                    ParticleSystem.MainModule mainModule = chunksParticleSystem.main;
+                    mainModule.startColor = new ParticleSystem.MinMaxGradient(new Color32(0x89, 0x87, 0x84, 0xFF));
+                }
+
+                Transform billboardSplash = _impactEffectPrefab.transform.Find("BillboardSplash");
+                if (billboardSplash)
+                {
+                    billboardSplash.gameObject.SetActive(false);
+                }
+
+                Transform runeRings = _impactEffectPrefab.transform.Find("RuneRings");
+                if (runeRings)
+                {
+                    runeRings.gameObject.SetActive(false);
+                }
+
+                args.ContentPack.effectDefs.Add(new EffectDef(_impactEffectPrefab));
+            });
+
+            return iceRingExplosionLoad.AsProgressCoroutine(args.ProgressReceiver);
+        }
+
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
-            IL.RoR2.SetStateOnHurt.OnTakeDamageServer += SetStateOnHurt_OnTakeDamageServer;
-            IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
-            GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
+            On.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        public static DelayedHitHandler HandleDelayedHit(GameObject attacker, GameObject victim)
+        private static void GlobalEventManager_ProcessHitEnemy(On.RoR2.GlobalEventManager.orig_ProcessHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
-            DelayedHitHandler delayedHitHandler = victim.GetComponent<DelayedHitHandler>();
-            if (!delayedHitHandler)
-            {
-                delayedHitHandler = victim.AddComponent<DelayedHitHandler>();
-                delayedHitHandler.attacker = attacker;
-            }
+            orig(self, damageInfo, victim);
 
-            return delayedHitHandler;
-        }
-
-        public static bool IsImmobile(EntityStateMachine entityStateMachine)
-        {
-            CharacterBody body = entityStateMachine.commonComponents.characterBody;
-            if (!body)
-            {
-                return false;
-            }
-
-            if (entityStateMachine.state is StunState ||
-                entityStateMachine.state is FrozenState ||
-                entityStateMachine.state is ShockState ||
-                entityStateMachine.state is ImmobilizeState ||
-                entityStateMachine.state is GenericCharacterVehicleSeated ||
-                entityStateMachine.state is ThrownObjectIdle ||
-                body.HasBuff(RoR2Content.Buffs.Nullified) ||
-                body.HasBuff(RoR2Content.Buffs.Entangle))
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        private static void onServerDamageDealt(DamageReport report)
-        {
-            DelayedHitHandler delayedHitHandler = report.victimBody.GetComponent<DelayedHitHandler>();
-            CharacterBody attackerbody = report.attackerBody;
-            if (!attackerbody || !attackerbody.inventory)
+            if (!damageInfo.attacker || !damageInfo.attacker.TryGetComponent(out CharacterBody attackerBody) || !attackerBody.inventory)
                 return;
 
-            if (!delayedHitHandler)
+            ItemQualityCounts crowbar = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Crowbar);
+            if (crowbar.TotalQualityCount == 0)
+                return;
+
+            if (!victim || !victim.TryGetComponent(out CharacterBody victimBody))
+                return;
+
+            if (damageInfo.damage >= attackerBody.damage * 4f && !damageInfo.procChainMask.HasModdedProc(ProcTypes.Crowbar))
             {
-                //fallback if something immobilizes directly, set the proc owner to the first person attacking after that instead, this should handle immobilizing attack automatically
-                //things that are procced or don't deal damage still need to be handled manually, like quality opal
-                if (report.victimBody.TryGetComponent<EntityStateMachine>(out EntityStateMachine entityStateMachine) &&
-                IsImmobile(entityStateMachine))
+                BuffQualityCounts crowbarCharge = attackerBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.CrowbarCharge);
+                if (crowbarCharge.TotalQualityCount >= 9)
                 {
-                    delayedHitHandler = HandleDelayedHit(report.attacker, report.victimBody.gameObject);
+                    float damageCoefficient = (crowbar.UncommonCount * 0.5f) +
+                                              (crowbar.RareCount * 1.0f) +
+                                              (crowbar.EpicCount * 2.5f) +
+                                              (crowbar.LegendaryCount * 4.0f);
+
+                    ProcChainMask procChainMask = damageInfo.procChainMask;
+                    procChainMask.AddModdedProc(ProcTypes.Crowbar);
+
+                    DamageInfo crowbarDamageInfo = new DamageInfo
+                    {
+                        attacker = damageInfo.attacker,
+                        damage = damageCoefficient * damageInfo.damage,
+                        crit = damageInfo.crit,
+                        procChainMask = procChainMask,
+                        procCoefficient = 1f,
+                        position = damageInfo.position,
+                        damageColorIndex = DamageColorIndex.Item,
+                        inflictedHurtbox = damageInfo.inflictedHurtbox,
+                    };
+
+                    victimBody.healthComponent.TakeDamage(crowbarDamageInfo);
+
+                    EffectManager.SimpleEffect(_impactEffectPrefab, damageInfo.position, Quaternion.identity, true);
+
+                    attackerBody.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.CrowbarCharge);
                 }
                 else
                 {
-                    return;
+                    attackerBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.CrowbarCharge.GetBuffIndex(crowbar.HighestQuality));
                 }
             }
+        }
+    }
 
-            ItemQualityCounts crowbar = attackerbody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Crowbar);
-            float multiplier = (crowbar.UncommonCount * 0.15f) +
-                               (crowbar.RareCount * 0.3f) +
-                               (crowbar.EpicCount * 0.45f) +
-                               (crowbar.LegendaryCount * 0.6f);
+    public sealed class CrowbarQualityItemBehavior : QualityItemBodyBehavior
+    {
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.Crowbar;
 
-            delayedHitHandler.damage += report.damageDealt * multiplier;
+        protected override void OnStacksChanged()
+        {
+            base.OnStacksChanged();
+            Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.CrowbarCharge, Stacks.HighestQuality);
         }
 
-        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private void OnDisable()
         {
-            ILLabel label = null;
-            ILCursor c = new ILCursor(il);
-            //tentabauble
-            if (c.TryGotoNext(
-                    x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.Nullified))
-                ) &&
-                c.TryGotoPrev(MoveType.After,
-                    x => x.MatchBrfalse(out label)
-                ))
-            {
-                c.Emit(OpCodes.Ldarg_1);
-                c.Emit(OpCodes.Ldarg_2);
-                c.EmitDelegate<Func<DamageInfo, GameObject, bool>>(checkImmobileProcChainMask);
-                c.Emit(OpCodes.Brfalse, label);
-            }
-            else
-            {
-                Log.Error(il.Method.Name + " IL Hook failed!");
-                return;
-            }
-        }
-
-        private static bool checkImmobileProcChainMask(DamageInfo damageInfo, GameObject victim)
-        {
-            if (!damageInfo.procChainMask.HasModdedProc(ProcTypes.Immobilize))
-            {
-                HandleDelayedHit(damageInfo.attacker, victim);
-                return true;
-            }
-
-            return false;
-        }
-
-        private static void SetStateOnHurt_OnTakeDamageServer(ILContext il)
-        {
-            ILLabel label = null;
-            ILCursor c = new ILCursor(il);
-            //stungrenade
-            if (c.TryGotoNext(
-                    x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetStun))
-                ) &&
-                c.TryGotoPrev(MoveType.After,
-                    x => x.MatchBrfalse(out label)
-                ))
-            {
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
-                c.Emit(OpCodes.Brfalse, label);
-            }
-            else
-            {
-                Log.Error("stungrenade IL Hook failed!");
-            }
-
-            //freezeonhit
-            c.Index = 0;
-            if (c.TryGotoNext(
-                    x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetFrozen))
-                ) &&
-                c.TryGotoPrev(MoveType.After,
-                    x => x.MatchBrfalse(out label)
-                ))
-            {
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
-                c.Emit(OpCodes.Brfalse, label);
-            }
-            else
-            {
-                Log.Error("freezeonhit IL Hook failed!");
-            }
-
-            //shockonhit
-            c.Index = 0;
-            if (c.TryGotoNext(
-                    x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetShock))
-                ) &&
-                c.TryGotoPrev(MoveType.After,
-                    x => x.MatchBrfalse(out label)
-                ))
-            {
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
-                c.Emit(OpCodes.Brfalse, label);
-            }
-            else
-            {
-                Log.Error("shockonhit IL Hook failed!");
-            }
-
-            //stunbullet
-            c.Index = 0;
-            if (c.TryGotoNext(MoveType.Before,
-                    x => x.MatchBrfalse(out label),
-                    x => x.MatchLdarg(0),
-                    x => x.MatchLdcR4(1),
-                    x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetStun))
-                ))
-            {
-                c.Index++;
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
-                c.Emit(OpCodes.Brfalse, label);
-            }
-            else
-            {
-                Log.Error("stunbullet IL Hook failed!");
-            }
-
-            //immobilizestate
-            c.Index = 0;
-            if (c.TryGotoNext(
-                    x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetImmobilize))
-                ) &&
-                c.TryGotoPrev(MoveType.After,
-                    x => x.MatchBrfalse(out label)
-                ))
-            {
-                c.Emit(OpCodes.Ldarg_1);
-                c.EmitDelegate<Func<DamageReport, bool>>(checkImmobileProcChainMask);
-                c.Emit(OpCodes.Brfalse, label);
-            }
-            else
-            {
-                Log.Error("immobilizestate IL Hook failed!");
-            }
-        }
-
-        private static bool checkImmobileProcChainMask(DamageReport damageReport)
-        {
-            if (!damageReport.damageInfo.procChainMask.HasModdedProc(ProcTypes.Immobilize))
-            {
-                HandleDelayedHit(damageReport.attacker, damageReport.victimBody.gameObject);
-                return true;
-            }
-
-            return false;
-        }
-
-        public sealed class DelayedHitHandler : MonoBehaviour
-        {
-            public float damage = 0;
-            public GameObject attacker;
-
-            EntityStateMachine _entityStateMachine;
-            CharacterBody _body;
-            bool wasInFrozenState;
-
-            private void Awake()
-            {
-                _entityStateMachine = GetComponent<EntityStateMachine>();
-                _body = GetComponent<CharacterBody>();
-                if (!_entityStateMachine || !_body)
-                {
-                    Destroy(this);
-                }
-            }
-
-            private void FixedUpdate()
-            {
-                if (damage == 0 || !_body.healthComponent)
-                {
-                    Destroy(this);
-                    return;
-                }
-
-                if (!IsImmobile(_entityStateMachine))
-                {
-                    dealDelayedDamage();
-                    Destroy(this);
-                }
-
-                wasInFrozenState = _body.healthComponent.isInFrozenState;
-            }
-
-            void dealDelayedDamage()
-            {
-                ProcChainMask procChainMask = default(ProcChainMask);
-                procChainMask.AddModdedProc(ProcTypes.Immobilize);
-
-                bool restorefrozen = _body.healthComponent.isInFrozenState;
-                _body.healthComponent.isInFrozenState = wasInFrozenState;
-
-                DamageInfo damageInfo = new DamageInfo
-                {
-                    damage = damage,
-                    inflictor = attacker,
-                    attacker = attacker,
-                    procChainMask = procChainMask,
-                    procCoefficient = 1,
-                    damageColorIndex = DamageColorIndex.DelayedDamage,
-                    damageType = DamageTypeExtended.BypassDamageCalculations,
-                    position = _body.corePosition,
-                };
-
-                _body.healthComponent.TakeDamage(damageInfo);
-                GlobalEventManager.instance.OnHitEnemy(damageInfo, _body.healthComponent.gameObject);
-                GlobalEventManager.instance.OnHitAll(damageInfo, _body.healthComponent.gameObject);
-                _body.healthComponent.isInFrozenState = restorefrozen;
-            }
+            Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.CrowbarCharge);
         }
     }
 }

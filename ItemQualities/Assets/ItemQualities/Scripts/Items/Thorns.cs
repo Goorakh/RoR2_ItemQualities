@@ -4,6 +4,7 @@ using MonoMod.Cil;
 using RoR2;
 using RoR2.Orbs;
 using System;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -48,7 +49,7 @@ namespace ItemQualities.Items
                                                         (3f * thorns.EpicCount) +
                                                         (5f * thorns.LegendaryCount);
 
-                        thornsDamage += returnDamageCoefficient * damageReport.damageDealt;
+                        thornsDamage += returnDamageCoefficient * Mathf.Max(damageReport.damageDealt, damageReport.damageInfo.damage);
                     }
                 }
 

@@ -113,7 +113,10 @@ namespace ItemQualities.Equipments
                 {
                     missileItemCount += master.inventory.GetItemCountEffective(itemIndex);
                 }
+            }
 
+            if (!master.inventory.GetEquipmentDisabled())
+            {
                 int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
                 for (uint slot = 0; slot < equipmentSlotCount; slot++)
                 {

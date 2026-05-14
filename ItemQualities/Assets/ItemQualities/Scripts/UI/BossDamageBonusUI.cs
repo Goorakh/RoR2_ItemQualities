@@ -61,12 +61,22 @@ namespace ItemQualities.UI
                 _targetMasterStats.OnBossDamageBonusTicksChanged -= onBossDamageBonusTicksChanged;
             }
 
+            if (_targetMaster && _targetMaster.inventory)
+            {
+                _targetMaster.inventory.onInventoryChanged -= onTargetInventoryChanged;
+            }
+
             _targetMaster = master;
             _targetMasterStats = master ? master.GetComponentCached<CharacterMasterExtraStatsTracker>() : null;
 
             if (_targetMasterStats)
             {
                 _targetMasterStats.OnBossDamageBonusTicksChanged += onBossDamageBonusTicksChanged;
+            }
+
+            if (_targetMaster && _targetMaster.inventory)
+            {
+                _targetMaster.inventory.onInventoryChanged += onTargetInventoryChanged;
             }
 
             refreshTicks();
@@ -77,12 +87,27 @@ namespace ItemQualities.UI
             refreshTicks();
         }
 
+        void onTargetInventoryChanged()
+        {
+            refreshTicks();
+        }
+
         void refreshTicks()
         {
-            int sections = _targetMasterStats && _targetMasterStats.BossDamageBonusTicks > 0 ? HGMath.IntDivCeil(_targetMasterStats.BossDamageBonusTicks, _maxTicksPerSection) : 0;
-            _tickAllocator.AllocateElements(sections);
+            ItemQualityCounts bossDamageBonus = default;
+            if (_targetMaster && _targetMaster.inventory)
+            {
+                bossDamageBonus = _targetMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
+            }
 
-            for (int i = 0; i < sections; i++)
+            bool shouldShowTicks = bossDamageBonus.TotalQualityCount > 0;
+
+            int ticksToDisplay = shouldShowTicks && _targetMasterStats ? _targetMasterStats.BossDamageBonusTicks : 0;
+
+            int tickSections = ticksToDisplay > 0 ? HGMath.IntDivCeil(ticksToDisplay, _maxTicksPerSection) : 0;
+
+            _tickAllocator.AllocateElements(tickSections);
+            for (int i = 0; i < tickSections; i++)
             {
                 BossDamageBonusTickController markerController = _tickAllocator.elements[i];
                 markerController.DisplayedNumber = Mathf.Min(_maxTicksPerSection, _targetMasterStats.BossDamageBonusTicks - (_maxTicksPerSection * i));

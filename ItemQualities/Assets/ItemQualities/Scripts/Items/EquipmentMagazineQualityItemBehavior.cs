@@ -26,7 +26,7 @@ namespace ItemQualities.Items
             if (Body.equipmentSlot != equipmentSlot || equipmentIndex == EquipmentIndex.None)
                 return;
 
-            ItemQualityCounts equipmentMagazine = Stacks;
+            ref readonly ItemQualityCounts equipmentMagazine = ref Stacks;
 
             float freeRestockChance = (10f * equipmentMagazine.UncommonCount) +
                                       (20f * equipmentMagazine.RareCount) +

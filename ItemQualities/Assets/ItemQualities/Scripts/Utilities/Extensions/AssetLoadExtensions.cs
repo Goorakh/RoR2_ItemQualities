@@ -93,19 +93,31 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
+        public static void AddProgressCoroutine(this ParallelProgressCoroutine parallelProgressCoroutine, Func<ReadableProgress<float>, IEnumerator> coroutine)
+        {
+            ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
+            parallelProgressCoroutine.Add(coroutine(progressReceiver), progressReceiver);
+        }
+
+        public static void AddProgressCoroutine<TArg>(this ParallelProgressCoroutine parallelProgressCoroutine, Func<TArg, ReadableProgress<float>, IEnumerator> coroutine, TArg arg)
+        {
+            ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
+            parallelProgressCoroutine.Add(coroutine(arg, progressReceiver), progressReceiver);
+        }
+
         public static void Add(this ParallelProgressCoroutine parallelProgressCoroutine, AsyncOperation asyncOperation)
         {
             ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
             parallelProgressCoroutine.Add(asyncOperation.AsProgressCoroutine(progressReceiver), progressReceiver);
         }
 
-        public static void Add(this ParallelProgressCoroutine parallelProgressCoroutine, AsyncOperationHandle asyncOperation)
+        public static void Add(this ParallelProgressCoroutine parallelProgressCoroutine, in AsyncOperationHandle asyncOperation)
         {
             ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
             parallelProgressCoroutine.Add(asyncOperation.AsProgressCoroutine(progressReceiver), progressReceiver);
         }
 
-        public static void Add<T>(this ParallelProgressCoroutine parallelProgressCoroutine, AsyncOperationHandle<T> asyncOperation)
+        public static void Add<T>(this ParallelProgressCoroutine parallelProgressCoroutine, in AsyncOperationHandle<T> asyncOperation)
         {
             ReadableProgress<float> progressReceiver = new ReadableProgress<float>();
             parallelProgressCoroutine.Add(asyncOperation.AsProgressCoroutine(progressReceiver), progressReceiver);

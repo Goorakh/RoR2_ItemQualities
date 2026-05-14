@@ -36,10 +36,10 @@ namespace ItemQualities.Items
 
                     if (infusion.TotalQualityCount > 0)
                     {
-                        int infusionBonus = (5 * infusion.UncommonCount) +
-                                            (15 * infusion.RareCount) +
-                                            (30 * infusion.EpicCount) +
-                                            (50 * infusion.LegendaryCount);
+                        int infusionBonus = (10 * infusion.UncommonCount) +
+                                            (20 * infusion.RareCount) +
+                                            (35 * infusion.EpicCount) +
+                                            (55 * infusion.LegendaryCount);
 
                         InfusionOrb infusionOrb = new InfusionOrb
                         {

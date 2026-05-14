@@ -1,3 +1,4 @@
+using EntityStates;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -7,64 +8,145 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class QuestVolatileBatteryPickup : NetworkBehaviour
+    public sealed class QuestVolatileBatteryPickup : MonoBehaviour
     {
-        GenericPickupController _pickupController;
-        QualityTierContext _qualityTierContext;
+        static GameObject _detonationEffectPrefab;
 
-        static GameObject _vfxPrefab;
-        GameObject _vfxInstance;
-        float _timer;
+        QualityTierContext _qualityTierContext;
+        GenericOwnership _genericOwnership;
+
+        bool _resolvedParentPickupController;
+        GenericPickupController _pickupController;
 
         [SystemInitializer]
         static void Init()
         {
-            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryPreDetonation_prefab).OnSuccess(VolatileBatteryPreDetonation =>
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryPreDetonation_prefab).OnSuccess(volatileBatteryPreDetonation =>
             {
-                _vfxPrefab = VolatileBatteryPreDetonation;
+                _detonationEffectPrefab = volatileBatteryPreDetonation;
             });
         }
 
-        bool Begin()
+        private void Awake()
         {
-            if (!transform.parent)
-                return false;
-            if (_pickupController && _qualityTierContext)
-            {
-                return true;
-            }
-            _pickupController = transform.parent.GetComponent<GenericPickupController>();
-            if (!_pickupController || !_pickupController.pickup.isValid)
-                return false;
             _qualityTierContext = GetComponent<QualityTierContext>();
-            if (!_qualityTierContext)
-                return false;
-            return true;
+            _genericOwnership = GetComponent<GenericOwnership>();
         }
 
         private void FixedUpdate()
         {
-            if (!Begin())
-                return;
-            _timer += Time.deltaTime;
-
-            if (!_vfxInstance)
+            if (!_resolvedParentPickupController && transform.parent)
             {
-                _timer = 0;
-                EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(_pickupController.pickup.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
-                if (QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex) == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex &&
-                    QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None)
+                _pickupController = transform.parent.GetComponent<GenericPickupController>();
+                _resolvedParentPickupController = true;
+            }
+        }
+
+        public void OnInteractionBegin(Interactor activator)
+        {
+            _genericOwnership.ownerObject = activator ? activator.gameObject : null;
+        }
+
+        private abstract class BaseState : EntityState
+        {
+            protected QuestVolatileBatteryPickup batteryPickupAttachment { get; private set; }
+
+            protected GenericPickupController pickupController => batteryPickupAttachment._pickupController;
+
+            public override void OnEnter()
+            {
+                base.OnEnter();
+
+                batteryPickupAttachment = GetComponent<QuestVolatileBatteryPickup>();
+            }
+        }
+
+        private sealed class Idle : BaseState
+        {
+            public override void FixedUpdate()
+            {
+                base.FixedUpdate();
+
+                if (isAuthority)
                 {
-                    GetComponent<QualityTierContext>().QualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
-                    GameObject displayParent = _pickupController.pickupDisplay.modelRenderer.gameObject;
-                    _vfxInstance = UnityEngine.Object.Instantiate(_vfxPrefab, displayParent.transform);
-                    _vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+                    if (pickupController)
+                    {
+                        PickupDef currentPickupDef = PickupCatalog.GetPickupDef(pickupController.pickup.pickupIndex);
+                        EquipmentIndex currentEquipmentIndex = currentPickupDef != null ? currentPickupDef.equipmentIndex : EquipmentIndex.None;
+                        EquipmentQualityGroupIndex currentEquipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(currentEquipmentIndex);
+                        if (currentEquipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex &&
+                            QualityCatalog.GetQualityTier(currentEquipmentIndex) != QualityTier.None)
+                        {
+                            outer.SetNextState(new CountDown());
+                        }
+                    }
+                }
+            }
+        }
+
+        private sealed class CountDown : BaseState
+        {
+            public static float duration;
+
+            private GameObject _detonationEffectInstance;
+
+            public override void OnEnter()
+            {
+                base.OnEnter();
+
+                if (pickupController)
+                {
+                    GameObject displayParent = pickupController.pickupDisplay.modelObject;
+                    _detonationEffectInstance = Instantiate(_detonationEffectPrefab, displayParent.transform);
+                    _detonationEffectInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
                 }
             }
 
-            if (_timer >= 3f)
+            public override void OnExit()
             {
-                Equipments.QuestVolatileBattery.Detonate(base.gameObject, true);
+                Destroy(_detonationEffectInstance);
+                _detonationEffectInstance = null;
+
+                base.OnExit();
+            }
+
+            public override void FixedUpdate()
+            {
+                base.FixedUpdate();
+
+                if (pickupController)
+                {
+                    PickupDef currentPickupDef = PickupCatalog.GetPickupDef(pickupController.pickup.pickupIndex);
+                    EquipmentIndex currentEquipmentIndex = currentPickupDef != null ? currentPickupDef.equipmentIndex : EquipmentIndex.None;
+                    EquipmentQualityGroupIndex currentEquipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(currentEquipmentIndex);
+                    QualityTier currentEquipmentQualityTier = QualityCatalog.GetQualityTier(currentEquipmentIndex);
+
+                    if (currentEquipmentGroupIndex != ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex ||
+                        currentEquipmentQualityTier == QualityTier.None)
+                    {
+                        if (isAuthority)
+                        {
+                            outer.SetNextState(new Idle());
+                        }
+
+                        return;
+                    }
+
+                    batteryPickupAttachment._qualityTierContext.QualityTier = currentEquipmentQualityTier;
+                }
+
+                if (fixedAge >= duration)
+                {
+                    if (NetworkServer.active)
+                    {
+                        ItemQualities.Equipments.QuestVolatileBattery.Detonate(gameObject, damageMultiplier: 10f);
+
+                        if (pickupController)
+                        {
+                            Destroy(pickupController.gameObject);
+                        }
+                    }
+                }
             }
         }
     }

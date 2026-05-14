@@ -59,7 +59,7 @@ namespace ItemQualities
 
                 StartEvent startEvent = qualityUpgradeTransformationNotificationPanelPrefab.AddComponent<StartEvent>();
                 startEvent.action ??= new UnityEvent();
-                startEvent.action.AddPersistentListener(eventFunctions.PlaySound, QualityCatalog.GetQualityTierDef(qualityTier).pickupDropSoundEventName);
+                startEvent.action.AddPersistentListener(eventFunctions.PlaySound, QualityCatalog.GetQualityTierDef(qualityTier).pickupDropSound.eventName);
             }
         }
 

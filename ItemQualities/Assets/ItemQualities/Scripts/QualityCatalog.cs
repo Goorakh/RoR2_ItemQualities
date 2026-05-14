@@ -1,6 +1,5 @@
 ﻿using HG;
 using HG.Coroutines;
-using ItemQualities.Extensions;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;

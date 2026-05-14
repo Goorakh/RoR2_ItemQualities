@@ -475,7 +475,7 @@ namespace ItemQualities
 
             if (healthBarValues.healthFraction > 0f && healthBar.style.trailingOverHealthBarStyle.enabled)
             {
-                float temporaryHealthFraction = body.GetBuffCount(ItemQualitiesContent.Buffs.SlugHealth) / body.maxHealth;
+                float temporaryHealthFraction = body.GetTemporaryHealthBonus() / body.maxHealth;
                 if (temporaryHealthFraction > 0f)
                 {
                     float healthFillFraction = healthComponent.health / body.maxHealth;

@@ -169,9 +169,9 @@ namespace ItemQualities
                 if (pickupQualityTier > QualityTier.None)
                 {
                     QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(pickupQualityTier);
-                    if (!string.IsNullOrWhiteSpace(qualityTierDef.pickupLandSoundEventName))
+                    if (qualityTierDef.pickupLandSound)
                     {
-                        PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSoundEventName, transform.position);
+                        PointSoundManager.EmitSoundLocal(qualityTierDef.pickupLandSound.akId, transform.position);
                     }
                 }
             }

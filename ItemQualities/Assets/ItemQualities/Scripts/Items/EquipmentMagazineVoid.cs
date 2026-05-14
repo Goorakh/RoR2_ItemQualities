@@ -1,22 +1,63 @@
 ﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil.Cil;
+using MonoMod.Cil;
 using R2API;
 using RoR2;
+using System;
 
 namespace ItemQualities.Items
 {
-    static class EquipmentMagazineVoid
+    internal static class EquipmentMagazineVoid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             ItemHooks.TakeDamageModifier += modifyTakeDamage;
 
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+
+            IL.RoR2.CharacterBody.HandleConstructTurret += CharacterBody_HandleConstructTurret;
         }
 
-        static void modifyTakeDamage(ref float damageValue, DamageInfo damageInfo)
+        private static void CharacterBody_HandleConstructTurret(ILContext il)
         {
-            if (damageInfo == null || (damageInfo.damageType.damageSource & DamageSource.Special) == 0)
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.AfterLabel,
+                               x => x.MatchCallOrCallvirt<MasterSummon>(nameof(MasterSummon.Perform))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Dup);
+            c.EmitDelegate<Action<MasterSummon>>(handleTurretSummon);
+
+            static void handleTurretSummon(MasterSummon turretSummon)
+            {
+                if (turretSummon?.summonerBodyObject &&
+                    turretSummon.summonerBodyObject.TryGetComponent(out CharacterBody summonerBody) &&
+                    summonerBody.inventory)
+                {
+                    ItemQualityCounts equipmentMagazineVoid = summonerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid);
+                    if (equipmentMagazineVoid.TotalQualityCount > 0)
+                    {
+                        turretSummon.preSpawnSetupCallback += onTurretSpawned;
+                        void onTurretSpawned(CharacterMaster turretMaster)
+                        {
+                            if (turretMaster && turretMaster.inventory)
+                            {
+                                turretMaster.inventory.GiveItemsPermanent(ItemQualitiesContent.ItemQualityGroups.BoostDamageVoid, equipmentMagazineVoid);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void modifyTakeDamage(ref float damageValue, DamageInfo damageInfo)
+        {
+            if (damageInfo == null)
                 return;
 
             CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
@@ -24,7 +65,15 @@ namespace ItemQualities.Items
             if (!attackerInventory)
                 return;
 
-            ItemQualityCounts equipmentMagazineVoid = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid);
+            ItemQualityCounts equipmentMagazineVoid = new ItemQualityCounts();
+
+            if ((damageInfo.damageType.damageSource & DamageSource.Special) != 0)
+            {
+                equipmentMagazineVoid += attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.EquipmentMagazineVoid);
+            }
+
+            equipmentMagazineVoid += attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BoostDamageVoid);
+
             if (equipmentMagazineVoid.TotalQualityCount > 0)
             {
                 float damageIncrease = (0.1f * equipmentMagazineVoid.UncommonCount) +
@@ -40,7 +89,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender || !sender.inventory)
                 return;

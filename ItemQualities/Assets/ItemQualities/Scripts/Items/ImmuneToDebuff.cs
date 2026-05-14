@@ -77,16 +77,16 @@ namespace ItemQualities.Items
             switch (qualityTier)
             {
                 case QualityTier.Uncommon:
-                    buffStackCount = 2;
+                    buffStackCount = 5;
                     break;
                 case QualityTier.Rare:
-                    buffStackCount = 3;
+                    buffStackCount = 8;
                     break;
                 case QualityTier.Epic:
-                    buffStackCount = 4;
+                    buffStackCount = 12;
                     break;
                 case QualityTier.Legendary:
-                    buffStackCount = 5;
+                    buffStackCount = 15;
                     break;
                 default:
                     buffStackCount = 1;

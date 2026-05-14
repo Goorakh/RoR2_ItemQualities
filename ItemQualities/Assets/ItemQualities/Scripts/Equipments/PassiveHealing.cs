@@ -26,22 +26,32 @@ namespace ItemQualities.Equipments
 
         static DeployableSlot _woodspriteCloneDeployableSlot = DeployableSlot.None;
 
+        private static readonly Func<ItemIndex, bool> itemCopyFilterDelegate = itemCopyFilter;
+
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
         static void EarlyInit()
         {
             _woodspriteCloneDeployableSlot = DeployableAPI.RegisterDeployableSlot(getWoodspriteCloneLimit);
         }
 
-        static int getWoodspriteCloneLimit(CharacterMaster self, int deployableCountMultiplier)
+        private static bool itemCopyFilter(ItemIndex itemIndex)
+        {
+            return Inventory.DefaultItemCopyFilter(itemIndex) || itemIndex == DLC3Content.Items.DroneUpgradeHidden.itemIndex;
+        }
+
+        static int getWoodspriteCloneLimit(CharacterMaster master, int swarmsMultiplier)
         {
             QualityTier passiveHealingQualityTier = QualityTier.None;
-            int equipmentSlotCount = self.inventory.GetEquipmentSlotCount();
-            for (uint slot = 0; slot < equipmentSlotCount; slot++)
+            if (!master.inventory.GetEquipmentDisabled())
             {
-                int equipmentSetCount = self.inventory.GetEquipmentSetCount(slot);
-                for (uint set = 0; set < equipmentSetCount; set++)
+                int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
+                for (uint slot = 0; slot < equipmentSlotCount; slot++)
                 {
-                    passiveHealingQualityTier = QualityCatalog.Max(passiveHealingQualityTier, self.inventory.GetEquipmentQualityTier(slot, set));
+                    int equipmentSetCount = master.inventory.GetEquipmentSetCount(slot);
+                    for (uint set = 0; set < equipmentSetCount; set++)
+                    {
+                        passiveHealingQualityTier = QualityCatalog.Max(passiveHealingQualityTier, master.inventory.GetEquipmentQualityTier(slot, set));
+                    }
                 }
             }
 
@@ -252,15 +262,11 @@ namespace ItemQualities.Equipments
                     ignoreTeamMemberLimit = true,
                     position = cloneSpawnPosition,
                     rotation = cloneSpawnRotation,
-                    inventoryToCopy = targetBody.inventory
+                    inventoryToCopy = targetBody.inventory,
+                    inventoryItemCopyFilter = itemCopyFilterDelegate,
+                    preSpawnSetupCallback = preSpawnSetup,
+                    loadout = targetBody.master ? targetBody.master.loadout : null,
                 };
-
-                if (targetBody.master)
-                {
-                    masterSummon.loadout = targetBody.master.loadout;
-                }
-
-                masterSummon.preSpawnSetupCallback += preSpawnSetup;
 
                 CharacterMaster summonedMaster = masterSummon.Perform();
                 if (summonedMaster)

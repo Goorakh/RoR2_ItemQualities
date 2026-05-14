@@ -21,6 +21,7 @@ namespace ItemQualities
     [BepInDependency(R2API.DeployableAPI.PluginGUID)]
     [BepInDependency(R2API.ExecuteAPI.PluginGUID)]
     [BepInDependency(R2API.SoundAPI.PluginGUID)]
+    [BepInDependency(R2API.DotAPI.PluginGUID)]
     [BepInDependency(R2API.ItemAPI.PluginGUID)]
     [BepInDependency(R2API.Networking.NetworkingAPI.PluginGUID)]
     [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
@@ -30,7 +31,7 @@ namespace ItemQualities
         public const string PluginName = "ItemQualities";
         public const string PluginAuthor = "Gorakh";
         public const string PluginGUID = "com." + PluginAuthor + "." + PluginName;
-        public const string PluginVersion = "0.7.5";
+        public const string PluginVersion = "0.7.6";
 
         static ItemQualitiesPlugin _instance;
         public static ItemQualitiesPlugin Instance => _instance;

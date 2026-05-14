@@ -138,8 +138,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> banditSmokeBombProgress = new ReadableProgress<float>();
-            coroutine.Add(banditSmokeBombScaleFixAsync(banditSmokeBombProgress), banditSmokeBombProgress);
+            coroutine.AddProgressCoroutine(banditSmokeBombScaleFixAsync);
 
             static IEnumerator lightningStrikeImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -158,8 +157,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> lightningStrikeImpactProgress = new ReadableProgress<float>();
-            coroutine.Add(lightningStrikeImpactScaleFixAsync(lightningStrikeImpactProgress), lightningStrikeImpactProgress);
+            coroutine.AddProgressCoroutine(lightningStrikeImpactScaleFixAsync);
 
             static IEnumerator simpleLightningStrikeImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -178,8 +176,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> simpleLightningStrikeImpactProgress = new ReadableProgress<float>();
-            coroutine.Add(simpleLightningStrikeImpactScaleFixAsync(simpleLightningStrikeImpactProgress), simpleLightningStrikeImpactProgress);
+            coroutine.AddProgressCoroutine(simpleLightningStrikeImpactScaleFixAsync);
 
             static IEnumerator meteorStormScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -228,8 +225,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> meteorStormProgress = new ReadableProgress<float>();
-            coroutine.Add(meteorStormScaleFixAsync(meteorStormProgress), meteorStormProgress);
+            coroutine.AddProgressCoroutine(meteorStormScaleFixAsync);
 
             static IEnumerator brotherFistSlamScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -261,8 +257,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> brotherFistSlamProgress = new ReadableProgress<float>();
-            coroutine.Add(brotherFistSlamScaleFixAsync(brotherFistSlamProgress), brotherFistSlamProgress);
+            coroutine.AddProgressCoroutine(brotherFistSlamScaleFixAsync);
 
             static IEnumerator brotherWeaponSlamScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -294,8 +289,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> brotherWeaponSlamProgress = new ReadableProgress<float>();
-            coroutine.Add(brotherWeaponSlamScaleFixAsync(brotherWeaponSlamProgress), brotherWeaponSlamProgress);
+            coroutine.AddProgressCoroutine(brotherWeaponSlamScaleFixAsync);
 
             static IEnumerator falseSonBossPrimarySlamScaleFixAsync<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -368,8 +362,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> falseSonBossPrimarySlamProgress = new ReadableProgress<float>();
-            coroutine.Add(falseSonBossPrimarySlamScaleFixAsync(args.ContentPack, falseSonBossPrimarySlamProgress), falseSonBossPrimarySlamProgress);
+            coroutine.AddProgressCoroutine(falseSonBossPrimarySlamScaleFixAsync, args.ContentPack);
 
             static IEnumerator falseSonBossPrimeDevastatorScaleFixAsync<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -438,8 +431,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> falseSonBossPrimeDevastatorProgress = new ReadableProgress<float>();
-            coroutine.Add(falseSonBossPrimeDevastatorScaleFixAsync(args.ContentPack, falseSonBossPrimeDevastatorProgress), falseSonBossPrimeDevastatorProgress);
+            coroutine.AddProgressCoroutine(falseSonBossPrimeDevastatorScaleFixAsync, args.ContentPack);
 
             static IEnumerator golemClapScaleFixAsync<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -508,8 +500,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> golemClapProgress = new ReadableProgress<float>();
-            coroutine.Add(golemClapScaleFixAsync(args.ContentPack, golemClapProgress), golemClapProgress);
+            coroutine.AddProgressCoroutine(golemClapScaleFixAsync, args.ContentPack);
 
             static IEnumerator golemLaserScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -541,8 +532,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> golemLaserProgress = new ReadableProgress<float>();
-            coroutine.Add(golemLaserScaleFixAsync(golemLaserProgress), golemLaserProgress);
+            coroutine.AddProgressCoroutine(golemLaserScaleFixAsync);
 
             static IEnumerator halcyoniteTriLaserScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -574,8 +564,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> halcyoniteTriLaserProgress = new ReadableProgress<float>();
-            coroutine.Add(halcyoniteTriLaserScaleFixAsync(halcyoniteTriLaserProgress), halcyoniteTriLaserProgress);
+            coroutine.AddProgressCoroutine(halcyoniteTriLaserScaleFixAsync);
 
             static IEnumerator impBossBlinkScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -630,8 +619,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> impBossBlinkProgress = new ReadableProgress<float>();
-            coroutine.Add(impBossBlinkScaleFixAsync(impBossBlinkProgress), impBossBlinkProgress);
+            coroutine.AddProgressCoroutine(impBossBlinkScaleFixAsync);
 
             static IEnumerator impBossGroundPoundScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -663,8 +651,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> impBossGroundPoundProgress = new ReadableProgress<float>();
-            coroutine.Add(impBossGroundPoundScaleFixAsync(impBossGroundPoundProgress), impBossGroundPoundProgress);
+            coroutine.AddProgressCoroutine(impBossGroundPoundScaleFixAsync);
 
             static IEnumerator parentGroundSlamScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -728,8 +715,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> parentGroundSlamProgress = new ReadableProgress<float>();
-            coroutine.Add(parentGroundSlamScaleFixAsync(parentGroundSlamProgress), parentGroundSlamProgress);
+            coroutine.AddProgressCoroutine(parentGroundSlamScaleFixAsync);
 
             static IEnumerator mageFlyUpBlinkScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -761,8 +747,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> mageFlyUpBlinkProgress = new ReadableProgress<float>();
-            coroutine.Add(mageFlyUpBlinkScaleFixAsync(mageFlyUpBlinkProgress), mageFlyUpBlinkProgress);
+            coroutine.AddProgressCoroutine(mageFlyUpBlinkScaleFixAsync);
 
             static IEnumerator junkCubeDamageImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -836,8 +821,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> junkCubeDamageImpactProgress = new ReadableProgress<float>();
-            coroutine.Add(junkCubeDamageImpactScaleFixAsync(junkCubeDamageImpactProgress), junkCubeDamageImpactProgress);
+            coroutine.AddProgressCoroutine(junkCubeDamageImpactScaleFixAsync);
 
             static IEnumerator junkCubeLaunchedImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -886,8 +870,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> junkCubeLaunchedImpactProgress = new ReadableProgress<float>();
-            coroutine.Add(junkCubeLaunchedImpactScaleFixAsync(junkCubeLaunchedImpactProgress), junkCubeLaunchedImpactProgress);
+            coroutine.AddProgressCoroutine(junkCubeLaunchedImpactScaleFixAsync);
 
             static IEnumerator junkCubeDeathImpactScaleFixAsync<TProgress>(TProgress progressReceiver)
                 where TProgress : IProgress<float>
@@ -961,8 +944,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            ReadableProgress<float> junkCubeDeathImpactProgress = new ReadableProgress<float>();
-            coroutine.Add(junkCubeDeathImpactScaleFixAsync(junkCubeDeathImpactProgress), junkCubeDeathImpactProgress);
+            coroutine.AddProgressCoroutine(junkCubeDeathImpactScaleFixAsync);
 
             return coroutine;
         }

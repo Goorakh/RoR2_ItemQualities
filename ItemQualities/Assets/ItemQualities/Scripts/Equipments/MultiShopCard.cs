@@ -54,7 +54,8 @@ namespace ItemQualities.Equipments
 
                 foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
                 {
-                    if (master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats) &&
+                    if (!master.inventory.GetEquipmentDisabled() &&
+                        master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats) &&
                         masterExtraStats.CardStoredInteractableInfo.InteractableIndex != -1)
                     {
                         StoredInteractableInfo storedInteractableInfo = masterExtraStats.CardStoredInteractableInfo;
