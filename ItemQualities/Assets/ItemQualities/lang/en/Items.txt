@@ -409,16 +409,16 @@
         "ITEM_MISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increased base missile chance and chance to fire a big missile.",
         "ITEM_MISSILE_LEGENDARY_DESC": "<sprite name=\"Quality\"> <style=cIsDamage>20%</style> chance to fire a missile that deals <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage.\n<sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <sprite name=\"Quality\"> <style=cIsDamage>800%</style> <style=cStack>(+800% per stack)</style> TOTAL damage.",
 
-        "ITEM_WARCRYONMULTIKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
+        "ITEM_WARCRYONMULTIKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during all frenzies.",
         "ITEM_WARCRYONMULTIKILL_UNCOMMON_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>1%</style> <style=cStack>(+1% per stack)</style> for the rest of the stage.",
 
-        "ITEM_WARCRYONMULTIKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
+        "ITEM_WARCRYONMULTIKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during all frenzies.",
         "ITEM_WARCRYONMULTIKILL_RARE_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>2%</style> <style=cStack>(+2% per stack)</style> for the rest of the stage.",
 
-        "ITEM_WARCRYONMULTIKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
+        "ITEM_WARCRYONMULTIKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during all frenzies.",
         "ITEM_WARCRYONMULTIKILL_EPIC_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>3%</style> <style=cStack>(+3% per stack)</style> for the rest of the stage.",
 
-        "ITEM_WARCRYONMULTIKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
+        "ITEM_WARCRYONMULTIKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during all frenzies.",
         "ITEM_WARCRYONMULTIKILL_LEGENDARY_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> for the rest of the stage.",
 
         "ITEM_KNOCKBACKHITENEMIES_UNCOMMON_PICKUP": "Grounded enemies hit with any skill are launched and take <sprite name=\"Quality\"> bonus damage.",
