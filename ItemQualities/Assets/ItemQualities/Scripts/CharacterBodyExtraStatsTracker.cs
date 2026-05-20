@@ -266,18 +266,10 @@ namespace ItemQualities
                 {
                     QuailJumpComboAuthority = 0;
                 }
-            }
 
-            updateOverlays();
-        }
-
-        void Update()
-        {
-            if (HasEffectiveAuthority)
-            {
                 if (_gatewayTeleportCooldown > 0)
                 {
-                    _gatewayTeleportCooldown -= Time.deltaTime;
+                    _gatewayTeleportCooldown -= Time.fixedDeltaTime;
                 }
 
                 updateTargets();
@@ -288,6 +280,8 @@ namespace ItemQualities
                     _gatewayTeleportCooldown = 0.3f;
                 }
             }
+
+            updateOverlays();
         }
 
         void updateTargets()

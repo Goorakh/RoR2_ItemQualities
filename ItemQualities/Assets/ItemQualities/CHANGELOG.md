@@ -1,3 +1,8 @@
+## <Next Version>
+
+* Eccentric Vase:
+    * Fixed orb teleport not working when at less than 60fps.
+
 ## 0.7.6 Changes:
 
 * Symbiotic Scorpion
