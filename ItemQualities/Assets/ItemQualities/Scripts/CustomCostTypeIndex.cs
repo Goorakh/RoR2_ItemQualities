@@ -130,221 +130,247 @@ namespace ItemQualities
 
         static void payCostQualityItems(CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
         {
-            if (context.activatorBody)
+            if (context.activatorInventory)
             {
-                Inventory inventory = context.activatorBody.inventory;
-                if (inventory)
+                using var _ = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> itemsToTake);
+                ListUtils.EnsureCapacity(itemsToTake, context.cost);
+
+                WeightedSelection<ItemIndex> itemSelection = new WeightedSelection<ItemIndex>();
+                WeightedSelection<ItemIndex>[] scrapSelectionsByQuality = new WeightedSelection<ItemIndex>[(int)QualityTier.Count];
+                WeightedSelection<ItemIndex>[] priorityScrapSelectionsByQuality = new WeightedSelection<ItemIndex>[(int)QualityTier.Count];
+                WeightedSelection<ItemIndex>[] qualityRegeneratingScrapSelections = new WeightedSelection<ItemIndex>[(int)QualityTier.Count];
+
+                ItemQualityGroupIndex avoidedItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(context.avoidedItemIndex);
+
+                for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
                 {
-                    using var _ = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> itemsToTake);
+                    QualityTier qualityTier = QualityCatalog.GetQualityTier(itemIndex);
+                    if (qualityTier == QualityTier.None)
+                        continue;
 
-                    WeightedSelection<ItemIndex> itemSelection = new WeightedSelection<ItemIndex>();
-                    WeightedSelection<ItemIndex>[] scrapSelectionsByQuality = new WeightedSelection<ItemIndex>[(int)QualityTier.Count];
-                    WeightedSelection<ItemIndex>[] priorityScrapSelectionsByQuality = new WeightedSelection<ItemIndex>[(int)QualityTier.Count];
+                    ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
+                    if (itemGroupIndex == avoidedItemGroupIndex)
+                        continue;
 
-                    ItemQualityGroupIndex avoidedItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(context.avoidedItemIndex);
+                    int itemCount = context.activatorInventory.GetItemCountPermanent(itemIndex);
+                    if (itemCount <= 0)
+                        continue;
 
-                    for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
+                    ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+                    if (itemDef.tier != context.costTypeDef.itemTier || !itemDef.canRemove || itemDef.ContainsTag(ItemTag.ObjectiveRelated))
+                        continue;
+
+                    WeightedSelection<ItemIndex>[] targetSelectionsByQuality = null;
+                    if (itemGroupIndex == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
                     {
-                        QualityTier qualityTier = QualityCatalog.GetQualityTier(itemIndex);
-                        if (qualityTier == QualityTier.None)
-                            continue;
-
-                        ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
-                        if (itemGroupIndex == avoidedItemGroupIndex)
-                            continue;
-
-                        int itemCount = inventory.GetItemCountPermanent(itemIndex);
-                        if (itemCount <= 0)
-                            continue;
-
-                        ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                        if (itemDef.tier != context.costTypeDef.itemTier || !itemDef.canRemove || itemDef.ContainsTag(ItemTag.ObjectiveRelated))
-                            continue;
-
-                        WeightedSelection<ItemIndex>[] targetSelectionsByQuality = null;
-                        if (itemDef.ContainsTag(ItemTag.PriorityScrap))
-                        {
-                            targetSelectionsByQuality = priorityScrapSelectionsByQuality;
-                        }
-                        else if (itemDef.ContainsTag(ItemTag.Scrap))
-                        {
-                            targetSelectionsByQuality = scrapSelectionsByQuality;
-                        }
-
-                        WeightedSelection<ItemIndex> targetSelection;
-                        if (targetSelectionsByQuality != null)
-                        {
-                            targetSelection = (targetSelectionsByQuality[(int)qualityTier] ??= new WeightedSelection<ItemIndex>());
-                        }
-                        else
-                        {
-                            targetSelection = itemSelection;
-                        }
-
-                        targetSelection.AddChoice(itemIndex, itemCount);
+                        targetSelectionsByQuality = qualityRegeneratingScrapSelections;
+                    }
+                    else if (itemDef.ContainsTag(ItemTag.PriorityScrap))
+                    {
+                        targetSelectionsByQuality = priorityScrapSelectionsByQuality;
+                    }
+                    else if (itemDef.ContainsTag(ItemTag.Scrap))
+                    {
+                        targetSelectionsByQuality = scrapSelectionsByQuality;
                     }
 
-                    void TakeItemFromWeightedSelection(WeightedSelection<ItemIndex> weightedSelection, int choiceIndex)
+                    WeightedSelection<ItemIndex> targetSelection;
+                    if (targetSelectionsByQuality != null)
                     {
-                        WeightedSelection<ItemIndex>.ChoiceInfo choice = weightedSelection.GetChoice(choiceIndex);
-                        ItemIndex itemIndex = choice.value;
-                        int itemCount = (int)choice.weight;
-                        itemCount--;
-                        if (itemCount <= 0)
-                        {
-                            weightedSelection.RemoveChoice(choiceIndex);
-                        }
-                        else
-                        {
-                            weightedSelection.ModifyChoiceWeight(choiceIndex, itemCount);
-                        }
-
-                        itemsToTake.Add(itemIndex);
+                        targetSelection = (targetSelectionsByQuality[(int)qualityTier] ??= new WeightedSelection<ItemIndex>());
+                    }
+                    else
+                    {
+                        targetSelection = itemSelection;
                     }
 
-                    void TakeItemsFromWeightedSelection(WeightedSelection<ItemIndex> weightedSelection)
+                    targetSelection.AddChoice(itemIndex, itemCount);
+                }
+
+                void TakeItemFromWeightedSelection(WeightedSelection<ItemIndex> weightedSelection, int choiceIndex)
+                {
+                    WeightedSelection<ItemIndex>.ChoiceInfo choice = weightedSelection.GetChoice(choiceIndex);
+                    ItemIndex itemIndex = choice.value;
+                    int itemCount = (int)choice.weight;
+                    itemCount--;
+                    if (itemCount <= 0)
                     {
-                        while (weightedSelection.Count > 0 && itemsToTake.Count < context.cost)
-                        {
-                            int choiceIndex = weightedSelection.EvaluateToChoiceIndex(context.rng.nextNormalizedFloat);
-                            TakeItemFromWeightedSelection(weightedSelection, choiceIndex);
-                        }
+                        weightedSelection.RemoveChoice(choiceIndex);
+                    }
+                    else
+                    {
+                        weightedSelection.ModifyChoiceWeight(choiceIndex, itemCount);
                     }
 
-                    void TakeItemsFromWeightedSelections(WeightedSelection<ItemIndex>[] weightedSelections)
+                    itemsToTake.Add(itemIndex);
+                }
+
+                void TakeItemsFromWeightedSelection(WeightedSelection<ItemIndex> weightedSelection)
+                {
+                    while (weightedSelection.Count > 0 && itemsToTake.Count < context.cost)
                     {
-                        for (int i = weightedSelections.Length - 1; i >= 0; i--)
+                        int choiceIndex = weightedSelection.EvaluateToChoiceIndex(context.rng.nextNormalizedFloat);
+                        TakeItemFromWeightedSelection(weightedSelection, choiceIndex);
+                    }
+                }
+
+                void TakeItemsFromWeightedSelectionsDescending(WeightedSelection<ItemIndex>[] weightedSelections)
+                {
+                    for (int i = weightedSelections.Length - 1; i >= 0; i--)
+                    {
+                        if (weightedSelections[i] != null)
                         {
-                            if (weightedSelections[i] != null)
-                            {
-                                TakeItemsFromWeightedSelection(weightedSelections[i]);
-                            }
+                            TakeItemsFromWeightedSelection(weightedSelections[i]);
                         }
                     }
+                }
 
-                    TakeItemsFromWeightedSelections(priorityScrapSelectionsByQuality);
-                    TakeItemsFromWeightedSelections(scrapSelectionsByQuality);
-                    TakeItemsFromWeightedSelection(itemSelection);
+                void TakeItemsFromWeightedSelectionsAscending(WeightedSelection<ItemIndex>[] weightedSelections)
+                {
+                    for (int i = 0; i < weightedSelections.Length; i++)
+                    {
+                        if (weightedSelections[i] != null)
+                        {
+                            TakeItemsFromWeightedSelection(weightedSelections[i]);
+                        }
+                    }
+                }
 
+                bool TryTakeSingleItemFromWeightedSelection(WeightedSelection<ItemIndex> weightedSelection)
+                {
+                    if (weightedSelection.Count > 0 && itemsToTake.Count < context.cost)
+                    {
+                        int choiceIndex = weightedSelection.EvaluateToChoiceIndex(context.rng.nextNormalizedFloat);
+                        TakeItemFromWeightedSelection(weightedSelection, choiceIndex);
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                void TryTakeSingleItemFromWeightedSelectionsDescending(WeightedSelection<ItemIndex>[] weightedSelections)
+                {
+                    for (int i = weightedSelections.Length - 1; i >= 0; i--)
+                    {
+                        if (weightedSelections[i] != null && TryTakeSingleItemFromWeightedSelection(weightedSelections[i]))
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                TryTakeSingleItemFromWeightedSelectionsDescending(qualityRegeneratingScrapSelections);
+                TakeItemsFromWeightedSelectionsDescending(priorityScrapSelectionsByQuality);
+                TakeItemsFromWeightedSelectionsDescending(scrapSelectionsByQuality);
+                TakeItemsFromWeightedSelectionsAscending(qualityRegeneratingScrapSelections);
+                TakeItemsFromWeightedSelection(itemSelection);
+
+                if (itemsToTake.Count < context.cost)
+                {
                     ItemQualityGroup avoidedItemGroup = QualityCatalog.GetItemQualityGroup(avoidedItemGroupIndex);
                     if (avoidedItemGroup)
                     {
-                        if (itemsToTake.Count < context.cost)
+                        Span<QualityTier> avoidedItemQualityTakeOrder = stackalloc QualityTier[(int)QualityTier.Count];
+                        for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                         {
-                            Span<QualityTier> avoidedItemQualityTakeOrder = stackalloc QualityTier[(int)QualityTier.Count];
-                            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                            avoidedItemQualityTakeOrder[(int)qualityTier] = qualityTier;
+                        }
+
+                        Util.ShuffleSpan(avoidedItemQualityTakeOrder, context.rng);
+
+                        ItemQualityCounts avoidedItemCounts = context.activatorInventory.GetItemCountsPermanent(avoidedItemGroup);
+                        foreach (QualityTier qualityTier in avoidedItemQualityTakeOrder)
+                        {
+                            int itemCount = avoidedItemCounts[qualityTier];
+                            int itemCountToAdd = Math.Min(itemCount, context.cost - itemsToTake.Count);
+                            if (itemCountToAdd > 0)
                             {
-                                avoidedItemQualityTakeOrder[(int)qualityTier] = qualityTier;
-                            }
+                                ListUtils.AddMultiple(itemsToTake, avoidedItemGroup.GetItemIndex(qualityTier), itemCountToAdd);
 
-                            Util.ShuffleSpan(avoidedItemQualityTakeOrder, context.rng);
-
-                            ItemQualityCounts avoidedItemCounts = inventory.GetItemCountsPermanent(avoidedItemGroup);
-                            foreach (QualityTier qualityTier in avoidedItemQualityTakeOrder)
-                            {
-                                int itemCount = avoidedItemCounts[qualityTier];
-                                int itemCountToAdd = Math.Min(itemCount, context.cost - itemsToTake.Count);
-                                if (itemCountToAdd > 0)
-                                {
-                                    ItemIndex itemIndex = avoidedItemGroup.GetItemIndex(qualityTier);
-
-                                    for (int i = 0; i < itemCountToAdd; i++)
-                                    {
-                                        itemsToTake.Add(itemIndex);
-                                    }
-
-                                    if (itemsToTake.Count >= context.cost)
-                                        break;
-                                }
+                                if (itemsToTake.Count >= context.cost)
+                                    break;
                             }
                         }
                     }
                     else
                     {
-                        for (int i = itemsToTake.Count; i < context.cost; i++)
-                        {
-                            itemsToTake.Add(context.avoidedItemIndex);
-                        }
+                        ListUtils.AddMultiple(itemsToTake, context.avoidedItemIndex, context.cost - itemsToTake.Count);
+                    }
+                }
+
+                bool hasTakenAnyRegeneratingScrap = false;
+                foreach (ItemIndex itemIndex in itemsToTake)
+                {
+                    Inventory.ItemTransformation takeItemTransformation = new Inventory.ItemTransformation
+                    {
+                        originalItemIndex = itemIndex,
+                        newItemIndex = ItemIndex.None,
+                        maxToTransform = 1,
+                        forbidTempItems = true,
+                        transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.None,
+                    };
+
+                    if (QualityCatalog.FindItemQualityGroupIndex(takeItemTransformation.originalItemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
+                    {
+                        takeItemTransformation.newItemIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrapConsumed.GetItemIndex(QualityCatalog.GetQualityTier(takeItemTransformation.originalItemIndex));
+                        takeItemTransformation.transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default;
                     }
 
-                    bool hasTakenAnyRegeneratingScrap = false;
-                    foreach (ItemIndex itemIndex in itemsToTake)
+                    if (takeItemTransformation.TryTransform(context.activatorInventory, out Inventory.ItemTransformation.TryTransformResult tryTransformResult))
                     {
-                        Inventory.ItemTransformation takeItemTransformation = new Inventory.ItemTransformation
-                        {
-                            originalItemIndex = itemIndex,
-                            newItemIndex = ItemIndex.None,
-                            maxToTransform = 1,
-                            forbidTempItems = true,
-                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.None,
-                        };
+                        result.AddTakenItemsFromTransformation(tryTransformResult);
 
-                        if (QualityCatalog.FindItemQualityGroupIndex(takeItemTransformation.originalItemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
+                        if (QualityCatalog.FindItemQualityGroupIndex(tryTransformResult.takenItem.itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
                         {
-                            takeItemTransformation.newItemIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrapConsumed.GetItemIndex(QualityCatalog.GetQualityTier(takeItemTransformation.originalItemIndex));
+                            hasTakenAnyRegeneratingScrap = true;
                         }
+                    }
+                }
 
-                        if (takeItemTransformation.newItemIndex != ItemIndex.None)
+                if (hasTakenAnyRegeneratingScrap)
+                {
+                    if (_regeneratingScrapProcSoundEventIndex != NetworkSoundEventIndex.Invalid)
+                    {
+                        EntitySoundManager.EmitSoundServer(_regeneratingScrapProcSoundEventIndex, context.activatorBody.gameObject);
+                    }
+
+                    if (_regeneratingScrapDisplayExplosionEffectIndex != EffectIndex.Invalid)
+                    {
+                        ModelLocator activatorModelLocator = context.activatorBody.modelLocator;
+                        if (activatorModelLocator && activatorModelLocator.modelTransform && activatorModelLocator.modelTransform.TryGetComponent(out CharacterModel characterModel))
                         {
-                            takeItemTransformation.transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default;
-                        }
-
-                        if (takeItemTransformation.TryTransform(inventory, out Inventory.ItemTransformation.TryTransformResult tryTransformResult))
-                        {
-                            result.AddTakenItemsFromTransformation(tryTransformResult);
-
-                            if (QualityCatalog.FindItemQualityGroupIndex(tryTransformResult.takenItem.itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
+                            List<GameObject> itemDisplayObjects = characterModel.GetItemDisplayObjects(DLC1Content.Items.RegeneratingScrap.itemIndex);
+                            if (itemDisplayObjects.Count > 0)
                             {
-                                hasTakenAnyRegeneratingScrap = true;
+                                GameObject effectRoot = itemDisplayObjects[0];
+                                EffectData effectData = new EffectData
+                                {
+                                    origin = effectRoot.transform.position,
+                                    rotation = effectRoot.transform.rotation
+                                };
+
+                                EffectManager.SpawnEffect(_regeneratingScrapDisplayExplosionEffectIndex, effectData, true);
                             }
                         }
                     }
 
-                    if (hasTakenAnyRegeneratingScrap)
+                    if (_regeneratingScrapPrinterExplosionEffectIndex != EffectIndex.Invalid)
                     {
-                        if (_regeneratingScrapProcSoundEventIndex != NetworkSoundEventIndex.Invalid)
+                        if (context.purchasedObject.TryGetComponent(out ModelLocator purchasedObjectModelLocator))
                         {
-                            EntitySoundManager.EmitSoundServer(_regeneratingScrapProcSoundEventIndex, context.activatorBody.gameObject);
-                        }
-
-                        if (_regeneratingScrapDisplayExplosionEffectIndex != EffectIndex.Invalid)
-                        {
-                            ModelLocator activatorModelLocator = context.activatorBody.modelLocator;
-                            if (activatorModelLocator && activatorModelLocator.modelTransform && activatorModelLocator.modelTransform.TryGetComponent(out CharacterModel characterModel))
+                            ChildLocator modelChildLocator = purchasedObjectModelLocator.modelChildLocator;
+                            if (modelChildLocator)
                             {
-                                List<GameObject> itemDisplayObjects = characterModel.GetItemDisplayObjects(DLC1Content.Items.RegeneratingScrap.itemIndex);
-                                if (itemDisplayObjects.Count > 0)
+                                int dropPivotChildIndex = modelChildLocator.FindChildIndex("DropPivot");
+                                Transform dropPivot = modelChildLocator.FindChild(dropPivotChildIndex);
+                                if (dropPivot)
                                 {
-                                    GameObject effectRoot = itemDisplayObjects[0];
                                     EffectData effectData = new EffectData
                                     {
-                                        origin = effectRoot.transform.position,
-                                        rotation = effectRoot.transform.rotation
+                                        origin = dropPivot.position
                                     };
-
-                                    EffectManager.SpawnEffect(_regeneratingScrapDisplayExplosionEffectIndex, effectData, true);
-                                }
-                            }
-                        }
-
-                        if (_regeneratingScrapPrinterExplosionEffectIndex != EffectIndex.Invalid)
-                        {
-                            if (context.purchasedObject.TryGetComponent(out ModelLocator purchasedObjectModelLocator))
-                            {
-                                ChildLocator modelChildLocator = purchasedObjectModelLocator.modelChildLocator;
-                                if (modelChildLocator)
-                                {
-                                    int dropPivotChildIndex = modelChildLocator.FindChildIndex("DropPivot");
-                                    Transform dropPivot = modelChildLocator.FindChild(dropPivotChildIndex);
-                                    if (dropPivot)
-                                    {
-                                        EffectData effectData = new EffectData
-                                        {
-                                            origin = dropPivot.position
-                                        };
-                                        effectData.SetChildLocatorTransformReference(context.purchasedObject, dropPivotChildIndex);
-                                        EffectManager.SpawnEffect(_regeneratingScrapPrinterExplosionEffectIndex, effectData, true);
-                                    }
+                                    effectData.SetChildLocatorTransformReference(context.purchasedObject, dropPivotChildIndex);
+                                    EffectManager.SpawnEffect(_regeneratingScrapPrinterExplosionEffectIndex, effectData, true);
                                 }
                             }
                         }
