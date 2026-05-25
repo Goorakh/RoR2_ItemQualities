@@ -51,6 +51,13 @@ namespace ItemQualities.Editor
                 textureImporter.textureType = TextureImporterType.Sprite;
                 textureImporter.spritePixelsPerUnit = selectedTextureImporter.spritePixelsPerUnit;
                 textureImporter.alphaIsTransparency = selectedTextureImporter.alphaIsTransparency;
+
+                TextureImporterSettings textureImporterSettings = new TextureImporterSettings();
+                textureImporter.ReadTextureSettings(textureImporterSettings);
+                textureImporterSettings.spriteGenerateFallbackPhysicsShape = false;
+                textureImporterSettings.mipmapEnabled = false;
+                textureImporter.SetTextureSettings(textureImporterSettings);
+
                 textureImporter.SaveAndReimport();
             }
         }

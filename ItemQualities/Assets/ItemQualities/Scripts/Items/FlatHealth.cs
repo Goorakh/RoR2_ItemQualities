@@ -35,10 +35,10 @@ namespace ItemQualities.Items
             ItemQualityCounts flatHealth = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FlatHealth);
             if (flatHealth.TotalQualityCount > 0)
             {
-                float steakBonus = (35f * flatHealth.UncommonCount) +
-                                   (75f * flatHealth.RareCount) +
-                                   (150f * flatHealth.EpicCount) +
-                                   (250f * flatHealth.LegendaryCount);
+                float steakBonus = (40f * flatHealth.UncommonCount) +
+                                   (80f * flatHealth.RareCount) +
+                                   (130f * flatHealth.EpicCount) +
+                                   (200f * flatHealth.LegendaryCount);
 
                 if (steakBonus > 0f)
                 {

@@ -1,12 +1,8 @@
-﻿using HG;
-using ItemQualities.Utilities;
-using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
+﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
-using System;
+using RoR2.Projectile;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -20,14 +16,35 @@ namespace ItemQualities.Items
 
             IL.RoR2.TeleportOnLowHealthBehavior.DestroyTeleportOrb += TeleportOnLowHealthBehavior_DestroyTeleportOrb;
 
-            IL.RoR2.TeleportOnLowHealthBehavior.OnCharacterDeathGlobal += TeleportOnLowHealthBehavior_OnCharacterDeathGlobal;
+            CharacterBodyExtraStatsTracker.OnSkillActivatedServerGlobal += onSkillActivatedServerGlobal;
+        }
 
-            IL.RoR2.HealthComponent.DoWarp += HealthComponent_DoWarp;
+        private static void onSkillActivatedServerGlobal(CharacterBodyExtraStatsTracker bodyStats, GenericSkill skill)
+        {
+            if (!bodyStats.Body || !bodyStats.Body.skillLocator || !ReferenceEquals(bodyStats.Body.skillLocator.secondary, skill))
+                return;
 
-            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_TeleportOnLowHealth.TeleportOnLowHealthExplosion_prefab).OnSuccess(teleportOnLowHealthExplosion =>
+            BuffQualityCounts orbCharges = bodyStats.Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.TeleportOnLowHealthOrbCharge);
+            if (orbCharges.TotalQualityCount > 0)
             {
-                teleportOnLowHealthExplosion.EnsureComponent<TeleportOnLowHealthAuraQualityController>();
-            });
+                QualityTier qualityTier = orbCharges.HighestQuality;
+
+                Ray aimRay = bodyStats.Body.inputBank.GetAimRay();
+
+                ProjectileManager.instance.FireProjectile(new FireProjectileInfo
+                {
+                    projectilePrefab = ItemQualitiesContent.ProjectilePrefabs.TeleportOnLowHealthOrbProjectile,
+                    position = aimRay.origin,
+                    rotation = Util.QuaternionSafeLookRotation(aimRay.direction),
+                    owner = bodyStats.gameObject,
+                    damage = 0f,
+                    crit = bodyStats.Body.RollCrit(),
+                    damageColorIndex = DamageColorIndex.Bleed,
+                });
+
+                bodyStats.Body.RemoveBuff(ItemQualitiesContent.BuffQualityGroups.TeleportOnLowHealthOrbCharge.GetBuffIndex(qualityTier));
+                orbCharges[qualityTier]--;
+            }
         }
 
         static void CharacterMaster_TryTeleportOnLowHealthRegen(On.RoR2.CharacterMaster.orig_TryTeleportOnLowHealthRegen orig, CharacterMaster self)
@@ -61,47 +78,48 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
+            VariableDefinition tryTransformResultVar = null;
             if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdloca<Inventory.ItemTransformation.TryTransformResult>(il, out tryTransformResultVar),
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
-                Log.Fatal("Failed to find transmitter consume transformation call");
+                Log.Error("Failed to find transmitter consume transformation call");
                 return;
             }
 
             VariableDefinition itemTransformationVar = null;
-            if (!c.TryFindPrev(out _,
-                               x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationVar),
-                               x => x.MatchInitobj<Inventory.ItemTransformation>()))
+            if (!c.Clone().TryGotoPrev(MoveType.Before,
+                                       x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationVar),
+                                       x => x.MatchInitobj<Inventory.ItemTransformation>()))
             {
-                Log.Fatal("Failed to find ItemTransformation variable");
+                Log.Error("Failed to find ItemTransformation variable");
                 return;
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.Emit(OpCodes.Ldloc, itemTransformationVar);
-            c.EmitDelegate<Func<bool, TeleportOnLowHealthBehavior, Inventory.ItemTransformation, bool>>(tryConsumeQualityTransmitters);
+            c.Emit(OpCodes.Ldloca, itemTransformationVar);
+            c.Emit(OpCodes.Ldloca, tryTransformResultVar);
+            c.EmitDelegate<TryConsumeQualityTransmittersDelegate>(tryConsumeQualityTransmitters);
 
-            static bool tryConsumeQualityTransmitters(bool consumedRegularTransmitter, TeleportOnLowHealthBehavior teleportOnLowHealthBehavior, Inventory.ItemTransformation itemTransformation)
+            static bool tryConsumeQualityTransmitters(bool consumedRegularTransmitter, TeleportOnLowHealthBehavior teleportOnLowHealthBehavior, ref Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult transformResult)
             {
                 if (consumedRegularTransmitter)
                     return true;
 
                 CharacterBody body = teleportOnLowHealthBehavior ? teleportOnLowHealthBehavior.body : null;
                 Inventory inventory = body ? body.inventory : null;
-                CharacterMaster master = body ? body.master : null;
                 if (inventory)
                 {
                     for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                     {
-                        ItemIndex itemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GetItemIndex(qualityTier);
-                        ItemIndex consumedItemIndex = ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealthConsumed.GetItemIndex(qualityTier);
-
                         Inventory.ItemTransformation qualityItemTransformation = itemTransformation;
                         qualityItemTransformation.originalItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.originalItemIndex, qualityTier);
                         qualityItemTransformation.newItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.newItemIndex, qualityTier);
 
-                        if (qualityItemTransformation.TryTransform(inventory, out Inventory.ItemTransformation.TryTransformResult transformResult))
+                        if (qualityItemTransformation.originalItemIndex != itemTransformation.originalItemIndex &&
+                            qualityItemTransformation.TryTransform(inventory, out transformResult))
                         {
+                            itemTransformation = qualityItemTransformation;
                             return true;
                         }
                     }
@@ -111,98 +129,6 @@ namespace ItemQualities.Items
             }
         }
 
-        static void TeleportOnLowHealthBehavior_OnCharacterDeathGlobal(ILContext il)
-        {
-            ILCursor c = new ILCursor(il);
-
-            if (c.TryGotoNext(MoveType.Before,
-                              x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.ExtendTimedBuffIfPresent))) &&
-                c.TryGotoPrev(MoveType.After,
-                              x => x.MatchLdcR4(1f)))
-            {
-                c.Emit(OpCodes.Ldarg_0);
-                c.EmitDelegate<Func<float, TeleportOnLowHealthBehavior, float>>(getBuffExtensionDuration);
-
-                static float getBuffExtensionDuration(float extensionDuration, TeleportOnLowHealthBehavior teleportOnLowHealthBehavior)
-                {
-                    CharacterBody body = teleportOnLowHealthBehavior ? teleportOnLowHealthBehavior.body : null;
-                    Inventory inventory = body ? body.inventory : null;
-                    if (inventory)
-                    {
-                        ItemQualityCounts teleportOnLowHealth = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth);
-
-                        if (teleportOnLowHealth.UncommonCount > 0)
-                        {
-                            extensionDuration += 0.5f;
-                        }
-
-                        if (teleportOnLowHealth.RareCount > 0)
-                        {
-                            extensionDuration += 1.5f;
-                        }
-
-                        if (teleportOnLowHealth.EpicCount > 0)
-                        {
-                            extensionDuration += 3f;
-                        }
-
-                        if (teleportOnLowHealth.LegendaryCount > 0)
-                        {
-                            extensionDuration += 5f;
-                        }
-                    }
-
-                    return extensionDuration;
-                }
-            }
-            else
-            {
-                Log.Error("Failed to find patch location");
-            }
-        }
-
-        static void HealthComponent_DoWarp(ILContext il)
-        {
-            if (!il.Method.TryFindParameter<CharacterBody>("attackerBody", out ParameterDefinition attackerBodyParameter))
-            {
-                Log.Error("Failed to find attackerBody parameter");
-                return;
-            }
-
-            ILCursor c = new ILCursor(il);
-            
-            if (c.TryGotoNext(MoveType.Before,
-                              x => x.MatchCallOrCallvirt<DotController>(nameof(DotController.InflictDot))) &&
-                c.TryGotoPrev(MoveType.After,
-                              x => x.MatchLdcR4(5f)))
-            {
-                c.Emit(OpCodes.Ldarg, attackerBodyParameter);
-                c.EmitDelegate<Func<float, CharacterBody, float>>(getBleedDuration);
-
-                static float getBleedDuration(float bleedDuration, CharacterBody attackerBody)
-                {
-                    Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
-
-                    if (attackerInventory)
-                    {
-                        ItemQualityCounts teleportOnLowHealth = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth);
-
-                        if (teleportOnLowHealth.TotalQualityCount > 0)
-                        {
-                            bleedDuration += (1.0f * teleportOnLowHealth.UncommonCount) +
-                                             (2.0f * teleportOnLowHealth.RareCount) +
-                                             (3.5f * teleportOnLowHealth.EpicCount) +
-                                             (5.0f * teleportOnLowHealth.LegendaryCount);
-                        }
-                    }
-
-                    return bleedDuration;
-                }
-            }
-            else
-            {
-                Log.Error("Failed to find patch location");
-            }
-        }
+        delegate bool TryConsumeQualityTransmittersDelegate(bool consumedRegularTransmitter, TeleportOnLowHealthBehavior teleportOnLowHealthBehavior, ref Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult result);
     }
 }

@@ -165,6 +165,7 @@ namespace ItemQualities
         static readonly GatewayQualityPickupSearch _sharedGatewayPickupTargetSearch = new GatewayQualityPickupSearch
         {
             minDistanceFilter = 2f,
+            maxDistanceFilter = 1000f,
             maxAngleFilter = 10f,
             filterByLoS = true,
             sortMode = SortMode.Angle
@@ -181,6 +182,9 @@ namespace ItemQualities
         public event Action<CharacterMotor.HitGroundInfo> OnHitGroundServer;
 
         public event Action<DamageReport> OnKilledOther;
+
+        public static event Action<CharacterBodyExtraStatsTracker, GenericSkill> OnSkillActivatedAuthorityGlobal;
+        public static event Action<CharacterBodyExtraStatsTracker, GenericSkill> OnSkillActivatedServerGlobal;
 
         void Awake()
         {
@@ -226,6 +230,9 @@ namespace ItemQualities
                 _body.modelLocator.onModelChanged += refreshModelReference;
             }
 
+            _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
+            _body.onSkillActivatedServer += onSkillActivatedServer;
+
             refreshModelReference(_body.modelLocator ? _body.modelLocator.modelTransform : null);
 
             recalculateExtraStats();
@@ -244,6 +251,9 @@ namespace ItemQualities
             {
                 _body.modelLocator.onModelChanged -= refreshModelReference;
             }
+
+            _body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
+            _body.onSkillActivatedServer -= onSkillActivatedServer;
 
             refreshModelReference(null);
 
@@ -266,18 +276,10 @@ namespace ItemQualities
                 {
                     QuailJumpComboAuthority = 0;
                 }
-            }
 
-            updateOverlays();
-        }
-
-        void Update()
-        {
-            if (HasEffectiveAuthority)
-            {
                 if (_gatewayTeleportCooldown > 0)
                 {
-                    _gatewayTeleportCooldown -= Time.deltaTime;
+                    _gatewayTeleportCooldown -= Time.fixedDeltaTime;
                 }
 
                 updateTargets();
@@ -288,6 +290,8 @@ namespace ItemQualities
                     _gatewayTeleportCooldown = 0.3f;
                 }
             }
+
+            updateOverlays();
         }
 
         void updateTargets()
@@ -360,6 +364,16 @@ namespace ItemQualities
                     WeakPointHurtBoxIndex = -1;
                 }
             }
+        }
+
+        private void onSkillActivatedAuthority(GenericSkill skill)
+        {
+            OnSkillActivatedAuthorityGlobal?.Invoke(this, skill);
+        }
+
+        private void onSkillActivatedServer(GenericSkill skill)
+        {
+            OnSkillActivatedServerGlobal?.Invoke(this, skill);
         }
 
         void updateOverlays()

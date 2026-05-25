@@ -1,5 +1,24 @@
 ## <Next Version>
 
+* Unstable Transmitter rework:
+    * Fires a bleeding orb on secondary skill use, orb recharge while you have barrier.
+
+* Regenerating Scrap:
+    * Quality Regenerating Scrap is now the highest priority scrap, always being taken first if available.
+        * For cauldrons, scrap priority has been modified to take as few quality regenerating scraps as possible, so that you can properly benefit from having several quality regenerating scrap.
+            * Priority when taking items is now:
+                * 1 of the highest quality Regenerating Scrap available
+                * Normal Regenerating Scrap
+                * Normal Scrap
+                * Any remaining quality regenerating scrap, starting with the lowest quality
+                * Random items from inventory
+        * Cauldrons now give their item in the quality of the highest input scrap. Before now, they gave the average of all input scrap, which just tended to punish you for having a high and a low quality regenerating scrap by reducing the average quality of the resulting item.
+
+* Eccentric Vase:
+    * Fixed orb teleport not working when at less than 60fps.
+
+## 0.7.6 Changes:
+
 * Symbiotic Scorpion
     * Chance on hit to apply venom for 10 seconds:
         * Uncommon: 2%
@@ -11,6 +30,13 @@
         * Rare: 100% (+100% per stack)
         * Epic: 150% (+150% per stack)
         * Legendary: 200% (+200% per stack)
+
+* Crowbar:
+    * Every 10th high-damage hit deals more damage.
+
+* Stun Grenade:
+    * Changed to Crowbar's previous effect.
+    * Fixed immobilizing forces (Primordial Cube, Void Band, etc) not counting as immobilized.
 
 * Tougher Times
     * No longer counts blocks from i-frames.
@@ -32,19 +58,44 @@
         * Epic: 25% -> 16%
         * Legendary: 30% -> 20%
         
-* Crowbar:
-    * Every 10th high-damage hit deals more damage.
+* Ben's Raincoat:
+    * Reflected debuff count:
+        * Uncommon: 2 -> 5
+        * Rare: 3 -> 8
+        * Epic: 4 -> 12
+        * Legendary: 5 -> 15
 
-* Stun Grenade:
-    * Changed to Crowbar's previous effect.
-    * Fixed immobilizing forces (Primordial Cube, Void Band, etc) not counting as immobilized.
+* Blast Shower:
+    * Cleanse duration:
+        * Uncommon: 1s -> 2s
+        * Rare: 2s -> 3s
+        * Epic: 4s -> 5s
+        * Legendary: 5s -> 6s
+
+* Sawmerang:
+    * Linger duration changed to 1 second for all qualities.
+
+* Infusion:
+    * Health gained per boss kill:
+        * Uncommon: 5 -> 10
+        * Rare: 15 -> 20
+        * Epic: 30 -> 35
+        * Legendary: 50 -> 55
 
 * Gnarled Woodsprite:
     * Fixed ghost drones being usable in drone combiners and scrappers.
     * Fixed ghost drones not being the same tier as the drone being cloned.
 
 * Bison Steak:
-    * Now increases health for every boss or main stage objective completed. Health values unchanged.
+    * Now increases health for every boss or main stage objective completed.
+    * Health per boss or stage objective:
+        * Uncommon: 35 -> 40
+        * Rare: 75 -> 80
+        * Epic: 150 -> 130
+        * Legendary: 250 -> 200
+
+* Foreign Fruit:
+    * Fixed Cautious Slug affecting Foreign Fruit maximum temporary health, and vice versa.
 
 * Armor Piercing Rounds:
     * Marks no longer disappear sometimes when losing and regaining the item.
@@ -57,6 +108,9 @@
 
 * Newly Hatched Zoea:
     * Allies now spawn with the appropriate quality tier.
+
+* Eccentric Vase:
+    * Added maximum teleport distance (1000m, same as vase placement)
 
 * Fuel Array:
     * Not telling you.

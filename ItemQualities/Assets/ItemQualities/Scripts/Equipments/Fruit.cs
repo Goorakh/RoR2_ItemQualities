@@ -28,7 +28,7 @@ namespace ItemQualities.Equipments
 
                 if (currentEquipmentIndex == RoR2Content.Equipment.Fruit.equipmentIndex &&
                     currentEquipmentQualityTier != QualityTier.None &&
-                    self.HasBuff(ItemQualitiesContent.Buffs.SlugHealth))
+                    self.GetTemporaryHealthBonus() > 0)
                 {
                     float durationMultiplier;
                     switch (currentEquipmentQualityTier)
@@ -92,16 +92,16 @@ namespace ItemQualities.Equipments
 
                     if (temporaryHealthFraction > 0f)
                     {
-                        int temporaryHealth = self.characterBody.GetBuffCount(ItemQualitiesContent.Buffs.SlugHealth);
+                        float temporaryHealth = self.characterBody.GetTemporaryHealthBonus();
                         float fullRealHealth = self.healthComponent.fullHealth - temporaryHealth;
                         float maxTemporaryHealthAmount = fullRealHealth * 0.5f; // max temp hp at half of real hp (1:3 ratio)
 
-                        float maxTemporaryHealthToAdd = Mathf.Max(0, maxTemporaryHealthAmount - temporaryHealth);
-                        float desiredTemporaryHealthToAdd = Mathf.Max(1, self.healthComponent.fullHealth * temporaryHealthFraction);
+                        float maxTemporaryHealthToAdd = Mathf.Max(0, maxTemporaryHealthAmount - self.characterBody.GetBuffCount(ItemQualitiesContent.Buffs.FruitTempHealth));
+                        float desiredTemporaryHealthToAdd = Mathf.Max(1, fullRealHealth * temporaryHealthFraction);
                         int temporaryHealthAmountToAdd = Mathf.CeilToInt(Mathf.Min(maxTemporaryHealthToAdd, desiredTemporaryHealthToAdd));
                         for (int i = 0; i < temporaryHealthAmountToAdd; i++)
                         {
-                            self.characterBody.AddBuff(ItemQualitiesContent.Buffs.SlugHealth);
+                            self.characterBody.AddBuff(ItemQualitiesContent.Buffs.FruitTempHealth);
                         }
                     }
                 }

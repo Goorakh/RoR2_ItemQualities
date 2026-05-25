@@ -832,6 +832,8 @@ namespace ItemQualities
             public static BuffQualityGroup DelayedDamageDebuff;
 
             public static BuffQualityGroup CrowbarCharge;
+
+            public static BuffQualityGroup TeleportOnLowHealthOrbCharge;
         }
 
         public static class Buffs
@@ -853,6 +855,8 @@ namespace ItemQualities
             public static BuffDef FeatherExtraJumps;
 
             public static BuffDef SlugHealth;
+
+            public static BuffDef FruitTempHealth;
 
             public static BuffDef MiniBossCooldown;
 
@@ -942,6 +946,8 @@ namespace ItemQualities
         public static class ProjectilePrefabs
         {
             public static GameObject IncreasePrimaryDamageQualityDotZone;
+
+            public static GameObject TeleportOnLowHealthOrbProjectile;
         }
 
         public static class Materials

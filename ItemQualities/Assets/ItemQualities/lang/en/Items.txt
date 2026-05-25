@@ -409,16 +409,16 @@
         "ITEM_MISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increased base missile chance and chance to fire a big missile.",
         "ITEM_MISSILE_LEGENDARY_DESC": "<sprite name=\"Quality\"> <style=cIsDamage>20%</style> chance to fire a missile that deals <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> TOTAL damage.\n<sprite name=\"Quality\"> <style=cIsDamage>40%</style> <style=cStack>(+40% per stack)</style> chance to fire a <style=cIsDamage>big missile</style> for an additional <sprite name=\"Quality\"> <style=cIsDamage>800%</style> <style=cStack>(+800% per stack)</style> TOTAL damage.",
 
-        "ITEM_WARCRYONMULTIKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
+        "ITEM_WARCRYONMULTIKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during all frenzies.",
         "ITEM_WARCRYONMULTIKILL_UNCOMMON_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>1%</style> <style=cStack>(+1% per stack)</style> for the rest of the stage.",
 
-        "ITEM_WARCRYONMULTIKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
+        "ITEM_WARCRYONMULTIKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during all frenzies.",
         "ITEM_WARCRYONMULTIKILL_RARE_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>2%</style> <style=cStack>(+2% per stack)</style> for the rest of the stage.",
 
-        "ITEM_WARCRYONMULTIKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
+        "ITEM_WARCRYONMULTIKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during all frenzies.",
         "ITEM_WARCRYONMULTIKILL_EPIC_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>3%</style> <style=cStack>(+3% per stack)</style> for the rest of the stage.",
 
-        "ITEM_WARCRYONMULTIKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during the frenzy.",
+        "ITEM_WARCRYONMULTIKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an elite increases damage during all frenzies.",
         "ITEM_WARCRYONMULTIKILL_LEGENDARY_DESC": "{0}\nKilling an elite increases damage during <style=cIsDamage>all frenzies</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style> for the rest of the stage.",
 
         "ITEM_KNOCKBACKHITENEMIES_UNCOMMON_PICKUP": "Grounded enemies hit with any skill are launched and take <sprite name=\"Quality\"> bonus damage.",
@@ -518,28 +518,28 @@
         "ITEM_FEATHER_LEGENDARY_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>8 <style=cStack>(+8 per stack)</style> extra jumps</style>.",
 
         "ITEM_STRENGTHENBURN_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
-        "ITEM_STRENGTHENBURN_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> base damage.",
+        "ITEM_STRENGTHENBURN_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical strike chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> base damage.",
 
         "ITEM_STRENGTHENBURN_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
-        "ITEM_STRENGTHENBURN_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> base damage.",
+        "ITEM_STRENGTHENBURN_RARE_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical strike chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> base damage.",
 
         "ITEM_STRENGTHENBURN_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
-        "ITEM_STRENGTHENBURN_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> base damage.",
+        "ITEM_STRENGTHENBURN_EPIC_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical strike chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>30%</style> <style=cStack>(+30% per stack)</style> base damage.",
 
         "ITEM_STRENGTHENBURN_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes ignite enemies.",
-        "ITEM_STRENGTHENBURN_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> base damage.",
+        "ITEM_STRENGTHENBURN_LEGENDARY_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsDamage>5% critical strike chance</style>. <style=cIsDamage>Critical Strikes</style> <style=cIsDamage>ignite</style> enemies for <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> base damage.",
 
         "ITEM_INFUSION_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss or large enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_UNCOMMON_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>5</style> <style=cStack>(+5 per stack)</style>.",
+        "ITEM_INFUSION_UNCOMMON_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>10</style> <style=cStack>(+10 per stack)</style>.",
 
         "ITEM_INFUSION_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss or large enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_RARE_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>15</style> <style=cStack>(+15 per stack)</style>.",
+        "ITEM_INFUSION_RARE_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>20</style> <style=cStack>(+20 per stack)</style>.",
 
         "ITEM_INFUSION_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss or large enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_EPIC_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>30</style> <style=cStack>(+30 per stack)</style>.",
+        "ITEM_INFUSION_EPIC_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>35</style> <style=cStack>(+35 per stack)</style>.",
 
         "ITEM_INFUSION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing a boss or large enemy permanently increases your maximum health.",
-        "ITEM_INFUSION_LEGENDARY_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>50</style> <style=cStack>(+50 per stack)</style>.",
+        "ITEM_INFUSION_LEGENDARY_DESC": "{0}\nKilling a boss or large enemy increases your <style=cIsHealing>health permanently</style> by <sprite name=\"Quality\"> <style=cIsHealing>55</style> <style=cStack>(+55 per stack)</style>.",
 
         "ITEM_FIRERING_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase tornado duration, damage, and size.",
         "ITEM_FIRERING_UNCOMMON_DESC": "{0}\nIncreases tornado <style=cIsUtility>duration</style> and <style=cIsDamage>damage</style> by <sprite name=\"Quality\"> <style=cIsDamage>5%</style> <style=cStack>(+5% per stack)</style>. Increases <style=cIsUtility>tornado size</style> by <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>.",
@@ -784,26 +784,26 @@
         "ITEM_CHAINLIGHTNING_LEGENDARY_PICKUP": "...and his music was <sprite name=\"Quality\"> electric.",
         "ITEM_CHAINLIGHTNING_LEGENDARY_DESC": "{0}\nFiring lightning from an enemy <style=cIsUtility>charges</style> it, releasing an additional <sprite name=\"Quality\"> <style=cIsDamage>12 <style=cStack>(+12 per stack)</style> arcs</style> for <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
 
-        "ITEM_TELEPORTONLOWHEALTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase aura radius, bleed duration, and time extension.",
-        "ITEM_TELEPORTONLOWHEALTH_UNCOMMON_DESC": "Falling below <style=cIsHealth>25% health</style> gives you a <style=cIsHealing>temporary barrier</style> and a dimensional aura that <style=cIsDamage>bleeds</style> and <style=cIsUtility>teleports</style> away enemies for <style=cIsUtility>8s</style>. <style=cIsDamage>Enemies killed</style> by the aura <style=cIsUtility>extend</style> the duration by <sprite name=\"Quality\"> <style=cIsUtility>1.5s</style>. At the start of each stage, it regenerates.\nIncreases aura <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>10%</style> <style=cStack>(+10% per stack)</style> and <style=cIsDamage>bleed duration</style> by <sprite name=\"Quality\"> <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> second.",
+        "ITEM_TELEPORTONLOWHEALTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating your secondary skill launches a bleeding orb. Recharges while you have barrier.",
+        "ITEM_TELEPORTONLOWHEALTH_UNCOMMON_DESC": "{0}\nActivating your <style=cIsUtility>Secondary skill</style> also launches a <sprite name=\"Quality\"> <style=cIsUtility>3m <style=cStack>(+3m per stack)</style></style> <style=cIsDamage>orb</style> that bleeds enemies for <style=cIsDamage>240%</style> base damage every second. Orbs recharge every <sprite name=\"Quality\"> <style=cIsUtility>9s <style=cStack>(-10% per stack)</style></style> while you have <style=cIsHealing>barrier</style>. Can hold up to <sprite name=\"Quality\"> <style=cIsUtility>2</style>.",
 
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_UNCOMMON_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityUncommon\">.",
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_UNCOMMON_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityUncommon\">.",
 
-        "ITEM_TELEPORTONLOWHEALTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase aura radius, bleed duration, and time extension.",
-        "ITEM_TELEPORTONLOWHEALTH_RARE_DESC": "Falling below <style=cIsHealth>25% health</style> gives you a <style=cIsHealing>temporary barrier</style> and a dimensional aura that <style=cIsDamage>bleeds</style> and <style=cIsUtility>teleports</style> away enemies for <style=cIsUtility>8s</style>. <style=cIsDamage>Enemies killed</style> by the aura <style=cIsUtility>extend</style> the duration by <sprite name=\"Quality\"> <style=cIsUtility>2.5s</style>. At the start of each stage, it regenerates.\nIncreases aura <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> and <style=cIsDamage>bleed duration</style> by <sprite name=\"Quality\"> <style=cIsDamage>2</style> <style=cStack>(+2 per stack)</style> seconds.",
+        "ITEM_TELEPORTONLOWHEALTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating your secondary skill launches a bleeding orb. Recharges while you have barrier.",
+        "ITEM_TELEPORTONLOWHEALTH_RARE_DESC": "{0}\nActivating your <style=cIsUtility>Secondary skill</style> also launches a <sprite name=\"Quality\"> <style=cIsUtility>6m <style=cStack>(+6m per stack)</style></style> <style=cIsDamage>orb</style> that bleeds enemies for <style=cIsDamage>240%</style> base damage every second. Orbs recharge every <sprite name=\"Quality\"> <style=cIsUtility>7s <style=cStack>(-30% per stack)</style></style> while you have <style=cIsHealing>barrier</style>. Can hold up to <sprite name=\"Quality\"> <style=cIsUtility>5</style>.",
 
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_RARE_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityRare\">.",
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_RARE_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityRare\">.",
 
-        "ITEM_TELEPORTONLOWHEALTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase aura radius, bleed duration, and time extension.",
-        "ITEM_TELEPORTONLOWHEALTH_EPIC_DESC": "Falling below <style=cIsHealth>25% health</style> gives you a <style=cIsHealing>temporary barrier</style> and a dimensional aura that <style=cIsDamage>bleeds</style> and <style=cIsUtility>teleports</style> away enemies for <style=cIsUtility>8s</style>. <style=cIsDamage>Enemies killed</style> by the aura <style=cIsUtility>extend</style> the duration by <sprite name=\"Quality\"> <style=cIsUtility>4s</style>. At the start of each stage, it regenerates.\nIncreases aura <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>70%</style> <style=cStack>(+70% per stack)</style> and <style=cIsDamage>bleed duration</style> by <sprite name=\"Quality\"> <style=cIsDamage>3.5</style> <style=cStack>(+3.5 per stack)</style> seconds.",
+        "ITEM_TELEPORTONLOWHEALTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating your secondary skill launches a bleeding orb. Recharges while you have barrier.",
+        "ITEM_TELEPORTONLOWHEALTH_EPIC_DESC": "{0}\nActivating your <style=cIsUtility>Secondary skill</style> also launches a <sprite name=\"Quality\"> <style=cIsUtility>10m <style=cStack>(+10m per stack)</style></style> <style=cIsDamage>orb</style> that bleeds enemies for <style=cIsDamage>240%</style> base damage every second. Orbs recharge every <sprite name=\"Quality\"> <style=cIsUtility>5s <style=cStack>(-50% per stack)</style></style> while you have <style=cIsHealing>barrier</style>. Can hold up to <sprite name=\"Quality\"> <style=cIsUtility>10</style>.",
 
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_EPIC_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityEpic\">.",
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_EPIC_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityEpic\">.",
 
-        "ITEM_TELEPORTONLOWHEALTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase aura radius, bleed duration, and time extension.",
-        "ITEM_TELEPORTONLOWHEALTH_LEGENDARY_DESC": "Falling below <style=cIsHealth>25% health</style> gives you a <style=cIsHealing>temporary barrier</style> and a dimensional aura that <style=cIsDamage>bleeds</style> and <style=cIsUtility>teleports</style> away enemies for <style=cIsUtility>8s</style>. <style=cIsDamage>Enemies killed</style> by the aura <style=cIsUtility>extend</style> the duration by <sprite name=\"Quality\"> <style=cIsUtility>6s</style>. At the start of each stage, it regenerates.\nIncreases aura <style=cIsUtility>radius</style> by <sprite name=\"Quality\"> <style=cIsUtility>100%</style> <style=cStack>(+100% per stack)</style> and <style=cIsDamage>bleed duration</style> by <sprite name=\"Quality\"> <style=cIsDamage>5</style> <style=cStack>(+5 per stack)</style> seconds.",
+        "ITEM_TELEPORTONLOWHEALTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating your secondary skill launches a bleeding orb. Recharges while you have barrier.",
+        "ITEM_TELEPORTONLOWHEALTH_LEGENDARY_DESC": "{0}\nActivating your <style=cIsUtility>Secondary skill</style> also launches a <sprite name=\"Quality\"> <style=cIsUtility>15m <style=cStack>(+15m per stack)</style></style> <style=cIsDamage>orb</style> that bleeds enemies for <style=cIsDamage>240%</style> base damage every second. Orbs recharge every <sprite name=\"Quality\"> <style=cIsUtility>3s <style=cStack>(-70% per stack)</style></style> while you have <style=cIsHealing>barrier</style>. Can hold up to <sprite name=\"Quality\"> <style=cIsUtility>20</style>.",
 
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_PICKUP": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
         "ITEM_TELEPORTONLOWHEALTHCONSUMED_LEGENDARY_DESC": "At the start of each stage, it transforms into Unstable Transmitter <sprite name=\"QualityLegendary\">.",
@@ -893,16 +893,16 @@
         "ITEM_RANDOMEQUIPMENTTRIGGER_LEGENDARY_DESC": "Trigger a random legendary <sprite name=\"QualityLegendary\"> <style=cIsDamage>equipment</style> effect <style=cIsDamage>1</style> <style=cStack>(+1 per stack)</style> time(s).",
 
         "ITEM_IMMUNETODEBUFF_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to all nearby enemies.",
-        "ITEM_IMMUNETODEBUFF_UNCOMMON_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>2</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>15m</style> <style=cStack>(+15m per stack)</style>",
+        "ITEM_IMMUNETODEBUFF_UNCOMMON_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>5</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>15m</style> <style=cStack>(+15m per stack)</style>",
 
         "ITEM_IMMUNETODEBUFF_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to all nearby enemies.",
-        "ITEM_IMMUNETODEBUFF_RARE_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>3</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>25m</style> <style=cStack>(+25m per stack)</style>",
+        "ITEM_IMMUNETODEBUFF_RARE_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>8</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>25m</style> <style=cStack>(+25m per stack)</style>",
 
         "ITEM_IMMUNETODEBUFF_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to all nearby enemies.",
-        "ITEM_IMMUNETODEBUFF_EPIC_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>4</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>35m</style> <style=cStack>(+35m per stack)</style>",
+        "ITEM_IMMUNETODEBUFF_EPIC_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>12</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>35m</style> <style=cStack>(+35m per stack)</style>",
 
         "ITEM_IMMUNETODEBUFF_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Blocked debuffs are spread to all nearby enemies.",
-        "ITEM_IMMUNETODEBUFF_LEGENDARY_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>5</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>50m</style> <style=cStack>(+50m per stack)</style>",
+        "ITEM_IMMUNETODEBUFF_LEGENDARY_DESC": "{0}\nSpreads <sprite name=\"Quality\"> <style=cIsUtility>15</style> instances of the blocked <style=cIsDamage>debuff</style> to all enemies within <sprite name=\"Quality\"> <style=cIsUtility>50m</style> <style=cStack>(+50m per stack)</style>",
 
         "ITEM_KILLELITEFRENZY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage for every elite killed during the frenzy.",
         "ITEM_KILLELITEFRENZY_UNCOMMON_DESC": "{0}\nEvery elite killed during the frenzy increases damage by <sprite name=\"Quality\"> <style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style>.",
@@ -1037,16 +1037,16 @@
         "ITEM_PLANT_LEGENDARY_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style>",
 
         "ITEM_CRITDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
-        "ITEM_CRITDAMAGE_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance to crit an additional time.",
+        "ITEM_CRITDAMAGE_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Critical Strikes</style> gain a <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance to crit an additional time.",
 
         "ITEM_CRITDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
-        "ITEM_CRITDAMAGE_RARE_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>35%</style> <style=cStack>(+35% per stack)</style> chance to crit an additional time.",
+        "ITEM_CRITDAMAGE_RARE_DESC": "{0}\n<style=cIsDamage>Critical Strikes</style> gain a <sprite name=\"Quality\"> <style=cIsDamage>35%</style> <style=cStack>(+35% per stack)</style> chance to crit an additional time.",
 
         "ITEM_CRITDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
-        "ITEM_CRITDAMAGE_EPIC_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to crit an additional time.",
+        "ITEM_CRITDAMAGE_EPIC_DESC": "{0}\n<style=cIsDamage>Critical Strikes</style> gain a <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to crit an additional time.",
 
         "ITEM_CRITDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
-        "ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style> chance to crit an additional time.",
+        "ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Critical Strikes</style> gain a <sprite name=\"Quality\"> <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style> chance to crit an additional time.",
 
         "ITEM_INCREASEHEALING_UNCOMMON_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_UNCOMMON_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+150%</style> <style=cStack>(+150% per stack)</style> more.",

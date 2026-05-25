@@ -31,7 +31,7 @@ namespace ItemQualities
         public const string PluginName = "ItemQualities";
         public const string PluginAuthor = "Gorakh";
         public const string PluginGUID = "com." + PluginAuthor + "." + PluginName;
-        public const string PluginVersion = "0.7.5";
+        public const string PluginVersion = "0.7.6";
 
         static ItemQualitiesPlugin _instance;
         public static ItemQualitiesPlugin Instance => _instance;

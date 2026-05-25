@@ -40,16 +40,16 @@ namespace ItemQualities.Equipments
                             extraCleanseDuration = 0;
                             break;
                         case QualityTier.Uncommon:
-                            extraCleanseDuration = 1f;
-                            break;
-                        case QualityTier.Rare:
                             extraCleanseDuration = 2f;
                             break;
-                        case QualityTier.Epic:
+                        case QualityTier.Rare:
                             extraCleanseDuration = 3f;
                             break;
+                        case QualityTier.Epic:
+                            extraCleanseDuration = 5f;
+                            break;
                         case QualityTier.Legendary:
-                            extraCleanseDuration = 4f;
+                            extraCleanseDuration = 6f;
                             break;
                         default:
                             extraCleanseDuration = 0;
