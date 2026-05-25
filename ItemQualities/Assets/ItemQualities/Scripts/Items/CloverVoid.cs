@@ -141,7 +141,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
-                Log.Fatal("Failed to find ItemTransformation call location");
+                Log.Error("Failed to find ItemTransformation call location");
                 return;
             }
 
@@ -150,7 +150,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationVar),
                                x => x.MatchInitobj<Inventory.ItemTransformation>()))
             {
-                Log.Fatal("Failed to find ItemTransformation variable");
+                Log.Error("Failed to find ItemTransformation variable");
                 return;
             }
 

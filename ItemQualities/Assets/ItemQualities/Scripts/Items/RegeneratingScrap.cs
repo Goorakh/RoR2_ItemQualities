@@ -60,7 +60,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contextParameter))
             {
-                Log.Fatal("Failed to find context parameter");
+                Log.Error("Failed to find context parameter");
                 return;
             }
 
