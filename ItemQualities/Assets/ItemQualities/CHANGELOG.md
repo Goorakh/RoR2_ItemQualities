@@ -1,5 +1,8 @@
 ## <Next Version>
 
+* Unstable Transmitter rework:
+    * Fires a bleeding orb on secondary skill use, orb recharge while you have barrier.
+
 * Regenerating Scrap:
     * Quality Regenerating Scrap is now the highest priority scrap, always being taken first if available.
         * For cauldrons, scrap priority has been modified to take as few quality regenerating scraps as possible, so that you can properly benefit from having several quality regenerating scrap.
