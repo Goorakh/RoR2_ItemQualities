@@ -182,6 +182,9 @@ namespace ItemQualities
 
         public event Action<DamageReport> OnKilledOther;
 
+        public static event Action<CharacterBodyExtraStatsTracker, GenericSkill> OnSkillActivatedAuthorityGlobal;
+        public static event Action<CharacterBodyExtraStatsTracker, GenericSkill> OnSkillActivatedServerGlobal;
+
         void Awake()
         {
             _netIdentity = GetComponent<NetworkIdentity>();
@@ -226,6 +229,9 @@ namespace ItemQualities
                 _body.modelLocator.onModelChanged += refreshModelReference;
             }
 
+            _body.onSkillActivatedAuthority += onSkillActivatedAuthority;
+            _body.onSkillActivatedServer += onSkillActivatedServer;
+
             refreshModelReference(_body.modelLocator ? _body.modelLocator.modelTransform : null);
 
             recalculateExtraStats();
@@ -244,6 +250,9 @@ namespace ItemQualities
             {
                 _body.modelLocator.onModelChanged -= refreshModelReference;
             }
+
+            _body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
+            _body.onSkillActivatedServer -= onSkillActivatedServer;
 
             refreshModelReference(null);
 
@@ -354,6 +363,16 @@ namespace ItemQualities
                     WeakPointHurtBoxIndex = -1;
                 }
             }
+        }
+
+        private void onSkillActivatedAuthority(GenericSkill skill)
+        {
+            OnSkillActivatedAuthorityGlobal?.Invoke(this, skill);
+        }
+
+        private void onSkillActivatedServer(GenericSkill skill)
+        {
+            OnSkillActivatedServerGlobal?.Invoke(this, skill);
         }
 
         void updateOverlays()
