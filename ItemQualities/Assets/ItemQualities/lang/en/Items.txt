@@ -1037,16 +1037,16 @@
         "ITEM_PLANT_LEGENDARY_DESC": "{0}\nIncreases <style=cIsHealing>healing rate</style> by <sprite name=\"Quality\"> <style=cIsHealing>100%</style> <style=cStack>(+100% per stack)</style>",
 
         "ITEM_CRITDAMAGE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
-        "ITEM_CRITDAMAGE_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance to crit an additional time.",
+        "ITEM_CRITDAMAGE_UNCOMMON_DESC": "{0}\n<style=cIsDamage>Critical Strikes</style> gain a <sprite name=\"Quality\"> <style=cIsDamage>20%</style> <style=cStack>(+20% per stack)</style> chance to crit an additional time.",
 
         "ITEM_CRITDAMAGE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
-        "ITEM_CRITDAMAGE_RARE_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>35%</style> <style=cStack>(+35% per stack)</style> chance to crit an additional time.",
+        "ITEM_CRITDAMAGE_RARE_DESC": "{0}\n<style=cIsDamage>Critical Strikes</style> gain a <sprite name=\"Quality\"> <style=cIsDamage>35%</style> <style=cStack>(+35% per stack)</style> chance to crit an additional time.",
 
         "ITEM_CRITDAMAGE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
-        "ITEM_CRITDAMAGE_EPIC_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to crit an additional time.",
+        "ITEM_CRITDAMAGE_EPIC_DESC": "{0}\n<style=cIsDamage>Critical Strikes</style> gain a <sprite name=\"Quality\"> <style=cIsDamage>50%</style> <style=cStack>(+50% per stack)</style> chance to crit an additional time.",
 
         "ITEM_CRITDAMAGE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Critical Strikes can trigger multiple times.",
-        "ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Critical</style> Strikes gain a <sprite name=\"Quality\"> <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style> chance to crit an additional time.",
+        "ITEM_CRITDAMAGE_LEGENDARY_DESC": "{0}\n<style=cIsDamage>Critical Strikes</style> gain a <sprite name=\"Quality\"> <style=cIsDamage>75%</style> <style=cStack>(+75% per stack)</style> chance to crit an additional time.",
 
         "ITEM_INCREASEHEALING_UNCOMMON_PICKUP": "Increase the <sprite name=\"Quality\"> strength of healing.",
         "ITEM_INCREASEHEALING_UNCOMMON_DESC": "<style=cIsHealing>Heal</style> <sprite name=\"Quality\"> <style=cIsHealing>+150%</style> <style=cStack>(+150% per stack)</style> more.",
