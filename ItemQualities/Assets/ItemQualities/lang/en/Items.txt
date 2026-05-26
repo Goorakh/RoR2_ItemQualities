@@ -1586,5 +1586,17 @@
         
         "ITEM_TITANGOLDDURINGTP_LEGENDARY_PICKUP": "Summon Aurelionite <sprite name=\"QualityLegendary\"> during the Teleporter event.\n<sprite name=\"Quality\"> Defeating any non-Teleporter boss creates an Overgrown Quality Printer.",
         "ITEM_TITANGOLDDURINGTP_LEGENDARY_DESC": "Summon <style=cIsDamage>Aurelionite</style> <sprite name=\"QualityLegendary\"> during the teleporter event. It has <style=cIsDamage>100% <style=cStack>(+50% per stack)</style> damage</style>, <style=cIsHealing>100% <style=cStack>(+100% per stack)</style> health</style>, and <sprite name=\"Quality\"> <style=cIsDamage>+250% attack speed</style>.\n<sprite name=\"Quality\"> Defeating any <style=cIsUtility>non-Teleporter</style> boss creates an <style=cShrine>Overgrown Quality Printer</style>.",
+
+        "ITEM_LIGHTNINGSTRIKEONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to call down a big lightning strike.",
+        "ITEM_LIGHTNINGSTRIKEONHIT_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> chance to call down a big lightning strike, dealing <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+500% per stack)</style> damage</style>.",
+        
+        "ITEM_LIGHTNINGSTRIKEONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to call down a big lightning strike.",
+        "ITEM_LIGHTNINGSTRIKEONHIT_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>12%</style> chance to call down a big lightning strike, dealing <sprite name=\"Quality\"> <style=cIsDamage>1500% <style=cStack>(+1000% per stack)</style> damage</style>.",
+        
+        "ITEM_LIGHTNINGSTRIKEONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to call down a big lightning strike.",
+        "ITEM_LIGHTNINGSTRIKEONHIT_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>14%</style> chance to call down a big lightning strike, dealing <sprite name=\"Quality\"> <style=cIsDamage>2000% <style=cStack>(+1500% per stack)</style> damage</style>.",
+        
+        "ITEM_LIGHTNINGSTRIKEONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to call down a big lightning strike.",
+        "ITEM_LIGHTNINGSTRIKEONHIT_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>16%</style> chance to call down a big lightning strike, dealing <sprite name=\"Quality\"> <style=cIsDamage>2500% <style=cStack>(+2000% per stack)</style> damage</style>.",
     }
 }
