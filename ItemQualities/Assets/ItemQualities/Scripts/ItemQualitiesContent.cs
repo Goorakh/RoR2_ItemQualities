@@ -709,6 +709,8 @@ namespace ItemQualities
             public static ItemQualityGroup ConstructBubble;
 
             public static ItemQualityGroup TitanGoldDuringTP;
+
+            public static ItemQualityGroup LightningStrikeOnHit;
         }
 
         public static class Items
