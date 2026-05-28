@@ -22,11 +22,13 @@ namespace ItemQualities
             public static readonly FieldInfo[] LowHealthUnderBarInfoFields = new FieldInfo[]
             {
                 typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthUnderBarInfo)),
+                typeof(AdditionalBarInfos).GetField(nameof(GenesisLoopLowHealthUnderBarInfo)),
             };
 
             public static readonly FieldInfo[] LowHealthOverBarInfoFields = new FieldInfo[]
             {
                 typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthOverBarInfo)),
+                typeof(AdditionalBarInfos).GetField(nameof(GenesisLoopLowHealthOverBarInfo)),
             };
 
             public static readonly FieldInfo[] ShieldOverlayBarInfoFields = new FieldInfo[]
@@ -49,6 +51,9 @@ namespace ItemQualities
             public readonly HealthBar.BarInfo StealthKitLowHealthUnderBarInfo;
             public readonly HealthBar.BarInfo StealthKitLowHealthOverBarInfo;
 
+            public readonly HealthBar.BarInfo GenesisLoopLowHealthUnderBarInfo;
+            public readonly HealthBar.BarInfo GenesisLoopLowHealthOverBarInfo;
+
             public readonly HealthBar.BarInfo TemporaryShieldBarInfo;
 
             public readonly HealthBar.BarInfo TemporaryHealthBarInfo;
@@ -59,6 +64,8 @@ namespace ItemQualities
 
             public AdditionalBarInfos(in HealthBar.BarInfo stealthKitLowHealthUnderBarInfo,
                                       in HealthBar.BarInfo stealthKitLowHealthOverBarInfo,
+                                      in HealthBar.BarInfo genesisLoopLowHealthUnderBarInfo,
+                                      in HealthBar.BarInfo genesisLoopLowHealthOverBarInfo,
                                       in HealthBar.BarInfo temporaryShieldBarInfo,
                                       in HealthBar.BarInfo temporaryHealthBarInfo,
                                       in HealthBar.BarInfo barrierOverflowBarInfo)
@@ -72,8 +79,10 @@ namespace ItemQualities
                 }
 
                 setBarInfo(out StealthKitLowHealthUnderBarInfo, stealthKitLowHealthUnderBarInfo);
-
                 setBarInfo(out StealthKitLowHealthOverBarInfo, stealthKitLowHealthOverBarInfo);
+
+                setBarInfo(out GenesisLoopLowHealthUnderBarInfo, genesisLoopLowHealthUnderBarInfo);
+                setBarInfo(out GenesisLoopLowHealthOverBarInfo, genesisLoopLowHealthOverBarInfo);
 
                 setBarInfo(out TemporaryShieldBarInfo, temporaryShieldBarInfo);
 
@@ -175,6 +184,7 @@ namespace ItemQualities
                     }
 
                     handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.Phasing);
+                    handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth);
                 }
 
                 if (ignoreLowHealthItemIndices.Count == 0)
@@ -450,6 +460,17 @@ namespace ItemQualities
                 setupHealthThresholdBarInfos(ref stealthKitLowHealthUnderBarInfo, ref stealthKitLowHealthOverBarInfo, extraStatsTracker.StealthKitActivationThreshold);
             }
 
+            HealthBar.BarInfo genesisLoopLowHealthUnderBarInfo = lowHealthUnderBarInfoTemplate;
+            HealthBar.BarInfo genesisLoopLowHealthOverBarInfo = lowHealthOverBarInfoTemplate;
+            genesisLoopLowHealthUnderBarInfo.enabled = false;
+            genesisLoopLowHealthOverBarInfo.enabled = false;
+
+            ItemQualityCounts novaOnLowHealth = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth);
+            if (novaOnLowHealth.TotalQualityCount > 0)
+            {
+                setupHealthThresholdBarInfos(ref genesisLoopLowHealthUnderBarInfo, ref genesisLoopLowHealthOverBarInfo, extraStatsTracker.GenesisLoopActivationThreshold);
+            }
+
             HealthBar.BarInfo temporaryShieldBarInfo = shieldBarInfoTemplate;
             temporaryShieldBarInfo.enabled = false;
 
@@ -532,7 +553,13 @@ namespace ItemQualities
                 }
             }
 
-            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo, temporaryShieldBarInfo, temporaryHealthBarInfo, barrierOverflowBarInfo);
+            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo,
+                                          stealthKitLowHealthOverBarInfo,
+                                          genesisLoopLowHealthUnderBarInfo,
+                                          genesisLoopLowHealthOverBarInfo,
+                                          temporaryShieldBarInfo,
+                                          temporaryHealthBarInfo,
+                                          barrierOverflowBarInfo);
         }
 
         static void HealthComponent_GetHealthBarValues(ILContext il)
