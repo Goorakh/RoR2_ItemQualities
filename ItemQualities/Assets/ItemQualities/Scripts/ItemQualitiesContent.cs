@@ -711,6 +711,8 @@ namespace ItemQualities
             public static ItemQualityGroup TitanGoldDuringTP;
 
             public static ItemQualityGroup LightningStrikeOnHit;
+
+            public static ItemQualityGroup NovaOnLowHealth;
         }
 
         public static class Items
@@ -943,6 +945,8 @@ namespace ItemQualities
             public static GameObject RecyclableObjectAttachment;
 
             public static GameObject QualityMinorConstructOnKillAttachment;
+
+            public static GameObject VagrantNovaItemQualityAttachment;
         }
 
         public static class ProjectilePrefabs
