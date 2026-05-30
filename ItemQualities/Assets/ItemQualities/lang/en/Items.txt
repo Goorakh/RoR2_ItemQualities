@@ -1610,5 +1610,17 @@
         
         "ITEM_NOVAONLOWHEALTH_LEGENDARY_PICKUP": "Fire an electric nova at <sprite name=\"Quality\"> low health.\n<sprite name=\"Quality\"> Chance on taking damage to fire a lesser nova.",
         "ITEM_NOVAONLOWHEALTH_LEGENDARY_DESC": "Falling below <sprite name=\"Quality\"> <style=cIsHealth>90% health</style> causes you to explode, dealing <style=cIsDamage>6000% base damage</style>. Recharges every <style=cIsUtility>30 seconds</style> <style=cStack>(-50% per stack)</style>.\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> chance on taking damage to activate a lesser nova for <sprite name=\"Quality\"> <style=cIsDamage>6000% <style=cStack>(+6000% per stack)</style> base damage</style>.",
+
+        "ITEM_SPRINTWISP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a greater wisp that explodes for more damage.",
+        "ITEM_SPRINTWISP_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>10%</style> chance to instead fire a <style=cIsDamage>greater wisp</style> that <style=cIsDamage>explodes</style> in a <sprite name=\"Quality\"> <style=cIsUtility>7m <style=cStack>(+7m per stack)</style></style> radius for an additional <sprite name=\"Quality\"> <style=cIsDamage>400% <style=cStack>(+400% per stack)</style> damage</style>.",
+
+        "ITEM_SPRINTWISP_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a greater wisp that explodes for more damage.",
+        "ITEM_SPRINTWISP_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>30%</style> chance to instead fire a <style=cIsDamage>greater wisp</style> that <style=cIsDamage>explodes</style> in a <sprite name=\"Quality\"> <style=cIsUtility>15m <style=cStack>(+15m per stack)</style></style> radius for an additional <sprite name=\"Quality\"> <style=cIsDamage>600% <style=cStack>(+600% per stack)</style> damage</style>.",
+
+        "ITEM_SPRINTWISP_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a greater wisp that explodes for more damage.",
+        "ITEM_SPRINTWISP_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> chance to instead fire a <style=cIsDamage>greater wisp</style> that <style=cIsDamage>explodes</style> in a <sprite name=\"Quality\"> <style=cIsUtility>25m <style=cStack>(+25m per stack)</style></style> radius for an additional <sprite name=\"Quality\"> <style=cIsDamage>800% <style=cStack>(+800% per stack)</style> damage</style>.",
+
+        "ITEM_SPRINTWISP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a greater wisp that explodes for more damage.",
+        "ITEM_SPRINTWISP_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>75%</style> chance to instead fire a <style=cIsDamage>greater wisp</style> that <style=cIsDamage>explodes</style> in a <sprite name=\"Quality\"> <style=cIsUtility>40m <style=cStack>(+40m per stack)</style></style> radius for an additional <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+1000% per stack)</style> damage</style>.",
     }
 }
