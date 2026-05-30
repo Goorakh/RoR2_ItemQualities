@@ -62,7 +62,7 @@ namespace ItemQualities.Equipments
         {
             bool success = orig(self);
 
-            if (success)
+            if (success && self.GetCurrentEquipmentActionQualityTier() != QualityTier.None)
             {
                 self.characterBody.healthComponent.AddBarrier(self.characterBody.healthComponent.fullHealth * 0.2f);
             }
