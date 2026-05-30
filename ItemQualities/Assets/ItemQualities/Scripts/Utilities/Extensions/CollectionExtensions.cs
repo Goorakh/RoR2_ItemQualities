@@ -1,4 +1,6 @@
 ﻿using RoR2.ContentManagement;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
@@ -62,6 +64,34 @@ namespace ItemQualities.Utilities.Extensions
             }
 
             return -1;
+        }
+
+        /// <summary>
+        /// Calls <see cref="IEnumerator.MoveNext"/> on <typeparamref name="TEnumerator"/>, safely swallowing any exceptions.
+        /// </summary>
+        /// <typeparam name="TEnumerator"></typeparam>
+        /// <param name="enumerator"></param>
+        /// <returns>
+        /// <see langword="true"/> if the enumerator has more elements.
+        /// <br/>
+        /// <see langword="false"/> if the enumerator has no more elements, or an exception occured within <see cref="IEnumerator.MoveNext"/>
+        /// </returns>
+        public static bool SafeMoveNext<TEnumerator>(this TEnumerator enumerator)
+            where TEnumerator : IEnumerator
+        {
+            try
+            {
+                if (enumerator.MoveNext())
+                {
+                    return true;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error_NoCallerPrefix(e.ToString());
+            }
+
+            return false;
         }
     }
 }
