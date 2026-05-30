@@ -1,132 +1,199 @@
-﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using MonoMod.Utils;
+﻿using HG;
+using ItemQualities.ContentManagement;
+using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
-using System;
-using System.Collections.Generic;
+using RoR2BepInExPack.GameAssetPathsBetter;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class Medkit
+    internal static class Medkit
     {
+        private static GameObject _healingWardPrefab;
+
+        [ContentInitializer]
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
+        {
+            AsyncOperationHandle<GameObject> shrineHealingWardHandle = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_ShrineHealing.ShrineHealingWard_prefab);
+            shrineHealingWardHandle.OnSuccess(healingWardPrefab =>
+            {
+                _healingWardPrefab = healingWardPrefab.InstantiateClone("MedkitHealingWard");
+                _healingWardPrefab.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+                _healingWardPrefab.AddComponent<MedkitHealingWardController>();
+
+                HealingWard healingWard = _healingWardPrefab.GetComponent<HealingWard>();
+                healingWard.radius = 0f;
+                healingWard.interval = 0.25f;
+                healingWard.healPoints = 0f;
+                healingWard.healFraction = 0f;
+
+                args.ContentPack.networkedObjectPrefabs.Add(_healingWardPrefab);
+            });
+
+            return shrineHealingWardHandle.AsProgressCoroutine(args.ProgressReceiver);
+        }
+
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
-            IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
-
-            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += CharacterBody_RemoveBuff_BuffIndex;
+            GlobalEventManager.OnInteractionsGlobal += onInteractGlobal;
         }
 
-        static void CharacterBody_RemoveBuff_BuffIndex(ILContext il)
+        private static void onInteractGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
         {
-            ILCursor c = new ILCursor(il);
-
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.MedkitHeal)),
-                               x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.Heal))))
-            {
-                Log.Error("Failed to find patch location");
+            if (!NetworkServer.active)
                 return;
-            }
 
-            c.Goto(foundCursors[1].Next, MoveType.Before);
+            if (!SharedItemUtils.InteractableIsPermittedForSpawn(interactable))
+                return;
 
-            MethodReference healMethod = (MethodReference)c.Next.Operand;
+            if (!interactor || !interactor.TryGetComponent(out CharacterBody interactorBody) || !interactorBody.inventory)
+                return;
 
-            List<VariableDefinition> tempHealMethodParameterVars = new List<VariableDefinition>();
-            for (int i = healMethod.Parameters.Count - 1; i >= 0; i--)
+            ItemQualityCounts medkit = interactorBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Medkit);
+            if (medkit.TotalQualityCount > 0)
             {
-                ParameterDefinition parameter = healMethod.Parameters[i];
-                if (parameter.ParameterType.Is(typeof(float)))
-                    break;
-
-                tempHealMethodParameterVars.Add(il.AddVariable(parameter.ParameterType));
-            }
-
-            tempHealMethodParameterVars.Reverse();
-
-            for (int i = tempHealMethodParameterVars.Count - 1; i >= 0; i--)
-            {
-                c.Emit(OpCodes.Stloc, tempHealMethodParameterVars[i]);
-            }
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<float, CharacterBody, float>>(getHealAmount);
-
-            static float getHealAmount(float healAmount, CharacterBody body)
-            {
-                if (body && body.inventory)
+                MedkitHealingWardController medkitHealingWard = MedkitHealingWardController.FindHealingWard(interactableObject, interactorBody.teamComponent.teamIndex);
+                if (!medkitHealingWard)
                 {
-                    ItemQualityCounts medkit = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Medkit);
-                    if (medkit.TotalQualityCount > 0 && body.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
-                    {
-                        float timeSinceLastHit = bodyExtraStats.CurrentMedkitProcTimeSinceLastHit;
-                        bodyExtraStats.CurrentMedkitProcTimeSinceLastHit = 0f;
-                        if (timeSinceLastHit > 0f)
-                        {
-                            float healingIncreasePerSecond = (0.01f * medkit.UncommonCount) +
-                                                             (0.02f * medkit.RareCount) +
-                                                             (0.04f * medkit.EpicCount) +
-                                                             (0.08f * medkit.LegendaryCount);
+                    GameObject healingWardInstance = GameObject.Instantiate(_healingWardPrefab, interactableObject.transform.position, interactableObject.transform.rotation);
 
-                            float maxHealingIncrease = (1.0f * medkit.UncommonCount) +
-                                                       (1.5f * medkit.RareCount) +
-                                                       (2.5f * medkit.EpicCount) +
-                                                       (4.0f * medkit.LegendaryCount);
+                    medkitHealingWard = healingWardInstance.GetComponent<MedkitHealingWardController>();
 
-                            float healingMultiplier = 1f + Mathf.Min(maxHealingIncrease, healingIncreasePerSecond * timeSinceLastHit);
+                    TeamFilter teamFilter = healingWardInstance.GetComponent<TeamFilter>();
+                    teamFilter.teamIndex = interactorBody.teamComponent.teamIndex;
 
-                            Log.Debug($"Time since last hit: {timeSinceLastHit}, multiplier: {healingMultiplier}");
-
-                            healAmount *= healingMultiplier;
-                        }
-                    }
+                    medkitHealingWard.InteractableObject = interactableObject;
                 }
 
-                return healAmount;
-            }
+                float radius = (10f * medkit.UncommonCount) +
+                               (20f * medkit.RareCount) +
+                               (35f * medkit.EpicCount) +
+                               (50f * medkit.LegendaryCount);
 
-            for (int i = 0; i < tempHealMethodParameterVars.Count; i++)
+                float healFractionPerSecond;
+                switch (medkit.HighestQuality)
+                {
+                    case QualityTier.Uncommon:
+                        healFractionPerSecond = 0.05f;
+                        break;
+                    case QualityTier.Rare:
+                        healFractionPerSecond = 0.10f;
+                        break;
+                    case QualityTier.Epic:
+                        healFractionPerSecond = 0.20f;
+                        break;
+                    case QualityTier.Legendary:
+                        healFractionPerSecond = 0.30f;
+                        break;
+                    default:
+                        healFractionPerSecond = 0f;
+                        Log.Warning($"Quality tier {medkit.HighestQuality} is not implemented");
+                        break;
+                }
+
+                medkitHealingWard.HealingWard.Networkradius += radius;
+                medkitHealingWard.HealingWard.healFraction = healFractionPerSecond * medkitHealingWard.HealingWard.interval;
+                medkitHealingWard.ResetDuration(60f);
+            }
+        }
+    }
+
+    public sealed class MedkitHealingWardController : NetworkBehaviour
+    {
+        [SyncVar(hook = nameof(syncInteractableObject))]
+        public GameObject InteractableObject;
+
+        public HealingWard HealingWard { get; private set; }
+
+        private TeamFilter _teamFilter;
+
+        private float _age;
+        private float _duration;
+
+        private void Awake()
+        {
+            _teamFilter = GetComponent<TeamFilter>();
+            HealingWard = GetComponent<HealingWard>();
+
+            InstanceTracker.Add(this);
+        }
+
+        private void OnDestroy()
+        {
+            InstanceTracker.Remove(this);
+        }
+
+        public override void OnStartClient()
+        {
+            base.OnStartClient();
+            syncInteractableObject(InteractableObject);
+        }
+
+        private void FixedUpdate()
+        {
+            if (NetworkServer.active)
             {
-                c.Emit(OpCodes.Ldloc, tempHealMethodParameterVars[i]);
+                _age += Time.fixedDeltaTime;
+                if (_age >= _duration)
+                {
+                    Destroy(gameObject);
+                }
             }
         }
 
-        static void HealthComponent_UpdateLastHitTime(ILContext il)
+        private void LateUpdate()
         {
-            ILCursor c = new ILCursor(il);
+            tryMatchInteractablePosition();
+        }
 
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.medkit)),
-                               x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.MedkitHeal)),
-                               x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.AddTimedBuff))))
+        private void tryMatchInteractablePosition()
+        {
+            if (InteractableObject)
             {
-                Log.Error("Failed to find patch location");
-                return;
+                InteractableObject.transform.GetPositionAndRotation(out Vector3 position, out Quaternion rotation);
+                transform.SetPositionAndRotation(position, rotation);
             }
+        }
 
-            c.Goto(foundCursors[2].Next, MoveType.After);
+        public void OnAttachedObjectDiscovered(GenericNetworkedObjectAttachment attachment, GameObject attachedObject)
+        {
+            tryMatchInteractablePosition();
+        }
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Action<HealthComponent>>(onMedkitProc);
+        public void ResetDuration(float newDuration)
+        {
+            _duration = newDuration;
+            _age = 0f;
+        }
 
-            static void onMedkitProc(HealthComponent healthComponent)
+        private void syncInteractableObject(GameObject newInteractableObject)
+        {
+            InteractableObject = newInteractableObject;
+            tryMatchInteractablePosition();
+        }
+
+        public static MedkitHealingWardController FindHealingWard(GameObject interactableObject, TeamIndex teamIndex)
+        {
+            if (!ReferenceEquals(interactableObject, null))
             {
-                if (healthComponent && healthComponent.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
+                foreach (MedkitHealingWardController medkitHealingWard in InstanceTracker.GetInstancesList<MedkitHealingWardController>())
                 {
-                    Run.FixedTimeStamp lastHitTime = healthComponent.lastHitTime;
-                    if (lastHitTime.isInfinity && healthComponent.body)
+                    if (medkitHealingWard._teamFilter.teamIndex == teamIndex &&
+                        ReferenceEquals(medkitHealingWard.InteractableObject, interactableObject))
                     {
-                        lastHitTime = healthComponent.body.localStartTime;
+                        return medkitHealingWard;
                     }
-
-                    float timeSinceLastHit = lastHitTime.timeSince;
-                    bodyExtraStats.CurrentMedkitProcTimeSinceLastHit = timeSinceLastHit;
                 }
             }
+
+            return null;
         }
     }
 }

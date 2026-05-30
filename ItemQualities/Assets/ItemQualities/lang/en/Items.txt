@@ -169,17 +169,17 @@
         "ITEM_FIREWORK_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a large firework.",
         "ITEM_FIREWORK_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance per firework to launch a <style=cIsDamage>large firework</style> instead, dealing <style=cIsDamage>500%</style> base damage and exploding in a larger area.",
 
-        "ITEM_MEDKIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
-        "ITEM_MEDKIT_UNCOMMON_DESC": "{0}\nFor every second since the last time you were hit, increase delayed heal amount by <sprite name=\"Quality\"> <style=cIsHealing>1% <style=cStack>(+1% per stack)</style></style>, up to a maximum of <style=cIsHealing>100% <style=cStack>(+100% per stack)</style></style>.",
+        "ITEM_MEDKIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a healing zone.",
+        "ITEM_MEDKIT_UNCOMMON_DESC": "{0}\nActivating an interactable creates a <sprite name=\"Quality\"> <style=cIsUtility>10m <style=cStack>(+10m per stack)</style></style> <style=cIsHealing>healing zone</style> that heals all allies inside for <sprite name=\"Quality\"> <style=cIsHealing>5%</style> of their maximum health per second. Lasts <style=cIsUtility>60</style> seconds.",
         
-        "ITEM_MEDKIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
-        "ITEM_MEDKIT_RARE_DESC": "{0}\nFor every second since the last time you were hit, increase delayed heal amount by <sprite name=\"Quality\"> <style=cIsHealing>2% <style=cStack>(+2% per stack)</style></style>, up to a maximum of <style=cIsHealing>150% <style=cStack>(+150% per stack)</style></style>.",
+        "ITEM_MEDKIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a healing zone.",
+        "ITEM_MEDKIT_RARE_DESC": "{0}\nActivating an interactable creates a <sprite name=\"Quality\"> <style=cIsUtility>20m <style=cStack>(+20m per stack)</style></style> <style=cIsHealing>healing zone</style> that heals all allies inside for <sprite name=\"Quality\"> <style=cIsHealing>10%</style> of their maximum health per second. Lasts <style=cIsUtility>60</style> seconds.",
         
-        "ITEM_MEDKIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
-        "ITEM_MEDKIT_EPIC_DESC": "{0}\nFor every second since the last time you were hit, increase delayed heal amount by <sprite name=\"Quality\"> <style=cIsHealing>4% <style=cStack>(+4% per stack)</style></style>, up to a maximum of <style=cIsHealing>250% <style=cStack>(+250% per stack)</style></style>.",
+        "ITEM_MEDKIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a healing zone.",
+        "ITEM_MEDKIT_EPIC_DESC": "{0}\nActivating an interactable creates a <sprite name=\"Quality\"> <style=cIsUtility>35m <style=cStack>(+35m per stack)</style></style> <style=cIsHealing>healing zone</style> that heals all allies inside for <sprite name=\"Quality\"> <style=cIsHealing>20%</style> of their maximum health per second. Lasts <style=cIsUtility>60</style> seconds.",
         
-        "ITEM_MEDKIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase healing based on time since last damage taken.",
-        "ITEM_MEDKIT_LEGENDARY_DESC": "{0}\nFor every second since the last time you were hit, increase delayed heal amount by <sprite name=\"Quality\"> <style=cIsHealing>8% <style=cStack>(+8% per stack)</style></style>, up to a maximum of <style=cIsHealing>400% <style=cStack>(+400% per stack)</style></style>.",
+        "ITEM_MEDKIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activating an interactable creates a healing zone.",
+        "ITEM_MEDKIT_LEGENDARY_DESC": "{0}\nActivating an interactable creates a <sprite name=\"Quality\"> <style=cIsUtility>50m <style=cStack>(+50m per stack)</style></style> <style=cIsHealing>healing zone</style> that heals all allies inside for <sprite name=\"Quality\"> <style=cIsHealing>30%</style> of their maximum health per second. Lasts <style=cIsUtility>60</style> seconds.",
 
         "ITEM_MUSHROOM_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Create a bubble shield after standing still for 0.6 seconds.",
         "ITEM_MUSHROOM_UNCOMMON_DESC": "{0}\nAfter standing still for <style=cIsUtility>0.6 seconds</style>, create a <style=cIsUtility>bubble shield</style> with a <sprite name=\"Quality\"> <style=cIsDamage>13m radius</style>, lasting for <sprite name=\"Quality\"> <style=cIsDamage>1 <style=cStack>(+1 per stack)</style> seconds</style>.",

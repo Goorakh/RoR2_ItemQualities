@@ -122,8 +122,6 @@ namespace ItemQualities
 
         public bool HasHadAnyQualityDeathMarkDebuffServer { get; private set; }
 
-        public float CurrentMedkitProcTimeSinceLastHit { get; set; } = 0f;
-
         public float LeechBuffReserveFraction { get; set; } = 0f;
 
         public int EliteKillCount { get; private set; } = 0;
