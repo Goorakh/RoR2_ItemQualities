@@ -62,8 +62,8 @@ namespace ItemQualities.Items
                 MedkitHealingWardController medkitHealingWard = MedkitHealingWardController.FindHealingWard(interactableObject, interactorBody.teamComponent.teamIndex);
                 if (!medkitHealingWard)
                 {
-                    GameObject healingWardInstance = GameObject.Instantiate(_healingWardPrefab, interactableObject.transform.position, interactableObject.transform.rotation);
-
+                    GameObject healingWardInstance = GameObject.Instantiate(_healingWardPrefab, interactableObject.transform.position, Quaternion.identity);
+                    
                     medkitHealingWard = healingWardInstance.GetComponent<MedkitHealingWardController>();
 
                     TeamFilter teamFilter = healingWardInstance.GetComponent<TeamFilter>();
@@ -157,8 +157,7 @@ namespace ItemQualities.Items
         {
             if (InteractableObject)
             {
-                InteractableObject.transform.GetPositionAndRotation(out Vector3 position, out Quaternion rotation);
-                transform.SetPositionAndRotation(position, rotation);
+                transform.position = InteractableObject.transform.position;
             }
         }
 
