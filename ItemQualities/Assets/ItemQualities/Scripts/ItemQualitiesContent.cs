@@ -713,6 +713,8 @@ namespace ItemQualities
             public static ItemQualityGroup LightningStrikeOnHit;
 
             public static ItemQualityGroup NovaOnLowHealth;
+
+            public static ItemQualityGroup ShockDamageAura;
         }
 
         public static class Items

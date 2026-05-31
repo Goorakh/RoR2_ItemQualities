@@ -42,6 +42,8 @@ namespace ItemQualities
         [SyncVar]
         public StoredInteractableInfo CardStoredInteractableInfo = StoredInteractableInfo.None;
 
+        public ItemCollection ConductorItemStacks = ItemCollection.Create();
+
         readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
 
         List<PendingItemUpgrade> _pendingItemUpgrades;

@@ -39,7 +39,7 @@ namespace ItemQualities
             };
 
             General.InitRiskOfOptions();
-            Interface.InitRiskOfOptions();
+            //Interface.InitRiskOfOptions();
 
 #if DEBUG
             Debug.InitRiskOfOptions();
