@@ -7,7 +7,6 @@ using RoR2.UI;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -28,14 +27,12 @@ namespace ItemQualities.Items
             Transform parent = self.transform.parent;
             if (!parent)
                 return;
-            ItemInventoryDisplay itemInventoryDisplay = parent.GetComponent<ItemInventoryDisplay>();
-            if (!itemInventoryDisplay)
+            if (!parent.TryGetComponent(out ItemInventoryDisplay itemInventoryDisplay))
                 return;
             CharacterBody body = itemInventoryDisplay._characterBody;
             if (!body || !body.master)
                 return;
-            CharacterMasterExtraStatsTracker extraStats = body.master.GetComponent<CharacterMasterExtraStatsTracker>();
-            if (!extraStats)
+            if (!body.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker extraStats))
                 return;
 
             if (extraStats.ConductorItemStacks.GetStackValue(newItemIndex) > 0)
@@ -46,36 +43,19 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void OnDeserialize(On.RoR2.Inventory.orig_OnDeserialize orig, Inventory self, NetworkReader reader, bool initialState)
-        {
-            orig(self, reader, initialState);
-            if (reader.ReadBoolean())
-            {
-                CharacterMasterExtraStatsTracker extraStats = self.GetComponent<CharacterMasterExtraStatsTracker>();
-                extraStats.ConductorItemStacks.Deserialize(reader);
-            }
-        }
-
-        private static bool OnSerialize(On.RoR2.Inventory.orig_OnSerialize orig, Inventory self, NetworkWriter writer, bool initialState)
-        {
-            bool result = orig(self, writer, initialState);
-            CharacterMasterExtraStatsTracker extraStats = self.GetComponent<CharacterMasterExtraStatsTracker>();
-            if (!extraStats)
-            {
-                writer.Write(false);
-                return result;
-            }
-            writer.Write(true);
-            extraStats.ConductorItemStacks.Serialize(writer);
-            return result;
-        }
-
         private static void HandleInventoryChanged(On.RoR2.Inventory.orig_HandleInventoryChanged orig, Inventory self)
         {
-            orig(self);
-            CharacterMasterExtraStatsTracker extraStats = self.GetComponent<CharacterMasterExtraStatsTracker>();
-            if (!extraStats)
+            ItemQualityCounts shockDamageAura = self.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ShockDamageAura);
+            if (shockDamageAura.TotalQualityCount == 0)
+            {
+                orig(self);
                 return;
+            } 
+            if (!self.TryGetComponentCached(out CharacterMasterExtraStatsTracker extraStats))
+            {
+                orig(self);
+                return;
+            }
             int? conductorIndex = null;
             List<ItemIndex> itemAcquisitionOrder = self.itemAcquisitionOrder;
 
@@ -89,9 +69,11 @@ namespace ItemQualities.Items
                 }
             }
             if (conductorIndex == null)
+            {
+                orig(self);
                 return;
+            }
 
-            ItemQualityCounts shockDamageAura = self.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ShockDamageAura);
             int itemBuffCount = shockDamageAura.HighestQuality switch
             {
                 QualityTier.Uncommon => 2,
@@ -120,11 +102,17 @@ namespace ItemQualities.Items
 
                 ItemQualityGroupIndex shockDamageAuraGroup = QualityCatalog.FindItemQualityGroupIndex(itemAcquisitionOrder[index]);
                 if (shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.ShockDamageAura.GroupIndex ||
-                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.ScrapWhite.GroupIndex ||
-                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.ScrapGreen.GroupIndex ||
-                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.ScrapRed.GroupIndex ||
-                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.ScrapYellow.GroupIndex ||
                 shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex ||
+                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.TreasureCache.GroupIndex ||
+                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid.GroupIndex ||
+                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.HealingPotion.GroupIndex ||
+                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GroupIndex ||
+                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.LowerPricedChests.GroupIndex ||
+                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.ExtraLife.GroupIndex ||
+                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.ExtraLifeVoid.GroupIndex ||
+                shockDamageAuraGroup == ItemQualitiesContent.ItemQualityGroups.ExtraStatsOnLevelUp.GroupIndex ||
+                ItemCatalog.GetItemDef(itemAcquisitionOrder[index]).ContainsTag(ItemTag.Scrap) ||
+                ItemCatalog.GetItemDef(itemAcquisitionOrder[index]).ContainsTag(ItemTag.ObjectiveRelated) ||
                 ItemCatalog.GetItemDef(itemAcquisitionOrder[index]).tier == ItemTier.NoTier)
                 {
                     itemBuffCount++;
@@ -134,18 +122,14 @@ namespace ItemQualities.Items
                 extraStats.ConductorItemStacks.SetStackValue(itemAcquisitionOrder[index], extraStacks);
                 self.UpdateEffectiveItemStacks(itemAcquisitionOrder[index]);
             }
-
-            foreach (HUD hud in HUD.instancesList)
-            {
-                hud.itemInventoryDisplay.OnInventoryChanged();
-            }
+            orig(self);
         }
 
         private static int CalculateEffectiveItemStacks(On.RoR2.Inventory.orig_CalculateEffectiveItemStacks orig, Inventory self, ItemIndex itemIndex)
         {
             int result = orig(self, itemIndex);
 
-            if (self.TryGetComponent(out CharacterMasterExtraStatsTracker extraStats))
+            if (self.TryGetComponentCached(out CharacterMasterExtraStatsTracker extraStats))
             {
                 result += extraStats.ConductorItemStacks.GetStackValue(itemIndex);
             }
@@ -185,7 +169,7 @@ namespace ItemQualities.Items
 
             int addConductorStacks(Inventory self, int stackNum, ItemIndex itemIndex)
             {
-                if (self.TryGetComponent(out CharacterMasterExtraStatsTracker extraStats))
+                if (self.TryGetComponentCached(out CharacterMasterExtraStatsTracker extraStats))
                 {
                     return stackNum + extraStats.ConductorItemStacks.GetStackValue(itemIndex);
                 }
