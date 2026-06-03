@@ -148,9 +148,8 @@ namespace ItemQualities
         {
             bool hasAnyPendingUpgrade = false;
 
-            foreach (uint upgradedItemIndexInt in _upgradeItemIndices)
+            foreach (ItemIndex upgradedItemIndex in _upgradeItemIndices)
             {
-                ItemIndex upgradedItemIndex = (ItemIndex)upgradedItemIndexInt;
                 if (checkItemQualityUpgrade(upgradedItemIndex))
                 {
                     hasAnyPendingUpgrade = true;
@@ -209,9 +208,8 @@ namespace ItemQualities
             QualityTier qualityTier = QualityCatalog.GetQualityTier(itemIndex);
             ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
 
-            foreach (uint upgradeItemIndexInt in _upgradeItemIndices)
+            foreach (ItemIndex upgradeItemIndex in _upgradeItemIndices)
             {
-                ItemIndex upgradeItemIndex = (ItemIndex)upgradeItemIndexInt;
                 QualityTier upgradeQualityTier = QualityCatalog.GetQualityTier(upgradeItemIndex);
                 ItemQualityGroupIndex upgradeItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(upgradeItemIndex);
 
@@ -249,9 +247,8 @@ namespace ItemQualities
                 if (itemGroupIndex == ItemQualityGroupIndex.Invalid) // Item does not have any qualities
                     return false;
 
-                foreach (uint upgradeItemIndexInt in _upgradeItemIndices)
+                foreach (ItemIndex upgradeItemIndex in _upgradeItemIndices)
                 {
-                    ItemIndex upgradeItemIndex = (ItemIndex)upgradeItemIndexInt;
                     ItemQualityGroupIndex upgradeItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(upgradeItemIndex);
                     if (upgradeItemGroupIndex == itemGroupIndex)
                     {
@@ -334,7 +331,7 @@ namespace ItemQualities
             // If we still don't have any upgradable items at this point just give up
             if (availableUpgradeItemsSelection.Count == 0)
                 return ItemIndex.None;
-            
+
             ItemIndex upgradedItemIndex = QualityCatalog.GetItemIndexOfQuality(availableUpgradeItemsSelection.Evaluate(rng.nextNormalizedFloat), targetQualityTier);
             ItemQualityGroupIndex upgradeItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(upgradedItemIndex);
 
