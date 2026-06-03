@@ -906,7 +906,7 @@ namespace ItemQualities
 
             public static GameObject HealOrbSpecial;
 
-            public static GameObject DuplicatorQualityAttachment;
+            public static GameObject QualityDuplicatorMinionInventory;
 
             public static GameObject DroneShootableAttachment;
 
