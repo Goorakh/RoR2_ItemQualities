@@ -1,10 +1,9 @@
 ## <Next Version>
 
-* Unstable Transmitter rework:
-    * Fires a bleeding orb on secondary skill use, orb recharge while you have barrier.
-
-* Medkit rework:
-    * Creates a healing zone when activating an interactable.
+* Reworks:
+    * Substandard Duplicator
+    * Unstable Transmitter
+    * Medkit
 
 * Regenerating Scrap:
     * Quality Regenerating Scrap is now the highest priority scrap, always being taken first if available.
