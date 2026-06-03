@@ -44,10 +44,10 @@ namespace ItemQualities.Items
 
             ref readonly ItemQualityCounts stacks = ref Stacks;
 
-            float itemShareChance = (stacks.UncommonCount * 10f) +
-                                    (stacks.RareCount * 25f) +
+            float itemShareChance = (stacks.UncommonCount * 15f) +
+                                    (stacks.RareCount * 30f) +
                                     (stacks.EpicCount * 50f) +
-                                    (stacks.LegendaryCount * 75f);
+                                    (stacks.LegendaryCount * 80f);
 
             int itemShareStackCount = RollUtil.GetOverflowRoll(itemShareChance, Body.master, false);
             if (itemShareStackCount > 0)
