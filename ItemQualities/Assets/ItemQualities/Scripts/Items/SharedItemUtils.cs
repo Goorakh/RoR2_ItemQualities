@@ -5,6 +5,8 @@ namespace ItemQualities.Items
 {
     static class SharedItemUtils
     {
+        // Copied from GlobalEventManager.OnInteractionBegin InteractableIsPermittedForSpawn local method.
+        // TODO: Reverse patch this?
         public static bool InteractableIsPermittedForSpawn(IInteractable interactable)
         {
             if (interactable is not MonoBehaviour interactableBehavior || !interactableBehavior)

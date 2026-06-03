@@ -2,6 +2,7 @@
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
+using RoR2.Items;
 using System;
 using UnityEngine;
 
@@ -92,6 +93,15 @@ namespace ItemQualities
 
                 if (pickupDef.itemIndex != ItemIndex.None)
                 {
+                    // Don't show notification if the item will be corrupted
+                    ItemIndex transformedItemIndex = ContagiousItemManager.GetTransformedItemIndex(pickupDef.itemIndex);
+                    ItemQualityGroupIndex transformedItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(transformedItemIndex);
+                    if (transformedItemGroupIndex != ItemQualityGroupIndex.Invalid &&
+                        master.inventory.GetItemCountsEffective(transformedItemGroupIndex).TotalCount > 0)
+                    {
+                        return false;
+                    }
+
                     // Don't show notification if item will be upgraded
                     if (masterExtraStats && masterExtraStats.HasUpgradeForItem(pickupDef.itemIndex))
                         return false;

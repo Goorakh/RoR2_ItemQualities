@@ -10,6 +10,7 @@ namespace ItemQualities
 {
     static class InventoryHooks
     {
+        /*
         public delegate void ItemCountChangedDelegate(Inventory inventory, ItemIndex itemIndex, int itemCountDiff);
 
         public static event ItemCountChangedDelegate OnTempItemGivenServerGlobal;
@@ -74,5 +75,6 @@ namespace ItemQualities
                 }
             }
         }
+        */
     }
 }

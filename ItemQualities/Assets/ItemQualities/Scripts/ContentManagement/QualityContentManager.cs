@@ -12,7 +12,7 @@ namespace ItemQualities.ContentManagement
     {
         public delegate IEnumerator LoadContentAsyncDelegate(QualityContentLoadArgs args);
 
-        static event LoadContentAsyncDelegate loadContentInternal;
+        private static event LoadContentAsyncDelegate loadContentInternal;
         public static event LoadContentAsyncDelegate LoadContentAsync
         {
             add
@@ -31,10 +31,10 @@ namespace ItemQualities.ContentManagement
             }
         }
 
-        static bool _hasCollectedLoadCoroutines = false;
+        private static bool _hasCollectedLoadCoroutines = false;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             if (loadContentInternal == null)
             {
@@ -42,7 +42,7 @@ namespace ItemQualities.ContentManagement
                 yield break;
             }
 
-            PartitionedProgress<IProgress<float>> totalProgress = new PartitionedProgress<IProgress<float>>(args.ProgressReceiver);
+            PartitionedProgress<ReadableProgress<float>> totalProgress = new PartitionedProgress<ReadableProgress<float>>(args.ProgressReceiver);
             ProgressPartition loadContentProgress = totalProgress.AddPartition();
             ProgressPartition generateAssetsProgress = totalProgress.AddPartition();
 
@@ -53,7 +53,7 @@ namespace ItemQualities.ContentManagement
             List<BuffQualityGroup> buffQualityGroups = new List<BuffQualityGroup>();
 
             foreach (LoadContentAsyncDelegate loadContentDelegate in loadContentInternal.GetInvocationList()
-                                                                                           .OfType<LoadContentAsyncDelegate>())
+                                                                                        .OfType<LoadContentAsyncDelegate>())
             {
                 if (loadContentDelegate != null)
                 {
@@ -105,26 +105,7 @@ namespace ItemQualities.ContentManagement
             args.ProgressReceiver.Report(1f);
         }
 
-        static bool safeMoveNext(IEnumerator enumerator, out object current)
-        {
-            try
-            {
-                if (enumerator.MoveNext())
-                {
-                    current = enumerator.Current;
-                    return true;
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error_NoCallerPrefix(e.ToString());
-            }
-
-            current = null;
-            return false;
-        }
-
-        static IEnumerator safeCoroutineWrapper(LoadContentAsyncDelegate loadContentDelegate, QualityContentLoadArgs args)
+        private static IEnumerator safeCoroutineWrapper(LoadContentAsyncDelegate loadContentDelegate, QualityContentLoadArgs args)
         {
             IEnumerator coroutine;
             try
@@ -139,9 +120,9 @@ namespace ItemQualities.ContentManagement
 
             if (coroutine != null)
             {
-                while (safeMoveNext(coroutine, out object current))
+                while (coroutine.SafeMoveNext())
                 {
-                    yield return current;
+                    yield return coroutine.Current;
                 }
             }
 

@@ -1,7 +1,9 @@
 ## <Next Version>
 
-* Unstable Transmitter rework:
-    * Fires a bleeding orb on secondary skill use, orb recharge while you have barrier.
+* Reworks:
+    * Substandard Duplicator
+    * Unstable Transmitter
+    * Medkit
 
 * Regenerating Scrap:
     * Quality Regenerating Scrap is now the highest priority scrap, always being taken first if available.
@@ -13,6 +15,9 @@
                 * Any remaining quality regenerating scrap, starting with the lowest quality
                 * Random items from inventory
         * Cauldrons now give their item in the quality of the highest input scrap. Before now, they gave the average of all input scrap, which just tended to punish you for having a high and a low quality regenerating scrap by reducing the average quality of the resulting item.
+
+* Jade Elephant:
+    * Fixed barrier gain being applied when using the non-quality version of the equipment.
 
 * Eccentric Vase:
     * Fixed orb teleport not working when at less than 60fps.

@@ -6,6 +6,7 @@ using RoR2;
 using RoR2.ContentManagement;
 using System;
 using System.Collections;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -135,6 +136,7 @@ namespace ItemQualities
         }
 
         [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BuffQualityCounts GetBuffCounts(CharacterBody body)
         {
@@ -142,12 +144,16 @@ namespace ItemQualities
         }
 
         [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasBuff(CharacterBody body)
         {
             return HasBuff(body, out _);
         }
 
         [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasBuff(CharacterBody body, out QualityTier buffQualityTier)
         {
             BuffQualityCounts buffCounts = GetBuffCounts(body);
@@ -156,18 +162,23 @@ namespace ItemQualities
         }
 
         [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasQualityBuff(CharacterBody body)
         {
             return HasQualityBuff(body, out _);
         }
 
         [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasQualityBuff(CharacterBody body, out QualityTier buffQualityTier)
         {
             return HasBuff(body, out buffQualityTier) && buffQualityTier > QualityTier.None;
         }
 
         [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.RemoveAllBuffs) + "/" + nameof(CharacterBodyExtensions.RemoveAllQualityBuffs) + "/" + nameof(CharacterBodyExtensions.ConvertQualityBuffsToTier) + "/" + nameof(CharacterBodyExtensions.ConvertAllBuffsToQualityTier) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public void EnsureBuffQualities(CharacterBody body, QualityTier buffQualityTier, bool includeBaseBuff = false)
         {
             if (!body)
