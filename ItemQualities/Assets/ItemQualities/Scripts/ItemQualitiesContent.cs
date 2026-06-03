@@ -715,6 +715,8 @@ namespace ItemQualities
             public static ItemQualityGroup NovaOnLowHealth;
 
             public static ItemQualityGroup ShockDamageAura;
+            
+            public static ItemQualityGroup SprintWisp;
         }
 
         public static class Items
@@ -961,6 +963,8 @@ namespace ItemQualities
         public static class Materials
         {
             public static Material HealCritBoost;
+
+            public static Material SprintWispQualityFire;
         }
 
         public static class SpawnCards
