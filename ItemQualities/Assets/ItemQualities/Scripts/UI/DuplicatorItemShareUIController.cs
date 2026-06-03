@@ -1,4 +1,5 @@
-﻿using ItemQualities.Items;
+﻿using HG;
+using ItemQualities.Items;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -25,18 +26,14 @@ namespace ItemQualities.UI
         GameObject _itemShareInventoryDisplayRoot;
         ItemInventoryDisplay _itemShareInventoryDisplay;
 
-        CharacterBody _currentTargetBody;
-        GameObject _currentTargetBodyObject;
-        DuplicatorQualityAttachmentBehavior _currentBodyDuplicatorAttachment;
+        CharacterMaster _currentTargetMaster;
+        QualityDuplicatorMinionInventoryController _currentTargetMinionInventoryController;
 
         void Awake()
         {
             _hud = GetComponent<HUD>();
             _childLocator = GetComponent<ChildLocator>();
-        }
 
-        void Start()
-        {
             Transform leftClusterTransform = _childLocator.FindChild("LeftCluster");
 
             _itemShareInventoryDisplayRoot = Instantiate(_hud.itemInventoryDisplay.gameObject, leftClusterTransform);
@@ -51,83 +48,79 @@ namespace ItemQualities.UI
 
             _itemShareInventoryDisplay.maxHeight = itemShareDisplayTransform.rect.height;
 
-            Inventory duplicatorInventory = _currentBodyDuplicatorAttachment ? _currentBodyDuplicatorAttachment.MinionMirrorInventory : null;
-            setDisplayedDuplicatorInventory(duplicatorInventory);
+            // Will be enabled whenever an inventory is found
+            _itemShareInventoryDisplayRoot.SetActive(false);
         }
 
         void OnEnable()
         {
-            setTargetBodyObject(_hud.targetBodyObject);
+            setTargetMaster(_hud.targetMaster);
 
             HUD.onHudTargetChangedGlobal += onHudTargetChangedGlobal;
-            DuplicatorQualityAttachmentBehavior.OnAttachedBodyChangedGlobal += onDuplicatorAttachmentBodyChangedGlobal;
         }
 
         void OnDisable()
         {
-            DuplicatorQualityAttachmentBehavior.OnAttachedBodyChangedGlobal -= onDuplicatorAttachmentBodyChangedGlobal;
             HUD.onHudTargetChangedGlobal -= onHudTargetChangedGlobal;
 
-            setTargetBodyObject(null);
+            setTargetMaster(null);
         }
 
         void onHudTargetChangedGlobal(HUD hud)
         {
-            if (hud != _hud)
+            if (!ReferenceEquals(hud, _hud))
                 return;
 
-            setTargetBodyObject(hud.targetBodyObject);
+            setTargetMaster(hud.targetMaster);
         }
 
-        void setTargetBodyObject(GameObject targetBodyObject)
+        void setTargetMaster(CharacterMaster newTargetMaster)
         {
-            if (targetBodyObject == _currentTargetBodyObject)
+            if (ReferenceEquals(_currentTargetMaster, newTargetMaster))
                 return;
 
-            _currentTargetBodyObject = targetBodyObject;
-            _currentTargetBody = _currentTargetBodyObject ? _currentTargetBodyObject.GetComponent<CharacterBody>() : null;
+            if (!ReferenceEquals(_currentTargetMaster, null))
+            {
+                QualityDuplicatorMinionInventoryController.OnOwnerDiscoveredGlobal -= onDuplicatorMinionInventoryOwnerDiscoveredGlobal;
+                QualityDuplicatorMinionInventoryController.OnOwnerLostGlobal -= onDuplicatorMinionInventoryOwnerLostGlobal;
+            }
+
+            _currentTargetMaster = newTargetMaster;
+
+            if (!ReferenceEquals(_currentTargetMaster, null))
+            {
+                QualityDuplicatorMinionInventoryController.OnOwnerDiscoveredGlobal += onDuplicatorMinionInventoryOwnerDiscoveredGlobal;
+                QualityDuplicatorMinionInventoryController.OnOwnerLostGlobal += onDuplicatorMinionInventoryOwnerLostGlobal;
+            }
             
-            DuplicatorQualityAttachmentBehavior currentBodyDuplicatorAttachment = null;
-            if (_currentTargetBody)
-            {
-                foreach (DuplicatorQualityAttachmentBehavior duplicatorAttachment in InstanceTracker.GetInstancesList<DuplicatorQualityAttachmentBehavior>())
-                {
-                    if (duplicatorAttachment.AttachedBody == _currentTargetBody)
-                    {
-                        currentBodyDuplicatorAttachment = duplicatorAttachment;
-                        break;
-                    }
-                }
-            }
-
-            setCurrentBodyDuplicatorAttachment(currentBodyDuplicatorAttachment);
+            setCurrentMinionInventoryController(QualityDuplicatorMinionInventoryController.FindMinionInventoryController(_currentTargetMaster));
         }
 
-        void onDuplicatorAttachmentBodyChangedGlobal(DuplicatorQualityAttachmentBehavior duplicatorAttachment)
+        private void onDuplicatorMinionInventoryOwnerDiscoveredGlobal(QualityDuplicatorMinionInventoryController minionInventoryController)
         {
-            if (_currentTargetBody && duplicatorAttachment.AttachedBody == _currentTargetBody)
+            if (ReferenceEquals(minionInventoryController.OwnerMaster, _currentTargetMaster))
             {
-                setCurrentBodyDuplicatorAttachment(duplicatorAttachment);
-            }
-            else if (duplicatorAttachment == _currentBodyDuplicatorAttachment)
-            {
-                setCurrentBodyDuplicatorAttachment(null);
+                setCurrentMinionInventoryController(minionInventoryController);
             }
         }
 
-        void setCurrentBodyDuplicatorAttachment(DuplicatorQualityAttachmentBehavior duplicatorAttachment)
+        private void onDuplicatorMinionInventoryOwnerLostGlobal(QualityDuplicatorMinionInventoryController minionInventoryController)
         {
-            if (_currentBodyDuplicatorAttachment == duplicatorAttachment)
+            if (ReferenceEquals(minionInventoryController.OwnerMaster, _currentTargetMaster))
+            {
+                setCurrentMinionInventoryController(null);
+            }
+        }
+
+        void setCurrentMinionInventoryController(QualityDuplicatorMinionInventoryController duplicatorAttachment)
+        {
+            if (ReferenceEquals(_currentTargetMinionInventoryController, duplicatorAttachment))
                 return;
 
-            _currentBodyDuplicatorAttachment = duplicatorAttachment;
+            _currentTargetMinionInventoryController = duplicatorAttachment;
 
-            Inventory duplicatorInventory = _currentBodyDuplicatorAttachment ? _currentBodyDuplicatorAttachment.MinionMirrorInventory : null;
-            setDisplayedDuplicatorInventory(duplicatorInventory);
-        }
+            Inventory duplicatorInventory = _currentTargetMinionInventoryController ? _currentTargetMinionInventoryController.MinionMirrorInventory : null;
 
-        void setDisplayedDuplicatorInventory(Inventory duplicatorInventory)
-        {
             if (_itemShareInventoryDisplayRoot)
             {
                 _itemShareInventoryDisplayRoot.SetActive(duplicatorInventory != null);
