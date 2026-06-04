@@ -715,6 +715,8 @@ namespace ItemQualities
             public static ItemQualityGroup NovaOnLowHealth;
 
             public static ItemQualityGroup SprintWisp;
+
+            public static ItemQualityGroup FireballsOnHit;
         }
 
         public static class Items
