@@ -1634,5 +1634,17 @@
 
         "ITEM_SPRINTWISP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to fire a greater wisp that explodes for more damage.",
         "ITEM_SPRINTWISP_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>75%</style> chance to instead fire a <style=cIsDamage>greater wisp</style> that <style=cIsDamage>explodes</style> in a <sprite name=\"Quality\"> <style=cIsUtility>40m <style=cStack>(+40m per stack)</style></style> radius for an additional <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+1000% per stack)</style> damage</style>.",
+
+        "ITEM_FIREBALLSONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increased amount of magma balls and explosion radius.",
+        "ITEM_FIREBALLSONHIT_UNCOMMON_DESC": "<style=cIsDamage>10%</style> chance on hit to call forth <sprite name=\"Quality\"> <style=cIsDamage>5 <style=cStack>(+2 per stack)</style> magma balls</style> from an enemy, exploding in a <sprite name=\"Quality\"> <style=cIsDamage>10m radius</style> and dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> damage and <style=cIsDamage>igniting</style> all enemies.",
+
+        "ITEM_FIREBALLSONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increased amount of magma balls and explosion radius.",
+        "ITEM_FIREBALLSONHIT_RARE_DESC": "<style=cIsDamage>10%</style> chance on hit to call forth <sprite name=\"Quality\"> <style=cIsDamage>7 <style=cStack>(+4 per stack)</style> magma balls</style> from an enemy, exploding in a <sprite name=\"Quality\"> <style=cIsDamage>13m radius</style> and dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> damage and <style=cIsDamage>igniting</style> all enemies.",
+
+        "ITEM_FIREBALLSONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increased amount of magma balls and explosion radius.",
+        "ITEM_FIREBALLSONHIT_EPIC_DESC": "<style=cIsDamage>10%</style> chance on hit to call forth <sprite name=\"Quality\"> <style=cIsDamage>9 <style=cStack>(+6 per stack)</style> magma balls</style> from an enemy, exploding in a <sprite name=\"Quality\"> <style=cIsDamage>16m radius</style> and dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> damage and <style=cIsDamage>igniting</style> all enemies.",
+
+        "ITEM_FIREBALLSONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increased amount of magma balls and explosion radius.",
+        "ITEM_FIREBALLSONHIT_LEGENDARY_DESC": "<style=cIsDamage>10%</style> chance on hit to call forth <sprite name=\"Quality\"> <style=cIsDamage>11 <style=cStack>(+8 per stack)</style> magma balls</style> from an enemy, exploding in a <sprite name=\"Quality\"> <style=cIsDamage>20m radius</style> and dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> damage and <style=cIsDamage>igniting</style> all enemies.",
     }
 }

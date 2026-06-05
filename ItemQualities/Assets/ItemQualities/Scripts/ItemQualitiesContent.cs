@@ -717,6 +717,8 @@ namespace ItemQualities
             public static ItemQualityGroup ShockDamageAura;
             
             public static ItemQualityGroup SprintWisp;
+
+            public static ItemQualityGroup FireballsOnHit;
         }
 
         public static class Items
