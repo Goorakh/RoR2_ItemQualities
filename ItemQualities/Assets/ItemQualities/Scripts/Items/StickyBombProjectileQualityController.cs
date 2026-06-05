@@ -5,7 +5,6 @@ using RoR2;
 using RoR2.Projectile;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -20,19 +19,10 @@ namespace ItemQualities.Items
             });
         }
 
-        void Awake()
+        void Start()
         {
-            if (NetworkServer.active)
-            {
-                if (TryGetComponent(out ProjectileController projectileController))
-                {
-                    projectileController.onInitialized += onInitializedServer;
-                }
-            }
-        }
-
-        void onInitializedServer(ProjectileController projectileController)
-        {
+            if (!TryGetComponent(out ProjectileController projectileController))
+                return;
             GameObject owner = projectileController ? projectileController.owner : null;
             CharacterBody ownerBody = owner ? owner.GetComponent<CharacterBody>() : null;
 
