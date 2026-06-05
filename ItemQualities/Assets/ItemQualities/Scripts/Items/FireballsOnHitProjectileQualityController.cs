@@ -5,7 +5,6 @@ using RoR2;
 using RoR2.Projectile;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
@@ -20,30 +19,36 @@ namespace ItemQualities.Items
             });
         }
 
-        void Awake()
+        bool Initialized = false;
+        void FixedUpdate()
         {
-            if (!NetworkServer.active)
+            if (Initialized)
                 return;
-            if (TryGetComponent(out ProjectileController projectileController))
-            {
-                projectileController.onInitialized += onInitializedServer;
-            }
-        }
-
-        void onInitializedServer(ProjectileController projectileController)
-        {
-            GameObject owner = projectileController ? projectileController.owner : null;
+            Initialized = true;
+            if (!TryGetComponent(out ProjectileController projectileController) || !projectileController.ghost)
+                return;
+            GameObject owner = projectileController.owner;
             CharacterBody ownerBody = owner ? owner.GetComponent<CharacterBody>() : null;
 
             float scaleIncrease = FireballsOnHit.GetFireballScaleIncrease(ownerBody);
 
             if (scaleIncrease > 0f)
             {
+                transform.localScale *= 1 + (scaleIncrease / 7);
                 if (TryGetComponent(out ProjectileExplosion projectileExplosion))
                 {
                     projectileExplosion.SetExplosionRadius(projectileExplosion.blastRadius + scaleIncrease);
                 }
             }
+
+            Transform trailRenderer = projectileController.ghost.transform.Find("TrailRenderer");
+            if (trailRenderer && trailRenderer.TryGetComponent(out TrailRenderer trailRendererComp))
+            {
+                trailRendererComp.widthMultiplier = 1 + (scaleIncrease / 7);
+                trailRendererComp.time = 1 + (scaleIncrease / 7);
+            }
+
+            projectileController.ghost.transform.localScale = Vector3.one * (1 + (scaleIncrease / 7));
         }
     }
 }
