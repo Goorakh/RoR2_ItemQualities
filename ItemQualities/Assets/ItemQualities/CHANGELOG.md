@@ -5,8 +5,9 @@
     * Unstable Transmitter
     * Medkit
 
-* Sticky Bomb:
-    * Fixed size not changing on client
+* Scrap:
+    * Quality Scrap can now be traded for regular Scrap with a special scrapper interactable on the moon.
+    * Quality Scrap no longer automatically turns into regular Scrap when entering the moon.
 
 * Regenerating Scrap:
     * Quality Regenerating Scrap is now the highest priority scrap, always being taken first if available.
@@ -24,6 +25,9 @@
 
 * Jade Elephant:
     * Fixed barrier gain being applied when using the non-quality version of the equipment.
+
+* Sticky Bomb:
+    * Fixed size not changing on client
 
 * Eccentric Vase:
     * Fixed orb teleport not working when at less than 60fps.
