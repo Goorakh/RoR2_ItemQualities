@@ -927,6 +927,8 @@ namespace ItemQualities
             public static GameObject GatewayQualityAttachment;
 
             public static GameObject RecyclableObjectAttachment;
+
+            public static GameObject QualityScrapper;
         }
 
         public static class ProjectilePrefabs
@@ -939,6 +941,8 @@ namespace ItemQualities
         public static class Materials
         {
             public static Material HealCritBoost;
+
+            public static Material QualityScrapper;
         }
 
         public static class SpawnCards
