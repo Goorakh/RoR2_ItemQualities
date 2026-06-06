@@ -28,8 +28,6 @@ Quality printer variants allow you to trade a quality item for a different item,
 
 Quality items can also be scrapped to produce Quality Scrap, these act just the same as regular scrap, but they can only be used in Quality Printers.
 
-As of right now, all quality scrap is converted into non-quality scrap when entering Commencement, this is because they currently have no use on the moon and letting you use them in the Cauldrons is better than letting you do nothing at all.
-
 #
 
 Includes a 25% increased difficulty scaling to balance out the more powerful on-average items, can be disabled in config.

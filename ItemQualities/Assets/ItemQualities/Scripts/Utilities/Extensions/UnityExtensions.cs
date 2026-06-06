@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#undef UNITY_EDITOR // Uncomment for testing UnityEventInterface in editor environment
+
+using System;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
@@ -43,7 +45,7 @@ namespace ItemQualities.Utilities.Extensions
             return ComponentCache.TryGetComponent(srcComponent.gameObject, out T component) ? component : null;
         }
 
-        static void validatePersistentListener(UnityEvent unityEvent, Delegate action)
+        static void validatePersistentListener(UnityEventBase unityEvent, Delegate action)
         {
             if (unityEvent is null)
                 throw new ArgumentNullException(nameof(unityEvent));
@@ -82,6 +84,18 @@ namespace ItemQualities.Utilities.Extensions
 #endif
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void AddPersistentListener<T>(this UnityEvent<T> unityEvent, UnityAction<T> action)
+        {
+            validatePersistentListener(unityEvent, action);
+
+#if UNITY_EDITOR
+            UnityEditor.Events.UnityEventTools.AddPersistentListener(unityEvent, action);
+#else
+            UnityEventInterface.AddEventPersistentListener(unityEvent, action);
+#endif
+        }
+
 #if !UNITY_EDITOR
         static class UnityEventInterface
         {
@@ -94,6 +108,7 @@ namespace ItemQualities.Utilities.Extensions
             static readonly MethodInfo _persistentCallGroupAddListenerMethod;
 
             static readonly MethodInfo _persistentCallGroupRegisterVoidPersistentListenerMethod;
+            static readonly MethodInfo _persistentCallGroupRegisterEventPersistentListenerMethod;
             static readonly MethodInfo _persistentCallGroupRegisterStringPersistentListenerMethod;
 
             static UnityEventInterface()
@@ -120,6 +135,12 @@ namespace ItemQualities.Utilities.Extensions
                     Log.Error("Failed to find PersistentCallGroup.RegisterVoidPersistentListener(int, UnityEngine.Object, Type, string) method");
                 }
 
+                _persistentCallGroupRegisterEventPersistentListenerMethod = _unityPersistentCallGroupType.GetMethod("RegisterEventPersistentListener", BindingFlags.Public | BindingFlags.Instance, null, new Type[] { typeof(int), typeof(UnityEngine.Object), typeof(Type), typeof(string) }, null);
+                if (_persistentCallGroupRegisterEventPersistentListenerMethod == null)
+                {
+                    Log.Error("Failed to find PersistentCallGroup.RegisterEventPersistentListener(int, UnityEngine.Object, Type, string) method");
+                }
+
                 _persistentCallGroupRegisterStringPersistentListenerMethod = _unityPersistentCallGroupType.GetMethod("RegisterStringPersistentListener", BindingFlags.Public | BindingFlags.Instance, null, new Type[] { typeof(int), typeof(UnityEngine.Object), typeof(Type), typeof(string), typeof(string) }, null);
                 if (_persistentCallGroupRegisterStringPersistentListenerMethod == null)
                 {
@@ -127,7 +148,7 @@ namespace ItemQualities.Utilities.Extensions
                 }
             }
 
-            static bool tryRegisterPersistentListener(UnityEvent unityEvent, out int index, out object persistentCallGroup)
+            static bool tryRegisterPersistentListener(UnityEventBase unityEvent, out int index, out object persistentCallGroup)
             {
                 if (_unityEventBasePersistentListenersField == null ||
                     _persistentCallGroupAddListenerMethod == null)
@@ -163,6 +184,29 @@ namespace ItemQualities.Utilities.Extensions
                     action.Target.GetType(),
                     action.Method.Name
                 });
+
+                unityEvent.SetPersistentListenerState(index, UnityEventCallState.RuntimeOnly);
+            }
+
+            public static void AddEventPersistentListener<TDelegate>(UnityEventBase unityEvent, TDelegate action)
+                where TDelegate : Delegate
+            {
+                if (_persistentCallGroupRegisterEventPersistentListenerMethod == null ||
+                    !tryRegisterPersistentListener(unityEvent, out int index, out object persistentCallGroup))
+                {
+                    Log.Error("Failed to add listener: Interface initialization did not succeed for required component(s).");
+                    return;
+                }
+
+                _persistentCallGroupRegisterEventPersistentListenerMethod.Invoke(persistentCallGroup, new object[]
+                {
+                    index,
+                    action.Target as UnityEngine.Object,
+                    action.Target.GetType(),
+                    action.Method.Name
+                });
+
+                unityEvent.SetPersistentListenerState(index, UnityEventCallState.RuntimeOnly);
             }
 
             static void addArgumentPersistentListener<T>(UnityEvent unityEvent, MethodInfo registerMethod, UnityAction<T> action, T argument)
@@ -182,6 +226,8 @@ namespace ItemQualities.Utilities.Extensions
                     argument,
                     action.Method.Name
                 });
+
+                unityEvent.SetPersistentListenerState(index, UnityEventCallState.RuntimeOnly);
             }
 
             public static void AddStringPersistentListener(UnityEvent unityEvent, UnityAction<string> action, string argument)
