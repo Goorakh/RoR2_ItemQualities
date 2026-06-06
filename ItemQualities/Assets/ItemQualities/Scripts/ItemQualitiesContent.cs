@@ -90,6 +90,7 @@ namespace ItemQualities
             populateTypeFields(typeof(Materials), _contentPack.materials, fieldName => "mat" + fieldName);
 
             populateTypeFields(typeof(SpawnCards), _contentPack.spawnCards);
+            SpawnCards.AllSpawnCards = new ReadOnlyCollection<SpawnCard>(_contentPack.spawnCards.ToArray());
 
             populateTypeFields(typeof(Sprites), _contentPack.sprites);
 
@@ -947,6 +948,8 @@ namespace ItemQualities
 
         public static class SpawnCards
         {
+            public static ReadOnlyCollection<SpawnCard> AllSpawnCards { get; internal set; } = Empty<SpawnCard>.ReadOnlyCollection;
+
             [TargetAssetName("iscQualityEquipmentBarrel")]
             public static InteractableSpawnCard QualityEquipmentBarrel;
 

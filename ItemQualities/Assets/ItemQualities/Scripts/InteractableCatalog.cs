@@ -135,6 +135,14 @@ namespace ItemQualities
                 overrideCanCopy("ScavBackpack", false);
                 overrideCanCopy("ScavLunarBackpack", false);
             }
+
+            foreach (SpawnCard spawnCard in ItemQualitiesContent.SpawnCards.AllSpawnCards)
+            {
+                if (spawnCard is InteractableSpawnCard interactableSpawnCard && interactableSpawnCard.prefab)
+                {
+                    recordSpawnCard(interactableSpawnCard);
+                }
+            }
         }
 
         static void onSpawnCardSpawnedServerGlobal(SpawnCard.SpawnResult spawnResult)
