@@ -5,6 +5,10 @@
     * Unstable Transmitter
     * Medkit
 
+* Scrap:
+    * Quality Scrap can now be traded for regular Scrap with a special scrapper interactable on the moon.
+    * Quality Scrap no longer automatically turns into regular Scrap when entering the moon.
+
 * Regenerating Scrap:
     * Quality Regenerating Scrap is now the highest priority scrap, always being taken first if available.
         * For cauldrons, scrap priority has been modified to take as few quality regenerating scraps as possible, so that you can properly benefit from having several quality regenerating scrap.
@@ -16,8 +20,14 @@
                 * Random items from inventory
         * Cauldrons now give their item in the quality of the highest input scrap. Before now, they gave the average of all input scrap, which just tended to punish you for having a high and a low quality regenerating scrap by reducing the average quality of the resulting item.
 
+* Bottled Chaos:
+    * Fixed no additional equipment effects triggering when having both a quality Bottled Chaos and a regular one.
+
 * Jade Elephant:
     * Fixed barrier gain being applied when using the non-quality version of the equipment.
+
+* Sticky Bomb:
+    * Fixed size not changing on client
 
 * Eccentric Vase:
     * Fixed orb teleport not working when at less than 60fps.

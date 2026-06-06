@@ -29,6 +29,13 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
+        public static bool TryGetAsset<T>(this NamedAssetCollection<T> assetCollection, string name, out T asset)
+            where T : class
+        {
+            asset = assetCollection.Find(name);
+            return asset != null;
+        }
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T GetSafe<T, TList>(this TList list, int index, in T defaultValue = default)
             where TList : IList<T>

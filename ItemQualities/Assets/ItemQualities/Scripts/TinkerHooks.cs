@@ -15,7 +15,7 @@ namespace ItemQualities
         [SystemInitializer]
         static void Init()
         {
-            IL.RoR2.Projectile.TinkerProjectile.TransmuteTargetObject += Scrap.ReplaceScrapPickupFromItemDefTierQualityPatch;
+            IL.RoR2.Projectile.TinkerProjectile.TransmuteTargetObject += Scrap.GenericReplaceScrapPickupPatch;
 
             IL.RoR2.DrifterTracker.IsWhitelist += DrifterTracker_IsWhitelist;
 

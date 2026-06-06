@@ -36,5 +36,10 @@
         "QUALITY_CHEST2_STEALTHED_NAME": "Large Cloaked Chest",
         "QUALITY_CHEST2_STEALTHED_CONTEXT": "Open large cloaked chest",
         "QUALITY_CHEST2_STEALTHED_DESCRIPTION": "An invisible chest that does not have to be purchased. The Large Cloaked Chest has a chance to contain either an uncommon or legendary quality <sprite name=\"Quality\"> item.",
+
+        "QUALITY_SCRAPPER_NAME": "Scrap Scrapper",
+        "QUALITY_SCRAPPER_CONTEXT": "Scrap Scrap",
+        "QUALITY_SCRAPPER_DESCRIPTION": "Turns any quality <sprite name=\"Quality\"> scrap into its common counterpart.",
+        "QUALITY_SCRAPPER_POPUP_TEXT": "<b>Scrap Scrapper V2-5</b>\n<i><style=cSub><size=75%>Turn any scrap into common scrap!</size></style></i>",
     }
 }

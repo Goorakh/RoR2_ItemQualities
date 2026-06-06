@@ -90,6 +90,7 @@ namespace ItemQualities
             populateTypeFields(typeof(Materials), _contentPack.materials, fieldName => "mat" + fieldName);
 
             populateTypeFields(typeof(SpawnCards), _contentPack.spawnCards);
+            SpawnCards.AllSpawnCards = new ReadOnlyCollection<SpawnCard>(_contentPack.spawnCards.ToArray());
 
             populateTypeFields(typeof(Sprites), _contentPack.sprites);
 
@@ -950,6 +951,8 @@ namespace ItemQualities
 
             public static GameObject RecyclableObjectAttachment;
 
+            public static GameObject QualityScrapper;
+
             public static GameObject QualityMinorConstructOnKillAttachment;
 
             public static GameObject VagrantNovaItemQualityAttachment;
@@ -966,11 +969,15 @@ namespace ItemQualities
         {
             public static Material HealCritBoost;
 
+            public static Material QualityScrapper;
+
             public static Material SprintWispQualityFire;
         }
 
         public static class SpawnCards
         {
+            public static ReadOnlyCollection<SpawnCard> AllSpawnCards { get; internal set; } = Empty<SpawnCard>.ReadOnlyCollection;
+
             [TargetAssetName("iscQualityEquipmentBarrel")]
             public static InteractableSpawnCard QualityEquipmentBarrel;
 
