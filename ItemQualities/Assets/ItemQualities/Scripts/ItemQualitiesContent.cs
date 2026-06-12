@@ -720,6 +720,8 @@ namespace ItemQualities
             public static ItemQualityGroup SprintWisp;
 
             public static ItemQualityGroup FireballsOnHit;
+
+            public static ItemQualityGroup BleedOnHitAndExplode;
         }
 
         public static class Items
