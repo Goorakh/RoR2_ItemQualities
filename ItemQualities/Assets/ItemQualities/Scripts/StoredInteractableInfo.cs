@@ -1,8 +1,9 @@
-﻿using System;
+﻿using ItemQualities.Serialization;
+using System;
 
 namespace ItemQualities
 {
-    public struct StoredInteractableInfo : IEquatable<StoredInteractableInfo>
+    public struct StoredInteractableInfo : IEquatable<StoredInteractableInfo>, IBinarySerializable
     {
         public static readonly StoredInteractableInfo None = new StoredInteractableInfo { InteractableIndex = -1 };
 
@@ -12,7 +13,7 @@ namespace ItemQualities
 
         public override readonly bool Equals(object obj)
         {
-            return obj is StoredInteractableInfo info && this.Equals(info);
+            return obj is StoredInteractableInfo info && Equals(info);
         }
 
         readonly bool IEquatable<StoredInteractableInfo>.Equals(StoredInteractableInfo other)
@@ -34,6 +35,33 @@ namespace ItemQualities
         public override readonly string ToString()
         {
             return $"{InteractableCatalog.GetInteractableDef(InteractableIndex)?.Name ?? "None"} (T{UpgradeValue + 1})";
+        }
+
+        readonly void IBinarySerializable.Serialize(WriterContext context)
+        {
+            Serialize(context);
+        }
+
+        internal readonly void Serialize(WriterContext context)
+        {
+            context.WritePackedIndex32(InteractableIndex);
+            bool hasInteractableIndex = InteractableIndex != -1;
+            if (hasInteractableIndex)
+            {
+                context.WritePackedUInt32((uint)UpgradeValue);
+            }
+        }
+
+        void IBinarySerializable.Deserialize(ReaderContext context)
+        {
+            Deserialize(context);
+        }
+
+        internal void Deserialize(ReaderContext context)
+        {
+            InteractableIndex = context.ReadPackedIndex32();
+            bool hasInteractableIndex = InteractableIndex != -1;
+            UpgradeValue = hasInteractableIndex ? (int)context.ReadPackedUInt32() : 0;
         }
 
         public static bool operator ==(in StoredInteractableInfo left, in StoredInteractableInfo right)
