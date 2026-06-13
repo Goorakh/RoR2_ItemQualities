@@ -349,17 +349,17 @@
         "ITEM_CROWBAR_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Every 10th high damage hit deals bonus damage.",
         "ITEM_CROWBAR_LEGENDARY_DESC": "{0}\nEvery 10th hit that deals <style=cIsDamage>more than 400% damage</style> deals an additional <sprite name=\"Quality\"> <style=cIsDamage>400% <style=cStack>(+400% per stack)</style></style> TOTAL damage.",
 
-        "ITEM_BLEEDONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed and hemorrhage damage.",
-        "ITEM_BLEEDONHIT_UNCOMMON_DESC": "{0}\nIncrease <style=cIsDamage>bleed</style> and <style=cIsDamage>hemorrhage damage</style> from all sources by <sprite name=\"Quality\"> <style=cIsDamage>10% <style=cStack>(+10% per stack)</style></style>.",
+        "ITEM_BLEEDONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
+        "ITEM_BLEEDONHIT_UNCOMMON_DESC": "{0}\nIncrease all <style=cIsDamage>bleed</style> damage by <sprite name=\"Quality\"> <style=cIsDamage>10% <style=cStack>(+10% per stack)</style></style>.",
 
-        "ITEM_BLEEDONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed and hemorrhage damage.",
-        "ITEM_BLEEDONHIT_RARE_DESC": "{0}\nIncrease <style=cIsDamage>bleed</style> and <style=cIsDamage>hemorrhage damage</style> from all sources by <sprite name=\"Quality\"> <style=cIsDamage>20% <style=cStack>(+20% per stack)</style></style>.",
+        "ITEM_BLEEDONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
+        "ITEM_BLEEDONHIT_RARE_DESC": "{0}\nIncrease all <style=cIsDamage>bleed</style> damage by <sprite name=\"Quality\"> <style=cIsDamage>20% <style=cStack>(+20% per stack)</style></style>.",
 
-        "ITEM_BLEEDONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed and hemorrhage damage.",
-        "ITEM_BLEEDONHIT_EPIC_DESC": "{0}\nIncrease <style=cIsDamage>bleed</style> and <style=cIsDamage>hemorrhage damage</style> from all sources by <sprite name=\"Quality\"> <style=cIsDamage>30% <style=cStack>(+30% per stack)</style></style>.",
+        "ITEM_BLEEDONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
+        "ITEM_BLEEDONHIT_EPIC_DESC": "{0}\nIncrease all <style=cIsDamage>bleed</style> damage by <sprite name=\"Quality\"> <style=cIsDamage>30% <style=cStack>(+30% per stack)</style></style>.",
 
-        "ITEM_BLEEDONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed and hemorrhage damage.",
-        "ITEM_BLEEDONHIT_LEGENDARY_DESC": "{0}\nIncrease <style=cIsDamage>bleed</style> and <style=cIsDamage>hemorrhage damage</style> from all sources by <sprite name=\"Quality\"> <style=cIsDamage>50% <style=cStack>(+50% per stack)</style></style>.",
+        "ITEM_BLEEDONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
+        "ITEM_BLEEDONHIT_LEGENDARY_DESC": "{0}\nIncrease all <style=cIsDamage>bleed</style> damage by <sprite name=\"Quality\"> <style=cIsDamage>50% <style=cStack>(+50% per stack)</style></style>.",
 
         "ITEM_CLOVER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Luck is on your side.",
         "ITEM_CLOVER_UNCOMMON_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
