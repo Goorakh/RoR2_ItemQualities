@@ -5,6 +5,9 @@
     * Unstable Transmitter
     * Medkit
 
+* Tri-Tip Dagger:
+    * Increases hemorrhage damage as well.
+
 * Scrap:
     * Quality Scrap can now be traded for regular Scrap with a special scrapper interactable on the moon.
     * Quality Scrap no longer automatically turns into regular Scrap when entering the moon.
