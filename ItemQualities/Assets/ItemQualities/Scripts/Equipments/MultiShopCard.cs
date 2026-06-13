@@ -8,6 +8,7 @@ using RoR2.Audio;
 using RoR2.DirectionalSearch;
 using RoR2.UI;
 using System;
+using System.Linq;
 using UnityEngine;
 
 namespace ItemQualities.Equipments
@@ -17,7 +18,6 @@ namespace ItemQualities.Equipments
         static readonly InteractableSearch _sharedInteractableSearch = new InteractableSearch
         {
             requireCanCopy = true,
-            requireSpawnCard = true,
             forbidDuplicated = true,
         };
 
@@ -52,8 +52,10 @@ namespace ItemQualities.Equipments
             {
                 Xoroshiro128Plus cardInteractablesRng = new Xoroshiro128Plus(sceneDirector.rng.nextUlong);
 
-                foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
+                for (int i = 0; i < CharacterMaster.readOnlyInstancesList.Count; i++)
                 {
+                    CharacterMaster master = CharacterMaster.readOnlyInstancesList[i];
+
                     if (!master.inventory.GetEquipmentDisabled() &&
                         master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats) &&
                         masterExtraStats.CardStoredInteractableInfo.InteractableIndex != -1)
@@ -108,7 +110,7 @@ namespace ItemQualities.Equipments
 
                             int spawnCount = RollUtil.GetOverflowRoll(spawnChance, cardInteractablesRng);
 
-                            for (int i = 0; i < spawnCount; i++)
+                            for (int j = 0; j < spawnCount; j++)
                             {
                                 DirectorSpawnRequest directorSpawnRequest = new DirectorSpawnRequest(interactableDef.SpawnCard, new DirectorPlacementRule
                                 {

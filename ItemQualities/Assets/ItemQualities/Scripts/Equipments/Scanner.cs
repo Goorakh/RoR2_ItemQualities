@@ -90,6 +90,7 @@ namespace ItemQualities.Equipments
             iscChest2Stealthed.slightlyRandomizeOrientation = true;
 
             args.ContentPack.spawnCards.Add(iscChest2Stealthed);
+            args.ContentPack.networkedObjectPrefabs.Add(chest2CloakedPrefab);
         }
 
         [SystemInitializer]

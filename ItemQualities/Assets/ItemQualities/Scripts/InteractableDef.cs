@@ -1,14 +1,13 @@
 ﻿using RoR2;
-using System;
 using UnityEngine;
 
 namespace ItemQualities
 {
     internal sealed class InteractableDef
     {
-        public GameObject Prefab;
+        public readonly GameObject Prefab;
 
-        public InteractableSpawnCard SpawnCard;
+        public readonly InteractableSpawnCard SpawnCard;
 
         public bool CanCopy = true;
 
@@ -28,12 +27,11 @@ namespace ItemQualities
 
         public int InteractableIndex => PrefabInfoProviderComponent ? PrefabInfoProviderComponent.CatalogIndex : -1;
 
-        public InteractableDef(GameObject prefab)
+        public InteractableDef(InteractableSpawnCard spawnCard)
         {
-            if (!prefab)
-                throw new ArgumentNullException(nameof(prefab));
-            
-            Prefab = prefab;
+            SpawnCard = spawnCard;
+
+            Prefab = SpawnCard.prefab;
             Name = Prefab.name;
 
             PrefabInfoProviderComponent = Prefab.GetComponent<InteractableInfoProvider>();

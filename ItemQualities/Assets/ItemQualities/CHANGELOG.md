@@ -23,6 +23,9 @@
 * Bottled Chaos:
     * Fixed no additional equipment effects triggering when having both a quality Bottled Chaos and a regular one.
 
+* Executive Card:
+    * Fixed the small chests on Gilded Coast not being targetable.
+
 * Jade Elephant:
     * Fixed barrier gain being applied when using the non-quality version of the equipment.
 
