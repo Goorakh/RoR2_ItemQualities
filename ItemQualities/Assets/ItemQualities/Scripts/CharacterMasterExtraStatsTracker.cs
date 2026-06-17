@@ -1,4 +1,5 @@
 ﻿using HG;
+using ItemQualities.SaveData;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
@@ -225,6 +226,15 @@ namespace ItemQualities
             return false;
         }
 
+        public void GetItemUpgradeIndices(List<ItemIndex> dest)
+        {
+            ListUtils.EnsureCapacity(dest, dest.Count + _upgradeItemIndices.Count);
+            foreach (ItemIndex itemIndex in _upgradeItemIndices)
+            {
+                dest.Add(itemIndex);
+            }
+        }
+
         [Server]
         public ItemIndex TryPermanentUpgradeRandomItemToQualityTier(Xoroshiro128Plus rng, QualityTier targetQualityTier)
         {
@@ -431,6 +441,24 @@ namespace ItemQualities
             if (_cachedBody)
             {
                 _cachedBody.MarkAllStatsDirty();
+            }
+        }
+
+        [Server]
+        internal void InitializeFromSaveServer(MasterSaveData masterSaveData)
+        {
+            SteakBonus = masterSaveData.SteakBonus;
+            SpeedOnPickupBonus = masterSaveData.SpeedOnPickupBonus;
+            BossDamageBonusTicks = masterSaveData.BossDamageBonusTicks;
+            CardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+
+            _upgradeItemIndices.Clear();
+            foreach (ItemIndex upgradeItemIndex in masterSaveData.UpgradeItemIndices)
+            {
+                if (ItemCatalog.IsIndexValid(upgradeItemIndex))
+                {
+                    _upgradeItemIndices.Add((uint)upgradeItemIndex);
+                }
             }
         }
 

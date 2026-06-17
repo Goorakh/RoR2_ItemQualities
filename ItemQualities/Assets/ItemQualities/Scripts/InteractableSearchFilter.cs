@@ -6,17 +6,12 @@ namespace ItemQualities
     {
         public bool requireCanCopy;
 
-        public bool requireSpawnCard;
-
         public bool forbidDuplicated;
 
         public readonly bool PassesFilter(InteractableInfoProvider interactable)
         {
             InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(interactable.CatalogIndex);
             if (interactableDef == null)
-                return false;
-
-            if (requireSpawnCard && !interactableDef.SpawnCard)
                 return false;
 
             if (requireCanCopy && !interactableDef.CanCopy)

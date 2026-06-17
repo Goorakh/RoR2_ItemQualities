@@ -1,30 +1,31 @@
 ﻿using HG;
+using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 
 namespace ItemQualities
 {
     public sealed class TreebotUnlockableQualityController : MonoBehaviour
     {
-        private static int _treebotUnlockInteractableIndex = -1;
-
-        [SystemInitializer(typeof(InteractableCatalog), typeof(MasterCatalog), typeof(BodyCatalog))]
+        [SystemInitializer]
         private static void Init()
         {
-            _treebotUnlockInteractableIndex = InteractableCatalog.FindInteractableIndex("TreebotUnlockInteractable");
-            if (_treebotUnlockInteractableIndex == -1)
+            AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Treebot.TreebotUnlockInteractable_prefab).OnSuccess(treebotUnlockInteractablePrefab =>
             {
-                Log.Error("Failed to find treebot unlockable interactabel index");
-            }
+                treebotUnlockInteractablePrefab.EnsureComponent<TreebotUnlockableQualityController>();
+            });
 
-            InteractableInfoProvider.OnCatalogedInteractableStartGlobal += onCatalogedInteractableStartGlobal;
+            On.RoR2.PurchaseInteraction.Start += PurchaseInteraction_Start;
         }
 
-        private static void onCatalogedInteractableStartGlobal(InteractableInfoProvider interactableInfo)
+        private static void PurchaseInteraction_Start(On.RoR2.PurchaseInteraction.orig_Start orig, PurchaseInteraction self)
         {
-            if (interactableInfo.CatalogIndex == _treebotUnlockInteractableIndex)
+            orig(self);
+            if (self.name.StartsWith("TreebotUnlockInteractable"))
             {
-                interactableInfo.gameObject.EnsureComponent<TreebotUnlockableQualityController>();
+                self.gameObject.EnsureComponent<TreebotUnlockableQualityController>();
             }
         }
 
