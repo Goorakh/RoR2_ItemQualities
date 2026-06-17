@@ -56,23 +56,15 @@ namespace ItemQualities.Equipments
                 {
                     CharacterMaster master = CharacterMaster.readOnlyInstancesList[i];
 
-                    Log.Debug($"Attempting to spawn interactables for master: {Util.GetBestMasterName(master)}");
-
                     if (master.inventory.GetEquipmentDisabled())
                         continue;
-
-                    Log.Debug($"{Util.GetBestMasterName(master)} Does not have equipment disabled");
 
                     if (!master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
                         continue;
 
-                    Log.Debug($"{Util.GetBestMasterName(master)} Has CharacterMasterExtraStatsTracker");
-
                     StoredInteractableInfo storedInteractableInfo = masterExtraStats.CardStoredInteractableInfo;
                     if (storedInteractableInfo.InteractableIndex == -1)
                         continue;
-
-                    Log.Debug($"{Util.GetBestMasterName(master)} Has stored interactable ({storedInteractableInfo})");
 
                     masterExtraStats.CardStoredInteractableInfo = StoredInteractableInfo.None;
 
