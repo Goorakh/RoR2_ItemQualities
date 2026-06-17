@@ -5,9 +5,6 @@
     * Unstable Transmitter
     * Medkit
 
-* Tri-Tip Dagger:
-    * Increases hemorrhage damage as well.
-
 * Scrap:
     * Quality Scrap can now be traded for regular Scrap with a special scrapper interactable on the moon.
     * Quality Scrap no longer automatically turns into regular Scrap when entering the moon.
@@ -24,6 +21,9 @@
         * Cauldrons now give their item in the quality of the highest input scrap. Before now, they gave the average of all input scrap, which just tended to punish you for having a high and a low quality regenerating scrap by reducing the average quality of the resulting item.
 
 * Added ProperSave support.
+
+* Tri-Tip Dagger:
+    * Fixed bleed damage increase not applying to Hemorrhage.
 
 * Bottled Chaos:
     * Fixed no additional equipment effects triggering when having both a quality Bottled Chaos and a regular one.
