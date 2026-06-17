@@ -2,8 +2,8 @@
 {
     internal interface IBinarySerializable
     {
-        void Serialize(WriterContext context);
+        void Serialize(SerializerContext context);
 
-        void Deserialize(ReaderContext context);
+        void Deserialize(DeserializerContext context);
     }
 }

@@ -6,7 +6,16 @@ namespace ItemQualities.Serialization
 {
     internal static class SerializationExtensions
     {
-        public static void Write(this WriterContext context, in NetworkUserId networkUserId)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static T Read<T>(this DeserializerContext context)
+            where T : IBinarySerializable, new()
+        {
+            T value = new T();
+            value.Deserialize(context);
+            return value;
+        }
+
+        public static void Write(this SerializerContext context, in NetworkUserId networkUserId)
         {
             BinaryWriter writer = context.Writer;
 
@@ -24,7 +33,7 @@ namespace ItemQualities.Serialization
             writer.Write(networkUserId.subId);
         }
 
-        public static NetworkUserId ReadNetworkUserId(this ReaderContext context)
+        public static NetworkUserId ReadNetworkUserId(this DeserializerContext context)
         {
             BinaryReader reader = context.Reader;
 
@@ -47,12 +56,41 @@ namespace ItemQualities.Serialization
             return networkUserId;
         }
 
+        public static void WriteArray<T>(this SerializerContext context, T[] array)
+            where T : IBinarySerializable
+        {
+            if (array == null)
+            {
+                context.WritePackedUInt32(0);
+                return;
+            }
+
+            context.WritePackedUInt32((uint)array.Length);
+            foreach (T item in array)
+            {
+                item.Serialize(context);
+            }
+        }
+
+        public static T[] ReadArray<T>(this DeserializerContext context)
+            where T : IBinarySerializable, new()
+        {
+            uint length = context.ReadPackedUInt32();
+            T[] array = new T[length];
+            for (int i = 0; i < length; i++)
+            {
+                array[i] = context.Read<T>();
+            }
+
+            return array;
+        }
+
         #region Packed Int32
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WritePackedIndex32(this WriterContext context, int value) => context.Writer.WritePackedUInt32((uint)(value + 1));
+        public static void WritePackedIndex32(this SerializerContext context, int value) => context.Writer.WritePackedUInt32((uint)(value + 1));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static int ReadPackedIndex32(this ReaderContext context) => (int)context.Reader.ReadPackedUInt32() - 1;
+        public static int ReadPackedIndex32(this DeserializerContext context) => (int)context.Reader.ReadPackedUInt32() - 1;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void WritePackedIndex32(this BinaryWriter writer, int value) => writer.WritePackedUInt32((uint)(value + 1));
@@ -61,10 +99,10 @@ namespace ItemQualities.Serialization
         public static int ReadPackedIndex32(this BinaryReader reader) => (int)reader.ReadPackedUInt32() - 1;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WritePackedUInt32(this WriterContext context, uint value) => context.Writer.WritePackedUInt32(value);
+        public static void WritePackedUInt32(this SerializerContext context, uint value) => context.Writer.WritePackedUInt32(value);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static uint ReadPackedUInt32(this ReaderContext context) => context.Reader.ReadPackedUInt32();
+        public static uint ReadPackedUInt32(this DeserializerContext context) => context.Reader.ReadPackedUInt32();
 
         /// <summary>
         /// <see href="https://sqlite.org/src4/doc/trunk/www/varint.wiki"/>
@@ -153,10 +191,10 @@ namespace ItemQualities.Serialization
 
         #region Packed Int64
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static void WritePackedUInt64(this WriterContext context, ulong value) => context.Writer.WritePackedUInt64(value);
+        public static void WritePackedUInt64(this SerializerContext context, ulong value) => context.Writer.WritePackedUInt64(value);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static ulong ReadPackedUInt64(this ReaderContext context) => context.Reader.ReadPackedUInt64();
+        public static ulong ReadPackedUInt64(this DeserializerContext context) => context.Reader.ReadPackedUInt64();
 
         /// <summary>
         /// <see href="https://sqlite.org/src4/doc/trunk/www/varint.wiki"/>

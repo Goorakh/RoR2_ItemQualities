@@ -1,5 +1,6 @@
 ﻿using HG;
 using ItemQualities.Serialization;
+using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,7 +9,7 @@ namespace ItemQualities.SaveData
 {
     internal sealed class MasterSaveData : IBinarySerializable
     {
-        public MasterIdentifier Identifier { get; } = new MasterIdentifier();
+        public MasterIdentifier Identifier { get; }
 
         public float SteakBonus { get; private set; }
 
@@ -24,10 +25,25 @@ namespace ItemQualities.SaveData
 
         public MasterSaveData()
         {
+            Identifier = new MasterIdentifier();
             UpgradeItemIndices = _upgradeItemIndices.AsReadOnly();
         }
 
-        public void Serialize(WriterContext context)
+        public MasterSaveData(CharacterMaster master)
+        {
+            Identifier = MasterIdentifier.FromMaster(master);
+
+            if (master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+            {
+                SteakBonus = masterExtraStats.SteakBonus;
+                SpeedOnPickupBonus = masterExtraStats.SpeedOnPickupBonus;
+                BossDamageBonusTicks = masterExtraStats.BossDamageBonusTicks;
+                _cardStoredInteractableInfo = masterExtraStats.CardStoredInteractableInfo;
+                masterExtraStats.GetItemUpgradeIndices(_upgradeItemIndices);
+            }
+        }
+
+        public void Serialize(SerializerContext context)
         {
             Identifier.Serialize(context);
             context.Writer.Write(SteakBonus);
@@ -42,7 +58,7 @@ namespace ItemQualities.SaveData
             }
         }
 
-        public void Deserialize(ReaderContext context)
+        public void Deserialize(DeserializerContext context)
         {
             Identifier.Deserialize(context);
             SteakBonus = context.Reader.ReadSingle();

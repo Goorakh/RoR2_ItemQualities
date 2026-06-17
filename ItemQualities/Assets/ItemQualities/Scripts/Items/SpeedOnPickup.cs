@@ -209,12 +209,12 @@ namespace ItemQualities.Items
         [SystemInitializer]
         static void Init()
         {
-            SceneDirector.onPostPopulateSceneServer += onPostPopulateSceneServer;
+            SpawnUtils.OnSceneReadyForSpawnsServer += onSceneReadyForSpawnsServer;
 
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void onPostPopulateSceneServer(SceneDirector sceneDirector)
+        static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
         {
             if (!_iscSpeedOnPickupBarrel)
                 return;

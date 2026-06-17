@@ -43,10 +43,10 @@ namespace ItemQualities.Equipments
 
             IL.RoR2.SummonMasterBehavior.OnEquipmentSpentOnPurchase += SummonMasterBehavior_OnEquipmentSpentOnPurchase;
 
-            SceneDirector.onPostPopulateSceneServer += onPostPopulateSceneServer;
+            SpawnUtils.OnSceneReadyForSpawnsServer += onSceneReadyForSpawnsServer;
         }
 
-        static void onPostPopulateSceneServer(SceneDirector sceneDirector)
+        static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
         {
             if (SceneInfo.instance.countsAsStage || SceneInfo.instance.sceneDef.allowItemsToSpawnObjects)
             {
@@ -56,109 +56,120 @@ namespace ItemQualities.Equipments
                 {
                     CharacterMaster master = CharacterMaster.readOnlyInstancesList[i];
 
-                    if (!master.inventory.GetEquipmentDisabled() &&
-                        master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats) &&
-                        masterExtraStats.CardStoredInteractableInfo.InteractableIndex != -1)
+                    Log.Debug($"Attempting to spawn interactables for master: {Util.GetBestMasterName(master)}");
+
+                    if (master.inventory.GetEquipmentDisabled())
+                        continue;
+
+                    Log.Debug($"{Util.GetBestMasterName(master)} Does not have equipment disabled");
+
+                    if (!master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+                        continue;
+
+                    Log.Debug($"{Util.GetBestMasterName(master)} Has CharacterMasterExtraStatsTracker");
+
+                    StoredInteractableInfo storedInteractableInfo = masterExtraStats.CardStoredInteractableInfo;
+                    if (storedInteractableInfo.InteractableIndex == -1)
+                        continue;
+
+                    Log.Debug($"{Util.GetBestMasterName(master)} Has stored interactable ({storedInteractableInfo})");
+
+                    masterExtraStats.CardStoredInteractableInfo = StoredInteractableInfo.None;
+
+                    QualityTier cardQualityTier = QualityTier.None;
+
+                    int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
+                    for (uint slot = 0; slot < equipmentSlotCount; slot++)
                     {
-                        StoredInteractableInfo storedInteractableInfo = masterExtraStats.CardStoredInteractableInfo;
-
-                        QualityTier cardQualityTier = QualityTier.None;
-
-                        int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
-                        for (uint slot = 0; slot < equipmentSlotCount; slot++)
+                        int equipmentSetCount = master.inventory.GetEquipmentSetCount(slot);
+                        for (uint set = 0; set < equipmentSetCount; set++)
                         {
-                            int equipmentSetCount = master.inventory.GetEquipmentSetCount(slot);
-                            for (uint set = 0; set < equipmentSetCount; set++)
+                            EquipmentState equipmentState = master.inventory.GetEquipment(slot, set);
+                            EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentState.equipmentIndex);
+                            if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.MultiShopCard.GroupIndex)
                             {
-                                EquipmentState equipmentState = master.inventory.GetEquipment(slot, set);
-                                EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentState.equipmentIndex);
-                                if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.MultiShopCard.GroupIndex)
+                                QualityTier qualityTier = QualityCatalog.GetQualityTier(equipmentState.equipmentIndex);
+                                if (qualityTier > cardQualityTier)
                                 {
-                                    QualityTier qualityTier = QualityCatalog.GetQualityTier(equipmentState.equipmentIndex);
-                                    if (qualityTier > cardQualityTier)
-                                    {
-                                        cardQualityTier = qualityTier;
-                                    }
+                                    cardQualityTier = qualityTier;
                                 }
                             }
                         }
+                    }
 
-                        if (cardQualityTier > QualityTier.None)
+                    if (cardQualityTier > QualityTier.None)
+                    {
+                        InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(storedInteractableInfo.InteractableIndex);
+
+                        float spawnChance;
+                        switch (cardQualityTier)
                         {
-                            InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(storedInteractableInfo.InteractableIndex);
-
-                            float spawnChance;
-                            switch (cardQualityTier)
-                            {
-                                case QualityTier.Uncommon:
-                                    spawnChance = 100f;
-                                    break;
-                                case QualityTier.Rare:
-                                    spawnChance = 130f;
-                                    break;
-                                case QualityTier.Epic:
-                                    spawnChance = 180f;
-                                    break;
-                                case QualityTier.Legendary:
-                                    spawnChance = 220f;
-                                    break;
-                                default:
-                                    spawnChance = 100f;
-                                    Log.Warning($"Quality tier {cardQualityTier} is not implemented");
-                                    break;
-                            }
-
-                            int spawnCount = RollUtil.GetOverflowRoll(spawnChance, cardInteractablesRng);
-
-                            for (int j = 0; j < spawnCount; j++)
-                            {
-                                DirectorSpawnRequest directorSpawnRequest = new DirectorSpawnRequest(interactableDef.SpawnCard, new DirectorPlacementRule
-                                {
-                                    placementMode = DirectorPlacementRule.PlacementMode.Random,
-                                }, cardInteractablesRng);
-
-                                directorSpawnRequest.onSpawnedServer += onSpawnedServer;
-
-                                DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
-
-                                void onSpawnedServer(SpawnCard.SpawnResult spawnResult)
-                                {
-                                    if (!spawnResult.success || !spawnResult.spawnedInstance)
-                                        return;
-                                    
-                                    if (spawnResult.spawnedInstance.TryGetComponent(out PurchaseInteraction purchaseInteraction))
-                                    {
-                                        if (purchaseInteraction.costType == CostTypeIndex.Money && !purchaseInteraction.automaticallyScaleCostWithDifficulty)
-                                        {
-                                            purchaseInteraction.Networkcost = Run.instance.GetDifficultyScaledCost(purchaseInteraction.cost);
-                                        }
-                                    }
-
-                                    if (spawnResult.spawnedInstance.TryGetComponent(out SummonMasterBehavior summonMasterBehavior))
-                                    {
-                                        summonMasterBehavior.NetworkdroneUpgradeCount = storedInteractableInfo.UpgradeValue;
-                                    }
-
-                                    if (spawnResult.spawnedInstance.TryGetComponent(out InteractableInfoProvider interactableInfo))
-                                    {
-                                        interactableInfo.Duplicated = true;
-                                    }
-
-                                    EffectData effectData = new EffectData
-                                    {
-                                        origin = spawnResult.spawnedInstance.transform.position,
-                                    };
-
-                                    effectData.SetNetworkedObjectReference(spawnResult.spawnedInstance);
-
-                                    EffectManager.SpawnEffect(ItemQualitiesContent.Prefabs.DuplicatedInteractableEffect, effectData, true);
-                                }
-                            }
-
-                            Log.Debug($"Spawned {spawnCount}x {interactableDef} for {Util.GetBestMasterName(master)}");
+                            case QualityTier.Uncommon:
+                                spawnChance = 100f;
+                                break;
+                            case QualityTier.Rare:
+                                spawnChance = 130f;
+                                break;
+                            case QualityTier.Epic:
+                                spawnChance = 180f;
+                                break;
+                            case QualityTier.Legendary:
+                                spawnChance = 220f;
+                                break;
+                            default:
+                                spawnChance = 100f;
+                                Log.Warning($"Quality tier {cardQualityTier} is not implemented");
+                                break;
                         }
 
-                        masterExtraStats.CardStoredInteractableInfo = StoredInteractableInfo.None;
+                        int spawnCount = RollUtil.GetOverflowRoll(spawnChance, cardInteractablesRng);
+
+                        for (int j = 0; j < spawnCount; j++)
+                        {
+                            DirectorSpawnRequest directorSpawnRequest = new DirectorSpawnRequest(interactableDef.SpawnCard, new DirectorPlacementRule
+                            {
+                                placementMode = DirectorPlacementRule.PlacementMode.Random,
+                            }, cardInteractablesRng);
+
+                            directorSpawnRequest.onSpawnedServer += onSpawnedServer;
+
+                            DirectorCore.instance.TrySpawnObject(directorSpawnRequest);
+
+                            void onSpawnedServer(SpawnCard.SpawnResult spawnResult)
+                            {
+                                if (!spawnResult.success || !spawnResult.spawnedInstance)
+                                    return;
+
+                                if (spawnResult.spawnedInstance.TryGetComponent(out PurchaseInteraction purchaseInteraction))
+                                {
+                                    if (purchaseInteraction.costType == CostTypeIndex.Money && !purchaseInteraction.automaticallyScaleCostWithDifficulty)
+                                    {
+                                        purchaseInteraction.Networkcost = Run.instance.GetDifficultyScaledCost(purchaseInteraction.cost);
+                                    }
+                                }
+
+                                if (spawnResult.spawnedInstance.TryGetComponent(out SummonMasterBehavior summonMasterBehavior))
+                                {
+                                    summonMasterBehavior.NetworkdroneUpgradeCount = storedInteractableInfo.UpgradeValue;
+                                }
+
+                                if (spawnResult.spawnedInstance.TryGetComponent(out InteractableInfoProvider interactableInfo))
+                                {
+                                    interactableInfo.Duplicated = true;
+                                }
+
+                                EffectData effectData = new EffectData
+                                {
+                                    origin = spawnResult.spawnedInstance.transform.position,
+                                };
+
+                                effectData.SetNetworkedObjectReference(spawnResult.spawnedInstance);
+
+                                EffectManager.SpawnEffect(ItemQualitiesContent.Prefabs.DuplicatedInteractableEffect, effectData, true);
+                            }
+                        }
+
+                        Log.Debug($"Spawned {spawnCount}x {interactableDef} for {Util.GetBestMasterName(master)}");
                     }
                 }
             }

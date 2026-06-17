@@ -114,10 +114,10 @@ namespace ItemQualities.Equipments
                 }
             }
 
-            SceneDirector.onPostPopulateSceneServer += onPostPopulateSceneServer;
+            SpawnUtils.OnSceneReadyForSpawnsServer += onSceneReadyForSpawnsServer;
         }
 
-        static void onPostPopulateSceneServer(SceneDirector sceneDirector)
+        static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
         {
             if (SceneInfo.instance.countsAsStage || SceneInfo.instance.sceneDef.allowItemsToSpawnObjects)
             {

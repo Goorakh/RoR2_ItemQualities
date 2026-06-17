@@ -37,12 +37,12 @@ namespace ItemQualities
             return $"{InteractableCatalog.GetInteractableDef(InteractableIndex)?.Name ?? "None"} (T{UpgradeValue + 1})";
         }
 
-        readonly void IBinarySerializable.Serialize(WriterContext context)
+        readonly void IBinarySerializable.Serialize(SerializerContext context)
         {
             Serialize(context);
         }
 
-        internal readonly void Serialize(WriterContext context)
+        internal readonly void Serialize(SerializerContext context)
         {
             context.WritePackedIndex32(InteractableIndex);
             bool hasInteractableIndex = InteractableIndex != -1;
@@ -52,12 +52,12 @@ namespace ItemQualities
             }
         }
 
-        void IBinarySerializable.Deserialize(ReaderContext context)
+        void IBinarySerializable.Deserialize(DeserializerContext context)
         {
             Deserialize(context);
         }
 
-        internal void Deserialize(ReaderContext context)
+        internal void Deserialize(DeserializerContext context)
         {
             InteractableIndex = context.ReadPackedIndex32();
             bool hasInteractableIndex = InteractableIndex != -1;

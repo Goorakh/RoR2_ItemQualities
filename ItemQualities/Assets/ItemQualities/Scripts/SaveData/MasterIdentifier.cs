@@ -1,7 +1,6 @@
 ﻿using ItemQualities.Serialization;
 using ProperSave.Data;
 using RoR2;
-using System;
 using System.Linq;
 
 namespace ItemQualities.SaveData
@@ -15,7 +14,7 @@ namespace ItemQualities.SaveData
         public static MasterIdentifier FromMaster(CharacterMaster master)
         {
             UserIDData userID = null;
-            int minionIndex = 0;
+            int minionIndex = -1;
             if (master.playerCharacterMasterController)
             {
                 userID = HeaderUserData.Create(master.playerCharacterMasterController).UserId;
@@ -34,6 +33,11 @@ namespace ItemQualities.SaveData
                 }
             }
 
+            if (userID == null)
+            {
+                return null;
+            }
+
             return new MasterIdentifier
             {
                 UserID = userID,
@@ -43,6 +47,9 @@ namespace ItemQualities.SaveData
 
         public CharacterMaster ResolveMaster()
         {
+            if (UserID == null)
+                return null;
+
             NetworkUserId networkUserId = UserID.Load();
 
             NetworkUser networkUser = NetworkUser.readOnlyInstancesList.FirstOrDefault(n => n.id.Equals(networkUserId));
@@ -71,13 +78,13 @@ namespace ItemQualities.SaveData
             return master;
         }
 
-        public void Serialize(WriterContext context)
+        public void Serialize(SerializerContext context)
         {
             context.Write(UserID.Load());
             context.WritePackedIndex32(MinionIndex);
         }
 
-        public void Deserialize(ReaderContext context)
+        public void Deserialize(DeserializerContext context)
         {
             UserID = UserIDData.Create(context.ReadNetworkUserId());
             MinionIndex = context.ReadPackedIndex32();
