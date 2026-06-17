@@ -13,7 +13,7 @@ namespace ItemQualities
 
         static int[] _recyclableInteractableIndices = Array.Empty<int>();
 
-        [SystemInitializer(typeof(EffectCatalogUtils), typeof(InteractableCatalog), typeof(CustomInteractableHandler))]
+        [SystemInitializer(typeof(EffectCatalogUtils))]
         static void Init()
         {
             _recycleEffectIndex = EffectCatalogUtils.FindEffectIndex("OmniRecycleEffect");
@@ -22,27 +22,30 @@ namespace ItemQualities
                 Log.Warning("Failed to find recycle effect index");
             }
 
-            List<int> recyclableInteractableIndices = new List<int>(InteractableCatalog.InteractableCount);
-            for (int i = 0; i < InteractableCatalog.InteractableCount; i++)
+            InteractableCatalog.Availability.CallWhenAvailable(() =>
             {
-                InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(i);
-                if (interactableDef.Name.Contains("Duplicator", StringComparison.OrdinalIgnoreCase) &&
-                    interactableDef.Prefab.TryGetComponent(out ShopTerminalBehavior shopTerminalBehavior) &&
-                    interactableDef.Prefab.TryGetComponent(out PurchaseInteraction purchaseInteraction) &&
-                    CustomCostTypeIndex.IsQualityItemCostType(purchaseInteraction.costType))
+                List<int> recyclableInteractableIndices = new List<int>(InteractableCatalog.InteractableCount);
+                for (int i = 0; i < InteractableCatalog.InteractableCount; i++)
                 {
-                    recyclableInteractableIndices.Add(i);
-                    Log.Debug($"Including interactable {interactableDef.Name} as recyclable");
+                    InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(i);
+                    if (interactableDef.Name.Contains("Duplicator", StringComparison.OrdinalIgnoreCase) &&
+                        interactableDef.Prefab.TryGetComponent(out ShopTerminalBehavior shopTerminalBehavior) &&
+                        interactableDef.Prefab.TryGetComponent(out PurchaseInteraction purchaseInteraction) &&
+                        CustomCostTypeIndex.IsQualityItemCostType(purchaseInteraction.costType))
+                    {
+                        recyclableInteractableIndices.Add(i);
+                        Log.Debug($"Including interactable {interactableDef.Name} as recyclable");
+                    }
                 }
-            }
 
-            if (recyclableInteractableIndices.Count > 0)
-            {
-                _recyclableInteractableIndices = recyclableInteractableIndices.ToArray();
-                Array.Sort(_recyclableInteractableIndices);
+                if (recyclableInteractableIndices.Count > 0)
+                {
+                    _recyclableInteractableIndices = recyclableInteractableIndices.ToArray();
+                    Array.Sort(_recyclableInteractableIndices);
 
-                InteractableInfoProvider.OnCatalogedInteractableStartGlobal += onCatalogedInteractableStartGlobal;
-            }
+                    InteractableInfoProvider.OnCatalogedInteractableStartGlobal += onCatalogedInteractableStartGlobal;
+                }
+            });
         }
 
         static void onCatalogedInteractableStartGlobal(InteractableInfoProvider interactableInfo)
