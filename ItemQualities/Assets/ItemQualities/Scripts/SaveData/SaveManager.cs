@@ -16,7 +16,7 @@ namespace ItemQualities.SaveData
         /// </summary>
         public const uint SaveFileVersion = 0;
 
-        private static readonly SaveContainerBreadBox _saveContainerBreadBox = new SaveContainerBreadBox();
+        private static SaveContainerBreadBox _saveContainerBreadBox;
         public static SaveContainer LoadedSaveData
         {
             get => ProperSaveCompat.Enabled ? _saveContainerBreadBox.Value : null;
@@ -35,6 +35,8 @@ namespace ItemQualities.SaveData
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
         private static void Init()
         {
+            _saveContainerBreadBox = new SaveContainerBreadBox();
+
             ProperSave.SaveFile.OnGatherSaveData += onGatherSaveData;
 
             ProperSave.Loading.OnLoadingStarted += onLoadingStarted;
