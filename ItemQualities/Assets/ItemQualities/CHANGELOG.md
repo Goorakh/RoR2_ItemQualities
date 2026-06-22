@@ -22,8 +22,8 @@
 
 * Added ProperSave support.
 
-* Tri-Tip Dagger:
-    * Fixed bleed damage increase not applying to Hemorrhage.
+* Disposable Missile Launcher:
+    * Fixed missile increase not counting common Dml.
 
 * Bottled Chaos:
     * Fixed no additional equipment effects triggering when having both a quality Bottled Chaos and a regular one.

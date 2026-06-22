@@ -16,7 +16,7 @@ namespace ItemQualities.Items
         {
             try
             {
-                if (inflictDotInfo.dotIndex == DotController.DotIndex.Bleed || inflictDotInfo.dotIndex == DotController.DotIndex.SuperBleed)
+                if (inflictDotInfo.dotIndex == DotController.DotIndex.Bleed)
                 {
                     CharacterBody attackerBody = inflictDotInfo.attackerObject ? inflictDotInfo.attackerObject.GetComponent<CharacterBody>() : null;
                     Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
