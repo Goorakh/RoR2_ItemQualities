@@ -40,6 +40,8 @@
 * Eccentric Vase:
     * Fixed orb teleport not working when at less than 60fps.
 
+* Fixed Artifact of Sacrifice not being able to drop quality equipments.
+
 ## 0.7.6 Changes:
 
 * Symbiotic Scorpion

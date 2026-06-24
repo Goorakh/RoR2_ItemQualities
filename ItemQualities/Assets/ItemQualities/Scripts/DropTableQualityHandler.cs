@@ -81,9 +81,12 @@ namespace ItemQualities
         static bool pickupCheckNotAIBlacklist(PickupIndex pickupIndex)
         {
             PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
-            ItemDef itemDef = ItemCatalog.GetItemDef(pickupDef != null ? pickupDef.itemIndex : ItemIndex.None);
 
-            return itemDef && itemDef.DoesNotContainTag(ItemTag.AIBlacklist);
+            ItemDef itemDef = ItemCatalog.GetItemDef(pickupDef != null ? pickupDef.itemIndex : ItemIndex.None);
+            if (itemDef && itemDef.ContainsTag(ItemTag.AIBlacklist))
+                return false;
+
+            return true;
         }
 
         static QualityTier rollQuality(Xoroshiro128Plus rng)
@@ -305,23 +308,23 @@ namespace ItemQualities
             bool pickupPassesFilter(PickupIndex pickupIndex)
             {
                 PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
+
                 ItemDef itemDef = ItemCatalog.GetItemDef(pickupDef != null ? pickupDef.itemIndex : ItemIndex.None);
-
-                if (requiredItemTags.Length > 0 || bannedItemTags.Length > 0)
+                if (itemDef)
                 {
-                    if (!itemDef)
-                        return false;
-
-                    foreach (ItemTag requiredItemTag in requiredItemTags)
+                    if (requiredItemTags.Length > 0 || bannedItemTags.Length > 0)
                     {
-                        if (!itemDef.ContainsTag(requiredItemTag))
-                            return false;
-                    }
+                        foreach (ItemTag requiredItemTag in requiredItemTags)
+                        {
+                            if (!itemDef.ContainsTag(requiredItemTag))
+                                return false;
+                        }
 
-                    foreach (ItemTag bannedItemTag in bannedItemTags)
-                    {
-                        if (itemDef.ContainsTag(bannedItemTag))
-                            return false;
+                        foreach (ItemTag bannedItemTag in bannedItemTags)
+                        {
+                            if (itemDef.ContainsTag(bannedItemTag))
+                                return false;
+                        }
                     }
                 }
 
