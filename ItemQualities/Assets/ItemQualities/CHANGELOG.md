@@ -5,9 +5,6 @@
     * Unstable Transmitter
     * Medkit
 
-* Tri-Tip Dagger:
-    * Increases hemorrhage damage as well.
-
 * Scrap:
     * Quality Scrap can now be traded for regular Scrap with a special scrapper interactable on the moon.
     * Quality Scrap no longer automatically turns into regular Scrap when entering the moon.
@@ -25,6 +22,9 @@
 
 * Added ProperSave support.
 
+* Disposable Missile Launcher:
+    * Fixed missile increase not counting common Dml.
+
 * Bottled Chaos:
     * Fixed no additional equipment effects triggering when having both a quality Bottled Chaos and a regular one.
 
@@ -39,6 +39,8 @@
 
 * Eccentric Vase:
     * Fixed orb teleport not working when at less than 60fps.
+
+* Fixed Artifact of Sacrifice not being able to drop quality equipments.
 
 ## 0.7.6 Changes:
 
