@@ -188,6 +188,12 @@ namespace ItemQualities
                 baseRadius = 0f;
             }
 
+            if (baseRadius <= 0f)
+            {
+                Log.Warning($"Invalid base scale ({baseRadius}) for {Util.GetGameObjectHierarchyName(gameObject)}, aborting indicator scale adjustment");
+                return;
+            }
+
             float scaledRadius = ExplodeOnDeath.GetExplosionRadius(baseRadius, _ownerBody);
 
             float desiredIndicatorScaleMultiplier = scaledRadius / baseRadius;

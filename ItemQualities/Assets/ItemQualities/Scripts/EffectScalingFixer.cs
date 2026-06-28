@@ -49,6 +49,12 @@ namespace ItemQualities
 
             defaultRadius = MathF.Round(defaultRadius, 1);
 
+            if (defaultRadius <= 0f)
+            {
+                Log.Warning($"Default radius must be a positive value! effectPrefab={effectPrefab}, defaultRadius={defaultRadius}");
+                return null;
+            }
+
             Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew
                 <Dictionary<GameObject, Dictionary<int, EffectDef>>, GameObject, Dictionary<int, EffectDef>>(effectPrefab);
 

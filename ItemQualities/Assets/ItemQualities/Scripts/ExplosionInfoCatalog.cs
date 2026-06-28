@@ -24,6 +24,10 @@ namespace ItemQualities
             {
                 explosionInfoDef.Name = explosionInfoIndex.ToString();
             }
+            else if (string.IsNullOrEmpty(explosionInfoDef.Name))
+            {
+                explosionInfoDef.Name = explosionInfoIndex.ToString("D");
+            }
 
             explosionInfoDef.Index = explosionInfoIndex;
             _explosionInfoDefs[(int)explosionInfoIndex] = explosionInfoDef;
@@ -75,7 +79,7 @@ namespace ItemQualities
                 DefaultRangeGetter = () => EntityStates.Engi.Mine.Detonate.blastRadius
             }, ExplosionInfoIndex.EngiMine);
 
-            ExplosionInfoDef.GetDefaultRangeDelegate getEntityStateInstanceFieldGetter(Type entityStateType, string fieldName)
+            static ExplosionInfoDef.GetDefaultRangeDelegate getEntityStateInstanceFieldGetter(Type entityStateType, string fieldName)
             {
                 if (entityStateType is null)
                     throw new ArgumentNullException(nameof(entityStateType));
