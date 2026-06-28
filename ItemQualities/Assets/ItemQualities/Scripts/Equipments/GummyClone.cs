@@ -11,6 +11,7 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
@@ -56,6 +57,34 @@ namespace ItemQualities.Equipments
             IL.RoR2.EquipmentSlot.FireGummyClone += EquipmentSlot_FireGummyClone;
 
             IL.RoR2.Projectile.GummyCloneProjectile.SpawnGummyClone += GummyCloneProjectile_SpawnGummyClone;
+
+            On.RoR2.CharacterMaster.SetUpGummyClone += CharacterMaster_SetUpGummyClone;
+        }
+
+        private static void CharacterMaster_SetUpGummyClone(On.RoR2.CharacterMaster.orig_SetUpGummyClone orig, CharacterMaster self)
+        {
+            try
+            {
+                // Check if this is a quality goobo, just to be safe
+                if (NetworkServer.active &&
+                    self &&
+                    self.inventory &&
+                    self.inventory.GetItemCountEffective(DLC1Content.Items.GummyCloneIdentifier) > 0 &&
+                    self.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier).TotalQualityCount > 0)
+                {
+                    // If this master has already died, let the component be re-added
+                    if (self.TryGetComponent(out MasterSuicideOnTimer masterSuicideOnTimer) && masterSuicideOnTimer.hasDied)
+                    {
+                        GameObject.DestroyImmediate(masterSuicideOnTimer);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error_NoCallerPrefix(e.ToString());
+            }
+
+            orig(self);
         }
 
         private static void EquipmentSlot_FireGummyClone(ILContext il)
