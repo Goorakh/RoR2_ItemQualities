@@ -15,11 +15,11 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class GummyClone
+    internal static class GummyClone
     {
-        static readonly GameObject[] _qualityGummyCloneProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityGummyCloneProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
-        static readonly Func<ItemIndex, bool>[] _qualityItemCopyFilters = new Func<ItemIndex, bool>[(int)QualityTier.Count]
+        private static readonly Func<ItemIndex, bool>[] _qualityItemCopyFilters = new Func<ItemIndex, bool>[(int)QualityTier.Count]
         {
             uncommonItemCopyFilter,
             rareItemCopyFilter,
@@ -28,7 +28,7 @@ namespace ItemQualities.Equipments
         };
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> gummyCloneProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_GummyClone.GummyCloneProjectile_prefab);
             gummyCloneProjectileLoad.OnSuccess(gummyCloneProjectilePrefab =>
@@ -51,14 +51,14 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireGummyClone += EquipmentSlot_FireGummyClone;
 
             IL.RoR2.Projectile.GummyCloneProjectile.SpawnGummyClone += GummyCloneProjectile_SpawnGummyClone;
         }
 
-        static void EquipmentSlot_FireGummyClone(ILContext il)
+        private static void EquipmentSlot_FireGummyClone(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -82,7 +82,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void GummyCloneProjectile_SpawnGummyClone(ILContext il)
+        private static void GummyCloneProjectile_SpawnGummyClone(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -192,7 +192,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool uncommonItemCopyFilter(ItemIndex itemIndex)
+        private static bool uncommonItemCopyFilter(ItemIndex itemIndex)
         {
             if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.Uncommon)
                 return false;
@@ -213,7 +213,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool rareItemCopyFilter(ItemIndex itemIndex)
+        private static bool rareItemCopyFilter(ItemIndex itemIndex)
         {
             if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.Rare)
                 return false;
@@ -235,7 +235,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool epicItemCopyFilter(ItemIndex itemIndex)
+        private static bool epicItemCopyFilter(ItemIndex itemIndex)
         {
             if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.Epic)
                 return false;
@@ -258,7 +258,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool legendaryItemCopyFilter(ItemIndex itemIndex)
+        private static bool legendaryItemCopyFilter(ItemIndex itemIndex)
         {
             ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
             if (!itemDef)
