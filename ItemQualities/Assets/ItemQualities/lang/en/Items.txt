@@ -1646,5 +1646,17 @@
 
         "ITEM_FIREBALLSONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increased amount of magma balls and explosion radius.",
         "ITEM_FIREBALLSONHIT_LEGENDARY_DESC": "<style=cIsDamage>10%</style> chance on hit to call forth <sprite name=\"Quality\"> <style=cIsDamage>11 <style=cStack>(+8 per stack)</style> magma balls</style> from an enemy, exploding in a <sprite name=\"Quality\"> <style=cIsDamage>20m radius</style> and dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> damage and <style=cIsDamage>igniting</style> all enemies.",
+        
+        "ITEM_EXTRAEQUIPMENT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
+        "ITEM_EXTRAEQUIPMENT_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityUncommon\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>10% <style=cStack>(+10% per stack)</style></style>.",
+        
+        "ITEM_EXTRAEQUIPMENT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
+        "ITEM_EXTRAEQUIPMENT_RARE_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityRare\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>20% <style=cStack>(+20% per stack)</style></style>.",
+        
+        "ITEM_EXTRAEQUIPMENT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
+        "ITEM_EXTRAEQUIPMENT_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityEpic\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>30% <style=cStack>(+30% per stack)</style></style>.",
+        
+        "ITEM_EXTRAEQUIPMENT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
+        "ITEM_EXTRAEQUIPMENT_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityLegendary\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>40% <style=cStack>(+40% per stack)</style></style>.",
     }
 }
