@@ -172,7 +172,25 @@ namespace ItemQualities.Items
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.ExtraEquipment;
 
+        private static bool IsEquipmentDrone(CharacterMaster master)
+        {
+            return master && master.masterIndex.isValid && (master.masterIndex == MasterCatalog.FindMasterIndex("EquipmentDroneMaster") || master.masterIndex == MasterCatalog.FindMasterIndex("QualityEquipmentDroneMaster"));
+        }
+
+        public int targetBoostEquipmentRechargeCount
+        {
+            get
+            {
+                ref readonly var stacks = ref Stacks;
+                return (stacks.UncommonCount * 1) + // 10%
+                       (stacks.RareCount * 2) +     // 20%
+                       (stacks.EpicCount * 3) +     // 30%
+                       (stacks.LegendaryCount * 5); // 40%
+            }
+        }
+
         private QualityTier _lastEquipmentDroneQualityTier = QualityTier.None;
+        private int _lastEquipmentDroneEquipmentRechargeCount = 0;
         private EquipmentDroneSlot[] _equipmentDrones = Array.Empty<EquipmentDroneSlot>();
 
         private int _equipmentDroneCount;
@@ -191,11 +209,15 @@ namespace ItemQualities.Items
 
             Body.onInventoryChanged += onInventoryChanged;
             onInventoryChanged();
+
+            MasterSummon.onServerMasterSummonGlobal += onServerMasterSummonGlobal;
         }
 
         private void OnDisable()
         {
             Body.onInventoryChanged -= onInventoryChanged;
+
+            MasterSummon.onServerMasterSummonGlobal -= onServerMasterSummonGlobal;
 
             for (int i = 0; i < _equipmentDrones.Length; i++)
             {
@@ -204,6 +226,21 @@ namespace ItemQualities.Items
                 {
                     droneSlot.Clear();
                     droneSlot = null;
+                }
+            }
+
+            MinionOwnership.MinionGroup minionGroup = Body.master ? MinionOwnership.MinionGroup.FindGroup(Body.master.netId) : null;
+            if (minionGroup != null)
+            {
+                for (int i = 0; i < minionGroup.memberCount; i++)
+                {
+                    MinionOwnership minion = minionGroup.members[i];
+                    if (minion &&
+                        minion.TryGetComponent(out CharacterMaster minionMaster) &&
+                        IsEquipmentDrone(minionMaster))
+                    {
+                        minionMaster.inventory.RemoveItemPermanent(RoR2Content.Items.BoostEquipmentRecharge, targetBoostEquipmentRechargeCount);
+                    }
                 }
             }
         }
@@ -316,6 +353,41 @@ namespace ItemQualities.Items
                 }
 
                 _lastEquipmentDroneQualityTier = equipmentDroneQualityTier;
+            }
+
+            int boostEquipmentRechargeCount = targetBoostEquipmentRechargeCount;
+            if (boostEquipmentRechargeCount != _lastEquipmentDroneEquipmentRechargeCount)
+            {
+                MinionOwnership.MinionGroup minionGroup = Body.master ? MinionOwnership.MinionGroup.FindGroup(Body.master.netId) : null;
+                if (minionGroup != null)
+                {
+                    for (int i = 0; i < minionGroup.memberCount; i++)
+                    {
+                        MinionOwnership minion = minionGroup.members[i];
+                        if (minion &&
+                            minion.TryGetComponent(out CharacterMaster minionMaster) &&
+                            IsEquipmentDrone(minionMaster))
+                        {
+                            minionMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostEquipmentRecharge, boostEquipmentRechargeCount - _lastEquipmentDroneEquipmentRechargeCount);
+                        }
+                    }
+                }
+
+                _lastEquipmentDroneEquipmentRechargeCount = boostEquipmentRechargeCount;
+            }
+        }
+
+        private void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
+        {
+            if (ReferenceEquals(Body.master, null) || !ReferenceEquals(summonReport.leaderMasterInstance, Body.master))
+            {
+                return;
+            }
+
+            CharacterMaster summonedMaster = summonReport.summonMasterInstance;
+            if (summonedMaster && IsEquipmentDrone(summonedMaster))
+            {
+                summonedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostEquipmentRecharge, targetBoostEquipmentRechargeCount);
             }
         }
 
