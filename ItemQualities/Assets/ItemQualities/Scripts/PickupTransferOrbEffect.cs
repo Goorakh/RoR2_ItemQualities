@@ -55,9 +55,18 @@ namespace ItemQualities
 
         private EffectComponent effectComponent;
 
+        private Color trailBaseStartColor;
+        private Color trailBaseEndColor;
+
         private void Awake()
         {
             effectComponent = GetComponent<EffectComponent>();
+
+            if (trailToColor)
+            {
+                trailBaseStartColor = trailToColor.startColor;
+                trailBaseEndColor = trailToColor.endColor;
+            }
         }
 
         public void OnEnable()
@@ -82,8 +91,8 @@ namespace ItemQualities
 
             if (trailToColor)
             {
-                trailToColor.startColor *= color;
-                trailToColor.endColor *= color;
+                trailToColor.startColor = trailBaseStartColor * color;
+                trailToColor.endColor = trailBaseEndColor * color;
             }
 
             foreach (ParticleSystem particleSystem in particlesToColor)
