@@ -9,14 +9,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public static class BleedOnHitAndExplode
+    internal static class BleedOnHitAndExplode
     {
-        static EquipmentIndex[] _bleedEquipments = Array.Empty<EquipmentIndex>();
+        private static EquipmentIndex[] _bleedEquipments = Array.Empty<EquipmentIndex>();
 
         [SystemInitializer(typeof(QualityCatalog))]
-        static void Init() 
+        private static void Init() 
         {
-            HashSet<EquipmentIndex> bleedEquipments = new HashSet<EquipmentIndex>(EquipmentCatalog.equipmentCount*(int)QualityTier.Count);
+            HashSet<EquipmentIndex> bleedEquipments = new HashSet<EquipmentIndex>(EquipmentCatalog.equipmentCount);
+
             for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
             {
                 void tryAddEquipment(EquipmentQualityGroup equipmentGroup)
@@ -25,12 +26,12 @@ namespace ItemQualities.Items
                         return;
 
                     EquipmentIndex equipmentIndex = equipmentGroup.GetEquipmentIndex(qualityTier);
-                    Debug.Log(qualityTier);
                     if (equipmentIndex != EquipmentIndex.None)
                     {
                         bleedEquipments.Add(equipmentIndex);
                     }
                 }
+
                 tryAddEquipment(ItemQualitiesContent.EquipmentQualityGroups.Saw);
             }
 
@@ -56,12 +57,12 @@ namespace ItemQualities.Items
                     {
                         ItemQualityCounts bleedOnHitAndExplode = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BleedOnHitAndExplode);
 
-                        float damageMult =  bleedOnHitAndExplode.UncommonCount * 0.03f +
-                                            bleedOnHitAndExplode.RareCount * 0.06f +
-                                            bleedOnHitAndExplode.EpicCount * 0.1f +
-                                            bleedOnHitAndExplode.LegendaryCount * 0.15f;
+                        float damageMult = (bleedOnHitAndExplode.UncommonCount * 0.03f) +
+                                           (bleedOnHitAndExplode.RareCount * 0.06f) +
+                                           (bleedOnHitAndExplode.EpicCount * 0.1f) +
+                                           (bleedOnHitAndExplode.LegendaryCount * 0.15f);
 
-                        inflictDotInfo.damageMultiplier += ((1 + damageMult) * getBleedCount(attackerBody.master));
+                        inflictDotInfo.damageMultiplier += (1 + damageMult) * getBleedCount(attackerBody.master);
                     }
                 }
             }
@@ -76,10 +77,13 @@ namespace ItemQualities.Items
         static void ProcessHitEnemy(On.RoR2.GlobalEventManager.orig_ProcessHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
             orig(self, damageInfo, victim);
+
             if (!damageInfo.attacker)
                 return;
+
             if (!damageInfo.attacker.TryGetComponent(out CharacterBody body) || !body.inventory || !body.master)
                 return;
+
             if (!damageInfo.crit)
                 return;
 
@@ -112,7 +116,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static int getBleedCount(CharacterMaster master)
+        private static int getBleedCount(CharacterMaster master)
         {
             int bleedItemCount = 0;
 
