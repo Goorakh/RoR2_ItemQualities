@@ -210,7 +210,7 @@ MonoBehaviour:
   spawnEffect: {fileID: 0}
   lifetime: 10
   lifetimeExpiredEffect: {fileID: 5928295918446973005, guid: 7b5dffff4e25d1a4393a1d5d92c60cc3, type: 3}
-  desiredForwardSpeed: 7
+  desiredForwardSpeed: 4
   updateAfterFiring: 0
   enableVelocityOverLifetime: 1
   velocityOverLifetime:
