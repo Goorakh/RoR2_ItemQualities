@@ -53,17 +53,17 @@
         "EQUIPMENT_CLEANSE_LEGENDARY_PICKUP" : "Cleanse all negative effects for <sprite name=\"Quality\"> 6 seconds.",
         "EQUIPMENT_CLEANSE_LEGENDARY_DESC" : "<style=cIsUtility>Cleanse</style> all negative effects for <sprite name=\"Quality\"> <style=cIsUtility>6 seconds</style>. Includes debuffs, damage over time, stuns, freezes, and nearby projectiles.",
 
-        "EQUIPMENT_VENDINGMACHINE_UNCOMMON_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 15 seconds for free.",
-        "EQUIPMENT_VENDINGMACHINE_UNCOMMON_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>15 seconds for free</style>.",
+        "EQUIPMENT_VENDINGMACHINE_UNCOMMON_PICKUP" : "{0}\n<sprite name=\"Quality\"> Vending Machines contain more drinks and automatically activate every 15 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_UNCOMMON_DESC" : "{0}\nVending Machines contain <sprite name=\"Quality\"> <style=cIsUtility>4</style> additional drinks and automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>15 seconds for free</style>.",
 
-        "EQUIPMENT_VENDINGMACHINE_RARE_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 8 seconds for free.",
-        "EQUIPMENT_VENDINGMACHINE_RARE_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>8 seconds for free</style>.",
+        "EQUIPMENT_VENDINGMACHINE_RARE_PICKUP" : "{0}\n<sprite name=\"Quality\"> Vending Machines contain more drinks and automatically activate every 8 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_RARE_DESC" : "{0}\nVending Machines contain <sprite name=\"Quality\"> <style=cIsUtility>8</style> additional drinks and automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>8 seconds for free</style>.",
 
-        "EQUIPMENT_VENDINGMACHINE_EPIC_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every 4 seconds for free.",
-        "EQUIPMENT_VENDINGMACHINE_EPIC_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>4 seconds for free</style>.",
+        "EQUIPMENT_VENDINGMACHINE_EPIC_PICKUP" : "{0}\n<sprite name=\"Quality\"> Vending Machines contain more drinks and automatically activate every 4 seconds for free.",
+        "EQUIPMENT_VENDINGMACHINE_EPIC_DESC" : "{0}\nVending Machines contain <sprite name=\"Quality\"> <style=cIsUtility>12</style> additional drinks and automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>4 seconds for free</style>.",
 
-        "EQUIPMENT_VENDINGMACHINE_LEGENDARY_PICKUP" : "{0}\n<sprite name=\"Quality\"> Soda machines automatically activate every second for free.",
-        "EQUIPMENT_VENDINGMACHINE_LEGENDARY_DESC" : "{0}\nVending Machines automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>second for free</style>.",
+        "EQUIPMENT_VENDINGMACHINE_LEGENDARY_PICKUP" : "{0}\n<sprite name=\"Quality\"> Vending Machines contain more drinks and automatically activate every second for free.",
+        "EQUIPMENT_VENDINGMACHINE_LEGENDARY_DESC" : "{0}\nVending Machines contain <sprite name=\"Quality\"> <style=cIsUtility>16</style> additional drinks and automatically activate every <sprite name=\"Quality\"> <style=cIsUtility>second for free</style>.",
         
         "EQUIPMENT_COMMANDMISSILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
         "EQUIPMENT_COMMANDMISSILE_UNCOMMON_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>2</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
@@ -77,17 +77,17 @@
         "EQUIPMENT_COMMANDMISSILE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Fire additional missiles for every missile related item you have.",
         "EQUIPMENT_COMMANDMISSILE_LEGENDARY_DESC": "Fire a swarm of <style=cIsDamage>12</style> missiles, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>12</style> missiles for every missile related <style=cIsUtility>item or equipment</style> in your inventory, that deal <style=cIsDamage>300% damage</style> each.",
         
-        "EQUIPMENT_MULTISHOPCARD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
-        "EQUIPMENT_MULTISHOPCARD_UNCOMMON_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> instance of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to copy it. Creates an instance of the selected interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_UNCOMMON_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>copy</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> instance of the selected <style=cIsUtility>interactable</style> when entering a stage.",
         
-        "EQUIPMENT_MULTISHOPCARD_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
-        "EQUIPMENT_MULTISHOPCARD_RARE_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> (<sprite name=\"Quality\"> <style=cIsUtility>30%</style> chance for <style=cIsUtility>2</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to copy it. Creates an instance of the selected interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_RARE_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>copy</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> (<sprite name=\"Quality\"> <style=cIsUtility>30%</style> chance for <style=cIsUtility>2</style>) instances of the selected <style=cIsUtility>interactable</style> when entering a stage.",
         
-        "EQUIPMENT_MULTISHOPCARD_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates an instance of the stored interactable when entering a stage.",
-        "EQUIPMENT_MULTISHOPCARD_EPIC_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> (<sprite name=\"Quality\"> <style=cIsUtility>80%</style> chance for <style=cIsUtility>2</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to copy it. Creates an instance of the selected interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_EPIC_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>copy</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>1</style> (<sprite name=\"Quality\"> <style=cIsUtility>80%</style> chance for <style=cIsUtility>2</style>) instances of the selected <style=cIsUtility>interactable</style> when entering a stage.",
         
-        "EQUIPMENT_MULTISHOPCARD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to store it. Creates 2 instances of the stored interactable when entering a stage.",
-        "EQUIPMENT_MULTISHOPCARD_LEGENDARY_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>store</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>2</style> (<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance for <style=cIsUtility>3</style>) instances of the stored <style=cIsUtility>interactable</style> when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate on an interactable to copy it. Creates 2 instances of the selected interactable when entering a stage.",
+        "EQUIPMENT_MULTISHOPCARD_LEGENDARY_DESC": "{0}\nActivate on an <style=cIsUtility>interactable</style> to <style=cIsUtility>copy</style> it. Creates <sprite name=\"Quality\"> <style=cIsUtility>2</style> (<sprite name=\"Quality\"> <style=cIsUtility>20%</style> chance for <style=cIsUtility>3</style>) instances of the selected <style=cIsUtility>interactable</style> when entering a stage.",
 
         "EQUIPMENT_DEATHPROJECTILE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Doll lasts longer and has a chance to trigger 'On Elite Kill' effects.",
         "EQUIPMENT_DEATHPROJECTILE_UNCOMMON_DESC": "Throw a cursed doll out that <style=cIsDamage>triggers</style> any <style=cIsDamage>On-Kill</style> effects you have every <style=cIsUtility>1</style> second for <sprite name=\"Quality\"> <style=cIsUtility>9</style> seconds. <sprite name=\"Quality\"> <style=cIsUtility>5%</style> chance to trigger <style=cIsDamage>On-Elite-Kill</style> effects.",
@@ -341,16 +341,16 @@
         "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds.",
 
         "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
-        "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>2000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 75 second cooldown.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>4000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a <style=cIsUtility>30m</style> radius. <sprite name=\"Quality\"> <style=cIsUtility>40</style> second cooldown.",
 
         "EQUIPMENT_QUESTVOLATILEBATTERY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
-        "EQUIPMENT_QUESTVOLATILEBATTERY_RARE_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>3000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 60 second cooldown.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_RARE_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>5000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a <style=cIsUtility>30m</style> radius. <sprite name=\"Quality\"> <style=cIsUtility>35</style> second cooldown.",
 
         "EQUIPMENT_QUESTVOLATILEBATTERY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
-        "EQUIPMENT_QUESTVOLATILEBATTERY_EPIC_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>4000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 45 second cooldown.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_EPIC_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>6000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a <style=cIsUtility>30m</style> radius. <sprite name=\"Quality\"> <style=cIsUtility>30</style> second cooldown.",
 
         "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
-        "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>5000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a 30m radius. <sprite name=\"Quality\"> 30 second cooldown.",
+        "EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>7000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a <style=cIsUtility>30m</style> radius. <sprite name=\"Quality\"> <style=cIsUtility>25</style> second cooldown.",
         
         "EQUIPMENT_FRUIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Grants temporary health on use, all buffs last longer while you have temporary health.",
         "EQUIPMENT_FRUIT_UNCOMMON_DESC": "{0}\nGain <sprite name=\"Quality\"> <style=cIsHealing>5%</style> of your maximum health as <style=cIsHealing>non-regenerating temporary health</style>, up to a maximum of <style=cIsHealing>50% temporary health</style>. While you have <style=cIsHealing>temporary health</style>, increase the <style=cIsUtility>durations</style> of all positive buffs by <sprite name=\"Quality\"> <style=cIsUtility>25%</style>.",

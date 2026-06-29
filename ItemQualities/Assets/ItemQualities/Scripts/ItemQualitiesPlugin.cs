@@ -25,13 +25,14 @@ namespace ItemQualities
     [BepInDependency(R2API.ItemAPI.PluginGUID)]
     [BepInDependency(R2API.Networking.NetworkingAPI.PluginGUID)]
     [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(ProperSave.ProperSavePlugin.GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public sealed class ItemQualitiesPlugin : BaseUnityPlugin
     {
         public const string PluginName = "ItemQualities";
         public const string PluginAuthor = "Gorakh";
         public const string PluginGUID = "com." + PluginAuthor + "." + PluginName;
-        public const string PluginVersion = "0.7.6";
+        public const string PluginVersion = "0.7.7";
 
         static ItemQualitiesPlugin _instance;
         public static ItemQualitiesPlugin Instance => _instance;

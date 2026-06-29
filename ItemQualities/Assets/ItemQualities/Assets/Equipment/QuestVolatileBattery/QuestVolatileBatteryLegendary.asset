@@ -17,7 +17,7 @@ MonoBehaviour:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
-  cooldown: 30
+  cooldown: 25
   nameToken: 
   pickupToken: EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_PICKUP
   descriptionToken: EQUIPMENT_QUESTVOLATILEBATTERY_LEGENDARY_DESC
@@ -28,13 +28,13 @@ MonoBehaviour:
   colorIndex: 0
   canDrop: 0
   dropOnDeathChance: 0
-  canBeRandomlyTriggered: 1
+  canBeRandomlyTriggered: 0
   enigmaCompatible: 0
   isLunar: 0
   isBoss: 0
   foodRelated: 0
   passiveBuffDef: {fileID: 0}
-  appearsInSinglePlayer: 1
-  appearsInMultiPlayer: 1
+  appearsInSinglePlayer: 0
+  appearsInMultiPlayer: 0
   requiredExpansion: {fileID: 0}
   mageElement: 0

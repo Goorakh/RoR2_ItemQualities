@@ -1,4 +1,5 @@
-﻿using RoR2;
+﻿using HG;
+using RoR2;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,13 +9,13 @@ namespace ItemQualities.ContentManagement
 {
     public sealed class QualityContentLoadArgs
     {
-        readonly List<ItemQualityGroup> _itemQualityGroups;
-        readonly List<EquipmentQualityGroup> _equipmentQualityGroups;
-        readonly List<BuffQualityGroup> _buffQualityGroups;
+        private readonly List<ItemQualityGroup> _itemQualityGroups;
+        private readonly List<EquipmentQualityGroup> _equipmentQualityGroups;
+        private readonly List<BuffQualityGroup> _buffQualityGroups;
 
-        public IProgress<float> ProgressReceiver { get; }
+        public ReadableProgress<float> ProgressReceiver { get; }
 
-        internal QualityContentLoadArgs(List<ItemQualityGroup> itemQualityGroups, List<EquipmentQualityGroup> equipmentQualityGroups, List<BuffQualityGroup> buffQualityGroups, IProgress<float> progressReceiver)
+        internal QualityContentLoadArgs(List<ItemQualityGroup> itemQualityGroups, List<EquipmentQualityGroup> equipmentQualityGroups, List<BuffQualityGroup> buffQualityGroups, ReadableProgress<float> progressReceiver)
         {
             _itemQualityGroups = itemQualityGroups;
             _equipmentQualityGroups = equipmentQualityGroups;

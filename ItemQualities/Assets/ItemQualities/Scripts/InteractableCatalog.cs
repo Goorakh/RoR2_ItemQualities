@@ -1,73 +1,115 @@
 ﻿using HG;
 using RoR2;
-using RoR2.CharacterAI;
-using RoR2.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
+using UnityEngine.AddressableAssets.ResourceLocators;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace ItemQualities
 {
-    static class InteractableCatalog
+    internal static class InteractableCatalog
     {
-        static InteractableDef[] _interactableDefs = Array.Empty<InteractableDef>();
+        private static InteractableDef[] _interactableDefs = Array.Empty<InteractableDef>();
 
-        static readonly Dictionary<string, int> _interactableNameToIndex = new Dictionary<string, int>();
+        private static readonly Dictionary<string, int> _interactablePrefabNameToIndex = new Dictionary<string, int>();
 
         public static int InteractableCount => _interactableDefs.Length;
 
-        [SystemInitializer]
-        static void Init()
+        public static ResourceAvailability Availability;
+
+        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        private static void Init()
         {
-            using var _ = SetPool<GameObject>.RentCollection(out HashSet<GameObject> interactablePrefabs);
-            interactablePrefabs.EnsureCapacity(ContentManager.networkedObjectPrefabs.Length);
+            InteractableSpawnCard[] spawnCards = Array.Empty<InteractableSpawnCard>();
 
-            foreach (GameObject prefab in ContentManager.networkedObjectPrefabs)
+            // Locate spawn cards
             {
-                if (prefab.GetComponent<CharacterBody>())
-                    continue;
+                HashSet<InteractableSpawnCard> loadedSpawnCards = new HashSet<InteractableSpawnCard>();
 
-                if (prefab.GetComponent<GenericPickupController>())
-                    continue;
+                var stopwatch = System.Diagnostics.Stopwatch.StartNew();
 
-                if (prefab.GetComponent<PickupPickerController>() &&
-                    !prefab.GetComponent<DelusionChestController>() &&
-                    !prefab.GetComponent<ScrapperController>() &&
-                    !prefab.GetComponent<LemurianEggController>())
+                // First, find all spawn cards loaded into memory, this should catch most modded cards
+                loadedSpawnCards.UnionWith(Resources.FindObjectsOfTypeAll<InteractableSpawnCard>());
+
+                // Then, find all InteractableSpawnCards in Addressables, surprisingly not horribly inefficient
+                // TODO: convert this to async
+                try
                 {
-                    continue;
+                    List<IResourceLocation> interactableSpawnCardLocations = new List<IResourceLocation>();
+                    foreach (IResourceLocator locator in Addressables.ResourceLocators)
+                    {
+                        if (locator is not ResourceLocationMap resourceLocationMap)
+                            continue;
+
+                        foreach ((object key, IList<IResourceLocation> resourceLocations) in resourceLocationMap.Locations)
+                        {
+                            if (resourceLocations == null || resourceLocations.Count == 0)
+                                continue;
+
+                            foreach (IResourceLocation resourceLocation in resourceLocations)
+                            {
+                                if (typeof(InteractableSpawnCard).IsAssignableFrom(resourceLocation.ResourceType))
+                                {
+                                    ListUtils.AddIfUnique(interactableSpawnCardLocations, resourceLocation);
+                                }
+                            }
+                        }
+                    }
+
+                    if (interactableSpawnCardLocations.Count > 0)
+                    {
+                        var interactableSpawnCardsHandle = Addressables.LoadAssetsAsync<InteractableSpawnCard>(
+                            interactableSpawnCardLocations,
+                            null,
+                            false);
+
+                        interactableSpawnCardsHandle.WaitForCompletion();
+
+                        if (interactableSpawnCardsHandle.Status == AsyncOperationStatus.Succeeded && interactableSpawnCardsHandle.Result != null)
+                        {
+                            loadedSpawnCards.UnionWith(interactableSpawnCardsHandle.Result);
+                            Addressables.Release(interactableSpawnCardsHandle);
+                        }
+                        else
+                        {
+                            Log.Warning($"InteractableSpawnCard loads failed: {interactableSpawnCardsHandle.OperationException}");
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Warning_NoCallerPrefix($"Failed to load InteractableSpawnCards from addressables: {e}");
                 }
 
-                if (prefab.GetComponent<DroneVendorTerminalBehavior>())
-                    continue;
+                Log.Debug($"Found {loadedSpawnCards.Count} total InteractableSpawnCards in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
 
-                // HACK: Filter out unused vending machine prefab, both have the same name so components seems like the best way to differentiate them
-                if (prefab.GetComponent<VendingMachineBehavior>() && !prefab.GetComponent<AlignToNormal>())
-                    continue;
-
-                if (prefab.GetComponent<SpecialObjectAttributes>() ||
-                    prefab.GetComponent<DroneVendorMultiShopController>() ||
-                    prefab.GetComponent<IInteractable>() != null)
+                if (loadedSpawnCards.Count > 0)
                 {
-                    interactablePrefabs.Add(prefab);
-                    Log.Debug($"Including interactable prefab {prefab}");
+                    spawnCards = loadedSpawnCards.Where(c => c.prefab)
+                                                 .OrderBy(c => c.name)
+                                                 .ToArray();
                 }
             }
 
-            if (interactablePrefabs.Count > 0)
+            // Catalog spawn cards
+            if (spawnCards.Length > 0)
             {
-                foreach (GameObject prefab in interactablePrefabs)
+                foreach (InteractableSpawnCard card in spawnCards)
                 {
-                    prefab.EnsureComponent<InteractableInfoProvider>();
+                    card.prefab.EnsureComponent<InteractableInfoProvider>();
                 }
 
-                _interactableDefs = interactablePrefabs.Select(prefab => new InteractableDef(prefab)).ToArray();
+                _interactableDefs = spawnCards.Select(spawnCard => new InteractableDef(spawnCard))
+                                              .ToArray();
 
                 Array.Sort(_interactableDefs, Comparer<InteractableDef>.Create((a, b) => StringComparer.Ordinal.Compare(a.Name, b.Name)));
 
-                _interactableNameToIndex.EnsureCapacity(_interactableDefs.Length);
+                _interactablePrefabNameToIndex.EnsureCapacity(_interactableDefs.Length);
 
                 for (int i = 0; i < _interactableDefs.Length; i++)
                 {
@@ -83,7 +125,9 @@ namespace ItemQualities
                             prefab.GetComponent<SceneExitController>() ||
                             prefab.GetComponent<HoldoutZoneController>() ||
                             prefab.GetComponent<GeodeController>() ||
-                            prefab.GetComponent<ShrineColossusAccessBehavior>())
+                            prefab.GetComponent<ShrineColossusAccessBehavior>() ||
+                            prefab.GetComponent<CharacterMaster>() ||
+                            prefab.GetComponent<CharacterBody>())
                         {
                             return false;
                         }
@@ -98,9 +142,9 @@ namespace ItemQualities
                     }
 
                     string interactableName = interactableDef.Name;
-                    if (!_interactableNameToIndex.ContainsKey(interactableName))
+                    if (!_interactablePrefabNameToIndex.ContainsKey(interactableName))
                     {
-                        _interactableNameToIndex[interactableName] = i;
+                        _interactablePrefabNameToIndex[interactableName] = i;
                     }
                     else
                     {
@@ -108,94 +152,43 @@ namespace ItemQualities
                     }
                 }
 
-                _interactableNameToIndex.TrimExcess();
-
-                SpawnCard.onSpawnedServerGlobal += onSpawnCardSpawnedServerGlobal;
+                _interactablePrefabNameToIndex.TrimExcess();
 
                 On.RoR2.SpecialObjectAttributes.Start += SpecialObjectAttributes_Start;
                 On.RoR2.PurchaseInteraction.Start += PurchaseInteraction_Start;
                 On.RoR2.DroneVendorMultiShopController.Start += DroneVendorMultiShopController_Start;
 
-                On.RoR2.ClassicStageInfo.Start += ClassicStageInfo_Start;
-
-                static void overrideCanCopy(string interactableName, bool canCopy)
+                static void overrideCanCopy(string interactablePrefabName, bool canCopy)
                 {
-                    InteractableDef interactableDef = GetInteractableDef(FindInteractableIndex(interactableName));
+                    InteractableDef interactableDef = GetInteractableDef(FindInteractableIndex(interactablePrefabName));
                     if (interactableDef != null)
                     {
                         interactableDef.CanCopy = canCopy;
                     }
                     else
                     {
-                        Log.Warning($"Failed to find interactable '{interactableName}'");
+                        Log.Warning($"Failed to find interactable '{interactablePrefabName}'");
                     }
                 }
 
+                overrideCanCopy("GauntletEntranceOrb", false);
                 overrideCanCopy("GoldshoresBeacon", false);
                 overrideCanCopy("ScavBackpack", false);
                 overrideCanCopy("ScavLunarBackpack", false);
+                overrideCanCopy("VoidCamp", false); // lol
+                overrideCanCopy("VoidRaidSafeWard", false);
             }
+
+            Availability.MakeAvailable();
         }
 
-        static void onSpawnCardSpawnedServerGlobal(SpawnCard.SpawnResult spawnResult)
-        {
-            if (spawnResult.spawnRequest.spawnCard is InteractableSpawnCard interactableSpawnCard)
-            {
-                recordSpawnCard(interactableSpawnCard);
-            }
-        }
-
-        static void ClassicStageInfo_Start(On.RoR2.ClassicStageInfo.orig_Start orig, ClassicStageInfo self)
-        {
-            orig(self);
-
-            try
-            {
-                if (self.interactableCategories)
-                {
-                    foreach (DirectorCardCategorySelection.Category category in self.interactableCategories.categories)
-                    {
-                        foreach (DirectorCard directorCard in category.cards)
-                        {
-                            SpawnCard spawnCard = directorCard.GetSpawnCard();
-                            if (spawnCard && spawnCard is InteractableSpawnCard interactableSpawnCard && interactableSpawnCard.prefab)
-                            {
-                                recordSpawnCard(interactableSpawnCard);
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Warning_NoCallerPrefix(e.ToString());
-            }
-        }
-
-        static void recordSpawnCard(InteractableSpawnCard spawnCard)
-        {
-            int interactableIndex = FindInteractableIndex(spawnCard.prefab);
-            if (interactableIndex == -1)
-            {
-                Log.Debug($"Failed to find interactable index for '{spawnCard.prefab.name}'");
-                return;
-            }
-
-            InteractableDef interactableDef = GetInteractableDef(interactableIndex);
-            if (interactableDef != null && !interactableDef.SpawnCard)
-            {
-                interactableDef.SpawnCard = spawnCard;
-                Log.Debug($"Recorded spawn card {spawnCard} for interactable {interactableDef.Name}");
-            }
-        }
-
-        static void PurchaseInteraction_Start(On.RoR2.PurchaseInteraction.orig_Start orig, PurchaseInteraction self)
+        private static void PurchaseInteraction_Start(On.RoR2.PurchaseInteraction.orig_Start orig, PurchaseInteraction self)
         {
             orig(self);
             tryLinkToCatalog(self.gameObject);
         }
 
-        static void SpecialObjectAttributes_Start(On.RoR2.SpecialObjectAttributes.orig_Start orig, SpecialObjectAttributes self)
+        private static void SpecialObjectAttributes_Start(On.RoR2.SpecialObjectAttributes.orig_Start orig, SpecialObjectAttributes self)
         {
             orig(self);
 
@@ -205,13 +198,13 @@ namespace ItemQualities
             }
         }
 
-        static void DroneVendorMultiShopController_Start(On.RoR2.DroneVendorMultiShopController.orig_Start orig, DroneVendorMultiShopController self)
+        private static void DroneVendorMultiShopController_Start(On.RoR2.DroneVendorMultiShopController.orig_Start orig, DroneVendorMultiShopController self)
         {
             orig(self);
             tryLinkToCatalog(self.gameObject);
         }
 
-        static void tryLinkToCatalog(GameObject interactableObject)
+        private static void tryLinkToCatalog(GameObject interactableObject)
         {
             int interactableIndex = FindInteractableIndex(interactableObject);
             if (interactableIndex == -1)
@@ -239,41 +232,42 @@ namespace ItemQualities
                 return catalogedInteractable.CatalogIndex;
             }
 
-            string interactableName = interactableObject.name;
-            if (interactableName.EndsWith("(Clone)", StringComparison.OrdinalIgnoreCase))
-                interactableName = interactableName.Remove(interactableName.Length - 7);
+            string interactablePrefabName = interactableObject.name;
+            if (interactablePrefabName.EndsWith("(Clone)", StringComparison.OrdinalIgnoreCase))
+                interactablePrefabName = interactablePrefabName.Remove(interactablePrefabName.Length - 7);
 
             // Interactables that have been placed into a scene may have the 'number-in-parentheses' suffix. eg. "(1)", "(2)", etc
-            interactableName = Regex.Replace(interactableName, @"\(\d+\)$", string.Empty);
+            // Also remove " - X" (where x is any number) suffix, used on gilded coast preplaced chests
+            interactablePrefabName = Regex.Replace(interactablePrefabName, @"\s*(-\s*\d+)?\s*(\(\d+\))?\s*$", string.Empty);
 
-            interactableName = interactableName.Trim();
+            interactablePrefabName = interactablePrefabName.Trim();
 
-            return FindInteractableIndex(interactableName);
+            return FindInteractableIndex(interactablePrefabName);
         }
 
-        public static int FindInteractableIndex(string interactableName)
+        public static int FindInteractableIndex(string interactablePrefabName)
         {
-            return _interactableNameToIndex.GetValueOrDefault(interactableName, -1);
+            return _interactablePrefabNameToIndex.GetValueOrDefault(interactablePrefabName, -1);
         }
 
         [ConCommand(commandName = "quality_list_clonable_interactables")]
-        static void CCListClonableInteractables(ConCommandArgs args)
+        private static void CCListClonableInteractables(ConCommandArgs args)
         {
-            Debug.Log("=== Clonable Interactables ===");
+            args.Log("=== Clonable Interactables ===");
             foreach (InteractableDef interactableDef in _interactableDefs)
             {
                 if (interactableDef.CanCopy)
                 {
-                    Debug.Log(interactableDef.Name);
+                    args.Log(interactableDef.Name);
                 }
             }
 
-            Debug.Log("=== Non-Clonable Interactables ===");
+            args.Log("=== Non-Clonable Interactables ===");
             foreach (InteractableDef interactableDef in _interactableDefs)
             {
                 if (!interactableDef.CanCopy)
                 {
-                    Debug.Log(interactableDef.Name);
+                    args.Log(interactableDef.Name);
                 }
             }
         }

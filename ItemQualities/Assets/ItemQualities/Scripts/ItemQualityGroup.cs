@@ -7,6 +7,7 @@ using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -139,6 +140,7 @@ namespace ItemQualities
         }
 
         [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsEffective) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsEffective(Inventory inventory)
         {
@@ -146,6 +148,7 @@ namespace ItemQualities
         }
 
         [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsPermanent) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsPermanent(Inventory inventory)
         {
@@ -153,6 +156,7 @@ namespace ItemQualities
         }
 
         [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsTemp) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsTemp(Inventory inventory)
         {
@@ -160,6 +164,7 @@ namespace ItemQualities
         }
 
         [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsChanneled) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsChanneled(Inventory inventory)
         {
@@ -167,6 +172,7 @@ namespace ItemQualities
         }
 
         [Obsolete("Use " + nameof(ItemQualityUtils) + "." + nameof(ItemQualityUtils.GetTeamItemCounts) + "() instead")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetTeamItemCounts(TeamIndex teamIndex, bool requireAlive, bool requireConnected = true)
         {
@@ -414,6 +420,12 @@ namespace ItemQualities
                         textureImporter.textureType = TextureImporterType.Sprite;
                         textureImporter.spritePixelsPerUnit = qualityIconTexture.width / 5.12f;
                         textureImporter.alphaIsTransparency = true;
+
+                        TextureImporterSettings textureImporterSettings = new TextureImporterSettings();
+                        textureImporter.ReadTextureSettings(textureImporterSettings);
+                        textureImporterSettings.spriteGenerateFallbackPhysicsShape = false;
+                        textureImporterSettings.mipmapEnabled = false;
+                        textureImporter.SetTextureSettings(textureImporterSettings);
 
                         AssetDatabase.ImportAsset(qualityIconTextureAssetPath, ImportAssetOptions.ForceUpdate);
 

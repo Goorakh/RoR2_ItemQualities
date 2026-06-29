@@ -90,6 +90,7 @@ namespace ItemQualities
             populateTypeFields(typeof(Materials), _contentPack.materials, fieldName => "mat" + fieldName);
 
             populateTypeFields(typeof(SpawnCards), _contentPack.spawnCards);
+            SpawnCards.AllSpawnCards = new ReadOnlyCollection<SpawnCard>(_contentPack.spawnCards.ToArray());
 
             populateTypeFields(typeof(Sprites), _contentPack.sprites);
 
@@ -826,6 +827,8 @@ namespace ItemQualities
             public static BuffQualityGroup DelayedDamageDebuff;
 
             public static BuffQualityGroup CrowbarCharge;
+
+            public static BuffQualityGroup TeleportOnLowHealthOrbCharge;
         }
 
         public static class Buffs
@@ -904,7 +907,7 @@ namespace ItemQualities
 
             public static GameObject HealOrbSpecial;
 
-            public static GameObject DuplicatorQualityAttachment;
+            public static GameObject QualityDuplicatorMinionInventory;
 
             public static GameObject DroneShootableAttachment;
 
@@ -925,20 +928,28 @@ namespace ItemQualities
             public static GameObject GatewayQualityAttachment;
 
             public static GameObject RecyclableObjectAttachment;
+
+            public static GameObject QualityScrapper;
         }
 
         public static class ProjectilePrefabs
         {
             public static GameObject IncreasePrimaryDamageQualityDotZone;
+
+            public static GameObject TeleportOnLowHealthOrbProjectile;
         }
 
         public static class Materials
         {
             public static Material HealCritBoost;
+
+            public static Material QualityScrapper;
         }
 
         public static class SpawnCards
         {
+            public static ReadOnlyCollection<SpawnCard> AllSpawnCards { get; internal set; } = Empty<SpawnCard>.ReadOnlyCollection;
+
             [TargetAssetName("iscQualityEquipmentBarrel")]
             public static InteractableSpawnCard QualityEquipmentBarrel;
 

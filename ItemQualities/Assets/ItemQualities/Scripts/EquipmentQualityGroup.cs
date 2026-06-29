@@ -369,6 +369,12 @@ namespace ItemQualities
                     textureImporter.spritePixelsPerUnit = qualityIconTexture.width / 5.12f;
                     textureImporter.alphaIsTransparency = true;
 
+                    TextureImporterSettings textureImporterSettings = new TextureImporterSettings();
+                    textureImporter.ReadTextureSettings(textureImporterSettings);
+                    textureImporterSettings.spriteGenerateFallbackPhysicsShape = false;
+                    textureImporterSettings.mipmapEnabled = false;
+                    textureImporter.SetTextureSettings(textureImporterSettings);
+
                     AssetDatabase.ImportAsset(qualityIconTextureAssetPath, ImportAssetOptions.ForceUpdate);
 
                     equipmentDef.pickupIconSprite = AssetDatabase.LoadAssetAtPath<Sprite>(qualityIconTextureAssetPath);

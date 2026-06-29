@@ -1,3 +1,55 @@
+## 0.7.7 Changes:
+
+* Reworks:
+    * Substandard Duplicator
+    * Unstable Transmitter
+    * Medkit
+
+* Scrap:
+    * Quality Scrap can now be traded for regular Scrap with a special scrapper interactable on the moon.
+    * Quality Scrap no longer automatically turns into regular Scrap when entering the moon.
+
+* Regenerating Scrap:
+    * Quality Regenerating Scrap is now the highest priority scrap, always being taken first if available.
+        * For cauldrons, scrap priority has been modified to take as few quality regenerating scraps as possible, so that you can properly benefit from having several quality regenerating scrap.
+            * Priority when taking items is now:
+                * 1 of the highest quality Regenerating Scrap available
+                * Normal Regenerating Scrap
+                * Normal Scrap
+                * Any remaining quality regenerating scrap, starting with the lowest quality
+                * Random items from inventory
+        * Cauldrons now give their item in the quality of the highest input scrap. Before now, they gave the average of all input scrap, which just tended to punish you for having a high and a low quality regenerating scrap by reducing the average quality of the resulting item.
+
+* Added ProperSave support.
+
+* Remote Caffeinator:
+    * Now increases max number of activations per quality.
+
+* Disposable Missile Launcher:
+    * Fixed missile increase not counting common Dml.
+
+* Bottled Chaos:
+    * Fixed no additional equipment effects triggering when having both a quality Bottled Chaos and a regular one.
+
+* Executive Card:
+    * Fixed the small chests on Gilded Coast not being targetable.
+
+* Jade Elephant:
+    * Fixed barrier gain being applied when using the non-quality version of the equipment.
+
+* Sticky Bomb:
+    * Fixed size not changing on client
+
+* Eccentric Vase:
+    * Fixed orb teleport not working when at less than 60fps.
+
+* Fixed compatibility issues with mods that add projectiles with no explosion radius resulting in a divide by zero error.
+
+* Fixed Artifact of Sacrifice not being able to drop quality equipments.
+
+* Fuel Array:
+    * \:)
+
 ## 0.7.6 Changes:
 
 * Symbiotic Scorpion

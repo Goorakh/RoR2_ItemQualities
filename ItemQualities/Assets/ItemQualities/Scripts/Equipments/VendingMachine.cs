@@ -33,6 +33,18 @@ namespace ItemQualities.Equipments
                     {
                         projectileInstantiateDeployable.prefab = projectileInstantiateDeployable.prefab.InstantiateClone(projectileInstantiateDeployable.prefab.name + qualityTier);
 
+                        if (projectileInstantiateDeployable.prefab.TryGetComponent(out VendingMachineBehavior vendingMachineBehavior))
+                        {
+                            vendingMachineBehavior.maxPurchases += qualityTier switch
+                            {
+                                QualityTier.Uncommon => 4,
+                                QualityTier.Rare => 8,
+                                QualityTier.Epic => 12,
+                                QualityTier.Legendary => 16,
+                                _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
+                            };
+                        }
+
                         InteractOnTimer interactOnTimer = projectileInstantiateDeployable.prefab.EnsureComponent<InteractOnTimer>();
                         interactOnTimer.InteractInterval = qualityTier switch
                         {

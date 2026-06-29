@@ -12,7 +12,7 @@ namespace ItemQualities.Equipments
     {
         static EquipmentIndex[] _missileEquipments = Array.Empty<EquipmentIndex>();
 
-        [SystemInitializer(typeof(EquipmentCatalog))]
+        [SystemInitializer(typeof(QualityCatalog))]
         static void Init()
         {
             HashSet<EquipmentIndex> missileEquipments = new HashSet<EquipmentIndex>(EquipmentCatalog.equipmentCount);

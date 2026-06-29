@@ -44,10 +44,10 @@ namespace ItemQualities.Items
                         ItemQualityCounts randomEquipmentTrigger = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.RandomEquipmentTrigger);
                         if (randomEquipmentTrigger.TotalQualityCount > 0)
                         {
-                            Span<QualityTier> equipmentQualityTiersSpan = stackalloc QualityTier[randomEquipmentTrigger.TotalCount];
+                            Span<QualityTier> equipmentQualityTiersSpan = stackalloc QualityTier[randomEquipmentTrigger.TotalQualityCount];
 
                             int equipmentQualityTierIndex = 0;
-                            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                             {
                                 int tierCount = randomEquipmentTrigger[qualityTier];
                                 if (tierCount > 0)
@@ -60,6 +60,8 @@ namespace ItemQualities.Items
                             equipmentQualityTiers = equipmentQualityTiersSpan.ToArray();
                         }
                     }
+
+                    Log.Debug($"{equipmentSlot} equipment quality tiers: [{string.Join(", ", equipmentQualityTiers)}]");
 
                     return equipmentQualityTiers;
                 }
@@ -82,32 +84,36 @@ namespace ItemQualities.Items
             {
                 EquipmentIndex equipmentIndex = equipmentDef ? equipmentDef.equipmentIndex : EquipmentIndex.None;
 
-                if (equipmentIndex != EquipmentIndex.None && qualityTiers.Length > 0)
+                if (equipmentIndex != EquipmentIndex.None && qualityTierIndex < qualityTiers.Length)
                 {
-                    QualityTier qualityTier = qualityTiers[qualityTierIndex % qualityTiers.Length];
-
-                    EquipmentIndex qualityEquipmentIndex = QualityCatalog.GetEquipmentIndexOfQuality(equipmentIndex, qualityTier);
-                    if (qualityEquipmentIndex != EquipmentIndex.None && qualityEquipmentIndex != equipmentIndex)
+                    QualityTier qualityTier = qualityTiers[qualityTierIndex];
+                    if (qualityTier != QualityTier.None)
                     {
-                        equipmentDef = EquipmentCatalog.GetEquipmentDef(qualityEquipmentIndex);
-                        equipmentIndex = qualityEquipmentIndex;
-
-                        // Quality equipment blacklisted: pass null to the rest of the code, equipment activation will fail and this equipment will be skipped
-                        if (!equipmentDef.canBeRandomlyTriggered)
+                        EquipmentIndex qualityEquipmentIndex = QualityCatalog.GetEquipmentIndexOfQuality(equipmentIndex, qualityTier);
+                        if (qualityEquipmentIndex != EquipmentIndex.None && qualityEquipmentIndex != equipmentIndex)
                         {
-                            Log.Debug($"Quality equipment {equipmentDef.name} is not valid for random trigger, skipping");
+                            equipmentDef = EquipmentCatalog.GetEquipmentDef(qualityEquipmentIndex);
+                            equipmentIndex = qualityEquipmentIndex;
 
+                            // Quality equipment blacklisted: pass null to the rest of the code, equipment activation will fail and this equipment will be skipped
+                            if (!equipmentDef.canBeRandomlyTriggered)
+                            {
+                                Log.Debug($"Quality equipment {equipmentDef.name} is not valid for random trigger, skipping");
+
+                                equipmentDef = null;
+                                equipmentIndex = EquipmentIndex.None;
+                            }
+                        }
+                        else
+                        {
+                            // If quality does not exist for this equipment, skip it
                             equipmentDef = null;
                             equipmentIndex = EquipmentIndex.None;
                         }
                     }
-                    else
-                    {
-                        // If quality does not exist for this equipment, skip it
-                        equipmentDef = null;
-                        equipmentIndex = EquipmentIndex.None;
-                    }
                 }
+
+                Log.Debug($"Attempting equipment: {equipmentDef}");
 
                 return equipmentDef;
             }

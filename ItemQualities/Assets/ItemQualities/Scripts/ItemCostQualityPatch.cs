@@ -54,34 +54,85 @@ namespace ItemQualities
         {
             ILCursor c = new ILCursor(il);
 
-            ILLabel skipItemLabel = default;
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdfld<CostTypeDef.PayCostContext>(nameof(CostTypeDef.PayCostContext.avoidedItemIndex)),
-                               x => x.MatchBeq(out skipItemLabel)))
+            // Disallow quality items (except quality regen scrap)
             {
-                Log.Error("Failed to find patch location");
-                return;
+                c.Goto(0);
+
+                /*
+                 *  // if (itemIndex != CS$<>8__locals1.context.avoidedItemIndex)
+                 *  IL_007A: ldloc.s   V_9
+                 *  IL_007C: ldloc.0
+                 *  IL_007D: ldfld     class RoR2.CostTypeDef/PayCostContext RoR2.CostTypeCatalog/'<>c__DisplayClass5_0'::context
+                 *  IL_0082: ldfld     valuetype RoR2.ItemIndex RoR2.CostTypeDef/PayCostContext::avoidedItemIndex
+                 *  IL_0087: beq.s     IL_00F7
+                 */
+
+                VariableDefinition itemIndexVar = default;
+                ILLabel skipItemLabel = default;
+                if (c.TryGotoNext(MoveType.After,
+                                  x => x.MatchLdloc<ItemIndex>(il, out itemIndexVar),
+                                  x => x.MatchLdloc(out _),
+                                  x => x.MatchLdfld(out _), // context
+                                  x => x.MatchLdfld<CostTypeDef.PayCostContext>(nameof(CostTypeDef.PayCostContext.avoidedItemIndex)),
+                                  x => x.MatchBeq(out skipItemLabel)))
+                {
+                    c.Emit(OpCodes.Ldloc, itemIndexVar);
+                    c.EmitDelegate<Func<ItemIndex, bool>>(isItemAllowed);
+                    c.Emit(OpCodes.Brfalse, skipItemLabel);
+
+                    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+                    static bool isItemAllowed(ItemIndex itemIndex)
+                    {
+                        return QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None ||
+                               QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex;
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to find quality item filter patch location");
+                }
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.After); // beq
-
-            if (!c.TryFindForeachVariable(out VariableDefinition itemIndexVar))
+            // Quality item transformation
             {
-                Log.Error("Failed to find ItemIndex variable");
-                return;
-            }
+                c.Goto(0);
 
-            c.Emit(OpCodes.Ldloc, itemIndexVar);
-            c.EmitDelegate<Func<ItemIndex, bool>>(isItemAllowed);
-            c.Emit(OpCodes.Brfalse, skipItemLabel);
+                /*
+                 *  // if (itemTransformation.TryTransform(inventory, out tryTransformResult))
+                 *  IL_01D8: ldloca.s  V_15
+                 *  IL_01DA: ldloc.1
+                 *  IL_01DB: ldloca.s  V_16
+                 *  IL_01DD: call      instance bool RoR2.Inventory/ItemTransformation::TryTransform(class RoR2.Inventory, valuetype RoR2.Inventory/ItemTransformation/TryTransformResult&)
+                 *  IL_01E2: brfalse.s IL_01EC
+                 */
 
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            static bool isItemAllowed(ItemIndex itemIndex)
-            {
-                return QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None ||
-                       QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex;
+                VariableDefinition itemTransformationVar = default;
+                if (c.TryGotoNext(MoveType.AfterLabel,
+                                  x => x.MatchLdloca<Inventory.ItemTransformation>(il, out itemTransformationVar),
+                                  x => x.MatchLdloc(out _), // inventory
+                                  x => x.MatchLdloca(out _), // tryTransformResult
+                                  x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
+                {
+                    c.Emit(OpCodes.Ldloca, itemTransformationVar);
+                    c.EmitDelegate<SetTransformedItemQualityDelegate>(setTransformedItemQuality);
+
+                    // If there is a new item from the transformation, inherit whatever quality the input item had
+                    static void setTransformedItemQuality(ref Inventory.ItemTransformation itemTransformation)
+                    {
+                        if (itemTransformation.newItemIndex != ItemIndex.None)
+                        {
+                            itemTransformation.newItemIndex = QualityCatalog.GetItemIndexOfQuality(itemTransformation.newItemIndex, QualityCatalog.GetQualityTier(itemTransformation.originalItemIndex));
+                        }
+                    }
+                }
+                else
+                {
+                    Log.Error("Failed to find item transformation quality patch location");
+                }
             }
         }
+
+        private delegate void SetTransformedItemQualityDelegate(ref Inventory.ItemTransformation itemTransformation);
 
         static QualityTier getOutputQualityTierFromCost(GameObject dropperObject)
         {
@@ -110,32 +161,14 @@ namespace ItemQualities
                 }
             }
 
-            if (pickupsSpentOnPurchase.Count == 0)
-                return QualityTier.None;
-
-            float averageInputQualityTierValue = 0f;
-            int numInputItemsWithQuality = 0;
-
+            QualityTier highestInputQualityTier = QualityTier.None;
             foreach (UniquePickup inputPickup in pickupsSpentOnPurchase)
             {
                 QualityTier qualityTier = QualityCatalog.GetQualityTier(inputPickup.pickupIndex);
-                if (qualityTier > QualityTier.None)
-                {
-                    averageInputQualityTierValue += (float)qualityTier;
-
-                    numInputItemsWithQuality++;
-                }
+                highestInputQualityTier = QualityCatalog.Max(highestInputQualityTier, qualityTier);
             }
 
-            if (numInputItemsWithQuality == 0)
-                return QualityTier.None;
-
-            averageInputQualityTierValue /= numInputItemsWithQuality;
-            QualityTier outputQualityTier = (QualityTier)Mathf.Clamp(Mathf.CeilToInt(averageInputQualityTierValue), 0, (int)QualityTier.Count - 1);
-
-            Log.Debug($"{numInputItemsWithQuality}/{pickupsSpentOnPurchase.Count} input items of quality (avg={outputQualityTier})");
-
-            return outputQualityTier;
+            return highestInputQualityTier;
         }
 
         static PickupIndex tryUpgradeQualityFromCost(PickupIndex intendedDropPickupIndex, GameObject dropperObject)

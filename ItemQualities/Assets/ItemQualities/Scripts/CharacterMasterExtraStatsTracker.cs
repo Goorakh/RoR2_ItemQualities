@@ -1,4 +1,5 @@
 ﻿using HG;
+using ItemQualities.SaveData;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using System;
@@ -148,9 +149,8 @@ namespace ItemQualities
         {
             bool hasAnyPendingUpgrade = false;
 
-            foreach (uint upgradedItemIndexInt in _upgradeItemIndices)
+            foreach (ItemIndex upgradedItemIndex in _upgradeItemIndices)
             {
-                ItemIndex upgradedItemIndex = (ItemIndex)upgradedItemIndexInt;
                 if (checkItemQualityUpgrade(upgradedItemIndex))
                 {
                     hasAnyPendingUpgrade = true;
@@ -209,9 +209,8 @@ namespace ItemQualities
             QualityTier qualityTier = QualityCatalog.GetQualityTier(itemIndex);
             ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
 
-            foreach (uint upgradeItemIndexInt in _upgradeItemIndices)
+            foreach (ItemIndex upgradeItemIndex in _upgradeItemIndices)
             {
-                ItemIndex upgradeItemIndex = (ItemIndex)upgradeItemIndexInt;
                 QualityTier upgradeQualityTier = QualityCatalog.GetQualityTier(upgradeItemIndex);
                 ItemQualityGroupIndex upgradeItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(upgradeItemIndex);
 
@@ -227,10 +226,19 @@ namespace ItemQualities
             return false;
         }
 
+        public void GetItemUpgradeIndices(List<ItemIndex> dest)
+        {
+            ListUtils.EnsureCapacity(dest, dest.Count + _upgradeItemIndices.Count);
+            foreach (ItemIndex itemIndex in _upgradeItemIndices)
+            {
+                dest.Add(itemIndex);
+            }
+        }
+
         [Server]
         public ItemIndex TryPermanentUpgradeRandomItemToQualityTier(Xoroshiro128Plus rng, QualityTier targetQualityTier)
         {
-            using var _ = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> availableUpgradeItems);
+            WeightedSelection<ItemIndex> availableUpgradeItemsSelection = new WeightedSelection<ItemIndex>();
 
             bool canUpgrade(ItemIndex itemIndex)
             {
@@ -249,9 +257,8 @@ namespace ItemQualities
                 if (itemGroupIndex == ItemQualityGroupIndex.Invalid) // Item does not have any qualities
                     return false;
 
-                foreach (uint upgradeItemIndexInt in _upgradeItemIndices)
+                foreach (ItemIndex upgradeItemIndex in _upgradeItemIndices)
                 {
-                    ItemIndex upgradeItemIndex = (ItemIndex)upgradeItemIndexInt;
                     ItemQualityGroupIndex upgradeItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(upgradeItemIndex);
                     if (upgradeItemGroupIndex == itemGroupIndex)
                     {
@@ -276,44 +283,45 @@ namespace ItemQualities
             using (ListPool<ItemIndex>.RentCollection(out List<ItemIndex> permanentItemIndices))
             {
                 _master.inventory.permanentItemStacks.GetNonZeroIndices(permanentItemIndices);
+                availableUpgradeItemsSelection.EnsureCapacity(permanentItemIndices.Count);
                 foreach (ItemIndex itemIndex in permanentItemIndices)
                 {
                     if (canUpgrade(itemIndex))
                     {
-                        availableUpgradeItems.Add(itemIndex);
+                        availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountPermanent(itemIndex));
                     }
                 }
             }
 
             // If no permanent items can be upgraded, try temps
-            if (availableUpgradeItems.Count == 0)
+            if (availableUpgradeItemsSelection.Count == 0)
             {
                 using (ListPool<ItemIndex>.RentCollection(out List<ItemIndex> temporaryItemIndices))
                 {
                     _master.inventory.tempItemsStorage.GetNonZeroIndices(temporaryItemIndices);
+                    availableUpgradeItemsSelection.EnsureCapacity(temporaryItemIndices.Count);
                     foreach (ItemIndex itemIndex in temporaryItemIndices)
                     {
                         if (canUpgrade(itemIndex))
                         {
-                            availableUpgradeItems.Add(itemIndex);
+                            availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountEffective(itemIndex));
                         }
                     }
                 }
             }
 
             // If no items from our inventory can be upgraded, fall back on run available items
-            if (availableUpgradeItems.Count == 0)
+            if (availableUpgradeItemsSelection.Count == 0)
             {
-                WeightedSelection<ItemIndex> itemSelection = new WeightedSelection<ItemIndex>();
-
                 void addDropListToSelection(List<PickupIndex> dropList, float weight)
                 {
+                    availableUpgradeItemsSelection.EnsureCapacity(availableUpgradeItemsSelection.Count + dropList.Count);
                     foreach (PickupIndex pickupIndex in dropList)
                     {
                         PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
                         if (pickupDef != null && pickupDef.itemIndex != ItemIndex.None && canUpgrade(pickupDef.itemIndex))
                         {
-                            itemSelection.AddChoice(pickupDef.itemIndex, weight);
+                            availableUpgradeItemsSelection.AddChoice(pickupDef.itemIndex, weight);
                         }
                     }
                 }
@@ -328,25 +336,13 @@ namespace ItemQualities
 
                 addDropListToSelection(Run.instance.availableBossDropList, 0.2f);
                 addDropListToSelection(Run.instance.availableVoidBossDropList, 0.1f);
-
-                int itemsToAdd = Mathf.Min(20, itemSelection.Count);
-                for (int i = 0; i < itemsToAdd; i++)
-                {
-                    int choiceIndex = itemSelection.EvaluateToChoiceIndex(rng.nextNormalizedFloat);
-                    WeightedSelection<ItemIndex>.ChoiceInfo choiceInfo = itemSelection.GetChoice(choiceIndex);
-                    ItemIndex itemIndex = choiceInfo.value;
-
-                    availableUpgradeItems.Add(itemIndex);
-
-                    itemSelection.RemoveChoice(choiceIndex);
-                }
             }
 
             // If we still don't have any upgradable items at this point just give up
-            if (availableUpgradeItems.Count == 0)
+            if (availableUpgradeItemsSelection.Count == 0)
                 return ItemIndex.None;
-            
-            ItemIndex upgradedItemIndex = QualityCatalog.GetItemIndexOfQuality(rng.NextElementUniform(availableUpgradeItems), targetQualityTier);
+
+            ItemIndex upgradedItemIndex = QualityCatalog.GetItemIndexOfQuality(availableUpgradeItemsSelection.Evaluate(rng.nextNormalizedFloat), targetQualityTier);
             ItemQualityGroupIndex upgradeItemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(upgradedItemIndex);
 
             bool addedToList = false;
@@ -445,6 +441,24 @@ namespace ItemQualities
             if (_cachedBody)
             {
                 _cachedBody.MarkAllStatsDirty();
+            }
+        }
+
+        [Server]
+        internal void InitializeFromSaveServer(MasterSaveData masterSaveData)
+        {
+            SteakBonus = masterSaveData.SteakBonus;
+            SpeedOnPickupBonus = masterSaveData.SpeedOnPickupBonus;
+            BossDamageBonusTicks = masterSaveData.BossDamageBonusTicks;
+            CardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+
+            _upgradeItemIndices.Clear();
+            foreach (ItemIndex upgradeItemIndex in masterSaveData.UpgradeItemIndices)
+            {
+                if (ItemCatalog.IsIndexValid(upgradeItemIndex))
+                {
+                    _upgradeItemIndices.Add((uint)upgradeItemIndex);
+                }
             }
         }
 
