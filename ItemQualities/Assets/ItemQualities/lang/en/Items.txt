@@ -1647,16 +1647,16 @@
         "ITEM_FIREBALLSONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increased amount of magma balls and explosion radius.",
         "ITEM_FIREBALLSONHIT_LEGENDARY_DESC": "<style=cIsDamage>10%</style> chance on hit to call forth <sprite name=\"Quality\"> <style=cIsDamage>11 <style=cStack>(+8 per stack)</style> magma balls</style> from an enemy, exploding in a <sprite name=\"Quality\"> <style=cIsDamage>20m radius</style> and dealing <style=cIsDamage>300%</style> <style=cStack>(+300% per stack)</style> damage and <style=cIsDamage>igniting</style> all enemies.",
 
-        "ITEM_BLEEDONHITANDEXPLODE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance upgrade bleed to hemorrhage.",
-        "ITEM_BLEEDONHITANDEXPLODE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>5% <style=cStack>(+5% per stack)</style></style> chance to <style=cIsDamage>upgrade bleed</style> to <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage.",
+        "ITEM_BLEEDONHITANDEXPLODE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply hemorrhage on crit. Increase hemorrhage damage for every bleed related item you have.",
+        "ITEM_BLEEDONHITANDEXPLODE_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>5%</style> chance to apply <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage. Increase hemorrhage damage by <sprite name=\"Quality\"> <style=cIsDamage>3% <style=cStack>(+3% per stack)</style></style> for every bleed related <style=cIsUtility>item or equipment</style> in your inventory.",
 
-        "ITEM_BLEEDONHITANDEXPLODE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance upgrade bleed to hemorrhage.",
-        "ITEM_BLEEDONHITANDEXPLODE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10% <style=cStack>(+10% per stack)</style></style> chance to <style=cIsDamage>upgrade bleed</style> to <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage.",
+        "ITEM_BLEEDONHITANDEXPLODE_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply hemorrhage on crit. Increase hemorrhage damage for every bleed related item you have.",
+        "ITEM_BLEEDONHITANDEXPLODE_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>10%</style> chance to apply <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage. Increase hemorrhage damage by <sprite name=\"Quality\"> <style=cIsDamage>6% <style=cStack>(+6% per stack)</style></style> for every bleed related <style=cIsUtility>item or equipment</style> in your inventory.",
 
-        "ITEM_BLEEDONHITANDEXPLODE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance upgrade bleed to hemorrhage.",
-        "ITEM_BLEEDONHITANDEXPLODE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>15% <style=cStack>(+15% per stack)</style></style> chance to <style=cIsDamage>upgrade bleed</style> to <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage.",
+        "ITEM_BLEEDONHITANDEXPLODE_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply hemorrhage on crit. Increase hemorrhage damage for every bleed related item you have.",
+        "ITEM_BLEEDONHITANDEXPLODE_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>15%</style> chance to apply <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage. Increase hemorrhage damage by <sprite name=\"Quality\"> <style=cIsDamage>10% <style=cStack>(+10% per stack)</style></style> for every bleed related <style=cIsUtility>item or equipment</style> in your inventory.",
 
-        "ITEM_BLEEDONHITANDEXPLODE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance upgrade bleed to hemorrhage.",
-        "ITEM_BLEEDONHITANDEXPLODE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>25% <style=cStack>(+25% per stack)</style></style> chance to <style=cIsDamage>upgrade bleed</style> to <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage.",
+        "ITEM_BLEEDONHITANDEXPLODE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply hemorrhage on crit. Increase hemorrhage damage for every bleed related item you have.",
+        "ITEM_BLEEDONHITANDEXPLODE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>20%</style> chance to apply <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage. Increase hemorrhage damage by <sprite name=\"Quality\"> <style=cIsDamage>15% <style=cStack>(+15% per stack)</style></style> for every bleed related <style=cIsUtility>item or equipment</style> in your inventory.",
     }
 }
