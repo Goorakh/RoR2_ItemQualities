@@ -22,6 +22,9 @@
 
 * Added ProperSave support.
 
+* Remote Caffeinator:
+    * Now increases max number of activations per quality.
+
 * Disposable Missile Launcher:
     * Fixed missile increase not counting common Dml.
 
