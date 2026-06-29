@@ -1,3 +1,7 @@
+## 0.7.8 Changes:
+
+* Fixed survivors being pink or something?
+
 ## 0.7.7 Changes:
 
 * Reworks:
