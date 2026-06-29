@@ -180,10 +180,10 @@ namespace ItemQualities.Equipments
 
             float damageCoefficient = qualityTierContext.QualityTier switch
             {
-                QualityTier.Uncommon => 20f,
-                QualityTier.Rare => 30f,
-                QualityTier.Epic => 40f,
-                QualityTier.Legendary => 50f,
+                QualityTier.Uncommon => 40f,
+                QualityTier.Rare => 50f,
+                QualityTier.Epic => 60f,
+                QualityTier.Legendary => 70f,
                 _ => 0f
             };
 

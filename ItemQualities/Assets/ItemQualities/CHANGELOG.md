@@ -47,6 +47,9 @@
 
 * Fixed Artifact of Sacrifice not being able to drop quality equipments.
 
+* Fuel Array:
+    * \:)
+
 ## 0.7.6 Changes:
 
 * Symbiotic Scorpion
