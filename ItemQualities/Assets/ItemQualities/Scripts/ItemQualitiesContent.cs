@@ -721,6 +721,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup FireballsOnHit;
 
+            public static ItemQualityGroup BleedOnHitAndExplode;
+            
             public static ItemQualityGroup ExtraEquipment;
         }
 

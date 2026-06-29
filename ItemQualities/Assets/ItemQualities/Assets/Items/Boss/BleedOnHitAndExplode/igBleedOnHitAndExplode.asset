@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igBleedOnHitAndExplode
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 8c604d685e847cd409d013246dff0d95
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseItem: {fileID: 0}
+  _uncommonItem: {fileID: 11400000, guid: 2d1e9e774c0f86241ad2e84c2741e550, type: 2}
+  _rareItem: {fileID: 11400000, guid: ab8ce726eaa85ab47833219093599b12, type: 2}
+  _epicItem: {fileID: 11400000, guid: b1673d5ca34c74c40b4f0b222a1790ae, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: ee17bf8a69f79c74faf89d3d353eab62, type: 2}
