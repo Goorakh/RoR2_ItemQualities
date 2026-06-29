@@ -1,4 +1,4 @@
-## <Next Version>
+## 0.7.7 Changes:
 
 * Reworks:
     * Substandard Duplicator
