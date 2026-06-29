@@ -150,8 +150,22 @@ namespace ItemQualities.Items
                     ItemQualityCounts duplicator = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Duplicator);
                     if (duplicator.TotalQualityCount > 0)
                     {
-                        // +1 temp item per quality
-                        countToAdd += (int)(duplicator.HighestQuality + 1);
+                        switch (duplicator.HighestQuality)
+                        {
+                            case QualityTier.Uncommon:
+                                // no bonus
+                                break;
+                            case QualityTier.Rare:
+                            case QualityTier.Epic:
+                                countToAdd += 1f;
+                                break;
+                            case QualityTier.Legendary:
+                                countToAdd += 2f;
+                                break;
+                            default:
+                                Log.Warning($"Quality tier {duplicator.HighestQuality} is not implemented");
+                                break;
+                        }
                     }
                 }
 
