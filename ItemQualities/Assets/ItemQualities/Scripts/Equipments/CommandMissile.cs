@@ -111,7 +111,7 @@ namespace ItemQualities.Equipments
             {
                 foreach (ItemIndex itemIndex in ItemCatalog.GetItemsWithTag(ItemTags.MissileRelated))
                 {
-                    missileItemCount += master.inventory.GetItemCountEffective(itemIndex);
+                    missileItemCount += master.inventory.CalculateEffectiveItemStacks(itemIndex);
                 }
             }
 
