@@ -105,6 +105,10 @@ namespace ItemQualities.ContentManagement
 
         public NamedAssetCollection<MiscPickupDef> miscPickupDefs => _innerContentPack.miscPickupDefs;
 
+        public NamedAssetCollection<DroneDef> droneDefs => _innerContentPack.droneDefs;
+
+        public NamedAssetCollection<CraftableDef> craftableDefs => _innerContentPack.craftableDefs;
+
         public NamedAssetCollection<Type> entityStateTypes => _innerContentPack.entityStateTypes;
 
         public NamedAssetCollection<GameObject> prefabs { get; } = new NamedAssetCollection<GameObject>(ContentPack.getGameObjectName);

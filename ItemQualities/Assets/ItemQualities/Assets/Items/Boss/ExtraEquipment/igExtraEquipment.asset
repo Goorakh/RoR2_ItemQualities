@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igExtraEquipment
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: c47e6ee1fdd10de43b099309ecf8cd6d
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseItem: {fileID: 0}
+  _uncommonItem: {fileID: 11400000, guid: 38c0ebec49ab6964082188df5783a4ef, type: 2}
+  _rareItem: {fileID: 11400000, guid: 8cd5b39a25a987d44982466eb6a49eba, type: 2}
+  _epicItem: {fileID: 11400000, guid: f6f68144647f0d3439d3499da5d5986d, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 2bb3e28844b37b949b35f006f6abc488, type: 2}

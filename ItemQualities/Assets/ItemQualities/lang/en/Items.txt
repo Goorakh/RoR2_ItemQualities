@@ -350,16 +350,16 @@
         "ITEM_CROWBAR_LEGENDARY_DESC": "{0}\nEvery 10th hit that deals <style=cIsDamage>more than 400% damage</style> deals an additional <sprite name=\"Quality\"> <style=cIsDamage>400% <style=cStack>(+400% per stack)</style></style> TOTAL damage.",
 
         "ITEM_BLEEDONHIT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
-        "ITEM_BLEEDONHIT_UNCOMMON_DESC": "<style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <sprite name=\"Quality\"> <style=cIsDamage>250%</style> <style=cStack>(+10% per stack)</style> base damage.",
+        "ITEM_BLEEDONHIT_UNCOMMON_DESC": "{0}\nIncrease all <style=cIsDamage>bleed</style> damage by <sprite name=\"Quality\"> <style=cIsDamage>10% <style=cStack>(+10% per stack)</style></style>.",
 
         "ITEM_BLEEDONHIT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
-        "ITEM_BLEEDONHIT_RARE_DESC": "<style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <sprite name=\"Quality\"> <style=cIsDamage>260%</style> <style=cStack>(+20% per stack)</style> base damage.",
+        "ITEM_BLEEDONHIT_RARE_DESC": "{0}\nIncrease all <style=cIsDamage>bleed</style> damage by <sprite name=\"Quality\"> <style=cIsDamage>20% <style=cStack>(+20% per stack)</style></style>.",
 
         "ITEM_BLEEDONHIT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
-        "ITEM_BLEEDONHIT_EPIC_DESC": "<style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <sprite name=\"Quality\"> <style=cIsDamage>270%</style> <style=cStack>(+30% per stack)</style> base damage.",
+        "ITEM_BLEEDONHIT_EPIC_DESC": "{0}\nIncrease all <style=cIsDamage>bleed</style> damage by <sprite name=\"Quality\"> <style=cIsDamage>30% <style=cStack>(+30% per stack)</style></style>.",
 
         "ITEM_BLEEDONHIT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase bleed damage.",
-        "ITEM_BLEEDONHIT_LEGENDARY_DESC": "<style=cIsDamage>10%</style> <style=cStack>(+10% per stack)</style> chance to <style=cIsDamage>bleed</style> an enemy for <sprite name=\"Quality\"> <style=cIsDamage>290%</style> <style=cStack>(+50% per stack)</style> base damage.",
+        "ITEM_BLEEDONHIT_LEGENDARY_DESC": "{0}\nIncrease all <style=cIsDamage>bleed</style> damage by <sprite name=\"Quality\"> <style=cIsDamage>50% <style=cStack>(+50% per stack)</style></style>.",
 
         "ITEM_CLOVER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Luck is on your side.",
         "ITEM_CLOVER_UNCOMMON_DESC": "{0}\nAll item qualities are rolled <sprite name=\"Quality\"> <style=cIsUtility>+1</style> <style=cStack>(+1 per stack)</style> times for a <style=cIsUtility>favorable outcome</style>.",
@@ -1658,5 +1658,17 @@
 
         "ITEM_BLEEDONHITANDEXPLODE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to apply hemorrhage on crit. Increase hemorrhage damage for every bleed related item you have.",
         "ITEM_BLEEDONHITANDEXPLODE_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsDamage>20%</style> chance to apply <style=cIsDamage>hemorrhage</style> for <style=cIsDamage>2000%</style> base damage. Increase hemorrhage damage by <sprite name=\"Quality\"> <style=cIsDamage>15% <style=cStack>(+15% per stack)</style></style> for every bleed related <style=cIsUtility>item or equipment</style> in your inventory.",
+        
+        "ITEM_EXTRAEQUIPMENT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
+        "ITEM_EXTRAEQUIPMENT_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityUncommon\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>10% <style=cStack>(+10% per stack)</style></style>.",
+        
+        "ITEM_EXTRAEQUIPMENT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
+        "ITEM_EXTRAEQUIPMENT_RARE_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityRare\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>20% <style=cStack>(+20% per stack)</style></style>.",
+        
+        "ITEM_EXTRAEQUIPMENT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
+        "ITEM_EXTRAEQUIPMENT_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityEpic\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>30% <style=cStack>(+30% per stack)</style></style>.",
+        
+        "ITEM_EXTRAEQUIPMENT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
+        "ITEM_EXTRAEQUIPMENT_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityLegendary\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>40% <style=cStack>(+40% per stack)</style></style>.",
     }
 }

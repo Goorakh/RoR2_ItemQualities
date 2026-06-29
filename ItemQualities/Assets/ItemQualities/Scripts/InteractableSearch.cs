@@ -10,12 +10,6 @@ namespace ItemQualities
             set => candidateFilter.requireCanCopy = value;
         }
 
-        public bool requireSpawnCard
-        {
-            get => candidateFilter.requireSpawnCard;
-            set => candidateFilter.requireSpawnCard = value;
-        }
-
         public bool forbidDuplicated
         {
             get => candidateFilter.forbidDuplicated;

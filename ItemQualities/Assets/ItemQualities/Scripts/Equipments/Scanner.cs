@@ -90,6 +90,7 @@ namespace ItemQualities.Equipments
             iscChest2Stealthed.slightlyRandomizeOrientation = true;
 
             args.ContentPack.spawnCards.Add(iscChest2Stealthed);
+            args.ContentPack.networkedObjectPrefabs.Add(chest2CloakedPrefab);
         }
 
         [SystemInitializer]
@@ -113,10 +114,10 @@ namespace ItemQualities.Equipments
                 }
             }
 
-            SceneDirector.onPostPopulateSceneServer += onPostPopulateSceneServer;
+            SpawnUtils.OnSceneReadyForSpawnsServer += onSceneReadyForSpawnsServer;
         }
 
-        static void onPostPopulateSceneServer(SceneDirector sceneDirector)
+        static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
         {
             if (SceneInfo.instance.countsAsStage || SceneInfo.instance.sceneDef.allowItemsToSpawnObjects)
             {

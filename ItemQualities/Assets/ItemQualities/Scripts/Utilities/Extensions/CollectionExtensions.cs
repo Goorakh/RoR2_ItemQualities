@@ -43,6 +43,20 @@ namespace ItemQualities.Utilities.Extensions
             return list != null && (uint)index < list.Count ? list[index] : defaultValue;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryGetSafe<T, TList>(this TList list, int index, out T value)
+            where TList : IList<T>
+        {
+            if (list != null && (uint)index < list.Count)
+            {
+                value = list[index];
+                return true;
+            }
+
+            value = default;
+            return false;
+        }
+
         public static int IndexOf<T, TList, TComparer>(this TList list, T item, TComparer equalityComparer)
             where TList : IList<T>
             where TComparer : IEqualityComparer<T>

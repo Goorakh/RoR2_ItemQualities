@@ -722,6 +722,8 @@ namespace ItemQualities
             public static ItemQualityGroup FireballsOnHit;
 
             public static ItemQualityGroup BleedOnHitAndExplode;
+            
+            public static ItemQualityGroup ExtraEquipment;
         }
 
         public static class Items
@@ -905,6 +907,8 @@ namespace ItemQualities
             public static GameObject ParryProjectileDisplayUI;
 
             public static GameObject MinorConstructBubbleEffect;
+
+            public static GameObject PickupTransferOrbEffect;
         }
 
         public static class NetworkedPrefabs
@@ -974,6 +978,8 @@ namespace ItemQualities
             public static Material QualityScrapper;
 
             public static Material SprintWispQualityFire;
+
+            public static Material TrimSheetQualityEquipmentDrone;
         }
 
         public static class SpawnCards

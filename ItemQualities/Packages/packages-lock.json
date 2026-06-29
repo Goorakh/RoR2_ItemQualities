@@ -160,6 +160,12 @@
         "com.unity.modules.imgui": "1.0.0"
       }
     },
+    "kingenderbrine-propersave": {
+      "version": "file:ProperSave",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "mmhook-assemblies": {
       "version": "file:mmhook-assemblies",
       "depth": 0,
