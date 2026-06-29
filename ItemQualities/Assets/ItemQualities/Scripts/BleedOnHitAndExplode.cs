@@ -124,7 +124,7 @@ namespace ItemQualities.Items
             {
                 foreach (ItemIndex itemIndex in ItemCatalog.GetItemsWithTag(ItemTags.BleedRelated))
                 {
-                    bleedItemCount += master.inventory.GetItemCountEffective(itemIndex);
+                    bleedItemCount += master.inventory.CalculateEffectiveItemStacks(itemIndex);
                 }
             }
 
