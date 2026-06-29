@@ -73,7 +73,6 @@ namespace ItemQualities
                         if (interactableSpawnCardsHandle.Status == AsyncOperationStatus.Succeeded && interactableSpawnCardsHandle.Result != null)
                         {
                             loadedSpawnCards.UnionWith(interactableSpawnCardsHandle.Result);
-                            Addressables.Release(interactableSpawnCardsHandle);
                         }
                         else
                         {
@@ -90,7 +89,7 @@ namespace ItemQualities
 
                 if (loadedSpawnCards.Count > 0)
                 {
-                    spawnCards = loadedSpawnCards.Where(c => c.prefab)
+                    spawnCards = loadedSpawnCards.Where(c => c && c.prefab)
                                                  .OrderBy(c => c.name)
                                                  .ToArray();
                 }

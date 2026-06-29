@@ -11,15 +11,16 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class GummyClone
+    internal static class GummyClone
     {
-        static readonly GameObject[] _qualityGummyCloneProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityGummyCloneProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
-        static readonly Func<ItemIndex, bool>[] _qualityItemCopyFilters = new Func<ItemIndex, bool>[(int)QualityTier.Count]
+        private static readonly Func<ItemIndex, bool>[] _qualityItemCopyFilters = new Func<ItemIndex, bool>[(int)QualityTier.Count]
         {
             uncommonItemCopyFilter,
             rareItemCopyFilter,
@@ -28,7 +29,7 @@ namespace ItemQualities.Equipments
         };
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> gummyCloneProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_GummyClone.GummyCloneProjectile_prefab);
             gummyCloneProjectileLoad.OnSuccess(gummyCloneProjectilePrefab =>
@@ -51,14 +52,42 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireGummyClone += EquipmentSlot_FireGummyClone;
 
             IL.RoR2.Projectile.GummyCloneProjectile.SpawnGummyClone += GummyCloneProjectile_SpawnGummyClone;
+
+            On.RoR2.CharacterMaster.SetUpGummyClone += CharacterMaster_SetUpGummyClone;
         }
 
-        static void EquipmentSlot_FireGummyClone(ILContext il)
+        private static void CharacterMaster_SetUpGummyClone(On.RoR2.CharacterMaster.orig_SetUpGummyClone orig, CharacterMaster self)
+        {
+            try
+            {
+                // Check if this is a quality goobo, just to be safe
+                if (NetworkServer.active &&
+                    self &&
+                    self.inventory &&
+                    self.inventory.GetItemCountEffective(DLC1Content.Items.GummyCloneIdentifier) > 0 &&
+                    self.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier).TotalQualityCount > 0)
+                {
+                    // If this master has already died, let the component be re-added
+                    if (self.TryGetComponent(out MasterSuicideOnTimer masterSuicideOnTimer) && masterSuicideOnTimer.hasDied)
+                    {
+                        GameObject.DestroyImmediate(masterSuicideOnTimer);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error_NoCallerPrefix(e.ToString());
+            }
+
+            orig(self);
+        }
+
+        private static void EquipmentSlot_FireGummyClone(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -82,7 +111,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void GummyCloneProjectile_SpawnGummyClone(ILContext il)
+        private static void GummyCloneProjectile_SpawnGummyClone(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -192,7 +221,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool uncommonItemCopyFilter(ItemIndex itemIndex)
+        private static bool uncommonItemCopyFilter(ItemIndex itemIndex)
         {
             if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.Uncommon)
                 return false;
@@ -213,7 +242,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool rareItemCopyFilter(ItemIndex itemIndex)
+        private static bool rareItemCopyFilter(ItemIndex itemIndex)
         {
             if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.Rare)
                 return false;
@@ -235,7 +264,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool epicItemCopyFilter(ItemIndex itemIndex)
+        private static bool epicItemCopyFilter(ItemIndex itemIndex)
         {
             if (QualityCatalog.GetQualityTier(itemIndex) > QualityTier.Epic)
                 return false;
@@ -258,7 +287,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool legendaryItemCopyFilter(ItemIndex itemIndex)
+        private static bool legendaryItemCopyFilter(ItemIndex itemIndex)
         {
             ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
             if (!itemDef)

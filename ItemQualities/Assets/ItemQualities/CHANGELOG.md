@@ -1,4 +1,8 @@
-## <Next Version>
+## 0.7.8 Changes:
+
+* Fixed survivors being pink or something?
+
+## 0.7.7 Changes:
 
 * Reworks:
     * Substandard Duplicator
@@ -22,6 +26,9 @@
 
 * Added ProperSave support.
 
+* Remote Caffeinator:
+    * Now increases max number of activations per quality.
+
 * Disposable Missile Launcher:
     * Fixed missile increase not counting common Dml.
 
@@ -40,7 +47,12 @@
 * Eccentric Vase:
     * Fixed orb teleport not working when at less than 60fps.
 
+* Fixed compatibility issues with mods that add projectiles with no explosion radius resulting in a divide by zero error.
+
 * Fixed Artifact of Sacrifice not being able to drop quality equipments.
+
+* Fuel Array:
+    * \:)
 
 ## 0.7.6 Changes:
 
