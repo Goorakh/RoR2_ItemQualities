@@ -13,8 +13,6 @@ namespace ItemQualities.Items
 {
     static class QualityTierItem
     {
-        static Texture2D _defaultElitesRamp;
-
         static readonly int _overrideQualityRampIndex = -1;
 
         [SystemInitializer]
@@ -29,11 +27,6 @@ namespace ItemQualities.Items
                 new ILHook(characterModelUpdateMaterialsMethod, CharacterModel_UpdateMaterials, new ILHookConfig
                 {
                     Priority = -100
-                });
-
-                AddressableUtil.LoadAssetAsync<Texture2D>(RoR2_Base_Common_GlobalTextures.texRampElites_psd).OnSuccess(rampElites =>
-                {
-                    _defaultElitesRamp = rampElites;
                 });
             }
             else
@@ -124,29 +117,12 @@ namespace ItemQualities.Items
                 else
                 {
                     Texture eliteRamp = propertyStorage.GetTexture(ShaderProperties._EliteRamp);
-                    if (isQualityRampTexture(eliteRamp))
+                    if (QualityCatalog.IsQualityRampTexture(eliteRamp))
                     {
-                        propertyStorage.SetTexture(ShaderProperties._EliteRamp, _defaultElitesRamp);
+                        propertyStorage.SetTexture(ShaderProperties._EliteRamp, CommonTextures.DefaultElitesRamp);
                     }
                 }
             }
-        }
-
-        static bool isQualityRampTexture(Texture texture)
-        {
-            if (texture)
-            {
-                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-                {
-                    QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(qualityTier);
-                    if (qualityTierDef.colorRampTexture == texture)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
     }
 }

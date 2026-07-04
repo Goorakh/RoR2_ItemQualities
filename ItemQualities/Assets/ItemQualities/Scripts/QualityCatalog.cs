@@ -700,6 +700,23 @@ namespace ItemQualities
             return a < b ? a : b;
         }
 
+        public static bool IsQualityRampTexture(Texture texture)
+        {
+            if (!ReferenceEquals(texture, null))
+            {
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                {
+                    QualityTierDef qualityTierDef = GetQualityTierDef(qualityTier);
+                    if (ReferenceEquals(qualityTierDef.colorRampTexture, texture))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTier qualityTier, bool useConsumedIcon = false)
         {
             return CreateQualityIconTexture(baseIconTexture, qualityTier, Color.white, useConsumedIcon);

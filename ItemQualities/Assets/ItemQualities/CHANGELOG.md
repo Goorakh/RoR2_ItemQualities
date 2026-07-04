@@ -1,3 +1,7 @@
+## \<Next Version\>
+
+* Quality items/equipments displayed on non-player characters are now colored according to their quality tier.
+
 ## 0.7.8 Changes:
 
 * Fixed survivors being pink or something?

@@ -7,6 +7,29 @@ namespace ItemQualities.Utilities.Extensions
     public static class InventoryExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ItemQualityCounts CalculateEffectiveItemStacks(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
+        {
+            return inventory.CalculateEffectiveItemStacks(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
+        }
+
+        public static ItemQualityCounts CalculateEffectiveItemStacks(this Inventory inventory, ItemQualityGroup itemGroup)
+        {
+            if (!inventory)
+                throw new ArgumentNullException(nameof(inventory));
+
+            if (!itemGroup)
+                return default;
+
+            int baseItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.BaseItemIndex);
+            int uncommonItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.UncommonItemIndex);
+            int rareItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.RareItemIndex);
+            int epicItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.EpicItemIndex);
+            int legendaryItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.LegendaryItemIndex);
+
+            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static ItemQualityCounts GetItemCountsEffective(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             return inventory.GetItemCountsEffective(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
