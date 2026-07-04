@@ -1,10 +1,8 @@
-﻿using ItemQualities.Utilities;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Reflection;
 using UnityEngine;

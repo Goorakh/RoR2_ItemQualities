@@ -41,7 +41,8 @@ namespace ItemQualities.Items
             {
                 return true;
             }
-            return forcespawn; 
+
+            return forcespawn;
         }
     }
 }

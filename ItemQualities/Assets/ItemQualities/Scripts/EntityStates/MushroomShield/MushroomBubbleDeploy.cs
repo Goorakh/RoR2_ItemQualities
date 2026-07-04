@@ -80,7 +80,7 @@ namespace EntityStates.MushroomShield
         {
             if (!isAuthority)
                 return;
-            
+
             if (immediate)
             {
                 outer.SetNextState(new MushroomBubbleFlashOut());

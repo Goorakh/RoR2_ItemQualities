@@ -1,6 +1,5 @@
 ﻿using HG;
 using RoR2;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -18,7 +17,7 @@ namespace ItemQualities
 
         public bool ForceHostAuthority;
 
-		NetworkIdentity _networkIdentity;
+        NetworkIdentity _networkIdentity;
 
         CharacterBody _attachmentBody;
 

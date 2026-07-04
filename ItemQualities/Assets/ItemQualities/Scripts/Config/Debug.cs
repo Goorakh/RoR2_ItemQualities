@@ -1,5 +1,4 @@
 ﻿using BepInEx.Configuration;
-using RiskOfOptions;
 using RiskOfOptions.Options;
 
 namespace ItemQualities

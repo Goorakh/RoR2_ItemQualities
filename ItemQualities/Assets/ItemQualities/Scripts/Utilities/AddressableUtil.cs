@@ -47,7 +47,7 @@ namespace ItemQualities.Utilities
             AssetAsyncReferenceManagerInstance assetAsyncReferenceManager = getOrCreateAssetAsyncReferenceManager(assetType);
             assetAsyncReferenceManager.UnloadAsset(assetReference);
         }
-        
+
         static AssetAsyncReferenceManagerInstance getOrCreateAssetAsyncReferenceManager(Type assetType)
         {
             if (!_assetAsyncReferenceManagerCache.TryGetValue(assetType, out AssetAsyncReferenceManagerInstance assetAsyncReferenceManager))

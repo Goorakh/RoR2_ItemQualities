@@ -1,7 +1,6 @@
 ﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
@@ -100,7 +99,7 @@ namespace ItemQualities.Utilities
                 c.Emit(OpCodes.Brtrue, eventFieldNotNullLabel);
 
                 c.Emit(OpCodes.Pop);
-                
+
                 if (delegateInvokeMethod.ReturnType != typeof(void))
                 {
                     c.Emit(OpCodes.Ldstr, $"Attempting to invoke delegate {eventDelegateField.DeclaringType.FullName}.{eventDelegateField.Name} ({delegateType.FullName}) without a delegate instance, the default value for the return type ({delegateInvokeMethod.ReturnType.FullName}) will be returned");

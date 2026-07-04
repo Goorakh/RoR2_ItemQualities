@@ -39,10 +39,10 @@ namespace ItemQualities.Items
                                            (talisman.RareCount * 2) +
                                            (talisman.EpicCount * 3) +
                                            (talisman.LegendaryCount * 4);
-                    
+
                     EquipmentState equipmentState = attackerInventory.GetEquipment(attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
                     equipmentState.charges = HGMath.ByteSafeAdd(equipmentState.charges, (byte)Math.Min(temporaryCharges, byte.MaxValue));
-                    
+
                     if (equipmentState.charges > attackerInventory.GetEquipmentSlotMaxCharges())
                     {
                         equipmentState.chargeFinishTime = Run.FixedTimeStamp.positiveInfinity;

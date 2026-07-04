@@ -1,5 +1,4 @@
 ﻿using HG;
-using ItemQualities.Utilities.Extensions;
 using R2API.Utils;
 using RoR2;
 using System.Collections.Generic;

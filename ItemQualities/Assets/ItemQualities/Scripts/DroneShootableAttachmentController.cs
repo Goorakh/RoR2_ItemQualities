@@ -285,7 +285,7 @@ namespace ItemQualities
                                         (2f * dronesDropDynamite.RareCount) +
                                         (4f * dronesDropDynamite.EpicCount) +
                                         (6f * dronesDropDynamite.LegendaryCount);
-                
+
                 maxRadius += (5f * dronesDropDynamite.UncommonCount) +
                              (10f * dronesDropDynamite.RareCount) +
                              (15f * dronesDropDynamite.EpicCount) +

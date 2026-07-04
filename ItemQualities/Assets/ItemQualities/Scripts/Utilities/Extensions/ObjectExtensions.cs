@@ -54,7 +54,7 @@ namespace ItemQualities.Utilities.Extensions
                 {
                     Type fieldType = field.FieldType;
                     object fieldValue = field.GetValue(source);
-                    
+
                     if (fieldValue is ICloneable fieldValueCloneable)
                     {
                         fieldValue = fieldValueCloneable.Clone();

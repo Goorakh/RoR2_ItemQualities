@@ -219,7 +219,7 @@ namespace ItemQualities
             {
                 c.Emit(OpCodes.Ldloca, ignoreLowHealthItemIndicesVar);
                 c.EmitDelegate<CheckInventoryCleanupDelegate>(cleanup);
-                
+
                 static void cleanup(ref HashSet<ItemIndex> ignoreLowHealthItemIndices)
                 {
                     if (ignoreLowHealthItemIndices != null)

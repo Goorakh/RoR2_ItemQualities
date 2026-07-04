@@ -1,5 +1,4 @@
 ﻿using RoR2;
-using RoR2.Audio;
 using RoR2.ContentManagement;
 using System;
 using System.Collections.Generic;
@@ -254,7 +253,7 @@ namespace ItemQualities
             CostTypeDef costTypeDef = CostTypeCatalog.GetCostTypeDef(CostTypeIndex);
             return costTypeDef.IsAffordable(Cost, interactor);
         }
-        
+
         bool hasAmbiguousPayment(Interactor interactor)
         {
             CharacterBody activatorBody = interactor ? interactor.GetComponent<CharacterBody>() : null;

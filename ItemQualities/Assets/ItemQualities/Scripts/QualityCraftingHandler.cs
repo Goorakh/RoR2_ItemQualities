@@ -300,7 +300,7 @@ namespace ItemQualities
                 }
 
                 sb.AppendLine($"{craftableDef.name} ({craftableDef.GetPickupDefFromResult()?.pickupIndex ?? PickupIndex.none}):");
-                
+
                 foreach (PickupIndex[] ingredients in allValidIngredientCombinations)
                 {
                     sb.AppendLine("\t" + string.Join(" + ", ingredients));

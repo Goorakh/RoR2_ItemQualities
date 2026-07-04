@@ -1,6 +1,5 @@
 ﻿using BepInEx.Configuration;
 using ItemQualities.Config;
-using RiskOfOptions;
 using RiskOfOptions.OptionConfigs;
 using RiskOfOptions.Options;
 using System.Runtime.CompilerServices;

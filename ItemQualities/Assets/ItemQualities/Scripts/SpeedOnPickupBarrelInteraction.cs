@@ -46,7 +46,7 @@ namespace ItemQualities
         {
             if (_opened)
                 return;
-            
+
             _opened = true;
 
             CharacterBody activatorBody = activator ? activator.GetComponent<CharacterBody>() : null;
@@ -85,7 +85,7 @@ namespace ItemQualities
 
                     pickupComponent.BuffStacks = buffStacks;
                 }
-                
+
                 GravitatePickup gravitatePickup = pickupObj.GetComponentInChildren<GravitatePickup>();
                 if (gravitatePickup)
                 {

@@ -1,5 +1,4 @@
 ﻿using ItemQualities.Utilities.Extensions;
-using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -48,7 +47,7 @@ namespace ItemQualities.Buffs
 
             body.ClearTimedBuffs(ItemQualitiesContent.Buffs.LifeStealSpeed);
         }
-        
+
         static void onBuffFinalStackLostGlobal(CharacterBody body, BuffDef buffDef)
         {
             if (!NetworkServer.active)

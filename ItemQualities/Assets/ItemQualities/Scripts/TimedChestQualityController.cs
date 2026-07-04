@@ -135,8 +135,8 @@ namespace ItemQualities
                 {
                     QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(pickupQualityTier);
 
-                    int effectTransformIndex = -1; 
-                    Transform effectTransform = null; 
+                    int effectTransformIndex = -1;
+                    Transform effectTransform = null;
 
                     ChildLocator modelChildLocator = _modelLocator ? _modelLocator.modelChildLocator : null;
                     if (modelChildLocator)

@@ -160,7 +160,7 @@ namespace ItemQualities.Equipments
                             ItemIndex qualityItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, qualityTier);
                             if (qualityItemIndex == itemIndex)
                                 continue;
-                            
+
                             int qualityItemCountPermanent = ownerBody.inventory.GetItemCountPermanent(qualityItemIndex) + qualityItemCountAccumulator;
                             float qualityTempItemRawValue = ownerBody.inventory.GetTempItemRawValue(qualityItemIndex) + qualityTempItemRawValueAccumulator;
 

@@ -27,7 +27,7 @@ namespace ItemQualities.Items
 
             ParallelProgressCoroutine prefabsLoadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
             prefabsLoadCoroutine.Add(icicleAuraLoad);
-            
+
             yield return prefabsLoadCoroutine;
 
             if (icicleAuraLoad.Status != AsyncOperationStatus.Succeeded || !icicleAuraLoad.Result)

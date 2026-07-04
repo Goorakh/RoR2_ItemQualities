@@ -248,7 +248,7 @@ namespace ItemQualities.Items
 
             if (!damageReport.attackerBody || !damageReport.attackerBody.inventory)
                 return;
-            
+
             ItemQualityCounts sharedSuffering = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SharedSuffering);
             if (sharedSuffering.TotalQualityCount > 0)
             {

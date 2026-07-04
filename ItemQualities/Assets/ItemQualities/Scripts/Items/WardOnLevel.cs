@@ -88,10 +88,11 @@ namespace ItemQualities.Items
                 return;
 
             BuffQualityCounts warbanner = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.Warbanner);
-            args.attackSpeedMultAdd +=  warbanner.UncommonCount * 0.02f +
-                                        warbanner.RareCount * 0.03f +
-                                        warbanner.EpicCount * 0.04f +
-                                        warbanner.LegendaryCount * 0.05f;
+
+            args.attackSpeedMultAdd += (warbanner.UncommonCount * 0.02f) +
+                                       (warbanner.RareCount * 0.03f) +
+                                       (warbanner.EpicCount * 0.04f) +
+                                       (warbanner.LegendaryCount * 0.05f);
         }
 
         private static void WardOnLevelManager_OnCharacterLevelUp(ILContext il)
@@ -138,17 +139,17 @@ namespace ItemQualities.Items
 
         static void addGrowingBuff(GameObject banner, CharacterBody body)
         {
-            ItemQualityCounts WardOnLevel = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WardOnLevel);
-            if (WardOnLevel.TotalQualityCount > 0)
+            ItemQualityCounts wardOnLevel = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WardOnLevel);
+            if (wardOnLevel.TotalQualityCount > 0)
             {
                 banner.GetComponent<BuffWard>().buffDef = null;
                 WardOnLevelGrowingBuff wardOnLevelGrowingBuff = banner.GetComponent<WardOnLevelGrowingBuff>();
                 wardOnLevelGrowingBuff.enabled = true;
-                wardOnLevelGrowingBuff.buff = ItemQualitiesContent.BuffQualityGroups.Warbanner.GetBuffDef(WardOnLevel.HighestQuality);
-                wardOnLevelGrowingBuff.maxStacks = WardOnLevel.UncommonCount * 30 +
-                                                    WardOnLevel.RareCount * 40 +
-                                                    WardOnLevel.EpicCount * 50 +
-                                                    WardOnLevel.LegendaryCount * 60;
+                wardOnLevelGrowingBuff.buff = ItemQualitiesContent.BuffQualityGroups.Warbanner.GetBuffDef(wardOnLevel.HighestQuality);
+                wardOnLevelGrowingBuff.maxStacks = (wardOnLevel.UncommonCount * 30) +
+                                                   (wardOnLevel.RareCount * 40) +
+                                                   (wardOnLevel.EpicCount * 50) +
+                                                   (wardOnLevel.LegendaryCount * 60);
             }
         }
 
@@ -224,8 +225,9 @@ namespace ItemQualities.Items
             {
                 return;
             }
+
             _buffTimer = 1;
-            
+
             BuffTeam(TeamComponent.GetTeamMembers(_teamFilter.teamIndex), _buffWard.radius * _buffWard.radius, base.transform.position);
         }
 

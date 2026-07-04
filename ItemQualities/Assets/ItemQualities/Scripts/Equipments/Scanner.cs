@@ -33,7 +33,7 @@ namespace ItemQualities.Equipments
                 yield break;
 
             GameObject chest2CloakedPrefab = chest2LoadHandle.Result.InstantiateClone("Chest2StealthedVariant");
-            
+
             if (chest2CloakedPrefab.TryGetComponent(out PurchaseInteraction purchaseInteraction))
             {
                 purchaseInteraction.costType = CostTypeIndex.None;

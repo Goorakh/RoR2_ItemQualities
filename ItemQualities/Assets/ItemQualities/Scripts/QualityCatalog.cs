@@ -119,7 +119,7 @@ namespace ItemQualities
                 {
                     if (itemIndex == ItemIndex.None)
                         return;
-                    
+
                     if (_itemIndexToQualityGroupIndex[(int)itemIndex] != ItemQualityGroupIndex.Invalid)
                     {
                         Log.Error($"Item {ItemCatalog.GetItemDef(itemIndex)} is registered in several quality groups, ({GetItemQualityGroup(_itemIndexToQualityGroupIndex[(int)itemIndex])} & {GetItemQualityGroup(itemQualityGroupIndex)})");
@@ -394,7 +394,7 @@ namespace ItemQualities
             {
                 if (string.IsNullOrEmpty(qualityNameToken))
                     return;
-                
+
                 foreach (Language language in Language.GetAllLanguages())
                 {
                     if (!language.TokenIsRegistered(qualityNameToken))
@@ -778,7 +778,7 @@ namespace ItemQualities
 
                 iconTexture.Apply();
             }
-            
+
             return iconTexture;
         }
     }

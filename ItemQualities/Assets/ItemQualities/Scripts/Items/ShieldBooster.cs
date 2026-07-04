@@ -81,7 +81,7 @@ namespace ItemQualities.Items
                     float shieldBoosterBuffFraction = shieldBoosterBuff.TotalQualityCount / 100f;
                     if (shieldBoosterBuffFraction > 0)
                     {
-                        float maxRadiusIncrease = (5f * shieldBooster.UncommonCount) + 
+                        float maxRadiusIncrease = (5f * shieldBooster.UncommonCount) +
                                                   (12f * shieldBooster.RareCount) +
                                                   (18f * shieldBooster.EpicCount) +
                                                   (25f * shieldBooster.LegendaryCount);

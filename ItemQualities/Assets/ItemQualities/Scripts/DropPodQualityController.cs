@@ -69,6 +69,7 @@ namespace ItemQualities
             {
                 return true;
             }
+
             return false;
         }
 
@@ -89,13 +90,13 @@ namespace ItemQualities
             GenericPickupController pickupController = worldPickup.GetComponent<GenericPickupController>();
             if (!pickupController || pickupController.pickup == null)
                 return;
-            
+
             Transform qualityPickupDisplay = worldPickup.Find("PickupDisplay/QualityPickupDisplay(Clone)");
             if (qualityPickupDisplay)
             {
                 qualityPickupDisplay.gameObject.SetActive(true);
             }
-            
+
             EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(pickupController.pickup.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
             if (QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None)
             {

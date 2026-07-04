@@ -168,7 +168,7 @@ namespace ItemQualities
                         {
                             if (qualityWeight <= 0f)
                                 return;
-                            
+
                             PickupIndex qualityPickupIndex = QualityCatalog.GetPickupIndexOfQuality(pickupIndex, qualityTier);
                             if (qualityPickupIndex == PickupIndex.none)
                                 return;

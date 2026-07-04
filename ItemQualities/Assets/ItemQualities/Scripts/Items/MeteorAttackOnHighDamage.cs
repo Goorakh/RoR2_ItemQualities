@@ -56,7 +56,7 @@ namespace ItemQualities.Items
         static float getMeteorRadius(float baseRadius, CharacterBody attackerBody)
         {
             float radius = baseRadius;
-            
+
             if (attackerBody && attackerBody.inventory)
             {
                 ItemQualityCounts meteorAttackOnHighDamage = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MeteorAttackOnHighDamage);

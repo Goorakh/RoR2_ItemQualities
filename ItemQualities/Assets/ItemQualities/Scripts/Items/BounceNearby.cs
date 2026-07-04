@@ -44,7 +44,7 @@ namespace ItemQualities.Items
             c.Emit(OpCodes.Ldarg, damageInfoParameter);
             c.Emit(OpCodes.Ldloc, foundTargetsListVar);
             c.EmitDelegate<Action<DamageInfo, List<HurtBox>>>(tryProcQualityHook);
-            
+
             static void tryProcQualityHook(DamageInfo damageInfo, List<HurtBox> foundTargets)
             {
                 if (!NetworkServer.active)

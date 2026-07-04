@@ -106,7 +106,7 @@ namespace ItemQualities
         {
             if (!BossGroup || !BossGroup.combatSquad)
                 return 0f;
-            
+
             if (BossGroup.combatSquad.defeatedServer)
                 return 1f;
 

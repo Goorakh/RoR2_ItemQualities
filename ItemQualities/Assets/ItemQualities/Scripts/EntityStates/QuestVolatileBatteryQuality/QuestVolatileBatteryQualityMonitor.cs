@@ -17,7 +17,7 @@ namespace EntityStates.QuestVolatileBatteryQuality
     {
         [NonSerialized]
         public static GameObject qualityBatteryPreDetonationEffect;
-        
+
         GameObject _vfxInstance;
 
         [ContentInitializer]
@@ -27,7 +27,7 @@ namespace EntityStates.QuestVolatileBatteryQuality
             volatileBatteryPreDetonationLoad.OnSuccess(volatileBatteryPreDetonationPrefab =>
             {
                 qualityBatteryPreDetonationEffect = volatileBatteryPreDetonationPrefab.InstantiateClone("QualityVolatileBatteryPreDetonation", false);
-                
+
                 if (qualityBatteryPreDetonationEffect.TryGetComponent<ShakeEmitter>(out ShakeEmitter shakeEmitter))
                 {
                     Destroy(shakeEmitter);

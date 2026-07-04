@@ -67,7 +67,7 @@ namespace ItemQualities.Equipments
 
             if (buffGroupIndex != ItemQualitiesContent.BuffQualityGroups.FullCrit.GroupIndex)
                 return;
-            
+
             for (QualityTier buffQualityTier = QualityTier.None; buffQualityTier < QualityTier.Count; buffQualityTier++)
             {
                 BuffIndex qualityBuffIndex = QualityCatalog.GetBuffIndexOfQuality(buffIndex, buffQualityTier);
@@ -100,7 +100,7 @@ namespace ItemQualities.Equipments
 
             if (buffGroupIndex != ItemQualitiesContent.BuffQualityGroups.FullCrit.GroupIndex || qualityTier == QualityTier.None)
                 return;
-            
+
             for (QualityTier buffQualityTier = 0; buffQualityTier < QualityTier.Count; buffQualityTier++)
             {
                 BuffIndex qualityBuffIndex = QualityCatalog.GetBuffIndexOfQuality(buffIndex, buffQualityTier);

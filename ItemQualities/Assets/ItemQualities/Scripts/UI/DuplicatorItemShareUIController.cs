@@ -1,5 +1,4 @@
-﻿using HG;
-using ItemQualities.Items;
+﻿using ItemQualities.Items;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -92,7 +91,7 @@ namespace ItemQualities.UI
                 QualityDuplicatorMinionInventoryController.OnOwnerDiscoveredGlobal += onDuplicatorMinionInventoryOwnerDiscoveredGlobal;
                 QualityDuplicatorMinionInventoryController.OnOwnerLostGlobal += onDuplicatorMinionInventoryOwnerLostGlobal;
             }
-            
+
             setCurrentMinionInventoryController(QualityDuplicatorMinionInventoryController.FindMinionInventoryController(_currentTargetMaster));
         }
 

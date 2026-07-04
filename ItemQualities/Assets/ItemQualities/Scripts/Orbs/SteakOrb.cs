@@ -34,7 +34,7 @@ namespace ItemQualities.Orbs
                     origin = origin,
                     genericFloat = duration
                 };
-                
+
                 effectData.SetHurtBoxReference(target);
 
                 EffectManager.SpawnEffect(_orbEffectIndex, effectData, true);

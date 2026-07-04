@@ -216,6 +216,7 @@ namespace ItemQualities.Items
                         _ => 0
                     };
                 }
+
                 return chance;
             }
         }

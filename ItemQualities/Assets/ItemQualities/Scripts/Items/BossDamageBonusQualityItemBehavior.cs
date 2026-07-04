@@ -98,7 +98,7 @@ namespace ItemQualities.Items
             void Awake()
             {
                 _body = GetComponent<CharacterBody>();
-                
+
                 _miniBossBodyAttachmentObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.MiniBossBodyAttachment);
 
                 NetworkedBodyAttachment miniBossAttachment = _miniBossBodyAttachmentObj.GetComponent<NetworkedBodyAttachment>();

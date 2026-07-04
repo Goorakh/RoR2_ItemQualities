@@ -119,14 +119,15 @@ namespace ItemQualities.Items
                 if (isMiniBoss)
                 {
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
-                    if (attackerBody && attackerBody.master && attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats)) {
+                    if (attackerBody && attackerBody.master && attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+                    {
                         ItemQualityCounts bossDamageBonus = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
 
-                        damageMultiplier +=  masterExtraStats.BossDamageBonusTicks * (
-                                            bossDamageBonus.UncommonCount * 0.01f +
-                                            bossDamageBonus.EpicCount * 0.0125f +
-                                            bossDamageBonus.RareCount * 0.015f +
-                                            bossDamageBonus.LegendaryCount * 0.02f);
+                        damageMultiplier += masterExtraStats.BossDamageBonusTicks * (
+                                            (bossDamageBonus.UncommonCount * 0.01f) +
+                                            (bossDamageBonus.EpicCount * 0.0125f) +
+                                            (bossDamageBonus.RareCount * 0.015f) +
+                                            (bossDamageBonus.LegendaryCount * 0.02f));
                     }
                 }
 

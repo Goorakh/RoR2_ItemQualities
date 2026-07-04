@@ -1,4 +1,3 @@
-using EntityStates.QuestVolatileBattery;
 using EntityStates.QuestVolatileBatteryQuality;
 using HG;
 using ItemQualities.ContentManagement;
@@ -116,11 +115,11 @@ namespace ItemQualities.Equipments
             c.EmitDelegate<Func<EquipmentSlot, EquipmentIndex, bool>>(shouldTargetEnemy);
             c.Emit(OpCodes.Brtrue, targetEnemyLabel);
 
-            bool shouldTargetEnemy(EquipmentSlot equipmentSlot, EquipmentIndex targetingEquipmentIndex)
+            static bool shouldTargetEnemy(EquipmentSlot equipmentSlot, EquipmentIndex targetingEquipmentIndex)
             {
                 if (equipmentSlot.GetActiveEquipmentQualityTier() == QualityTier.None)
                     return false;
-                
+
                 EquipmentQualityGroupIndex targetingEquipmentGroup = QualityCatalog.FindEquipmentQualityGroupIndex(targetingEquipmentIndex);
                 if (targetingEquipmentGroup == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex)
                 {
