@@ -198,7 +198,8 @@ namespace ItemQualities.Items
             }
         }
     }
-    public class WardOnLevelGrowingBuff : NetworkBehaviour
+
+    public sealed class WardOnLevelGrowingBuff : NetworkBehaviour
     {
         float _buffTimer;
         TeamFilter _teamFilter;

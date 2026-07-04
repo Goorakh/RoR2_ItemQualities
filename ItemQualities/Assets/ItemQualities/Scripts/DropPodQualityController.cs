@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class DropPodQualityController : MonoBehaviour
+    public sealed class DropPodQualityController : MonoBehaviour
     {
         bool appliedQuality;
         bool hidQuality;
