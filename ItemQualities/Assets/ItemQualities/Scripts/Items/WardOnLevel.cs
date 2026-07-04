@@ -228,7 +228,7 @@ namespace ItemQualities.Items
 
             _buffTimer = 1;
 
-            BuffTeam(TeamComponent.GetTeamMembers(_teamFilter.teamIndex), _buffWard.radius * _buffWard.radius, base.transform.position);
+            BuffTeam(TeamComponent.GetTeamMembers(_teamFilter.teamIndex), _buffWard.radius * _buffWard.radius, transform.position);
         }
 
         private void BuffTeam(IEnumerable<TeamComponent> recipients, float radiusSqr, Vector3 currentPosition)
@@ -247,6 +247,7 @@ namespace ItemQualities.Items
                 CharacterBody characterBody = recipient.body;
                 if (!characterBody)
                     continue;
+
                 if (characterBody.healthComponent && characterBody.healthComponent.alive)
                 {
                     characterBody.AddTimedBuff(buff, 1.5f, maxStacks);
