@@ -7,8 +7,8 @@ namespace ItemQualities
 {
     public static partial class Configs
     {
-        const string ModGuid = ItemQualitiesPlugin.PluginGUID;
-        const string ModName = "Quality";
+        private const string ModGuid = ItemQualitiesPlugin.PluginGUID;
+        private const string ModName = "Quality";
 
         internal static void Init(ConfigFile configFile)
         {
@@ -23,6 +23,13 @@ namespace ItemQualities
 
             configFile.SaveOnConfigSet = true;
             configFile.Save();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static void addOption<TOption>(TOption option)
+            where TOption : RiskOfOptions.Options.BaseOption
+        {
+            ModSettingsManager.AddOption(option, ModGuid, ModName);
         }
 
         [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]

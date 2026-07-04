@@ -11,7 +11,7 @@ namespace ItemQualities
     {
         public static class General
         {
-            const string SectionName = "General";
+            private const string SectionName = "General";
 
             public static ConfigEntry<float> DifficultyCoefficientMultiplier { get; private set; }
 
@@ -27,19 +27,19 @@ namespace ItemQualities
             [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
             internal static void InitRiskOfOptions()
             {
-                ModSettingsManager.AddOption(new SliderOption(DifficultyCoefficientMultiplier, new SliderConfig
+                addOption(new SliderOption(DifficultyCoefficientMultiplier, new SliderConfig
                 {
                     min = 1f,
                     max = 5f,
                     FormatString = "{0:0.##}x"
-                }), ModGuid, ModName);
+                }));
 
-                ModSettingsManager.AddOption(new SliderOption(GlobalQualityChance, new SliderConfig
+                addOption(new SliderOption(GlobalQualityChance, new SliderConfig
                 {
                     min = 0f,
                     max = 100f,
                     FormatString = "{0:0.#}%"
-                }), ModGuid, ModName);
+                }));
             }
         }
     }

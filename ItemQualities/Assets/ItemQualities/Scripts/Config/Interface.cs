@@ -21,7 +21,7 @@ namespace ItemQualities
             [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
             internal static void InitRiskOfOptions()
             {
-                ModSettingsManager.AddOption(new CheckBoxOption(EnableQualityItemSorting), ModGuid, ModName);
+                addOption(new CheckBoxOption(EnableQualityItemSorting));
             }
         }
     }
