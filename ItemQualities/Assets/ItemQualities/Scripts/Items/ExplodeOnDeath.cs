@@ -45,7 +45,7 @@ namespace ItemQualities.Items
         static GameObject _halcyoniteTriLaserImpactScaleFixPrefab;
 
         static GameObject _impBossBlinkScaleFixPrefab;
-        
+
         static GameObject _impBossGroundPoundSlamScaleFixPrefab;
 
         static GameObject _mageFlyUpBlinkScaleFixPrefab;
@@ -127,7 +127,7 @@ namespace ItemQualities.Items
                 {
                     yield break;
                 }
-                
+
                 if (stealthModeConfigurationLoad.Result.TryGetFieldValue(nameof(EntityStates.Bandit2.StealthMode.blastAttackRadius), out float radiusValue))
                 {
                     EffectDef smokebombFixedScaling = EffectScalingFixer.GetOrCreateFixedScalingCopy(smokeBombPrefabLoad.Result, radiusValue);
@@ -169,7 +169,7 @@ namespace ItemQualities.Items
                 if (!impactEffectLoad.AssertLoaded("SimpleLightningStrikeImpact"))
                     yield break;
 
-                EffectDef impactEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(impactEffectLoad.Result,SimpleLightningStrikeOrbRadius);
+                EffectDef impactEffectScaleFix = EffectScalingFixer.GetOrCreateFixedScalingCopy(impactEffectLoad.Result, SimpleLightningStrikeOrbRadius);
                 if (impactEffectScaleFix != null)
                 {
                     _simpleLightningStrikeScalingFixPrefab = impactEffectScaleFix.prefab;
@@ -2209,7 +2209,7 @@ namespace ItemQualities.Items
             c.Emit(OpCodes.Dup);
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Action<EffectData, EntityStates.JunkCube.DeathState>>(setEffectScale);
-            
+
             static void setEffectScale(EffectData effectData, EntityStates.JunkCube.DeathState self)
             {
                 if (effectData == null || self == null)
@@ -2358,7 +2358,7 @@ namespace ItemQualities.Items
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getPassenger);
-            
+
             static CharacterBody getPassenger(MonoBehaviour component)
             {
                 VehicleSeat vehicleSeat = tryGetAsComponent<VehicleSeat>(component);

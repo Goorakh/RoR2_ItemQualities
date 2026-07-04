@@ -15,10 +15,10 @@ namespace ItemQualities
 
         [FieldOffset(sizeof(int) * 1)]
         public int UncommonCount;
-        
+
         [FieldOffset(sizeof(int) * 2)]
         public int RareCount;
-        
+
         [FieldOffset(sizeof(int) * 3)]
         public int EpicCount;
 
@@ -131,13 +131,13 @@ namespace ItemQualities
 
         [FieldOffset(0)]
         public float BaseItemCount;
-        
+
         [FieldOffset(sizeof(int) * 1)]
         public float UncommonCount;
-        
+
         [FieldOffset(sizeof(int) * 2)]
         public float RareCount;
-        
+
         [FieldOffset(sizeof(int) * 3)]
         public float EpicCount;
 

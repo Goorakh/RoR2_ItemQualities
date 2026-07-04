@@ -58,7 +58,7 @@ namespace ItemQualities.Items
 
             if (!recipient.TryGetComponent(out SkillLocator skillLocator))
                 return;
-            
+
             List<GenericSkill> skills = new List<GenericSkill>(4);
 
             void tryAddSkill(GenericSkill genericSkill)

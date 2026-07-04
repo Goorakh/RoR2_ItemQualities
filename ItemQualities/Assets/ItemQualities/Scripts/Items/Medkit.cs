@@ -1,5 +1,4 @@
-﻿using HG;
-using ItemQualities.ContentManagement;
+﻿using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
@@ -63,7 +62,7 @@ namespace ItemQualities.Items
                 if (!medkitHealingWard)
                 {
                     GameObject healingWardInstance = GameObject.Instantiate(_healingWardPrefab, interactableObject.transform.position, Quaternion.identity);
-                    
+
                     medkitHealingWard = healingWardInstance.GetComponent<MedkitHealingWardController>();
 
                     TeamFilter teamFilter = healingWardInstance.GetComponent<TeamFilter>();

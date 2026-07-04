@@ -184,7 +184,7 @@ namespace ItemQualities
                     _searchedSceneIndices.Add(currentSceneIndex);
 
                     Dictionary<string, InteractableAppearenceInfo> appearenceInfoByInteractableName = new Dictionary<string, InteractableAppearenceInfo>(TestInteractableNames.Length);
-                    
+
                     foreach (PurchaseInteraction purchaseInteraction in InstanceTracker.GetInstancesList<PurchaseInteraction>())
                     {
                         string interactableObjectName = purchaseInteraction.name;

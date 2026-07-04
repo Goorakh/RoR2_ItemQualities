@@ -181,7 +181,7 @@ namespace ItemQualities.Equipments
                 GameObject cloneMasterPrefab = MasterCatalog.GetMasterPrefab(cloneMasterIndex);
                 if (!cloneMasterPrefab)
                     return;
-                
+
                 Vector3 cloneSpawnPosition = targetBody.footPosition;
                 Quaternion cloneSpawnRotation = ((Component)targetBody).transform.rotation;
                 if (targetBody.characterDirection)

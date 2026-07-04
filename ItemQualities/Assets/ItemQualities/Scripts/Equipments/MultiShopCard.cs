@@ -8,7 +8,6 @@ using RoR2.Audio;
 using RoR2.DirectionalSearch;
 using RoR2.UI;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace ItemQualities.Equipments

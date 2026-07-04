@@ -53,7 +53,7 @@ namespace ItemQualities.Items
             change_color(_featherEffectLast.transform.Find("Ring"), new Color(1, 0.05f, 0));
             args.ContentPack.effectDefs.Add(new EffectDef(_featherEffectLast));
 
-            void change_color(Transform child, Color color)
+            static void change_color(Transform child, Color color)
             {
                 if (!child)
                     return;

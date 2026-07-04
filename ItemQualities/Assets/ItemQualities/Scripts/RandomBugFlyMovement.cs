@@ -82,7 +82,7 @@ namespace ItemQualities
                 case State.Moving:
                     _lastPosition = transform.localPosition;
                     _targetPosition = _basePosition + (Random.insideUnitSphere * MaxDistance);
-                    Vector3 moveVector = (_lastPosition - _targetPosition);
+                    Vector3 moveVector = _lastPosition - _targetPosition;
                     _moveTotalDuration = moveVector.magnitude / MoveSpeed;
                     _timer = _moveTotalDuration;
 

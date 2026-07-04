@@ -92,7 +92,7 @@ namespace ItemQualities.Items
                 float estimatedTimeToLeavePickupRadius;
                 if (Body.moveSpeed > 0)
                 {
-                    estimatedTimeToLeavePickupRadius = (gravitateSize / Body.moveSpeed);
+                    estimatedTimeToLeavePickupRadius = gravitateSize / Body.moveSpeed;
                 }
                 else
                 {

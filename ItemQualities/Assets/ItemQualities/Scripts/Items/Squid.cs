@@ -49,7 +49,7 @@ namespace ItemQualities.Items
             int squidUpgradeOnKillCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill);
             if (squidUpgradeOnKillCount == 0)
                 return;
-            
+
             int maxUpgradeLevel = Mathf.Min(squidUpgradeOnKillCount, (int)QualityTier.Count);
 
             int upgradeCount = attackerInventory.GetItemCountEffective(ItemQualitiesContent.Items.SquidUpgradeHidden);

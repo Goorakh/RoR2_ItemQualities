@@ -30,7 +30,7 @@ namespace ItemQualities.Utilities.Extensions
             RuleDef ruleDef = RuleCatalog.FindRuleDef("Items." + ItemCatalog.GetItemDef(itemIndex).name);
             if (ruleDef == null)
                 return true;
-            
+
             RuleChoiceDef ruleChoiceDef = ruleBook.GetRuleChoice(ruleDef);
             if (ruleChoiceDef == null)
                 return true;

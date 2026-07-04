@@ -333,7 +333,7 @@ namespace ItemQualities
 
             return pickupPassesFilter;
         }
-        
+
         static UniquePickup PickupDropTable_GeneratePickup(On.RoR2.PickupDropTable.orig_GeneratePickup orig, PickupDropTable self, Xoroshiro128Plus rng)
         {
             UniquePickup dropPickupIndex = orig(self, rng);

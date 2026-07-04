@@ -119,7 +119,7 @@ namespace ItemQualities
             c.Emit(OpCodes.Ldloc, voidBatterySpawnRequestVar);
             c.Emit(OpCodes.Ldloc, eventsControllerVar);
             c.EmitDelegate<Action<DirectorSpawnRequest, VoidStageMissionControllerEvents>>(addVoidBatterySpawnedEventListener);
-            
+
             static void addVoidBatterySpawnedEventListener(DirectorSpawnRequest voidBatterySpawnRequest, VoidStageMissionControllerEvents eventsController)
             {
                 if (eventsController)

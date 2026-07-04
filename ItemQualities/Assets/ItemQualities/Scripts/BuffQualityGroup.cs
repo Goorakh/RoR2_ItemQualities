@@ -1,5 +1,4 @@
-﻿using HG;
-using ItemQualities.ContentManagement;
+﻿using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;

@@ -1,11 +1,7 @@
 ﻿using ItemQualities.Orbs;
 using ItemQualities.Utilities.Extensions;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using R2API;
 using RoR2;
 using RoR2.Orbs;
-using System;
 using UnityEngine;
 using UnityEngine.Networking;
 

@@ -226,7 +226,7 @@ namespace ItemQualities.Equipments
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc, damageReportVar);
                 c.EmitDelegate<Action<DeathProjectileComponent, DamageReport>>(modifyDeathReport);
-                
+
                 static void modifyDeathReport(DeathProjectileComponent deathProjectileComponent, DamageReport damageReport)
                 {
                     QualityTier qualityTier = QualityTierContext.GetQualityTier(deathProjectileComponent.gameObject);

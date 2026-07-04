@@ -1,5 +1,4 @@
-﻿using BepInEx;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.UI;
 using RoR2BepInExPack.GameAssetPaths.Version_1_39_0;

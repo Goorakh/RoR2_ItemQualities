@@ -7,7 +7,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
 using RoR2;
-using RoR2.EntityLogic;
 using RoR2.UI;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;

@@ -92,7 +92,7 @@ namespace ItemQualities.Items
                 _treebotAiSpawnCard.forbiddenFlags = NodeFlags.NoCharacterSpawn;
                 _treebotAiSpawnCard.directorCreditCost = 0;
                 _treebotAiSpawnCard.occupyPosition = false;
-                
+
                 if (treebotAiMaster.bodyPrefab &&
                     treebotAiMaster.bodyPrefab.TryGetComponent(out CharacterBody treebotBody))
                 {

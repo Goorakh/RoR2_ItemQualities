@@ -3,7 +3,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace ItemQualities.Equipments

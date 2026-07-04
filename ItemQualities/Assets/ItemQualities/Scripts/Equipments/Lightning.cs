@@ -47,7 +47,7 @@ namespace ItemQualities.Equipments
             c.Emit(OpCodes.Dup);
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Action<LightningStrikeOrb, EquipmentSlot>>(setOrbQualityTier);
-            
+
             static void setOrbQualityTier(LightningStrikeOrb lightningStrikeOrb, EquipmentSlot equipmentSlot)
             {
                 if (lightningStrikeOrb == null || !equipmentSlot)

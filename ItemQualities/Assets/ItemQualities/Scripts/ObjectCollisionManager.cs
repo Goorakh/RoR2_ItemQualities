@@ -1,5 +1,4 @@
 ﻿using HG;
-using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.Projectile;
 using System;
@@ -147,7 +146,7 @@ namespace ItemQualities
         {
             if (!otherCollider)
                 return;
-            
+
             foreach (Collider collider in _ourColliders)
             {
                 if (collider)

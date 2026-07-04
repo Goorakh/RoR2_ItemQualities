@@ -34,7 +34,7 @@ namespace ItemQualities.Items
                 Log.Error("Failed to find patch location");
                 return;
             }
-            
+
             c.Goto(foundCursors[2].Next, MoveType.Before); // stfld GenericDamageOrb.damageValue
 
             c.Emit(OpCodes.Ldarg, damageInfoParameter);

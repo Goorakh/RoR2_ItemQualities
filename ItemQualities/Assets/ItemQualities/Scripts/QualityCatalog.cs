@@ -119,7 +119,7 @@ namespace ItemQualities
                 {
                     if (itemIndex == ItemIndex.None)
                         return;
-                    
+
                     if (_itemIndexToQualityGroupIndex[(int)itemIndex] != ItemQualityGroupIndex.Invalid)
                     {
                         Log.Error($"Item {ItemCatalog.GetItemDef(itemIndex)} is registered in several quality groups, ({GetItemQualityGroup(_itemIndexToQualityGroupIndex[(int)itemIndex])} & {GetItemQualityGroup(itemQualityGroupIndex)})");
@@ -394,7 +394,7 @@ namespace ItemQualities
             {
                 if (string.IsNullOrEmpty(qualityNameToken))
                     return;
-                
+
                 foreach (Language language in Language.GetAllLanguages())
                 {
                     if (!language.TokenIsRegistered(qualityNameToken))
@@ -700,6 +700,23 @@ namespace ItemQualities
             return a < b ? a : b;
         }
 
+        public static bool IsQualityRampTexture(Texture texture)
+        {
+            if (!ReferenceEquals(texture, null))
+            {
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                {
+                    QualityTierDef qualityTierDef = GetQualityTierDef(qualityTier);
+                    if (ReferenceEquals(qualityTierDef.colorRampTexture, texture))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public static Texture2D CreateQualityIconTexture(Texture2D baseIconTexture, QualityTier qualityTier, bool useConsumedIcon = false)
         {
             return CreateQualityIconTexture(baseIconTexture, qualityTier, Color.white, useConsumedIcon);
@@ -761,7 +778,7 @@ namespace ItemQualities
 
                 iconTexture.Apply();
             }
-            
+
             return iconTexture;
         }
     }

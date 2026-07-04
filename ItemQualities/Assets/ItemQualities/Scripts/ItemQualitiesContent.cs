@@ -1,4 +1,3 @@
-using HG;
 using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
@@ -594,7 +593,7 @@ namespace ItemQualities
             public static ItemQualityGroup Icicle;
 
             public static ItemQualityGroup OutOfCombatArmor;
-            
+
             public static ItemQualityGroup BoostAllStats;
 
             public static ItemQualityGroup GhostOnKill;
@@ -608,7 +607,7 @@ namespace ItemQualities
             public static ItemQualityGroup CritDamage;
 
             public static ItemQualityGroup IncreaseHealing;
-            
+
             public static ItemQualityGroup NovaOnHeal;
 
             public static ItemQualityGroup LaserTurbine;
@@ -618,7 +617,7 @@ namespace ItemQualities
             public static ItemQualityGroup BossDamageBonus;
 
             public static ItemQualityGroup PermanentDebuffOnHit;
-            
+
             public static ItemQualityGroup SpeedBoostPickup;
 
             public static ItemQualityGroup BounceNearby;
@@ -628,7 +627,7 @@ namespace ItemQualities
             public static ItemQualityGroup Talisman;
 
             public static ItemQualityGroup DroneWeapons;
-            
+
             public static ItemQualityGroup BarrageOnBoss;
 
             public static ItemQualityGroup CloverVoid;
@@ -638,7 +637,7 @@ namespace ItemQualities
             public static ItemQualityGroup BoostDamageVoid;
 
             public static ItemQualityGroup IgniteOnKill;
-            
+
             public static ItemQualityGroup BleedOnHitVoid;
 
             public static ItemQualityGroup VoidMegaCrabItem;
@@ -650,7 +649,7 @@ namespace ItemQualities
             public static ItemQualityGroup BearVoid;
 
             public static ItemQualityGroup ArmorReductionOnHit;
-            
+
             public static ItemQualityGroup SlowOnHitVoid;
 
             public static ItemQualityGroup ElementalRingVoid;
@@ -784,13 +783,13 @@ namespace ItemQualities
             public static EquipmentQualityGroup Jetpack;
 
             public static EquipmentQualityGroup Parry;
-            
+
             public static EquipmentQualityGroup HealAndRevive;
 
             public static EquipmentQualityGroup HealAndReviveConsumed;
 
             public static EquipmentQualityGroup QuestVolatileBattery;
-            
+
             public static EquipmentQualityGroup Fruit;
 
             public static EquipmentQualityGroup Gateway;
@@ -841,7 +840,7 @@ namespace ItemQualities
             public static BuffQualityGroup LifeSteal;
 
             public static BuffQualityGroup BugBlock;
-            
+
             public static BuffQualityGroup Warbanner;
 
             public static BuffQualityGroup DelayedDamageDebuff;
@@ -878,7 +877,7 @@ namespace ItemQualities
             public static BuffDef LifeStealSpeed;
 
             public static BuffDef ScorpionVenom;
-            
+
             public static BuffDef Immobilized;
 
             public static BuffDef ConstructBubble;
@@ -901,7 +900,7 @@ namespace ItemQualities
             public static GameObject BugBlockProcEffect;
 
             public static GameObject BugOrbEffect;
-            
+
             public static GameObject HitlistMarkersUI;
 
             public static GameObject ParryProjectileDisplayUI;
@@ -950,7 +949,7 @@ namespace ItemQualities
             public static GameObject HealAndReviveSproutAttachment;
 
             public static GameObject QuestVolatileBatteryPickup;
-            
+
             public static GameObject SprintArmorDashAttachment;
 
             public static GameObject GatewayQualityAttachment;

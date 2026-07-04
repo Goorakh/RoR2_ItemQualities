@@ -120,7 +120,7 @@ namespace ItemQualities
             costTypeDefs.Add(_redItemQualityCostDef);
             costTypeDefs.Add(_bossItemQualityCostDef);
         }
-        
+
         static bool isAffordableQualityItems(CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context)
         {
             CharacterBody activatorBody = context.activator ? context.activator.GetComponent<CharacterBody>() : null;

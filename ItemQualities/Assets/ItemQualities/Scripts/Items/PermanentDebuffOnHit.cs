@@ -74,10 +74,10 @@ namespace ItemQualities.Items
             if (permanentDebuffOnHit.TotalQualityCount <= 0)
                 return;
 
-            float damageCoefficient = permanentDebuffOnHit.UncommonCount * 0.5f +
-                                        permanentDebuffOnHit.RareCount * 1f +
-                                        permanentDebuffOnHit.EpicCount * 1.5f +
-                                        permanentDebuffOnHit.LegendaryCount * 2f;
+            float damageCoefficient = (permanentDebuffOnHit.UncommonCount * 0.5f) +
+                                      (permanentDebuffOnHit.RareCount * 1f) +
+                                      (permanentDebuffOnHit.EpicCount * 1.5f) +
+                                      (permanentDebuffOnHit.LegendaryCount * 2f);
 
             int activeDots = 0;
             for (int i = 0; i < DotAPI.VanillaDotCount + DotAPI.CustomDotCount; i++)

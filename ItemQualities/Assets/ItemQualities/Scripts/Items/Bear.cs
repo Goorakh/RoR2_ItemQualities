@@ -69,10 +69,10 @@ namespace ItemQualities.Items
                                                                       (0.1f * bear.EpicCount) +
                                                                       (0.15f * bear.LegendaryCount);
 
-                        int maxDuration =   (3 * bear.UncommonCount) +
-                                            (6 * bear.RareCount) +
-                                            (9 * bear.EpicCount) +
-                                            (12 * bear.LegendaryCount);
+                        int maxDuration = (3 * bear.UncommonCount) +
+                                          (6 * bear.RareCount) +
+                                          (9 * bear.EpicCount) +
+                                          (12 * bear.LegendaryCount);
 
                         float invincibilityDuration = Math.Min(damageFraction * 100f * invincibilityDurationPerPercentDamage, maxDuration);
                         if (invincibilityDuration >= 1f / 30f)

@@ -12,7 +12,7 @@ namespace ItemQualities.Items
     {
         [SystemInitializer]
         static void Init()
-        {      
+        {
             IL.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += HeadstompersFall_DoStompExplosionAuthority;
         }
 

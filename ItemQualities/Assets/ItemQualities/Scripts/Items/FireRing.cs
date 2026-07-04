@@ -49,7 +49,7 @@ namespace ItemQualities.Items
 
             ProjectileGhostController ghostController = fireTornadoGhost.GetComponent<ProjectileGhostController>();
             ghostController.inheritScaleFromProjectile = true;
-            
+
             ParticleSystem[] fireTornadoParticleSystems = fireTornadoGhost.GetComponentsInChildren<ParticleSystem>(true);
             foreach (ParticleSystem particleSystem in fireTornadoParticleSystems)
             {
