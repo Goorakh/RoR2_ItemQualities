@@ -1,5 +1,8 @@
 ## \<Next Version\>
 
+* Reworks (Click to reveal):
+    * <details><summary>Shattering Justice</summary> Fires a short range piercing beam every 5th primary skill use.</details>
+
 * Quality items/equipments displayed on non-player characters are now colored according to their quality tier.
 
 ## 0.7.8 Changes:

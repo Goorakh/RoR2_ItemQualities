@@ -1,6 +1,8 @@
 ﻿//#undef UNITY_EDITOR // Uncomment for testing UnityEventInterface in editor environment
 
+using RoR2;
 using System;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;
@@ -43,6 +45,23 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(srcComponent));
 
             return ComponentCache.TryGetComponent(srcComponent.gameObject, out T component) ? component : null;
+        }
+
+        public static bool ExpectComponent<T>(this GameObject gameObject, out T component, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        {
+            if (gameObject.TryGetComponent(out component))
+            {
+                return true;
+            }
+
+            Log.Error($"Expected component of type {typeof(T).FullName} on object {Util.GetGameObjectHierarchyName(gameObject)}", callerPath, callerMemberName, callerLineNumber);
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool ExpectComponent<T>(this Component srcComponent, out T component, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        {
+            return srcComponent.gameObject.ExpectComponent(out component, callerPath, callerMemberName, callerLineNumber);
         }
 
         static void validatePersistentListener(UnityEventBase unityEvent, Delegate action)
