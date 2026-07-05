@@ -26,7 +26,7 @@ namespace ItemQualities.Networking
         {
             writer.Write(_body.gameObject);
             writer.WriteBuffIndex(_buffIndex);
-            writer.WritePackedUInt32((uint)_buffIndex);
+            writer.WritePackedUInt32((uint)_buffCount);
         }
 
         void ISerializableObject.Deserialize(NetworkReader reader)

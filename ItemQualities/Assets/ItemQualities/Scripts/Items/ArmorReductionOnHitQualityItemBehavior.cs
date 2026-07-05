@@ -69,6 +69,7 @@ namespace ItemQualities.Items
 
         private void OnEnable()
         {
+            attackCounterAuthority = 0;
             Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
         }
 
