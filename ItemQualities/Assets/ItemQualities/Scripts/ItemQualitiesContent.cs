@@ -828,6 +828,8 @@ namespace ItemQualities
             public static BuffQualityGroup CrowbarCharge;
 
             public static BuffQualityGroup TeleportOnLowHealthOrbCharge;
+
+            public static BuffQualityGroup ArmorReductionOnHitCounter;
         }
 
         public static class Buffs
