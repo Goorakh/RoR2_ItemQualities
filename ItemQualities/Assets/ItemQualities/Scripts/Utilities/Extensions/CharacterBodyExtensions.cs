@@ -108,6 +108,7 @@ namespace ItemQualities.Utilities.Extensions
             body.ConvertQualityBuffsToTier(QualityCatalog.GetBuffQualityGroup(buffGroupIndex), buffQualityTier);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ConvertQualityBuffsToTier(this CharacterBody body, BuffQualityGroup buffGroup, QualityTier buffQualityTier)
         {
             convertBuffs(body, buffGroup, buffQualityTier, false);
@@ -119,6 +120,7 @@ namespace ItemQualities.Utilities.Extensions
             body.ConvertAllBuffsToQualityTier(QualityCatalog.GetBuffQualityGroup(buffGroupIndex), buffQualityTier);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void ConvertAllBuffsToQualityTier(this CharacterBody body, BuffQualityGroup buffGroup, QualityTier buffQualityTier)
         {
             convertBuffs(body, buffGroup, buffQualityTier, true);
