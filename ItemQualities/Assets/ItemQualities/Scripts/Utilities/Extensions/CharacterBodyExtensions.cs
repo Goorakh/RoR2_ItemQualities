@@ -1,7 +1,11 @@
 ﻿using ItemQualities.Buffs;
+using ItemQualities.Networking;
+using R2API.Networking;
+using R2API.Networking.Interfaces;
 using RoR2;
 using System;
 using System.Runtime.CompilerServices;
+using UnityEngine.Networking;
 
 namespace ItemQualities.Utilities.Extensions
 {
@@ -173,6 +177,21 @@ namespace ItemQualities.Utilities.Extensions
                             }
                         }
                     }
+                }
+            }
+        }
+
+        public static void SetBuffCountAuthority(this CharacterBody body, BuffIndex buffIndex, int buffCount)
+        {
+            if (body.hasEffectiveAuthority)
+            {
+                if (NetworkServer.active)
+                {
+                    body.SetBuffCount(buffIndex, buffCount);
+                }
+                else
+                {
+                    new SetBuffCountMessage(body, buffIndex, buffCount).Send(NetworkDestination.Server);
                 }
             }
         }
