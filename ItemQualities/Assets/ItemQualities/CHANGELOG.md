@@ -2,6 +2,7 @@
 
 * Reworks (Click to reveal):
     * <details><summary>Shattering Justice</summary> Fires a short range piercing beam every 5th primary skill use.</details>
+    * <details><summary>Spare Drone Parts</summary> Chance to give summoned drones a random elite effect. Chance for summoned drones to revive on death.</details>
 
 * Quality items/equipments displayed on non-player characters are now colored according to their quality tier.
 

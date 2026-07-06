@@ -714,6 +714,8 @@ namespace ItemQualities
             public static ItemDef SquidUpgradeHidden;
 
             public static ItemDef TrueKillOnTimer;
+
+            public static ItemDef QualityDroneWeaponsRandomElite;
         }
 
         public static class EquipmentQualityGroups
