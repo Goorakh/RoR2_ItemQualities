@@ -10,12 +10,12 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Equipments
 {
-    static class HealAndRevive
+    internal static class HealAndRevive
     {
-        static Xoroshiro128Plus _rng;
+        private static Xoroshiro128Plus _rng;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.CharacterMaster.TrueKill += CharacterMaster_TrueKill;
             IL.RoR2.CharacterMaster.TryReviveOnBodyDeath += CharacterMaster_TryReviveOnBodyDeath;
@@ -24,7 +24,7 @@ namespace ItemQualities.Equipments
             Run.onRunStartGlobal += onRunStartGlobal;
         }
 
-        static void onRunStartGlobal(Run run)
+        private static void onRunStartGlobal(Run run)
         {
             if (NetworkServer.active)
             {
@@ -32,7 +32,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void onRevivedServer(CharacterMaster master, QualityTier qualityTier)
+        private static void onRevivedServer(CharacterMaster master, QualityTier qualityTier)
         {
             if (master && master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
             {
@@ -40,7 +40,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void CharacterMaster_TrueKill(On.RoR2.CharacterMaster.orig_TrueKill orig, CharacterMaster self)
+        private static void CharacterMaster_TrueKill(On.RoR2.CharacterMaster.orig_TrueKill orig, CharacterMaster self)
         {
             if (self.inventory)
             {
@@ -68,7 +68,7 @@ namespace ItemQualities.Equipments
             orig(self);
         }
 
-        static void CharacterMaster_TryReviveOnBodyDeath(ILContext il)
+        private static void CharacterMaster_TryReviveOnBodyDeath(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -163,7 +163,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void EquipmentSlot_FireHealAndRevive(ILContext il)
+        private static void EquipmentSlot_FireHealAndRevive(ILContext il)
         {
             MethodInfo addComponentMethod = typeof(GameObject).GetMethod(nameof(GameObject.AddComponent), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, Array.Empty<Type>(), Array.Empty<ParameterModifier>());
             if (addComponentMethod == null || !addComponentMethod.IsGenericMethodDefinition)
