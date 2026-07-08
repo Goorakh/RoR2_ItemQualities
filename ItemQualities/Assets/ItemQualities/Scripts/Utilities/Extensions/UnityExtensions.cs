@@ -63,7 +63,7 @@ namespace ItemQualities.Utilities.Extensions
             return srcComponent.gameObject.ExpectComponent(out component, callerPath, callerMemberName, callerLineNumber);
         }
 
-        static void validatePersistentListener(UnityEventBase unityEvent, Delegate action)
+        private static void validatePersistentListener(UnityEventBase unityEvent, Delegate action)
         {
             if (unityEvent is null)
                 throw new ArgumentNullException(nameof(unityEvent));

@@ -16,7 +16,7 @@ namespace ItemQualities
         public static ModdedProcType Crowbar { get; private set; } = ModdedProcType.Invalid;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IncreasePrimaryDamage = ProcTypeAPI.ReserveProcType();
             Immobilize = ProcTypeAPI.ReserveProcType();

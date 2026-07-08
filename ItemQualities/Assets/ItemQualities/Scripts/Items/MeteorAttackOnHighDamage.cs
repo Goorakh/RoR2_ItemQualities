@@ -10,15 +10,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class MeteorAttackOnHighDamage
+    internal static class MeteorAttackOnHighDamage
     {
-        const float BaseRadius = 10f;
+        private const float BaseRadius = 10f;
 
-        static float _radiusToPredictionScale = 1f / BaseRadius;
-        static float _radiusToImpactScale = 1f / BaseRadius;
+        private static float _radiusToPredictionScale = 1f / BaseRadius;
+        private static float _radiusToImpactScale = 1f / BaseRadius;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_MeteorAttackOnHighDamage.RunicMeteorStrikePredictionEffect_prefab).OnSuccess(meteorPredictionEffect =>
             {
@@ -53,7 +53,7 @@ namespace ItemQualities.Items
             return getMeteorRadius(10f, attackerBody);
         }
 
-        static float getMeteorRadius(float baseRadius, CharacterBody attackerBody)
+        private static float getMeteorRadius(float baseRadius, CharacterBody attackerBody)
         {
             float radius = baseRadius;
 
@@ -80,7 +80,7 @@ namespace ItemQualities.Items
             return radius;
         }
 
-        static void MeteorAttackOnHighDamageBodyBehavior_DetonateRunicLensMeteor(ILContext il)
+        private static void MeteorAttackOnHighDamageBodyBehavior_DetonateRunicLensMeteor(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -102,7 +102,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void MeteorAttackOnHighDamageBodyBehavior_FixedUpdate(ILContext il)
+        private static void MeteorAttackOnHighDamageBodyBehavior_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -133,7 +133,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {

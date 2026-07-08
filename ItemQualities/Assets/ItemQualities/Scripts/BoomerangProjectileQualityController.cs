@@ -9,34 +9,34 @@ namespace ItemQualities
     {
         public float HitPauseDuration;
 
-        BoomerangProjectile _boomerangProjectile;
+        private BoomerangProjectile _boomerangProjectile;
 
-        bool _hasStartedHitPause;
+        private bool _hasStartedHitPause;
 
-        float _hitPauseTimer;
+        private float _hitPauseTimer;
 
         public bool IsInHitPause => _hitPauseTimer > 0;
 
-        void Awake()
+        private void Awake()
         {
             _boomerangProjectile = GetComponent<BoomerangProjectile>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             ComponentCache.Add(gameObject, this);
 
             _boomerangProjectile.onFlyBack.AddListener(onFlyBack);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _boomerangProjectile.onFlyBack.RemoveListener(onFlyBack);
 
             ComponentCache.Remove(gameObject, this);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -57,12 +57,12 @@ namespace ItemQualities
             }
         }
 
-        void onFlyBack()
+        private void onFlyBack()
         {
             tryStartHitPause();
         }
 
-        void tryStartHitPause()
+        private void tryStartHitPause()
         {
             if (!_hasStartedHitPause)
             {

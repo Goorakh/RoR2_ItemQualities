@@ -24,7 +24,7 @@ namespace ItemQualities
         public static DamageAPI.ModdedDamageType Echo { get; private set; }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             Frost6s = DamageAPI.ReserveDamageType();
             ForceAddToSharedSuffering = DamageAPI.ReserveDamageType();
@@ -45,7 +45,7 @@ namespace ItemQualities
             On.RoR2.Stats.StatManager.OnCharacterDeath += StatManager_OnCharacterDeath;
         }
 
-        static void onServerDamageDealt(DamageReport damageReport)
+        private static void onServerDamageDealt(DamageReport damageReport)
         {
             if (damageReport?.damageInfo == null)
                 return;
@@ -86,18 +86,18 @@ namespace ItemQualities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static bool shouldBypassDrops(DamageReport damageReport)
+        private static bool shouldBypassDrops(DamageReport damageReport)
         {
             return damageReport.damageInfo.damageType.HasModdedDamageType(BypassDrops) || isEchoed(damageReport);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static bool isEchoed(DamageReport damageReport)
+        private static bool isEchoed(DamageReport damageReport)
         {
             return damageReport.damageInfo.damageType.HasModdedDamageType(Echo);
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
@@ -292,7 +292,7 @@ namespace ItemQualities
             }
         }
 
-        static void BombArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.BombArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)
+        private static void BombArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.BombArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)
         {
             if (!isEchoed(damageReport))
             {
@@ -300,7 +300,7 @@ namespace ItemQualities
             }
         }
 
-        static void DoppelgangerInvasionManager_OnCharacterDeathGlobal(On.RoR2.Artifacts.DoppelgangerInvasionManager.orig_OnCharacterDeathGlobal orig, DoppelgangerInvasionManager self, DamageReport damageReport)
+        private static void DoppelgangerInvasionManager_OnCharacterDeathGlobal(On.RoR2.Artifacts.DoppelgangerInvasionManager.orig_OnCharacterDeathGlobal orig, DoppelgangerInvasionManager self, DamageReport damageReport)
         {
             if (!shouldBypassDrops(damageReport))
             {
@@ -308,7 +308,7 @@ namespace ItemQualities
             }
         }
 
-        static void SacrificeArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.SacrificeArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)
+        private static void SacrificeArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.SacrificeArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)
         {
             if (!shouldBypassDrops(damageReport))
             {
@@ -316,7 +316,7 @@ namespace ItemQualities
             }
         }
 
-        static void TeamDeathArtifactManager_OnServerCharacterDeathGlobal(On.RoR2.Artifacts.TeamDeathArtifactManager.orig_OnServerCharacterDeathGlobal orig, DamageReport damageReport)
+        private static void TeamDeathArtifactManager_OnServerCharacterDeathGlobal(On.RoR2.Artifacts.TeamDeathArtifactManager.orig_OnServerCharacterDeathGlobal orig, DamageReport damageReport)
         {
             if (!isEchoed(damageReport))
             {
@@ -324,7 +324,7 @@ namespace ItemQualities
             }
         }
 
-        static void GlobalDeathRewards_OnCharacterDeathGlobal(On.RoR2.GlobalDeathRewards.orig_OnCharacterDeathGlobal orig, GlobalDeathRewards self, DamageReport damageReport)
+        private static void GlobalDeathRewards_OnCharacterDeathGlobal(On.RoR2.GlobalDeathRewards.orig_OnCharacterDeathGlobal orig, GlobalDeathRewards self, DamageReport damageReport)
         {
             if (!shouldBypassDrops(damageReport))
             {
@@ -332,7 +332,7 @@ namespace ItemQualities
             }
         }
 
-        static void StatManager_OnCharacterDeath(On.RoR2.Stats.StatManager.orig_OnCharacterDeath orig, DamageReport damageReport)
+        private static void StatManager_OnCharacterDeath(On.RoR2.Stats.StatManager.orig_OnCharacterDeath orig, DamageReport damageReport)
         {
             if (!isEchoed(damageReport))
             {

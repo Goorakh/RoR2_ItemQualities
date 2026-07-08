@@ -7,15 +7,15 @@ using System;
 
 namespace ItemQualities
 {
-    static class HiddenPickupPingPatch
+    internal static class HiddenPickupPingPatch
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.UI.PingIndicator.GetFormattedTargetString += PingIndicator_GetFormattedTargetString;
         }
 
-        static void PingIndicator_GetFormattedTargetString(ILContext il)
+        private static void PingIndicator_GetFormattedTargetString(ILContext il)
         {
             if (!il.Method.TryFindParameter<PickupIndex>(out ParameterDefinition pickupIndexParameter))
             {

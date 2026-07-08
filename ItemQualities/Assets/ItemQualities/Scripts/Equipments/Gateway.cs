@@ -13,12 +13,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class Gateway
+    internal static class Gateway
     {
         public static GameObject QualityGatewayPickupTargetIndicatorPrefab { get; private set; }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> lightningIndicatorLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Lightning.LightningIndicator_prefab);
             lightningIndicatorLoad.OnSuccess(lightningIndicatorPrefab =>
@@ -46,14 +46,14 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             CharacterBody.onBodyInventoryChangedGlobal += onBodyInventoryChangedGlobal;
 
             On.RoR2.EquipmentSlot.FireGateway += EquipmentSlot_FireGateway;
         }
 
-        static void onBodyInventoryChangedGlobal(CharacterBody body)
+        private static void onBodyInventoryChangedGlobal(CharacterBody body)
         {
             if (!NetworkServer.active)
                 return;
@@ -87,7 +87,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool EquipmentSlot_FireGateway(On.RoR2.EquipmentSlot.orig_FireGateway orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireGateway(On.RoR2.EquipmentSlot.orig_FireGateway orig, EquipmentSlot self)
         {
             bool success = orig(self);
 

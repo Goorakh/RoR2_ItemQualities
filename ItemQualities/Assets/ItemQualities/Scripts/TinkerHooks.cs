@@ -10,10 +10,10 @@ using System.Reflection;
 
 namespace ItemQualities
 {
-    static class TinkerHooks
+    internal static class TinkerHooks
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Projectile.TinkerProjectile.TransmuteTargetObject += Scrap.GenericReplaceScrapPickupPatch;
 
@@ -34,13 +34,13 @@ namespace ItemQualities
             On.RoR2.ShopTerminalBehavior.GenerateReroll += ShopTerminalBehavior_GenerateReroll;
         }
 
-        static bool interactablePickupIsTinkerable(in UniquePickup pickup)
+        private static bool interactablePickupIsTinkerable(in UniquePickup pickup)
         {
             return pickup.isValid && QualityCatalog.GetQualityTier(pickup.pickupIndex) == QualityTier.None;
         }
 
-        delegate bool orig_TinkerableObjectAttributes_get_IsTinkerable(TinkerableObjectAttributes self);
-        static bool TinkerableObjectAttributes_get_IsTinkerable(orig_TinkerableObjectAttributes_get_IsTinkerable orig, TinkerableObjectAttributes self)
+        private delegate bool orig_TinkerableObjectAttributes_get_IsTinkerable(TinkerableObjectAttributes self);
+        private static bool TinkerableObjectAttributes_get_IsTinkerable(orig_TinkerableObjectAttributes_get_IsTinkerable orig, TinkerableObjectAttributes self)
         {
             if (!orig(self))
                 return false;
@@ -75,7 +75,7 @@ namespace ItemQualities
             return true;
         }
 
-        static UniquePickup? ShopTerminalBehavior_GenerateReroll(On.RoR2.ShopTerminalBehavior.orig_GenerateReroll orig, PickupDropTable dropTable, Xoroshiro128Plus rng, UniquePickup pickup)
+        private static UniquePickup? ShopTerminalBehavior_GenerateReroll(On.RoR2.ShopTerminalBehavior.orig_GenerateReroll orig, PickupDropTable dropTable, Xoroshiro128Plus rng, UniquePickup pickup)
         {
             UniquePickup? result = orig(dropTable, rng, pickup);
 
@@ -87,7 +87,7 @@ namespace ItemQualities
             return result;
         }
 
-        static void PickupPickerController_RerollCurrentOptions(ILContext il)
+        private static void PickupPickerController_RerollCurrentOptions(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -141,7 +141,7 @@ namespace ItemQualities
             }
         }
 
-        static void DrifterTracker_IsWhitelist(ILContext il)
+        private static void DrifterTracker_IsWhitelist(ILContext il)
         {
             if (!il.Method.TryFindParameter(typeof(UniquePickup).MakeByRefType(), out ParameterDefinition pickupParameter))
             {
@@ -179,6 +179,6 @@ namespace ItemQualities
             }
         }
 
-        delegate bool GetBaseQualityIsWorldUniqueDelegate(bool isWorldUnique, in UniquePickup pickup);
+        private delegate bool GetBaseQualityIsWorldUniqueDelegate(bool isWorldUnique, in UniquePickup pickup);
     }
 }

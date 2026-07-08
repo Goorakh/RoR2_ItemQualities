@@ -11,12 +11,12 @@ using UnityEngine;
 
 namespace ItemQualities.Equipments
 {
-    static class Jetpack
+    internal static class Jetpack
     {
-        static DamageColorIndex _bugColorIndex;
+        private static DamageColorIndex _bugColorIndex;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             _bugColorIndex = ColorsAPI.RegisterDamageColor(new Color32(0x93, 0x8A, 0x71, 0xFF));
 
@@ -30,7 +30,7 @@ namespace ItemQualities.Equipments
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        static bool EquipmentSlot_FireJetpack(On.RoR2.EquipmentSlot.orig_FireJetpack orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireJetpack(On.RoR2.EquipmentSlot.orig_FireJetpack orig, EquipmentSlot self)
         {
             bool fired = orig(self);
 
@@ -46,7 +46,7 @@ namespace ItemQualities.Equipments
             return fired;
         }
 
-        static void onServerDamageDealt(DamageReport damageReport)
+        private static void onServerDamageDealt(DamageReport damageReport)
         {
             if (damageReport?.damageInfo == null || damageReport.damageDealt <= 0 || damageReport.damageInfo.procCoefficient <= 0)
                 return;

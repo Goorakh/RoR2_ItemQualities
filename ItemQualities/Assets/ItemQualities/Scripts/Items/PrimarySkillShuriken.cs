@@ -13,10 +13,10 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class PrimarySkillShuriken
+    internal static class PrimarySkillShuriken
     {
         [SystemInitializer]
-        static IEnumerator Init()
+        private static IEnumerator Init()
         {
             IL.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate;
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
@@ -55,7 +55,7 @@ namespace ItemQualities.Items
             return getTotalReloadTime(PrimarySkillShurikenBehavior.totalReloadTime, body);
         }
 
-        static float getTotalReloadTime(float totalReloadTime, CharacterBody body)
+        private static float getTotalReloadTime(float totalReloadTime, CharacterBody body)
         {
             Inventory inventory = body ? body.inventory : null;
             if (inventory)
@@ -79,7 +79,7 @@ namespace ItemQualities.Items
             return totalReloadTime;
         }
 
-        static void PrimarySkillShurikenBehavior_FixedUpdate(ILContext il)
+        private static void PrimarySkillShurikenBehavior_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

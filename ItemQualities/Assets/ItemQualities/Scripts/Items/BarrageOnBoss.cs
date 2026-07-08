@@ -5,10 +5,10 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class BarrageOnBoss
+    internal static class BarrageOnBoss
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
         }

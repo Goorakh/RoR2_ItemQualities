@@ -3,15 +3,15 @@ using RoR2;
 
 namespace ItemQualities.Buffs
 {
-    static class LifeStealSpeed
+    internal static class LifeStealSpeed
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             int lifestealSpeedCount = sender.GetBuffCount(ItemQualitiesContent.Buffs.LifeStealSpeed);
             if (lifestealSpeedCount > 0)

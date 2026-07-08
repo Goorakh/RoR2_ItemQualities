@@ -14,7 +14,7 @@ namespace ItemQualities
     public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver
     {
         [SystemInitializer(typeof(BodyCatalog))]
-        static void Init()
+        private static void Init()
         {
             foreach (GameObject bodyPrefab in BodyCatalog.allBodyPrefabs)
             {
@@ -33,7 +33,7 @@ namespace ItemQualities
             }
         }
 
-        static void onCharacterDeathGlobal(DamageReport damageReport)
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (damageReport.attacker && damageReport.attacker.TryGetComponentCached(out CharacterBodyExtraStatsTracker attackerBodyExtraStats))
             {
@@ -41,28 +41,28 @@ namespace ItemQualities
             }
         }
 
-        NetworkIdentity _netIdentity;
+        private NetworkIdentity _netIdentity;
 
-        CharacterBody _body;
-        Interactor _interactor;
-        InteractionDriver _interactionDriver;
+        private CharacterBody _body;
+        private Interactor _interactor;
+        private InteractionDriver _interactionDriver;
 
-        GameObject _currentInteractableObject;
-        IInteractable _currentInteractable;
+        private GameObject _currentInteractableObject;
+        private IInteractable _currentInteractable;
 
-        CharacterModel _cachedCharacterModel;
+        private CharacterModel _cachedCharacterModel;
 
-        MemoizedGetComponentCached<CharacterMasterExtraStatsTracker> _memoizedMasterExtraStatsComponent;
+        private MemoizedGetComponentCached<CharacterMasterExtraStatsTracker> _memoizedMasterExtraStatsComponent;
 
-        TemporaryVisualEffect _qualityDeathMarkEffectInstance;
-        TemporaryVisualEffect _sprintArmorWeakenEffectInstance;
+        private TemporaryVisualEffect _qualityDeathMarkEffectInstance;
+        private TemporaryVisualEffect _sprintArmorWeakenEffectInstance;
 
-        TemporaryOverlayInstance _healCritBoostOverlay;
+        private TemporaryOverlayInstance _healCritBoostOverlay;
 
-        int _weakPointsEnabledCounterServer;
+        private int _weakPointsEnabledCounterServer;
 
         [SyncVar]
-        byte _weakPointHurtBoxIndexPlusOne;
+        private byte _weakPointHurtBoxIndexPlusOne;
         public int WeakPointHurtBoxIndex
         {
             get => _weakPointHurtBoxIndexPlusOne - 1;
@@ -89,7 +89,7 @@ namespace ItemQualities
         public bool ParryStoredProjectileCrit;
 
         [SyncVar]
-        int _parryStoredProjectileAttackerBodyIndexInt;
+        private int _parryStoredProjectileAttackerBodyIndexInt;
         public BodyIndex ParryStoredProjectileAttackerBodyIndex
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -99,7 +99,7 @@ namespace ItemQualities
         }
 
         [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
-        bool _isPerformingQuailJump;
+        private bool _isPerformingQuailJump;
         public bool IsPerformingQuailJump
         {
             get => _isPerformingQuailJump;
@@ -156,10 +156,10 @@ namespace ItemQualities
             }
         }
 
-        float _gatewayTeleportCooldown;
-        Indicator _qualityGatewayPickupTargetIndicator;
-        GatewayQualityPickupController _currentGatewayPickupTargetAuthority;
-        static readonly GatewayQualityPickupSearch _sharedGatewayPickupTargetSearch = new GatewayQualityPickupSearch
+        private float _gatewayTeleportCooldown;
+        private Indicator _qualityGatewayPickupTargetIndicator;
+        private GatewayQualityPickupController _currentGatewayPickupTargetAuthority;
+        private static readonly GatewayQualityPickupSearch _sharedGatewayPickupTargetSearch = new GatewayQualityPickupSearch
         {
             minDistanceFilter = 2f,
             maxDistanceFilter = 1000f,
@@ -183,7 +183,7 @@ namespace ItemQualities
         public static event Action<CharacterBodyExtraStatsTracker, GenericSkill> OnSkillActivatedAuthorityGlobal;
         public static event Action<CharacterBodyExtraStatsTracker, GenericSkill> OnSkillActivatedServerGlobal;
 
-        void Awake()
+        private void Awake()
         {
             _netIdentity = GetComponent<NetworkIdentity>();
             _body = GetComponent<CharacterBody>();
@@ -193,7 +193,7 @@ namespace ItemQualities
             ComponentCache.Add(gameObject, this);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (_qualityGatewayPickupTargetIndicator != null)
             {
@@ -203,7 +203,7 @@ namespace ItemQualities
             ComponentCache.Remove(gameObject, this);
         }
 
-        void Start()
+        private void Start()
         {
             if (HasEffectiveAuthority)
             {
@@ -211,7 +211,7 @@ namespace ItemQualities
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
 
@@ -235,7 +235,7 @@ namespace ItemQualities
             recalculateExtraStats();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _body.onRecalculateStats -= onBodyRecalculateStats;
 
@@ -257,7 +257,7 @@ namespace ItemQualities
             InstanceTracker.Remove(this);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -291,7 +291,7 @@ namespace ItemQualities
             updateOverlays();
         }
 
-        void updateTargets()
+        private void updateTargets()
         {
             if (!Body.inputBank)
                 return;
@@ -338,7 +338,7 @@ namespace ItemQualities
             _qualityGatewayPickupTargetIndicator.targetTransform = gatewayPickupTargetTransform;
         }
 
-        void refreshModelReference(Transform modelTransform)
+        private void refreshModelReference(Transform modelTransform)
         {
             GameObject cachedModelObject = _cachedCharacterModel ? _cachedCharacterModel.gameObject : null;
             GameObject newModelObject = modelTransform ? modelTransform.gameObject : null;
@@ -373,7 +373,7 @@ namespace ItemQualities
             OnSkillActivatedServerGlobal?.Invoke(this, skill);
         }
 
-        void updateOverlays()
+        private void updateOverlays()
         {
             void setOverlay(ref TemporaryOverlayInstance overlayInstance, Material material, bool active)
             {
@@ -411,12 +411,12 @@ namespace ItemQualities
             setOverlay(ref _healCritBoostOverlay, ItemQualitiesContent.Materials.HealCritBoost, _body.HasBuff(ItemQualitiesContent.Buffs.HealCritBoost));
         }
 
-        void onBodyRecalculateStats(CharacterBody body)
+        private void onBodyRecalculateStats(CharacterBody body)
         {
             recalculateExtraStats();
         }
 
-        void recalculateExtraStats()
+        private void recalculateExtraStats()
         {
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
@@ -487,7 +487,7 @@ namespace ItemQualities
             OnTakeDamageServer?.Invoke(damageReport);
         }
 
-        void onKilledOther(DamageReport damageReport)
+        private void onKilledOther(DamageReport damageReport)
         {
             if (damageReport.victimIsElite)
             {
@@ -497,12 +497,12 @@ namespace ItemQualities
             OnKilledOther?.Invoke(damageReport);
         }
 
-        void onDamagedOther(DamageReport damageReport)
+        private void onDamagedOther(DamageReport damageReport)
         {
             LastHitBody = damageReport.victimBody;
         }
 
-        void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)
+        private void onHitGroundAuthority(ref CharacterMotor.HitGroundInfo hitGroundInfo)
         {
             if (IsPerformingQuailJump)
             {
@@ -516,7 +516,7 @@ namespace ItemQualities
         }
 
         [Command]
-        void CmdOnHitGround(Vector3 velocity, Vector3 position, bool isValidForEffect)
+        private void CmdOnHitGround(Vector3 velocity, Vector3 position, bool isValidForEffect)
         {
             OnHitGroundServer?.Invoke(new CharacterMotor.HitGroundInfo
             {
@@ -557,12 +557,12 @@ namespace ItemQualities
         }
 
         [Command]
-        void CmdSetPerformingQuailJump(bool performing)
+        private void CmdSetPerformingQuailJump(bool performing)
         {
             IsPerformingQuailJump = performing;
         }
 
-        void hookSetIsPerformingQuailJump(bool performingQuailJump)
+        private void hookSetIsPerformingQuailJump(bool performingQuailJump)
         {
             bool changed = _isPerformingQuailJump != performingQuailJump;
             _isPerformingQuailJump = performingQuailJump;

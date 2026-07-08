@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class PersonalShield
+    internal static class PersonalShield
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
@@ -20,7 +20,7 @@ namespace ItemQualities.Items
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -55,7 +55,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void onInteractGlobal(Interactor interactor, IInteractable interactable, GameObject @object)
+        private static void onInteractGlobal(Interactor interactor, IInteractable interactable, GameObject @object)
         {
             if (!SharedItemUtils.InteractableIsPermittedForSpawn(interactable))
                 return;
@@ -102,7 +102,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender)
                 return;

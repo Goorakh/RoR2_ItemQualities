@@ -7,15 +7,15 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class HealingPotion
+    internal static class HealingPotion
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
         }
 
-        static void HealthComponent_UpdateLastHitTime(ILContext il)
+        private static void HealthComponent_UpdateLastHitTime(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -117,6 +117,6 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate void TryConsumeQualityElixirsDelegate(HealthComponent healthComponent, ref Inventory.ItemTransformation itemTransformation);
+        private delegate void TryConsumeQualityElixirsDelegate(HealthComponent healthComponent, ref Inventory.ItemTransformation itemTransformation);
     }
 }

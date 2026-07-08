@@ -50,9 +50,9 @@ namespace ItemQualities
             }
         }
 
-        static class TypedCache<T> where T : Component
+        private static class TypedCache<T> where T : Component
         {
-            static readonly Dictionary<UnityObjectWrapperKey<GameObject>, T> _componentLookup = new Dictionary<UnityObjectWrapperKey<GameObject>, T>();
+            private static readonly Dictionary<UnityObjectWrapperKey<GameObject>, T> _componentLookup = new Dictionary<UnityObjectWrapperKey<GameObject>, T>();
 
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
             public static bool TryGetValue(GameObject gameObject, out T component)

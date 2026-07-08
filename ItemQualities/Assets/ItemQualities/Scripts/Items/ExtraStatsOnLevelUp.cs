@@ -9,15 +9,15 @@ using UnityEngine.Networking;
 namespace ItemQualities.Items
 {
     // Because regular Prayer Beads are horribly made, this code has to inherit that
-    static class ExtraStatsOnLevelUp
+    internal static class ExtraStatsOnLevelUp
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
         }
 
-        static void CharacterBody_RecalculateStats(ILContext il)
+        private static void CharacterBody_RecalculateStats(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

@@ -17,12 +17,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class BFG
+    internal static class BFG
     {
-        static readonly GameObject[] _qualityProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> bfgProjectilePrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_BFG.BeamSphere_prefab);
             bfgProjectilePrefabLoad.OnSuccess(projectilePrefab =>
@@ -120,21 +120,21 @@ namespace ItemQualities.Equipments
             return bfgProjectilePrefabLoad.AsProgressCoroutine(args.ProgressReceiver);
         }
 
-        static readonly FixedConditionalWeakTable<EquipmentSlot, EquipmentSlotBFGQualityInfo> _equipmentSlotQualityInfoLookup = new FixedConditionalWeakTable<EquipmentSlot, EquipmentSlotBFGQualityInfo>();
+        private static readonly FixedConditionalWeakTable<EquipmentSlot, EquipmentSlotBFGQualityInfo> _equipmentSlotQualityInfoLookup = new FixedConditionalWeakTable<EquipmentSlot, EquipmentSlotBFGQualityInfo>();
 
-        sealed class EquipmentSlotBFGQualityInfo
+        private sealed class EquipmentSlotBFGQualityInfo
         {
             public QualityTier QualityTier = QualityTier.None;
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.EquipmentSlot.FireBfg += EquipmentSlot_FireBfg;
             IL.RoR2.EquipmentSlot.MyFixedUpdate += EquipmentSlot_MyFixedUpdate;
         }
 
-        static bool EquipmentSlot_FireBfg(On.RoR2.EquipmentSlot.orig_FireBfg orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireBfg(On.RoR2.EquipmentSlot.orig_FireBfg orig, EquipmentSlot self)
         {
             bool success = orig(self);
 
@@ -157,7 +157,7 @@ namespace ItemQualities.Equipments
             return success;
         }
 
-        static void EquipmentSlot_MyFixedUpdate(ILContext il)
+        private static void EquipmentSlot_MyFixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

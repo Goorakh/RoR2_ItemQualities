@@ -5,21 +5,21 @@ using System;
 
 namespace ItemQualities
 {
-    static class ContagiousItemQualityHandler
+    internal static class ContagiousItemQualityHandler
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Items.ContagiousItemManager.OnInventoryChangedGlobal += ContagiousItemManager_OnInventoryChangedGlobal;
             IL.RoR2.Items.ContagiousItemManager.StepInventoryInfection += ContagiousItemManager_StepInventoryInfection;
         }
 
-        static ItemIndex getItemForTransformation(ItemIndex itemIndex)
+        private static ItemIndex getItemForTransformation(ItemIndex itemIndex)
         {
             return QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None);
         }
 
-        static void ContagiousItemManager_OnInventoryChangedGlobal(ILContext il)
+        private static void ContagiousItemManager_OnInventoryChangedGlobal(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -35,7 +35,7 @@ namespace ItemQualities
             c.EmitDelegate<Func<ItemIndex, ItemIndex>>(getItemForTransformation);
         }
 
-        static void ContagiousItemManager_StepInventoryInfection(ILContext il)
+        private static void ContagiousItemManager_StepInventoryInfection(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

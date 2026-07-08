@@ -5,10 +5,10 @@ namespace ItemQualities
 {
     public static class EffectCatalogUtils
     {
-        static readonly Dictionary<string, EffectIndex> _effectIndexByPrefabName = new Dictionary<string, EffectIndex>();
+        private static readonly Dictionary<string, EffectIndex> _effectIndexByPrefabName = new Dictionary<string, EffectIndex>();
 
         [SystemInitializer(typeof(EffectCatalog))]
-        static void Init()
+        private static void Init()
         {
             _effectIndexByPrefabName.Clear();
             _effectIndexByPrefabName.EnsureCapacity(EffectCatalog.effectCount);

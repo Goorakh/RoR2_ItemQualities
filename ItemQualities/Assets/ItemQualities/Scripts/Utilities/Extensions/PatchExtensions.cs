@@ -13,7 +13,7 @@ namespace ItemQualities.Utilities.Extensions
 {
     internal static class PatchExtensions
     {
-        static FieldInfo _cachedDecimalZeroFieldInfo;
+        private static FieldInfo _cachedDecimalZeroFieldInfo;
 
         /// <summary>
         /// Emits instructions to unconditionally skip the method call directly ahead of the cursor and moves after it.

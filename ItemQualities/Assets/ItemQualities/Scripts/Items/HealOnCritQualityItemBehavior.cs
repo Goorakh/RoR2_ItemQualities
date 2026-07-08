@@ -5,24 +5,24 @@ namespace ItemQualities.Items
     public sealed class HealOnCritQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.HealOnCrit;
         }
 
-        float _accumulatedHealing;
+        private float _accumulatedHealing;
 
-        void OnEnable()
+        private void OnEnable()
         {
             HealthComponent.onCharacterHealServer += onCharacterHealServer;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             HealthComponent.onCharacterHealServer -= onCharacterHealServer;
         }
 
-        void onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
+        private void onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
         {
             if (!healthComponent || healthComponent != Body.healthComponent)
                 return;
@@ -38,7 +38,7 @@ namespace ItemQualities.Items
             updateAccumulatedHealing();
         }
 
-        void updateAccumulatedHealing()
+        private void updateAccumulatedHealing()
         {
             ref readonly ItemQualityCounts healOnCrit = ref Stacks;
             if (healOnCrit.TotalQualityCount == 0)

@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class NovaOnHeal
+    internal static class NovaOnHeal
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.HealthComponent.ServerFixedUpdate += HealthComponent_ServerFixedUpdate;
         }
 
-        static void HealthComponent_ServerFixedUpdate(ILContext il)
+        private static void HealthComponent_ServerFixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

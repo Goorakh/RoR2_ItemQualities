@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class JumpBoost
+    internal static class JumpBoost
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.EntityStates.GenericCharacterMain.ProcessJump_bool += GenericCharacterMain_ProcessJump_bool;
         }
 
-        static void GenericCharacterMain_ProcessJump_bool(ILContext il)
+        private static void GenericCharacterMain_ProcessJump_bool(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

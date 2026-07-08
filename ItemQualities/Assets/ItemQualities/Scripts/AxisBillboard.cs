@@ -7,17 +7,17 @@ namespace ItemQualities
     {
         public Vector3 Axis = Vector3.up;
 
-        void OnEnable()
+        private void OnEnable()
         {
             SceneCamera.onSceneCameraPreCull += onSceneCameraPreCull;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             SceneCamera.onSceneCameraPreCull -= onSceneCameraPreCull;
         }
 
-        void onSceneCameraPreCull(SceneCamera sceneCamera)
+        private void onSceneCameraPreCull(SceneCamera sceneCamera)
         {
             Vector3 position = Vector3.ProjectOnPlane(transform.position, Axis);
             Vector3 cameraPosition = Vector3.ProjectOnPlane(sceneCamera.transform.position, Axis);

@@ -394,10 +394,10 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate bool IsQualityRegeneratingScrapDelegate(ItemDef itemDef, WeightedSelection<ItemIndex>[] qualityScrapSelections, out WeightedSelection<ItemIndex> targetQualityScrapSelection);
+        private delegate bool IsQualityRegeneratingScrapDelegate(ItemDef itemDef, WeightedSelection<ItemIndex>[] qualityScrapSelections, out WeightedSelection<ItemIndex> targetQualityScrapSelection);
 
-        delegate bool TryGetHighestQualityRegeneratingScrapSelectionDelegate(WeightedSelection<ItemIndex>[] qualityScrapSelections, out WeightedSelection<ItemIndex> highestQualitySelection);
+        private delegate bool TryGetHighestQualityRegeneratingScrapSelectionDelegate(WeightedSelection<ItemIndex>[] qualityScrapSelections, out WeightedSelection<ItemIndex> highestQualitySelection);
 
-        delegate bool IsRegeneratingScrapDelegate(in Inventory.ItemTransformation itemTransformation);
+        private delegate bool IsRegeneratingScrapDelegate(in Inventory.ItemTransformation itemTransformation);
     }
 }

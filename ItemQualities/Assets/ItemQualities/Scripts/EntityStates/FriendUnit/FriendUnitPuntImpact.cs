@@ -10,10 +10,10 @@ namespace EntityStates.FriendUnit
 {
     public sealed class FriendUnitPuntImpact : BaseState
     {
-        static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _explosionEffectIndex = EffectCatalogUtils.FindEffectIndex("OmniExplosionVFXRoboBallDeath");
             if (_explosionEffectIndex == EffectIndex.Invalid)

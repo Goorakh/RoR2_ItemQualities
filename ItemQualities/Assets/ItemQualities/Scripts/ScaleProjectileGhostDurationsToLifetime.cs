@@ -7,14 +7,14 @@ namespace ItemQualities
     [RequireComponent(typeof(ProjectileController))]
     public sealed class ScaleProjectileGhostDurationsToLifetime : MonoBehaviour
     {
-        ProjectileController _projectileController;
+        private ProjectileController _projectileController;
 
-        void Awake()
+        private void Awake()
         {
             _projectileController = GetComponent<ProjectileController>();
         }
 
-        void Start()
+        private void Start()
         {
             if (_projectileController.ghost)
             {

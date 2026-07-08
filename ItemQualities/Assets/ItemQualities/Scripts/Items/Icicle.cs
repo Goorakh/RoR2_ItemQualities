@@ -8,16 +8,16 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class Icicle
+    internal static class Icicle
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.IcicleAuraController.FixedUpdate += IcicleAuraController_FixedUpdate;
             On.RoR2.IcicleAuraController.UpdateRadius += IcicleAuraController_UpdateRadius;
         }
 
-        static void IcicleAuraController_FixedUpdate(ILContext il)
+        private static void IcicleAuraController_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -59,7 +59,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void IcicleAuraController_UpdateRadius(On.RoR2.IcicleAuraController.orig_UpdateRadius orig, IcicleAuraController self)
+        private static void IcicleAuraController_UpdateRadius(On.RoR2.IcicleAuraController.orig_UpdateRadius orig, IcicleAuraController self)
         {
             orig(self);
 

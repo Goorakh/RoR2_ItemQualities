@@ -37,19 +37,19 @@ namespace ItemQualities
 
         [FormerlySerializedAs("UncommonVariant")]
         [SerializeField]
-        ItemDef _uncommonItem;
+        private ItemDef _uncommonItem;
 
         [FormerlySerializedAs("RareVariant")]
         [SerializeField]
-        ItemDef _rareItem;
+        private ItemDef _rareItem;
 
         [FormerlySerializedAs("EpicVariant")]
         [SerializeField]
-        ItemDef _epicItem;
+        private ItemDef _epicItem;
 
         [FormerlySerializedAs("LegendaryVariant")]
         [SerializeField]
-        ItemDef _legendaryItem;
+        private ItemDef _legendaryItem;
 
         [HideInInspector]
         [NonSerialized]
@@ -63,7 +63,7 @@ namespace ItemQualities
 
         public ItemIndex LegendaryItemIndex => _legendaryItem ? _legendaryItem.itemIndex : ItemIndex.None;
 
-        bool checkCanModify()
+        private bool checkCanModify()
         {
             if (QualityCatalog.Availability.available)
             {
@@ -371,7 +371,7 @@ namespace ItemQualities
 
 #if UNITY_EDITOR
         [ContextMenu("Generate ItemDefs")]
-        void GenerateItems()
+        private void GenerateItems()
         {
             string baseItemName = name;
             if (baseItemName.StartsWith("ig"))

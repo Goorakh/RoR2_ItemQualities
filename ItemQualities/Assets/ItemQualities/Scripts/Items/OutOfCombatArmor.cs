@@ -17,20 +17,20 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class OutOfCombatArmor
+    internal static class OutOfCombatArmor
     {
-        static readonly SphereSearch _opalSphereSearch = new SphereSearch();
+        private static readonly SphereSearch _opalSphereSearch = new SphereSearch();
 
-        static GameObject _explosionVFX;
+        private static GameObject _explosionVFX;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.CharacterBody.OnTakeDamageServer += CharacterBody_OnTakeDamageServer;
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> igniteOnKillExplosionLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_IgniteOnKill.IgniteExplosionVFX_prefab);
 
@@ -51,7 +51,7 @@ namespace ItemQualities.Items
             args.ContentPack.effectDefs.Add(new EffectDef(_explosionVFX));
         }
 
-        static void CharacterBody_OnTakeDamageServer(ILContext il)
+        private static void CharacterBody_OnTakeDamageServer(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {

@@ -3,10 +3,10 @@ using TMPro;
 
 namespace ItemQualities
 {
-    static class TextSpriteHandler
+    internal static class TextSpriteHandler
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             foreach (TMP_SpriteAsset spriteAsset in ItemQualitiesContent.TMP_SpriteAssets.AllSpriteAssets)
             {
@@ -14,7 +14,7 @@ namespace ItemQualities
             }
         }
 
-        static void registerSpriteAsset(TMP_SpriteAsset spriteAsset)
+        private static void registerSpriteAsset(TMP_SpriteAsset spriteAsset)
         {
             TMP_Settings.defaultSpriteAsset.fallbackSpriteAssets.Add(spriteAsset);
         }

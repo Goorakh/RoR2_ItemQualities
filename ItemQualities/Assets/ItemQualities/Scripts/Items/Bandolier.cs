@@ -11,10 +11,10 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class Bandolier
+    internal static class Bandolier
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
 
@@ -23,7 +23,7 @@ namespace ItemQualities.Items
             IL.RoR2.UI.SkillIcon.Update += SkillIcon_Update;
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -75,7 +75,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void AmmoPickup_OnTriggerStay(ILContext il)
+        private static void AmmoPickup_OnTriggerStay(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -109,7 +109,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void SkillIcon_Update(ILContext il)
+        private static void SkillIcon_Update(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

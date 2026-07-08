@@ -9,10 +9,10 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class AnimationEffectSetExplosionScalePatch
+    internal static class AnimationEffectSetExplosionScalePatch
     {
-        const int ExplosionInfoBitOffset = 8;
-        const int ExplosionInfoBitMask = 0xFF << ExplosionInfoBitOffset;
+        private const int ExplosionInfoBitOffset = 8;
+        private const int ExplosionInfoBitMask = 0xFF << ExplosionInfoBitOffset;
 
         public static void SetEncodedExplosionIndex(AnimationEvent evnt, ExplosionInfoIndex explosionInfoIndex)
         {
@@ -52,12 +52,12 @@ namespace ItemQualities
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.AnimationEvents.CreateEffect += AnimationEvents_CreateEffect;
         }
 
-        static void AnimationEvents_CreateEffect(ILContext il)
+        private static void AnimationEvents_CreateEffect(ILContext il)
         {
             if (!il.Method.TryFindParameter<AnimationEvent>(out ParameterDefinition animationEventParameter))
             {

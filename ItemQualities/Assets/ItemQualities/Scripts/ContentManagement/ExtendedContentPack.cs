@@ -14,9 +14,9 @@ namespace ItemQualities.ContentManagement
 {
     internal sealed class ExtendedContentPack
     {
-        readonly ContentPack _innerContentPack;
+        private readonly ContentPack _innerContentPack;
 
-        readonly NamedAssetCollection[] _extendedAssetCollections = Array.Empty<NamedAssetCollection>();
+        private readonly NamedAssetCollection[] _extendedAssetCollections = Array.Empty<NamedAssetCollection>();
 
         public ExtendedContentPack(ContentPack contentPack)
         {

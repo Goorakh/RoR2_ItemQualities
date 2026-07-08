@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class TeleportOnLowHealth
+    internal static class TeleportOnLowHealth
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.CharacterMaster.TryTeleportOnLowHealthRegen += CharacterMaster_TryTeleportOnLowHealthRegen;
 
@@ -47,7 +47,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void CharacterMaster_TryTeleportOnLowHealthRegen(On.RoR2.CharacterMaster.orig_TryTeleportOnLowHealthRegen orig, CharacterMaster self)
+        private static void CharacterMaster_TryTeleportOnLowHealthRegen(On.RoR2.CharacterMaster.orig_TryTeleportOnLowHealthRegen orig, CharacterMaster self)
         {
             orig(self);
 
@@ -74,7 +74,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void TeleportOnLowHealthBehavior_DestroyTeleportOrb(ILContext il)
+        private static void TeleportOnLowHealthBehavior_DestroyTeleportOrb(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -129,6 +129,6 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate bool TryConsumeQualityTransmittersDelegate(bool consumedRegularTransmitter, TeleportOnLowHealthBehavior teleportOnLowHealthBehavior, ref Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult result);
+        private delegate bool TryConsumeQualityTransmittersDelegate(bool consumedRegularTransmitter, TeleportOnLowHealthBehavior teleportOnLowHealthBehavior, ref Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult result);
     }
 }

@@ -3,15 +3,15 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class TreasureCacheVoid
+    internal static class TreasureCacheVoid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             SpecificItemCostTransformationHooks.ModifyItemCostTransformation += modifyItemCostTransformation;
         }
 
-        static void modifyItemCostTransformation(ref Inventory.ItemTransformation itemTransformation, Interactor activator, int cost)
+        private static void modifyItemCostTransformation(ref Inventory.ItemTransformation itemTransformation, Interactor activator, int cost)
         {
             if (itemTransformation.originalItemIndex != DLC1Content.Items.TreasureCacheVoid.itemIndex)
                 return;

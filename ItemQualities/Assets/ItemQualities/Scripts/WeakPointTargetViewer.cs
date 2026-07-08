@@ -14,34 +14,34 @@ namespace ItemQualities
     {
         public GameObject VisualizerPrefab;
 
-        PointViewer _pointViewer;
+        private PointViewer _pointViewer;
 
-        HUD _hud;
+        private HUD _hud;
 
-        readonly Dictionary<UnityObjectWrapperKey<HurtBox>, GameObject> _visualizersByHurtBox = new Dictionary<UnityObjectWrapperKey<HurtBox>, GameObject>();
+        private readonly Dictionary<UnityObjectWrapperKey<HurtBox>, GameObject> _visualizersByHurtBox = new Dictionary<UnityObjectWrapperKey<HurtBox>, GameObject>();
 
-        void Awake()
+        private void Awake()
         {
             _pointViewer = GetComponent<PointViewer>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             OnTransformParentChanged();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             setDisplayedWeakPoints(Array.Empty<HurtBox>());
             _visualizersByHurtBox.Clear();
         }
 
-        void OnTransformParentChanged()
+        private void OnTransformParentChanged()
         {
             _hud = GetComponentInParent<HUD>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> weakPointHurtBoxes);
 
@@ -67,7 +67,7 @@ namespace ItemQualities
             setDisplayedWeakPoints(weakPointHurtBoxes);
         }
 
-        void setDisplayedWeakPoints(IReadOnlyList<HurtBox> newWeakPoints)
+        private void setDisplayedWeakPoints(IReadOnlyList<HurtBox> newWeakPoints)
         {
             using var _ = ListPool<UnityObjectWrapperKey<HurtBox>>.RentCollection(out List<UnityObjectWrapperKey<HurtBox>> weakPointsToRemove);
 

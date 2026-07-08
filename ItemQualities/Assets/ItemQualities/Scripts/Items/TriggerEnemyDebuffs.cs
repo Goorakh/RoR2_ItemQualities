@@ -10,15 +10,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class TriggerEnemyDebuffs
+    internal static class TriggerEnemyDebuffs
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.CharacterBody.TriggerEnemyDebuffs += CharacterBody_TriggerEnemyDebuffs;
         }
 
-        static void CharacterBody_TriggerEnemyDebuffs(ILContext il)
+        private static void CharacterBody_TriggerEnemyDebuffs(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

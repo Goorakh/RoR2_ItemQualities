@@ -2,7 +2,7 @@
 
 namespace ItemQualities.ModCompatibility
 {
-    static class TeamsAPICompat
+    internal static class TeamsAPICompat
     {
         public static int TeamsCount => TeamCatalog.teamDefs.Length;
     }

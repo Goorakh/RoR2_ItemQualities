@@ -7,13 +7,13 @@ namespace ItemQualities
 {
     internal static class Log
     {
-        static readonly StringBuilder _sharedStringBuilder = new StringBuilder(256);
+        private static readonly StringBuilder _sharedStringBuilder = new StringBuilder(256);
 
-        static readonly int _cachedCallerPathPrefixLength;
+        private static readonly int _cachedCallerPathPrefixLength;
 
-        static readonly object _logLock = new object();
+        private static readonly object _logLock = new object();
 
-        static ManualLogSource _logSource;
+        private static ManualLogSource _logSource;
 
         static Log()
         {
@@ -41,7 +41,7 @@ namespace ItemQualities
             _logSource = logSource;
         }
 
-        static StringBuilder buildCallerLogString(string callerPath, string callerMemberName, int callerLineNumber, string data)
+        private static StringBuilder buildCallerLogString(string callerPath, string callerMemberName, int callerLineNumber, string data)
         {
             return _sharedStringBuilder.Clear()
                                        .Append(callerPath, _cachedCallerPathPrefixLength, callerPath.Length - _cachedCallerPathPrefixLength)

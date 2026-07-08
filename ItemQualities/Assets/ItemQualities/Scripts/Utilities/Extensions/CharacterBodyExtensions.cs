@@ -130,7 +130,7 @@ namespace ItemQualities.Utilities.Extensions
             convertBuffs(body, buffGroup, buffQualityTier, true);
         }
 
-        static void convertBuffs(CharacterBody body, BuffQualityGroup buffGroup, QualityTier buffQualityTier, bool includeBaseBuff)
+        private static void convertBuffs(CharacterBody body, BuffQualityGroup buffGroup, QualityTier buffQualityTier, bool includeBaseBuff)
         {
             if (!body)
                 throw new ArgumentNullException(nameof(body));

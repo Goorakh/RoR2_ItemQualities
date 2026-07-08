@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace ItemQualities.Equipments
 {
-    static class BossHunter
+    internal static class BossHunter
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireBossHunter += EquipmentSlot_FireBossHunter;
         }
 
-        static void EquipmentSlot_FireBossHunter(ILContext il)
+        private static void EquipmentSlot_FireBossHunter(ILContext il)
         {
             EquipmentHooks.GenericPatchAllGetEquipmentQuality(il);
 

@@ -34,10 +34,10 @@ namespace ItemQualities
         public const string PluginGUID = "com." + PluginAuthor + "." + PluginName;
         public const string PluginVersion = "0.7.8";
 
-        static ItemQualitiesPlugin _instance;
+        private static ItemQualitiesPlugin _instance;
         public static ItemQualitiesPlugin Instance => _instance;
 
-        void Awake()
+        private void Awake()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -63,7 +63,7 @@ namespace ItemQualities
             Log.Message_NoCallerPrefix($"Initialized in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             SingletonHelper.Unassign(ref _instance, this);
         }

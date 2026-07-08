@@ -8,44 +8,44 @@ namespace ItemQualities
     public sealed class ShrineBossExtraStatsTracker : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.ShrineBossBehavior.Start += ShrineBossBehavior_Start;
         }
 
-        static void ShrineBossBehavior_Start(On.RoR2.ShrineBossBehavior.orig_Start orig, ShrineBossBehavior self)
+        private static void ShrineBossBehavior_Start(On.RoR2.ShrineBossBehavior.orig_Start orig, ShrineBossBehavior self)
         {
             orig(self);
             self.gameObject.EnsureComponent<ShrineBossExtraStatsTracker>();
         }
 
-        ShrineBossBehavior _shrineBossBehavior;
+        private ShrineBossBehavior _shrineBossBehavior;
 
-        int _baseMaxInteractions;
+        private int _baseMaxInteractions;
 
-        void Awake()
+        private void Awake()
         {
             _shrineBossBehavior = GetComponent<ShrineBossBehavior>();
             _baseMaxInteractions = _shrineBossBehavior.maxPurchaseCount;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             refreshMaxPurchases();
             Inventory.onInventoryChangedGlobal += onInventoryChangedGlobal;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             Inventory.onInventoryChangedGlobal -= onInventoryChangedGlobal;
         }
 
-        void onInventoryChangedGlobal(Inventory inventory)
+        private void onInventoryChangedGlobal(Inventory inventory)
         {
             refreshMaxPurchases();
         }
 
-        void refreshMaxPurchases()
+        private void refreshMaxPurchases()
         {
             ItemQualityCounts totalWarbondsCounts = default;
 

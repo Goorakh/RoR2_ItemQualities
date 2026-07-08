@@ -8,7 +8,7 @@ namespace ItemQualities
 {
     public sealed class DelayBlastExtraStats : MonoBehaviour
     {
-        static void Init()
+        private static void Init()
         {
             foreach (GameObject networkedPrefab in ContentManager.networkedObjectPrefabs)
             {
@@ -19,14 +19,14 @@ namespace ItemQualities
             }
         }
 
-        DelayBlast _delayBlast;
+        private DelayBlast _delayBlast;
 
-        void Awake()
+        private void Awake()
         {
             _delayBlast = GetComponent<DelayBlast>();
         }
 
-        void Start()
+        private void Start()
         {
             if (_delayBlast)
             {

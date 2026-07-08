@@ -10,14 +10,14 @@ namespace ItemQualities.Items
 {
     public sealed class SecondarySkillMagazineQualityItemBehavior : QualityItemBodyBehavior
     {
-        static int[] _onActivateBlacklistSkillIndices = Array.Empty<int>();
+        private static int[] _onActivateBlacklistSkillIndices = Array.Empty<int>();
 
-        static int[] _otherSkillIndicesToRestock = Array.Empty<int>();
+        private static int[] _otherSkillIndicesToRestock = Array.Empty<int>();
 
-        static EffectIndex _restockEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _restockEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils), typeof(SkillCatalog))]
-        static void Init()
+        private static void Init()
         {
             _restockEffectIndex = EffectCatalogUtils.FindEffectIndex("AmmoPackPickupEffect");
             if (_restockEffectIndex == EffectIndex.Invalid)
@@ -61,24 +61,24 @@ namespace ItemQualities.Items
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Authority)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.SecondarySkillMagazine;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
             SkillHooks.OnSkillUsedIndirectAuthority += onSkillUsedIndirectAuthority;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             Body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
             SkillHooks.OnSkillUsedIndirectAuthority -= onSkillUsedIndirectAuthority;
         }
 
-        void onSkillActivatedAuthority(GenericSkill skill)
+        private void onSkillActivatedAuthority(GenericSkill skill)
         {
             if (Array.BinarySearch(_onActivateBlacklistSkillIndices, skill.skillDef.skillIndex) >= 0)
                 return;
@@ -89,7 +89,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onSkillUsedIndirectAuthority(GenericSkill skill)
+        private void onSkillUsedIndirectAuthority(GenericSkill skill)
         {
             if (!Body.skillLocator)
                 return;
@@ -100,7 +100,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void rollRestockSkill(GenericSkill skill)
+        private void rollRestockSkill(GenericSkill skill)
         {
             ref readonly ItemQualityCounts secondarySkillMagazine = ref Stacks;
 
@@ -134,7 +134,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void restockSkill(GenericSkill skill)
+        private void restockSkill(GenericSkill skill)
         {
             skill.AddOneStock();
             Body.OnSkillCooldown(skill, 1);

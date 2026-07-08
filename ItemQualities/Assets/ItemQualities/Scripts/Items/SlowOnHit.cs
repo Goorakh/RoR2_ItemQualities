@@ -9,15 +9,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class SlowOnHit
+    internal static class SlowOnHit
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -125,6 +125,6 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate bool ShouldApplyBaseSlowOnHitDelegate(DamageInfo damageInfo, GameObject victim, out bool isQualityProc);
+        private delegate bool ShouldApplyBaseSlowOnHitDelegate(DamageInfo damageInfo, GameObject victim, out bool isQualityProc);
     }
 }

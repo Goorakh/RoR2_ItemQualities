@@ -4,16 +4,16 @@ using System;
 
 namespace ItemQualities
 {
-    static class DifficultyScaling
+    internal static class DifficultyScaling
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Run.RecalculateDifficultyCoefficentInternal += ApplyScalingValueChangesPatch;
             IL.RoR2.InfiniteTowerRun.RecalculateDifficultyCoefficentInternal += ApplyScalingValueChangesPatch;
         }
 
-        static void ApplyScalingValueChangesPatch(ILContext il)
+        private static void ApplyScalingValueChangesPatch(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

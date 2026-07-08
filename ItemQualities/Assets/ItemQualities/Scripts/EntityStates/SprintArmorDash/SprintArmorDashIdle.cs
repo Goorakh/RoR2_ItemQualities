@@ -7,9 +7,9 @@ namespace EntityStates.SprintArmorDash
     {
         public static float DoubleTapWindow;
 
-        float _lastValidInputTime = float.NegativeInfinity;
+        private float _lastValidInputTime = float.NegativeInfinity;
 
-        CharacterBody _attachedBody;
+        private CharacterBody _attachedBody;
 
         public override void OnEnter()
         {
@@ -35,7 +35,7 @@ namespace EntityStates.SprintArmorDash
             }
         }
 
-        void UpdateAuthority()
+        private void UpdateAuthority()
         {
             if (!_attachedBody.HasBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown) && _attachedBody.inputBank.rawMoveUp.justPressed)
             {

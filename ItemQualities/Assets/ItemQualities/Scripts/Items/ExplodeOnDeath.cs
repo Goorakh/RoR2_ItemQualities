@@ -25,36 +25,36 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class ExplodeOnDeath
+    internal static class ExplodeOnDeath
     {
-        static GameObject _banditSmokeBombScalingFixPrefab;
+        private static GameObject _banditSmokeBombScalingFixPrefab;
 
-        static GameObject _lightningStrikeScalingFixPrefab;
-        static GameObject _simpleLightningStrikeScalingFixPrefab;
+        private static GameObject _lightningStrikeScalingFixPrefab;
+        private static GameObject _simpleLightningStrikeScalingFixPrefab;
 
-        static GameObject _meteorWarningEffectScalingFixPrefab;
-        static GameObject _meteorTravelEffectScalingFixPrefab;
-        static GameObject _meteorImpactEffectScalingFixPrefab;
+        private static GameObject _meteorWarningEffectScalingFixPrefab;
+        private static GameObject _meteorTravelEffectScalingFixPrefab;
+        private static GameObject _meteorImpactEffectScalingFixPrefab;
 
-        static GameObject _brotherFistSlamImpactScaleFixPrefab;
+        private static GameObject _brotherFistSlamImpactScaleFixPrefab;
 
-        static GameObject _brotherWeaponSlamImpactScaleFixPrefab;
+        private static GameObject _brotherWeaponSlamImpactScaleFixPrefab;
 
-        static GameObject _golemLaserImpactScaleFixPrefab;
+        private static GameObject _golemLaserImpactScaleFixPrefab;
 
-        static GameObject _halcyoniteTriLaserImpactScaleFixPrefab;
+        private static GameObject _halcyoniteTriLaserImpactScaleFixPrefab;
 
-        static GameObject _impBossBlinkScaleFixPrefab;
+        private static GameObject _impBossBlinkScaleFixPrefab;
 
-        static GameObject _impBossGroundPoundSlamScaleFixPrefab;
+        private static GameObject _impBossGroundPoundSlamScaleFixPrefab;
 
-        static GameObject _mageFlyUpBlinkScaleFixPrefab;
+        private static GameObject _mageFlyUpBlinkScaleFixPrefab;
 
         // RoR2.Orbs.LightningStrikeOrb.OnArrival
-        const float LightningStrikeOrbRadius = 3f;
+        private const float LightningStrikeOrbRadius = 3f;
 
         // RoR2.Orbs.SimpleLightningStrikeOrb.OnArrival
-        const float SimpleLightningStrikeOrbRadius = 3f;
+        private const float SimpleLightningStrikeOrbRadius = 3f;
 
         public static float GetExplosionRadius(float radius, CharacterBody attacker)
         {
@@ -78,7 +78,7 @@ namespace ItemQualities.Items
             return radius;
         }
 
-        static bool isScaledExplosion(float baseRadius, CharacterBody attacker)
+        private static bool isScaledExplosion(float baseRadius, CharacterBody attacker)
         {
             if (baseRadius <= 0f)
                 return false;
@@ -87,7 +87,7 @@ namespace ItemQualities.Items
             return Mathf.Abs((radius / baseRadius) - 1f) > Mathf.Epsilon;
         }
 
-        static void spawnEffectAtMuzzle(GameObject effectPrefab, EffectData effectData, GameObject entityObject, string muzzleName, bool transmit)
+        private static void spawnEffectAtMuzzle(GameObject effectPrefab, EffectData effectData, GameObject entityObject, string muzzleName, bool transmit)
         {
             if (entityObject &&
                 entityObject.TryGetComponent(out ModelLocator modelLocator) &&
@@ -106,7 +106,7 @@ namespace ItemQualities.Items
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
 
@@ -950,7 +950,7 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             static void beaconImpactIndicatorScaler(string beaconGuid)
             {
@@ -1238,7 +1238,7 @@ namespace ItemQualities.Items
             });
         }
 
-        static bool matchLoadValue(Instruction x, out Instruction instruction)
+        private static bool matchLoadValue(Instruction x, out Instruction instruction)
         {
             if (x.MatchCallOrCallvirt(out _) ||
                 x.MatchLdsfld(out _) ||
@@ -1255,7 +1255,7 @@ namespace ItemQualities.Items
             return false;
         }
 
-        static bool instructionsEqual(Instruction a, Instruction b)
+        private static bool instructionsEqual(Instruction a, Instruction b)
         {
             if (a.MatchLdcR4(out float constFloat))
             {
@@ -1290,7 +1290,7 @@ namespace ItemQualities.Items
             return false;
         }
 
-        static bool matchSetupBlastAttack(ILContext il)
+        private static bool matchSetupBlastAttack(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -1312,7 +1312,7 @@ namespace ItemQualities.Items
         }
 
         // FML
-        static void JellyNova_ReplaceNovaRadius(ILContext il)
+        private static void JellyNova_ReplaceNovaRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -1342,7 +1342,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ChargeMegaNova_ReplaceNovaRadius(ILContext il)
+        private static void ChargeMegaNova_ReplaceNovaRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -1372,7 +1372,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void VagrantNovaItem_ReplaceBlastRadius(ILContext il)
+        private static void VagrantNovaItem_ReplaceBlastRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -1402,12 +1402,12 @@ namespace ItemQualities.Items
             }
         }
 
-        static float JumpDamageStrikeBodyBehavior_GetRadius_ReplaceRadius(On.RoR2.Items.JumpDamageStrikeBodyBehavior.orig_GetRadius orig, JumpDamageStrikeBodyBehavior self, int charge, int stacks)
+        private static float JumpDamageStrikeBodyBehavior_GetRadius_ReplaceRadius(On.RoR2.Items.JumpDamageStrikeBodyBehavior.orig_GetRadius orig, JumpDamageStrikeBodyBehavior self, int charge, int stacks)
         {
             return GetExplosionRadius(orig(self, charge, stacks), self.body);
         }
 
-        static void DroneBallShootableController_Start_ReplaceRadius(On.RoR2.Projectile.DroneBallShootableController.orig_Start orig, DroneBallShootableController self)
+        private static void DroneBallShootableController_Start_ReplaceRadius(On.RoR2.Projectile.DroneBallShootableController.orig_Start orig, DroneBallShootableController self)
         {
             if (self &&
                 self.TryGetComponent(out ProjectileController projectileController) &&
@@ -1421,7 +1421,7 @@ namespace ItemQualities.Items
             orig(self);
         }
 
-        static void StealthMode_FireSmokebomb_ReplaceRadius(ILContext il)
+        private static void StealthMode_FireSmokebomb_ReplaceRadius(ILContext il)
         {
             getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody).Invoke(il);
 
@@ -1458,7 +1458,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void HitGroundState_OnEnter_ReplaceRadius(ILContext il)
+        private static void HitGroundState_OnEnter_ReplaceRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -1483,7 +1483,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ClubGroundSlam_DetonateAuthority_ReplaceRadius(ILContext il)
+        private static void ClubGroundSlam_DetonateAuthority_ReplaceRadius(ILContext il)
         {
             if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
                 return;
@@ -1502,7 +1502,7 @@ namespace ItemQualities.Items
             c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
         }
 
-        static void ChargedClubSwing_InitializeBlastAttackAsCharged_ReplaceEffectRadius(ILContext il)
+        private static void ChargedClubSwing_InitializeBlastAttackAsCharged_ReplaceEffectRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -1520,7 +1520,7 @@ namespace ItemQualities.Items
             c.EmitDelegate<Func<float, CharacterBody, float>>(GetExplosionRadius);
         }
 
-        static void MeridiansWillAim_OnEnter_SetIndicatorOwner(On.EntityStates.FalseSon.MeridiansWillAim.orig_OnEnter orig, EntityStates.FalseSon.MeridiansWillAim self)
+        private static void MeridiansWillAim_OnEnter_SetIndicatorOwner(On.EntityStates.FalseSon.MeridiansWillAim.orig_OnEnter orig, EntityStates.FalseSon.MeridiansWillAim self)
         {
             orig(self);
 
@@ -1537,7 +1537,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void MeridiansWillAim_OnExit_UnsetIndicatorOwner(On.EntityStates.FalseSon.MeridiansWillAim.orig_OnExit orig, EntityStates.FalseSon.MeridiansWillAim self)
+        private static void MeridiansWillAim_OnExit_UnsetIndicatorOwner(On.EntityStates.FalseSon.MeridiansWillAim.orig_OnExit orig, EntityStates.FalseSon.MeridiansWillAim self)
         {
             try
             {
@@ -1554,7 +1554,7 @@ namespace ItemQualities.Items
             orig(self);
         }
 
-        static void LightningStrikeOrb_OnArrival_ReplaceRadius(ILContext il)
+        private static void LightningStrikeOrb_OnArrival_ReplaceRadius(ILContext il)
         {
             if (!simpleBlastAttackRadiusManipulator(il, emitGetOrbOwnerBody))
                 return;
@@ -1607,7 +1607,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void SimpleLightningStrikeOrb_OnArrival_ReplaceRadius(ILContext il)
+        private static void SimpleLightningStrikeOrb_OnArrival_ReplaceRadius(ILContext il)
         {
             if (!simpleBlastAttackRadiusManipulator(il, emitGetOrbOwnerBody))
                 return;
@@ -1662,7 +1662,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void MeteorStormController_ReplaceRadius(ILContext il)
+        private static void MeteorStormController_ReplaceRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -1687,7 +1687,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void MeteorStormController_FixedUpdate_ReplaceRadius(ILContext il)
+        private static void MeteorStormController_FixedUpdate_ReplaceRadius(ILContext il)
         {
             MeteorStormController_ReplaceRadius(il);
 
@@ -1721,7 +1721,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void MeteorStormController_DetonateMeteor_ReplaceRadius(ILContext il)
+        private static void MeteorStormController_DetonateMeteor_ReplaceRadius(ILContext il)
         {
             MeteorStormController_ReplaceRadius(il);
 
@@ -1775,7 +1775,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void MeteorStormController_DoMeteorEffect_ReplaceTravelEffectRadius(ILContext il)
+        private static void MeteorStormController_DoMeteorEffect_ReplaceTravelEffectRadius(ILContext il)
         {
 
             ILCursor c = new ILCursor(il);
@@ -1828,7 +1828,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void FistSlam_FixedUpdate_ReplaceRadius(ILContext il)
+        private static void FistSlam_FixedUpdate_ReplaceRadius(ILContext il)
         {
             if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
                 return;
@@ -1866,7 +1866,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void WeaponSlam_FixedUpdate_ReplaceRadius(ILContext il)
+        private static void WeaponSlam_FixedUpdate_ReplaceRadius(ILContext il)
         {
             if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
                 return;
@@ -1904,7 +1904,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void CorruptedPathsDash_FixedUpdate_ReplaceRadius(ILContext il)
+        private static void CorruptedPathsDash_FixedUpdate_ReplaceRadius(ILContext il)
         {
             const float DefaultBlastRadius = 20f;
 
@@ -1934,7 +1934,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void FireLaser_OnEnter_ReplaceRadius(ILContext il)
+        private static void FireLaser_OnEnter_ReplaceRadius(ILContext il)
         {
             if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
                 return;
@@ -1975,7 +1975,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void TriLaser_FireTriLaser_ReplaceRadius(ILContext il)
+        private static void TriLaser_FireTriLaser_ReplaceRadius(ILContext il)
         {
             if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
                 return;
@@ -2016,7 +2016,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ImpBoss_BlinkState_CreateBlinkEffect_ReplaceRadius(ILContext il)
+        private static void ImpBoss_BlinkState_CreateBlinkEffect_ReplaceRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2056,7 +2056,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ImpBoss_BlinkState_FixedUpdate_SetBlinkDestinationEffectOwner(ILContext il)
+        private static void ImpBoss_BlinkState_FixedUpdate_SetBlinkDestinationEffectOwner(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2086,7 +2086,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ImpBoss_GroundPound_FixedUpdate_ReplaceEffectRadius(ILContext il)
+        private static void ImpBoss_GroundPound_FixedUpdate_ReplaceEffectRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2124,7 +2124,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void Mage_FlyUpState_CreateBlinkEffect_ReplaceEffectRadius(ILContext il)
+        private static void Mage_FlyUpState_CreateBlinkEffect_ReplaceEffectRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2167,7 +2167,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void Seeker_Meditate_Update_ReplaceRadius(ILContext il)
+        private static void Seeker_Meditate_Update_ReplaceRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2192,7 +2192,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void JunkCube_DeathState_Explode_ReplaceRadius(ILContext il)
+        private static void JunkCube_DeathState_Explode_ReplaceRadius(ILContext il)
         {
             if (!simpleBlastAttackRadiusManipulator(il, emitGetEntityStateAttackerBody))
                 return;
@@ -2219,7 +2219,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void AimThrowableBase_OnEnter_ReplaceEndpointRadius(ILContext il)
+        private static void AimThrowableBase_OnEnter_ReplaceEndpointRadius(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2246,7 +2246,7 @@ namespace ItemQualities.Items
         }
 
         // Fixes dumb false son code that instantiates a projectile prefab directly for no reason, thus not invoking the onInitialized event.
-        static void LunarStakesLightningController_FixProjectileInitializeDispatch(ILContext il)
+        private static void LunarStakesLightningController_FixProjectileInitializeDispatch(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2269,7 +2269,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static ILContext.Manipulator groupManipulators(params ILContext.Manipulator[] manipulators)
+        private static ILContext.Manipulator groupManipulators(params ILContext.Manipulator[] manipulators)
         {
             return il =>
             {
@@ -2280,7 +2280,7 @@ namespace ItemQualities.Items
             };
         }
 
-        static CharacterBody entityStateGetAttackerBody(EntityState entityState)
+        private static CharacterBody entityStateGetAttackerBody(EntityState entityState)
         {
             if (entityState == null)
                 return null;
@@ -2337,13 +2337,13 @@ namespace ItemQualities.Items
             return entityState.characterBody;
         }
 
-        static void emitGetEntityStateAttackerBody(ILCursor c)
+        private static void emitGetEntityStateAttackerBody(ILCursor c)
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<EntityState, CharacterBody>>(entityStateGetAttackerBody);
         }
 
-        static T tryGetAsComponent<T>(Component component) where T : Component
+        private static T tryGetAsComponent<T>(Component component) where T : Component
         {
             if (component)
             {
@@ -2354,7 +2354,7 @@ namespace ItemQualities.Items
             return null;
         }
 
-        static void emitGetVehicleSeatPassengerBody(ILCursor c)
+        private static void emitGetVehicleSeatPassengerBody(ILCursor c)
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getPassenger);
@@ -2366,7 +2366,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetBodyComponentBody(ILCursor c)
+        private static void emitGetBodyComponentBody(ILCursor c)
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getBody);
@@ -2377,7 +2377,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetMethodParameterBody(ILCursor c)
+        private static void emitGetMethodParameterBody(ILCursor c)
         {
             if (c.Context.Method.TryFindParameter<CharacterBody>(out ParameterDefinition bodyParameter))
             {
@@ -2390,7 +2390,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetMethodParameterDamageInfoAttackerBody(ILCursor c)
+        private static void emitGetMethodParameterDamageInfoAttackerBody(ILCursor c)
         {
             if (c.Context.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
@@ -2409,7 +2409,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetMethodParameterDamageReportAttackerBody(ILCursor c)
+        private static void emitGetMethodParameterDamageReportAttackerBody(ILCursor c)
         {
             FieldInfo attackerBodyField = typeof(DamageReport).GetField(nameof(DamageReport.attackerBody), BindingFlags.Public | BindingFlags.Instance);
             if (attackerBodyField == null)
@@ -2441,7 +2441,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetProjectileOwner(ILCursor c)
+        private static void emitGetProjectileOwner(ILCursor c)
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getBody);
@@ -2456,7 +2456,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetVoidRaidCrabLegControllerMainBody(ILCursor c)
+        private static void emitGetVoidRaidCrabLegControllerMainBody(ILCursor c)
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getBody);
@@ -2468,7 +2468,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetFissureSlamCracksControllerOwnerBody(ILCursor c)
+        private static void emitGetFissureSlamCracksControllerOwnerBody(ILCursor c)
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getBody);
@@ -2481,7 +2481,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetOrbOwnerBody(ILCursor c)
+        private static void emitGetOrbOwnerBody(ILCursor c)
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<Orb, CharacterBody>>(getBody);
@@ -2511,7 +2511,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void emitGetMeteorStormControllerOwner(ILCursor c)
+        private static void emitGetMeteorStormControllerOwner(ILCursor c)
         {
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<MonoBehaviour, CharacterBody>>(getBody);
@@ -2524,7 +2524,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static ILContext.Manipulator getVisualBlastAttackRadiusManipulator(Action<ILCursor> emitGetAttackerBody, bool strictRadiusMatch = true)
+        private static ILContext.Manipulator getVisualBlastAttackRadiusManipulator(Action<ILCursor> emitGetAttackerBody, bool strictRadiusMatch = true)
         {
             return il =>
             {
@@ -2532,7 +2532,7 @@ namespace ItemQualities.Items
             };
         }
 
-        static ILContext.Manipulator getSimpleBlastAttackRadiusManipulator(Action<ILCursor> emitGetAttackerBody)
+        private static ILContext.Manipulator getSimpleBlastAttackRadiusManipulator(Action<ILCursor> emitGetAttackerBody)
         {
             return il =>
             {
@@ -2540,7 +2540,7 @@ namespace ItemQualities.Items
             };
         }
 
-        static ILContext.Manipulator getSimpleSphereSearchRadiusManipulator(Action<ILCursor> emitGetAttackerBody)
+        private static ILContext.Manipulator getSimpleSphereSearchRadiusManipulator(Action<ILCursor> emitGetAttackerBody)
         {
             return il =>
             {
@@ -2548,7 +2548,7 @@ namespace ItemQualities.Items
             };
         }
 
-        static ILContext.Manipulator getSimpleEffectDataScaleManipulator(Action<ILCursor> emitGetAttackerBody)
+        private static ILContext.Manipulator getSimpleEffectDataScaleManipulator(Action<ILCursor> emitGetAttackerBody)
         {
             return il =>
             {
@@ -2556,7 +2556,7 @@ namespace ItemQualities.Items
             };
         }
 
-        static void visualBlastAttackRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody, bool strictRadiusMatch = true)
+        private static void visualBlastAttackRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody, bool strictRadiusMatch = true)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2613,7 +2613,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static bool simpleBlastAttackRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
+        private static bool simpleBlastAttackRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2641,7 +2641,7 @@ namespace ItemQualities.Items
             return patchCount > 0;
         }
 
-        static void simpleSphereSearchRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
+        private static void simpleSphereSearchRadiusManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
         {
             ILCursor c = new ILCursor(il);
 
@@ -2667,7 +2667,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void simpleEffectDataScaleManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
+        private static void simpleEffectDataScaleManipulator(ILContext il, Action<ILCursor> emitGetAttackerBody)
         {
             ILCursor c = new ILCursor(il);
 

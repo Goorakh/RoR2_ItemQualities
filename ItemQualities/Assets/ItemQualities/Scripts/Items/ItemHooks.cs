@@ -11,13 +11,13 @@ using System.Linq;
 
 namespace ItemQualities.Items
 {
-    static class ItemHooks
+    internal static class ItemHooks
     {
         public delegate void ModifyDamageDelegate(ref float damageValue, DamageInfo damageInfo);
         public static event ModifyDamageDelegate TakeDamageModifier;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Inventory.UpdateEffectiveItemStacks += Inventory_UpdateEffectiveItemStacks;
 
@@ -30,7 +30,7 @@ namespace ItemQualities.Items
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void Inventory_UpdateEffectiveItemStacks(ILContext il)
+        private static void Inventory_UpdateEffectiveItemStacks(ILContext il)
         {
             if (!il.Method.TryFindParameter<ItemIndex>(out ParameterDefinition itemIndexParameter))
             {
@@ -106,7 +106,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ItemInventoryDisplay_OnInventoryChanged(ILContext il)
+        private static void ItemInventoryDisplay_OnInventoryChanged(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -141,7 +141,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void CharacterModel_UpdateItemDisplay(ILContext il)
+        private static void CharacterModel_UpdateItemDisplay(ILContext il)
         {
             if (!il.Method.TryFindParameter<Inventory>(out ParameterDefinition inventoryParameter))
             {
@@ -180,7 +180,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
@@ -220,7 +220,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)
+        private static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)
         {
             return orig(self, QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None));
         }

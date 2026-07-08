@@ -13,7 +13,7 @@ namespace ItemQualities
     public sealed class TimedChestQualityController : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.TimedChestController.OnEnable += TimedChestController_OnEnable;
 
@@ -21,13 +21,13 @@ namespace ItemQualities
             IL.EntityStates.TimedChest.Opening.FixedUpdate += Opening_FixedUpdate;
         }
 
-        static void TimedChestController_OnEnable(On.RoR2.TimedChestController.orig_OnEnable orig, TimedChestController self)
+        private static void TimedChestController_OnEnable(On.RoR2.TimedChestController.orig_OnEnable orig, TimedChestController self)
         {
             orig(self);
             self.EnsureComponent<TimedChestQualityController>();
         }
 
-        static void Opening_OnEnter(On.EntityStates.TimedChest.Opening.orig_OnEnter orig, EntityStates.TimedChest.Opening self)
+        private static void Opening_OnEnter(On.EntityStates.TimedChest.Opening.orig_OnEnter orig, EntityStates.TimedChest.Opening self)
         {
             orig(self);
 
@@ -37,7 +37,7 @@ namespace ItemQualities
             }
         }
 
-        static void Opening_FixedUpdate(ILContext il)
+        private static void Opening_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -60,18 +60,18 @@ namespace ItemQualities
             }
         }
 
-        Xoroshiro128Plus _rng;
+        private Xoroshiro128Plus _rng;
 
-        ModelLocator _modelLocator;
+        private ModelLocator _modelLocator;
 
-        GenericPickupController _pickupController;
-        QualityPickupDisplayController _qualityPickupDisplayController;
+        private GenericPickupController _pickupController;
+        private QualityPickupDisplayController _qualityPickupDisplayController;
 
-        bool _foundPickupController;
+        private bool _foundPickupController;
 
-        float _findPickupTimer;
+        private float _findPickupTimer;
 
-        void Awake()
+        private void Awake()
         {
             _modelLocator = GetComponent<ModelLocator>();
 
@@ -81,7 +81,7 @@ namespace ItemQualities
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (!_foundPickupController)
             {
@@ -115,13 +115,13 @@ namespace ItemQualities
             }
         }
 
-        void rollQualityServer()
+        private void rollQualityServer()
         {
             _pickupController.pickup = _pickupController.pickup.WithQualityTier(DropTableQualityHandler.RollQualityTier(_rng, new PickupRollInfo(null, TeamIndex.Player)));
             Log.Debug($"{Util.GetGameObjectHierarchyName(gameObject)}: Rolled quality for pickup ({QualityCatalog.GetQualityTier(_pickupController.pickup.pickupIndex)})");
         }
 
-        void onOpening()
+        private void onOpening()
         {
             if (_qualityPickupDisplayController)
             {
@@ -161,7 +161,7 @@ namespace ItemQualities
             }
         }
 
-        void onOpened()
+        private void onOpened()
         {
             if (_pickupController)
             {

@@ -6,9 +6,9 @@ namespace ItemQualities.ContentManagement
     internal sealed class PartitionedProgress<TReceiver>
         where TReceiver : IProgress<float>
     {
-        readonly TReceiver _progressReceiver;
+        private readonly TReceiver _progressReceiver;
 
-        readonly List<ProgressPartition> _partitions = new List<ProgressPartition>();
+        private readonly List<ProgressPartition> _partitions = new List<ProgressPartition>();
 
         public float Progress { get; private set; }
 
@@ -36,7 +36,7 @@ namespace ItemQualities.ContentManagement
             return partitions;
         }
 
-        void recalculateProgress()
+        private void recalculateProgress()
         {
             float progress = 0f;
 
@@ -57,7 +57,7 @@ namespace ItemQualities.ContentManagement
             Progress = progress;
         }
 
-        void onPartitionReport(float _)
+        private void onPartitionReport(float _)
         {
             recalculateProgress();
             _progressReceiver.Report(Progress);

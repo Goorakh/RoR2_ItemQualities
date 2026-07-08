@@ -4,17 +4,17 @@ using RoR2;
 
 namespace ItemQualities.Equipments
 {
-    static class GainArmor
+    internal static class GainArmor
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             On.RoR2.EquipmentSlot.FireGainArmor += EquipmentSlot_FireGainArmor;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory || sender.inventory.GetEquipmentDisabled())
                 return;
@@ -58,7 +58,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool EquipmentSlot_FireGainArmor(On.RoR2.EquipmentSlot.orig_FireGainArmor orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireGainArmor(On.RoR2.EquipmentSlot.orig_FireGainArmor orig, EquipmentSlot self)
         {
             bool success = orig(self);
 

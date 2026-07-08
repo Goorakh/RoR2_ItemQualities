@@ -11,7 +11,7 @@ namespace ItemQualities
     public sealed class BossArenaHealNovaManager : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.SolusWingGrid.GridManager.OnTierSet += GridManager_OnTierSet;
         }
@@ -40,9 +40,9 @@ namespace ItemQualities
 
         public float ArenaRadius = 100f;
 
-        readonly GameObject[] _healNovaSpawnersByTeam = new GameObject[TeamsAPICompat.TeamsCount];
+        private readonly GameObject[] _healNovaSpawnersByTeam = new GameObject[TeamsAPICompat.TeamsCount];
 
-        void Awake()
+        private void Awake()
         {
             if (!NetworkServer.active)
             {
@@ -52,7 +52,7 @@ namespace ItemQualities
             }
         }
 
-        void Start()
+        private void Start()
         {
             if (WatchingBossGroup)
             {
@@ -60,7 +60,7 @@ namespace ItemQualities
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
 
@@ -74,7 +74,7 @@ namespace ItemQualities
             BossGroup.onBossGroupDefeatedServer += onBossGroupDefeatedServer;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
 
@@ -91,7 +91,7 @@ namespace ItemQualities
             BossGroup.onBossGroupDefeatedServer -= onBossGroupDefeatedServer;
         }
 
-        void onBossGroupDefeatedServer(BossGroup bossGroup)
+        private void onBossGroupDefeatedServer(BossGroup bossGroup)
         {
             if (bossGroup == WatchingBossGroup)
             {
@@ -99,7 +99,7 @@ namespace ItemQualities
             }
         }
 
-        void onInventoryChangedGlobal(Inventory inventory)
+        private void onInventoryChangedGlobal(Inventory inventory)
         {
             if (inventory.TryGetComponent(out CharacterMaster master) && master.teamIndex != TeamIndex.None)
             {
@@ -107,7 +107,7 @@ namespace ItemQualities
             }
         }
 
-        void updateAllTeamHealNovaManagers()
+        private void updateAllTeamHealNovaManagers()
         {
             for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
             {
@@ -115,7 +115,7 @@ namespace ItemQualities
             }
         }
 
-        void updateTeamHealNovaManager(TeamIndex teamIndex)
+        private void updateTeamHealNovaManager(TeamIndex teamIndex)
         {
             if (!ArrayUtils.IsInBounds(_healNovaSpawnersByTeam, (int)teamIndex))
             {
@@ -151,7 +151,7 @@ namespace ItemQualities
             }
         }
 
-        void setPosition(Vector3 arenaCenter)
+        private void setPosition(Vector3 arenaCenter)
         {
             transform.position = arenaCenter;
 

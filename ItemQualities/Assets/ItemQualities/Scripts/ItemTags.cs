@@ -10,7 +10,7 @@ namespace ItemQualities
         public static ItemTag MissileRelated { get; private set; } = (ItemTag)(-1);
 
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
-        static void PreInit()
+        private static void PreInit()
         {
             MissileRelated = ItemAPI.AddItemTag("Quality_MissileRelated");
 

@@ -20,7 +20,7 @@ namespace ItemQualities
             setDuration();
         }
 
-        void setDuration()
+        private void setDuration()
         {
             if (BuffWard)
             {
@@ -33,7 +33,7 @@ namespace ItemQualities
             }
         }
 
-        void hookSetDuration(float duration)
+        private void hookSetDuration(float duration)
         {
             Duration = duration;
             setDuration();

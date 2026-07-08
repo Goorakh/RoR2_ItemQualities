@@ -6,7 +6,7 @@ namespace ItemQualities.Utilities
 {
     public readonly struct ScopedAsyncOperationHandle : IDisposable
     {
-        readonly AsyncOperationHandle _handle;
+        private readonly AsyncOperationHandle _handle;
 
         public ScopedAsyncOperationHandle(AsyncOperationHandle handle)
         {
@@ -24,7 +24,7 @@ namespace ItemQualities.Utilities
 
     public readonly struct ScopedAsyncOperationHandle<T> : IDisposable
     {
-        readonly AsyncOperationHandle<T> _handle;
+        private readonly AsyncOperationHandle<T> _handle;
 
         public ScopedAsyncOperationHandle(AsyncOperationHandle<T> handle)
         {

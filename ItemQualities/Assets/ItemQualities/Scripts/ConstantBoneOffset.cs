@@ -7,16 +7,16 @@ namespace ItemQualities
         public Vector3 PositionOffset;
 
         [SerializeField]
-        Animator _animator;
+        private Animator _animator;
 
-        Vector3 _lastLocalPosition;
+        private Vector3 _lastLocalPosition;
 
-        void OnEnable()
+        private void OnEnable()
         {
             _lastLocalPosition = Vector3.positiveInfinity;
         }
 
-        void LateUpdate()
+        private void LateUpdate()
         {
             if (_animator && _animator.isActiveAndEnabled)
             {

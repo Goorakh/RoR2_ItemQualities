@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class PickupNotificationTransformationPatch
+    internal static class PickupNotificationTransformationPatch
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GenericPickupController.HandlePickupMessage += GenericPickupController_HandlePickupMessage;
         }
 
-        static void GenericPickupController_HandlePickupMessage(ILContext il)
+        private static void GenericPickupController_HandlePickupMessage(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

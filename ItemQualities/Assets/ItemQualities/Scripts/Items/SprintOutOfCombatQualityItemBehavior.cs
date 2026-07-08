@@ -7,10 +7,10 @@ namespace ItemQualities.Items
 {
     public sealed class SprintOutOfCombatQualityItemBehavior : QualityItemBodyBehavior
     {
-        static EffectIndex _whipActivateEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _whipActivateEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _whipActivateEffectIndex = EffectCatalogUtils.FindEffectIndex("SprintActivate");
             if (_whipActivateEffectIndex == EffectIndex.Invalid)
@@ -20,14 +20,14 @@ namespace ItemQualities.Items
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.SprintOutOfCombat;
         }
 
-        bool _providingBuff;
+        private bool _providingBuff;
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (NetworkServer.active)
             {
@@ -35,7 +35,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -50,7 +50,7 @@ namespace ItemQualities.Items
             Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.WhipBoost, Stacks.HighestQuality);
         }
 
-        void setProvidingBuff(bool providingBuff)
+        private void setProvidingBuff(bool providingBuff)
         {
             if (providingBuff == _providingBuff)
                 return;

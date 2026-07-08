@@ -9,12 +9,12 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class QualityTierItem
+    internal static class QualityTierItem
     {
-        static readonly int _overrideQualityRampIndex = -1;
+        private static readonly int _overrideQualityRampIndex = -1;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.Util.GetBestBodyName += Util_GetBestBodyName;
 
@@ -35,7 +35,7 @@ namespace ItemQualities.Items
             MasterSummon.onServerMasterSummonGlobal += onServerMasterSummonGlobal;
         }
 
-        static void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
+        private static void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
         {
             if (!summonReport.summonMasterInstance || !summonReport.summonMasterInstance.inventory)
                 return;
@@ -53,7 +53,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static string Util_GetBestBodyName(On.RoR2.Util.orig_GetBestBodyName orig, GameObject bodyObject)
+        private static string Util_GetBestBodyName(On.RoR2.Util.orig_GetBestBodyName orig, GameObject bodyObject)
         {
             string bodyName = orig(bodyObject);
 
@@ -74,7 +74,7 @@ namespace ItemQualities.Items
             return bodyName;
         }
 
-        static void CharacterModel_UpdateMaterials(ILContext il)
+        private static void CharacterModel_UpdateMaterials(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

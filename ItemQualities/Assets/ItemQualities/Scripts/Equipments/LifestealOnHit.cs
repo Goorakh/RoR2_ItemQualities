@@ -6,15 +6,15 @@ using System;
 
 namespace ItemQualities.Equipments
 {
-    static class LifestealOnHit
+    internal static class LifestealOnHit
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireLifeStealOnHit += EquipmentSlot_FireLifeStealOnHit;
         }
 
-        static void EquipmentSlot_FireLifeStealOnHit(ILContext il)
+        private static void EquipmentSlot_FireLifeStealOnHit(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

@@ -5,8 +5,8 @@ namespace ItemQualities
 {
     internal struct MemoizedGetComponentCached<TComponent> where TComponent : Component
     {
-        GameObject _cachedGameObject;
-        TComponent _cachedComponent;
+        private GameObject _cachedGameObject;
+        private TComponent _cachedComponent;
 
         public TComponent Get(GameObject gameObject)
         {

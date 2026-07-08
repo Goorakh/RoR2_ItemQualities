@@ -3,15 +3,15 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class Seed
+    internal static class Seed
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        static void onServerDamageDealt(DamageReport damageReport)
+        private static void onServerDamageDealt(DamageReport damageReport)
         {
             if (!damageReport.attackerBody || !damageReport.attackerBody.inventory)
                 return;

@@ -7,14 +7,14 @@ namespace ItemQualities.Items
     public sealed class DronesDropDynamiteQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite;
         }
 
-        readonly HashSet<MinionInfo> _trackedMinions = new HashSet<MinionInfo>();
+        private readonly HashSet<MinionInfo> _trackedMinions = new HashSet<MinionInfo>();
 
-        void OnEnable()
+        private void OnEnable()
         {
             MinionOwnership.onMinionOwnerChangedGlobal += onMinionOwnerChangedGlobal;
 
@@ -41,7 +41,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             MinionOwnership.onMinionOwnerChangedGlobal -= onMinionOwnerChangedGlobal;
 
@@ -53,7 +53,7 @@ namespace ItemQualities.Items
             _trackedMinions.Clear();
         }
 
-        void onMinionOwnerChangedGlobal(MinionOwnership minionOwnership)
+        private void onMinionOwnerChangedGlobal(MinionOwnership minionOwnership)
         {
             MinionInfo minionInfo = new MinionInfo(minionOwnership);
             if (Body.master && minionOwnership.ownerMaster == Body.master)
@@ -72,7 +72,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onMinionEnter(MinionInfo minion)
+        private void onMinionEnter(MinionInfo minion)
         {
             if (minion.Inventory)
             {
@@ -80,7 +80,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onMinionExit(MinionInfo minion)
+        private void onMinionExit(MinionInfo minion)
         {
             if (minion.Inventory)
             {
@@ -88,7 +88,7 @@ namespace ItemQualities.Items
             }
         }
 
-        sealed class MinionInfo : IEquatable<MinionInfo>
+        private sealed class MinionInfo : IEquatable<MinionInfo>
         {
             public MinionOwnership Ownership { get; }
 

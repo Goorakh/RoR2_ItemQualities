@@ -18,12 +18,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class Saw
+    internal static class Saw
     {
-        static readonly GameObject[] _qualitySawProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualitySawProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> sawProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Saw.Sawmerang_prefab);
             sawProjectileLoad.OnSuccess(sawProjectilePrefab =>
@@ -43,7 +43,7 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireSaw += EquipmentSlot_FireSaw;
 
@@ -88,7 +88,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void EquipmentSlot_FireSaw_FireSingleSaw(ILContext il)
+        private static void EquipmentSlot_FireSaw_FireSingleSaw(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -112,7 +112,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void EquipmentSlot_FireSaw(ILContext il)
+        private static void EquipmentSlot_FireSaw(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -240,6 +240,6 @@ namespace ItemQualities.Equipments
             c.Emit(OpCodes.Stloc, sawRotationVar);
         }
 
-        delegate void GetSawLoopParamsDelegate(EquipmentSlot equipmentSlot, float sawAngle, out int middleSawRepeatCount, out Quaternion rotationPerSaw, ref Quaternion sawRotation);
+        private delegate void GetSawLoopParamsDelegate(EquipmentSlot equipmentSlot, float sawAngle, out int middleSawRepeatCount, out Quaternion rotationPerSaw, ref Quaternion sawRotation);
     }
 }

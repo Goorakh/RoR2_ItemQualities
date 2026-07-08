@@ -15,12 +15,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class WardOnLevel
+    internal static class WardOnLevel
     {
-        static GameObject _wardTemporaryPrefab;
+        private static GameObject _wardTemporaryPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> warbannerWardLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_WardOnLevel.WarbannerWard_prefab);
             warbannerWardLoad.OnSuccess(warbannerWard =>
@@ -74,7 +74,7 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             GlobalEventManager.OnInteractionsGlobal += onInteractionsGlobal;
             IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += WardOnLevelManager_OnCharacterLevelUp;
@@ -137,7 +137,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void addGrowingBuff(GameObject banner, CharacterBody body)
+        private static void addGrowingBuff(GameObject banner, CharacterBody body)
         {
             ItemQualityCounts wardOnLevel = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WardOnLevel);
             if (wardOnLevel.TotalQualityCount > 0)
@@ -153,7 +153,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void onInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
+        private static void onInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
         {
             if (!NetworkServer.active)
                 return;
@@ -201,9 +201,9 @@ namespace ItemQualities.Items
 
     public sealed class WardOnLevelGrowingBuff : NetworkBehaviour
     {
-        float _buffTimer;
-        TeamFilter _teamFilter;
-        BuffWard _buffWard;
+        private float _buffTimer;
+        private TeamFilter _teamFilter;
+        private BuffWard _buffWard;
 
         public int maxStacks;
         public BuffDef buff;

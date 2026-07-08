@@ -3,15 +3,15 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class TreasureCache
+    internal static class TreasureCache
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             SpecificItemCostTransformationHooks.ModifyItemCostTransformation += modifyItemCostTransformation;
         }
 
-        static void modifyItemCostTransformation(ref Inventory.ItemTransformation itemTransformation, Interactor activator, int cost)
+        private static void modifyItemCostTransformation(ref Inventory.ItemTransformation itemTransformation, Interactor activator, int cost)
         {
             if (itemTransformation.originalItemIndex != RoR2Content.Items.TreasureCache.itemIndex)
                 return;

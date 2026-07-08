@@ -5,7 +5,7 @@ using Path = System.IO.Path;
 
 namespace ItemQualities
 {
-    static class LanguageFolderHandler
+    internal static class LanguageFolderHandler
     {
         public static void Register(string searchFolder, string langFolderName = "lang")
         {

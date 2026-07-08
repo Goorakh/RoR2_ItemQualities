@@ -54,9 +54,9 @@ namespace ItemQualities
 
         public float LegendaryQualityWeight = 0.02f;
 
-        readonly WeightedSelection<UniquePickup> _selector = new WeightedSelection<UniquePickup>();
+        private readonly WeightedSelection<UniquePickup> _selector = new WeightedSelection<UniquePickup>();
 
-        readonly WeightedSelection<QualityTier> _qualityTierSelection = new WeightedSelection<QualityTier>();
+        private readonly WeightedSelection<QualityTier> _qualityTierSelection = new WeightedSelection<QualityTier>();
 
         public override void Regenerate(Run run)
         {
@@ -132,7 +132,7 @@ namespace ItemQualities
             return true;
         }
 
-        void generateWeightedSelection(Run run)
+        private void generateWeightedSelection(Run run)
         {
             _selector.Clear();
             addPickups(run.availableTier1DropList, Tier1Weight);
@@ -200,12 +200,12 @@ namespace ItemQualities
             }
         }
 
-        QualityTier rollQuality(Xoroshiro128Plus rng)
+        private QualityTier rollQuality(Xoroshiro128Plus rng)
         {
             return _qualityTierSelection.Evaluate(rng.nextNormalizedFloat);
         }
 
-        PickupIndex tryRerollQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, int qualityLuck)
+        private PickupIndex tryRerollQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, int qualityLuck)
         {
             QualityTier currentPickupQualityTier = QualityCatalog.GetQualityTier(pickupIndex);
 

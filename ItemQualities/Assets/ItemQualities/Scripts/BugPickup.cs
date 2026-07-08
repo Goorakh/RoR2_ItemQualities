@@ -22,9 +22,9 @@ namespace ItemQualities
 
         public QualityTier Tier = QualityTier.None;
 
-        bool _alive = true;
+        private bool _alive = true;
 
-        void OnTriggerStay(Collider other)
+        private void OnTriggerStay(Collider other)
         {
             if (NetworkServer.active && _alive && TeamComponent.GetObjectTeam(other.gameObject) == TeamFilter.teamIndex)
             {

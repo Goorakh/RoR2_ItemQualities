@@ -5,17 +5,17 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class AttackSpeedOnCrit
+    internal static class AttackSpeedOnCrit
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender || !sender.inventory)
                 return;
@@ -31,7 +31,7 @@ namespace ItemQualities.Items
             args.attackSpeedMultAdd += attackSpeedPerBuff * attackSpeedOnCritBuff.TotalQualityCount;
         }
 
-        static void onCharacterDeathGlobal(DamageReport damageReport)
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (!NetworkServer.active || damageReport?.damageInfo == null)
                 return;

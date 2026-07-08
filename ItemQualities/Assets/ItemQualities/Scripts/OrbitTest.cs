@@ -22,7 +22,7 @@ namespace ItemQualities
         [Range(-360f, 360f)]
         public float TiltOffset = 0f;
 
-        void Update()
+        private void Update()
         {
             int directionSign = InvertDirection ? -1 : 1;
 
@@ -37,7 +37,7 @@ namespace ItemQualities
             OrbitTransform.SetLocalPositionAndRotation(localPosition, localRotation);
         }
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             // Your gizmo drawing thing goes here if required...
 

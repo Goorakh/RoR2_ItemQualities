@@ -14,13 +14,13 @@ namespace EntityStates.BossGroupHealNovaController
 
         public static float LingerDuration;
 
-        float _totalDuration;
+        private float _totalDuration;
 
-        Transform _effectTransform;
+        private Transform _effectTransform;
 
-        HealPulse _healPulse;
+        private HealPulse _healPulse;
 
-        float _radius;
+        private float _radius;
 
         public override void OnEnter()
         {
@@ -83,23 +83,23 @@ namespace EntityStates.BossGroupHealNovaController
             }
         }
 
-        sealed class HealPulse
+        private sealed class HealPulse
         {
-            readonly HashSet<HealthComponent> _healedTargets = new HashSet<HealthComponent>();
+            private readonly HashSet<HealthComponent> _healedTargets = new HashSet<HealthComponent>();
 
-            readonly SphereSearch _sphereSearch;
+            private readonly SphereSearch _sphereSearch;
 
-            readonly float _duration;
+            private readonly float _duration;
 
-            readonly float _finalRadius;
+            private readonly float _finalRadius;
 
-            readonly float _healFractionValue;
+            private readonly float _healFractionValue;
 
-            readonly TeamMask _teamMask;
+            private readonly TeamMask _teamMask;
 
-            readonly List<HurtBox> _hurtBoxesList = new List<HurtBox>();
+            private readonly List<HurtBox> _hurtBoxesList = new List<HurtBox>();
 
-            float _timeElapsed;
+            private float _timeElapsed;
 
             public HealPulse(Vector3 origin, float finalRadius, float healFractionValue, float duration, TeamIndex teamIndex)
             {
@@ -142,7 +142,7 @@ namespace EntityStates.BossGroupHealNovaController
                 _hurtBoxesList.Clear();
             }
 
-            void healTarget(HealthComponent target)
+            private void healTarget(HealthComponent target)
             {
                 target.HealFraction(_healFractionValue, new ProcChainMask());
                 Util.PlaySound("Play_item_proc_TPhealingNova_hitPlayer", target.gameObject);

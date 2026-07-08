@@ -16,12 +16,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class Molotov
+    internal static class Molotov
     {
-        static readonly GameObject[] _qualityMolotovClusterProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityMolotovClusterProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> molotovClusterProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_Molotov.MolotovClusterProjectile_prefab);
             molotovClusterProjectileLoad.OnSuccess(molotovClusterProjectilePrefab =>
@@ -162,12 +162,12 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireMolotov += EquipmentSlot_FireMolotov;
         }
 
-        static void EquipmentSlot_FireMolotov(ILContext il)
+        private static void EquipmentSlot_FireMolotov(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

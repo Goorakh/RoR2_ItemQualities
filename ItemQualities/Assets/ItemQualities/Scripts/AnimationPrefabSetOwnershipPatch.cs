@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class AnimationPrefabSetOwnershipPatch
+    internal static class AnimationPrefabSetOwnershipPatch
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.AnimationEvents.CreatePrefab += AnimationEvents_CreatePrefab;
         }
 
-        static void AnimationEvents_CreatePrefab(ILContext il)
+        private static void AnimationEvents_CreatePrefab(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

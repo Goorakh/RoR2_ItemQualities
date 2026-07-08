@@ -18,22 +18,22 @@ namespace ItemQualities
 {
     public static class QualityCatalog
     {
-        static readonly QualityTierDef[] _qualityTierDefs = new QualityTierDef[(int)QualityTier.Count];
+        private static readonly QualityTierDef[] _qualityTierDefs = new QualityTierDef[(int)QualityTier.Count];
 
-        static ItemQualityGroup[] _allItemQualityGroups = Array.Empty<ItemQualityGroup>();
-        static QualityTier[] _itemIndexToQuality = Array.Empty<QualityTier>();
-        static ItemQualityGroupIndex[] _itemIndexToQualityGroupIndex = Array.Empty<ItemQualityGroupIndex>();
-        static readonly ReadOnlyArray<ItemIndex>[] _itemsByQualityTier = new ReadOnlyArray<ItemIndex>[(int)QualityTier.Count + 1];
+        private static ItemQualityGroup[] _allItemQualityGroups = Array.Empty<ItemQualityGroup>();
+        private static QualityTier[] _itemIndexToQuality = Array.Empty<QualityTier>();
+        private static ItemQualityGroupIndex[] _itemIndexToQualityGroupIndex = Array.Empty<ItemQualityGroupIndex>();
+        private static readonly ReadOnlyArray<ItemIndex>[] _itemsByQualityTier = new ReadOnlyArray<ItemIndex>[(int)QualityTier.Count + 1];
 
-        static EquipmentQualityGroup[] _allEquipmentQualityGroups = Array.Empty<EquipmentQualityGroup>();
-        static QualityTier[] _equipmentIndexToQuality = Array.Empty<QualityTier>();
-        static EquipmentQualityGroupIndex[] _equipmentIndexToQualityGroupIndex = Array.Empty<EquipmentQualityGroupIndex>();
-        static readonly ReadOnlyArray<EquipmentIndex>[] _equipmentsByQualityTier = new ReadOnlyArray<EquipmentIndex>[(int)QualityTier.Count + 1];
+        private static EquipmentQualityGroup[] _allEquipmentQualityGroups = Array.Empty<EquipmentQualityGroup>();
+        private static QualityTier[] _equipmentIndexToQuality = Array.Empty<QualityTier>();
+        private static EquipmentQualityGroupIndex[] _equipmentIndexToQualityGroupIndex = Array.Empty<EquipmentQualityGroupIndex>();
+        private static readonly ReadOnlyArray<EquipmentIndex>[] _equipmentsByQualityTier = new ReadOnlyArray<EquipmentIndex>[(int)QualityTier.Count + 1];
 
-        static BuffQualityGroup[] _allBuffQualityGroups = Array.Empty<BuffQualityGroup>();
-        static QualityTier[] _buffIndexToQuality = Array.Empty<QualityTier>();
-        static BuffQualityGroupIndex[] _buffIndexToQualityGroupIndex = Array.Empty<BuffQualityGroupIndex>();
-        static readonly ReadOnlyArray<BuffIndex>[] _buffsByQualityTier = new ReadOnlyArray<BuffIndex>[(int)QualityTier.Count + 1];
+        private static BuffQualityGroup[] _allBuffQualityGroups = Array.Empty<BuffQualityGroup>();
+        private static QualityTier[] _buffIndexToQuality = Array.Empty<QualityTier>();
+        private static BuffQualityGroupIndex[] _buffIndexToQualityGroupIndex = Array.Empty<BuffQualityGroupIndex>();
+        private static readonly ReadOnlyArray<BuffIndex>[] _buffsByQualityTier = new ReadOnlyArray<BuffIndex>[(int)QualityTier.Count + 1];
 
         public static int ItemQualityGroupCount => _allItemQualityGroups.Length;
 
@@ -44,7 +44,7 @@ namespace ItemQualities
         public static ResourceAvailability Availability = new ResourceAvailability();
 
         [SystemInitializer(typeof(ItemCatalog), typeof(EquipmentCatalog), typeof(BuffCatalog))]
-        static IEnumerator Init()
+        private static IEnumerator Init()
         {
             yield return setQualityGroups(ItemQualitiesContent.QualityTiers.AllQualityTiers,
                                           ItemQualitiesContent.ItemQualityGroups.AllGroups,
@@ -54,10 +54,10 @@ namespace ItemQualities
             Availability.MakeAvailable();
         }
 
-        static IEnumerator setQualityGroups(ReadOnlyCollection<QualityTierDef> qualityTierDefs,
-                                            ReadOnlyCollection<ItemQualityGroup> itemQualityGroups,
-                                            ReadOnlyCollection<EquipmentQualityGroup> equipmentQualityGroups,
-                                            ReadOnlyCollection<BuffQualityGroup> buffQualityGroups)
+        private static IEnumerator setQualityGroups(ReadOnlyCollection<QualityTierDef> qualityTierDefs,
+                                                    ReadOnlyCollection<ItemQualityGroup> itemQualityGroups,
+                                                    ReadOnlyCollection<EquipmentQualityGroup> equipmentQualityGroups,
+                                                    ReadOnlyCollection<BuffQualityGroup> buffQualityGroups)
         {
             for (int i = 0; i < qualityTierDefs.Count; i++)
             {

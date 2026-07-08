@@ -6,7 +6,7 @@ namespace ItemQualities
 {
     internal sealed class TeamObjectFilter : IObjectCollideFilter, IDisposable
     {
-        readonly TeamIndex _teamIndex = TeamIndex.None;
+        private readonly TeamIndex _teamIndex = TeamIndex.None;
 
         public bool InvertFilter { get; init; }
 
@@ -20,7 +20,7 @@ namespace ItemQualities
             TeamComponent.onLeaveTeamGlobal += onLeaveTeamGlobal;
         }
 
-        bool bodyPassesFilter(CharacterBody body)
+        private bool bodyPassesFilter(CharacterBody body)
         {
             if (!body || !body.teamComponent)
                 return false;
@@ -34,7 +34,7 @@ namespace ItemQualities
             return collisionManager && (bodyPassesFilter(collisionManager.Body) || bodyPassesFilter(collisionManager.OwnerBody));
         }
 
-        void onLeaveTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
+        private void onLeaveTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
         {
             if (teamIndex == _teamIndex && OnFilterDirty != null && teamComponent.TryGetComponentCached(out ObjectCollisionManager collisionManager))
             {
@@ -42,7 +42,7 @@ namespace ItemQualities
             }
         }
 
-        void onJoinTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
+        private void onJoinTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
         {
             if (teamIndex == _teamIndex && OnFilterDirty != null && teamComponent.TryGetComponentCached(out ObjectCollisionManager collisionManager))
             {

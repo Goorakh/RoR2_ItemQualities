@@ -18,14 +18,14 @@ using DeathProjectileComponent = RoR2.Projectile.DeathProjectile;
 
 namespace ItemQualities.Equipments
 {
-    static class DeathProjectile
+    internal static class DeathProjectile
     {
-        static readonly GameObject[] _qualityDeathProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityDeathProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
-        static BuffIndex[] _validEliteBuffIndices = Array.Empty<BuffIndex>();
+        private static BuffIndex[] _validEliteBuffIndices = Array.Empty<BuffIndex>();
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> deathProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_DeathProjectile.DeathProjectile_prefab);
             deathProjectileLoad.OnSuccess(deathProjectilePrefab =>
@@ -73,7 +73,7 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer(typeof(BuffCatalog))]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireDeathProjectile += EquipmentSlot_FireDeathProjectile;
 
@@ -105,7 +105,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void EquipmentSlot_FireDeathProjectile(ILContext il)
+        private static void EquipmentSlot_FireDeathProjectile(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -136,7 +136,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void DeathProjectile_FixedUpdate(ILContext il)
+        private static void DeathProjectile_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

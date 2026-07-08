@@ -96,7 +96,7 @@ namespace ItemQualities.Utilities
             return findConverterMethod(from, to, "op_Explicit");
         }
 
-        static MethodInfo findConverterMethod(Type from, Type to, string name)
+        private static MethodInfo findConverterMethod(Type from, Type to, string name)
         {
             if (from is null)
                 throw new ArgumentNullException(nameof(from));

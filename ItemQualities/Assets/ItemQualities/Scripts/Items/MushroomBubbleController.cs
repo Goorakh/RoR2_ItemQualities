@@ -6,20 +6,20 @@ namespace ItemQualities.Items
 {
     public sealed class MushroomBubbleController : MonoBehaviour
     {
-        GenericOwnership _genericOwnership;
+        private GenericOwnership _genericOwnership;
 
-        IgnoredCollisionsProvider _ignoredCollisionsProvider;
+        private IgnoredCollisionsProvider _ignoredCollisionsProvider;
 
-        EntityStateMachine _stateMachine;
+        private EntityStateMachine _stateMachine;
 
-        void Awake()
+        private void Awake()
         {
             _genericOwnership = GetComponent<GenericOwnership>();
             _ignoredCollisionsProvider = GetComponent<IgnoredCollisionsProvider>();
             _stateMachine = GetComponent<EntityStateMachine>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (_genericOwnership)
             {
@@ -29,7 +29,7 @@ namespace ItemQualities.Items
             refreshCollisionWhitelist();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (_genericOwnership)
             {
@@ -37,12 +37,12 @@ namespace ItemQualities.Items
             }
         }
 
-        void onOwnerChanged(GameObject newOwner)
+        private void onOwnerChanged(GameObject newOwner)
         {
             refreshCollisionWhitelist();
         }
 
-        void refreshCollisionWhitelist()
+        private void refreshCollisionWhitelist()
         {
             GameObject ownerObject = _genericOwnership ? _genericOwnership.ownerObject : null;
             TeamIndex ownerTeam = TeamComponent.GetObjectTeam(ownerObject);
@@ -63,7 +63,7 @@ namespace ItemQualities.Items
             invokeStateUndeploy(true);
         }
 
-        void invokeStateUndeploy(bool immediate)
+        private void invokeStateUndeploy(bool immediate)
         {
             if (_stateMachine && _stateMachine.state is MushroomBubbleBaseState mushroomBubbleState)
             {

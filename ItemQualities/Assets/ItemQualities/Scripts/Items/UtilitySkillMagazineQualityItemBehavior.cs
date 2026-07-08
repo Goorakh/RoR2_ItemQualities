@@ -5,10 +5,10 @@ namespace ItemQualities.Items
 {
     public sealed class UtilitySkillMagazineQualityItemBehavior : QualityItemBodyBehavior
     {
-        static EffectIndex _restockEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _restockEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _restockEffectIndex = EffectCatalogUtils.FindEffectIndex("AmmoPackPickupEffect");
             if (_restockEffectIndex == EffectIndex.Invalid)
@@ -18,14 +18,14 @@ namespace ItemQualities.Items
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Authority)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.UtilitySkillMagazine;
         }
 
-        Run.FixedTimeStamp _lastUtilitySkillRechargeTime;
+        private Run.FixedTimeStamp _lastUtilitySkillRechargeTime;
 
-        void OnEnable()
+        private void OnEnable()
         {
             GenericSkillHooks.OnSkillRechargeAuthority += onSkillRechargeAuthority;
             Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
@@ -33,13 +33,13 @@ namespace ItemQualities.Items
             _lastUtilitySkillRechargeTime = Run.FixedTimeStamp.negativeInfinity;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             GenericSkillHooks.OnSkillRechargeAuthority -= onSkillRechargeAuthority;
             Body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
         }
 
-        void onSkillRechargeAuthority(GenericSkill skill)
+        private void onSkillRechargeAuthority(GenericSkill skill)
         {
             if (Body.skillLocator && skill && skill == Body.skillLocator.utility)
             {
@@ -47,7 +47,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onSkillActivatedAuthority(GenericSkill skill)
+        private void onSkillActivatedAuthority(GenericSkill skill)
         {
             if (Body.inputBank.skill3.justPressed && Body.skillLocator && skill && skill == Body.skillLocator.utility)
             {

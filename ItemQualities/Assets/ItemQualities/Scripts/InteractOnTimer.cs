@@ -9,16 +9,16 @@ namespace ItemQualities
         [Min(0f)]
         public float InteractInterval = 1f;
 
-        IInteractable _interactable;
-        PurchaseInteraction _interactableAsPurchaseInteraction;
+        private IInteractable _interactable;
+        private PurchaseInteraction _interactableAsPurchaseInteraction;
 
-        VendingMachineBehavior _vendingMachineBehavior;
+        private VendingMachineBehavior _vendingMachineBehavior;
 
-        Deployable _deployable;
+        private Deployable _deployable;
 
-        float _interactTimer;
+        private float _interactTimer;
 
-        void Awake()
+        private void Awake()
         {
             _interactable = GetComponent<IInteractable>();
             _interactableAsPurchaseInteraction = _interactable as PurchaseInteraction;
@@ -28,7 +28,7 @@ namespace ItemQualities
             _deployable = GetComponent<Deployable>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -41,7 +41,7 @@ namespace ItemQualities
             }
         }
 
-        void triggerInteractServer()
+        private void triggerInteractServer()
         {
             if (!NetworkServer.active)
             {

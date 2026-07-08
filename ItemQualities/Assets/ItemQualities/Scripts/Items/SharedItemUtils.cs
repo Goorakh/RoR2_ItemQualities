@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class SharedItemUtils
+    internal static class SharedItemUtils
     {
         // Copied from GlobalEventManager.OnInteractionBegin InteractableIsPermittedForSpawn local method.
         // TODO: Reverse patch this?

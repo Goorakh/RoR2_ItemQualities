@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class PermanentDebuffOnHit
+    internal static class PermanentDebuffOnHit
     {
-        static DotController.DotIndex _scorpionVenomDot;
+        private static DotController.DotIndex _scorpionVenomDot;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             DotController.DotDef dotDef = new DotController.DotDef
             {
@@ -62,7 +62,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void dealVenomDamage(DotController self, DotController.PendingDamage pendingDamage)
+        private static void dealVenomDamage(DotController self, DotController.PendingDamage pendingDamage)
         {
             GameObject attacker = pendingDamage.attackerObject;
             CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;

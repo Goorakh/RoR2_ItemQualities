@@ -15,21 +15,21 @@ namespace ItemQualities
 
         public Transform CoreTransform;
 
-        bool _hasTeleported;
+        private bool _hasTeleported;
 
         public bool IsAvailable => !_hasTeleported;
 
-        void Awake()
+        private void Awake()
         {
             TeamFilter = GetComponent<TeamFilter>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
         }

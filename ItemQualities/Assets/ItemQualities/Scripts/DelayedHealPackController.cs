@@ -14,7 +14,7 @@ namespace ItemQualities
     public sealed class DelayedHealPackController : NetworkBehaviour
     {
         [ContentInitializer]
-        static IEnumerator Init(ContentInitializerArgs args)
+        private static IEnumerator Init(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> healPackLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Tooth.HealPack_prefab);
             healPackLoad.OnSuccess(healPackPrefab =>
@@ -46,21 +46,21 @@ namespace ItemQualities
         public float Delay = 1f;
 
         [SerializeField]
-        HealthPickup _healthPickup;
+        private HealthPickup _healthPickup;
 
         [SerializeField]
-        Collider _healthPickupTrigger;
+        private Collider _healthPickupTrigger;
 
         [SerializeField]
-        GravitatePickup _gravitatePickup;
+        private GravitatePickup _gravitatePickup;
 
         [SerializeField]
-        Collider _gravitateTrigger;
+        private Collider _gravitateTrigger;
 
-        bool _reachedTimerEnd = false;
-        float _timer = 0f;
+        private bool _reachedTimerEnd = false;
+        private float _timer = 0f;
 
-        void OnEnable()
+        private void OnEnable()
         {
             _timer = 0f;
             _reachedTimerEnd = false;
@@ -68,7 +68,7 @@ namespace ItemQualities
             setBehaviorsEnabled(false);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (!_reachedTimerEnd)
             {
@@ -82,7 +82,7 @@ namespace ItemQualities
             }
         }
 
-        void setBehaviorsEnabled(bool enabled)
+        private void setBehaviorsEnabled(bool enabled)
         {
             if (_healthPickup)
                 _healthPickup.enabled = enabled;

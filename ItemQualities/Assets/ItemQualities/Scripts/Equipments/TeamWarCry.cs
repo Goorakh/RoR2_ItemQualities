@@ -6,15 +6,15 @@ using System;
 
 namespace ItemQualities.Equipments
 {
-    static class TeamWarCry
+    internal static class TeamWarCry
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireTeamWarCry += EquipmentSlot_FireTeamWarCry;
         }
 
-        static void EquipmentSlot_FireTeamWarCry(ILContext il)
+        private static void EquipmentSlot_FireTeamWarCry(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

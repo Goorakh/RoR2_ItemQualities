@@ -47,19 +47,19 @@ namespace ItemQualities
         [Tooltip("How long to smooth the rotation of a bug to its target rotation")]
         public float RotationSmoothDuration = 0.2f;
 
-        int _bugCount;
-        BugOrbit[] _bugs = Array.Empty<BugOrbit>();
+        private int _bugCount;
+        private BugOrbit[] _bugs = Array.Empty<BugOrbit>();
 
-        NetworkedBodyAttachment _bodyAttachment;
+        private NetworkedBodyAttachment _bodyAttachment;
 
-        CharacterBody _attachedBody;
+        private CharacterBody _attachedBody;
 
-        void Awake()
+        private void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (_bodyAttachment)
             {
@@ -67,12 +67,12 @@ namespace ItemQualities
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             setAttachedBody(null);
         }
 
-        void setAttachedBody(CharacterBody body)
+        private void setAttachedBody(CharacterBody body)
         {
             if (_attachedBody == body)
                 return;
@@ -92,18 +92,18 @@ namespace ItemQualities
             updateAttachedBodyBuffs();
         }
 
-        void onAttachedBodyRecalculateStats(CharacterBody body)
+        private void onAttachedBodyRecalculateStats(CharacterBody body)
         {
             updateAttachedBodyBuffs();
         }
 
-        void updateAttachedBodyBuffs()
+        private void updateAttachedBodyBuffs()
         {
             int bugInstanceCount = _attachedBody ? _attachedBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BugBlock).TotalQualityCount : 0;
             setActiveBugCount(bugInstanceCount);
         }
 
-        void setActiveBugCount(int newBugCount)
+        private void setActiveBugCount(int newBugCount)
         {
             newBugCount = Math.Clamp(newBugCount, 0, MaxDisplayedBugCount);
 
@@ -146,7 +146,7 @@ namespace ItemQualities
             _bugCount += bugCountDiff;
         }
 
-        void initializeBugInstance(ref BugOrbit bug)
+        private void initializeBugInstance(ref BugOrbit bug)
         {
             bug.DistanceOffset = Random.Range(OrbitDistanceOffset.min, OrbitDistanceOffset.max);
 
@@ -172,7 +172,7 @@ namespace ItemQualities
             bug.RotationSmoothVelocity = 0f;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (_bugCount == 0)
                 return;
@@ -222,7 +222,7 @@ namespace ItemQualities
             setAttachedBody(attachedBody);
         }
 
-        struct BugOrbit
+        private struct BugOrbit
         {
             public Transform BugTransform;
 

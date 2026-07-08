@@ -6,16 +6,16 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class VoidMegaCrabItem
+    internal static class VoidMegaCrabItem
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.VoidMegaCrabItemBehavior.FixedUpdate += VoidMegaCrabItemBehavior_FixedUpdate;
             On.RoR2.VoidMegaCrabItemBehavior.OnMasterSpawned += VoidMegaCrabItemBehavior_OnMasterSpawned;
         }
 
-        static void VoidMegaCrabItemBehavior_FixedUpdate(ILContext il)
+        private static void VoidMegaCrabItemBehavior_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -54,7 +54,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void VoidMegaCrabItemBehavior_OnMasterSpawned(On.RoR2.VoidMegaCrabItemBehavior.orig_OnMasterSpawned orig, VoidMegaCrabItemBehavior self, SpawnCard.SpawnResult spawnResult)
+        private static void VoidMegaCrabItemBehavior_OnMasterSpawned(On.RoR2.VoidMegaCrabItemBehavior.orig_OnMasterSpawned orig, VoidMegaCrabItemBehavior self, SpawnCard.SpawnResult spawnResult)
         {
             orig(self, spawnResult);
 

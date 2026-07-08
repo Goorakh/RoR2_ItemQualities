@@ -25,30 +25,30 @@ namespace ItemQualities.Items
         [NonSerialized]
         public float Duration;
 
-        NetworkedBodyAttachment _bodyAttachment;
+        private NetworkedBodyAttachment _bodyAttachment;
 
-        MemoizedGetComponent<CharacterBody> _attackerBody;
+        private MemoizedGetComponent<CharacterBody> _attackerBody;
 
-        float _stopwatch;
+        private float _stopwatch;
 
-        float _fireTimer;
+        private float _fireTimer;
 
-        void Awake()
+        private void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -56,7 +56,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void fixedUpdateServer(float deltaTime)
+        private void fixedUpdateServer(float deltaTime)
         {
             _stopwatch += deltaTime;
             if (_stopwatch >= Duration)
@@ -73,7 +73,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void fireArc()
+        private void fireArc()
         {
             CharacterBody attackerBody = _attackerBody.Get(Attacker);
             if (!attackerBody || !attackerBody.inventory)

@@ -15,10 +15,10 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class ImmuneToDebuff
+    internal static class ImmuneToDebuff
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.Items.ImmuneToDebuffBehavior.OverrideDot += ImmuneToDebuffBehavior_OverrideDot;
 
@@ -28,7 +28,7 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.ExtendTimedBuffIfPresent_BuffDef_float_float += handleDebuffBuffReflectPatch;
         }
 
-        static void trySpreadBlockedDebuff(CharacterBody victimBody, BuffIndex buffIndex, float duration, InflictDotInfo? inflictDotInfo)
+        private static void trySpreadBlockedDebuff(CharacterBody victimBody, BuffIndex buffIndex, float duration, InflictDotInfo? inflictDotInfo)
         {
             if (!NetworkServer.active)
             {
@@ -148,7 +148,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static bool ImmuneToDebuffBehavior_OverrideDot(On.RoR2.Items.ImmuneToDebuffBehavior.orig_OverrideDot orig, InflictDotInfo inflictDotInfo)
+        private static bool ImmuneToDebuffBehavior_OverrideDot(On.RoR2.Items.ImmuneToDebuffBehavior.orig_OverrideDot orig, InflictDotInfo inflictDotInfo)
         {
             bool blocked = orig(inflictDotInfo);
 
@@ -162,7 +162,7 @@ namespace ItemQualities.Items
             return blocked;
         }
 
-        static void handleDebuffBuffReflectPatch(ILContext il)
+        private static void handleDebuffBuffReflectPatch(ILContext il)
         {
             if (!il.Method.TryFindParameter<float>("duration", out ParameterDefinition durationParameter))
             {

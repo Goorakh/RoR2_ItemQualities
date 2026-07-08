@@ -24,12 +24,12 @@ namespace ItemQualities
 {
     public sealed class ItemQualitiesContent : IContentPackProvider
     {
-        readonly ExtendedContentPack _contentPack = new ExtendedContentPack();
+        private readonly ExtendedContentPack _contentPack = new ExtendedContentPack();
 
         public string identifier => ItemQualitiesPlugin.PluginGUID;
 
-        QualityContagiousItemHelper _qualityContagiousItemHelper;
-        ProjectileExplosionEffectScaleFixHelper _projectileExplosionEffectScaleFixHelper;
+        private QualityContagiousItemHelper _qualityContagiousItemHelper;
+        private ProjectileExplosionEffectScaleFixHelper _projectileExplosionEffectScaleFixHelper;
 
         internal ItemQualitiesContent()
         {
@@ -40,7 +40,7 @@ namespace ItemQualities
             ContentManager.collectContentPackProviders += collectContentPackProviders;
         }
 
-        void collectContentPackProviders(ContentManager.AddContentPackProviderDelegate addContentPackProvider)
+        private void collectContentPackProviders(ContentManager.AddContentPackProviderDelegate addContentPackProvider)
         {
             addContentPackProvider(this);
         }
@@ -101,7 +101,7 @@ namespace ItemQualities
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        IEnumerator loadAssetBundleContentAsync<TProgress>(TProgress progressReceiver)
+        private IEnumerator loadAssetBundleContentAsync<TProgress>(TProgress progressReceiver)
             where TProgress : IProgress<float>
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -316,7 +316,7 @@ namespace ItemQualities
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        IEnumerator runContentLoadCallbacks<TProgress>(TProgress progressReceiver)
+        private IEnumerator runContentLoadCallbacks<TProgress>(TProgress progressReceiver)
             where TProgress : IProgress<float>
         {
             ParallelProgressCoroutine callbackParallelCoroutine = new ParallelProgressCoroutine(progressReceiver);
@@ -380,7 +380,7 @@ namespace ItemQualities
             yield break;
         }
 
-        static void populateTypeFields<TAsset>(Type typeToPopulate, NamedAssetCollection<TAsset> assets, Func<string, string> fieldNameToAssetNameConverter = null)
+        private static void populateTypeFields<TAsset>(Type typeToPopulate, NamedAssetCollection<TAsset> assets, Func<string, string> fieldNameToAssetNameConverter = null)
         {
             foreach (FieldInfo fieldInfo in typeToPopulate.GetFields(BindingFlags.Static | BindingFlags.Public))
             {

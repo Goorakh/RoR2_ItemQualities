@@ -9,10 +9,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class Tooth
+    internal static class Tooth
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
@@ -21,7 +21,7 @@ namespace ItemQualities.Items
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             BuffQualityCounts toothPrimaryBoost = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.ToothPrimaryBuff);
             if (toothPrimaryBoost.TotalQualityCount > 0)
@@ -47,7 +47,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void takeDamageModifier(ref float damageValue, DamageInfo damageInfo)
+        private static void takeDamageModifier(ref float damageValue, DamageInfo damageInfo)
         {
             if (damageInfo == null || (damageInfo.damageType.damageSource & DamageSource.Secondary) == 0)
                 return;
@@ -87,7 +87,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -227,9 +227,9 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate GameObject GetHealingOrbPrefabDelegate(GameObject healingOrbPrefab, DamageReport damageReport, out ToothOrbParameters orbParameters);
+        private delegate GameObject GetHealingOrbPrefabDelegate(GameObject healingOrbPrefab, DamageReport damageReport, out ToothOrbParameters orbParameters);
 
-        readonly struct ToothOrbParameters
+        private readonly struct ToothOrbParameters
         {
             public readonly float FlatValue;
             public readonly float FractionalValue;

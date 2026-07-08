@@ -4,15 +4,15 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class BarrierOnOverHeal
+    internal static class BarrierOnOverHeal
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.healthComponent || !sender.inventory)
                 return;

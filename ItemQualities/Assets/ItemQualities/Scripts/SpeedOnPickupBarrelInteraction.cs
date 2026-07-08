@@ -10,17 +10,17 @@ namespace ItemQualities
         public GameObject PickupPrefab;
 
         [SyncVar]
-        bool _opened;
+        private bool _opened;
 
         public bool IsOpened => _opened;
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
             InterfaceInstanceTracker<IInteractable>.Add(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
             InterfaceInstanceTracker<IInteractable>.Remove(this);

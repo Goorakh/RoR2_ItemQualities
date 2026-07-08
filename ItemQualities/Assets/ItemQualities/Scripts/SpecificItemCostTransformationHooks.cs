@@ -11,15 +11,15 @@ using System.Reflection;
 
 namespace ItemQualities
 {
-    static class SpecificItemCostTransformationHooks
+    internal static class SpecificItemCostTransformationHooks
     {
         public delegate void ModifyItemCostTransformationDelegate(ref Inventory.ItemTransformation itemTransformation, Interactor activator, int cost);
         public static event ModifyItemCostTransformationDelegate ModifyItemCostTransformation;
 
-        static MethodInfo _getTransformationForSpecificItemCostMethod;
+        private static MethodInfo _getTransformationForSpecificItemCostMethod;
 
         [SystemInitializer(typeof(CostTypeCatalog))]
-        static void Init()
+        private static void Init()
         {
             _getTransformationForSpecificItemCostMethod = typeof(CostTypeCatalog).GetMethods(BindingFlags.Static | BindingFlags.NonPublic).SingleOrDefault(m => m.Name.StartsWith("<Init>g__GetTransformationForSpecificItemCost|"));
             if (_getTransformationForSpecificItemCostMethod == null)
@@ -80,7 +80,7 @@ namespace ItemQualities
             }
         }
 
-        static void IsAffordableHooksPatch(ILContext il)
+        private static void IsAffordableHooksPatch(ILContext il)
         {
             if (!il.Method.TryFindParameter<CostTypeDef.IsAffordableContext>(out ParameterDefinition contextParameter))
             {
@@ -107,7 +107,7 @@ namespace ItemQualities
             }
         }
 
-        static void PayCostHooksPatch(ILContext il)
+        private static void PayCostHooksPatch(ILContext il)
         {
             if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contextParameter))
             {

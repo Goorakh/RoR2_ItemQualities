@@ -11,9 +11,9 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    static class QualityItemOrderPatch
+    internal static class QualityItemOrderPatch
     {
-        static readonly IComparer<ItemIndex> _itemQualityComparer = Comparer<ItemIndex>.Create((a, b) =>
+        private static readonly IComparer<ItemIndex> _itemQualityComparer = Comparer<ItemIndex>.Create((a, b) =>
         {
             QualityTier qualityTierA = QualityCatalog.GetQualityTier(a);
             QualityTier qualityTierB = QualityCatalog.GetQualityTier(b);
@@ -22,14 +22,14 @@ namespace ItemQualities
         });
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Inventory.SetItemAcquiredServer += Inventory_SetItemAcquiredServer;
 
             Configs.Interface.EnableQualityItemSorting.SettingChanged += onEnableQualityItemSortingChanged;
         }
 
-        static void onEnableQualityItemSortingChanged(object sender, EventArgs e)
+        private static void onEnableQualityItemSortingChanged(object sender, EventArgs e)
         {
             if (Configs.Interface.EnableQualityItemSorting.Value && NetworkServer.active)
             {
@@ -40,7 +40,7 @@ namespace ItemQualities
             }
         }
 
-        static void sortAllQualityItems(Inventory inventory)
+        private static void sortAllQualityItems(Inventory inventory)
         {
             using var _1 = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> tempItemAcquisitionOrder);
             tempItemAcquisitionOrder.AddRange(inventory.itemAcquisitionOrder);
@@ -84,7 +84,7 @@ namespace ItemQualities
             }
         }
 
-        static void sortQualityItem(Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
+        private static void sortQualityItem(Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             using var _1 = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> tempItemAcquisitionOrder);
             tempItemAcquisitionOrder.AddRange(inventory.itemAcquisitionOrder);
@@ -119,7 +119,7 @@ namespace ItemQualities
             }
         }
 
-        static void extractAndSortAllItemsInGroup(ItemQualityGroupIndex itemGroupIndex, int startSearchIndex, List<ItemIndex> itemsList, List<ItemIndex> extractedGroup, out int firstFoundIndex)
+        private static void extractAndSortAllItemsInGroup(ItemQualityGroupIndex itemGroupIndex, int startSearchIndex, List<ItemIndex> itemsList, List<ItemIndex> extractedGroup, out int firstFoundIndex)
         {
             void recordItemInGroup(ItemIndex itemIndex)
             {
@@ -154,7 +154,7 @@ namespace ItemQualities
             }
         }
 
-        static void Inventory_SetItemAcquiredServer(ILContext il)
+        private static void Inventory_SetItemAcquiredServer(ILContext il)
         {
             MethodInfo itemIndexListAddMethod = typeof(List<ItemIndex>).GetMethod(nameof(List<ItemIndex>.Add));
             if (itemIndexListAddMethod == null)

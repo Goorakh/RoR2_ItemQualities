@@ -15,10 +15,10 @@ namespace EntityStates.SharedSufferingOrb
 {
     public sealed class SharedSufferingOrbDeath : EntityState
     {
-        static GameObject _deathEffectPrefab;
+        private static GameObject _deathEffectPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> timeCrystalDeathLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_WeeklyRun.TimeCrystalDeath_prefab);
             timeCrystalDeathLoad.OnSuccess(timeCrystalDeath =>
@@ -41,7 +41,7 @@ namespace EntityStates.SharedSufferingOrb
             explode();
         }
 
-        void explode()
+        private void explode()
         {
             if (modelLocator)
             {

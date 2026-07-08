@@ -7,7 +7,7 @@ namespace ItemQualities.Config
     {
         public T MaxValue { get; }
 
-        readonly string _cachedMaxValueString;
+        private readonly string _cachedMaxValueString;
 
         public AcceptableValueMax(T maxValue, string customValueFormat = null) : base(typeof(T))
         {

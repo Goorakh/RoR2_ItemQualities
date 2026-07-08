@@ -9,17 +9,17 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class GhostOnKill
+    internal static class GhostOnKill
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
 
             IL.RoR2.Util.TryToCreateGhost += Util_TryToCreateGhost;
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
@@ -110,9 +110,9 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate bool ShouldSpawnAnotherGhostDelegate(ref int ghostSpawnCount);
+        private delegate bool ShouldSpawnAnotherGhostDelegate(ref int ghostSpawnCount);
 
-        static void Util_TryToCreateGhost(ILContext il)
+        private static void Util_TryToCreateGhost(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

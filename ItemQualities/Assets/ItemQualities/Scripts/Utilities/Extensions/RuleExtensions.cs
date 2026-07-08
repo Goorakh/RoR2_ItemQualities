@@ -2,7 +2,7 @@
 
 namespace ItemQualities.Utilities.Extensions
 {
-    static class RuleExtensions
+    internal static class RuleExtensions
     {
         public static bool IsPickupRuleEnabled(this RuleBook ruleBook, PickupIndex pickupIndex)
         {
