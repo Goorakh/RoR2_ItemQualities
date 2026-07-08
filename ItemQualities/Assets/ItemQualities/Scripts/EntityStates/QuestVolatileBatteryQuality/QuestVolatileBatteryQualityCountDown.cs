@@ -15,10 +15,10 @@ namespace EntityStates.QuestVolatileBatteryQuality
         public static float duration;
         public static float explosionRadius;
 
-        GameObject _countdownEffectInstance;
+        private GameObject _countdownEffectInstance;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryPreDetonation_prefab).OnSuccess(volatileBatteryPreDetonation =>
             {

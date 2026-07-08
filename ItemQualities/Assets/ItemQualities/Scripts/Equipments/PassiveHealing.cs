@@ -18,18 +18,18 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class PassiveHealing
+    internal static class PassiveHealing
     {
-        static GameObject _thrownObjectProjectileSilentPrefab;
+        private static GameObject _thrownObjectProjectileSilentPrefab;
 
-        static GameObject _teleportEffectPrefab;
+        private static GameObject _teleportEffectPrefab;
 
-        static DeployableSlot _woodspriteCloneDeployableSlot = DeployableSlot.None;
+        private static DeployableSlot _woodspriteCloneDeployableSlot = DeployableSlot.None;
 
         private static readonly Func<ItemIndex, bool> itemCopyFilterDelegate = itemCopyFilter;
 
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
-        static void EarlyInit()
+        private static void EarlyInit()
         {
             _woodspriteCloneDeployableSlot = DeployableAPI.RegisterDeployableSlot(getWoodspriteCloneLimit);
         }
@@ -39,7 +39,7 @@ namespace ItemQualities.Equipments
             return Inventory.DefaultItemCopyFilter(itemIndex) || itemIndex == DLC3Content.Items.DroneUpgradeHidden.itemIndex;
         }
 
-        static int getWoodspriteCloneLimit(CharacterMaster master, int swarmsMultiplier)
+        private static int getWoodspriteCloneLimit(CharacterMaster master, int swarmsMultiplier)
         {
             QualityTier passiveHealingQualityTier = QualityTier.None;
             if (!master.inventory.GetEquipmentDisabled())
@@ -73,7 +73,7 @@ namespace ItemQualities.Equipments
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
 
@@ -143,12 +143,12 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FirePassiveHealing += EquipmentSlot_FirePassiveHealing;
         }
 
-        static void EquipmentSlot_FirePassiveHealing(ILContext il)
+        private static void EquipmentSlot_FirePassiveHealing(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

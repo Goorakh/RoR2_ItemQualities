@@ -18,14 +18,14 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class QuestVolatileBattery
+    internal static class QuestVolatileBattery
     {
-        static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
         static GameObject _qualityVolatileBatteryAttachmentPrefab;
+        private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
@@ -89,7 +89,7 @@ namespace ItemQualities.Equipments
             orig(self, activator);
         }
 
-        static void EquipmentSlot_UpdateTargets(ILContext il)
+        private static void EquipmentSlot_UpdateTargets(ILContext il)
         {
             if (!il.Method.TryFindParameter<EquipmentIndex>("targetingEquipmentIndex", out ParameterDefinition targetingEquipmentIndexParameter))
             {
@@ -130,7 +130,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
+        private static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
             if (orig(self, equipmentDef))
                 return true;

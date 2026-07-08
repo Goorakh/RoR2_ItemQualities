@@ -6,20 +6,20 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using UnityEngine;
 using UnityEngine.Networking;
 
-namespace ItemQualities
+namespace ItemQualities.Equipments
 {
     public sealed class QuestVolatileBatteryPickup : MonoBehaviour
     {
-        static GameObject _detonationEffectPrefab;
+        private static GameObject _detonationEffectPrefab;
 
-        QualityTierContext _qualityTierContext;
-        GenericOwnership _genericOwnership;
+        private QualityTierContext _qualityTierContext;
+        private GenericOwnership _genericOwnership;
 
-        bool _resolvedParentPickupController;
-        GenericPickupController _pickupController;
+        private bool _resolvedParentPickupController;
+        private GenericPickupController _pickupController;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryPreDetonation_prefab).OnSuccess(volatileBatteryPreDetonation =>
             {

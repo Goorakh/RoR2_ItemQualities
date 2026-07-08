@@ -1,4 +1,3 @@
-using EntityStates.QuestVolatileBattery;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
@@ -15,48 +14,47 @@ namespace EntityStates.QuestVolatileBatteryQuality
 {
     public sealed class QuestVolatileBatteryQualityMonitor : QuestVolatileBatteryBaseState
     {
-        [NonSerialized]
-        public static GameObject qualityBatteryPreDetonationEffect;
+        private static GameObject _qualityBatteryPreDetonationEffect;
 
-        GameObject _vfxInstance;
+        private GameObject _vfxInstance;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> volatileBatteryPreDetonationLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.VolatileBatteryPreDetonation_prefab);
             volatileBatteryPreDetonationLoad.OnSuccess(volatileBatteryPreDetonationPrefab =>
             {
-                qualityBatteryPreDetonationEffect = volatileBatteryPreDetonationPrefab.InstantiateClone("QualityVolatileBatteryPreDetonation", false);
+                _qualityBatteryPreDetonationEffect = volatileBatteryPreDetonationPrefab.InstantiateClone("QualityVolatileBatteryPreDetonation", false);
 
-                if (qualityBatteryPreDetonationEffect.TryGetComponent<ShakeEmitter>(out ShakeEmitter shakeEmitter))
+                if (_qualityBatteryPreDetonationEffect.TryGetComponent<ShakeEmitter>(out ShakeEmitter shakeEmitter))
                 {
                     Destroy(shakeEmitter);
                 }
 
-                if (qualityBatteryPreDetonationEffect.TryGetComponent<LoopSound>(out LoopSound loopSound))
+                if (_qualityBatteryPreDetonationEffect.TryGetComponent<LoopSound>(out LoopSound loopSound))
                 {
                     Destroy(loopSound);
                 }
 
-                Transform postProcess = qualityBatteryPreDetonationEffect.transform.Find("PP");
+                Transform postProcess = _qualityBatteryPreDetonationEffect.transform.Find("PP");
                 if (postProcess)
                 {
                     Destroy(postProcess.gameObject);
                 }
 
-                Transform lightShafts = qualityBatteryPreDetonationEffect.transform.Find("LightShafts");
+                Transform lightShafts = _qualityBatteryPreDetonationEffect.transform.Find("LightShafts");
                 if (lightShafts)
                 {
                     Destroy(lightShafts.gameObject);
                 }
 
-                Transform pulse = qualityBatteryPreDetonationEffect.transform.Find("Pulse");
+                Transform pulse = _qualityBatteryPreDetonationEffect.transform.Find("Pulse");
                 if (pulse)
                 {
                     Destroy(pulse.gameObject);
                 }
 
-                Transform sparks = qualityBatteryPreDetonationEffect.transform.Find("Sparks, Trail");
+                Transform sparks = _qualityBatteryPreDetonationEffect.transform.Find("Sparks, Trail");
                 if (sparks && sparks.TryGetComponent(out ParticleSystem particleSystem))
                 {
                     ParticleSystem.MainModule main = particleSystem.main;
@@ -65,7 +63,7 @@ namespace EntityStates.QuestVolatileBatteryQuality
                     emission.rateOverTimeMultiplier = 10;
                 }
 
-                args.ContentPack.prefabs.Add(qualityBatteryPreDetonationEffect);
+                args.ContentPack.prefabs.Add(_qualityBatteryPreDetonationEffect);
             });
 
             return volatileBatteryPreDetonationLoad.AsProgressCoroutine(args.ProgressReceiver);
