@@ -1,4 +1,3 @@
-using EntityStates.QuestVolatileBattery;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;

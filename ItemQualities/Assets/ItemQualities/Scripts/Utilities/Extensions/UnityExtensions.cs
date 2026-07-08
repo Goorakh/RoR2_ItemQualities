@@ -2,7 +2,6 @@
 
 using RoR2;
 using System;
-using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Events;

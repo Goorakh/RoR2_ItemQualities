@@ -4,7 +4,6 @@ using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;

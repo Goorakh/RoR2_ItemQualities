@@ -121,7 +121,7 @@ namespace ItemQualities.Items
         {
             if (prevDroneCommanderQualityTier == qualityTier)
                 return;
-            
+
             ItemIndex fromItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(prevDroneCommanderQualityTier);
             ItemIndex toItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(qualityTier);
 
