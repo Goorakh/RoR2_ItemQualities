@@ -145,8 +145,41 @@ namespace ItemQualities.Equipments
         [SystemInitializer]
         private static void Init()
         {
+            IL.EntityStates.Drone.DroneJunk.Surprise.DropTempItemServer += Surprise_DropTempItemServer;
             IL.RoR2.EquipmentSlot.FirePassiveHealing += EquipmentSlot_FirePassiveHealing;
         }
+
+        private static void Surprise_DropTempItemServer(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            VariableDefinition uniquePickupVar = null;
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchLdloc<UniquePickup>(il, out uniquePickupVar),
+                               x => x.MatchLdloc<Vector3>(il, out _), // position
+                               x => x.MatchLdarg<Vector3>(il, out _), // velocity
+                               x => x.MatchCallOrCallvirt<PickupDropletController>(nameof(PickupDropletController.CreatePickupDroplet))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldloca, uniquePickupVar);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<ModifyTempItemPickupDelegate>(modifyTempItemPickup);
+
+            static void modifyTempItemPickup(ref UniquePickup pickup, EntityStates.Drone.DroneJunk.Surprise surpriseState)
+            {
+                if (surpriseState.characterBody &&
+                    surpriseState.characterBody.inventory &&
+                    surpriseState.characterBody.inventory.GetItemCountEffective(RoR2Content.Items.Ghost) > 0)
+                {
+                    pickup.decayValue *= 1f / 4f;
+                }
+            }
+        }
+
+        private delegate void ModifyTempItemPickupDelegate(ref UniquePickup pickup, EntityStates.Drone.DroneJunk.Surprise surpriseState);
 
         private static void EquipmentSlot_FirePassiveHealing(ILContext il)
         {
