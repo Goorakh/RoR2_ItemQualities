@@ -12,7 +12,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace EntityStates.QuestVolatileBatteryQuality
 {
-    public sealed class QuestVolatileBatteryQualityMonitor : QuestVolatileBatteryBaseState
+    public sealed class QuestVolatileBatteryQualityMonitor : QuestVolatileBatteryQualityBaseState
     {
         private static GameObject _qualityBatteryPreDetonationEffect;
 
@@ -73,9 +73,14 @@ namespace EntityStates.QuestVolatileBatteryQuality
         {
             base.OnEnter();
 
-            _vfxInstance = GameObject.Instantiate(qualityBatteryPreDetonationEffect, networkedBodyAttachment.attachedBody.transform);
+            if (!attachedBody)
+            {
+                return;
+            }
+
+            _vfxInstance = GameObject.Instantiate(_qualityBatteryPreDetonationEffect, transform);
             _vfxInstance.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-            _vfxInstance.transform.localScale = Vector3.one * networkedBodyAttachment.attachedBody.bestFitActualRadius;
+            _vfxInstance.transform.localScale = Vector3.one * attachedBody.bestFitActualRadius;
         }
 
         public override void OnExit()
@@ -91,6 +96,11 @@ namespace EntityStates.QuestVolatileBatteryQuality
         {
             base.FixedUpdate();
 
+            if (attachedBody)
+            {
+                transform.position = attachedBody.corePosition;
+            }
+
             if (NetworkServer.active)
             {
                 FixedUpdateServer();
@@ -99,7 +109,7 @@ namespace EntityStates.QuestVolatileBatteryQuality
 
         private void FixedUpdateServer()
         {
-            if (attachedHealthComponent && attachedHealthComponent.combinedHealthFraction <= 0.5f)
+            if (attachedBody && attachedBody.healthComponent.combinedHealthFraction <= 0.5f)
             {
                 outer.SetNextState(new QuestVolatileBatteryQualityCountDown());
             }

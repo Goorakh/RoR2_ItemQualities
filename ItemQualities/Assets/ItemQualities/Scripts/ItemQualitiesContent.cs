@@ -933,6 +933,8 @@ namespace ItemQualities
             public static GameObject RecyclableObjectAttachment;
 
             public static GameObject QualityScrapper;
+
+            public static GameObject QualityVolatileBatteryAttachment;
         }
 
         public static class ProjectilePrefabs
