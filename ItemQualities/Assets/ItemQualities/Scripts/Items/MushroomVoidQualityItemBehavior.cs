@@ -8,21 +8,21 @@ namespace ItemQualities.Items
     public sealed class MushroomVoidQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.MushroomVoid;
         }
 
         public const float HealOrbSpawnInterval = 1f;
 
-        float _healOrbSpawnTimer;
+        private float _healOrbSpawnTimer;
 
-        void OnEnable()
+        private void OnEnable()
         {
             _healOrbSpawnTimer = 0f;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (Body.isSprinting)
             {
@@ -39,7 +39,7 @@ namespace ItemQualities.Items
             }
         }
 
-        IEnumerator spawnHealOrb()
+        private IEnumerator spawnHealOrb()
         {
             Vector3 spawnPosition = Body.corePosition;
 

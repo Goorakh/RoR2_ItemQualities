@@ -8,10 +8,10 @@ namespace ItemQualities
     [RequireComponent(typeof(HealthComponent))]
     public sealed class RepeatDeathEvent : MonoBehaviour
     {
-        static EffectIndex _deathEventTickEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _deathEventTickEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _deathEventTickEffectIndex = EffectCatalogUtils.FindEffectIndex("DeathProjectileTickEffect");
             if (_deathEventTickEffectIndex == EffectIndex.Invalid)
@@ -24,19 +24,19 @@ namespace ItemQualities
 
         public float DelayBetweenDeathEvents = 1f;
 
-        NetworkedBodyAttachment _bodyAttachment;
+        private NetworkedBodyAttachment _bodyAttachment;
 
-        HealthComponent _healthComponent;
+        private HealthComponent _healthComponent;
 
-        float _timer = 0f;
+        private float _timer = 0f;
 
-        void Awake()
+        private void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
             _healthComponent = GetComponent<HealthComponent>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -58,7 +58,7 @@ namespace ItemQualities
             }
         }
 
-        void tickDeathEvent()
+        private void tickDeathEvent()
         {
             CharacterBody body = _bodyAttachment.attachedBody;
 

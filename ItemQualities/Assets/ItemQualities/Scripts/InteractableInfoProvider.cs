@@ -29,24 +29,24 @@ namespace ItemQualities
 
         public static event Action<InteractableInfoProvider> OnCatalogedInteractableStartGlobal;
 
-        void Awake()
+        private void Awake()
         {
             SpecialObjectAttributes = GetComponent<SpecialObjectAttributes>();
             PurchaseInteraction = GetComponent<PurchaseInteraction>();
             InteractableLockable = GetComponent<IInteractableLockable>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
         }
 
-        void Start()
+        private void Start()
         {
             if (CatalogIndex != -1)
             {

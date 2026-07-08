@@ -10,10 +10,10 @@ using UnityEngine;
 
 namespace ItemQualities.Equipments
 {
-    static class GoldGat
+    internal static class GoldGat
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_GoldGat.GoldGatController_prefab).OnSuccess(goldGatAttachmentPrefab =>
             {
@@ -24,7 +24,7 @@ namespace ItemQualities.Equipments
             IL.EntityStates.GoldGat.GoldGatFire.FireBullet += GoldGatFire_FireBullet;
         }
 
-        static void EquipmentSlot_UpdateGoldGat(On.RoR2.EquipmentSlot.orig_UpdateGoldGat orig, EquipmentSlot self)
+        private static void EquipmentSlot_UpdateGoldGat(On.RoR2.EquipmentSlot.orig_UpdateGoldGat orig, EquipmentSlot self)
         {
             orig(self);
 
@@ -34,7 +34,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void GoldGatFire_FireBullet(ILContext il)
+        private static void GoldGatFire_FireBullet(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

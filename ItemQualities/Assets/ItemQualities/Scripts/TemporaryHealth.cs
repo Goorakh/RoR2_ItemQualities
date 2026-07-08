@@ -17,14 +17,14 @@ namespace ItemQualities
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -85,7 +85,7 @@ namespace ItemQualities
             }
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             args.baseHealthAdd += sender.GetTemporaryHealthBonus();
         }

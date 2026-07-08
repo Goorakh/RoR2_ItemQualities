@@ -8,15 +8,15 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class Dagger
+    internal static class Dagger
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

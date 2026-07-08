@@ -6,15 +6,15 @@ using System;
 
 namespace ItemQualities.Equipments
 {
-    static class DroneBackup
+    internal static class DroneBackup
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireDroneBackup += EquipmentSlot_FireDroneBackup;
         }
 
-        static void EquipmentSlot_FireDroneBackup(ILContext il)
+        private static void EquipmentSlot_FireDroneBackup(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

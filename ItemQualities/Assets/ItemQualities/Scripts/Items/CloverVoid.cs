@@ -9,15 +9,15 @@ using System.Collections.Generic;
 
 namespace ItemQualities.Items
 {
-    static class CloverVoid
+    internal static class CloverVoid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.CharacterMaster.TryCloverVoidUpgrades += CharacterMaster_TryCloverVoidUpgrades;
         }
 
-        static void CharacterMaster_TryCloverVoidUpgrades(ILContext il)
+        private static void CharacterMaster_TryCloverVoidUpgrades(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

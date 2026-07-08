@@ -6,15 +6,15 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class IncreaseHealing
+    internal static class IncreaseHealing
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
         }
 
-        static void HealthComponent_Heal(ILContext il)
+        private static void HealthComponent_Heal(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

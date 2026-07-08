@@ -12,18 +12,18 @@ namespace ItemQualities
 
         public Transform[] IndicatorTransforms = Array.Empty<Transform>();
 
-        ProjectileGhostController _projectileGhostController;
-        ProjectileController _projectileController;
-        GenericOwnership _genericOwnership;
-        LocalEffectOwnership _localEffectOwnership;
+        private ProjectileGhostController _projectileGhostController;
+        private ProjectileController _projectileController;
+        private GenericOwnership _genericOwnership;
+        private LocalEffectOwnership _localEffectOwnership;
 
-        ProjectileExplosion _projectileExplosion;
+        private ProjectileExplosion _projectileExplosion;
 
-        CharacterBody _ownerBody;
+        private CharacterBody _ownerBody;
 
-        float _lastIndicatorScaleMultiplier = 1f;
+        private float _lastIndicatorScaleMultiplier = 1f;
 
-        void Awake()
+        private void Awake()
         {
             _projectileGhostController = GetComponent<ProjectileGhostController>();
             _projectileController = GetComponent<ProjectileController>();
@@ -32,7 +32,7 @@ namespace ItemQualities
             _localEffectOwnership = GetComponent<LocalEffectOwnership>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (_projectileGhostController)
             {
@@ -72,7 +72,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             bool unsetProjectileControllerReference = false;
 
@@ -102,7 +102,7 @@ namespace ItemQualities
             }
         }
 
-        void onProjectileLinkedToGhostGlobal(ProjectileController projectileController)
+        private void onProjectileLinkedToGhostGlobal(ProjectileController projectileController)
         {
             if (projectileController.ghost == _projectileGhostController)
             {
@@ -115,7 +115,7 @@ namespace ItemQualities
             }
         }
 
-        void setProjectileControllerReference(ProjectileController projectileController)
+        private void setProjectileControllerReference(ProjectileController projectileController)
         {
             if (_projectileController == projectileController)
                 return;
@@ -136,17 +136,17 @@ namespace ItemQualities
             setProjectileControllerOwner(_projectileController);
         }
 
-        void setProjectileControllerOwner(ProjectileController projectileController)
+        private void setProjectileControllerOwner(ProjectileController projectileController)
         {
             setOwnerObject(projectileController ? projectileController.owner : null);
         }
 
-        void setOwnerObject(GameObject ownerObj)
+        private void setOwnerObject(GameObject ownerObj)
         {
             setOwner(ownerObj ? ownerObj.GetComponent<CharacterBody>() : null);
         }
 
-        void setOwner(CharacterBody owner)
+        private void setOwner(CharacterBody owner)
         {
             if (_ownerBody == owner)
                 return;
@@ -166,12 +166,12 @@ namespace ItemQualities
             recalculateIndicatorsScale();
         }
 
-        void onOwnerInventoryChanged()
+        private void onOwnerInventoryChanged()
         {
             recalculateIndicatorsScale();
         }
 
-        void recalculateIndicatorsScale()
+        private void recalculateIndicatorsScale()
         {
             float baseRadius;
             if (ExplosionInfoIndex != ExplosionInfoIndex.None)

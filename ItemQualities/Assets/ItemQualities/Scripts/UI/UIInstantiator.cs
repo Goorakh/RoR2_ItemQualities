@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace ItemQualities.UI
 {
-    sealed class UIInstantiator : MonoBehaviour
+    internal sealed class UIInstantiator : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_UI.HUDSimple_prefab).OnSuccess(hudPrefab =>
             {
@@ -19,7 +19,7 @@ namespace ItemQualities.UI
             });
         }
 
-        void Awake()
+        private void Awake()
         {
             HUD hud = GetComponent<HUD>();
 

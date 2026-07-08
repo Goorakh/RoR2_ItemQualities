@@ -8,7 +8,7 @@ namespace ItemQualities
     {
         public static class Interface
         {
-            const string SectionName = "UI";
+            private const string SectionName = "UI";
 
             
 

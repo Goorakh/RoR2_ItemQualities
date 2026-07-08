@@ -7,14 +7,14 @@ namespace ItemQualities.Items
     public sealed class ShieldBoosterQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.ShieldBooster;
         }
 
-        CharacterBodyExtraStatsTracker _bodyExtraStats;
+        private CharacterBodyExtraStatsTracker _bodyExtraStats;
 
-        float _boosterFraction;
+        private float _boosterFraction;
 
         protected override void Awake()
         {
@@ -23,7 +23,7 @@ namespace ItemQualities.Items
             _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _bodyExtraStats.OnTakeDamageServer += onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal += onShieldBoosterBreakServerGlobal;
@@ -32,7 +32,7 @@ namespace ItemQualities.Items
             updateBuffCount();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _bodyExtraStats.OnTakeDamageServer -= onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal -= onShieldBoosterBreakServerGlobal;
@@ -47,7 +47,7 @@ namespace ItemQualities.Items
             updateBuffCount();
         }
 
-        void onTakeDamageServer(DamageReport damageReport)
+        private void onTakeDamageServer(DamageReport damageReport)
         {
             if (damageReport.damageDealt > 0f && Body.healthComponent.shield > 0f)
             {
@@ -78,7 +78,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onShieldBoosterBreakServerGlobal(CharacterBody body)
+        private void onShieldBoosterBreakServerGlobal(CharacterBody body)
         {
             if (body == Body)
             {
@@ -87,7 +87,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void updateBuffCount()
+        private void updateBuffCount()
         {
             ref readonly ItemQualityCounts shieldBooster = ref Stacks;
 

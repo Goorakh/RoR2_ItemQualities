@@ -8,11 +8,11 @@ namespace ItemQualities.Items
     public sealed class FireTornadoProjectileController : NetworkBehaviour
     {
         [SyncVar]
-        float _overrideLifetime = -1f;
+        private float _overrideLifetime = -1f;
 
-        ProjectileSimple _projectileSimple;
+        private ProjectileSimple _projectileSimple;
 
-        void Awake()
+        private void Awake()
         {
             _projectileSimple = GetComponent<ProjectileSimple>();
             if (!_projectileSimple)
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
         }
 
         [Server]
-        void onInitializedServer(ProjectileController projectileController)
+        private void onInitializedServer(ProjectileController projectileController)
         {
             ItemQualityCounts fireRing = default;
             if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
@@ -80,7 +80,7 @@ namespace ItemQualities.Items
             applyLifetimeOverride();
         }
 
-        void applyLifetimeOverride()
+        private void applyLifetimeOverride()
         {
             if (_projectileSimple && _overrideLifetime > 0f)
             {

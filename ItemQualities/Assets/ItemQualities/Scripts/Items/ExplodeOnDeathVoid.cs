@@ -7,15 +7,15 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class ExplodeOnDeathVoid
+    internal static class ExplodeOnDeathVoid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {

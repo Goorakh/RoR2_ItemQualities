@@ -8,13 +8,13 @@ namespace ItemQualities.Items
     public sealed class ElementalRingVoidBlackHoleProjectileController : NetworkBehaviour
     {
         [SyncVar]
-        float _scaleMultiplier = 1f;
+        private float _scaleMultiplier = 1f;
 
-        bool _appliedScaleMultiplier;
+        private bool _appliedScaleMultiplier;
 
-        RadialForce _radialForce;
+        private RadialForce _radialForce;
 
-        void Awake()
+        private void Awake()
         {
             if (TryGetComponent(out RadialForce radialForce))
             {
@@ -41,7 +41,7 @@ namespace ItemQualities.Items
         }
 
         [Server]
-        void onInitializedServer(ProjectileController projectileController)
+        private void onInitializedServer(ProjectileController projectileController)
         {
             ItemQualityCounts elementalRingVoid = default;
             if (projectileController && projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
@@ -89,7 +89,7 @@ namespace ItemQualities.Items
             applyScaleMultiplier();
         }
 
-        void applyScaleMultiplier()
+        private void applyScaleMultiplier()
         {
             if (_appliedScaleMultiplier)
                 return;

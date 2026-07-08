@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace ItemQualities.Buffs
 {
-    static class BuffHooks
+    internal static class BuffHooks
     {
         public delegate void BodyBuffGainedOrLostDelegate(CharacterBody body, BuffDef buffDef);
         public static event BodyBuffGainedOrLostDelegate OnBuffFirstStackGainedGlobal;
@@ -19,10 +19,10 @@ namespace ItemQualities.Buffs
         public delegate void BodyBuffCountChangedDelegate(CharacterBody body, BuffIndex buffIndex, int newCount);
         public static event BodyBuffCountChangedDelegate OnBodyBuffCountChangedGlobal;
 
-        static readonly List<CharacterBody> _disableBuffCountHooksForBodies = new List<CharacterBody>();
+        private static readonly List<CharacterBody> _disableBuffCountHooksForBodies = new List<CharacterBody>();
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.CharacterBody.SetBuffCount += On_CharacterBody_SetBuffCount;
 
@@ -44,7 +44,7 @@ namespace ItemQualities.Buffs
             On.RoR2.CharacterBody.OnBuffFinalStackLost += CharacterBody_OnBuffFinalStackLost;
         }
 
-        static void On_CharacterBody_SetBuffCount(On.RoR2.CharacterBody.orig_SetBuffCount orig, CharacterBody self, BuffIndex buffType, int newCount)
+        private static void On_CharacterBody_SetBuffCount(On.RoR2.CharacterBody.orig_SetBuffCount orig, CharacterBody self, BuffIndex buffType, int newCount)
         {
             orig(self, buffType, newCount);
 
@@ -61,7 +61,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void CharacterBody_OnBuffFirstStackGained(On.RoR2.CharacterBody.orig_OnBuffFirstStackGained orig, CharacterBody self, BuffDef buffDef)
+        private static void CharacterBody_OnBuffFirstStackGained(On.RoR2.CharacterBody.orig_OnBuffFirstStackGained orig, CharacterBody self, BuffDef buffDef)
         {
             orig(self, buffDef);
 
@@ -82,7 +82,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void CharacterBody_OnBuffFinalStackLost(On.RoR2.CharacterBody.orig_OnBuffFinalStackLost orig, CharacterBody self, BuffDef buffDef)
+        private static void CharacterBody_OnBuffFinalStackLost(On.RoR2.CharacterBody.orig_OnBuffFinalStackLost orig, CharacterBody self, BuffDef buffDef)
         {
             orig(self, buffDef);
 
@@ -103,7 +103,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static int CharacterBody_GetBuffCount_BuffIndex(On.RoR2.CharacterBody.orig_GetBuffCount_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        private static int CharacterBody_GetBuffCount_BuffIndex(On.RoR2.CharacterBody.orig_GetBuffCount_BuffIndex orig, CharacterBody self, BuffIndex buffType)
         {
             int buffCount = orig(self, buffType);
 
@@ -140,7 +140,7 @@ namespace ItemQualities.Buffs
             return buffCount;
         }
 
-        static void CharacterBody_ClearTimedBuffs_BuffIndex(On.RoR2.CharacterBody.orig_ClearTimedBuffs_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        private static void CharacterBody_ClearTimedBuffs_BuffIndex(On.RoR2.CharacterBody.orig_ClearTimedBuffs_BuffIndex orig, CharacterBody self, BuffIndex buffType)
         {
             orig(self, buffType);
 
@@ -175,7 +175,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void CharacterBody_RemoveBuff_BuffIndex(On.RoR2.CharacterBody.orig_RemoveBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        private static void CharacterBody_RemoveBuff_BuffIndex(On.RoR2.CharacterBody.orig_RemoveBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
         {
             if (!_disableBuffCountHooksForBodies.Contains(self))
             {
@@ -211,7 +211,7 @@ namespace ItemQualities.Buffs
             orig(self, buffType);
         }
 
-        static void CharacterBody_ClearAllBuffs(On.RoR2.CharacterBody.orig_ClearAllBuffs orig, CharacterBody self, BuffDef buffToSet)
+        private static void CharacterBody_ClearAllBuffs(On.RoR2.CharacterBody.orig_ClearAllBuffs orig, CharacterBody self, BuffDef buffToSet)
         {
             if (_disableBuffCountHooksForBodies.Contains(self))
             {
@@ -257,7 +257,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void BuffDisplay_AllocateIcons(On.RoR2.UI.BuffDisplay.orig_AllocateIcons orig, RoR2.UI.BuffDisplay self)
+        private static void BuffDisplay_AllocateIcons(On.RoR2.UI.BuffDisplay.orig_AllocateIcons orig, RoR2.UI.BuffDisplay self)
         {
             using (new DisableBuffCountHooksScope(self.source))
             {
@@ -265,7 +265,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void CharacterBody_SetBuffCount(ILContext il)
+        private static void CharacterBody_SetBuffCount(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -402,7 +402,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void patchBuffEqualityComparison(ILContext il)
+        private static void patchBuffEqualityComparison(ILContext il)
         {
             bool anyPatchAttempted = false;
             bool anyPatchSucceeded = false;
@@ -538,7 +538,7 @@ namespace ItemQualities.Buffs
 
         public readonly ref struct DisableBuffCountHooksScope
         {
-            readonly CharacterBody _body;
+            private readonly CharacterBody _body;
 
             public DisableBuffCountHooksScope(CharacterBody body)
             {

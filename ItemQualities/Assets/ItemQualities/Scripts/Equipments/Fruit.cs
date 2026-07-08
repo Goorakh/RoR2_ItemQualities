@@ -4,17 +4,17 @@ using UnityEngine;
 
 namespace ItemQualities.Equipments
 {
-    static class Fruit
+    internal static class Fruit
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.EquipmentSlot.FireFruit += EquipmentSlot_FireFruit;
 
             On.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += CharacterBody_AddTimedBuff_BuffDef_float;
         }
 
-        static void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration)
+        private static void CharacterBody_AddTimedBuff_BuffDef_float(On.RoR2.CharacterBody.orig_AddTimedBuff_BuffDef_float orig, CharacterBody self, BuffDef buffDef, float duration)
         {
             if (buffDef && !buffDef.isHidden && !buffDef.isCooldown && !buffDef.isDebuff && !buffDef.isDOT)
             {
@@ -61,7 +61,7 @@ namespace ItemQualities.Equipments
             orig(self, buffDef, duration);
         }
 
-        static bool EquipmentSlot_FireFruit(On.RoR2.EquipmentSlot.orig_FireFruit orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireFruit(On.RoR2.EquipmentSlot.orig_FireFruit orig, EquipmentSlot self)
         {
             bool success = orig(self);
             if (success)

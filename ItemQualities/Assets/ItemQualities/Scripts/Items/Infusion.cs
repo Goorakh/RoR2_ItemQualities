@@ -6,15 +6,15 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class Infusion
+    internal static class Infusion
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static void onCharacterDeathGlobal(DamageReport damageReport)
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (!NetworkServer.active)
                 return;

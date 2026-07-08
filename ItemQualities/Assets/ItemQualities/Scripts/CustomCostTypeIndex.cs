@@ -9,14 +9,14 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class CustomCostTypeIndex
+    internal static class CustomCostTypeIndex
     {
-        static EffectIndex _regeneratingScrapDisplayExplosionEffectIndex = EffectIndex.Invalid;
-        static EffectIndex _regeneratingScrapPrinterExplosionEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _regeneratingScrapDisplayExplosionEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _regeneratingScrapPrinterExplosionEffectIndex = EffectIndex.Invalid;
 
-        static NetworkSoundEventIndex _regeneratingScrapProcSoundEventIndex = NetworkSoundEventIndex.Invalid;
+        private static NetworkSoundEventIndex _regeneratingScrapProcSoundEventIndex = NetworkSoundEventIndex.Invalid;
 
-        static readonly CostTypeDef _whiteItemQualityCostDef = new CostTypeDef
+        private static readonly CostTypeDef _whiteItemQualityCostDef = new CostTypeDef
         {
             name = "WhiteItemQuality",
             colorIndex = ColorCatalog.ColorIndex.Tier1Item,
@@ -26,7 +26,7 @@ namespace ItemQualities
             payCost = payCostQualityItems
         };
 
-        static readonly CostTypeDef _greenItemQualityCostDef = new CostTypeDef
+        private static readonly CostTypeDef _greenItemQualityCostDef = new CostTypeDef
         {
             name = "GreenItemQuality",
             colorIndex = ColorCatalog.ColorIndex.Tier2Item,
@@ -36,7 +36,7 @@ namespace ItemQualities
             payCost = payCostQualityItems
         };
 
-        static readonly CostTypeDef _redItemQualityCostDef = new CostTypeDef
+        private static readonly CostTypeDef _redItemQualityCostDef = new CostTypeDef
         {
             name = "RedItemQuality",
             colorIndex = ColorCatalog.ColorIndex.Tier3Item,
@@ -47,7 +47,7 @@ namespace ItemQualities
             payCost = payCostQualityItems
         };
 
-        static readonly CostTypeDef _bossItemQualityCostDef = new CostTypeDef
+        private static readonly CostTypeDef _bossItemQualityCostDef = new CostTypeDef
         {
             name = "BossItemQuality",
             colorIndex = ColorCatalog.ColorIndex.BossItem,
@@ -66,7 +66,7 @@ namespace ItemQualities
         public static CostTypeIndex BossItemQuality { get; private set; } = CostTypeIndex.None;
 
         [SystemInitializer(typeof(CostTypeCatalog), typeof(EffectCatalogUtils), typeof(NetworkSoundEventCatalog))]
-        static void Init()
+        private static void Init()
         {
             _regeneratingScrapDisplayExplosionEffectIndex = EffectCatalogUtils.FindEffectIndex("RegeneratingScrapExplosionDisplay");
             if (_regeneratingScrapDisplayExplosionEffectIndex == EffectIndex.Invalid)
@@ -113,7 +113,7 @@ namespace ItemQualities
             CostTypeCatalog.modHelper.getAdditionalEntries += getAdditionalEntries;
         }
 
-        static void getAdditionalEntries(List<CostTypeDef> costTypeDefs)
+        private static void getAdditionalEntries(List<CostTypeDef> costTypeDefs)
         {
             costTypeDefs.Add(_whiteItemQualityCostDef);
             costTypeDefs.Add(_greenItemQualityCostDef);
@@ -121,14 +121,14 @@ namespace ItemQualities
             costTypeDefs.Add(_bossItemQualityCostDef);
         }
 
-        static bool isAffordableQualityItems(CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context)
+        private static bool isAffordableQualityItems(CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context)
         {
             CharacterBody activatorBody = context.activator ? context.activator.GetComponent<CharacterBody>() : null;
             Inventory activatorInventory = activatorBody ? activatorBody.inventory : null;
             return activatorInventory && activatorInventory.HasAtLeastXTotalQualityItemsOfTierForPurchase(costTypeDef.itemTier, context.cost);
         }
 
-        static void payCostQualityItems(CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
+        private static void payCostQualityItems(CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
         {
             if (context.activatorInventory)
             {

@@ -7,27 +7,27 @@ namespace ItemQualities.Items
     public sealed class QualityTierItemBodyBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server | QualityItemBehaviorUsageFlags.Client)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.QualityTier;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static float getScale(QualityTier qualityTier)
+        private static float getScale(QualityTier qualityTier)
         {
             return Mathf.Max(1f, 1.35f + Mathf.Log((int)qualityTier + 1, 4f));
         }
 
-        Collider _collider;
-        CameraTargetParams _cameraTargetParams;
-        Interactor _interactor;
+        private Collider _collider;
+        private CameraTargetParams _cameraTargetParams;
+        private Interactor _interactor;
 
-        Transform _modelScaleTransform;
-        Transform _modelOffsetTransform;
+        private Transform _modelScaleTransform;
+        private Transform _modelOffsetTransform;
 
-        ItemQualityCounts _previousStack;
+        private ItemQualityCounts _previousStack;
 
-        void OnEnable()
+        private void OnEnable()
         {
             _collider = GetComponent<Collider>();
             _cameraTargetParams = GetComponent<CameraTargetParams>();
@@ -59,7 +59,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             setStack(default);
         }
@@ -71,7 +71,7 @@ namespace ItemQualities.Items
             setStack(Stacks);
         }
 
-        void setStack(in ItemQualityCounts newStack)
+        private void setStack(in ItemQualityCounts newStack)
         {
             if (_previousStack == newStack)
                 return;

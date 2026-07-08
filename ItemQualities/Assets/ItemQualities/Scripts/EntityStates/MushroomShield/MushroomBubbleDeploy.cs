@@ -9,11 +9,11 @@ namespace EntityStates.MushroomShield
     {
         public static string StartSoundString;
 
-        CharacterBody _ownerBody;
+        private CharacterBody _ownerBody;
 
-        float _startMoveStopwatchValue;
+        private float _startMoveStopwatchValue;
 
-        float _undeployLifetime;
+        private float _undeployLifetime;
 
         public override void OnEnter()
         {

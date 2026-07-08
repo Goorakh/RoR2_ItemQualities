@@ -7,10 +7,10 @@ namespace ItemQualities.Items
 {
     public sealed class FragileDamageBonusQualityItemBehavior : QualityItemBodyBehavior
     {
-        static EffectIndex _watchBreakEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _watchBreakEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _watchBreakEffectIndex = EffectCatalogUtils.FindEffectIndex("DelicateWatchProcEffect");
             if (_watchBreakEffectIndex == EffectIndex.Invalid)
@@ -20,16 +20,16 @@ namespace ItemQualities.Items
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus;
         }
 
-        CharacterBodyExtraStatsTracker _bodyExtraStats;
+        private CharacterBodyExtraStatsTracker _bodyExtraStats;
 
-        bool _buffCountsDirty;
+        private bool _buffCountsDirty;
 
-        int _maxHits;
+        private int _maxHits;
 
         protected override void Awake()
         {
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
             _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (_bodyExtraStats.MasterExtraStatsTracker)
             {
@@ -47,7 +47,7 @@ namespace ItemQualities.Items
             refreshBuffCounts();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (_bodyExtraStats.MasterExtraStatsTracker)
             {
@@ -60,7 +60,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (_buffCountsDirty)
             {
@@ -69,7 +69,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onStageDamageInstancesTakenCountChangedServer(CharacterMasterExtraStatsTracker _)
+        private void onStageDamageInstancesTakenCountChangedServer(CharacterMasterExtraStatsTracker _)
         {
             _buffCountsDirty = true;
         }
@@ -102,12 +102,12 @@ namespace ItemQualities.Items
             refreshBuffCounts();
         }
 
-        void ensureBuffQualities()
+        private void ensureBuffQualities()
         {
             Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff, Stacks.HighestQuality);
         }
 
-        void refreshBuffCounts()
+        private void refreshBuffCounts()
         {
             int hitsTaken = _bodyExtraStats.MasterExtraStatsTracker ? _bodyExtraStats.MasterExtraStatsTracker.StageDamageInstancesTakenCount : 0;
 

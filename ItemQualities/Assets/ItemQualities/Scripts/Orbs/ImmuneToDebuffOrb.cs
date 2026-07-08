@@ -6,10 +6,10 @@ namespace ItemQualities.Orbs
 {
     public sealed class ImmuneToDebuffOrb : Orb
     {
-        static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _orbEffectIndex = EffectCatalogUtils.FindEffectIndex("ChainVineOrbEffect");
             if (_orbEffectIndex == EffectIndex.Invalid)
@@ -18,7 +18,7 @@ namespace ItemQualities.Orbs
             }
         }
 
-        CharacterMaster _attackerMaster;
+        private CharacterMaster _attackerMaster;
         public GameObject Attacker
         {
             get => _attackerMaster ? _attackerMaster.GetBodyObject() : null;

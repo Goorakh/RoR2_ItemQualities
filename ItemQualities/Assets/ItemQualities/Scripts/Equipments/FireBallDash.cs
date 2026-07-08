@@ -14,12 +14,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class FireBallDash
+    internal static class FireBallDash
     {
-        static readonly GameObject[] _qualityVehiclePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityVehiclePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> fireballVehicleLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_FireBallDash.FireballVehicle_prefab);
             fireballVehicleLoad.OnSuccess(fireballVehiclePrefab =>
@@ -66,14 +66,14 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireFireBallDash += EquipmentSlot_FireFireBallDash;
 
             IL.RoR2.FireballVehicle.FixedUpdate += FireballVehicle_FixedUpdate;
         }
 
-        static void EquipmentSlot_FireFireBallDash(ILContext il)
+        private static void EquipmentSlot_FireFireBallDash(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -104,7 +104,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void FireballVehicle_FixedUpdate(ILContext il)
+        private static void FireballVehicle_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

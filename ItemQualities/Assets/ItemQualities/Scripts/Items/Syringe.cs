@@ -4,15 +4,15 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class Syringe
+    internal static class Syringe
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory)
                 return;

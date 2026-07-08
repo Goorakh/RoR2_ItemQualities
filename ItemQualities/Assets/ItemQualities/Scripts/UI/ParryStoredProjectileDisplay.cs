@@ -20,32 +20,32 @@ namespace ItemQualities.UI
         [NonSerialized]
         public EquipmentIcon ParentEquipmentIcon;
 
-        float _highPosition;
+        private float _highPosition;
 
-        Vector3 _positionVelocity;
+        private Vector3 _positionVelocity;
 
-        HUD _hud;
+        private HUD _hud;
 
-        MemoizedGetComponentCached<CharacterBodyExtraStatsTracker> _targetBodyExtraStats;
+        private MemoizedGetComponentCached<CharacterBodyExtraStatsTracker> _targetBodyExtraStats;
 
         public new RectTransform transform => base.transform as RectTransform;
 
-        void Awake()
+        private void Awake()
         {
             _highPosition = transform.anchoredPosition.y;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _hud = GetComponentInParent<HUD>();
         }
 
-        void OnTransformParentChanged()
+        private void OnTransformParentChanged()
         {
             _hud = GetComponentInParent<HUD>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             GameObject targetBodyObject = _hud ? _hud.targetBodyObject : null;
 

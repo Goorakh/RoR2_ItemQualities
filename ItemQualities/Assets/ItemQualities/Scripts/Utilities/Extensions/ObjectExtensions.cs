@@ -6,7 +6,7 @@ namespace ItemQualities.Utilities.Extensions
 {
     internal static class ObjectExtensions
     {
-        static readonly Dictionary<Type, ConstructorInfo> _cloneConstructorCache = new Dictionary<Type, ConstructorInfo>();
+        private static readonly Dictionary<Type, ConstructorInfo> _cloneConstructorCache = new Dictionary<Type, ConstructorInfo>();
 
         public static T ShallowCopy<T>(this T source, BindingFlags fieldBindingFlags = BindingFlags.Instance | BindingFlags.Public)
         {

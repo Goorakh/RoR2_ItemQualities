@@ -30,16 +30,16 @@ namespace ItemQualities
         internal EquipmentDef BaseEquipment;
 
         [SerializeField]
-        EquipmentDef _uncommonEquipment;
+        private EquipmentDef _uncommonEquipment;
 
         [SerializeField]
-        EquipmentDef _rareEquipment;
+        private EquipmentDef _rareEquipment;
 
         [SerializeField]
-        EquipmentDef _epicEquipment;
+        private EquipmentDef _epicEquipment;
 
         [SerializeField]
-        EquipmentDef _legendaryEquipment;
+        private EquipmentDef _legendaryEquipment;
 
         [HideInInspector]
         [NonSerialized]
@@ -53,7 +53,7 @@ namespace ItemQualities
 
         public EquipmentIndex LegendaryEquipmentIndex => _legendaryEquipment ? _legendaryEquipment.equipmentIndex : EquipmentIndex.None;
 
-        bool checkCanModify()
+        private bool checkCanModify()
         {
             if (QualityCatalog.Availability.available)
             {
@@ -129,7 +129,7 @@ namespace ItemQualities
             }
         }
 
-        void OnValidate()
+        private void OnValidate()
         {
             if (!BaseEquipment && (BaseEquipmentReference == null || !BaseEquipmentReference.RuntimeKeyIsValid()))
             {
@@ -328,7 +328,7 @@ namespace ItemQualities
 
 #if UNITY_EDITOR
         [ContextMenu("Generate EquipmentDefs")]
-        void GenerateEquipments()
+        private void GenerateEquipments()
         {
             string baseEquipmentName = name;
             if (baseEquipmentName.StartsWith("eg"))

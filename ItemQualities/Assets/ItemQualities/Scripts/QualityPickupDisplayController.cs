@@ -7,13 +7,13 @@ namespace ItemQualities
     public sealed class QualityPickupDisplayController : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.PickupDisplay.Start += PickupDisplay_Start;
             On.RoR2.PickupDisplay.RebuildModel += PickupDisplay_RebuildModel;
         }
 
-        static void PickupDisplay_Start(On.RoR2.PickupDisplay.orig_Start orig, PickupDisplay self)
+        private static void PickupDisplay_Start(On.RoR2.PickupDisplay.orig_Start orig, PickupDisplay self)
         {
             orig(self);
             GameObject qualityDisplay = Instantiate(ItemQualitiesContent.Prefabs.QualityPickupDisplay, self.transform);
@@ -21,7 +21,7 @@ namespace ItemQualities
             qualityDisplayController._pickupDisplay = self;
         }
 
-        static void PickupDisplay_RebuildModel(On.RoR2.PickupDisplay.orig_RebuildModel orig, PickupDisplay self, GameObject modelObjectOverride)
+        private static void PickupDisplay_RebuildModel(On.RoR2.PickupDisplay.orig_RebuildModel orig, PickupDisplay self, GameObject modelObjectOverride)
         {
             orig(self, modelObjectOverride);
 
@@ -38,11 +38,11 @@ namespace ItemQualities
 
         public Renderer[] Renderers = Array.Empty<Renderer>();
 
-        PickupDisplay _pickupDisplay;
+        private PickupDisplay _pickupDisplay;
 
-        PickupIndex _lastPickupIndex = PickupIndex.none;
+        private PickupIndex _lastPickupIndex = PickupIndex.none;
 
-        void Awake()
+        private void Awake()
         {
             if (!_pickupDisplay)
             {
@@ -50,19 +50,19 @@ namespace ItemQualities
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _pickupDisplay.modelRenderers?.AddRange(Renderers);
 
             refreshQualityIcon();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _pickupDisplay.modelRenderers?.RemoveAll(r => Array.IndexOf(Renderers, r) != -1);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             PickupIndex currentPickupIndex = _pickupDisplay ? _pickupDisplay.pickupState.pickupIndex : PickupIndex.none;
             if (_lastPickupIndex != currentPickupIndex)
@@ -71,7 +71,7 @@ namespace ItemQualities
             }
         }
 
-        void refreshQualityIcon()
+        private void refreshQualityIcon()
         {
             PickupIndex currentPickupIndex = _pickupDisplay ? _pickupDisplay.pickupState.pickupIndex : PickupIndex.none;
             PickupDef currentPickup = PickupCatalog.GetPickupDef(currentPickupIndex);

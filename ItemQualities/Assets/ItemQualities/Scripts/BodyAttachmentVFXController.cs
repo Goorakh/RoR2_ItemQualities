@@ -8,30 +8,30 @@ namespace ItemQualities
     public sealed class BodyAttachmentVFXController : MonoBehaviour, INetworkedBodyAttachmentListener
     {
         [SerializeField]
-        InstantiateAddressablePrefab _bodyVFXInstantiator;
+        private InstantiateAddressablePrefab _bodyVFXInstantiator;
 
         [SerializeField]
-        RadiusMode _radiusMode = RadiusMode.BodyRadius;
+        private RadiusMode _radiusMode = RadiusMode.BodyRadius;
 
         [SerializeField]
         [Min(0f)]
-        float _radiusMultiplier = 1f;
+        private float _radiusMultiplier = 1f;
 
-        NetworkedBodyAttachment _bodyAttachment;
+        private NetworkedBodyAttachment _bodyAttachment;
 
-        void Awake()
+        private void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
 
             _bodyVFXInstantiator.OnInstantiated += onVFXInstantiated;
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             _bodyVFXInstantiator.OnInstantiated -= onVFXInstantiated;
         }
 
-        void onVFXInstantiated(GameObject vfx)
+        private void onVFXInstantiated(GameObject vfx)
         {
             if (vfx.TryGetComponent(out TemporaryVisualEffect temporaryVisualEffect))
             {

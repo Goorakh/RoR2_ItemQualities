@@ -6,12 +6,12 @@ namespace ItemQualities.Items
     public sealed class FeatherQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.Feather;
         }
 
-        CharacterBodyExtraStatsTracker _bodyStats;
+        private CharacterBodyExtraStatsTracker _bodyStats;
 
         protected override void Awake()
         {
@@ -20,19 +20,19 @@ namespace ItemQualities.Items
             _bodyStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
             _bodyStats.OnHitGroundServer += onHitGroundServer;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
             _bodyStats.OnHitGroundServer -= onHitGroundServer;
         }
 
-        void onCharacterDeathGlobal(DamageReport report)
+        private void onCharacterDeathGlobal(DamageReport report)
         {
             if (report.attackerBody != Body || (Body.characterMotor && Body.characterMotor.isGrounded))
                 return;
@@ -50,7 +50,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onHitGroundServer(CharacterMotor.HitGroundInfo info)
+        private void onHitGroundServer(CharacterMotor.HitGroundInfo info)
         {
             Body.SetBuffCount(ItemQualitiesContent.Buffs.FeatherExtraJumps.buffIndex, 0);
         }

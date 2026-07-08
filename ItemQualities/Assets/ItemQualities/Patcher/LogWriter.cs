@@ -4,7 +4,7 @@ namespace ItemQualitiesPatcher
 {
     internal sealed class LogWriter
     {
-        ManualLogSource _logSource;
+        private ManualLogSource _logSource;
 
         public LogWriter(ManualLogSource logSource)
         {

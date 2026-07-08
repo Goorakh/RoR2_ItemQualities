@@ -9,7 +9,7 @@ namespace ItemQualities.Items
     [RequireComponent(typeof(ProjectileController))]
     public sealed class IncreasePrimaryDamageQualityDotZoneController : MonoBehaviour
     {
-        void Awake()
+        private void Awake()
         {
             if (NetworkServer.active)
             {
@@ -26,7 +26,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onInitializedServer(ProjectileController projectileController)
+        private void onInitializedServer(ProjectileController projectileController)
         {
             GameObject owner = projectileController ? projectileController.owner : null;
             CharacterBody ownerBody = owner ? owner.GetComponent<CharacterBody>() : null;

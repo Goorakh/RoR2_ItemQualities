@@ -7,12 +7,12 @@ namespace ItemQualities.Items
     public sealed class KillEliteFrenzyQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (NetworkServer.active)
             {
@@ -20,7 +20,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {

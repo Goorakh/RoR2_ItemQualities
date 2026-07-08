@@ -10,10 +10,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class Squid
+    internal static class Squid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
 
@@ -22,7 +22,7 @@ namespace ItemQualities.Items
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory)
                 return;
@@ -36,7 +36,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void onCharacterDeathGlobal(DamageReport damageReport)
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
         {
             CharacterMaster attackerMaster = damageReport?.attackerMaster;
             if (!attackerMaster)
@@ -93,7 +93,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void GlobalEventManager_OnInteractionBegin(ILContext il)
+        private static void GlobalEventManager_OnInteractionBegin(ILContext il)
         {
             if (!il.Method.TryFindParameter<Interactor>(out ParameterDefinition interactorParameter))
             {

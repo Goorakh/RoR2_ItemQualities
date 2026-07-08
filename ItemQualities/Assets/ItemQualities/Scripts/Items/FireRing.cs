@@ -9,10 +9,10 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class FireRing
+    internal static class FireRing
     {
         [SystemInitializer]
-        static IEnumerator Init()
+        private static IEnumerator Init()
         {
             AsyncOperationHandle<GameObject> fireTornadoLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_ElementalRings.FireTornado_prefab);
             AsyncOperationHandle<GameObject> fireTornadoGhostLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_ElementalRings.FireTornadoGhost_prefab);

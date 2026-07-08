@@ -10,12 +10,12 @@ using VultureHunter;
 
 namespace ItemQualities.Equipments
 {
-    static class Parry
+    internal static class Parry
     {
-        static int[] _projectileIndexConversions = Array.Empty<int>();
+        private static int[] _projectileIndexConversions = Array.Empty<int>();
 
         [SystemInitializer(typeof(ProjectileCatalog))]
-        static void Init()
+        private static void Init()
         {
             int projectileCount = ProjectileCatalog.projectilePrefabCount;
 
@@ -90,7 +90,7 @@ namespace ItemQualities.Equipments
             On.RoR2.EquipmentSlot.FireParry += EquipmentSlot_FireParry;
         }
 
-        static void HealthComponent_ProcParry(On.RoR2.HealthComponent.orig_ProcParry orig, HealthComponent self, DamageInfo damageInfo)
+        private static void HealthComponent_ProcParry(On.RoR2.HealthComponent.orig_ProcParry orig, HealthComponent self, DamageInfo damageInfo)
         {
             orig(self, damageInfo);
 
@@ -128,7 +128,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool EquipmentSlot_FireParry(On.RoR2.EquipmentSlot.orig_FireParry orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireParry(On.RoR2.EquipmentSlot.orig_FireParry orig, EquipmentSlot self)
         {
             int storedProjectileIndex = -1;
             float storedProjectileDamage = 0f;

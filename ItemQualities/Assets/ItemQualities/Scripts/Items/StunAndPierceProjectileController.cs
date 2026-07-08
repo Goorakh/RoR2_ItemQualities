@@ -13,7 +13,7 @@ namespace ItemQualities.Items
     public sealed class StunAndPierceProjectileController : NetworkBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_StunAndPierce.StunAndPierceBoomerang_prefab).OnSuccess(boomerangPrefab =>
             {
@@ -21,19 +21,19 @@ namespace ItemQualities.Items
             });
         }
 
-        ProjectileController _projectileController;
-        BoomerangProjectile _boomerangProjectile;
-        ProjectileOverlapAttack _projectileOverlapAttack;
+        private ProjectileController _projectileController;
+        private BoomerangProjectile _boomerangProjectile;
+        private ProjectileOverlapAttack _projectileOverlapAttack;
 
-        float _startBounceTimer = -1f;
+        private float _startBounceTimer = -1f;
 
-        int _bouncesRemaining = 0;
+        private int _bouncesRemaining = 0;
 
-        GameObject _lastHitObject;
+        private GameObject _lastHitObject;
 
-        readonly List<GameObject> _bouncedObjects = new List<GameObject>();
+        private readonly List<GameObject> _bouncedObjects = new List<GameObject>();
 
-        readonly BullseyeSearch _bounceTargetSearch = new BullseyeSearch
+        private readonly BullseyeSearch _bounceTargetSearch = new BullseyeSearch
         {
             queryTriggerInteraction = QueryTriggerInteraction.Ignore,
             filterByDistinctEntity = true,
@@ -43,7 +43,7 @@ namespace ItemQualities.Items
             teamMaskFilter = TeamMask.all
         };
 
-        void Awake()
+        private void Awake()
         {
             _projectileController = GetComponent<ProjectileController>();
             _boomerangProjectile = GetComponent<BoomerangProjectile>();
@@ -52,7 +52,7 @@ namespace ItemQualities.Items
             _projectileController.onInitialized += onInitialized;
         }
 
-        void onInitialized(ProjectileController projectileController)
+        private void onInitialized(ProjectileController projectileController)
         {
             if (projectileController.owner)
             {
@@ -75,18 +75,18 @@ namespace ItemQualities.Items
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _projectileOverlapAttack.onServerHitGameObject.AddListener(onHit);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _projectileOverlapAttack.onServerHitGameObject.RemoveListener(onHit);
             _bouncedObjects.Clear();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (_startBounceTimer > 0f)
             {
@@ -98,7 +98,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onHit(GameObject hitObject)
+        private void onHit(GameObject hitObject)
         {
             if (!NetworkServer.active)
                 return;
@@ -123,7 +123,7 @@ namespace ItemQualities.Items
         }
 
         [Server]
-        void tryRedirectBoomerang()
+        private void tryRedirectBoomerang()
         {
             if (_bouncesRemaining <= 0)
                 return;
@@ -163,7 +163,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void resetBoomerang()
+        private void resetBoomerang()
         {
             _boomerangProjectile.NetworkboomerangState = BoomerangProjectile.BoomerangState.FlyOut;
             _boomerangProjectile.stopwatch = 0f;

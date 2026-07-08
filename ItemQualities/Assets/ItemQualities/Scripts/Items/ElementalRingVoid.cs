@@ -13,10 +13,10 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class ElementalRingVoid
+    internal static class ElementalRingVoid
     {
         [SystemInitializer]
-        static IEnumerator Init()
+        private static IEnumerator Init()
         {
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
 
@@ -36,7 +36,7 @@ namespace ItemQualities.Items
             return blackHoleProjectileLoad;
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {

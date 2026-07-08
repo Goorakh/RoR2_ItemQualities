@@ -4,17 +4,17 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class StrengthenBurn
+    internal static class StrengthenBurn
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory)
                 return;
@@ -26,7 +26,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void onServerDamageDealt(DamageReport damageReport)
+        private static void onServerDamageDealt(DamageReport damageReport)
         {
             if (damageReport?.damageInfo == null)
                 return;

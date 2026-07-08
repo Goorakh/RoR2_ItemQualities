@@ -10,10 +10,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class MoreMissile
+    internal static class MoreMissile
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += MissileUtils_FireMissile;
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
@@ -36,7 +36,7 @@ namespace ItemQualities.Items
             return RollUtil.GetOverflowRoll(moreMissileChance, attackerBody.master, sureProc);
         }
 
-        static void MissileUtils_FireMissile(ILContext il)
+        private static void MissileUtils_FireMissile(ILContext il)
         {
             if (!il.Method.TryFindParameter<CharacterBody>("attackerBody", out ParameterDefinition attackerBodyParameter))
             {
@@ -113,7 +113,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {

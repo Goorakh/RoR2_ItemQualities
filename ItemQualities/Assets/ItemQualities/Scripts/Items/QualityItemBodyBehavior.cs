@@ -14,16 +14,16 @@ namespace ItemQualities.Items
 {
     public abstract class QualityItemBodyBehavior : MonoBehaviour
     {
-        readonly static QualityGroupBehaviorCollection[] _behaviorCollectionsLookup = new QualityGroupBehaviorCollection[(int)QualityItemBehaviorUsageFlags.All];
+        private static readonly QualityGroupBehaviorCollection[] _behaviorCollectionsLookup = new QualityGroupBehaviorCollection[(int)QualityItemBehaviorUsageFlags.All];
 
-        static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
+        private static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
 
-        static CharacterBody _earlyAssignmentBody;
-        static ItemQualityCounts _earlyAssignmentStacks;
+        private static CharacterBody _earlyAssignmentBody;
+        private static ItemQualityCounts _earlyAssignmentStacks;
 
         public CharacterBody Body { get; private set; }
 
-        ItemQualityCounts _stacks;
+        private ItemQualityCounts _stacks;
         public ref readonly ItemQualityCounts Stacks
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -44,7 +44,7 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer(typeof(QualityCatalog))]
-        static void Init()
+        private static void Init()
         {
             Span<List<QualityGroupBehaviorInfo>> qualityGroupBehaviorsByUsageLookup = new List<QualityGroupBehaviorInfo>[(int)QualityItemBehaviorUsageFlags.All];
             foreach (ref List<QualityGroupBehaviorInfo> qualityGroupBehaviors in qualityGroupBehaviorsByUsageLookup)
@@ -165,7 +165,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static QualityItemBehaviorUsageFlags getBehaviorFlagsForBody(CharacterBody body)
+        private static QualityItemBehaviorUsageFlags getBehaviorFlagsForBody(CharacterBody body)
         {
             QualityItemBehaviorUsageFlags usageFlags = QualityItemBehaviorUsageFlags.None;
 
@@ -188,12 +188,12 @@ namespace ItemQualities.Items
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int getBehaviorCollectionIndex(CharacterBody body)
+        private static int getBehaviorCollectionIndex(CharacterBody body)
         {
             return (int)getBehaviorFlagsForBody(body) - 1;
         }
 
-        static void onBodyStartGlobal(CharacterBody body)
+        private static void onBodyStartGlobal(CharacterBody body)
         {
             // if body has an inventory OR is waiting on a master link
             if ((body.inventory || !body.masterObjectId.IsEmpty()) && !_bodyQualityBehaviorInfoLookup.ContainsKey(body))
@@ -214,7 +214,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void onBodyDestroyGlobal(CharacterBody body)
+        private static void onBodyDestroyGlobal(CharacterBody body)
         {
             if (_bodyQualityBehaviorInfoLookup.Remove(body, out BodyBehaviorInfo behaviorInfo))
             {
@@ -222,7 +222,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void onBodyInventoryChangedGlobal(CharacterBody body)
+        private static void onBodyInventoryChangedGlobal(CharacterBody body)
         {
             if (!_bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
             {
@@ -245,7 +245,7 @@ namespace ItemQualities.Items
             refreshBodyQualityBehaviors(body, behaviorInfo);
         }
 
-        static void refreshBodyQualityBehaviors(CharacterBody body, BodyBehaviorInfo bodyBehaviorInfo)
+        private static void refreshBodyQualityBehaviors(CharacterBody body, BodyBehaviorInfo bodyBehaviorInfo)
         {
             if (body.inventory)
             {
@@ -272,7 +272,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void updateItemStacks(CharacterBody body, ref QualityItemBodyBehavior itemBehavior, Type qualityBehaviorType, in ItemQualityCounts itemCounts)
+        private static void updateItemStacks(CharacterBody body, ref QualityItemBodyBehavior itemBehavior, Type qualityBehaviorType, in ItemQualityCounts itemCounts)
         {
             bool hasBehavior = !ReferenceEquals(itemBehavior, null);
             bool shouldHaveBehavior = itemCounts.TotalQualityCount > 0;
@@ -312,7 +312,7 @@ namespace ItemQualities.Items
             }
         }
 
-        sealed class BodyBehaviorInfo
+        private sealed class BodyBehaviorInfo
         {
             public readonly QualityItemBodyBehavior[] BehaviorComponents;
 
@@ -325,7 +325,7 @@ namespace ItemQualities.Items
             }
         }
 
-        readonly struct QualityGroupBehaviorInfo
+        private readonly struct QualityGroupBehaviorInfo
         {
             public readonly ItemQualityGroupIndex ItemGroupIndex;
 
@@ -338,7 +338,7 @@ namespace ItemQualities.Items
             }
         }
 
-        readonly struct QualityGroupBehaviorCollection
+        private readonly struct QualityGroupBehaviorCollection
         {
             public readonly QualityGroupBehaviorInfo[] Behaviors;
 

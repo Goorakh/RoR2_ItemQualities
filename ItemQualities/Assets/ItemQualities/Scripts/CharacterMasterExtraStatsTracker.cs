@@ -14,7 +14,7 @@ namespace ItemQualities
         public static readonly float ItemUpgradeDelay = 0.4f;
 
         [SystemInitializer(typeof(MasterCatalog))]
-        static void Init()
+        private static void Init()
         {
             foreach (CharacterMaster master in MasterCatalog.allMasters)
             {
@@ -25,10 +25,10 @@ namespace ItemQualities
             }
         }
 
-        CharacterMaster _master;
+        private CharacterMaster _master;
 
-        CharacterBody _cachedBody;
-        CharacterBodyExtraStatsTracker _bodyExtraStatsComponent;
+        private CharacterBody _cachedBody;
+        private CharacterBodyExtraStatsTracker _bodyExtraStatsComponent;
 
         [SyncVar(hook = nameof(hookSetSteakBonus))]
         public float SteakBonus;
@@ -44,10 +44,10 @@ namespace ItemQualities
 
         public ItemCollection ConductorItemStacks = ItemCollection.Create();
 
-        readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
+        private readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
 
-        List<PendingItemUpgrade> _pendingItemUpgrades;
-        struct PendingItemUpgrade
+        private List<PendingItemUpgrade> _pendingItemUpgrades;
+        private struct PendingItemUpgrade
         {
             public readonly ItemIndex UpgradeItemIndex;
 
@@ -60,13 +60,13 @@ namespace ItemQualities
             }
         }
 
-        int _stageIncomingDamageInstanceCountServer;
+        private int _stageIncomingDamageInstanceCountServer;
         public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
 
         public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
         public event Action<CharacterMasterExtraStatsTracker> OnBossDamageBonusTicksChanged;
 
-        void Awake()
+        private void Awake()
         {
             _master = GetComponent<CharacterMaster>();
 
@@ -78,7 +78,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             ComponentCache.Remove(gameObject, this);
 
@@ -88,7 +88,7 @@ namespace ItemQualities
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _master.onBodyStart += setBody;
             _master.onBodyDestroyed += setBody;
@@ -103,7 +103,7 @@ namespace ItemQualities
             setBody(_master.GetBody());
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _master.onBodyStart -= setBody;
             _master.onBodyDestroyed -= setBody;
@@ -118,7 +118,7 @@ namespace ItemQualities
             setBody(null);
         }
 
-        void setBody(CharacterBody body)
+        private void setBody(CharacterBody body)
         {
             if (_cachedBody == body)
                 return;
@@ -137,7 +137,7 @@ namespace ItemQualities
             }
         }
 
-        void onInventoryChanged()
+        private void onInventoryChanged()
         {
             if (NetworkServer.active)
             {
@@ -146,7 +146,7 @@ namespace ItemQualities
         }
 
         [Server]
-        bool checkAllItemQualityUpgrades()
+        private bool checkAllItemQualityUpgrades()
         {
             bool hasAnyPendingUpgrade = false;
 
@@ -162,7 +162,7 @@ namespace ItemQualities
         }
 
         [Server]
-        bool checkItemQualityUpgrade(ItemIndex upgradedItemIndex)
+        private bool checkItemQualityUpgrade(ItemIndex upgradedItemIndex)
         {
             if (_pendingItemUpgrades.Any(p => p.UpgradeItemIndex == upgradedItemIndex))
                 return true;
@@ -189,7 +189,7 @@ namespace ItemQualities
             return hasAnyUpgradableItem;
         }
 
-        static Inventory.ItemTransformation getUpgradeItemTransformation(ItemIndex originalItemIndex, ItemIndex upgradedItemIndex)
+        private static Inventory.ItemTransformation getUpgradeItemTransformation(ItemIndex originalItemIndex, ItemIndex upgradedItemIndex)
         {
             QualityTier upgradeQualityTier = QualityCatalog.GetQualityTier(upgradedItemIndex);
 
@@ -378,7 +378,7 @@ namespace ItemQualities
             return upgradedItemIndex;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -416,7 +416,7 @@ namespace ItemQualities
             }
         }
 
-        void onServerStageBegin(Stage stage)
+        private void onServerStageBegin(Stage stage)
         {
             if (_stageIncomingDamageInstanceCountServer != 0)
             {
@@ -425,7 +425,7 @@ namespace ItemQualities
             }
         }
 
-        void onIncomingDamageServer(DamageInfo damageInfo)
+        private void onIncomingDamageServer(DamageInfo damageInfo)
         {
             if (damageInfo.damage > 0f &&
                 !damageInfo.delayedDamageSecondHalf &&
@@ -437,7 +437,7 @@ namespace ItemQualities
             }
         }
 
-        void markBodyStatsDirty()
+        private void markBodyStatsDirty()
         {
             if (_cachedBody)
             {
@@ -463,7 +463,7 @@ namespace ItemQualities
             }
         }
 
-        void hookSetSteakBonus(float steakBonus)
+        private void hookSetSteakBonus(float steakBonus)
         {
             bool changed = SteakBonus != steakBonus;
             SteakBonus = steakBonus;
@@ -474,7 +474,7 @@ namespace ItemQualities
             }
         }
 
-        void hookSetSpeedOnPickupBonus(int speedOnPickupBonus)
+        private void hookSetSpeedOnPickupBonus(int speedOnPickupBonus)
         {
             bool changed = SpeedOnPickupBonus != speedOnPickupBonus;
             SpeedOnPickupBonus = speedOnPickupBonus;
@@ -485,7 +485,7 @@ namespace ItemQualities
             }
         }
 
-        void hookSetBossDamageBonusTicks(int bossDamageBonusTicks)
+        private void hookSetBossDamageBonusTicks(int bossDamageBonusTicks)
         {
             bool changed = BossDamageBonusTicks != bossDamageBonusTicks;
             BossDamageBonusTicks = bossDamageBonusTicks;

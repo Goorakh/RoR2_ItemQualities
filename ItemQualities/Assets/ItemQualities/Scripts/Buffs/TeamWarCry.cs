@@ -4,17 +4,17 @@ using RoR2;
 
 namespace ItemQualities.Buffs
 {
-    static class TeamWarCry
+    internal static class TeamWarCry
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             BuffHooks.OnBuffFirstStackGainedGlobal += onBuffFirstStackGainedGlobal;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             BuffQualityCounts teamWarCry = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.TeamWarCry);
             QualityTier qualityTier = teamWarCry.HighestQuality;
@@ -48,7 +48,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void onBuffFirstStackGainedGlobal(CharacterBody body, BuffDef buffDef)
+        private static void onBuffFirstStackGainedGlobal(CharacterBody body, BuffDef buffDef)
         {
             if (!body.hasEffectiveAuthority)
                 return;

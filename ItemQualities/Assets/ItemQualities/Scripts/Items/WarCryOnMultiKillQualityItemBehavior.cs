@@ -6,16 +6,16 @@ namespace ItemQualities.Items
     public sealed class WarCryOnMultiKillQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill;
         }
 
-        CharacterBodyExtraStatsTracker _bodyExtraStats;
+        private CharacterBodyExtraStatsTracker _bodyExtraStats;
 
-        bool _hadWarCryBuff;
+        private bool _hadWarCryBuff;
 
-        bool hasWarCryBuff => Body.HasBuff(RoR2Content.Buffs.WarCryBuff) || Body.HasBuff(RoR2Content.Buffs.TeamWarCry);
+        private bool hasWarCryBuff => Body.HasBuff(RoR2Content.Buffs.WarCryBuff) || Body.HasBuff(RoR2Content.Buffs.TeamWarCry);
 
         protected override void Awake()
         {
@@ -24,21 +24,21 @@ namespace ItemQualities.Items
             _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _bodyExtraStats.OnKilledOther += onKilledOther;
 
             _hadWarCryBuff = false;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _bodyExtraStats.OnKilledOther -= onKilledOther;
 
             setWarCryBuffCount(0);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             bool hasBuff = hasWarCryBuff;
             if (hasBuff != _hadWarCryBuff)
@@ -48,7 +48,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onKilledOther(DamageReport damageReport)
+        private void onKilledOther(DamageReport damageReport)
         {
             if (damageReport.victimIsElite)
             {
@@ -66,7 +66,7 @@ namespace ItemQualities.Items
             setWarCryBuffCount(hasWarCryBuff ? _bodyExtraStats.EliteKillCount : 0);
         }
 
-        void setWarCryBuffCount(int count)
+        private void setWarCryBuffCount(int count)
         {
             int currentBuffCount = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff).TotalQualityCount;
             if (currentBuffCount != count)

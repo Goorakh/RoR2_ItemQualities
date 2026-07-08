@@ -12,12 +12,12 @@ namespace ItemQualities.UI
     internal sealed class TooltipContext : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.UI.TooltipController.SetTooltipProvider += TooltipController_SetTooltipProvider;
         }
 
-        static void TooltipController_SetTooltipProvider(ILContext il)
+        private static void TooltipController_SetTooltipProvider(ILContext il)
         {
             if (!il.Method.TryFindParameter<TooltipProvider>(out ParameterDefinition tooltipProviderParameter))
             {

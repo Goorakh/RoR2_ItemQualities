@@ -10,9 +10,9 @@ namespace ItemQualities
 {
     internal static class EffectScalingFixer
     {
-        static bool _contentLock = false;
+        private static bool _contentLock = false;
 
-        static readonly Dictionary<GameObject, Dictionary<int, EffectDef>> _fixedScalingPrefabCaches = new();
+        private static readonly Dictionary<GameObject, Dictionary<int, EffectDef>> _fixedScalingPrefabCaches = new();
 
         public static void AddToContentPack(ContentPack contentPack)
         {

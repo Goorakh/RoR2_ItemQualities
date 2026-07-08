@@ -3,10 +3,10 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class BonusGoldPackOnKill
+    internal static class BonusGoldPackOnKill
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }

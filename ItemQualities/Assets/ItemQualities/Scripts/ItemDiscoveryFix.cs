@@ -4,15 +4,15 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class ItemDiscoveryFix
+    internal static class ItemDiscoveryFix
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             CharacterMaster.onStartGlobal += onStartGlobal;
         }
 
-        static void onStartGlobal(CharacterMaster master)
+        private static void onStartGlobal(CharacterMaster master)
         {
             if (master.playerCharacterMasterController &&
                 master.playerCharacterMasterController.networkUser &&
@@ -22,19 +22,19 @@ namespace ItemQualities
             }
         }
 
-        sealed class ItemGrantTracker : MonoBehaviour
+        private sealed class ItemGrantTracker : MonoBehaviour
         {
-            NetworkUser _networkUser;
-            Inventory _inventory;
+            private NetworkUser _networkUser;
+            private Inventory _inventory;
 
-            void Awake()
+            private void Awake()
             {
                 CharacterMaster master = GetComponent<CharacterMaster>();
                 _networkUser = master && master.playerCharacterMasterController ? master.playerCharacterMasterController.networkUser : GetComponent<NetworkUser>();
                 _inventory = master ? master.inventory : GetComponent<Inventory>();
             }
 
-            void OnEnable()
+            private void OnEnable()
             {
                 if (_inventory)
                 {
@@ -43,7 +43,7 @@ namespace ItemQualities
                 }
             }
 
-            void OnDisable()
+            private void OnDisable()
             {
                 if (_inventory)
                 {
@@ -52,7 +52,7 @@ namespace ItemQualities
                 }
             }
 
-            void onItemAddedClient(ItemIndex itemIndex)
+            private void onItemAddedClient(ItemIndex itemIndex)
             {
                 if (itemIndex != ItemIndex.None)
                 {
@@ -60,7 +60,7 @@ namespace ItemQualities
                 }
             }
 
-            void onEquipmentChangedClient(EquipmentIndex equipmentIndex, uint equipmentSlot)
+            private void onEquipmentChangedClient(EquipmentIndex equipmentIndex, uint equipmentSlot)
             {
                 if (equipmentIndex != EquipmentIndex.None)
                 {
@@ -68,7 +68,7 @@ namespace ItemQualities
                 }
             }
 
-            void tryDiscoverPickup(PickupIndex pickupIndex)
+            private void tryDiscoverPickup(PickupIndex pickupIndex)
             {
                 if (pickupIndex != PickupIndex.none && _networkUser)
                 {

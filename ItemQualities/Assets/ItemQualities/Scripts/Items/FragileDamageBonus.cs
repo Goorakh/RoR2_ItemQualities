@@ -6,17 +6,17 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class FragileDamageBonus
+    internal static class FragileDamageBonus
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory)
                 return;
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void HealthComponent_UpdateLastHitTime(ILContext il)
+        private static void HealthComponent_UpdateLastHitTime(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -96,6 +96,6 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate bool ConsumeQualityWatchesDelegate(bool result, HealthComponent healthComponent, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult);
+        private delegate bool ConsumeQualityWatchesDelegate(bool result, HealthComponent healthComponent, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult);
     }
 }

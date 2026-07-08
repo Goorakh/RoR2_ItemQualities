@@ -5,7 +5,7 @@ namespace ItemQualities.Utilities
 {
     public static class MeshUtil
     {
-        static Mesh[] _primitiveMeshCache = new Mesh[(int)PrimitiveType.Quad + 1];
+        private static Mesh[] _primitiveMeshCache = new Mesh[(int)PrimitiveType.Quad + 1];
 
         public static Mesh GetPrimitive(PrimitiveType primitiveType)
         {

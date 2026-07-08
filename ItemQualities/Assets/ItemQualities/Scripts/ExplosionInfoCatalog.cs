@@ -10,7 +10,7 @@ namespace ItemQualities
 {
     public static class ExplosionInfoCatalog
     {
-        static ExplosionInfoDef[] _explosionInfoDefs = Array.Empty<ExplosionInfoDef>();
+        private static ExplosionInfoDef[] _explosionInfoDefs = Array.Empty<ExplosionInfoDef>();
 
         public static int ExplosionInfoDefCount => _explosionInfoDefs.Length;
 
@@ -18,7 +18,7 @@ namespace ItemQualities
             (index, explosionInfoDef) => register(explosionInfoDef, (ExplosionInfoIndex)index),
             explosionInfoDef => explosionInfoDef.Name);
 
-        static void register(ExplosionInfoDef explosionInfoDef, ExplosionInfoIndex explosionInfoIndex)
+        private static void register(ExplosionInfoDef explosionInfoDef, ExplosionInfoIndex explosionInfoIndex)
         {
             if (explosionInfoIndex > ExplosionInfoIndex.None && explosionInfoIndex < ExplosionInfoIndex.Count)
             {
@@ -34,7 +34,7 @@ namespace ItemQualities
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             _explosionInfoDefs = new ExplosionInfoDef[(int)ExplosionInfoIndex.Count];
 

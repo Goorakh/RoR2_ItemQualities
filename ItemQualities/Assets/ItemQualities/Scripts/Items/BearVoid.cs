@@ -7,15 +7,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class BearVoid
+    internal static class BearVoid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

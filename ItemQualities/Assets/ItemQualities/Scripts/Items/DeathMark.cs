@@ -7,10 +7,10 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class DeathMark
+    internal static class DeathMark
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
 
@@ -22,7 +22,7 @@ namespace ItemQualities.Items
             return body && body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.DeathMark).TotalQualityCount > 0;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -95,7 +95,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void GlobalEventManager_ProcDeathMark(ILContext il)
+        private static void GlobalEventManager_ProcDeathMark(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

@@ -6,12 +6,12 @@ namespace ItemQualities.Items
     public sealed class ArmorPlateQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.ArmorPlate;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (NetworkServer.active)
             {

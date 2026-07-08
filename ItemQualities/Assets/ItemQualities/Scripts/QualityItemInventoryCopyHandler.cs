@@ -8,16 +8,16 @@ using System.Collections.Generic;
 
 namespace ItemQualities
 {
-    static class QualityItemInventoryCopyHandler
+    internal static class QualityItemInventoryCopyHandler
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Inventory.AddItemsFrom_Int32Array_Func2 += Inventory_AddItemsFrom_Int32Array_Func2;
             IL.RoR2.Inventory.AddItemsFrom_Inventory_Func2 += Inventory_AddItemsFrom_Inventory_Func2;
         }
 
-        static int calculateBonusItemCountFromQualities(ItemIndex itemIndex, in ItemQualityCounts itemCounts, Func<ItemIndex, bool> filter)
+        private static int calculateBonusItemCountFromQualities(ItemIndex itemIndex, in ItemQualityCounts itemCounts, Func<ItemIndex, bool> filter)
         {
             QualityTier itemQualityTier = QualityCatalog.GetQualityTier(itemIndex);
 
@@ -44,7 +44,7 @@ namespace ItemQualities
             return bonusItemCount;
         }
 
-        static void Inventory_AddItemsFrom_Int32Array_Func2(ILContext il)
+        private static void Inventory_AddItemsFrom_Int32Array_Func2(ILContext il)
         {
             if (!il.Method.TryFindParameter<Func<ItemIndex, bool>>(out ParameterDefinition filterParameter))
             {
@@ -108,7 +108,7 @@ namespace ItemQualities
             }
         }
 
-        static void Inventory_AddItemsFrom_Inventory_Func2(ILContext il)
+        private static void Inventory_AddItemsFrom_Inventory_Func2(ILContext il)
         {
             if (!il.Method.TryFindParameter<Inventory>("other", out ParameterDefinition otherInventoryParameter))
             {

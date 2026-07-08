@@ -15,12 +15,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class VendingMachine
+    internal static class VendingMachine
     {
-        static readonly GameObject[] _qualityVendingMachineProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityVendingMachineProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> vendingMachineProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_VendingMachine.VendingMachineProjectile_prefab);
             vendingMachineProjectileLoad.OnSuccess(vendingMachineProjectilePrefab =>
@@ -72,12 +72,12 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireVendingMachine += EquipmentSlot_FireVendingMachine;
         }
 
-        static void EquipmentSlot_FireVendingMachine(ILContext il)
+        private static void EquipmentSlot_FireVendingMachine(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

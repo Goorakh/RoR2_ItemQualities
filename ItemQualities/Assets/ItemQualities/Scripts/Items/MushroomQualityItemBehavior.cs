@@ -21,23 +21,23 @@ namespace ItemQualities.Items
 {
     public sealed class MushroomQualityItemBehavior : QualityItemBodyBehavior
     {
-        static DeployableSlot _mushroomBubbleDeployableSlot = DeployableSlot.None;
+        private static DeployableSlot _mushroomBubbleDeployableSlot = DeployableSlot.None;
 
-        static GameObject _bubbleShieldPrefab;
+        private static GameObject _bubbleShieldPrefab;
 
-        static int getMushroomBubbleLimit(CharacterMaster master, int deployableCountMultiplier)
+        private static int getMushroomBubbleLimit(CharacterMaster master, int deployableCountMultiplier)
         {
             return 1;
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             _mushroomBubbleDeployableSlot = DeployableAPI.RegisterDeployableSlot(getMushroomBubbleLimit);
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> bubbleShieldLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Engi.EngiBubbleShield_prefab);
             AsyncOperationHandle<GameObject> engiBodyLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Engi.EngiBody_prefab);
@@ -129,14 +129,14 @@ namespace ItemQualities.Items
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.Mushroom;
         }
 
-        MushroomBubbleController _shieldInstance;
+        private MushroomBubbleController _shieldInstance;
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (Body && Body.notMovingStopwatch >= 0.6f && Body.healthComponent && Body.healthComponent.alive)
             {
@@ -163,7 +163,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (_shieldInstance)
             {

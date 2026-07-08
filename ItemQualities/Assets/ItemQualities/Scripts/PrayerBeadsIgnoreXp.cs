@@ -7,17 +7,17 @@ using System.Collections.Generic;
 
 namespace ItemQualities
 {
-    static class PrayerBeadsIgnoreXp
+    internal static class PrayerBeadsIgnoreXp
     {
-        static readonly List<IgnoreXpChunk> _ignoreXpChunks = new List<IgnoreXpChunk>();
+        private static readonly List<IgnoreXpChunk> _ignoreXpChunks = new List<IgnoreXpChunk>();
 
-        static readonly IComparer<IgnoreXpChunk> _xpChunkExpirationTimeComparer = Comparer<IgnoreXpChunk>.Create((a, b) =>
+        private static readonly IComparer<IgnoreXpChunk> _xpChunkExpirationTimeComparer = Comparer<IgnoreXpChunk>.Create((a, b) =>
         {
             return a.ExpirationTime.CompareTo(b.ExpirationTime);
         });
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.TeamManager.GiveTeamExperience += TeamManager_GiveTeamExperience;
         }
@@ -43,13 +43,13 @@ namespace ItemQualities
             _ignoreXpChunks.Insert(chunkIndex, chunk);
         }
 
-        static void onRunDestroyGlobal(Run run)
+        private static void onRunDestroyGlobal(Run run)
         {
             _ignoreXpChunks.Clear();
             Run.onRunDestroyGlobal -= onRunDestroyGlobal;
         }
 
-        static void TeamManager_GiveTeamExperience(ILContext il)
+        private static void TeamManager_GiveTeamExperience(ILContext il)
         {
             if (!il.Method.TryFindParameter<TeamIndex>(out ParameterDefinition teamIndexParameter))
             {
@@ -116,9 +116,9 @@ namespace ItemQualities
             }
         }
 
-        delegate bool AllowPrayerBeadsXpGainDelegate(ref ulong experience);
+        private delegate bool AllowPrayerBeadsXpGainDelegate(ref ulong experience);
 
-        sealed class IgnoreXpChunk
+        private sealed class IgnoreXpChunk
         {
             public ulong Amount;
             public readonly Run.FixedTimeStamp ExpirationTime;

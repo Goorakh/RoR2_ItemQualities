@@ -8,7 +8,7 @@ namespace ItemQualities
     public sealed class HealTargetOnDamaged : MonoBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver
     {
         [SerializeField]
-        CharacterBody _healTarget;
+        private CharacterBody _healTarget;
 
         [Min(0)]
         public float DamageToHealingConversionRate = 0.5f;
@@ -33,14 +33,14 @@ namespace ItemQualities
             }
         }
 
-        HealthComponent _healthComponent;
+        private HealthComponent _healthComponent;
 
-        void Awake()
+        private void Awake()
         {
             _healthComponent = GetComponent<HealthComponent>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (IgnoredCollisionsProvider)
             {
@@ -48,7 +48,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (IgnoredCollisionsProvider)
             {
@@ -56,7 +56,7 @@ namespace ItemQualities
             }
         }
 
-        void refreshCollisionFilter()
+        private void refreshCollisionFilter()
         {
             if (IgnoredCollisionsProvider)
             {

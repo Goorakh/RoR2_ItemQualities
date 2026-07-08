@@ -21,11 +21,11 @@ namespace ItemQualities
 
         [SerializeField]
         [HideInInspector]
-        bool _hasLoaded = false;
+        private bool _hasLoaded = false;
 
         public bool HasLoaded => _hasLoaded;
 
-        void Awake()
+        private void Awake()
         {
             if (!_hasLoaded)
             {
@@ -74,7 +74,7 @@ namespace ItemQualities
             enabled = false;
         }
 
-        IEnumerator assignComponentFieldAsync<TProgress>(ComponentFieldAddressableAssignment componentFieldAssignment, TProgress progressReceiver = default)
+        private IEnumerator assignComponentFieldAsync<TProgress>(ComponentFieldAddressableAssignment componentFieldAssignment, TProgress progressReceiver = default)
             where TProgress : IProgress<float>
         {
             if (!componentFieldAssignment.TargetObject)
@@ -104,7 +104,7 @@ namespace ItemQualities
             }
         }
 
-        void applyFieldValue(ComponentFieldAddressableAssignment componentFieldAssignment, MemberInfo member, UnityEngine.Object value)
+        private void applyFieldValue(ComponentFieldAddressableAssignment componentFieldAssignment, MemberInfo member, UnityEngine.Object value)
         {
             Type componentType = componentFieldAssignment.TargetObject.GetType();
             object assetKey = componentFieldAssignment.AssetReference.RuntimeKey;
@@ -136,7 +136,7 @@ namespace ItemQualities
             }
         }
 
-        void OnValidate()
+        private void OnValidate()
         {
             foreach (ComponentFieldAddressableAssignment componentFieldAssignment in FieldAssignments)
             {
@@ -166,7 +166,7 @@ namespace ItemQualities
             }
         }
 
-        static MemberInfo findTargetMember(Type componentType, string fieldName, out Type memberType)
+        private static MemberInfo findTargetMember(Type componentType, string fieldName, out Type memberType)
         {
             FieldInfo field = componentType.GetField(fieldName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
             if (field != null)
@@ -192,11 +192,11 @@ namespace ItemQualities
             [Tooltip("The object to assign the field on")]
             [SerializeField]
             [FormerlySerializedAs("TargetObject")]
-            UnityEngine.Object _targetObject;
+            private UnityEngine.Object _targetObject;
 
             [SerializeField]
             [HideInInspector]
-            Component _targetObjectComponent;
+            private Component _targetObjectComponent;
 
             [Tooltip("If set, the first component of this type will be located on the Target Object and used as the field instance")]
             [SerializableSystemType.RequiredBaseType(typeof(Component))]

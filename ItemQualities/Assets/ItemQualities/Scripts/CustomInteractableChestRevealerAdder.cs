@@ -5,10 +5,10 @@ using System.Reflection;
 
 namespace ItemQualities
 {
-    static class CustomInteractableChestRevealerAdder
+    internal static class CustomInteractableChestRevealerAdder
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             bool addedAnyInteractable = false;
             List<Type> interactableTypes = new List<Type>(ChestRevealer.TypesToCheck);

@@ -9,19 +9,19 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class NearbyDamageBonus
+    internal static class NearbyDamageBonus
     {
-        static DamageColorIndex _nearbyBoostedColorIndex;
+        private static DamageColorIndex _nearbyBoostedColorIndex;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             _nearbyBoostedColorIndex = ColorsAPI.RegisterDamageColor(new Color32(247, 59, 115, 255));
 
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -110,6 +110,6 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate void ModifyFocusCrystalDamageDelegate(HealthComponent healthComponent, DamageInfo damageInfo, ref float damageValue);
+        private delegate void ModifyFocusCrystalDamageDelegate(HealthComponent healthComponent, DamageInfo damageInfo, ref float damageValue);
     }
 }

@@ -10,7 +10,7 @@ namespace ItemQualities.Utilities
 {
     internal static class EventUtils
     {
-        static readonly Dictionary<FieldInfo, Delegate> _invokeDelegateCache = new Dictionary<FieldInfo, Delegate>();
+        private static readonly Dictionary<FieldInfo, Delegate> _invokeDelegateCache = new Dictionary<FieldInfo, Delegate>();
 
         public static TDelegate GetInvokeMethodDelegate<TDelegate>(Type eventDeclaringType, string eventName)
             where TDelegate : Delegate

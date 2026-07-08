@@ -16,12 +16,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class Missile
+    internal static class Missile
     {
-        static GameObject _missileBigProjectilePrefab;
+        private static GameObject _missileBigProjectilePrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> missileProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Common.MissileProjectile_prefab);
             AsyncOperationHandle<GameObject> missileGhostLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Common.MissileGhost_prefab);
@@ -82,12 +82,12 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

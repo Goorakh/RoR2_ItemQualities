@@ -6,24 +6,24 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class SlowOnHitVoid
+    internal static class SlowOnHitVoid
     {
-        static DeployableSlot _rootAreaDeployableSlot = DeployableSlot.None;
+        private static DeployableSlot _rootAreaDeployableSlot = DeployableSlot.None;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             _rootAreaDeployableSlot = DeployableAPI.RegisterDeployableSlot(getRootAreaLimit);
 
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static int getRootAreaLimit(CharacterMaster self, int deployableCountMultiplier)
+        private static int getRootAreaLimit(CharacterMaster self, int deployableCountMultiplier)
         {
             return 2;
         }
 
-        static void onCharacterDeathGlobal(DamageReport deathReport)
+        private static void onCharacterDeathGlobal(DamageReport deathReport)
         {
             if (deathReport?.damageInfo == null)
                 return;

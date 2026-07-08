@@ -7,44 +7,44 @@ namespace ItemQualities
     public sealed class ShrineChanceExtraStatsTracker : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.ShrineChanceBehavior.Awake += ShrineChanceBehavior_Awake;
         }
 
-        static void ShrineChanceBehavior_Awake(On.RoR2.ShrineChanceBehavior.orig_Awake orig, ShrineChanceBehavior self)
+        private static void ShrineChanceBehavior_Awake(On.RoR2.ShrineChanceBehavior.orig_Awake orig, ShrineChanceBehavior self)
         {
             self.gameObject.AddComponent<ShrineChanceExtraStatsTracker>();
             orig(self);
         }
 
-        ShrineChanceBehavior _shrineChanceBehavior;
+        private ShrineChanceBehavior _shrineChanceBehavior;
 
-        int _baseMaxInteractions;
+        private int _baseMaxInteractions;
 
-        void Awake()
+        private void Awake()
         {
             _shrineChanceBehavior = GetComponent<ShrineChanceBehavior>();
             _baseMaxInteractions = _shrineChanceBehavior.maxPurchaseCount;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             refreshMaxPurchases();
             Inventory.onInventoryChangedGlobal += onInventoryChangedGlobal;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             Inventory.onInventoryChangedGlobal -= onInventoryChangedGlobal;
         }
 
-        void onInventoryChangedGlobal(Inventory inventory)
+        private void onInventoryChangedGlobal(Inventory inventory)
         {
             refreshMaxPurchases();
         }
 
-        void refreshMaxPurchases()
+        private void refreshMaxPurchases()
         {
             ItemQualityCounts totalChanceDollCounts = default;
 

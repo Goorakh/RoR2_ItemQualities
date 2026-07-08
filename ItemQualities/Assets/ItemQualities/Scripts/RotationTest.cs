@@ -9,7 +9,7 @@ namespace ItemQualities
 
         public float Yaw;
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             Quaternion rotation = Quaternion.Euler(Pitch, Yaw, 0f);
 

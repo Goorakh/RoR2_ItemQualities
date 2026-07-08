@@ -8,7 +8,7 @@ namespace ItemQualities
     public unsafe struct ItemQualityCounts : IEquatable<ItemQualityCounts>
     {
         [FieldOffset(0)]
-        fixed int _itemCounts[(int)QualityTier.Count + 1];
+        private fixed int _itemCounts[(int)QualityTier.Count + 1];
 
         [FieldOffset(0)]
         public int BaseItemCount;
@@ -127,7 +127,7 @@ namespace ItemQualities
     public unsafe struct TempItemQualityCounts : IEquatable<TempItemQualityCounts>
     {
         [FieldOffset(0)]
-        fixed float _itemCounts[(int)QualityTier.Count + 1];
+        private fixed float _itemCounts[(int)QualityTier.Count + 1];
 
         [FieldOffset(0)]
         public float BaseItemCount;

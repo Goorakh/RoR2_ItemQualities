@@ -88,7 +88,7 @@ namespace ItemQualities
         public static event Action<HoldoutZoneController> OnVoidStagePillarChargedServer;
         public static event Action<HoldoutZoneController> OnFinalVoidStagePillarChargedServer;
 
-        static void VoidStageMissionController_Start(ILContext il)
+        private static void VoidStageMissionController_Start(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

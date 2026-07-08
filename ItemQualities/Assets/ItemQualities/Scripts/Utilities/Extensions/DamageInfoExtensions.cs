@@ -3,17 +3,17 @@ using RoR2BepInExPack.Utilities;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    static class DamageInfoExtensions
+    internal static class DamageInfoExtensions
     {
-        static readonly FixedConditionalWeakTable<DamageInfo, DamageInfoData> _damageInfoDataLookup = new FixedConditionalWeakTable<DamageInfo, DamageInfoData>();
+        private static readonly FixedConditionalWeakTable<DamageInfo, DamageInfoData> _damageInfoDataLookup = new FixedConditionalWeakTable<DamageInfo, DamageInfoData>();
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.HealthComponent.ProcParry += HealthComponent_ProcParry;
         }
 
-        static void HealthComponent_ProcParry(On.RoR2.HealthComponent.orig_ProcParry orig, HealthComponent self, DamageInfo damageInfo)
+        private static void HealthComponent_ProcParry(On.RoR2.HealthComponent.orig_ProcParry orig, HealthComponent self, DamageInfo damageInfo)
         {
             orig(self, damageInfo);
 
@@ -26,7 +26,7 @@ namespace ItemQualities.Utilities.Extensions
             return _damageInfoDataLookup.TryGetValue(damageInfo, out DamageInfoData damageInfoData) && damageInfoData.Parried;
         }
 
-        sealed class DamageInfoData
+        private sealed class DamageInfoData
         {
             public bool Parried;
         }

@@ -9,12 +9,12 @@ namespace ItemQualities
     [RequireComponent(typeof(GenericNetworkedObjectAttachment))]
     public sealed class RecyclableObject : NetworkBehaviour, INetworkedObjectAttachmentListener
     {
-        static EffectIndex _recycleEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _recycleEffectIndex = EffectIndex.Invalid;
 
-        static int[] _recyclableInteractableIndices = Array.Empty<int>();
+        private static int[] _recyclableInteractableIndices = Array.Empty<int>();
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _recycleEffectIndex = EffectCatalogUtils.FindEffectIndex("OmniRecycleEffect");
             if (_recycleEffectIndex == EffectIndex.Invalid)
@@ -48,7 +48,7 @@ namespace ItemQualities
             });
         }
 
-        static void onCatalogedInteractableStartGlobal(InteractableInfoProvider interactableInfo)
+        private static void onCatalogedInteractableStartGlobal(InteractableInfoProvider interactableInfo)
         {
             if (!NetworkServer.active)
                 return;
@@ -63,7 +63,7 @@ namespace ItemQualities
         public int MaxRecycles = 1;
 
         [SyncVar]
-        int _numRecycles;
+        private int _numRecycles;
 
         public Transform IndicatorTransform;
 
@@ -97,14 +97,14 @@ namespace ItemQualities
 
         public GameObject InteractableObject => _objectAttachment ? _objectAttachment.AttachedToObject : null;
 
-        GenericNetworkedObjectAttachment _objectAttachment;
+        private GenericNetworkedObjectAttachment _objectAttachment;
 
-        TinkerableObjectAttributes _tinkerAttributes;
-        PurchaseInteraction _purchaseInteraction;
-        ShopTerminalBehavior _shopTerminalBehavior;
-        SpecialObjectAttributes _specialObjectAttributes;
+        private TinkerableObjectAttributes _tinkerAttributes;
+        private PurchaseInteraction _purchaseInteraction;
+        private ShopTerminalBehavior _shopTerminalBehavior;
+        private SpecialObjectAttributes _specialObjectAttributes;
 
-        void Awake()
+        private void Awake()
         {
             _objectAttachment = GetComponent<GenericNetworkedObjectAttachment>();
 
@@ -115,12 +115,12 @@ namespace ItemQualities
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
         }

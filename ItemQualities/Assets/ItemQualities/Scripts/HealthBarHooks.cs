@@ -15,9 +15,9 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class HealthBarHooks
+    internal static class HealthBarHooks
     {
-        readonly struct AdditionalBarInfos
+        private readonly struct AdditionalBarInfos
         {
             public static readonly FieldInfo[] LowHealthUnderBarInfoFields = new FieldInfo[]
             {
@@ -94,10 +94,10 @@ namespace ItemQualities
             }
         }
 
-        static readonly Dictionary<Sprite, Sprite> _barToGreyscaleBarrierBarLookup = new Dictionary<Sprite, Sprite>();
-        static readonly HashSet<Sprite> _greyscaleBars = new HashSet<Sprite>();
+        private static readonly Dictionary<Sprite, Sprite> _barToGreyscaleBarrierBarLookup = new Dictionary<Sprite, Sprite>();
+        private static readonly HashSet<Sprite> _greyscaleBars = new HashSet<Sprite>();
 
-        static Sprite getGreyscaleBar(Sprite bar)
+        private static Sprite getGreyscaleBar(Sprite bar)
         {
             if (_barToGreyscaleBarrierBarLookup.TryGetValue(bar, out Sprite greyscaleBar))
                 return greyscaleBar;
@@ -131,7 +131,7 @@ namespace ItemQualities
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.UI.HealthBar.CheckInventory += HealthBar_CheckInventory;
 
@@ -140,7 +140,7 @@ namespace ItemQualities
             IL.RoR2.HealthComponent.GetHealthBarValues += HealthComponent_GetHealthBarValues;
         }
 
-        static void HealthBar_CheckInventory(ILContext il)
+        private static void HealthBar_CheckInventory(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -252,9 +252,9 @@ namespace ItemQualities
             }
         }
 
-        delegate void CheckInventoryCleanupDelegate(ref HashSet<ItemIndex> ignoreLowHealthItemIndices);
+        private delegate void CheckInventoryCleanupDelegate(ref HashSet<ItemIndex> ignoreLowHealthItemIndices);
 
-        static void HealthBar_ApplyBars(ILContext il)
+        private static void HealthBar_ApplyBars(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -420,7 +420,7 @@ namespace ItemQualities
             }
         }
 
-        static AdditionalBarInfos collectBarInfos(HealthBar healthBar)
+        private static AdditionalBarInfos collectBarInfos(HealthBar healthBar)
         {
             HealthComponent healthComponent = healthBar ? healthBar.source : null;
             CharacterBody body = healthComponent ? healthComponent.body : null;
@@ -562,7 +562,7 @@ namespace ItemQualities
                                           barrierOverflowBarInfo);
         }
 
-        static void HealthComponent_GetHealthBarValues(ILContext il)
+        private static void HealthComponent_GetHealthBarValues(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

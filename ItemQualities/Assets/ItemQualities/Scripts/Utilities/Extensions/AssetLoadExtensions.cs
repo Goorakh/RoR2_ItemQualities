@@ -11,7 +11,7 @@ namespace ItemQualities.Utilities.Extensions
 {
     internal static class AssetLoadExtensions
     {
-        static class AsyncOperationHandleStaticData<T>
+        private static class AsyncOperationHandleStaticData<T>
         {
             public static readonly PropertyInfo LocationNamePropertyInfo = typeof(AsyncOperationHandle<T>).GetProperty("LocationName", BindingFlags.NonPublic | BindingFlags.Instance);
         }

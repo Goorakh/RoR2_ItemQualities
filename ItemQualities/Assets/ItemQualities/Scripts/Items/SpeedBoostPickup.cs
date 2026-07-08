@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class SpeedBoostPickup
+    internal static class SpeedBoostPickup
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.ElusiveAntlersPickup.OnTriggerStay += ElusiveAntlersPickup_OnTriggerStay;
         }
 
-        static void ElusiveAntlersPickup_OnTriggerStay(ILContext il)
+        private static void ElusiveAntlersPickup_OnTriggerStay(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

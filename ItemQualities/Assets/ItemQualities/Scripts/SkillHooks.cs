@@ -10,7 +10,7 @@ using System.Runtime.CompilerServices;
 
 namespace ItemQualities
 {
-    static class SkillHooks
+    internal static class SkillHooks
     {
         /// <summary>
         /// For skills such as loader grapple that deduct stock manually rather than immediately on skill use
@@ -18,7 +18,7 @@ namespace ItemQualities
         public static event Action<GenericSkill> OnSkillUsedIndirectAuthority;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             EntityStatePatcher.AddPatcher(new EntityStatePatcher.PatcherInfo
             {
@@ -28,17 +28,17 @@ namespace ItemQualities
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static void invokeOnSkillUsedIndirectAuthority(GenericSkill skill)
+        private static void invokeOnSkillUsedIndirectAuthority(GenericSkill skill)
         {
             OnSkillUsedIndirectAuthority?.Invoke(skill);
         }
 
-        static void emitOnSkillUsedIndirectAuthority(ILCursor c)
+        private static void emitOnSkillUsedIndirectAuthority(ILCursor c)
         {
             c.EmitDelegate<Action<GenericSkill>>(invokeOnSkillUsedIndirectAuthority);
         }
 
-        static bool matchEntityStateDeductStocks(ILContext il)
+        private static bool matchEntityStateDeductStocks(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -81,7 +81,7 @@ namespace ItemQualities
             return false;
         }
 
-        static void entityStateStockDeductHookManipulator(ILContext il)
+        private static void entityStateStockDeductHookManipulator(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

@@ -15,12 +15,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class Firework
+    internal static class Firework
     {
-        static GameObject _fireworkBigProjectilePrefab;
+        private static GameObject _fireworkBigProjectilePrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> fireworkProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Firework.FireworkProjectile_prefab);
             AsyncOperationHandle<GameObject> fireworkGhostLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Firework.FireworkGhost_prefab);
@@ -82,12 +82,12 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.FireworkLauncher.FireMissile += FireworkLauncher_FireMissile;
         }
 
-        static void FireworkLauncher_FireMissile(ILContext il)
+        private static void FireworkLauncher_FireMissile(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

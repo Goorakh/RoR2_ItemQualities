@@ -6,7 +6,7 @@ namespace ItemQualities.Networking
 {
     public sealed class GatewayPickupTeleportMessage : INetMessage
     {
-        GameObject _pickupObject;
+        private GameObject _pickupObject;
 
         public GatewayPickupTeleportMessage(GameObject pickupObject)
         {

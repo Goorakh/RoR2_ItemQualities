@@ -5,17 +5,17 @@ using System;
 
 namespace ItemQualities
 {
-    static class QualityTempItemHandler
+    internal static class QualityTempItemHandler
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.EntityStates.Drone.DroneJunk.Surprise.DropTempItemServer += Surprise_DropTempItemServer;
 
             IL.EntityStates.Drifter.Salvage.DropTempItemServer += Salvage_DropTempItemServer;
         }
 
-        static void Surprise_DropTempItemServer(ILContext il)
+        private static void Surprise_DropTempItemServer(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -34,7 +34,7 @@ namespace ItemQualities
             }
         }
 
-        static void Salvage_DropTempItemServer(ILContext il)
+        private static void Salvage_DropTempItemServer(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

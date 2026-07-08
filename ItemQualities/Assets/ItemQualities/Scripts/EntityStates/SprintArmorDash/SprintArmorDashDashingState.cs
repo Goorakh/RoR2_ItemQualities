@@ -10,18 +10,18 @@ namespace EntityStates.SprintArmorDash
 {
     public sealed class SprintArmorDashDashingState : EntityState
     {
-        static readonly SphereSearch _dashSphereSearch = new SphereSearch();
+        private static readonly SphereSearch _dashSphereSearch = new SphereSearch();
 
-        static EffectIndex _blinkEffectIndex;
+        private static EffectIndex _blinkEffectIndex;
 
-        CharacterBody _attachedBody;
-        IPhysMotor _motor;
+        private CharacterBody _attachedBody;
+        private IPhysMotor _motor;
 
-        Vector3 _dashDirection;
-        bool _stoppedDash;
+        private Vector3 _dashDirection;
+        private bool _stoppedDash;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _blinkEffectIndex = EffectCatalogUtils.FindEffectIndex("HuntressBlinkEffect");
             if (_blinkEffectIndex == EffectIndex.Invalid)
@@ -146,7 +146,7 @@ namespace EntityStates.SprintArmorDash
             }
         }
 
-        void tryAttack()
+        private void tryAttack()
         {
             using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> hurtBoxes);
 

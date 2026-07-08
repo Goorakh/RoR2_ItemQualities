@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class StickyBomb
+    internal static class StickyBomb
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_StickyBomb.StickyBombGhost_prefab).OnSuccess(stickyBombGhost =>
             {
@@ -45,7 +45,7 @@ namespace ItemQualities.Items
             return scaleMultiplier;
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

@@ -6,15 +6,15 @@ using System;
 
 namespace ItemQualities.Equipments
 {
-    static class BossHunterConsumed
+    internal static class BossHunterConsumed
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireBossHunterConsumed += EquipmentSlot_FireBossHunterConsumed;
         }
 
-        static void EquipmentSlot_FireBossHunterConsumed(ILContext il)
+        private static void EquipmentSlot_FireBossHunterConsumed(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

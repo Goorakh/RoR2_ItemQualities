@@ -4,7 +4,7 @@ using System;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    static class EntityStateConfigurationExtensions
+    internal static class EntityStateConfigurationExtensions
     {
         public static bool TryGetFieldValue<T>(this EntityStateConfiguration entityStateConfiguration, string fieldName, out T value)
         {

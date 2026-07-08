@@ -12,7 +12,7 @@ namespace ItemQualities
     public sealed class QualityItemDropletEffectController : NetworkBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Common.PickupDroplet_prefab).OnSuccess(pickupDropletPrefab =>
             {
@@ -20,17 +20,17 @@ namespace ItemQualities
             });
         }
 
-        PickupDropletController _dropletController;
+        private PickupDropletController _dropletController;
 
         [SyncVar]
-        uint _pickupQualityTierInt;
+        private uint _pickupQualityTierInt;
         public QualityTier PickupQualityTier
         {
             get => (QualityTier)_pickupQualityTierInt - 1;
             private set => _pickupQualityTierInt = (uint)(value + 1);
         }
 
-        void Awake()
+        private void Awake()
         {
             _dropletController = GetComponent<PickupDropletController>();
             if (!_dropletController)
@@ -40,7 +40,7 @@ namespace ItemQualities
             }
         }
 
-        void Start()
+        private void Start()
         {
             if (NetworkServer.active)
             {
@@ -62,7 +62,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(PickupQualityTier);
             if (qualityTierDef && qualityTierDef.pickupLandSound)
@@ -72,7 +72,7 @@ namespace ItemQualities
         }
 
         [Server]
-        void trySpawnQualityEffectServer(QualityTier qualityTier)
+        private void trySpawnQualityEffectServer(QualityTier qualityTier)
         {
             QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(qualityTier);
             if (!qualityTierDef)

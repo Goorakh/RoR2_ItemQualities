@@ -8,7 +8,7 @@ namespace ItemQualities.Utilities.Extensions
 {
     internal static class CollectionExtensions
     {
-        static class SharedSingleElementArray<T>
+        private static class SharedSingleElementArray<T>
         {
             public static readonly T[] Array = new T[1];
         }

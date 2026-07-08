@@ -7,22 +7,22 @@ namespace ItemQualities.Items
     public sealed class BonusGoldPackOnKillQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.BonusGoldPackOnKill;
         }
 
-        uint _lastGoldAmount;
+        private uint _lastGoldAmount;
 
-        float _buffRefreshTimer;
+        private float _buffRefreshTimer;
 
-        void OnEnable()
+        private void OnEnable()
         {
             refreshBuff();
             _lastGoldAmount = Body.master ? Body.master.money : 0;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (NetworkServer.active)
             {
@@ -33,7 +33,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             _buffRefreshTimer -= Time.fixedDeltaTime;
             if (_buffRefreshTimer <= 0f)
@@ -55,7 +55,7 @@ namespace ItemQualities.Items
             refreshBuff();
         }
 
-        void refreshBuff()
+        private void refreshBuff()
         {
             ref readonly ItemQualityCounts bonusGoldPackOnKill = ref Stacks;
 

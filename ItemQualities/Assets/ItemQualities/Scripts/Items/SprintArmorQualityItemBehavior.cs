@@ -6,21 +6,21 @@ namespace ItemQualities.Items
     public sealed class SprintArmorQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.SprintArmor;
         }
 
-        GameObject _sprintArmorDashAttachment;
+        private GameObject _sprintArmorDashAttachment;
 
-        void OnEnable()
+        private void OnEnable()
         {
             _sprintArmorDashAttachment = Instantiate(ItemQualitiesContent.NetworkedPrefabs.SprintArmorDashAttachment);
             NetworkedBodyAttachment sprintArmorDashAttachment = _sprintArmorDashAttachment.GetComponent<NetworkedBodyAttachment>();
             sprintArmorDashAttachment.AttachToGameObjectAndSpawn(Body.gameObject);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             Destroy(_sprintArmorDashAttachment);
 

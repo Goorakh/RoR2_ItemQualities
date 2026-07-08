@@ -15,18 +15,18 @@ namespace ItemQualities.ContentManagement
 {
     internal sealed class QualityContagiousItemHelper : IDisposable
     {
-        int _completedSteps;
+        private int _completedSteps;
 
-        readonly AssetReferenceT<ItemRelationshipType> _contagiousItemRelationshipTypeRef = new AssetReferenceT<ItemRelationshipType>(RoR2_DLC1_Common.ContagiousItem_asset);
-        ItemRelationshipType _contagiousItemRelationshipType;
+        private readonly AssetReferenceT<ItemRelationshipType> _contagiousItemRelationshipTypeRef = new AssetReferenceT<ItemRelationshipType>(RoR2_DLC1_Common.ContagiousItem_asset);
+        private ItemRelationshipType _contagiousItemRelationshipType;
 
-        ItemRelationshipProvider _contagiousQualityItemProvider;
-        bool _contagiousItemProviderInContentPack = false;
+        private ItemRelationshipProvider _contagiousQualityItemProvider;
+        private bool _contagiousItemProviderInContentPack = false;
 
-        readonly Dictionary<ItemDef, ItemQualityGroup> _baseItemToGroupLookup = new Dictionary<ItemDef, ItemQualityGroup>();
-        readonly List<AssetReferenceT<ItemDef>> _itemDefReferences = new List<AssetReferenceT<ItemDef>>();
+        private readonly Dictionary<ItemDef, ItemQualityGroup> _baseItemToGroupLookup = new Dictionary<ItemDef, ItemQualityGroup>();
+        private readonly List<AssetReferenceT<ItemDef>> _itemDefReferences = new List<AssetReferenceT<ItemDef>>();
 
-        IEnumerator initialize<TProgress>(ExtendedContentPack contentPack, TProgress progessReceiver)
+        private IEnumerator initialize<TProgress>(ExtendedContentPack contentPack, TProgress progessReceiver)
             where TProgress : IProgress<float>
         {
             ParallelProgressCoroutine initializeCoroutine = new ParallelProgressCoroutine(progessReceiver);

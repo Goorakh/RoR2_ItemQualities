@@ -4,10 +4,10 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class ExtraShrineItem
+    internal static class ExtraShrineItem
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.ShrineChanceBehavior.AddShrineStack += ShrineChanceBehavior_AddShrineStack;
         }

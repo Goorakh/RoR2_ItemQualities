@@ -12,19 +12,19 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class IncreasePrimaryDamage
+    internal static class IncreasePrimaryDamage
     {
-        static readonly int _qualityBuffActivationThreshold = 5;
+        private static readonly int _qualityBuffActivationThreshold = 5;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
 
             On.RoR2.IncreasePrimaryDamageEffectUpdater.LightUpRings += IncreasePrimaryDamageEffectUpdater_LightUpRings;
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -118,7 +118,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void IncreasePrimaryDamageEffectUpdater_LightUpRings(On.RoR2.IncreasePrimaryDamageEffectUpdater.orig_LightUpRings orig, IncreasePrimaryDamageEffectUpdater self, int ringsToLight)
+        private static void IncreasePrimaryDamageEffectUpdater_LightUpRings(On.RoR2.IncreasePrimaryDamageEffectUpdater.orig_LightUpRings orig, IncreasePrimaryDamageEffectUpdater self, int ringsToLight)
         {
             // Default behavior assumes buffs will never go down to anything but 0, so decreasing the value doesn't properly disable lights
 

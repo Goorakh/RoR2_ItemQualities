@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class ShockNearby
+    internal static class ShockNearby
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Items.ShockNearbyBodyBehavior.FixedUpdate += ShockNearbyBodyBehavior_FixedUpdate;
         }
 
-        static void ShockNearbyBodyBehavior_FixedUpdate(ILContext il)
+        private static void ShockNearbyBodyBehavior_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

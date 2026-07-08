@@ -11,7 +11,7 @@ namespace ItemQualities.UI
 
         public Image Image;
 
-        int _displayedNumber;
+        private int _displayedNumber;
         public int DisplayedNumber
         {
             get
@@ -28,12 +28,12 @@ namespace ItemQualities.UI
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             refreshDisplayedNumber();
         }
 
-        void refreshDisplayedNumber()
+        private void refreshDisplayedNumber()
         {
             Image.sprite = ArrayUtils.GetSafe(NumberSprites, DisplayedNumber - 1);
         }

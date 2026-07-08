@@ -15,9 +15,9 @@ using System.Reflection;
 
 namespace ItemQualities.Equipments
 {
-    static class EquipmentHooks
+    internal static class EquipmentHooks
     {
-        static readonly FixedConditionalWeakTable<EquipmentSlot, List<EquipmentAction>> _equipmentActionsBySlot = new();
+        private static readonly FixedConditionalWeakTable<EquipmentSlot, List<EquipmentAction>> _equipmentActionsBySlot = new();
         internal sealed class EquipmentAction
         {
             public EquipmentSlot EquipmentSlot { get; }
@@ -44,7 +44,7 @@ namespace ItemQualities.Equipments
         }
 
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
-        static void PreInit()
+        private static void PreInit()
         {
             SystemInitializerInjector.InjectDependency(typeof(RuleCatalog), typeof(QualityCatalog));
 
@@ -52,7 +52,7 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer(typeof(CostTypeCatalog))]
-        static void Init()
+        private static void Init()
         {
             MethodInfo performEquipmentActionMethod = typeof(EquipmentSlot).GetMethod(nameof(EquipmentSlot.PerformEquipmentAction), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
             if (performEquipmentActionMethod != null)
@@ -215,7 +215,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
+        private static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
             QualityTier equipmentQualityTier = QualityTier.None;
             if (equipmentDef)
@@ -255,36 +255,36 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void CharacterModel_SetEquipmentDisplay(On.RoR2.CharacterModel.orig_SetEquipmentDisplay orig, CharacterModel self, EquipmentIndex newEquipmentIndex)
+        private static void CharacterModel_SetEquipmentDisplay(On.RoR2.CharacterModel.orig_SetEquipmentDisplay orig, CharacterModel self, EquipmentIndex newEquipmentIndex)
         {
             orig(self, QualityCatalog.GetEquipmentIndexOfQuality(newEquipmentIndex, QualityTier.None));
         }
 
-        static void CharacterModel_HighlightEquipentDisplay(On.RoR2.CharacterModel.orig_HighlightEquipentDisplay orig, CharacterModel self, EquipmentIndex equipmentIndex)
+        private static void CharacterModel_HighlightEquipentDisplay(On.RoR2.CharacterModel.orig_HighlightEquipentDisplay orig, CharacterModel self, EquipmentIndex equipmentIndex)
         {
             orig(self, QualityCatalog.GetEquipmentIndexOfQuality(equipmentIndex, QualityTier.None));
         }
 
-        delegate EquipmentIndex orig_Inventory_get_currentEquipmentIndex(Inventory self);
-        delegate EquipmentIndex hook_Inventory_get_currentEquipmentIndex(orig_Inventory_get_currentEquipmentIndex orig, Inventory self);
-        static EquipmentIndex Inventory_get_currentEquipmentIndex(orig_Inventory_get_currentEquipmentIndex orig, Inventory self)
+        private delegate EquipmentIndex orig_Inventory_get_currentEquipmentIndex(Inventory self);
+        private delegate EquipmentIndex hook_Inventory_get_currentEquipmentIndex(orig_Inventory_get_currentEquipmentIndex orig, Inventory self);
+        private static EquipmentIndex Inventory_get_currentEquipmentIndex(orig_Inventory_get_currentEquipmentIndex orig, Inventory self)
         {
             return QualityCatalog.GetEquipmentIndexOfQuality(orig(self), QualityTier.None);
         }
 
-        delegate EquipmentIndex orig_Inventory_get_alternateEquipmentIndex(Inventory self);
-        delegate EquipmentIndex hook_Inventory_get_alternateEquipmentIndex(orig_Inventory_get_alternateEquipmentIndex orig, Inventory self);
-        static EquipmentIndex Inventory_get_alternateEquipmentIndex(orig_Inventory_get_alternateEquipmentIndex orig, Inventory self)
+        private delegate EquipmentIndex orig_Inventory_get_alternateEquipmentIndex(Inventory self);
+        private delegate EquipmentIndex hook_Inventory_get_alternateEquipmentIndex(orig_Inventory_get_alternateEquipmentIndex orig, Inventory self);
+        private static EquipmentIndex Inventory_get_alternateEquipmentIndex(orig_Inventory_get_alternateEquipmentIndex orig, Inventory self)
         {
             return QualityCatalog.GetEquipmentIndexOfQuality(orig(self), QualityTier.None);
         }
 
-        static EquipmentState Inventory_GetActiveEquipment(On.RoR2.Inventory.orig_GetActiveEquipment orig, Inventory self)
+        private static EquipmentState Inventory_GetActiveEquipment(On.RoR2.Inventory.orig_GetActiveEquipment orig, Inventory self)
         {
             return orig(self).WithQualityTier(QualityTier.None);
         }
 
-        static void CharacterMaster_TrueKill_GameObject_GameObject_DamageTypeCombo(ILContext il)
+        private static void CharacterMaster_TrueKill_GameObject_GameObject_DamageTypeCombo(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -347,7 +347,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void CharacterBody_OnInventoryChanged(ILContext il)
+        private static void CharacterBody_OnInventoryChanged(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -400,7 +400,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void patchSingleEquipmentQuality(ILCursor cursor, ref VariableDefinition qualityTierTempVar)
+        private static void patchSingleEquipmentQuality(ILCursor cursor, ref VariableDefinition qualityTierTempVar)
         {
             ILCursor c = cursor.Clone();
 
@@ -442,7 +442,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void qualityEquipmentCanDropPatch(ILContext il)
+        private static void qualityEquipmentCanDropPatch(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

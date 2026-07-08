@@ -6,7 +6,7 @@ namespace ItemQualitiesPatcher
 {
     public static class BuffPatcher
     {
-        static readonly LogWriter _log = new LogWriter();
+        private static readonly LogWriter _log = new LogWriter();
 
         public static IEnumerable<string> TargetDLLs { get; } = new string[] { AssemblyNames.RoR2 };
 
@@ -33,7 +33,7 @@ namespace ItemQualitiesPatcher
             }
         }
 
-        static void disableInlining(MethodDefinition method)
+        private static void disableInlining(MethodDefinition method)
         {
             method.ImplAttributes &= ~MethodImplAttributes.AggressiveInlining;
             method.ImplAttributes |= MethodImplAttributes.NoInlining;

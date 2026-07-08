@@ -13,7 +13,7 @@ namespace ItemQualities.Items
     public sealed class AttackSpeedPerNearbyColliderQualityController : MonoBehaviour
     {
         [SystemInitializer]
-        static IEnumerator Init()
+        private static IEnumerator Init()
         {
             AsyncOperationHandle<GameObject> lanternAttachmentLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_AttackSpeedPerNearbyAllyOrEnemy.BolsteringLanternBonusIndicator_prefab);
             lanternAttachmentLoad.OnSuccess(lanternAttachment =>
@@ -24,17 +24,17 @@ namespace ItemQualities.Items
             return lanternAttachmentLoad;
         }
 
-        NetworkedBodyAttachment _bodyAttachment;
-        AttackSpeedPerNearbyCollider _lanternCollider;
+        private NetworkedBodyAttachment _bodyAttachment;
+        private AttackSpeedPerNearbyCollider _lanternCollider;
 
-        BuffQualityCounts _lastLanternBuffCounts;
+        private BuffQualityCounts _lastLanternBuffCounts;
 
-        float _targetDiameter = 40f;
-        float _diameterVelocity = 0f;
+        private float _targetDiameter = 40f;
+        private float _diameterVelocity = 0f;
 
-        bool _settingDiameter = false;
+        private bool _settingDiameter = false;
 
-        void Awake()
+        private void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
 
@@ -54,7 +54,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (NetworkServer.active)
             {
@@ -69,12 +69,12 @@ namespace ItemQualities.Items
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -107,7 +107,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onCharacterDeathGlobal(DamageReport damageReport)
+        private void onCharacterDeathGlobal(DamageReport damageReport)
         {
             CharacterBody body = _bodyAttachment ? _bodyAttachment.attachedBody : null;
             if (!body || damageReport.attackerBody != body || !body.inventory)
@@ -151,7 +151,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void updateBuffCounts()
+        private void updateBuffCounts()
         {
             if (_lanternCollider.body)
             {

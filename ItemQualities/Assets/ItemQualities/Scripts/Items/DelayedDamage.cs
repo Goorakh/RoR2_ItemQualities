@@ -5,10 +5,10 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class DelayedDamage
+    internal static class DelayedDamage
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;

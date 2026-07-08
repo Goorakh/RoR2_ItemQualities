@@ -8,12 +8,12 @@ namespace ItemQualities
         public static class Debug
         {
 #if DEBUG
-            const string SectionName = "Debug";
+            private const string SectionName = "Debug";
 
-            static ConfigEntry<bool> _logItemQualitiesConfig;
+            private static ConfigEntry<bool> _logItemQualitiesConfig;
             public static bool LogItemQualities => _logItemQualitiesConfig?.Value ?? false;
 
-            static ConfigEntry<bool> _enableDebugDraw;
+            private static ConfigEntry<bool> _enableDebugDraw;
             public static bool EnableDebugDraw => _enableDebugDraw?.Value ?? false;
 
             internal static void Init(ConfigFile configFile)

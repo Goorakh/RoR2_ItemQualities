@@ -9,16 +9,16 @@ namespace ItemQualities.Equipments
 
         public float BlastDamageCoefficientBonusPerHit;
 
-        FireballVehicle _fireballVehicle;
+        private FireballVehicle _fireballVehicle;
 
-        void Awake()
+        private void Awake()
         {
             _fireballVehicle = GetComponent<FireballVehicle>();
 
             ComponentCache.Add(gameObject, this);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             ComponentCache.Remove(gameObject, this);
         }

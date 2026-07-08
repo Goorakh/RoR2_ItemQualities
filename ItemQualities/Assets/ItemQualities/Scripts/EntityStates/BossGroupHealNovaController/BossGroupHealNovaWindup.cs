@@ -5,10 +5,10 @@ namespace EntityStates.BossGroupHealNovaController
 {
     public sealed class BossGroupHealNovaWindup : EntityState
     {
-        static EffectIndex _chargeEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _chargeEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _chargeEffectIndex = EffectCatalogUtils.FindEffectIndex("ChargeTPHealingNova");
             if (_chargeEffectIndex == EffectIndex.Invalid)

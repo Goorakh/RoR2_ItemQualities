@@ -3,12 +3,13 @@ using RoR2;
 
 namespace ItemQualities.Networking
 {
-    static class NetworkMessageHandler
+    internal static class NetworkMessageHandler
     {
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
-        static void Init()
+        private static void Init()
         {
             NetworkingAPI.RegisterMessageType<GatewayPickupTeleportMessage>();
+            NetworkingAPI.RegisterMessageType<SetBuffCountMessage>();
         }
     }
 }

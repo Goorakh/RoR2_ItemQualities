@@ -4,15 +4,15 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class BleedOnHitVoid
+    internal static class BleedOnHitVoid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.DotController.InflictDot_refInflictDotInfo += DotController_InflictDot_refInflictDotInfo;
         }
 
-        static void DotController_InflictDot_refInflictDotInfo(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo inflictDotInfo)
+        private static void DotController_InflictDot_refInflictDotInfo(On.RoR2.DotController.orig_InflictDot_refInflictDotInfo orig, ref InflictDotInfo inflictDotInfo)
         {
             try
             {

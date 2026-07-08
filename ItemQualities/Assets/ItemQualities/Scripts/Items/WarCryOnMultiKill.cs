@@ -4,15 +4,15 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class WarCryOnMultiKill
+    internal static class WarCryOnMultiKill
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory)
                 return;

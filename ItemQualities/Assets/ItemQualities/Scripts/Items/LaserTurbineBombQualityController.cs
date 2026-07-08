@@ -11,7 +11,7 @@ namespace ItemQualities.Items
     public sealed class LaserTurbineBombQualityController : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_LaserTurbine.LaserTurbineBomb_prefab).OnSuccess(laserTurbineBomb =>
             {
@@ -19,9 +19,9 @@ namespace ItemQualities.Items
             });
         }
 
-        ProjectileImpactExplosion _projectileImpactExplosion;
+        private ProjectileImpactExplosion _projectileImpactExplosion;
 
-        void Awake()
+        private void Awake()
         {
             _projectileImpactExplosion = GetComponent<ProjectileImpactExplosion>();
 
@@ -31,7 +31,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onInitialized(ProjectileController projectileController)
+        private void onInitialized(ProjectileController projectileController)
         {
             GameObject owner = projectileController ? projectileController.owner : null;
             CharacterBody ownerBody = owner ? owner.GetComponent<CharacterBody>() : null;

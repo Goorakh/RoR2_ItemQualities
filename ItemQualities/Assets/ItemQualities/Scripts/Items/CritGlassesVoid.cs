@@ -10,15 +10,15 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class CritGlassesVoid
+    internal static class CritGlassesVoid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             GlobalEventManager.onServerCharacterExecuted += onServerCharacterExecuted;
         }
 
-        static void onServerCharacterExecuted(DamageReport damageReport, float executedHealth)
+        private static void onServerCharacterExecuted(DamageReport damageReport, float executedHealth)
         {
             if (!NetworkServer.active || damageReport?.damageInfo == null)
                 return;

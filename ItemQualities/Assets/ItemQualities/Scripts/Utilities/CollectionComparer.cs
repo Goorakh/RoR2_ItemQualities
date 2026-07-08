@@ -10,7 +10,7 @@ namespace ItemQualities.Utilities
 
         public static CollectionComparer<TCollection> SizeDescending { get; } = new CollectionComparer<TCollection>(true);
 
-        readonly bool _descending;
+        private readonly bool _descending;
 
         private CollectionComparer(bool descending)
         {

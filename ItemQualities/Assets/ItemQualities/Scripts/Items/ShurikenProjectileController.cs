@@ -7,7 +7,7 @@ namespace ItemQualities.Items
 {
     public sealed class ShurikenProjectileController : MonoBehaviour
     {
-        void Awake()
+        private void Awake()
         {
             ProjectileController projectileController = GetComponent<ProjectileController>();
             if (!projectileController)
@@ -20,7 +20,7 @@ namespace ItemQualities.Items
             projectileController.onInitialized += onInitialized;
         }
 
-        void onInitialized(ProjectileController projectileController)
+        private void onInitialized(ProjectileController projectileController)
         {
             ItemQualityCounts primarySkillShuriken = default;
             if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)

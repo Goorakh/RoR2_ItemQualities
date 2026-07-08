@@ -4,20 +4,20 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class AttackSpeedAndMoveSpeed
+    internal static class AttackSpeedAndMoveSpeed
     {
         // This is a bit strange, but the other approach would be to IL hook RecalculateStats, collect all the locals, and re-assign move and attack speed at the end, which would have compatibility issues, and also be a nightmare to maintain. Since recalcstats is in theory deterministic and not dependent on any external state (except now it is lol), calling it twice like this *should* be fine
 
-        static BonusType _currentCallBonusType = BonusType.None;
+        private static BonusType _currentCallBonusType = BonusType.None;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.CharacterBody.RecalculateStats += CharacterBody_RecalculateStats;
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             Inventory inventory = sender ? sender.inventory : null;
             if (!inventory)
@@ -42,7 +42,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
+        private static void CharacterBody_RecalculateStats(On.RoR2.CharacterBody.orig_RecalculateStats orig, CharacterBody self)
         {
             orig(self);
 
@@ -90,7 +90,7 @@ namespace ItemQualities.Items
             }
         }
 
-        enum BonusType
+        private enum BonusType
         {
             None,
             AttackSpeed,

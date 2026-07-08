@@ -11,14 +11,14 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class ShieldBooster
+    internal static class ShieldBooster
     {
         public static event Action<CharacterBody> OnShieldBoosterBreakServerGlobal;
 
-        static float _defaultShieldBreakBlastRadius = 12.5f;
+        private static float _defaultShieldBreakBlastRadius = 12.5f;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC3_Items_ShieldBooster.ShieldEMPPulseEffect_prefab).OnSuccess(fixShieldBreakEffectScaling);
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC3_Items_ShieldBooster.ShieldEMPPulseEffectVoid_prefab).OnSuccess(fixShieldBreakEffectScaling);
@@ -68,7 +68,7 @@ namespace ItemQualities.Items
             return getShieldBreakBlastRadius(_defaultShieldBreakBlastRadius, body);
         }
 
-        static float getShieldBreakBlastRadius(float baseRadius, CharacterBody body)
+        private static float getShieldBreakBlastRadius(float baseRadius, CharacterBody body)
         {
             float radius = baseRadius;
 
@@ -98,7 +98,7 @@ namespace ItemQualities.Items
             return radius;
         }
 
-        static float HealthComponent_GetShieldBoosterDamage(On.RoR2.HealthComponent.orig_GetShieldBoosterDamage orig, HealthComponent self, int stack)
+        private static float HealthComponent_GetShieldBoosterDamage(On.RoR2.HealthComponent.orig_GetShieldBoosterDamage orig, HealthComponent self, int stack)
         {
             float damage = orig(self, stack);
 
@@ -126,7 +126,7 @@ namespace ItemQualities.Items
             return damage;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

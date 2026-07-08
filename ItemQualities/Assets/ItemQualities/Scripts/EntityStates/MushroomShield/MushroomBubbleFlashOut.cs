@@ -5,10 +5,10 @@ namespace EntityStates.MushroomShield
 {
     public sealed class MushroomBubbleFlashOut : MushroomBubbleBaseState
     {
-        static EffectIndex _bubbleShieldEndEffect = EffectIndex.Invalid;
+        private static EffectIndex _bubbleShieldEndEffect = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _bubbleShieldEndEffect = EffectCatalogUtils.FindEffectIndex("BubbleShieldEndEffect");
             if (_bubbleShieldEndEffect == EffectIndex.Invalid)
@@ -21,7 +21,7 @@ namespace EntityStates.MushroomShield
 
         public static float Duration;
 
-        BeginRapidlyActivatingAndDeactivating _blinkController;
+        private BeginRapidlyActivatingAndDeactivating _blinkController;
 
         public override void OnEnter()
         {
