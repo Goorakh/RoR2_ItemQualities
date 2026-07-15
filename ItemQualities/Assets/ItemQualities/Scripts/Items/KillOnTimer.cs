@@ -4,10 +4,11 @@ using MonoMod.Cil;
 using RoR2;
 using RoR2.Items;
 using System;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    internal static class TrueKillOnTimer
+    internal static class KillOnTimer
     {
         [SystemInitializer]
         private static void Init()
@@ -20,7 +21,7 @@ namespace ItemQualities.Items
 
         private static bool hasKillTimer(CharacterBody body)
         {
-            return body && body.inventory && body.inventory.GetItemCountEffective(ItemQualitiesContent.Items.TrueKillOnTimer) > 0;
+            return body && body.inventory && body.inventory.GetItemCountEffective(ItemQualitiesContent.Items.KillOnTimer) > 0;
         }
 
         private static void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
@@ -31,11 +32,11 @@ namespace ItemQualities.Items
             if (!summonReport.masterSummon.summonerBodyObject.TryGetComponent(out CharacterBody summonerBody) || !summonerBody.inventory)
                 return;
 
-            int summonerTrueKillTimer = summonerBody.inventory.GetItemCountEffective(ItemQualitiesContent.Items.TrueKillOnTimer);
+            int summonerTrueKillTimer = summonerBody.inventory.GetItemCountEffective(ItemQualitiesContent.Items.KillOnTimer);
             if (summonerTrueKillTimer > 0)
             {
-                summonReport.summonMasterInstance.inventory.ResetItemPermanent(ItemQualitiesContent.Items.TrueKillOnTimer);
-                summonReport.summonMasterInstance.inventory.GiveItemPermanent(ItemQualitiesContent.Items.TrueKillOnTimer, summonerTrueKillTimer);
+                summonReport.summonMasterInstance.inventory.ResetItemPermanent(ItemQualitiesContent.Items.KillOnTimer);
+                summonReport.summonMasterInstance.inventory.GiveItemPermanent(ItemQualitiesContent.Items.KillOnTimer, summonerTrueKillTimer);
             }
         }
 
@@ -102,13 +103,15 @@ namespace ItemQualities.Items
         }
     }
 
-    public sealed class TrueKillOnTimerBehavior : BaseItemBodyBehavior
+    public sealed class KillOnTimerBehavior : BaseItemBodyBehavior
     {
         [ItemDefAssociation(useOnServer = true, useOnClient = false)]
         private static ItemDef GetItemDef()
         {
-            return ItemQualitiesContent.Items.TrueKillOnTimer;
+            return ItemQualitiesContent.Items.KillOnTimer;
         }
+
+        private float _timer;
 
         private void OnEnable()
         {
@@ -123,18 +126,10 @@ namespace ItemQualities.Items
 
         private void FixedUpdate()
         {
-            // This assumes the item was given at spawn
-            float timer = body.master ? body.master.currentLifeStopwatch : body.localStartTime.timeSince;
-            if (timer >= stack)
+            _timer += Time.fixedDeltaTime;
+            if (_timer >= stack)
             {
-                if (body.master)
-                {
-                    body.master.TrueKill();
-                }
-                else
-                {
-                    body.healthComponent.Suicide();
-                }
+                body.healthComponent.Suicide();
             }
         }
     }
