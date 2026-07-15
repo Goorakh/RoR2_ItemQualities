@@ -6,7 +6,7 @@
 
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
-    * Fix ghosts not being able to revive if given one.
+    * Fixed ghosts not being able to revive if given one.
 
 * Quality items/equipments displayed on non-player characters are now colored according to their quality tier.
 
