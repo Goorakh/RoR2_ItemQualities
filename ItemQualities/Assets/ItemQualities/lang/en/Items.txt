@@ -1670,5 +1670,17 @@
         
         "ITEM_EXTRAEQUIPMENT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Spawn an equipment drone for every offhand equipment. Reduce equipment drone cooldowns.",
         "ITEM_EXTRAEQUIPMENT_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> Spawn an <style=cIsUtility>Equipment Drone</style> <sprite name=\"QualityLegendary\"> for every <style=cIsUtility>offhand equipment</style> you hold. Reduce cooldowns for all <style=cIsUtility>Equipment Drones</style> by <sprite name=\"Quality\"> <style=cIsUtility>40% <style=cStack>(+40% per stack)</style></style>.",
+        
+        "ITEM_SIPHONONLOWHEALTH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Siphon damage charges a tar explosion.",
+        "ITEM_SIPHONONLOWHEALTH_UNCOMMON_DESC": "{0}\nAfter siphoning for a total of <sprite name=\"Quality\"> <style=cIsDamage>800%</style> damage, release a <sprite name=\"Quality\"> <style=cIsUtility>25m</style> <style=cIsDamage>tar explosion</style> for <sprite name=\"Quality\"> <style=cIsDamage>800% <style=cStack>(+800% per stack)</style></style> damage that <style=cIsHealing>heals</style> you for <style=cIsHealing>50%</style> of the damage dealt.",
+        
+        "ITEM_SIPHONONLOWHEALTH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Siphon damage charges a tar explosion.",
+        "ITEM_SIPHONONLOWHEALTH_RARE_DESC": "{0}\nAfter siphoning for a total of <sprite name=\"Quality\"> <style=cIsDamage>500%</style> damage, release a <sprite name=\"Quality\"> <style=cIsUtility>35m</style> <style=cIsDamage>tar explosion</style> for <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+1000% per stack)</style></style> damage that <style=cIsHealing>heals</style> you for <style=cIsHealing>50%</style> of the damage dealt.",
+        
+        "ITEM_SIPHONONLOWHEALTH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Siphon damage charges a tar explosion.",
+        "ITEM_SIPHONONLOWHEALTH_EPIC_DESC": "{0}\nAfter siphoning for a total of <sprite name=\"Quality\"> <style=cIsDamage>300%</style> damage, release a <sprite name=\"Quality\"> <style=cIsUtility>50m</style> <style=cIsDamage>tar explosion</style> for <sprite name=\"Quality\"> <style=cIsDamage>1200% <style=cStack>(+1200% per stack)</style></style> damage that <style=cIsHealing>heals</style> you for <style=cIsHealing>50%</style> of the damage dealt.",
+        
+        "ITEM_SIPHONONLOWHEALTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Siphon damage charges a tar explosion.",
+        "ITEM_SIPHONONLOWHEALTH_LEGENDARY_DESC": "{0}\nAfter siphoning for a total of <sprite name=\"Quality\"> <style=cIsDamage>200%</style> damage, release a <sprite name=\"Quality\"> <style=cIsUtility>75m</style> <style=cIsDamage>tar explosion</style> for <sprite name=\"Quality\"> <style=cIsDamage>1500% <style=cStack>(+1500% per stack)</style></style> damage that <style=cIsHealing>heals</style> you for <style=cIsHealing>50%</style> of the damage dealt.",
     }
 }
