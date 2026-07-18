@@ -343,7 +343,7 @@ namespace ItemQualities.Equipments
                             break;
                     }
 
-                    spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.TrueKillOnTimer, cloneDuration);
+                    spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.KillOnTimer, cloneDuration);
 
                     Deployable deployable = spawnedMaster.EnsureComponent<Deployable>();
                     deployable.onUndeploy ??= new UnityEvent();
