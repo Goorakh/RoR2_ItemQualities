@@ -23,6 +23,8 @@ namespace ItemQualities
         // TODO: Exclude Echo on-kills from achievement tracking
         public static DamageAPI.ModdedDamageType Echo { get; private set; }
 
+        public static DamageAPI.ModdedDamageType Lifesteal50 { get; private set; }
+
         [SystemInitializer]
         private static void Init()
         {
@@ -30,6 +32,7 @@ namespace ItemQualities
             ForceAddToSharedSuffering = DamageAPI.ReserveDamageType();
             BypassDrops = DamageAPI.ReserveDamageType();
             Echo = DamageAPI.ReserveDamageType();
+            Lifesteal50 = DamageAPI.ReserveDamageType();
 
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
 
@@ -53,6 +56,7 @@ namespace ItemQualities
             DamageInfo damageInfo = damageReport.damageInfo;
 
             GameObject attacker = damageReport.attacker;
+            CharacterBody attackerBody = damageReport.attackerBody;
 
             CharacterBody victimBody = damageReport.victimBody;
             HealthComponent victimHealthComponent = damageReport.victim;
@@ -80,6 +84,20 @@ namespace ItemQualities
                                 sharedSufferingItemBehaviour.afflictedDirty = true;
                             }
                         }
+                    }
+                }
+
+                float lifestealCoefficient = 0f;
+                if (damageInfo.damageType.HasModdedDamageType(Lifesteal50))
+                {
+                    lifestealCoefficient += 0.5f;
+                }
+
+                if (lifestealCoefficient > 0f)
+                {
+                    if (attackerBody && attackerBody.healthComponent)
+                    {
+                        attackerBody.healthComponent.Heal(damageReport.damageDealt * lifestealCoefficient, new ProcChainMask());
                     }
                 }
             }

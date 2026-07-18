@@ -723,6 +723,8 @@ namespace ItemQualities
             public static ItemQualityGroup BleedOnHitAndExplode;
             
             public static ItemQualityGroup ExtraEquipment;
+
+            public static ItemQualityGroup SiphonOnLowHealth;
         }
 
         public static class Items
