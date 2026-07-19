@@ -16,8 +16,6 @@ namespace ItemQualities.Items
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
-            ItemHooks.TakeDamageModifier += takeDamageModifier;
-
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
         }
 
@@ -47,7 +45,7 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void takeDamageModifier(ref float damageValue, DamageInfo damageInfo)
+        public static void TakeDamageModifier(ref float damageValue, HealthComponent victim, DamageInfo damageInfo)
         {
             if (damageInfo == null || (damageInfo.damageType.damageSource & DamageSource.Secondary) == 0)
                 return;

@@ -12,8 +12,6 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            ItemHooks.TakeDamageModifier += modifyTakeDamage;
-
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             IL.RoR2.CharacterBody.HandleConstructTurret += CharacterBody_HandleConstructTurret;
@@ -55,7 +53,7 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void modifyTakeDamage(ref float damageValue, DamageInfo damageInfo)
+        public static void ModifyTakeDamage(ref float damageValue, HealthComponent victim, DamageInfo damageInfo)
         {
             if (damageInfo == null)
                 return;
@@ -85,6 +83,7 @@ namespace ItemQualities.Items
                 {
                     damageValue *= 1f + damageIncrease;
                     damageInfo.damageColorIndex = DamageColorIndex.Void;
+                    damageInfo.damageType.AddModdedDamageType(DamageTypes.Void);
                 }
             }
         }

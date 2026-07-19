@@ -832,6 +832,8 @@ namespace ItemQualities
             public static BuffQualityGroup TeleportOnLowHealthOrbCharge;
 
             public static BuffQualityGroup ArmorReductionOnHitCounter;
+
+            public static BuffQualityGroup BearVoidFog;
         }
 
         public static class Buffs
@@ -935,6 +937,8 @@ namespace ItemQualities
             public static GameObject QualityScrapper;
 
             public static GameObject QualityVolatileBatteryAttachment;
+
+            public static GameObject QualityBearVoidFogZone;
         }
 
         public static class ProjectilePrefabs

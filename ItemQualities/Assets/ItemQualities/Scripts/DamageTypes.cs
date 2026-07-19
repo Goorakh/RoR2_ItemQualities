@@ -12,7 +12,7 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    public static class DamageTypes
+    public static partial class DamageTypes
     {
         public static DamageAPI.ModdedDamageType Frost6s { get; private set; }
 
@@ -23,6 +23,8 @@ namespace ItemQualities
         // TODO: Exclude Echo on-kills from achievement tracking
         public static DamageAPI.ModdedDamageType Echo { get; private set; }
 
+        public static DamageAPI.ModdedDamageType Void { get; private set; }
+
         [SystemInitializer]
         private static void Init()
         {
@@ -30,6 +32,7 @@ namespace ItemQualities
             ForceAddToSharedSuffering = DamageAPI.ReserveDamageType();
             BypassDrops = DamageAPI.ReserveDamageType();
             Echo = DamageAPI.ReserveDamageType();
+            Void = DamageAPI.ReserveDamageType();
 
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
 
