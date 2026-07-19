@@ -3,6 +3,7 @@
 * Reworks (Click to reveal):
     * <details><summary>Shattering Justice</summary> Fires a short range piercing beam every 5th primary skill use.</details>
     * <details><summary>Spare Drone Parts</summary> Chance to give summoned drones a random elite effect. Chance for summoned drones to revive on death.</details>
+    * <details><summary>Safer Spaces</summary> Chance on block to apply a fog to the attacker that increases damage taken from all void-based attacks.</details>
 
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
