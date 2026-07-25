@@ -886,6 +886,8 @@ namespace ItemQualities
             public static GameObject HitlistMarkersUI;
 
             public static GameObject ParryProjectileDisplayUI;
+
+            public static GameObject QualityBearVoidFogExplosion;
         }
 
         public static class NetworkedPrefabs
@@ -937,8 +939,6 @@ namespace ItemQualities
             public static GameObject QualityScrapper;
 
             public static GameObject QualityVolatileBatteryAttachment;
-
-            public static GameObject QualityBearVoidFogZone;
         }
 
         public static class ProjectilePrefabs

@@ -1,5 +1,5 @@
-﻿using ItemQualities.ModCompatibility;
-using ItemQualities.Utilities;
+﻿using HG;
+using ItemQualities.ModCompatibility;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
@@ -7,15 +7,34 @@ using MonoMod.Cil;
 using R2API;
 using RoR2;
 using System;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
     internal static class BearVoid
     {
+        private static readonly SphereSearch _fogSphereSearch = new SphereSearch
+        {
+            mask = LayerIndex.entityPrecise.mask,
+            queryTriggerInteraction = QueryTriggerInteraction.Ignore,
+        };
+
         [SystemInitializer]
         private static void Init()
         {
+            RecalculateStatsAPI.GetStatCoefficients += GetStatCoefficients;
+
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+        }
+
+        private static void GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            BuffQualityCounts bearVoidFog = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BearVoidFog);
+            if (bearVoidFog.TotalQualityCount > 0)
+            {
+                args.moveSpeedReductionMultAdd += 0.2f;
+            }
         }
 
         public static void TakeDamageModifier(ref float damageValue, HealthComponent victim, DamageInfo damageInfo)
@@ -85,29 +104,66 @@ namespace ItemQualities.Items
                     return;
                 }
 
-                CharacterBody attackerBody = damageInfo.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
-                if (!attackerBody)
-                {
-                    return;
-                }
-
                 ItemQualityCounts bearVoid = victim.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BearVoid);
                 if (bearVoid.TotalQualityCount == 0)
                 {
                     return;
                 }
 
+                int fogCount = bearVoid.TotalQualityCount;
+
                 QualityTier qualityTier = bearVoid.HighestQuality;
+                BuffIndex fogBuffIndex = ItemQualitiesContent.BuffQualityGroups.BearVoidFog.GetBuffIndex(qualityTier);
 
-                float fogChance = (bearVoid.UncommonCount * 25f) +
-                                  (bearVoid.RareCount * 50f) +
-                                  (bearVoid.EpicCount * 75f) +
-                                  (bearVoid.LegendaryCount * 100f);
-
-                int fogCount = RollUtil.GetOverflowRoll(fogChance, victim.body.master, false);
-                for (int i = 0; i < fogCount; i++)
+                float radius;
+                switch (qualityTier)
                 {
-                    attackerBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.BearVoidFog.GetBuffIndex(qualityTier));
+                    case QualityTier.Uncommon:
+                        radius = 15f;
+                        break;
+                    case QualityTier.Rare:
+                        radius = 25f;
+                        break;
+                    case QualityTier.Epic:
+                        radius = 40f;
+                        break;
+                    case QualityTier.Legendary:
+                        radius = 60f;
+                        break;
+                    default:
+                        radius = 1f;
+                        Log.Warning($"Quality tier {qualityTier} is not implemented");
+                        break;
+                }
+
+                radius = ExplodeOnDeath.GetExplosionRadius(radius, victim.body);
+
+                EffectData effectData = new EffectData
+                {
+                    origin = victim.body.corePosition,
+                    scale = radius
+                };
+
+                EffectManager.SpawnEffect(ItemQualitiesContent.Prefabs.QualityBearVoidFogExplosion, effectData, true);
+
+                TeamMask teamMask = TeamMask.allButNeutral;
+                teamMask.RemoveTeam(victim.body.teamComponent.teamIndex);
+
+                using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> hurtBoxes);
+
+                _fogSphereSearch.origin = victim.body.corePosition;
+                _fogSphereSearch.radius = radius;
+                _fogSphereSearch.RefreshCandidates()
+                                .FilterCandidatesByHurtBoxTeam(teamMask)
+                                .FilterCandidatesByDistinctHurtBoxEntities()
+                                .GetHurtBoxes(hurtBoxes);
+
+                foreach (HurtBox hurtBox in hurtBoxes)
+                {
+                    for (int i = 0; i < fogCount; i++)
+                    {
+                        hurtBox.healthComponent.body.AddBuff(fogBuffIndex);
+                    }
                 }
             }
         }
