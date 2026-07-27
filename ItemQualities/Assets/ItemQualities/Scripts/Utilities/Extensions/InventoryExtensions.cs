@@ -43,11 +43,13 @@ namespace ItemQualities.Utilities.Extensions
             if (!itemGroup)
                 return default;
 
-            int baseItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.BaseItemIndex);
             int uncommonItemCount = inventory.GetItemCountEffective(itemGroup.UncommonItemIndex);
             int rareItemCount = inventory.GetItemCountEffective(itemGroup.RareItemIndex);
             int epicItemCount = inventory.GetItemCountEffective(itemGroup.EpicItemIndex);
             int legendaryItemCount = inventory.GetItemCountEffective(itemGroup.LegendaryItemIndex);
+
+            // We need the actual number of the base item in the inventory here, undo additional effective item counts from higher qualities
+            int baseItemCount = inventory.GetItemCountEffective(itemGroup.BaseItemIndex) - uncommonItemCount - rareItemCount - epicItemCount - legendaryItemCount;
 
             return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
