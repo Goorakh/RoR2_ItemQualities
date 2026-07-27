@@ -94,7 +94,7 @@ namespace ItemQualities.Items
                         damage = damageCoefficient * damageInfo.damage,
                         crit = damageInfo.crit,
                         procChainMask = procChainMask,
-                        procCoefficient = 1f,
+                        procCoefficient = 0f,
                         position = damageInfo.position,
                         damageColorIndex = DamageColorIndex.Item,
                         inflictedHurtbox = damageInfo.inflictedHurtbox,
