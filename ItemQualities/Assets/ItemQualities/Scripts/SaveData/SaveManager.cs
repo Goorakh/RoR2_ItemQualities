@@ -12,7 +12,7 @@ namespace ItemQualities.SaveData
     internal static class SaveManager
     {
         /// <summary>
-        /// The current version of the binary save file format, increment whenever anything about the serialization changes. Retrieve the value from <see cref="DeserializerContext"/> when deserializing.
+        /// The current version of the binary save file format, increment whenever anything about the serialization changes. Retrieve the value from <see cref="DeserializerContext.SerializedVersion"/> when deserializing.
         /// </summary>
         public const uint SaveFileVersion = 0;
 
