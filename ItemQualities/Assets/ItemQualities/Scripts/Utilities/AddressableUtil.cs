@@ -42,6 +42,13 @@ namespace ItemQualities.Utilities
             return assetAsyncReferenceManager.LoadAssetAsync(assetReference, unloadType);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void UnloadAsset<T>(AssetReferenceT<T> assetReference)
+            where T : UnityEngine.Object
+        {
+            AssetAsyncReferenceManager<T>.UnloadAsset(assetReference);
+        }
+
         public static void UnloadAsset(AssetReference assetReference, Type assetType)
         {
             AssetAsyncReferenceManagerInstance assetAsyncReferenceManager = getOrCreateAssetAsyncReferenceManager(assetType);

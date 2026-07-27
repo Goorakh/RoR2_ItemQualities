@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igKnurl
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: d3b607c1137643643b378eebc4dc9984
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseItem: {fileID: 0}
+  _uncommonItem: {fileID: 11400000, guid: da6d5d14e3fc1864d873470bfdb218d2, type: 2}
+  _rareItem: {fileID: 11400000, guid: 48aa66689a0754d47a95fdb23ae200e1, type: 2}
+  _epicItem: {fileID: 11400000, guid: b844e65220535324fb8193434120f8f9, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 88043b5e415b51d4881e844ee1450f37, type: 2}

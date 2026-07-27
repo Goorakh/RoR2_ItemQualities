@@ -15,6 +15,8 @@ namespace ItemQualities
 
         public static ModdedProcType Crowbar { get; private set; } = ModdedProcType.Invalid;
 
+        public static ModdedProcType Knurl { get; private set; } = ModdedProcType.Invalid;
+
         [SystemInitializer]
         private static void Init()
         {
@@ -23,6 +25,7 @@ namespace ItemQualities
             VoidDeathOrbProcType = ProcTypeAPI.ReserveProcType();
             Bug = ProcTypeAPI.ReserveProcType();
             Crowbar = ProcTypeAPI.ReserveProcType();
+            Knurl = ProcTypeAPI.ReserveProcType();
         }
     }
 }
