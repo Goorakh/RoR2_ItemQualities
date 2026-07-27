@@ -11,7 +11,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver
+    public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver, IOnDamageDealtServerReceiver
     {
         [SystemInitializer(typeof(BodyCatalog))]
         private static void Init()
@@ -176,6 +176,8 @@ namespace ItemQualities
         public event Action<DamageInfo> OnIncomingDamageServer;
 
         public event Action<DamageReport> OnTakeDamageServer;
+
+        public event Action<DamageReport> OnDamageDealtServer;
 
         public event CharacterMotor.HitGroundDelegate OnHitGroundAuthority;
 
@@ -516,6 +518,11 @@ namespace ItemQualities
         void IOnTakeDamageServerReceiver.OnTakeDamageServer(DamageReport damageReport)
         {
             OnTakeDamageServer?.Invoke(damageReport);
+        }
+
+        void IOnDamageDealtServerReceiver.OnDamageDealtServer(DamageReport damageReport)
+        {
+            OnDamageDealtServer?.Invoke(damageReport);
         }
 
         private void onKilledOther(DamageReport damageReport)

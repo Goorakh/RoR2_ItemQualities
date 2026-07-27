@@ -725,6 +725,8 @@ namespace ItemQualities
             public static ItemQualityGroup ExtraEquipment;
 
             public static ItemQualityGroup SiphonOnLowHealth;
+
+            public static ItemQualityGroup Knurl;
         }
 
         public static class Items
@@ -854,6 +856,10 @@ namespace ItemQualities
             public static BuffQualityGroup TeleportOnLowHealthOrbCharge;
 
             public static BuffQualityGroup ArmorReductionOnHitCounter;
+
+            public static BuffQualityGroup KnurlReady;
+
+            public static BuffQualityGroup KnurlCooldown;
         }
 
         public static class Buffs

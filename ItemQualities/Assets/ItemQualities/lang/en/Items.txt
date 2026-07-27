@@ -1682,5 +1682,17 @@
         
         "ITEM_SIPHONONLOWHEALTH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Siphon damage charges a tar explosion.",
         "ITEM_SIPHONONLOWHEALTH_LEGENDARY_DESC": "{0}\nAfter siphoning for a total of <sprite name=\"Quality\"> <style=cIsDamage>200%</style> damage, release a <sprite name=\"Quality\"> <style=cIsUtility>75m</style> <style=cIsDamage>tar explosion</style> for <sprite name=\"Quality\"> <style=cIsDamage>1500% <style=cStack>(+1500% per stack)</style></style> damage that <style=cIsHealing>heals</style> you for <style=cIsHealing>50%</style> of the damage dealt.",
+
+        "ITEM_KNURL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> High damage hits create an earthquake. Recharges over time.",
+        "ITEM_KNURL_UNCOMMON_DESC": "{0}\nHits that deal <style=cIsDamage>more than 600% damage</style> also create a <sprite name=\"Quality\"> <style=cIsUtility>10m</style> <style=cIsDamage>earthquake</style> for <sprite name=\"Quality\"> <style=cIsDamage>400% <style=cStack>(+400% per stack)</style></style> TOTAL damage. Recharges every <sprite name=\"Quality\"> <style=cIsUtility>20</style> seconds. If the high damage hit is a <style=cIsDamage>critical strike</style>, the recharge time is <style=cIsUtility>reduced by 50%</style>.",
+
+        "ITEM_KNURL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> High damage hits create an earthquake. Recharges over time.",
+        "ITEM_KNURL_RARE_DESC": "{0}\nHits that deal <style=cIsDamage>more than 600% damage</style> also create a <sprite name=\"Quality\"> <style=cIsUtility>20m</style> <style=cIsDamage>earthquake</style> for <sprite name=\"Quality\"> <style=cIsDamage>500% <style=cStack>(+500% per stack)</style></style> TOTAL damage. Recharges every <sprite name=\"Quality\"> <style=cIsUtility>16</style> seconds. If the high damage hit is a <style=cIsDamage>critical strike</style>, the recharge time is <style=cIsUtility>reduced by 50%</style>.",
+
+        "ITEM_KNURL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> High damage hits create an earthquake. Recharges over time.",
+        "ITEM_KNURL_EPIC_DESC": "{0}\nHits that deal <style=cIsDamage>more than 600% damage</style> also create a <sprite name=\"Quality\"> <style=cIsUtility>30m</style> <style=cIsDamage>earthquake</style> for <sprite name=\"Quality\"> <style=cIsDamage>600% <style=cStack>(+600% per stack)</style></style> TOTAL damage. Recharges every <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds. If the high damage hit is a <style=cIsDamage>critical strike</style>, the recharge time is <style=cIsUtility>reduced by 50%</style>.",
+
+        "ITEM_KNURL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> High damage hits create an earthquake. Recharges over time.",
+        "ITEM_KNURL_LEGENDARY_DESC": "{0}\nHits that deal <style=cIsDamage>more than 600% damage</style> also create a <sprite name=\"Quality\"> <style=cIsUtility>40m</style> <style=cIsDamage>earthquake</style> for <sprite name=\"Quality\"> <style=cIsDamage>800% <style=cStack>(+800% per stack)</style></style> TOTAL damage. Recharges every <sprite name=\"Quality\"> <style=cIsUtility>8</style> seconds. If the high damage hit is a <style=cIsDamage>critical strike</style>, the recharge time is <style=cIsUtility>reduced by 50%</style>.",
     }
 }

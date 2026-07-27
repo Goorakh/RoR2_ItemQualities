@@ -67,9 +67,9 @@ namespace ItemQualities
             return effectDef;
         }
 
-        public static GameObject CreateFixedScalingCopy(GameObject prefab, float defaultRadius)
+        public static GameObject CreateFixedScalingCopy(GameObject prefab, float defaultRadius, string nameToSet = null)
         {
-            GameObject scaleFixExplosionEffectPrefab = prefab.InstantiateClone($"{prefab.name}_ScaleFix_x{defaultRadius:F1}", false);
+            GameObject scaleFixExplosionEffectPrefab = prefab.InstantiateClone(nameToSet ?? $"{prefab.name}_ScaleFix_x{defaultRadius:F1}", false);
 
             if (scaleFixExplosionEffectPrefab.TryGetComponent(out EffectComponent effectComponent))
                 effectComponent.applyScale = true;
