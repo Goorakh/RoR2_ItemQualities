@@ -36,7 +36,7 @@
         * Rare: 7s -> 10s
         * Epic: 10s -> 15s
         * Legendary: 15s -> 20s
-    * Base cooldown for all quality variants: 15s -> 30s
+    * Base cooldown (for all quality variants): 15s -> 30s
         * This was done to allow the sprout to remain for longer while still having a cooldown after the sprout times out.
 
 * Gnarled Woodsprite:
