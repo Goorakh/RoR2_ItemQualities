@@ -4,6 +4,7 @@
     * <details><summary>Shattering Justice</summary> Fires a short range piercing beam every 5th primary skill use.</details>
     * <details><summary>Spare Drone Parts</summary> Chance to give summoned drones a random elite effect. Chance for summoned drones to revive on death.</details>
     * <details><summary>Safer Spaces</summary> On block, apply a fog to nearby enemies that increases damage from all void-based attacks.</details>
+    * <details><summary>The Crowdfunder</summary> Bullets can ricochet to nearby enemies. Increased max fire rate (same stats as previous version)</details>
 
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
