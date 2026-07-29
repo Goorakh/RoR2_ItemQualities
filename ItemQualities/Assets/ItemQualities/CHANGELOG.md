@@ -18,6 +18,18 @@
         * Epic: 95s
         * Legendary: 80s
 
+* Molotov:
+    * Puddle burn damage:
+        * Uncommon: 250%/s -> 300%/s
+        * Rare: 300%/s -> 300%/s
+        * Epic: 400%/s -> 300%/s
+        * Legendary: 500%/s -> 300%/s
+    * Puddle size increase:
+        * Uncommon: +140% -> +160%
+        * Rare: +300% -> +300%
+        * Epic: +650% -> +600%
+        * Legendary: +1100% -> +800%
+
 * Seed of Life (consumed):
     * Sprout duration:
         * Uncommon: 6s -> 6s
