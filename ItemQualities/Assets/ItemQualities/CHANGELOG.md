@@ -18,6 +18,15 @@
         * Epic: 95s
         * Legendary: 80s
 
+* Seed of Life (consumed):
+    * Sprout duration:
+        * Uncommon: 6s -> 6s
+        * Rare: 7s -> 10s
+        * Epic: 10s -> 15s
+        * Legendary: 15s -> 20s
+    * Base cooldown for all quality variants: 15s -> 30s
+        * This was done to allow the sprout to remain for longer while still having a cooldown after the sprout times out.
+
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
     * Fixed ghosts not being able to revive if given one.
