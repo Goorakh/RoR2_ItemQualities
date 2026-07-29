@@ -6,6 +6,18 @@
     * <details><summary>Safer Spaces</summary> On block, apply a fog to nearby enemies that increases damage from all void-based attacks.</details>
     * <details><summary>The Crowdfunder</summary> Bullets can ricochet to nearby enemies. Increased max fire rate (same stats as previous version)</details>
 
+* Preon Accumulator:
+    * Explosion/zap radius:
+        * Uncommon: +5m -> +10m
+        * Rare: +10m -> +20m
+        * Epic: +20m -> +40m
+        * Legendary: +25m -> +50m
+    * Base cooldown: 140s ->
+        * Uncommon: 125s
+        * Rare: 110s
+        * Epic: 95s
+        * Legendary: 80s
+
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
     * Fixed ghosts not being able to revive if given one.
