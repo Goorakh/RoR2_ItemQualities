@@ -55,8 +55,7 @@ namespace ItemQualities
                 return null;
             }
 
-            Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew
-                <Dictionary<GameObject, Dictionary<int, EffectDef>>, GameObject, Dictionary<int, EffectDef>>(effectPrefab);
+            Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew(effectPrefab);
 
             int dictionaryKey = (int)(defaultRadius * 10);
             if (scaledPrefabsCache.TryGetValue(dictionaryKey, out EffectDef cachedScaledEffectDef))
