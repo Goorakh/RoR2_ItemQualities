@@ -727,6 +727,8 @@ namespace ItemQualities
             public static ItemQualityGroup SiphonOnLowHealth;
 
             public static ItemQualityGroup Knurl;
+
+            public static ItemQualityGroup Pearl;
         }
 
         public static class Items

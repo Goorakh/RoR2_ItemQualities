@@ -1694,5 +1694,17 @@
 
         "ITEM_KNURL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> High damage hits create an earthquake. Recharges over time.",
         "ITEM_KNURL_LEGENDARY_DESC": "{0}\nHits that deal <style=cIsDamage>more than 600% damage</style> also create a <sprite name=\"Quality\"> <style=cIsUtility>40m</style> <style=cIsDamage>earthquake</style> for <sprite name=\"Quality\"> <style=cIsDamage>800% <style=cStack>(+800% per stack)</style></style> TOTAL damage. Recharges every <sprite name=\"Quality\"> <style=cIsUtility>8</style> seconds. If the high damage hit is a <style=cIsDamage>critical strike</style>, the recharge time is <style=cIsUtility>reduced by 50%</style>.",
+
+        "ITEM_PEARL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Buff a stat depending on quality level.",
+        "ITEM_PEARL_UNCOMMON_DESC": "{0}\nIncrease <sprite name=\"Quality\"> <style=cIsHealing>base health regeneration</style> by <style=cIsHealing>+3 hp/s <style=cStack>(+3 hp/s per stack)</style></style> and <sprite name=\"Quality\"> <style=cIsHealing>maximum health</style> by <style=cIsHealing>100 <style=cStack>(+100 per stack)</style></style>.",
+
+        "ITEM_PEARL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Buff a stat depending on quality level.",
+        "ITEM_PEARL_RARE_DESC": "{0}\nIncrease <sprite name=\"Quality\"> <style=cIsHealing>shield</style> by <style=cIsHealing>80% <style=cStack>(+80% per stack)</style></style>.",
+
+        "ITEM_PEARL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Buff a stat depending on quality level.",
+        "ITEM_PEARL_EPIC_DESC": "{0}\nIncrease <sprite name=\"Quality\"> <style=cIsHealing>armor</style> by <style=cIsHealing>50 <style=cStack>(+50 per stack)</style></style>.",
+
+        "ITEM_PEARL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Buff a stat depending on quality level.",
+        "ITEM_PEARL_LEGENDARY_DESC": "{0}\nIncrease <sprite name=\"Quality\"> <style=cIsDamage>damage</style> by <style=cIsDamage>40% <style=cStack>(+40% per stack)</style></style>.",
     }
 }
