@@ -25,9 +25,13 @@ namespace ItemQualities.Items
                 args.levelRegenAdd += pearl.UncommonCount * 0.6f;
                 args.baseHealthAdd += pearl.UncommonCount * 100;
 
+                args.baseShieldAdd += pearl.RareCount > 0 ? 50 : 0;
                 args.shieldMultAdd += pearl.RareCount * 0.8f;
 
-                args.armorAdd += pearl.EpicCount * 50f;
+                if (sender.armor > 0)
+                {
+                    args.armorTotalMult += pearl.EpicCount * 0.5f;
+                }
 
                 args.damageMultAdd += pearl.LegendaryCount * 0.4f;
             }
