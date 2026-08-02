@@ -120,7 +120,7 @@ namespace ItemQualities.Equipments
                 Log.Debug($"{Util.GetBestBodyName(self.gameObject)} parried {ProjectileCatalog.GetProjectilePrefab(parriedProjectileIndex)} from {Util.GetBestBodyName(damageInfo.attacker)}");
             }
 
-            if (self.body && self.body && self.body.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterStats))
+            if (self.body && self.body.master && self.body.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterStats))
             {
                 if (parriedProjectileIndex != -1)
                 {
