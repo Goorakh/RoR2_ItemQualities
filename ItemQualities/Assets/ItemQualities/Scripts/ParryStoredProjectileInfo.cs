@@ -70,12 +70,13 @@ namespace ItemQualities
                    Damage == other.Damage &&
                    Crit == other.Crit &&
                    Force == other.Force &&
-                   AttackerBodyIndex == other.AttackerBodyIndex;
+                   AttackerBodyIndex == other.AttackerBodyIndex &&
+                   QualityTier == other.QualityTier;
         }
 
         public override readonly int GetHashCode()
         {
-            return HashCode.Combine(ProjectileIndex, Damage, Crit, Force, AttackerBodyIndex);
+            return HashCode.Combine(ProjectileIndex, Damage, Crit, Force, AttackerBodyIndex, QualityTier);
         }
 
         public static bool operator ==(in ParryStoredProjectileInfo left, in ParryStoredProjectileInfo right)
