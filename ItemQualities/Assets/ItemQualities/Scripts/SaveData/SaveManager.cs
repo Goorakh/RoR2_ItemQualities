@@ -14,7 +14,7 @@ namespace ItemQualities.SaveData
         /// <summary>
         /// The current version of the binary save file format, increment whenever anything about the serialization changes. Retrieve the value from <see cref="DeserializerContext.SerializedVersion"/> when deserializing.
         /// </summary>
-        public const uint SaveFileVersion = 0;
+        public const uint SaveFileVersion = 1;
 
         private static SaveContainerBreadBox _saveContainerBreadBox;
         public static SaveContainer LoadedSaveData

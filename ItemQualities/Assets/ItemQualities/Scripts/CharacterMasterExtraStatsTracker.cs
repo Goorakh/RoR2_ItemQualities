@@ -468,7 +468,8 @@ namespace ItemQualities
             SteakBonus = masterSaveData.SteakBonus;
             SpeedOnPickupBonus = masterSaveData.SpeedOnPickupBonus;
             BossDamageBonusTicks = masterSaveData.BossDamageBonusTicks;
-            CardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+            _cardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+            _parryStoredProjectileInfo = masterSaveData.ParryStoredProjectileInfo;
 
             _upgradeItemIndices.Clear();
             foreach (ItemIndex upgradeItemIndex in masterSaveData.UpgradeItemIndices)

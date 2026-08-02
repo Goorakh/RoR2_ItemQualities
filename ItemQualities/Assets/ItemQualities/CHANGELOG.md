@@ -8,6 +8,7 @@
 
 * Deus Ex Machina:
     * The stored projectile is now fired by using your primary skill, rather than next equipment activation.
+    * Stored projectile now persists between stages.
 
 * Preon Accumulator:
     * Explosion/zap radius:
