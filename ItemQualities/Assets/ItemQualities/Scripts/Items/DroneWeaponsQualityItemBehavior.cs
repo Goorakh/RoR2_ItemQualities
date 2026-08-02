@@ -72,7 +72,7 @@ namespace ItemQualities.Items
                             CharacterBody minionBody = minionMaster.GetBody();
                             if (minionBody && (minionBody.bodyFlags & CharacterBody.BodyFlags.Mechanical) != 0 && minionBody.healthComponent.alive)
                             {
-                                if (Util.CheckRoll(droneReviveChance, Body.master))
+                                if (Util.CheckRoll(droneReviveChance, Body.master.luck))
                                 {
                                     minionBody.AddTimedBuff(DLC2Content.Buffs.ExtraLifeBuff, droneReviveRollInterval);
                                 }

@@ -727,6 +727,8 @@ namespace ItemQualities
             public static ItemQualityGroup SiphonOnLowHealth;
 
             public static ItemQualityGroup Knurl;
+
+            public static ItemQualityGroup ShinyPearl;
         }
 
         public static class Items
@@ -895,6 +897,8 @@ namespace ItemQualities
             public static BuffDef ConstructBubble;
 
             public static BuffDef ConstructBubbleCooldown;
+
+            public static BuffDef ShinyPearlLuck;
         }
 
         public static class Prefabs
