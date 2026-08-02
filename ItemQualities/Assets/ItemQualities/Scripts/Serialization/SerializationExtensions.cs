@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 
 namespace ItemQualities.Serialization
 {
-    internal static class SerializationExtensions
+    internal static partial class SerializationExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static T Read<T>(this DeserializerContext context)
