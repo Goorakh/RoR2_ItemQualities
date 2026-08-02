@@ -15,9 +15,13 @@ namespace EntityStates.ParryProjectile
             base.OnEnter();
 
             _masterStats = characterBody && characterBody.master ? characterBody.master.GetComponentCached<CharacterMasterExtraStatsTracker>() : null;
-            if (!_masterStats && isAuthority)
+            if (!_masterStats)
             {
-                outer.SetNextStateToMain();
+                if (isAuthority)
+                {
+                    outer.SetNextStateToMain();
+                }
+
                 return;
             }
 
