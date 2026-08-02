@@ -47,16 +47,14 @@ namespace ItemQualities.SaveData
         {
             LoadedSaveData = null;
 
-            if (saveFile == null || !saveFile.ModdedData.ContainsKey(ItemQualitiesPlugin.PluginGUID))
+            byte[] saveBytes = saveFile?.TryGetModdedData<byte[]>(ItemQualitiesPlugin.PluginGUID);
+            if (saveBytes == null)
             {
                 return;
             }
 
             try
             {
-                string saveBytesB64 = saveFile.GetModdedData<string>(ItemQualitiesPlugin.PluginGUID);
-                byte[] saveBytes = Convert.FromBase64String(saveBytesB64);
-
                 using (MemoryStream stream = new MemoryStream(saveBytes))
                 using (DeserializerContext context = new DeserializerContext(stream))
                 {
@@ -137,7 +135,7 @@ namespace ItemQualities.SaveData
                     saveBytes = memoryStream.ToArray();
                 }
 
-                saveDataDict[ItemQualitiesPlugin.PluginGUID] = Convert.ToBase64String(saveBytes, Base64FormattingOptions.None);
+                saveDataDict[ItemQualitiesPlugin.PluginGUID] = saveBytes;
             }
             catch (Exception e)
             {
