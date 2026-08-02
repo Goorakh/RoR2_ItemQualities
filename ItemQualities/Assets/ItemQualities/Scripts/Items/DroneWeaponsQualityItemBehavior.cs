@@ -18,7 +18,7 @@ namespace ItemQualities.Items
 
         private QualityTier prevDroneCommanderQualityTier = QualityTier.None;
 
-        private float droneReviveTimer;
+        private float droneReviveRollTimer;
 
         private void OnEnable()
         {
@@ -33,10 +33,10 @@ namespace ItemQualities.Items
 
         private void FixedUpdate()
         {
-            droneReviveTimer += Time.fixedDeltaTime;
-            if (droneReviveTimer >= droneReviveRollInterval)
+            droneReviveRollTimer += Time.fixedDeltaTime;
+            if (droneReviveRollTimer >= droneReviveRollInterval)
             {
-                droneReviveTimer = 0f;
+                droneReviveRollTimer = 0f;
 
                 ref readonly ItemQualityCounts droneWeapons = ref Stacks;
 
