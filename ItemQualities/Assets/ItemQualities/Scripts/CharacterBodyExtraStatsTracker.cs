@@ -5,7 +5,6 @@ using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.DirectionalSearch;
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -81,23 +80,6 @@ namespace ItemQualities
         public CharacterBody LastHitBody { get; private set; }
 
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
-
-        [SyncVar]
-        public int ParryStoredProjectileIndex = -1;
-
-        public float ParryStoredProjectileDamage;
-
-        public bool ParryStoredProjectileCrit;
-
-        [SyncVar]
-        private int _parryStoredProjectileAttackerBodyIndexInt;
-        public BodyIndex ParryStoredProjectileAttackerBodyIndex
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => (BodyIndex)(_parryStoredProjectileAttackerBodyIndexInt - 1);
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => _parryStoredProjectileAttackerBodyIndexInt = (int)value + 1;
-        }
 
         [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
         private bool _isPerformingQuailJump;

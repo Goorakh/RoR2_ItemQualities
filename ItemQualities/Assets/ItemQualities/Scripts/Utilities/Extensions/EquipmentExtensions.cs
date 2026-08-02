@@ -60,7 +60,7 @@ namespace ItemQualities.Utilities.Extensions
             return equipmentState;
         }
 
-        public static bool HasAnyQualityEquipment(this Inventory inventory, EquipmentQualityGroupIndex equipmentGroupIndex, QualityTier minQualityTier = 0)
+        public static bool HasAnyQualityEquipment(this Inventory inventory, EquipmentQualityGroupIndex equipmentGroupIndex, QualityTier minQualityTier = QualityTier.Uncommon)
         {
             if (!inventory)
                 throw new ArgumentNullException(nameof(inventory));
