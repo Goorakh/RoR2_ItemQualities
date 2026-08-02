@@ -50,6 +50,16 @@ namespace ItemQualities
             set => _cardStoredInteractableInfo = value;
         }
 
+        [SyncVar(hook = nameof(hookSetParryStoredProjectileInfo))]
+        private ParryStoredProjectileInfo _parryStoredProjectileInfo = ParryStoredProjectileInfo.None;
+        public ParryStoredProjectileInfo ParryStoredProjectileInfo
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _parryStoredProjectileInfo;
+            [Server]
+            set => _parryStoredProjectileInfo = value;
+        }
+
         private readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
 
         private List<PendingItemUpgrade> _pendingItemUpgrades;
@@ -71,6 +81,7 @@ namespace ItemQualities
 
         public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
         public event Action<CharacterMasterExtraStatsTracker> OnBossDamageBonusTicksChanged;
+        public event Action<CharacterMasterExtraStatsTracker> OnParryStoredProjectileInfoChanged;
 
         private void Awake()
         {
@@ -499,6 +510,17 @@ namespace ItemQualities
             if (changed)
             {
                 OnBossDamageBonusTicksChanged?.Invoke(this);
+            }
+        }
+
+        private void hookSetParryStoredProjectileInfo(ParryStoredProjectileInfo newParryStoredProjectileInfo)
+        {
+            bool changed = _parryStoredProjectileInfo != newParryStoredProjectileInfo;
+            _parryStoredProjectileInfo = newParryStoredProjectileInfo;
+
+            if (changed)
+            {
+                OnParryStoredProjectileInfoChanged?.Invoke(this);
             }
         }
     }

@@ -6,6 +6,9 @@
     * <details><summary>Safer Spaces</summary> On block, apply a fog to nearby enemies that increases damage from all void-based attacks.</details>
     * <details><summary>The Crowdfunder</summary> Bullets can ricochet to nearby enemies. Increased max fire rate (same stats as previous version)</details>
 
+* Deus Ex Machina:
+    * The stored projectile is now fired by using your primary skill, rather than next equipment activation.
+
 * Preon Accumulator:
     * Explosion/zap radius:
         * Uncommon: +5m -> +10m
