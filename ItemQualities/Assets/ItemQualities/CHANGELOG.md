@@ -39,6 +39,13 @@
     * Base cooldown (for all quality variants): 15s -> 30s
         * This was done to allow the sprout to remain for longer while still having a cooldown after the sprout times out.
 
+* Ceremonial Dagger:
+    * Additional dagger amount:
+        * Uncommon: 1 (+1 per stack) -> 2 (+2 per stack)
+        * Rare: 2 (+2 per stack) -> 5 (+5 per stack)
+        * Epic: 5 (+5 per stack) -> 8 (+8 per stack)
+        * Legendary: 7 (+7 per stack) -> 10 (+10 per stack)
+
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
     * Fixed ghosts not being able to revive if given one.
