@@ -110,16 +110,16 @@
         "ITEM_EXTRASHRINEITEM_LEGENDARY_DESC": "{0}\nShrines of Chance contain <sprite name=\"Quality\"> <style=cIsUtility>5</style> <style=cStack>(+5 per stack)</style> additional items. Stops shrine <style=cIsUtility>price scaling</style> after <sprite name=\"Quality\"> <style=cIsUtility>1 succesful hit</style>.",
 
         "ITEM_DAGGER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
-        "ITEM_DAGGER_UNCOMMON_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>4</style> <style=cStack>(+1 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
+        "ITEM_DAGGER_UNCOMMON_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>5</style> <style=cStack>(+2 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
 
         "ITEM_DAGGER_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
-        "ITEM_DAGGER_RARE_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>5</style> <style=cStack>(+2 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
+        "ITEM_DAGGER_RARE_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>8</style> <style=cStack>(+5 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
 
         "ITEM_DAGGER_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
-        "ITEM_DAGGER_EPIC_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>8</style> <style=cStack>(+5 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
+        "ITEM_DAGGER_EPIC_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>11</style> <style=cStack>(+8 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
 
         "ITEM_DAGGER_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Fires additional daggers.",
-        "ITEM_DAGGER_LEGENDARY_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>10</style> <style=cStack>(+7 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
+        "ITEM_DAGGER_LEGENDARY_DESC": "Killing an enemy fires out <sprite name=\"Quality\"> <style=cIsDamage>13</style> <style=cStack>(+10 per stack)</style> <style=cIsDamage>homing daggers</style> that deal <style=cIsDamage>150%</style> <style=cStack>(+150% per stack)</style> base damage.",
 
         "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Deal bonus damage until you are hit 12 times.",
         "ITEM_FRAGILEDAMAGEBONUS_UNCOMMON_DESC": "{0}\nIncrease damage by <sprite name=\"Quality\"> <style=cIsDamage>7%</style> <style=cStack>(+7% per stack)</style> if you have <style=cIsHealth>received</style> or <style=cIsHealing>blocked</style> damage fewer than <sprite name=\"Quality\"> <style=cIsHealth>12</style> times on a stage.",
@@ -494,16 +494,16 @@
         "ITEM_EXECUTELOWHEALTHELITE_LEGENDARY_DESC": "{0}\nInstantly kill Boss monsters below <sprite name=\"Quality\"> <style=cIsHealth>40% <style=cStack>(+40% per stack)</style> health</style>.",
 
         "ITEM_MOVESPEEDONKILL_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
-        "ITEM_MOVESPEEDONKILL_UNCOMMON_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.5%</style> <style=cStack>(+0.5% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style>. Resets on stage exit or death.",
+        "ITEM_MOVESPEEDONKILL_UNCOMMON_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.5%</style> <style=cStack>(+0.5% per stack)</style>, stacks up to <sprite name=\"Quality\"> <style=cIsUtility>100 <style=cStack>(+100 per stack)</style> times</style>. Resets on stage exit or death.",
 
         "ITEM_MOVESPEEDONKILL_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
-        "ITEM_MOVESPEEDONKILL_RARE_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.6%</style> <style=cStack>(+0.6% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>90%</style> <style=cStack>(+90% per stack)</style>. Resets on stage exit or death.",
+        "ITEM_MOVESPEEDONKILL_RARE_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.6%</style> <style=cStack>(+0.6% per stack)</style>, stacks up to <sprite name=\"Quality\"> <style=cIsUtility>150 <style=cStack>(+150 per stack)</style> times</style>. Resets on stage exit or death.",
 
         "ITEM_MOVESPEEDONKILL_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
-        "ITEM_MOVESPEEDONKILL_EPIC_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.7%</style> <style=cStack>(+0.7% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>140%</style> <style=cStack>(+140% per stack)</style>. Resets on stage exit or death.",
+        "ITEM_MOVESPEEDONKILL_EPIC_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>0.7%</style> <style=cStack>(+0.7% per stack)</style>, stacks up to <sprite name=\"Quality\"> <style=cIsUtility>200 <style=cStack>(+200 per stack)</style> times</style>. Resets on stage exit or death.",
 
         "ITEM_MOVESPEEDONKILL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Killing an enemy increases movement speed for the rest of the stage.",
-        "ITEM_MOVESPEEDONKILL_LEGENDARY_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>1%</style> <style=cStack>(+1% per stack)</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>250%</style> <style=cStack>(+250% per stack)</style>. Resets on stage exit or death.",
+        "ITEM_MOVESPEEDONKILL_LEGENDARY_DESC": "{0}\nKilling an enemy permanently increases <style=cIsUtility>movement speed</style> by <sprite name=\"Quality\"> <style=cIsUtility>1%</style> <style=cStack>(+1% per stack)</style>, stacks up to <sprite name=\"Quality\"> <style=cIsUtility>250 <style=cStack>(+250 per stack)</style> times</style>. Resets on stage exit or death.",
 
         "ITEM_FEATHER_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Kills while airborne grant additional jumps.",
         "ITEM_FEATHER_UNCOMMON_DESC": "{0}\nKilling an enemy while airborne grants an <style=cIsUtility>additional jump</style>, up to <sprite name=\"Quality\"> <style=cIsUtility>2 <style=cStack>(+2 per stack)</style> extra jumps</style>.",

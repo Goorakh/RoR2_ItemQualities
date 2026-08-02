@@ -29,6 +29,8 @@ namespace ItemQualities.UI
 
             Instantiate(ItemQualitiesContent.Prefabs.HitlistMarkersUI, bottomRightClusterTransform);
 
+            // Parry projectile display over equipment
+            /*
             EquipmentIcon mainEquipmentIcon = hud.equipmentIcons.FirstOrDefault(e => !e.displayAlternateEquipment);
             if (mainEquipmentIcon && mainEquipmentIcon.displayRoot)
             {
@@ -38,6 +40,7 @@ namespace ItemQualities.UI
                 ParryStoredProjectileDisplay parryProjectileDisplay = parryProjectileDisplayUI.GetComponent<ParryStoredProjectileDisplay>();
                 parryProjectileDisplay.ParentEquipmentIcon = mainEquipmentIcon;
             }
+            */
 
             enabled = false;
         }

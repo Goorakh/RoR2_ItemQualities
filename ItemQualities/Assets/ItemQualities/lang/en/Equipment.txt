@@ -299,17 +299,17 @@
 
         "QUALITY_BUG_BLOCK_DAMAGE_HITMARKER": "MISS!",
 
-        "EQUIPMENT_PARRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
-        "EQUIPMENT_PARRY_UNCOMMON_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>50%</style> increased damage.",
+        "EQUIPMENT_PARRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activating your primary skill fires the captured projectile.",
+        "EQUIPMENT_PARRY_UNCOMMON_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it. Using your <style=cIsUtility>primary skill</style> <style=cIsDamage>fires</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>50%</style> increased damage.",
 
-        "EQUIPMENT_PARRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
-        "EQUIPMENT_PARRY_RARE_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>150%</style> increased damage.",
+        "EQUIPMENT_PARRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activating your primary skill fires the captured projectile.",
+        "EQUIPMENT_PARRY_RARE_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it. Using your <style=cIsUtility>primary skill</style> <style=cIsDamage>fires</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>150%</style> increased damage.",
 
-        "EQUIPMENT_PARRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
-        "EQUIPMENT_PARRY_EPIC_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>300%</style> increased damage.",
+        "EQUIPMENT_PARRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activating your primary skill fires the captured projectile.",
+        "EQUIPMENT_PARRY_EPIC_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it. Using your <style=cIsUtility>primary skill</style> <style=cIsDamage>fires</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>300%</style> increased damage.",
 
-        "EQUIPMENT_PARRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
-        "EQUIPMENT_PARRY_LEGENDARY_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>900%</style> increased damage.",
+        "EQUIPMENT_PARRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activating your primary skill fires the captured projectile.",
+        "EQUIPMENT_PARRY_LEGENDARY_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it. Using your <style=cIsUtility>primary skill</style> <style=cIsDamage>fires</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>900%</style> increased damage.",
         
         "EQUIPMENT_HEALANDREVIVE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to uncommon <sprite name=\"QualityUncommon\"> quality upon reviving.",
         "EQUIPMENT_HEALANDREVIVE_UNCOMMON_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade all instances of a random item into uncommon <sprite name=\"QualityUncommon\"> quality for the rest of the run.",

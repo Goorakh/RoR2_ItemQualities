@@ -5,6 +5,7 @@ using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.ContentManagement;
 using RoR2.Projectile;
+using RoR2.Skills;
 using ShaderSwapper;
 using System;
 using System.Collections;
@@ -98,6 +99,8 @@ namespace ItemQualities
 
             populateTypeFields(typeof(NetworkSoundEvents), _contentPack.networkSoundEventDefs, fieldName => "nse" + fieldName);
 
+            populateTypeFields(typeof(SkillDefs), _contentPack.skillDefs);
+
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
@@ -190,6 +193,8 @@ namespace ItemQualities
 
             List<NetworkSoundEventDef> networkSoundEventsList = new List<NetworkSoundEventDef>();
 
+            List<SkillDef> skillDefsList = new List<SkillDef>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -271,6 +276,9 @@ namespace ItemQualities
                     case NetworkSoundEventDef networkSoundEventDef:
                         networkSoundEventsList.Add(networkSoundEventDef);
                         break;
+                    case SkillDef skillDef:
+                        skillDefsList.Add(skillDef);
+                        break;
                 }
             }
 
@@ -312,6 +320,8 @@ namespace ItemQualities
             _contentPack.sprites.Add(spritesList.ToArray());
 
             _contentPack.networkSoundEventDefs.Add(networkSoundEventsList.ToArray());
+
+            _contentPack.skillDefs.Add(skillDefsList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -1046,6 +1056,11 @@ namespace ItemQualities
         public static class NetworkSoundEvents
         {
             public static NetworkSoundEventDef DuplicateInteractable;
+        }
+
+        public static class SkillDefs
+        {
+            public static SkillDef ParryProjectileSkill;
         }
     }
 }

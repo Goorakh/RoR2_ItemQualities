@@ -5,6 +5,7 @@ using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine.Networking;
 
 namespace ItemQualities
@@ -40,7 +41,24 @@ namespace ItemQualities
         public int BossDamageBonusTicks;
 
         [SyncVar]
-        public StoredInteractableInfo CardStoredInteractableInfo = StoredInteractableInfo.None;
+        private StoredInteractableInfo _cardStoredInteractableInfo = StoredInteractableInfo.None;
+        public StoredInteractableInfo CardStoredInteractableInfo
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _cardStoredInteractableInfo;
+            [Server]
+            set => _cardStoredInteractableInfo = value;
+        }
+
+        [SyncVar(hook = nameof(hookSetParryStoredProjectileInfo))]
+        private ParryStoredProjectileInfo _parryStoredProjectileInfo = ParryStoredProjectileInfo.None;
+        public ParryStoredProjectileInfo ParryStoredProjectileInfo
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _parryStoredProjectileInfo;
+            [Server]
+            set => _parryStoredProjectileInfo = value;
+        }
 
         public ItemCollection ConductorItemStacks = ItemCollection.Create();
 
@@ -65,6 +83,7 @@ namespace ItemQualities
 
         public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
         public event Action<CharacterMasterExtraStatsTracker> OnBossDamageBonusTicksChanged;
+        public event Action<CharacterMasterExtraStatsTracker> OnParryStoredProjectileInfoChanged;
 
         private void Awake()
         {
@@ -451,7 +470,8 @@ namespace ItemQualities
             SteakBonus = masterSaveData.SteakBonus;
             SpeedOnPickupBonus = masterSaveData.SpeedOnPickupBonus;
             BossDamageBonusTicks = masterSaveData.BossDamageBonusTicks;
-            CardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+            _cardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+            _parryStoredProjectileInfo = masterSaveData.ParryStoredProjectileInfo;
 
             _upgradeItemIndices.Clear();
             foreach (ItemIndex upgradeItemIndex in masterSaveData.UpgradeItemIndices)
@@ -493,6 +513,17 @@ namespace ItemQualities
             if (changed)
             {
                 OnBossDamageBonusTicksChanged?.Invoke(this);
+            }
+        }
+
+        private void hookSetParryStoredProjectileInfo(ParryStoredProjectileInfo newParryStoredProjectileInfo)
+        {
+            bool changed = _parryStoredProjectileInfo != newParryStoredProjectileInfo;
+            _parryStoredProjectileInfo = newParryStoredProjectileInfo;
+
+            if (changed)
+            {
+                OnParryStoredProjectileInfoChanged?.Invoke(this);
             }
         }
     }
