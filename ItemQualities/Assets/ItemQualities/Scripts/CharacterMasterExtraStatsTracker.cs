@@ -5,6 +5,7 @@ using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine.Networking;
 
 namespace ItemQualities
@@ -40,7 +41,14 @@ namespace ItemQualities
         public int BossDamageBonusTicks;
 
         [SyncVar]
-        public StoredInteractableInfo CardStoredInteractableInfo = StoredInteractableInfo.None;
+        private StoredInteractableInfo _cardStoredInteractableInfo = StoredInteractableInfo.None;
+        public StoredInteractableInfo CardStoredInteractableInfo
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _cardStoredInteractableInfo;
+            [Server]
+            set => _cardStoredInteractableInfo = value;
+        }
 
         private readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
 
