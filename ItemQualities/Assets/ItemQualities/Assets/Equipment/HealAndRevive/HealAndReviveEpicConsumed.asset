@@ -17,7 +17,7 @@ MonoBehaviour:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
-  cooldown: -1
+  cooldown: 30
   nameToken: 
   pickupToken: EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_PICKUP
   descriptionToken: EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_DESC

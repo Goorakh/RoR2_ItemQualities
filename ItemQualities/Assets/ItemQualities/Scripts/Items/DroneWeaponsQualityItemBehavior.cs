@@ -15,10 +15,11 @@ namespace ItemQualities.Items
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.DroneWeapons;
 
         private static readonly float droneReviveRollInterval = 1f;
+        private static readonly float droneReviveBuffDuration = droneReviveRollInterval + 0.05f;
 
         private QualityTier prevDroneCommanderQualityTier = QualityTier.None;
 
-        private float droneReviveTimer;
+        private float droneReviveRollTimer;
 
         private void OnEnable()
         {
@@ -33,10 +34,10 @@ namespace ItemQualities.Items
 
         private void FixedUpdate()
         {
-            droneReviveTimer += Time.fixedDeltaTime;
-            if (droneReviveTimer >= droneReviveRollInterval)
+            droneReviveRollTimer += Time.fixedDeltaTime;
+            if (droneReviveRollTimer >= droneReviveRollInterval)
             {
-                droneReviveTimer = 0f;
+                droneReviveRollTimer = 0f;
 
                 ref readonly ItemQualityCounts droneWeapons = ref Stacks;
 
@@ -74,7 +75,7 @@ namespace ItemQualities.Items
                             {
                                 if (Util.CheckRoll(droneReviveChance, Body.master.luck))
                                 {
-                                    minionBody.AddTimedBuff(DLC2Content.Buffs.ExtraLifeBuff, droneReviveRollInterval);
+                                    minionBody.AddTimedBuff(DLC2Content.Buffs.ExtraLifeBuff, droneReviveBuffDuration);
                                 }
                             }
                         }

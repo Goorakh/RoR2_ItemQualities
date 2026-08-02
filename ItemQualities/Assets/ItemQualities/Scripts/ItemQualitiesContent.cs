@@ -859,6 +859,8 @@ namespace ItemQualities
 
             public static BuffQualityGroup ArmorReductionOnHitCounter;
 
+            public static BuffQualityGroup BearVoidFog;
+
             public static BuffQualityGroup KnurlReady;
 
             public static BuffQualityGroup KnurlCooldown;
@@ -920,6 +922,8 @@ namespace ItemQualities
             public static GameObject HitlistMarkersUI;
 
             public static GameObject ParryProjectileDisplayUI;
+
+            public static GameObject QualityBearVoidFogExplosion;
 
             public static GameObject MinorConstructBubbleEffect;
 

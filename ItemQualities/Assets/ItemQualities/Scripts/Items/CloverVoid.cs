@@ -193,7 +193,9 @@ namespace ItemQualities.Items
 
                 QualityTier maxUpgradableQualityTier = cloverVoid.HighestQuality - 1;
 
-                List<QualityTier> upgradableItemQualityTiers = new List<QualityTier>(startingItemCount);
+                using var _ = ListPool<QualityTier>.RentCollection(out List<QualityTier> upgradableItemQualityTiers);
+                ListUtils.EnsureCapacity(upgradableItemQualityTiers, startingItemCount);
+
                 for (QualityTier qualityTier = QualityTier.None; qualityTier <= maxUpgradableQualityTier; qualityTier++)
                 {
                     int qualityCount = upgradeItemQualities[qualityTier];

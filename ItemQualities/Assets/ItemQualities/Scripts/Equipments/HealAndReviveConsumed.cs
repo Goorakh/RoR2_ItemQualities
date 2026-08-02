@@ -31,13 +31,13 @@ namespace ItemQualities.Equipments
                                 durationIncrease = 1f;
                                 break;
                             case QualityTier.Rare:
-                                durationIncrease = 2f;
-                                break;
-                            case QualityTier.Epic:
                                 durationIncrease = 5f;
                                 break;
-                            case QualityTier.Legendary:
+                            case QualityTier.Epic:
                                 durationIncrease = 10f;
+                                break;
+                            case QualityTier.Legendary:
+                                durationIncrease = 15f;
                                 break;
                             default:
                                 durationIncrease = 0f;

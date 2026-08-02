@@ -56,6 +56,7 @@ namespace ItemQualities
 
         private TemporaryVisualEffect _qualityDeathMarkEffectInstance;
         private TemporaryVisualEffect _sprintArmorWeakenEffectInstance;
+        private TemporaryVisualEffect _voidBearFogEffectInstance;
         private TemporaryVisualEffect _constructBubbleEffectInstance;
 
         private TemporaryOverlayInstance _healCritBoostOverlay;
@@ -569,6 +570,7 @@ namespace ItemQualities
         {
             updateTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
             updateTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
+            updateTemporaryVisualEffect(ref _voidBearFogEffectInstance, CharacterBody.AssetReferences.voidFogMildEffectPrefab, _body.radius, _body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BearVoidFog).TotalQualityCount > 0);
             updateTemporaryVisualEffect(ref _constructBubbleEffectInstance, ItemQualitiesContent.Prefabs.MinorConstructBubbleEffect, _body.bestFitActualRadius * 1.15f, _body.HasBuff(ItemQualitiesContent.Buffs.ConstructBubble));
 
             void updateTemporaryVisualEffect(ref TemporaryVisualEffect temporaryEffect, GameObject effectPrefab, float effectRadius, bool active)

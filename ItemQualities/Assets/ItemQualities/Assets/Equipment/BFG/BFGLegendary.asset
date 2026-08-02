@@ -17,7 +17,7 @@ MonoBehaviour:
     m_AssetGUID: 
     m_SubObjectName: 
     m_SubObjectType: 
-  cooldown: -1
+  cooldown: 80
   nameToken: 
   pickupToken: EQUIPMENT_BFG_LEGENDARY_PICKUP
   descriptionToken: EQUIPMENT_BFG_LEGENDARY_DESC
