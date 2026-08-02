@@ -1,4 +1,5 @@
 ﻿using RoR2;
+using System;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -76,6 +77,11 @@ namespace ItemQualities.Serialization
             where T : IBinarySerializable, new()
         {
             uint length = context.ReadPackedUInt32();
+            if (length == 0)
+            {
+                return Array.Empty<T>();
+            }
+
             T[] array = new T[length];
             for (int i = 0; i < length; i++)
             {
