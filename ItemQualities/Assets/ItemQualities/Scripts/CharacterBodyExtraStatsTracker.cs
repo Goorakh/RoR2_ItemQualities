@@ -5,7 +5,6 @@ using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.DirectionalSearch;
 using System;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -56,6 +55,7 @@ namespace ItemQualities
 
         private TemporaryVisualEffect _qualityDeathMarkEffectInstance;
         private TemporaryVisualEffect _sprintArmorWeakenEffectInstance;
+        private TemporaryVisualEffect _voidBearFogEffectInstance;
         private TemporaryVisualEffect _constructBubbleEffectInstance;
 
         private TemporaryOverlayInstance _healCritBoostOverlay;
@@ -83,23 +83,6 @@ namespace ItemQualities
         public CharacterBody LastHitBody { get; private set; }
 
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
-
-        [SyncVar]
-        public int ParryStoredProjectileIndex = -1;
-
-        public float ParryStoredProjectileDamage;
-
-        public bool ParryStoredProjectileCrit;
-
-        [SyncVar]
-        private int _parryStoredProjectileAttackerBodyIndexInt;
-        public BodyIndex ParryStoredProjectileAttackerBodyIndex
-        {
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            get => (BodyIndex)(_parryStoredProjectileAttackerBodyIndexInt - 1);
-            [MethodImpl(MethodImplOptions.AggressiveInlining)]
-            set => _parryStoredProjectileAttackerBodyIndexInt = (int)value + 1;
-        }
 
         [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
         private bool _isPerformingQuailJump;
@@ -569,6 +552,7 @@ namespace ItemQualities
         {
             updateTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
             updateTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
+            updateTemporaryVisualEffect(ref _voidBearFogEffectInstance, CharacterBody.AssetReferences.voidFogMildEffectPrefab, _body.radius, _body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BearVoidFog).TotalQualityCount > 0);
             updateTemporaryVisualEffect(ref _constructBubbleEffectInstance, ItemQualitiesContent.Prefabs.MinorConstructBubbleEffect, _body.bestFitActualRadius * 1.15f, _body.HasBuff(ItemQualitiesContent.Buffs.ConstructBubble));
 
             void updateTemporaryVisualEffect(ref TemporaryVisualEffect temporaryEffect, GameObject effectPrefab, float effectRadius, bool active)

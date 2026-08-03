@@ -4,8 +4,7 @@ namespace ItemQualities.Utilities.Extensions
 {
     internal static class DictionaryExtensions
     {
-        public static TValue GetOrAddNew<TDict, TKey, TValue>(this TDict dictionary, TKey key)
-            where TDict : IDictionary<TKey, TValue>
+        public static TValue GetOrAddNew<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
             where TValue : new()
         {
             if (!dictionary.TryGetValue(key, out TValue value))

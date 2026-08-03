@@ -61,10 +61,10 @@ namespace ItemQualities.Equipments
                 {
                     float blastRadiusIncrease = qualityTier switch
                     {
-                        QualityTier.Uncommon => 5f,
-                        QualityTier.Rare => 10f,
-                        QualityTier.Epic => 20f,
-                        QualityTier.Legendary => 25f,
+                        QualityTier.Uncommon => 10f,
+                        QualityTier.Rare => 20f,
+                        QualityTier.Epic => 40f,
+                        QualityTier.Legendary => 50f,
                         _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
                     };
 

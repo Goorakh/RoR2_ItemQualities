@@ -3,6 +3,52 @@
 * Reworks (Click to reveal):
     * <details><summary>Shattering Justice</summary> Fires a short range piercing beam every 5th primary skill use.</details>
     * <details><summary>Spare Drone Parts</summary> Chance to give summoned drones a random elite effect. Chance for summoned drones to revive on death.</details>
+    * <details><summary>Safer Spaces</summary> On block, apply a fog to nearby enemies that increases damage from all void-based attacks.</details>
+    * <details><summary>The Crowdfunder</summary> Bullets can ricochet to nearby enemies. Increased max fire rate (same stats as previous version)</details>
+
+* Deus Ex Machina:
+    * The stored projectile is now fired by using your primary skill, rather than next equipment activation.
+    * Stored projectile now persists between stages.
+
+* Preon Accumulator:
+    * Explosion/zap radius:
+        * Uncommon: +5m -> +10m
+        * Rare: +10m -> +20m
+        * Epic: +20m -> +40m
+        * Legendary: +25m -> +50m
+    * Base cooldown: 140s ->
+        * Uncommon: 125s
+        * Rare: 110s
+        * Epic: 95s
+        * Legendary: 80s
+
+* Molotov:
+    * Puddle burn damage:
+        * Uncommon: 250%/s -> 300%/s
+        * Rare: 300%/s -> 300%/s
+        * Epic: 400%/s -> 300%/s
+        * Legendary: 500%/s -> 300%/s
+    * Puddle size increase:
+        * Uncommon: +140% -> +160%
+        * Rare: +300% -> +300%
+        * Epic: +650% -> +600%
+        * Legendary: +1100% -> +800%
+
+* Seed of Life (consumed):
+    * Sprout duration:
+        * Uncommon: 6s -> 6s
+        * Rare: 7s -> 10s
+        * Epic: 10s -> 15s
+        * Legendary: 15s -> 20s
+    * Base cooldown (for all quality variants): 15s -> 30s
+        * This was done to allow the sprout to remain for longer while still having a cooldown after the sprout times out.
+
+* Ceremonial Dagger:
+    * Additional dagger amount:
+        * Uncommon: 1 (+1 per stack) -> 2 (+2 per stack)
+        * Rare: 2 (+2 per stack) -> 5 (+5 per stack)
+        * Epic: 5 (+5 per stack) -> 8 (+8 per stack)
+        * Legendary: 7 (+7 per stack) -> 10 (+10 per stack)
 
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%

@@ -173,7 +173,8 @@ namespace ItemQualities
                         case CostTypeIndex.RedItem:
                         case CostTypeIndex.Equipment:
                         case CostTypeIndex.VolatileBattery:
-                        case CostTypeIndex.LunarItemOrEquipment:
+                        // Because there are no quality lunars, we can just roll quality on things that take them as cost
+                        //case CostTypeIndex.LunarItemOrEquipment:
                         case CostTypeIndex.BossItem:
                         case CostTypeIndex.ArtifactShellKillerItem:
                         case CostTypeIndex.TreasureCacheItem:
