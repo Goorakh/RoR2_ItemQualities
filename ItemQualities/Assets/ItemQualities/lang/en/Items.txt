@@ -1694,5 +1694,17 @@
 
         "ITEM_KNURL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> High damage hits create an earthquake. Recharges over time.",
         "ITEM_KNURL_LEGENDARY_DESC": "{0}\nHits that deal <style=cIsDamage>more than 600% damage</style> also create a <sprite name=\"Quality\"> <style=cIsUtility>40m</style> <style=cIsDamage>earthquake</style> for <sprite name=\"Quality\"> <style=cIsDamage>800% <style=cStack>(+800% per stack)</style></style> TOTAL damage. Recharges every <sprite name=\"Quality\"> <style=cIsUtility>8</style> seconds. If the high damage hit is a <style=cIsDamage>critical strike</style>, the recharge time is <style=cIsUtility>reduced by 50%</style>.",
+
+        "ITEM_PARENTEGG_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Hitting enemies heats them. Create a sun after heating an enemy enough.",
+        "ITEM_PARENTEGG_UNCOMMON_DESC": "{0}\nOn hit apply <style=cIsDamage>heat</style> for <sprite name=\"Quality\"> <style=cIsUtility>1 <style=cStack>(+1 per stack)</style></style> second. Create a sun above enemies with <style=cIsDamage>15 heat</style>, <style=cIsDamage>overheating</style> enemies in a <sprite name=\"Quality\"> <style=cIsUtility>20m <style=cStack>(+20m per stack)</style></style> radius.",
+
+        "ITEM_PARENTEGG_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Hitting enemies heats them. Create a sun after heating an enemy enough.",
+        "ITEM_PARENTEGG_RARE_DESC": "{0}\nOn hit apply <style=cIsDamage>heat</style> for <sprite name=\"Quality\"> <style=cIsUtility>1.5 <style=cStack>(+1.5 per stack)</style></style> seconds. Create a sun above enemies with <style=cIsDamage>15 heat</style>, <style=cIsDamage>overheating</style> enemies in a <sprite name=\"Quality\"> <style=cIsUtility>30m <style=cStack>(+30m per stack)</style></style> radius.",
+
+        "ITEM_PARENTEGG_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Hitting enemies heats them. Create a sun after heating an enemy enough.",
+        "ITEM_PARENTEGG_EPIC_DESC": "{0}\nOn hit apply <style=cIsDamage>heat</style> for <sprite name=\"Quality\"> <style=cIsUtility>2 <style=cStack>(+2 per stack)</style></style> seconds. Create a sun above enemies with <style=cIsDamage>15 heat</style>, <style=cIsDamage>overheating</style> enemies in a <sprite name=\"Quality\"> <style=cIsUtility>40m <style=cStack>(+40m per stack)</style></style> radius.",
+
+        "ITEM_PARENTEGG_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Hitting enemies heats them. Create a sun after heating an enemy enough.",
+        "ITEM_PARENTEGG_LEGENDARY_DESC": "{0}\nOn hit apply <style=cIsDamage>heat</style> for <sprite name=\"Quality\"> <style=cIsUtility>2.5 <style=cStack>(+2.5 per stack)</style></style> seconds. Create a sun above enemies with <style=cIsDamage>15 heat</style>, <style=cIsDamage>overheating</style> enemies in a <sprite name=\"Quality\"> <style=cIsUtility>50m <style=cStack>(+50m per stack)</style></style> radius.",
     }
 }

@@ -727,6 +727,8 @@ namespace ItemQualities
             public static ItemQualityGroup SiphonOnLowHealth;
 
             public static ItemQualityGroup Knurl;
+
+            public static ItemQualityGroup ParentEgg;
         }
 
         public static class Items
@@ -860,6 +862,8 @@ namespace ItemQualities
             public static BuffQualityGroup KnurlReady;
 
             public static BuffQualityGroup KnurlCooldown;
+
+            public static BuffQualityGroup ParentEggOverheat;
         }
 
         public static class Buffs
