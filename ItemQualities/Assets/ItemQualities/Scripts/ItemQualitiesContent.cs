@@ -738,6 +738,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup Knurl;
 
+            public static ItemQualityGroup ParentEgg;
+            
             public static ItemQualityGroup ShinyPearl;
         }
 
@@ -874,6 +876,8 @@ namespace ItemQualities
             public static BuffQualityGroup KnurlReady;
 
             public static BuffQualityGroup KnurlCooldown;
+
+            public static BuffQualityGroup ParentEggOverheat;
         }
 
         public static class Buffs
