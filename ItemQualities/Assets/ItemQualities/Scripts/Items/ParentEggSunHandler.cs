@@ -54,26 +54,26 @@ namespace ItemQualities
 
         private void Start()
         {
-            _body = GetComponent<CharacterBody>();
             if (!TryGetComponent(out _body))
             {
                 Destroy(gameObject);
                 return;
             }
 
-            _sunInstance = GameObject.Instantiate(sunPrefab, _body.footPosition + (Vector3.up * (_body.bestFitActualRadius * 4)), Quaternion.identity);
+            _sunInstance = GameObject.Instantiate(sunPrefab, _body.footPosition + (Vector3.up * ((_body.bestFitActualRadius * 4) + 1)), Quaternion.identity);
 
-            if (_sunInstance.TryGetComponent(out GenericOwnership ownership))
-            {
-                ownership.ownerObject = owner.gameObject;
-            }
-            if (_sunInstance.TryGetComponent(out TeamFilter teamFilter))
-            {
-                teamFilter.teamIndex = owner.teamComponent.teamIndex;
-            }
             if (_sunInstance.TryGetComponent(out GrandParentSunController sunController))
             {
                 sunController.maxDistance = ParentEgg.SunRange(owner);
+                if (sunController.ownership)
+                {
+                    sunController.ownership.ownerObject = owner.gameObject;
+                }
+                if (sunController.teamFilter)
+                {
+                    sunController.teamFilter.teamIndex = owner.teamComponent.teamIndex;
+                }
+                sunController.bullseyeSearch.teamMaskFilter = TeamMask.AllExcept(owner.teamComponent.teamIndex);
             }
 
             NetworkServer.Spawn(_sunInstance);
@@ -87,7 +87,7 @@ namespace ItemQualities
                 return;
             }
 
-            _sunInstance.transform.position = _body.footPosition + (Vector3.up * (_body.bestFitActualRadius * 4));
+            _sunInstance.transform.position = _body.footPosition + (Vector3.up * ((_body.bestFitActualRadius * 4) + 1));
 
             if (!ParentEgg.allowSun(_body))
             {

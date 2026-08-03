@@ -2,7 +2,6 @@ using HG;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
-using System.Collections.Generic;
 
 namespace ItemQualities.Items
 {
@@ -12,13 +11,6 @@ namespace ItemQualities.Items
         private static void Init()
         {
             GlobalEventManager.onServerDamageDealt += OnServerDamageDealt;
-            On.RoR2.GrandParentSunController.SearchForTargets += TeamFilterFix;
-        }
-
-        private static void TeamFilterFix(On.RoR2.GrandParentSunController.orig_SearchForTargets orig, GrandParentSunController self, List<HurtBox> dest)
-        {
-            self.bullseyeSearch.teamMaskFilter = TeamMask.AllExcept(self.teamFilter.teamIndex);
-            orig(self, dest);
         }
 
         private static void OnServerDamageDealt(DamageReport report)
