@@ -1468,16 +1468,16 @@
         "ITEM_DUPLICATOR_LEGENDARY_DESC": "<style=cIsUtility>Picking up an item</style> gives you <sprite name=\"Quality\"> <style=cIsTemporary>3 temporary copies</style> of itself. Temporary items last an additional <style=cIsDamage>10 <style=cStack>(+10 per stack)</style> seconds</style>.\n<sprite name=\"Quality\"> <style=cIsUtility>80% <style=cStack>(+80% per stack)</style></style> chance on <style=cIsUtility>picking up a permanent item</style> to share it with all <style=cIsUtility>summons</style>. Going past <style=cIsUtility>100%</style> chance shares an additional copy of the picked up item instead.",
 
         "ITEM_EXPLODEONDEATH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_UNCOMMON_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>20% <style=cStack>(+20% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_UNCOMMON_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>25% <style=cStack>(+25% per stack)</style></style>.",
 
         "ITEM_EXPLODEONDEATH_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_RARE_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>40% <style=cStack>(+40% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_RARE_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>50% <style=cStack>(+50% per stack)</style></style>.",
 
         "ITEM_EXPLODEONDEATH_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_EPIC_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>70% <style=cStack>(+70% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_EPIC_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>100% <style=cStack>(+100% per stack)</style></style>.",
 
         "ITEM_EXPLODEONDEATH_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase range of all explosions.",
-        "ITEM_EXPLODEONDEATH_LEGENDARY_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>100% <style=cStack>(+100% per stack)</style></style>.",
+        "ITEM_EXPLODEONDEATH_LEGENDARY_DESC": "{0}\nIncreases range of all <style=cIsDamage>explosions</style> by <sprite name=\"Quality\"> <style=cIsDamage>200% <style=cStack>(+200% per stack)</style></style>.",
 
         "ITEM_DRONESDROPDYNAMITE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> All your drones explode by absorbing damage.",
         "ITEM_DRONESDROPDYNAMITE_UNCOMMON_DESC": "{0}\nAll drones absorb <sprite name=\"Quality\"> <style=cIsDamage>50%</style> of damage when hit, up to a maximum of <sprite name=\"Quality\"> <style=cIsDamage>500% <style=cStack>(+100% per stack)</style></style> base damage. After a short delay, the drone explodes for all absorbed damage in a radius of up to <sprite name=\"Quality\"> <style=cIsDamage>20m <style=cStack>(+5m per stack)</style></style>.",
