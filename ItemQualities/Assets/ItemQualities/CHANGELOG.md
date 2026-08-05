@@ -22,6 +22,23 @@
         * Epic: 95s
         * Legendary: 80s
 
+* Bundle of Fireworks:
+    * Chance to launch a large firework:
+        * Uncommon: 10% (+10% per stack) -> 15% (non-stacking)
+        * Rare: 20% (+20% per stack) -> 30% (non-stacking)
+        * Epic: 40% (+40% per stack) -> 60% (non-stacking)
+        * Legendary: 60% (+60% per stack) -> 100% (non-stacking)
+    * Large firework damage: 500% ->
+        * Uncommon: 400% (+100% per stack)
+        * Rare: 450% (+150% per stack)
+        * Epic: 550% (+250% per stack)
+        * Legendary: 600% (+300% per stack)
+    * Large firework size: +200% ->
+        * Uncommon: +100% (+100% per stack)
+        * Rare: +200% (+200% per stack)
+        * Epic: +300% (+300% per stack)
+        * Legendary: +500% (+500% per stack)
+
 * Molotov:
     * Puddle burn damage:
         * Uncommon: 250%/s -> 300%/s
