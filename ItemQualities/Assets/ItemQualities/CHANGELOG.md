@@ -71,6 +71,9 @@
     * Cloned Junk Drone temp item duration: 100% -> 25%
     * Fixed ghosts not being able to revive if given one.
 
+* Fixed Shrine of Order not interacting with quality items correctly.
+    * Each quality tier is now treated as its own sub-category for each tier, so all regular white items will be ordered as a group, all uncommon whites as one, all regular greens, all uncommon greens, etc.
+
 * Quality items/equipments displayed on non-player characters are now colored according to their quality tier.
 
 ## 0.7.8 Changes:
