@@ -19,6 +19,23 @@ namespace ItemQualities.Items
     {
         private static GameObject _fireworkBigProjectilePrefab;
 
+        public static float GetFireworkScaleMultiplier(CharacterBody ownerBody)
+        {
+            float scaleMultiplier = 1f;
+            
+            if (ownerBody && ownerBody.inventory)
+            {
+                ItemQualityCounts firework = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Firework);
+
+                scaleMultiplier += (firework.UncommonCount * 1f) +
+                                   (firework.RareCount * 2f) +
+                                   (firework.EpicCount * 3f) +
+                                   (firework.LegendaryCount * 5f);
+            }
+
+            return scaleMultiplier;
+        }
+
         [ContentInitializer]
         private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
@@ -33,28 +50,14 @@ namespace ItemQualities.Items
 
             yield return prefabsLoadCoroutine;
 
-            if (fireworkProjectileLoad.Status != AsyncOperationStatus.Succeeded || !fireworkProjectileLoad.Result)
+            if (!fireworkProjectileLoad.AssertLoaded() || !fireworkGhostLoad.AssertLoaded())
             {
-                Log.Error($"Failed to load firework projectile prefab: {fireworkProjectileLoad.OperationException}");
-                yield break;
-            }
-
-            if (fireworkGhostLoad.Status != AsyncOperationStatus.Succeeded || !fireworkGhostLoad.Result)
-            {
-                Log.Error($"Failed to load firework projectile ghost prefab: {fireworkGhostLoad.OperationException}");
                 yield break;
             }
 
             GameObject fireworkBigGhost = fireworkGhostLoad.Result.InstantiateClone("FireworkBigGhost", false);
-            Transform fireworkBigGhostModelRoot = fireworkBigGhost.transform.Find("mdlFireworkProjectile");
-            if (fireworkBigGhostModelRoot)
-            {
-                fireworkBigGhostModelRoot.localScale *= 3f;
-            }
-            else
-            {
-                Log.Warning("Failed to find firework model root");
-            }
+            ProjectileGhostController fireworkBigGhostController = fireworkBigGhost.GetComponent<ProjectileGhostController>();
+            fireworkBigGhostController.inheritScaleFromProjectile = true;
 
             GameObject fireworkBigPrefab = fireworkProjectileLoad.Result.InstantiateClone("FireworkBigProjectile");
 
@@ -70,12 +73,13 @@ namespace ItemQualities.Items
             fireworkBigQuaternionPID.PID = new Vector3(10f, 0.3f, 0f);
 
             ProjectileImpactExplosion fireworkBigImpactExplosion = fireworkBigPrefab.GetComponent<ProjectileImpactExplosion>();
-            fireworkBigImpactExplosion.blastRadius = 7.5f;
 
             if (explodeEffectLoad.Status == AsyncOperationStatus.Succeeded && explodeEffectLoad.Result)
             {
                 fireworkBigImpactExplosion.impactEffect = explodeEffectLoad.Result;
             }
+
+            fireworkBigPrefab.AddComponent<FireworkProjectileQualityController>();
 
             _fireworkBigProjectilePrefab = fireworkBigPrefab;
             args.ContentPack.projectilePrefabs.Add(fireworkBigPrefab);
@@ -91,28 +95,46 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            VariableDefinition shouldFireLargeFireworkVar = il.AddVariable<bool>();
+            VariableDefinition fireworkStacksVar = il.AddVariable<ItemQualityCounts>();
 
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<FireworkLauncher, bool>>(getShouldFireLargeFirework);
-            c.Emit(OpCodes.Stloc, shouldFireLargeFireworkVar);
+            c.EmitDelegate<Func<FireworkLauncher, ItemQualityCounts>>(getFireworkCounts);
+            c.Emit(OpCodes.Stloc, fireworkStacksVar);
 
-            static bool getShouldFireLargeFirework(FireworkLauncher fireworkLauncher)
+            static ItemQualityCounts getFireworkCounts(FireworkLauncher fireworkLauncher)
             {
                 GameObject owner = fireworkLauncher ? fireworkLauncher.owner : null;
                 CharacterBody ownerBody = owner ? owner.GetComponent<CharacterBody>() : null;
                 Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
 
-                float largeFireworkChance = 0f;
-                if (ownerInventory)
-                {
-                    ItemQualityCounts firework = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Firework);
+                return ownerInventory ? ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Firework) : default;
+            }
 
-                    largeFireworkChance = (10f * firework.UncommonCount) +
-                                          (20f * firework.RareCount) +
-                                          (40f * firework.EpicCount) +
-                                          (60f * firework.LegendaryCount);
+            VariableDefinition shouldFireLargeFireworkVar = il.AddVariable<bool>();
+
+            c.Emit(OpCodes.Ldarg_0);
+            c.Emit(OpCodes.Ldloca, fireworkStacksVar);
+            c.EmitDelegate<GetShouldFireLargeFireworkDelegate>(getShouldFireLargeFirework);
+            c.Emit(OpCodes.Stloc, shouldFireLargeFireworkVar);
+
+            static bool getShouldFireLargeFirework(FireworkLauncher fireworkLauncher, in ItemQualityCounts firework)
+            {
+                if (firework.TotalQualityCount == 0)
+                {
+                    return false;
                 }
+
+                GameObject owner = fireworkLauncher ? fireworkLauncher.owner : null;
+                CharacterBody ownerBody = owner ? owner.GetComponent<CharacterBody>() : null;
+
+                float largeFireworkChance = firework.HighestQuality switch
+                {
+                    QualityTier.Uncommon => 15f,
+                    QualityTier.Rare => 30f,
+                    QualityTier.Epic => 60f,
+                    QualityTier.Legendary => 100f,
+                    _ => throw new NotImplementedException(),
+                };
 
                 return RollUtil.CheckRoll(largeFireworkChance, ownerBody ? ownerBody.master : null, false);
             }
@@ -155,13 +177,17 @@ namespace ItemQualities.Items
                                  x => x.MatchLdfld<FireworkLauncher>(nameof(FireworkLauncher.damageCoefficient))))
             {
                 c.Emit(OpCodes.Ldloc, shouldFireLargeFireworkVar);
-                c.EmitDelegate<Func<float, bool, float>>(getDamageCoefficient);
+                c.Emit(OpCodes.Ldloca, fireworkStacksVar);
+                c.EmitDelegate<GetDamageCoefficientDelegate>(getDamageCoefficient);
 
-                static float getDamageCoefficient(float damageCoefficient, bool shouldFireLargeFirework)
+                static float getDamageCoefficient(float damageCoefficient, bool shouldFireLargeFirework, in ItemQualityCounts firework)
                 {
                     if (shouldFireLargeFirework)
                     {
-                        damageCoefficient = 5f;
+                        damageCoefficient += (firework.UncommonCount * 1f) +
+                                             (firework.RareCount * 1.5f) +
+                                             (firework.EpicCount * 2.5f) +
+                                             (firework.LegendaryCount * 3f);
                     }
 
                     return damageCoefficient;
@@ -179,5 +205,9 @@ namespace ItemQualities.Items
                 Log.Debug($"Found {patchCount} damage coefficient patch location(s)");
             }
         }
+
+        private delegate bool GetShouldFireLargeFireworkDelegate(FireworkLauncher fireworkLauncher, in ItemQualityCounts firework);
+
+        private delegate float GetDamageCoefficientDelegate(float damageCoefficient, bool shouldFireLargeFirework, in ItemQualityCounts firework);
     }
 }
