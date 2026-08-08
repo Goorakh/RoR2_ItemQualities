@@ -1,16 +1,25 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using HG;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
 using RoR2;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace ItemQualities.Items
 {
     internal static class NearbyDamageBonus
     {
+        private static readonly SphereSearch _sharedNearbyTargetSearch = new SphereSearch
+        {
+            radius = 13f,
+            queryTriggerInteraction = QueryTriggerInteraction.Ignore,
+            mask = LayerIndex.entityPrecise.mask,
+        };
+
         private static DamageColorIndex _nearbyBoostedColorIndex;
 
         [SystemInitializer]
@@ -57,13 +66,9 @@ namespace ItemQualities.Items
                     ItemQualityCounts nearbyDamageBonus = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NearbyDamageBonus);
                     if (nearbyDamageBonus.TotalQualityCount > 0)
                     {
-                        SphereSearch targetSearch = new SphereSearch()
-                        {
-                            origin = attackerBody.corePosition,
-                            radius = 13f,
-                            queryTriggerInteraction = QueryTriggerInteraction.Ignore,
-                            mask = LayerIndex.entityPrecise.mask
-                        };
+                        SphereSearch targetSearch = _sharedNearbyTargetSearch;
+
+                        targetSearch.origin = attackerBody.corePosition;
 
                         targetSearch.RefreshCandidates();
 
@@ -78,13 +83,16 @@ namespace ItemQualities.Items
 
                         int enemiesInRange = 0;
 
-                        foreach (HurtBox hurtBox in targetSearch.GetHurtBoxes())
+                        using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> hurtBoxes);
+                        targetSearch.GetHurtBoxes(hurtBoxes);
+
+                        foreach (HurtBox hurtBox in hurtBoxes)
                         {
                             HealthComponent enemyHealthComponent = hurtBox ? hurtBox.healthComponent : null;
                             if (!enemyHealthComponent || !enemyHealthComponent.alive)
                                 continue;
 
-                            if (enemyHealthComponent.gameObject == attacker)
+                            if (ReferenceEquals(enemyHealthComponent.gameObject, attacker))
                                 continue;
 
                             enemiesInRange++;
