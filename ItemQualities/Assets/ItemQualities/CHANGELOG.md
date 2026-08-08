@@ -10,6 +10,19 @@
     * The stored projectile is now fired by using your primary skill, rather than next equipment activation.
     * Stored projectile now persists between stages.
 
+* Medkit:
+    * Stacking healing zone radius on the same interactable now has diminishing returns rather than stacking linearly.
+    * Healing zone radius:
+        * Uncommon: 10m (+10m per stack) -> 7m (+7m per stack)
+        * Rare: 20m (+20m per stack) -> 15m (+15m per stack)
+        * Epic: 35m (+35m per stack) -> 25m (+25m per stack)
+        * Legendary: 50m (+50m per stack) -> 40m (+40m per stack)
+    * Healing zone duration: 60s ->
+        * Uncommon: 15s
+        * Rare: 30s
+        * Epic: 45s
+        * Legendary: 60s
+
 * Preon Accumulator:
     * Explosion/zap radius:
         * Uncommon: +5m -> +10m
