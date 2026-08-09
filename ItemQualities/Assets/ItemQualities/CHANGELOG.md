@@ -42,6 +42,15 @@
         * Uncommon: 5% (+5% per stack) -> 10% (+10% per stack)
         * Rare: 15% (+15% per stack) -> 20% (+20% per stack)
 
+* Delicate Watch:
+    * Now stacks additively with regular watches (was multiplicative).
+        * This now means quality watches just effectively act as having extra watches, rather than being their own source of damage mult.
+    * Additional damage bonus (not accounting for change from multiplicative to additive):
+        * Uncommon: 7% (+7% per stack) -> 10% (+10% per stack)
+        * Rare: 10% (+10% per stack) -> 20% (+20% per stack)
+        * Epic: 15% (+15% per stack) -> 40% (+40% per stack)
+        * Legendary: 20% (+20% per stack) -> 60% (+60% per stack)
+
 * Pocket I.C.B.M:
     * Now fires a small missile when using a skill that has at least 5s cooldown.
 
