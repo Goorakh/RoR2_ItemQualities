@@ -19,9 +19,11 @@ namespace ItemQualities.Items
         private static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
 
         private static CharacterBody _earlyAssignmentBody;
+        private static CharacterBodyExtraStatsTracker _earlyAssignmentBodyStats;
         private static ItemQualityCounts _earlyAssignmentStacks;
 
         public CharacterBody Body { get; private set; }
+        public CharacterBodyExtraStatsTracker BodyStats { get; private set; }
 
         private ItemQualityCounts _stacks;
         public ref readonly ItemQualityCounts Stacks
@@ -34,6 +36,9 @@ namespace ItemQualities.Items
         {
             Body = _earlyAssignmentBody;
             _earlyAssignmentBody = null;
+
+            BodyStats = _earlyAssignmentBodyStats;
+            _earlyAssignmentBodyStats = null;
 
             _stacks = _earlyAssignmentStacks;
             _earlyAssignmentStacks = default;
@@ -205,7 +210,7 @@ namespace ItemQualities.Items
                     if (behaviorCollection.BehaviorsArrayPool != null)
                     {
                         QualityItemBodyBehavior[] qualityItemBehaviors = behaviorCollection.BehaviorsArrayPool.Request();
-                        BodyBehaviorInfo bodyBehaviorInfo = new BodyBehaviorInfo(qualityItemBehaviors, behaviorCollectionIndex);
+                        BodyBehaviorInfo bodyBehaviorInfo = new BodyBehaviorInfo(body.GetComponentCached<CharacterBodyExtraStatsTracker>(), qualityItemBehaviors, behaviorCollectionIndex);
 
                         _bodyQualityBehaviorInfoLookup.Add(body, bodyBehaviorInfo);
                         refreshBodyQualityBehaviors(body, bodyBehaviorInfo);
@@ -226,20 +231,7 @@ namespace ItemQualities.Items
         {
             if (!_bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
             {
-                int behaviorCollectionIndex = getBehaviorCollectionIndex(body);
-                if (!ArrayUtils.IsInBounds(_behaviorCollectionsLookup, behaviorCollectionIndex))
-                    return;
-
-                ref readonly QualityGroupBehaviorCollection behaviorCollection = ref _behaviorCollectionsLookup[behaviorCollectionIndex];
-                if (behaviorCollection.Behaviors.Length == 0)
-                    return;
-
-                Log.Debug($"{Util.GetBestBodyName(body.gameObject)} does not have behavior info during inventory update, creating behaviors now");
-
-                QualityItemBodyBehavior[] qualityItemBehaviors = behaviorCollection.BehaviorsArrayPool.Request();
-                behaviorInfo = new BodyBehaviorInfo(qualityItemBehaviors, behaviorCollectionIndex);
-
-                _bodyQualityBehaviorInfoLookup.Add(body, behaviorInfo);
+                return;
             }
 
             refreshBodyQualityBehaviors(body, behaviorInfo);
@@ -255,7 +247,7 @@ namespace ItemQualities.Items
                 {
                     ref readonly QualityGroupBehaviorInfo behaviorInfo = ref behaviorCollection.Behaviors[i];
 
-                    updateItemStacks(body, ref bodyBehaviorInfo.BehaviorComponents[i], behaviorInfo.BehaviorType, body.inventory.GetItemCountsEffective(behaviorInfo.ItemGroupIndex));
+                    updateItemStacks(body, bodyBehaviorInfo.CachedBodyStatsComponent, ref bodyBehaviorInfo.BehaviorComponents[i], behaviorInfo.BehaviorType, body.inventory.GetItemCountsEffective(behaviorInfo.ItemGroupIndex));
                 }
             }
             else
@@ -272,7 +264,7 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void updateItemStacks(CharacterBody body, ref QualityItemBodyBehavior itemBehavior, Type qualityBehaviorType, in ItemQualityCounts itemCounts)
+        private static void updateItemStacks(CharacterBody body, CharacterBodyExtraStatsTracker bodyStats, ref QualityItemBodyBehavior itemBehavior, Type qualityBehaviorType, in ItemQualityCounts itemCounts)
         {
             bool hasBehavior = !ReferenceEquals(itemBehavior, null);
             bool shouldHaveBehavior = itemCounts.TotalQualityCount > 0;
@@ -282,6 +274,7 @@ namespace ItemQualities.Items
                 if (shouldHaveBehavior)
                 {
                     _earlyAssignmentBody = body;
+                    _earlyAssignmentBodyStats = bodyStats;
                     _earlyAssignmentStacks = itemCounts;
                     try
                     {
@@ -290,6 +283,7 @@ namespace ItemQualities.Items
                     finally
                     {
                         _earlyAssignmentBody = null;
+                        _earlyAssignmentBodyStats = null;
                         _earlyAssignmentStacks = default;
                     }
 
@@ -314,12 +308,15 @@ namespace ItemQualities.Items
 
         private sealed class BodyBehaviorInfo
         {
+            public readonly CharacterBodyExtraStatsTracker CachedBodyStatsComponent;
+
             public readonly QualityItemBodyBehavior[] BehaviorComponents;
 
             public readonly int CollectionIndex;
 
-            public BodyBehaviorInfo(QualityItemBodyBehavior[] behaviors, int collectionIndex)
+            public BodyBehaviorInfo(CharacterBodyExtraStatsTracker cachedBodyStatsComponent, QualityItemBodyBehavior[] behaviors, int collectionIndex)
             {
+                CachedBodyStatsComponent = cachedBodyStatsComponent;
                 BehaviorComponents = behaviors;
                 CollectionIndex = collectionIndex;
             }

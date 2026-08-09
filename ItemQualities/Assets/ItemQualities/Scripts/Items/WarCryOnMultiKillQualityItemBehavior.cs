@@ -11,29 +11,20 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill;
         }
 
-        private CharacterBodyExtraStatsTracker _bodyExtraStats;
-
         private bool _hadWarCryBuff;
 
         private bool hasWarCryBuff => Body.HasBuff(RoR2Content.Buffs.WarCryBuff) || Body.HasBuff(RoR2Content.Buffs.TeamWarCry);
 
-        protected override void Awake()
-        {
-            base.Awake();
-
-            _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
-        }
-
         private void OnEnable()
         {
-            _bodyExtraStats.OnKilledOther += onKilledOther;
+            BodyStats.OnKilledOther += onKilledOther;
 
             _hadWarCryBuff = false;
         }
 
         private void OnDisable()
         {
-            _bodyExtraStats.OnKilledOther -= onKilledOther;
+            BodyStats.OnKilledOther -= onKilledOther;
 
             setWarCryBuffCount(0);
         }
@@ -43,7 +34,7 @@ namespace ItemQualities.Items
             bool hasBuff = hasWarCryBuff;
             if (hasBuff != _hadWarCryBuff)
             {
-                setWarCryBuffCount(hasBuff ? _bodyExtraStats.EliteKillCount : 0);
+                setWarCryBuffCount(hasBuff ? BodyStats.EliteKillCount : 0);
                 _hadWarCryBuff = hasBuff;
             }
         }
@@ -54,7 +45,7 @@ namespace ItemQualities.Items
             {
                 if (hasWarCryBuff)
                 {
-                    setWarCryBuffCount(_bodyExtraStats.EliteKillCount);
+                    setWarCryBuffCount(BodyStats.EliteKillCount);
                 }
             }
         }
@@ -63,7 +54,7 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            setWarCryBuffCount(hasWarCryBuff ? _bodyExtraStats.EliteKillCount : 0);
+            setWarCryBuffCount(hasWarCryBuff ? BodyStats.EliteKillCount : 0);
         }
 
         private void setWarCryBuffCount(int count)

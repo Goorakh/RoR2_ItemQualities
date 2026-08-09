@@ -12,20 +12,11 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.ShieldBooster;
         }
 
-        private CharacterBodyExtraStatsTracker _bodyExtraStats;
-
         private float _boosterFraction;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
-        }
 
         private void OnEnable()
         {
-            _bodyExtraStats.OnTakeDamageServer += onTakeDamageServer;
+            BodyStats.OnTakeDamageServer += onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal += onShieldBoosterBreakServerGlobal;
 
             _boosterFraction = 0f;
@@ -34,7 +25,7 @@ namespace ItemQualities.Items
 
         private void OnDisable()
         {
-            _bodyExtraStats.OnTakeDamageServer -= onTakeDamageServer;
+            BodyStats.OnTakeDamageServer -= onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal -= onShieldBoosterBreakServerGlobal;
 
             Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff);

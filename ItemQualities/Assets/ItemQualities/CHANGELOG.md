@@ -6,9 +6,64 @@
     * <details><summary>Safer Spaces</summary> On block, apply a fog to nearby enemies that increases damage from all void-based attacks.</details>
     * <details><summary>The Crowdfunder</summary> Bullets can ricochet to nearby enemies. Increased max fire rate (same stats as previous version)</details>
 
-* Deus Ex Machina:
-    * The stored projectile is now fired by using your primary skill, rather than next equipment activation.
-    * Stored projectile now persists between stages.
+* Medkit:
+    * Stacking healing zone radius on the same interactable now has diminishing returns rather than stacking linearly.
+    * Healing zone radius:
+        * Uncommon: 10m (+10m per stack) -> 7m (+7m per stack)
+        * Rare: 20m (+20m per stack) -> 15m (+15m per stack)
+        * Epic: 35m (+35m per stack) -> 25m (+25m per stack)
+        * Legendary: 50m (+50m per stack) -> 40m (+40m per stack)
+    * Healing zone duration: 60s ->
+        * Uncommon: 15s
+        * Rare: 30s
+        * Epic: 45s
+        * Legendary: 60s
+
+* Bundle of Fireworks:
+    * Chance to launch a large firework:
+        * Uncommon: 10% (+10% per stack) -> 15% (non-stacking)
+        * Rare: 20% (+20% per stack) -> 30% (non-stacking)
+        * Epic: 40% (+40% per stack) -> 60% (non-stacking)
+        * Legendary: 60% (+60% per stack) -> 100% (non-stacking)
+    * Large firework damage: 500% ->
+        * Uncommon: 400% (+100% per stack)
+        * Rare: 450% (+150% per stack)
+        * Epic: 550% (+250% per stack)
+        * Legendary: 600% (+300% per stack)
+    * Large firework size: +200% ->
+        * Uncommon: +100% (+100% per stack)
+        * Rare: +200% (+200% per stack)
+        * Epic: +300% (+300% per stack)
+        * Legendary: +500% (+500% per stack)
+
+* Focus Crystal:
+    * Quality damage bonus now decreases by half for every enemy within the radius rather than being all-or-nothing with a single enemy.
+    * Maximum damage bonus (when exactly 1 enemy nearby):
+        * Uncommon: 5% (+5% per stack) -> 10% (+10% per stack)
+        * Rare: 15% (+15% per stack) -> 20% (+20% per stack)
+
+* Delicate Watch:
+    * Now stacks additively with regular watches (was multiplicative).
+        * This now means quality watches just effectively act as having extra watches, rather than being their own source of damage mult.
+    * Additional damage bonus (not accounting for change from multiplicative to additive):
+        * Uncommon: 7% (+7% per stack) -> 10% (+10% per stack)
+        * Rare: 10% (+10% per stack) -> 20% (+20% per stack)
+        * Epic: 15% (+15% per stack) -> 40% (+40% per stack)
+        * Legendary: 20% (+20% per stack) -> 60% (+60% per stack)
+
+* Bison Steak:
+    * Fixed incorrect numbers in item description.
+    * Health is now granted for every part of main stage objective completed. Ex. each pillar on Commencement or vent in Void Fields will give 1 health bonus, rather than only the final one giving the bonus.
+
+* Pocket I.C.B.M:
+    * Now fires a small missile when using a skill that has at least 5s cooldown.
+
+* Ceremonial Dagger:
+    * Additional dagger amount:
+        * Uncommon: 1 (+1 per stack) -> 2 (+2 per stack)
+        * Rare: 2 (+2 per stack) -> 5 (+5 per stack)
+        * Epic: 5 (+5 per stack) -> 8 (+8 per stack)
+        * Legendary: 7 (+7 per stack) -> 10 (+10 per stack)
 
 * Preon Accumulator:
     * Explosion/zap radius:
@@ -43,16 +98,16 @@
     * Base cooldown (for all quality variants): 15s -> 30s
         * This was done to allow the sprout to remain for longer while still having a cooldown after the sprout times out.
 
-* Ceremonial Dagger:
-    * Additional dagger amount:
-        * Uncommon: 1 (+1 per stack) -> 2 (+2 per stack)
-        * Rare: 2 (+2 per stack) -> 5 (+5 per stack)
-        * Epic: 5 (+5 per stack) -> 8 (+8 per stack)
-        * Legendary: 7 (+7 per stack) -> 10 (+10 per stack)
+* Deus Ex Machina:
+    * The stored projectile is now fired by using your primary skill, rather than next equipment activation.
+    * Stored projectile now persists between stages.
 
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
     * Fixed ghosts not being able to revive if given one.
+
+* Fixed Shrine of Order not interacting with quality items correctly.
+    * Each quality tier is now treated as its own sub-category for each tier, so all regular white items will be ordered as a group, all uncommon whites as one, all regular greens, all uncommon greens, etc.
 
 * Quality items/equipments displayed on non-player characters are now colored according to their quality tier.
 

@@ -556,6 +556,26 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
+        public static void RetargetHandlerEnd(this ExceptionHandler exceptionHandler, Instruction newHandlerEnd)
+        {
+            for (Instruction instr = exceptionHandler.TryStart; instr != exceptionHandler.TryEnd; instr = instr.Next)
+            {
+                if (instr.MatchLeaveAny(exceptionHandler.HandlerEnd))
+                {
+                    instr.Operand = newHandlerEnd;
+                }
+            }
+
+            exceptionHandler.HandlerEnd = newHandlerEnd;
+        }
+
+        public static bool MatchLeaveAny(this Instruction instr, Instruction targetInstruction)
+        {
+            ILLabel label;
+            return (instr.MatchLeave(out label) && label?.Target == targetInstruction) ||
+                   (instr.MatchLeaveS(out label) && label?.Target == targetInstruction);
+        }
+
         public static bool MatchAny(this Instruction instr, out Instruction instruction)
         {
             instruction = instr;
