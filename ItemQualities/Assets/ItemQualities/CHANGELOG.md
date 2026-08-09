@@ -109,6 +109,9 @@
     * Cloned Junk Drone temp item duration: 100% -> 25%
     * Fixed ghosts not being able to revive if given one.
 
+* Gorag's Opus:
+    * Fixed ally cooldown reset not working if activated while the buff is still active.
+
 * Fixed Shrine of Order not interacting with quality items correctly.
     * Each quality tier is now treated as its own sub-category for each tier, so all regular white items will be ordered as a group, all uncommon whites as one, all regular greens, all uncommon greens, etc.
 
