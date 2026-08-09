@@ -6,10 +6,6 @@
     * <details><summary>Safer Spaces</summary> On block, apply a fog to nearby enemies that increases damage from all void-based attacks.</details>
     * <details><summary>The Crowdfunder</summary> Bullets can ricochet to nearby enemies. Increased max fire rate (same stats as previous version)</details>
 
-* Deus Ex Machina:
-    * The stored projectile is now fired by using your primary skill, rather than next equipment activation.
-    * Stored projectile now persists between stages.
-
 * Medkit:
     * Stacking healing zone radius on the same interactable now has diminishing returns rather than stacking linearly.
     * Healing zone radius:
@@ -22,18 +18,6 @@
         * Rare: 30s
         * Epic: 45s
         * Legendary: 60s
-
-* Preon Accumulator:
-    * Explosion/zap radius:
-        * Uncommon: +5m -> +10m
-        * Rare: +10m -> +20m
-        * Epic: +20m -> +40m
-        * Legendary: +25m -> +50m
-    * Base cooldown: 140s ->
-        * Uncommon: 125s
-        * Rare: 110s
-        * Epic: 95s
-        * Legendary: 80s
 
 * Bundle of Fireworks:
     * Chance to launch a large firework:
@@ -51,6 +35,25 @@
         * Rare: +200% (+200% per stack)
         * Epic: +300% (+300% per stack)
         * Legendary: +500% (+500% per stack)
+
+* Ceremonial Dagger:
+    * Additional dagger amount:
+        * Uncommon: 1 (+1 per stack) -> 2 (+2 per stack)
+        * Rare: 2 (+2 per stack) -> 5 (+5 per stack)
+        * Epic: 5 (+5 per stack) -> 8 (+8 per stack)
+        * Legendary: 7 (+7 per stack) -> 10 (+10 per stack)
+
+* Preon Accumulator:
+    * Explosion/zap radius:
+        * Uncommon: +5m -> +10m
+        * Rare: +10m -> +20m
+        * Epic: +20m -> +40m
+        * Legendary: +25m -> +50m
+    * Base cooldown: 140s ->
+        * Uncommon: 125s
+        * Rare: 110s
+        * Epic: 95s
+        * Legendary: 80s
 
 * Molotov:
     * Puddle burn damage:
@@ -73,12 +76,9 @@
     * Base cooldown (for all quality variants): 15s -> 30s
         * This was done to allow the sprout to remain for longer while still having a cooldown after the sprout times out.
 
-* Ceremonial Dagger:
-    * Additional dagger amount:
-        * Uncommon: 1 (+1 per stack) -> 2 (+2 per stack)
-        * Rare: 2 (+2 per stack) -> 5 (+5 per stack)
-        * Epic: 5 (+5 per stack) -> 8 (+8 per stack)
-        * Legendary: 7 (+7 per stack) -> 10 (+10 per stack)
+* Deus Ex Machina:
+    * The stored projectile is now fired by using your primary skill, rather than next equipment activation.
+    * Stored projectile now persists between stages.
 
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
