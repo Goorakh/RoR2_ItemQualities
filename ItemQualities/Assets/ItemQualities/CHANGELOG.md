@@ -42,6 +42,9 @@
         * Uncommon: 5% (+5% per stack) -> 10% (+10% per stack)
         * Rare: 15% (+15% per stack) -> 20% (+20% per stack)
 
+* Pocket I.C.B.M:
+    * Now fires a small missile when using a skill that has at least 5s cooldown.
+
 * Ceremonial Dagger:
     * Additional dagger amount:
         * Uncommon: 1 (+1 per stack) -> 2 (+2 per stack)
