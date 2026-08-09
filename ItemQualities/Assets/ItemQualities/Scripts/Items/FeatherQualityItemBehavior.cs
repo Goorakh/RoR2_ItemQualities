@@ -11,25 +11,16 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.Feather;
         }
 
-        private CharacterBodyExtraStatsTracker _bodyStats;
-
-        protected override void Awake()
-        {
-            base.Awake();
-
-            _bodyStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
-        }
-
         private void OnEnable()
         {
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
-            _bodyStats.OnHitGroundServer += onHitGroundServer;
+            BodyStats.OnHitGroundServer += onHitGroundServer;
         }
 
         private void OnDisable()
         {
             GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
-            _bodyStats.OnHitGroundServer -= onHitGroundServer;
+            BodyStats.OnHitGroundServer -= onHitGroundServer;
         }
 
         private void onCharacterDeathGlobal(DamageReport report)

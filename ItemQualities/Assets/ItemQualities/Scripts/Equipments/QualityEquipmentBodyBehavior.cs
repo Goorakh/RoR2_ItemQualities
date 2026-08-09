@@ -19,6 +19,7 @@ namespace ItemQualities.Equipments
         private static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
 
         private static CharacterBody _earlyAssignmentBody;
+        private static CharacterBodyExtraStatsTracker _earlyAssignmentBodyStats;
 
         public CharacterBody Body { get; private set; }
         public CharacterBodyExtraStatsTracker BodyStats { get; private set; }
@@ -28,7 +29,8 @@ namespace ItemQualities.Equipments
             Body = _earlyAssignmentBody;
             _earlyAssignmentBody = null;
 
-            BodyStats = Body ? Body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
+            BodyStats = _earlyAssignmentBodyStats;
+            _earlyAssignmentBodyStats = null;
         }
 
         [SystemInitializer(typeof(QualityCatalog))]
@@ -193,7 +195,7 @@ namespace ItemQualities.Equipments
                     if (behaviorCollection.BehaviorsArrayPool != null)
                     {
                         QualityEquipmentBodyBehavior[] qualityEquipmentBehaviors = behaviorCollection.BehaviorsArrayPool.Request();
-                        BodyBehaviorInfo bodyBehaviorInfo = new BodyBehaviorInfo(qualityEquipmentBehaviors, behaviorCollectionIndex);
+                        BodyBehaviorInfo bodyBehaviorInfo = new BodyBehaviorInfo(body.GetComponentCached<CharacterBodyExtraStatsTracker>(), qualityEquipmentBehaviors, behaviorCollectionIndex);
 
                         _bodyQualityBehaviorInfoLookup.Add(body, bodyBehaviorInfo);
                         refreshBodyQualityBehaviors(body, bodyBehaviorInfo);
@@ -214,7 +216,7 @@ namespace ItemQualities.Equipments
         {
             if (!_bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
             {
-                    return;
+                return;
             }
 
             refreshBodyQualityBehaviors(body, behaviorInfo);
@@ -237,7 +239,7 @@ namespace ItemQualities.Equipments
                         (currentEquipmentQualityTier != QualityTier.None && currentEquipmentGroupIndex == behaviorInfo.EquipmentGroupIndex) ||
                         (behaviorInfo.AllowOffhand && body.inventory.HasAnyQualityEquipment(behaviorInfo.EquipmentGroupIndex));
 
-                    updateEquipmentBehavior(body, ref bodyBehaviorInfo.BehaviorComponents[i], behaviorInfo.BehaviorType, shouldHaveEquipmentBehavior);
+                    updateEquipmentBehavior(body, bodyBehaviorInfo.CachedBodyStatsComponent, ref bodyBehaviorInfo.BehaviorComponents[i], behaviorInfo.BehaviorType, shouldHaveEquipmentBehavior);
                 }
             }
             else
@@ -254,7 +256,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        private static void updateEquipmentBehavior(CharacterBody body, ref QualityEquipmentBodyBehavior equipmentBehavior, Type qualityBehaviorType, bool shouldHaveBehavior)
+        private static void updateEquipmentBehavior(CharacterBody body, CharacterBodyExtraStatsTracker bodyStats, ref QualityEquipmentBodyBehavior equipmentBehavior, Type qualityBehaviorType, bool shouldHaveBehavior)
         {
             bool hasBehavior = !ReferenceEquals(equipmentBehavior, null);
 
@@ -263,6 +265,7 @@ namespace ItemQualities.Equipments
                 if (shouldHaveBehavior)
                 {
                     _earlyAssignmentBody = body;
+                    _earlyAssignmentBodyStats = bodyStats;
                     try
                     {
                         equipmentBehavior = (QualityEquipmentBodyBehavior)body.gameObject.AddComponent(qualityBehaviorType);
@@ -270,6 +273,7 @@ namespace ItemQualities.Equipments
                     finally
                     {
                         _earlyAssignmentBody = null;
+                        _earlyAssignmentBodyStats = null;
                     }
 
                     hasBehavior = true;
@@ -286,12 +290,15 @@ namespace ItemQualities.Equipments
 
         private sealed class BodyBehaviorInfo
         {
+            public readonly CharacterBodyExtraStatsTracker CachedBodyStatsComponent;
+
             public readonly QualityEquipmentBodyBehavior[] BehaviorComponents;
 
             public readonly int CollectionIndex;
 
-            public BodyBehaviorInfo(QualityEquipmentBodyBehavior[] behaviors, int collectionIndex)
+            public BodyBehaviorInfo(CharacterBodyExtraStatsTracker cachedBodyStatsComponent, QualityEquipmentBodyBehavior[] behaviors, int collectionIndex)
             {
+                CachedBodyStatsComponent = cachedBodyStatsComponent;
                 BehaviorComponents = behaviors;
                 CollectionIndex = collectionIndex;
             }

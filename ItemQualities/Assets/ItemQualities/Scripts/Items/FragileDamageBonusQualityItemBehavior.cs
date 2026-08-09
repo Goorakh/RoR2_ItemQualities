@@ -25,23 +25,15 @@ namespace ItemQualities.Items
             return ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus;
         }
 
-        private CharacterBodyExtraStatsTracker _bodyExtraStats;
-
         private bool _buffCountsDirty;
 
         private int _maxHits;
 
-        protected override void Awake()
-        {
-            base.Awake();
-            _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
-        }
-
         private void OnEnable()
         {
-            if (_bodyExtraStats.MasterExtraStatsTracker)
+            if (!ReferenceEquals(BodyStats.MasterExtraStatsTracker, null))
             {
-                _bodyExtraStats.MasterExtraStatsTracker.OnStageDamageInstancesTakenCountChangedServer += onStageDamageInstancesTakenCountChangedServer;
+                BodyStats.MasterExtraStatsTracker.OnStageDamageInstancesTakenCountChangedServer += onStageDamageInstancesTakenCountChangedServer;
             }
 
             refreshBuffCounts();
@@ -49,9 +41,9 @@ namespace ItemQualities.Items
 
         private void OnDisable()
         {
-            if (_bodyExtraStats.MasterExtraStatsTracker)
+            if (!ReferenceEquals(BodyStats.MasterExtraStatsTracker, null))
             {
-                _bodyExtraStats.MasterExtraStatsTracker.OnStageDamageInstancesTakenCountChangedServer -= onStageDamageInstancesTakenCountChangedServer;
+                BodyStats.MasterExtraStatsTracker.OnStageDamageInstancesTakenCountChangedServer -= onStageDamageInstancesTakenCountChangedServer;
             }
 
             if (NetworkServer.active)
@@ -109,7 +101,7 @@ namespace ItemQualities.Items
 
         private void refreshBuffCounts()
         {
-            int hitsTaken = _bodyExtraStats.MasterExtraStatsTracker ? _bodyExtraStats.MasterExtraStatsTracker.StageDamageInstancesTakenCount : 0;
+            int hitsTaken = BodyStats.MasterExtraStatsTracker ? BodyStats.MasterExtraStatsTracker.StageDamageInstancesTakenCount : 0;
 
             int currentBuffCount = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff).TotalQualityCount;
             int targetBuffCount = Mathf.Max(0, _maxHits - hitsTaken);
