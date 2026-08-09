@@ -36,6 +36,12 @@
         * Epic: +300% (+300% per stack)
         * Legendary: +500% (+500% per stack)
 
+* Focus Crystal:
+    * Quality damage bonus now decreases by half for every enemy within the radius rather than being all-or-nothing with a single enemy.
+    * Maximum damage bonus (when exactly 1 enemy nearby):
+        * Uncommon: 5% (+5% per stack) -> 10% (+10% per stack)
+        * Rare: 15% (+15% per stack) -> 20% (+20% per stack)
+
 * Ceremonial Dagger:
     * Additional dagger amount:
         * Uncommon: 1 (+1 per stack) -> 2 (+2 per stack)

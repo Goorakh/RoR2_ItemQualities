@@ -114,12 +114,14 @@ namespace ItemQualities.Items
                             enemiesInRange++;
                         }
 
-                        if (enemiesInRange == 1)
+                        if (enemiesInRange > 0)
                         {
-                            float damageBonus = (0.05f * nearbyDamageBonus.UncommonCount) +
-                                                (0.15f * nearbyDamageBonus.RareCount) +
+                            float damageBonus = (0.10f * nearbyDamageBonus.UncommonCount) +
+                                                (0.20f * nearbyDamageBonus.RareCount) +
                                                 (0.35f * nearbyDamageBonus.EpicCount) +
                                                 (0.50f * nearbyDamageBonus.LegendaryCount);
+
+                            damageBonus /= Mathf.Pow(2f, enemiesInRange);
 
                             if (damageBonus > 0)
                             {
