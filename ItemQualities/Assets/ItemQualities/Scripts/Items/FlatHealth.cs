@@ -1,4 +1,5 @@
-﻿using ItemQualities.ModCompatibility;
+﻿using HG;
+using ItemQualities.ModCompatibility;
 using ItemQualities.Orbs;
 using ItemQualities.Utilities.Extensions;
 using R2API;
@@ -14,9 +15,9 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            ObjectiveEvents.OnFinalMoonPillarChargedGlobal += onFinalMoonPillarChargedGlobal;
-            ObjectiveEvents.OnFinalVoidStagePillarChargedServer += onFinalVoidStagePillarChargedServer;
-            ArenaMissionController.onBeatArena += onBeatArena;
+            ObjectiveEvents.OnMoonPillarChargedGlobal += onMoonPillarChargedGlobal;
+            ObjectiveEvents.OnVoidStagePillarChargedServer += onVoidStagePillarChargedServer;
+            ArenaMissionController.OnRoundEndServer += onArenaRoundEndServer;
             BossGroup.onBossGroupDefeatedServer += onBossGroupDefeatedServer;
 
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
@@ -61,7 +62,7 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void onFinalMoonPillarChargedGlobal(HoldoutZoneController pillarHoldoutZone)
+        private static void onMoonPillarChargedGlobal(HoldoutZoneController pillarHoldoutZone)
         {
             if (!NetworkServer.active)
                 return;
@@ -73,7 +74,7 @@ namespace ItemQualities.Items
             tryDispatchSteakRewards(chargingTeam, pillarHoldoutZone.transform.position + new Vector3(0f, 2f, 0f));
         }
 
-        private static void onFinalVoidStagePillarChargedServer(HoldoutZoneController pillarHoldoutZone)
+        private static void onVoidStagePillarChargedServer(HoldoutZoneController pillarHoldoutZone)
         {
             if (!NetworkServer.active)
                 return;
@@ -85,16 +86,12 @@ namespace ItemQualities.Items
             tryDispatchSteakRewards(chargingTeam, pillarHoldoutZone.transform.position + new Vector3(0f, 2f, 0f));
         }
 
-        private static void onBeatArena()
+        private static void onArenaRoundEndServer()
         {
             if (!NetworkServer.active || !ArenaMissionController.instance)
                 return;
 
-            GameObject lastWard = null;
-            if (ArenaMissionController.instance.nullWards != null && ArenaMissionController.instance.nullWards.Length > 0)
-            {
-                lastWard = ArenaMissionController.instance.nullWards[^1];
-            }
+            GameObject lastWard = ArrayUtils.GetSafe(ArenaMissionController.instance.nullWards, ArenaMissionController.instance.currentRound - 1);
 
             HoldoutZoneController lastWardHoldoutZone = lastWard ? lastWard.GetComponent<HoldoutZoneController>() : null;
 

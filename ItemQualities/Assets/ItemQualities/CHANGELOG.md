@@ -51,6 +51,10 @@
         * Epic: 15% (+15% per stack) -> 40% (+40% per stack)
         * Legendary: 20% (+20% per stack) -> 60% (+60% per stack)
 
+* Bison Steak:
+    * Fixed incorrect numbers in item description.
+    * Health is now granted for every part of main stage objective completed. Ex. each pillar on Commencement or vent in Void Fields will give 1 health bonus, rather than only the final one giving the bonus.
+
 * Pocket I.C.B.M:
     * Now fires a small missile when using a skill that has at least 5s cooldown.
 
