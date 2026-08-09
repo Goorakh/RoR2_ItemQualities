@@ -135,7 +135,5 @@ namespace ItemQualities.Items
                 return damagePerFocusCrystal;
             }
         }
-
-        private delegate void ModifyFocusCrystalDamageDelegate(HealthComponent healthComponent, DamageInfo damageInfo, ref float damageValue);
     }
 }
