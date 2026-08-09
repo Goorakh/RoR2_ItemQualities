@@ -40,6 +40,9 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetBossDamageBonusTicks))]
         public int BossDamageBonusTicks;
 
+        [SyncVar(hook = nameof(hookSetQualityInfusionBonus))]
+        public uint QualityInfusionBonus;
+
         [SyncVar]
         private StoredInteractableInfo _cardStoredInteractableInfo = StoredInteractableInfo.None;
         public StoredInteractableInfo CardStoredInteractableInfo
@@ -473,6 +476,7 @@ namespace ItemQualities
             SteakBonus = masterSaveData.SteakBonus;
             SpeedOnPickupBonus = masterSaveData.SpeedOnPickupBonus;
             BossDamageBonusTicks = masterSaveData.BossDamageBonusTicks;
+            QualityInfusionBonus = masterSaveData.QualityInfusionBonus;
             _cardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
             _parryStoredProjectileInfo = masterSaveData.ParryStoredProjectileInfo;
 
@@ -527,6 +531,17 @@ namespace ItemQualities
             if (changed)
             {
                 OnParryStoredProjectileInfoChanged?.Invoke(this);
+            }
+        }
+
+        private void hookSetQualityInfusionBonus(uint newQualityInfusionBonus)
+        {
+            bool changed = QualityInfusionBonus != newQualityInfusionBonus;
+            QualityInfusionBonus = newQualityInfusionBonus;
+
+            if (changed)
+            {
+                markBodyStatsDirty();
             }
         }
     }
