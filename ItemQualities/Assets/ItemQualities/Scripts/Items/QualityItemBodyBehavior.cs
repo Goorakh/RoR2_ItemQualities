@@ -226,20 +226,7 @@ namespace ItemQualities.Items
         {
             if (!_bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
             {
-                int behaviorCollectionIndex = getBehaviorCollectionIndex(body);
-                if (!ArrayUtils.IsInBounds(_behaviorCollectionsLookup, behaviorCollectionIndex))
                     return;
-
-                ref readonly QualityGroupBehaviorCollection behaviorCollection = ref _behaviorCollectionsLookup[behaviorCollectionIndex];
-                if (behaviorCollection.Behaviors.Length == 0)
-                    return;
-
-                Log.Debug($"{Util.GetBestBodyName(body.gameObject)} does not have behavior info during inventory update, creating behaviors now");
-
-                QualityItemBodyBehavior[] qualityItemBehaviors = behaviorCollection.BehaviorsArrayPool.Request();
-                behaviorInfo = new BodyBehaviorInfo(qualityItemBehaviors, behaviorCollectionIndex);
-
-                _bodyQualityBehaviorInfoLookup.Add(body, behaviorInfo);
             }
 
             refreshBodyQualityBehaviors(body, behaviorInfo);
