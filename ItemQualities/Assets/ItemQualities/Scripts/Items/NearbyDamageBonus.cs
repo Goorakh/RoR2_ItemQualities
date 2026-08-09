@@ -32,23 +32,39 @@ namespace ItemQualities.Items
 
         private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
-            ILCursor c = new ILCursor(il);
-
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.NearbyDamageBonus)),
-                               x => x.MatchLdcR4(0.2f)))
+            ILCursor c = new ILCursor(il);
+
+            if (!ItemHooks.TryGotoNextItemCountVariable(c, typeof(RoR2Content.Items), nameof(RoR2Content.Items.NearbyDamageBonus), out VariableDefinition nearbyDamageBonusCountVar))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find NearbyDamageBonus itemCount variable");
                 return;
             }
 
-            c.Goto(foundCursors[1].Next, MoveType.After);
+            /*
+             *  // (float)itemCountEffective4 * 0.2f
+             *  IL_0C8A: ldloc.s   V_41
+             *  IL_0C8C: conv.r4
+             *  IL_0C8D: ldc.r4    0.2
+             *  IL_0C92: mul
+             */
+
+            Instruction nearbyDamageBonusCoefficientInstruction = null;
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdloc(nearbyDamageBonusCountVar),
+                               x => x.MatchConvR4(),
+                               x => x.MatchLdcR4(out _) && x.MatchAny(out nearbyDamageBonusCoefficientInstruction)))
+            {
+                Log.PatchError(il, "Failed to find patch location");
+                return;
+            }
+
+            c.Goto(nearbyDamageBonusCoefficientInstruction, MoveType.After);
 
             c.Emit(OpCodes.Ldarg, damageInfoParameter);
 
