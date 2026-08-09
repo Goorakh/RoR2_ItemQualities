@@ -43,6 +43,9 @@ namespace ItemQualities
             On.RoR2.Artifacts.SacrificeArtifactManager.OnServerCharacterDeath += SacrificeArtifactManager_OnServerCharacterDeath;
             On.RoR2.Artifacts.TeamDeathArtifactManager.OnServerCharacterDeathGlobal += TeamDeathArtifactManager_OnServerCharacterDeathGlobal;
 
+            On.RoR2.ArtifactTrialMissionController.CombatState.OnCharacterDeathGlobal += CombatState_OnCharacterDeathGlobal;
+            On.PowerOrbKeySpawner.SpawnKey += PowerOrbKeySpawner_SpawnKey;
+
             On.RoR2.GlobalDeathRewards.OnCharacterDeathGlobal += GlobalDeathRewards_OnCharacterDeathGlobal;
 
             On.RoR2.Stats.StatManager.OnCharacterDeath += StatManager_OnCharacterDeath;
@@ -324,6 +327,22 @@ namespace ItemQualities
             if (!isEchoed(damageReport))
             {
                 orig(damageReport);
+            }
+        }
+
+        private static void CombatState_OnCharacterDeathGlobal(On.RoR2.ArtifactTrialMissionController.CombatState.orig_OnCharacterDeathGlobal orig, EntityStates.EntityState self, DamageReport damageReport)
+        {
+            if (!shouldBypassDrops(damageReport))
+            {
+                orig(self, damageReport);
+            }
+        }
+
+        private static void PowerOrbKeySpawner_SpawnKey(On.PowerOrbKeySpawner.orig_SpawnKey orig, PowerOrbKeySpawner self, DamageReport damageReport)
+        {
+            if (!shouldBypassDrops(damageReport))
+            {
+                orig(self, damageReport);
             }
         }
 

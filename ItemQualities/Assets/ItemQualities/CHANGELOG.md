@@ -55,6 +55,9 @@
     * Fixed incorrect numbers in item description.
     * Health is now granted for every part of main stage objective completed. Ex. each pillar on Commencement or vent in Void Fields will give 1 health bonus, rather than only the final one giving the bonus.
 
+* Warped Echo:
+    * Fixed Sentry Key drops being repeated on Conduit Canyon.
+
 * Infusion:
     * Fixed quality infusion health contributing to regular infusion's limit.
 
