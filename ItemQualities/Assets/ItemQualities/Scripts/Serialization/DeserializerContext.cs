@@ -8,6 +8,9 @@ namespace ItemQualities.Serialization
     {
         public BinaryReader Reader { get; }
 
+        /// <summary>
+        /// The version of the save file format we are deserializing, current version is <see cref="SaveData.SaveManager.SaveFileVersion"/>
+        /// </summary>
         public uint SerializedVersion { get; }
 
         private int _currentSharedBitIndex;
