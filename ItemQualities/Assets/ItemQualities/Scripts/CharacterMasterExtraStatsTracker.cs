@@ -29,7 +29,7 @@ namespace ItemQualities
         private CharacterMaster _master;
 
         private CharacterBody _cachedBody;
-        private CharacterBodyExtraStatsTracker _bodyExtraStatsComponent;
+        private CharacterBodyExtraStatsTracker _cachedBodyStats;
 
         [SyncVar(hook = nameof(hookSetSteakBonus))]
         public float SteakBonus;
@@ -108,9 +108,9 @@ namespace ItemQualities
         private void OnEnable()
         {
             _master.onBodyStart += setBody;
-            _master.onBodyDestroyed += setBody;
+            _master.onBodyDestroyed += onBodyDestroyed;
 
-            if (_master.inventory)
+            if (!ReferenceEquals(_master.inventory, null))
             {
                 _master.inventory.onInventoryChanged += onInventoryChanged;
             }
@@ -123,9 +123,9 @@ namespace ItemQualities
         private void OnDisable()
         {
             _master.onBodyStart -= setBody;
-            _master.onBodyDestroyed -= setBody;
+            _master.onBodyDestroyed -= onBodyDestroyed;
 
-            if (_master.inventory)
+            if (!ReferenceEquals(_master.inventory, null))
             {
                 _master.inventory.onInventoryChanged -= onInventoryChanged;
             }
@@ -135,22 +135,27 @@ namespace ItemQualities
             setBody(null);
         }
 
+        private void onBodyDestroyed(CharacterBody body)
+        {
+            setBody(null);
+        }
+
         private void setBody(CharacterBody body)
         {
-            if (_cachedBody == body)
+            if (ReferenceEquals(_cachedBody, body))
                 return;
 
-            if (_bodyExtraStatsComponent)
+            if (!ReferenceEquals(_cachedBodyStats, null))
             {
-                _bodyExtraStatsComponent.OnIncomingDamageServer -= onIncomingDamageServer;
+                _cachedBodyStats.OnIncomingDamageServer -= onIncomingDamageServer;
             }
 
             _cachedBody = body;
-            _bodyExtraStatsComponent = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
+            _cachedBodyStats = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
 
-            if (_bodyExtraStatsComponent)
+            if (!ReferenceEquals(_cachedBodyStats, null))
             {
-                _bodyExtraStatsComponent.OnIncomingDamageServer += onIncomingDamageServer;
+                _cachedBodyStats.OnIncomingDamageServer += onIncomingDamageServer;
             }
         }
 
