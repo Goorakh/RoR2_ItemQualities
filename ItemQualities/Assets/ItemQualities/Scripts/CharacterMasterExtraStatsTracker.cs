@@ -330,7 +330,7 @@ namespace ItemQualities
                     {
                         if (canUpgrade(itemIndex))
                         {
-                            availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountEffective(itemIndex));
+                            availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountTemp(itemIndex));
                         }
                     }
                 }
