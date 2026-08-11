@@ -55,6 +55,12 @@
     * Fixed incorrect numbers in item description.
     * Health is now granted for every part of main stage objective completed. Ex. each pillar on Commencement or vent in Void Fields will give 1 health bonus, rather than only the final one giving the bonus.
 
+* Warped Echo:
+    * Fixed Sentry Key drops being repeated on Conduit Canyon.
+
+* Infusion:
+    * Fixed quality infusion health contributing to regular infusion's limit.
+
 * Pocket I.C.B.M:
     * Now fires a small missile when using a skill that has at least 5s cooldown.
 
@@ -105,6 +111,9 @@
 * Gnarled Woodsprite:
     * Cloned Junk Drone temp item duration: 100% -> 25%
     * Fixed ghosts not being able to revive if given one.
+
+* Gorag's Opus:
+    * Fixed ally cooldowns not resetting if the equipment is activated while the buff is still active.
 
 * Fixed Shrine of Order not interacting with quality items correctly.
     * Each quality tier is now treated as its own sub-category for each tier, so all regular white items will be ordered as a group, all uncommon whites as one, all regular greens, all uncommon greens, etc.

@@ -29,7 +29,7 @@ namespace ItemQualities
         private CharacterMaster _master;
 
         private CharacterBody _cachedBody;
-        private CharacterBodyExtraStatsTracker _bodyExtraStatsComponent;
+        private CharacterBodyExtraStatsTracker _cachedBodyStats;
 
         [SyncVar(hook = nameof(hookSetSteakBonus))]
         public float SteakBonus;
@@ -39,6 +39,9 @@ namespace ItemQualities
 
         [SyncVar(hook = nameof(hookSetBossDamageBonusTicks))]
         public int BossDamageBonusTicks;
+
+        [SyncVar(hook = nameof(hookSetQualityInfusionBonus))]
+        public uint QualityInfusionBonus;
 
         [SyncVar]
         private StoredInteractableInfo _cardStoredInteractableInfo = StoredInteractableInfo.None;
@@ -110,9 +113,9 @@ namespace ItemQualities
         private void OnEnable()
         {
             _master.onBodyStart += setBody;
-            _master.onBodyDestroyed += setBody;
+            _master.onBodyDestroyed += onBodyDestroyed;
 
-            if (_master.inventory)
+            if (!ReferenceEquals(_master.inventory, null))
             {
                 _master.inventory.onInventoryChanged += onInventoryChanged;
             }
@@ -125,9 +128,9 @@ namespace ItemQualities
         private void OnDisable()
         {
             _master.onBodyStart -= setBody;
-            _master.onBodyDestroyed -= setBody;
+            _master.onBodyDestroyed -= onBodyDestroyed;
 
-            if (_master.inventory)
+            if (!ReferenceEquals(_master.inventory, null))
             {
                 _master.inventory.onInventoryChanged -= onInventoryChanged;
             }
@@ -137,22 +140,27 @@ namespace ItemQualities
             setBody(null);
         }
 
+        private void onBodyDestroyed(CharacterBody body)
+        {
+            setBody(null);
+        }
+
         private void setBody(CharacterBody body)
         {
-            if (_cachedBody == body)
+            if (ReferenceEquals(_cachedBody, body))
                 return;
 
-            if (_bodyExtraStatsComponent)
+            if (!ReferenceEquals(_cachedBodyStats, null))
             {
-                _bodyExtraStatsComponent.OnIncomingDamageServer -= onIncomingDamageServer;
+                _cachedBodyStats.OnIncomingDamageServer -= onIncomingDamageServer;
             }
 
             _cachedBody = body;
-            _bodyExtraStatsComponent = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
+            _cachedBodyStats = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
 
-            if (_bodyExtraStatsComponent)
+            if (!ReferenceEquals(_cachedBodyStats, null))
             {
-                _bodyExtraStatsComponent.OnIncomingDamageServer += onIncomingDamageServer;
+                _cachedBodyStats.OnIncomingDamageServer += onIncomingDamageServer;
             }
         }
 
@@ -470,6 +478,7 @@ namespace ItemQualities
             SteakBonus = masterSaveData.SteakBonus;
             SpeedOnPickupBonus = masterSaveData.SpeedOnPickupBonus;
             BossDamageBonusTicks = masterSaveData.BossDamageBonusTicks;
+            QualityInfusionBonus = masterSaveData.QualityInfusionBonus;
             _cardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
             _parryStoredProjectileInfo = masterSaveData.ParryStoredProjectileInfo;
 
@@ -524,6 +533,17 @@ namespace ItemQualities
             if (changed)
             {
                 OnParryStoredProjectileInfoChanged?.Invoke(this);
+            }
+        }
+
+        private void hookSetQualityInfusionBonus(uint newQualityInfusionBonus)
+        {
+            bool changed = QualityInfusionBonus != newQualityInfusionBonus;
+            QualityInfusionBonus = newQualityInfusionBonus;
+
+            if (changed)
+            {
+                markBodyStatsDirty();
             }
         }
     }
