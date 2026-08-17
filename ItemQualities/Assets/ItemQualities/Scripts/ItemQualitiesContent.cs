@@ -748,6 +748,10 @@ namespace ItemQualities
             public static ItemQualityGroup ParentEgg;
             
             public static ItemQualityGroup ShinyPearl;
+
+            public static ItemQualityGroup RoboBallBuddy;
+
+            public static ItemQualityGroup RoboBallBuddyItem;
         }
 
         public static class Items
