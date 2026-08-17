@@ -1718,5 +1718,17 @@
 
         "ITEM_SHINYPEARL_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Unfavorable outcomes increase luck temporarily.",
         "ITEM_SHINYPEARL_LEGENDARY_DESC": "{0}\nWhenever any random effect rolls an <style=cIsHealth>unfavorable outcome</style>, gain <sprite name=\"Quality\"> <style=cIsUtility>0.06 luck</style> for <sprite name=\"Quality\"> <style=cIsUtility>30</style> seconds, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>6 <style=cStack>(+6 per stack)</style> luck</style>.\nWhenever any random effect rolls a <style=cIsUtility>favorable outcome</style>, reduce <style=cIsUtility>luck bonus</style> by <style=cIsUtility>0.01</style>, <style=cIsUtility>cannot reduce below 0</style>.",
+        
+        "ITEM_ROBOBALLBUDDY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Each probe fires a more powerful laser beam.",
+        "ITEM_ROBOBALLBUDDY_UNCOMMON_DESC": "{0}\nEach probe additionally fires a <sprite name=\"Quality\"> <style=cIsUtility>2m wide</style> powerful <style=cIsDamage>laser beam</style> for <sprite name=\"Quality\"> <style=cIsDamage>300% <style=cStack>(+300% per stack)</style> damage per second</style> for <sprite name=\"Quality\"> <style=cIsUtility>4 <style=cStack>(+4 per stack)</style> seconds</style>.",
+        
+        "ITEM_ROBOBALLBUDDY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Each probe fires a more powerful laser beam.",
+        "ITEM_ROBOBALLBUDDY_RARE_DESC": "{0}\nEach probe additionally fires a <sprite name=\"Quality\"> <style=cIsUtility>4m wide</style> powerful <style=cIsDamage>laser beam</style> for <sprite name=\"Quality\"> <style=cIsDamage>600% <style=cStack>(+600% per stack)</style> damage per second</style> for <sprite name=\"Quality\"> <style=cIsUtility>8 <style=cStack>(+8 per stack)</style> seconds</style>.",
+        
+        "ITEM_ROBOBALLBUDDY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Each probe fires a more powerful laser beam.",
+        "ITEM_ROBOBALLBUDDY_EPIC_DESC": "{0}\nEach probe additionally fires a <sprite name=\"Quality\"> <style=cIsUtility>8m wide</style> powerful <style=cIsDamage>laser beam</style> for <sprite name=\"Quality\"> <style=cIsDamage>900% <style=cStack>(+900% per stack)</style> damage per second</style> for <sprite name=\"Quality\"> <style=cIsUtility>12 <style=cStack>(+12 per stack)</style> seconds</style>.",
+        
+        "ITEM_ROBOBALLBUDDY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Each probe fires a more powerful laser beam.",
+        "ITEM_ROBOBALLBUDDY_LEGENDARY_DESC": "{0}\nEach probe additionally fires a <sprite name=\"Quality\"> <style=cIsUtility>14m wide</style> powerful <style=cIsDamage>laser beam</style> for <sprite name=\"Quality\"> <style=cIsDamage>1200% <style=cStack>(+1200% per stack)</style> damage per second</style> for <sprite name=\"Quality\"> <style=cIsUtility>16 <style=cStack>(+16 per stack)</style> seconds</style>.",
     }
 }

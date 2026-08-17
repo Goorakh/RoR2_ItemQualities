@@ -195,6 +195,8 @@ namespace ItemQualities
 
             List<SkillDef> skillDefsList = new List<SkillDef>();
 
+            List<SkillFamily> skillFamiliesList = new List<SkillFamily>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -279,6 +281,9 @@ namespace ItemQualities
                     case SkillDef skillDef:
                         skillDefsList.Add(skillDef);
                         break;
+                    case SkillFamily skillFamily:
+                        skillFamiliesList.Add(skillFamily);
+                        break;
                 }
             }
 
@@ -322,6 +327,8 @@ namespace ItemQualities
             _contentPack.networkSoundEventDefs.Add(networkSoundEventsList.ToArray());
 
             _contentPack.skillDefs.Add(skillDefsList.ToArray());
+
+            _contentPack.skillFamilies.Add(skillFamiliesList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -741,6 +748,10 @@ namespace ItemQualities
             public static ItemQualityGroup ParentEgg;
             
             public static ItemQualityGroup ShinyPearl;
+
+            public static ItemQualityGroup RoboBallBuddy;
+
+            public static ItemQualityGroup RoboBallBuddyItem;
         }
 
         public static class Items
