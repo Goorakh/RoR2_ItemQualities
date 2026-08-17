@@ -71,7 +71,9 @@ namespace ItemQualities
             GameObject scaleFixExplosionEffectPrefab = prefab.InstantiateClone($"{prefab.name}_ScaleFix_x{defaultRadius:F1}", false);
 
             if (scaleFixExplosionEffectPrefab.TryGetComponent(out EffectComponent effectComponent))
+            {
                 effectComponent.applyScale = true;
+            }
 
             if (scaleFixExplosionEffectPrefab.transform.childCount > 0)
             {
