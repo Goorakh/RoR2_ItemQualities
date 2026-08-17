@@ -7,6 +7,8 @@ namespace ItemQualities
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct ItemQualityCounts : IEquatable<ItemQualityCounts>
     {
+        public static readonly ItemQualityCounts zero = new ItemQualityCounts(0, 0, 0, 0, 0);
+
         [FieldOffset(0)]
         private fixed int _itemCounts[(int)QualityTier.Count + 1];
 
@@ -126,6 +128,8 @@ namespace ItemQualities
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct TempItemQualityCounts : IEquatable<TempItemQualityCounts>
     {
+        public static readonly TempItemQualityCounts zero = new TempItemQualityCounts(0, 0, 0, 0, 0);
+
         [FieldOffset(0)]
         private fixed float _itemCounts[(int)QualityTier.Count + 1];
 
