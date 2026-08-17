@@ -49,7 +49,8 @@
         "AK.Wwise.Unity.Timeline.dll",
         "ShaderSwapper.dll",
         "RiskOfOptions.dll",
-        "ProperSave.dll"
+        "ProperSave.dll",
+        "MiscFixes.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
