@@ -60,7 +60,7 @@
     * Fixed Sentry Key drops being repeated on Conduit Canyon.
 
 * Ukulele:
-    * Fixed only being able to charge a single enemy at a time.
+    * Fixed not being able to apply the charge effect to multiple enemies at once.
 
 * Infusion:
     * Fixed quality infusion health contributing to regular infusion's limit.
