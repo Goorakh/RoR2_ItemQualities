@@ -69,6 +69,8 @@ namespace ItemQualities.Items
                     teamFilter.teamIndex = interactorBody.teamComponent.teamIndex;
 
                     medkitHealingWard.InteractableObject = interactableObject;
+
+                    NetworkServer.Spawn(healingWardInstance);
                 }
 
                 float radius = (7f * medkit.UncommonCount) +

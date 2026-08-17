@@ -7,6 +7,7 @@
     * <details><summary>The Crowdfunder</summary> Bullets can ricochet to nearby enemies. Increased max fire rate (same stats as previous version)</details>
 
 * Medkit:
+    * Fixed healing zone being invisible for non-host players.
     * Stacking healing zone radius on the same interactable now has diminishing returns rather than stacking linearly.
     * Healing zone radius:
         * Uncommon: 10m (+10m per stack) -> 7m (+7m per stack)
@@ -57,6 +58,9 @@
 
 * Warped Echo:
     * Fixed Sentry Key drops being repeated on Conduit Canyon.
+
+* Ukulele:
+    * Fixed not being able to apply the charge effect to multiple enemies at once.
 
 * Infusion:
     * Fixed quality infusion health contributing to regular infusion's limit.

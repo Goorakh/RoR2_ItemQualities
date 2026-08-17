@@ -15,9 +15,9 @@ namespace ItemQualities.Utilities.Extensions
 
         public static void Add<T>(this NamedAssetCollection<T> namedAssetCollection, T value)
         {
-            // OPTIMIZATION: Use shared array for passing info into collection to avoid allocations.
+            // Use shared array for passing info into collection to avoid allocations.
             // This is reliant on the fact that .Add() does not store a reference to the array and simply copies elements from it.
-            ref readonly T[] array = ref SharedSingleElementArray<T>.Array;
+            T[] array = SharedSingleElementArray<T>.Array;
             array[0] = value;
             try
             {

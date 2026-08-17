@@ -130,7 +130,8 @@ namespace ItemQualities.Items
             ChainLightningArcController lightningArcController = null;
             foreach (ChainLightningArcController chainLightningArcController in InstanceTracker.GetInstancesList<ChainLightningArcController>())
             {
-                if (chainLightningArcController.Attacker == attacker)
+                if (ReferenceEquals(chainLightningArcController._bodyAttachment.attachedBodyObject, bodyObject) &&
+                    ReferenceEquals(chainLightningArcController.Attacker, attacker))
                 {
                     lightningArcController = chainLightningArcController;
                     break;
