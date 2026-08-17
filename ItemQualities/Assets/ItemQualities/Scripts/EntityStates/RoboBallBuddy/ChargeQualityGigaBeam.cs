@@ -93,7 +93,10 @@ namespace EntityStates.RoboBallBuddy
 
             if (isAuthority)
             {
-                activatorSkillSlot.SetBlockedCooldownSkillState(true);
+                if (activatorSkillSlot)
+                {
+                    activatorSkillSlot.SetBlockedCooldownSkillState(true);
+                }
             }
         }
 
@@ -115,7 +118,10 @@ namespace EntityStates.RoboBallBuddy
 
             if (isAuthority)
             {
-                activatorSkillSlot.SetBlockedCooldownSkillState(false);
+                if (activatorSkillSlot)
+                {
+                    activatorSkillSlot.SetBlockedCooldownSkillState(false);
+                }
             }
         }
 

@@ -89,7 +89,10 @@ namespace EntityStates.RoboBallBuddy
 
             if (isAuthority)
             {
-                activatorSkillSlot.SetBlockedCooldownSkillState(true);
+                if (activatorSkillSlot)
+                {
+                    activatorSkillSlot.SetBlockedCooldownSkillState(true);
+                }
             }
 
             if (laserVfxInstance)
@@ -109,7 +112,10 @@ namespace EntityStates.RoboBallBuddy
 
             if (isAuthority)
             {
-                activatorSkillSlot.SetBlockedCooldownSkillState(false);
+                if (activatorSkillSlot)
+                {
+                    activatorSkillSlot.SetBlockedCooldownSkillState(false);
+                }
             }
 
             if (_beamLoopSoundPtr.isValid)
