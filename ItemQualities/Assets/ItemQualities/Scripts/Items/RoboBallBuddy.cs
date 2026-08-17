@@ -123,8 +123,8 @@ namespace ItemQualities.Items
                         fireGigaBeamAndStrafeDriver.buttonPressType = AISkillDriver.ButtonPressType.Hold;
 
                         // Transition Behavior
-                        fireGigaBeamAndFleeDriver.driverUpdateTimerOverride = 5f;
-                        fireGigaBeamAndFleeDriver.noRepeat = true;
+                        fireGigaBeamAndStrafeDriver.driverUpdateTimerOverride = 5f;
+                        fireGigaBeamAndStrafeDriver.noRepeat = true;
                     }
 
                     // Move all default SkillDrivers to end
