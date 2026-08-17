@@ -24,6 +24,7 @@ namespace ItemQualities
     [BepInDependency(R2API.DotAPI.PluginGUID)]
     [BepInDependency(R2API.ItemAPI.PluginGUID)]
     [BepInDependency(R2API.Networking.NetworkingAPI.PluginGUID)]
+    [BepInDependency(MiscFixes.MiscFixesPlugin.PluginGUID)]
     [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(ProperSave.ProperSavePlugin.GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(ModCompatibility.DamageSourceForEnemies.GUID, BepInDependency.DependencyFlags.SoftDependency)]
