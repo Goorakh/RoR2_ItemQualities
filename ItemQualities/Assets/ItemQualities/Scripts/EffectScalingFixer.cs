@@ -55,8 +55,7 @@ namespace ItemQualities
                 return null;
             }
 
-            Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew
-                <Dictionary<GameObject, Dictionary<int, EffectDef>>, GameObject, Dictionary<int, EffectDef>>(effectPrefab);
+            Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew(effectPrefab);
 
             int dictionaryKey = (int)(defaultRadius * 10);
             if (scaledPrefabsCache.TryGetValue(dictionaryKey, out EffectDef cachedScaledEffectDef))
@@ -72,7 +71,9 @@ namespace ItemQualities
             GameObject scaleFixExplosionEffectPrefab = prefab.InstantiateClone(nameToSet ?? $"{prefab.name}_ScaleFix_x{defaultRadius:F1}", false);
 
             if (scaleFixExplosionEffectPrefab.TryGetComponent(out EffectComponent effectComponent))
+            {
                 effectComponent.applyScale = true;
+            }
 
             if (scaleFixExplosionEffectPrefab.transform.childCount > 0)
             {

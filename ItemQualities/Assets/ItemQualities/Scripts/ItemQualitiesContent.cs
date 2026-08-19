@@ -5,6 +5,7 @@ using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.ContentManagement;
 using RoR2.Projectile;
+using RoR2.Skills;
 using ShaderSwapper;
 using System;
 using System.Collections;
@@ -98,6 +99,8 @@ namespace ItemQualities
 
             populateTypeFields(typeof(NetworkSoundEvents), _contentPack.networkSoundEventDefs, fieldName => "nse" + fieldName);
 
+            populateTypeFields(typeof(SkillDefs), _contentPack.skillDefs);
+
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
@@ -190,6 +193,10 @@ namespace ItemQualities
 
             List<NetworkSoundEventDef> networkSoundEventsList = new List<NetworkSoundEventDef>();
 
+            List<SkillDef> skillDefsList = new List<SkillDef>();
+
+            List<SkillFamily> skillFamiliesList = new List<SkillFamily>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -271,6 +278,12 @@ namespace ItemQualities
                     case NetworkSoundEventDef networkSoundEventDef:
                         networkSoundEventsList.Add(networkSoundEventDef);
                         break;
+                    case SkillDef skillDef:
+                        skillDefsList.Add(skillDef);
+                        break;
+                    case SkillFamily skillFamily:
+                        skillFamiliesList.Add(skillFamily);
+                        break;
                 }
             }
 
@@ -312,6 +325,10 @@ namespace ItemQualities
             _contentPack.sprites.Add(spritesList.ToArray());
 
             _contentPack.networkSoundEventDefs.Add(networkSoundEventsList.ToArray());
+
+            _contentPack.skillDefs.Add(skillDefsList.ToArray());
+
+            _contentPack.skillFamilies.Add(skillFamiliesList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -706,6 +723,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup MinorConstructOnKill;
 
+            public static ItemQualityGroup MinorConstructOnKillConstructItem;
+
             public static ItemQualityGroup ConstructBubble;
 
             public static ItemQualityGroup TitanGoldDuringTP;
@@ -729,6 +748,18 @@ namespace ItemQualities
             public static ItemQualityGroup Knurl;
 
             public static ItemQualityGroup Pearl;
+            
+            public static ItemQualityGroup ParentEgg;
+            
+            public static ItemQualityGroup ShinyPearl;
+
+            public static ItemQualityGroup RoboBallBuddy;
+
+            public static ItemQualityGroup RoboBallBuddyItem;
+
+            public static ItemQualityGroup BeetleGland;
+
+            public static ItemQualityGroup BeetleGlandGuardItem;
         }
 
         public static class Items
@@ -859,9 +890,13 @@ namespace ItemQualities
 
             public static BuffQualityGroup ArmorReductionOnHitCounter;
 
+            public static BuffQualityGroup BearVoidFog;
+
             public static BuffQualityGroup KnurlReady;
 
             public static BuffQualityGroup KnurlCooldown;
+
+            public static BuffQualityGroup ParentEggOverheat;
         }
 
         public static class Buffs
@@ -897,6 +932,8 @@ namespace ItemQualities
             public static BuffDef ConstructBubble;
 
             public static BuffDef ConstructBubbleCooldown;
+
+            public static BuffDef ShinyPearlLuck;
         }
 
         public static class Prefabs
@@ -918,6 +955,8 @@ namespace ItemQualities
             public static GameObject HitlistMarkersUI;
 
             public static GameObject ParryProjectileDisplayUI;
+
+            public static GameObject QualityBearVoidFogExplosion;
 
             public static GameObject MinorConstructBubbleEffect;
 
@@ -1040,6 +1079,11 @@ namespace ItemQualities
         public static class NetworkSoundEvents
         {
             public static NetworkSoundEventDef DuplicateInteractable;
+        }
+
+        public static class SkillDefs
+        {
+            public static SkillDef ParryProjectileSkill;
         }
     }
 }

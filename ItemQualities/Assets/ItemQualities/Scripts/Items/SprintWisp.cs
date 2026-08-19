@@ -148,7 +148,7 @@ namespace ItemQualities.Items
 
                         greaterWispOrb.blastRadius = explosionRadius;
 
-                        greaterWispOrb.scale = Mathf.Log(MathConstants.E + (greaterWispOrb.blastRadius / 5f));
+                        greaterWispOrb.scale = Mathf.Sqrt(greaterWispOrb.blastRadius / 2f);
 
                         float bonusDamageCoefficient = (4f * sprintWisp.UncommonCount) +
                                                        (6f * sprintWisp.RareCount) +
@@ -156,8 +156,6 @@ namespace ItemQualities.Items
                                                        (10f * sprintWisp.LegendaryCount);
 
                         greaterWispOrb.damageValue += sprintWispBodyBehavior.body.damage * bonusDamageCoefficient;
-
-                        
                     }
                 }
             }

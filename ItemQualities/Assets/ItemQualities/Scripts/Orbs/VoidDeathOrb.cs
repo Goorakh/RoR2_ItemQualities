@@ -65,6 +65,8 @@ namespace ItemQualities.Orbs
                         damageType = DamageType.VoidDeath | DamageType.BypassBlock | DamageType.Silent
                     };
 
+                    damageInfo.damageType.AddModdedDamageType(DamageTypes.Void);
+
                     victim.TakeDamage(damageInfo);
                     GlobalEventManager.instance.OnHitEnemy(damageInfo, victim.gameObject);
                     GlobalEventManager.instance.OnHitAll(damageInfo, victim.gameObject);

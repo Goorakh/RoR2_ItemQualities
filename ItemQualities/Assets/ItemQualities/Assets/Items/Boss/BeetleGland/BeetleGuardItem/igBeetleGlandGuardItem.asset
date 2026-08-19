@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igBeetleGlandGuardItem
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseItem: {fileID: 0}
+  _uncommonItem: {fileID: 11400000, guid: a408e037a38774a469ceb848357c64e6, type: 2}
+  _rareItem: {fileID: 11400000, guid: 76f2392bec33091428e9e0f22d7cbf15, type: 2}
+  _epicItem: {fileID: 11400000, guid: af5bbfcc263e72042b20692bbbda3b47, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 2366e84918add3e4a923f8422fcbaf3d, type: 2}

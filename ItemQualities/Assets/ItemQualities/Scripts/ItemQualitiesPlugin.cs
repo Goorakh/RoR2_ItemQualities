@@ -1,6 +1,7 @@
 using BepInEx;
 using BepInEx.Bootstrap;
 using HG.Reflection;
+using ItemQualities.ModCompatibility;
 using R2API.Utils;
 using System.Diagnostics;
 using System.IO;
@@ -24,8 +25,11 @@ namespace ItemQualities
     [BepInDependency(R2API.DotAPI.PluginGUID)]
     [BepInDependency(R2API.ItemAPI.PluginGUID)]
     [BepInDependency(R2API.Networking.NetworkingAPI.PluginGUID)]
+    [BepInDependency(MiscFixes.MiscFixesPlugin.PluginGUID)]
     [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(ProperSave.ProperSavePlugin.GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(ModCompatibility.DamageSourceForEnemies.GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(Rebindables.Rebindables.PluginGUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public sealed class ItemQualitiesPlugin : BaseUnityPlugin
     {
@@ -50,6 +54,11 @@ namespace ItemQualities
             if (Chainloader.PluginInfos.ContainsKey(RiskOfOptions.PluginInfo.PLUGIN_GUID))
             {
                 Configs.InitRiskOfOptions();
+            }
+
+            if (RebindablesCompat.Enabled)
+            {
+                RebindablesCompat.RegisterKeybinds();
             }
 
             ItemQualitiesContent contentProvider = new ItemQualitiesContent();

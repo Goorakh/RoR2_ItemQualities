@@ -1,4 +1,5 @@
 using BepInEx.Logging;
+using MonoMod.Cil;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -81,6 +82,17 @@ namespace ItemQualities
             lock (_logLock)
             {
                 _logSource.LogError(data);
+            }
+        }
+
+        internal static void PatchError(ILContext context, string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        {
+            lock (_logLock)
+            {
+                StringBuilder sb = buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data);
+                sb.Insert(0, $"Patch error for method: {context.Method.FullName} at ");
+
+                _logSource.LogError(sb);
             }
         }
 

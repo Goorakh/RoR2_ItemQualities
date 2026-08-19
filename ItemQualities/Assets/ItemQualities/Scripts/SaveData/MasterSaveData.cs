@@ -17,8 +17,13 @@ namespace ItemQualities.SaveData
 
         public int BossDamageBonusTicks { get; private set; }
 
+        public uint QualityInfusionBonus { get; private set; }
+
         private StoredInteractableInfo _cardStoredInteractableInfo;
         public ref readonly StoredInteractableInfo CardStoredInteractableInfo => ref _cardStoredInteractableInfo;
+
+        private ParryStoredProjectileInfo _parryStoredProjectileInfo;
+        public ref readonly ParryStoredProjectileInfo ParryStoredProjectileInfo => ref _parryStoredProjectileInfo;
 
         private readonly List<ItemIndex> _upgradeItemIndices = new List<ItemIndex>();
         public readonly ReadOnlyCollection<ItemIndex> UpgradeItemIndices;
@@ -38,7 +43,9 @@ namespace ItemQualities.SaveData
                 SteakBonus = masterExtraStats.SteakBonus;
                 SpeedOnPickupBonus = masterExtraStats.SpeedOnPickupBonus;
                 BossDamageBonusTicks = masterExtraStats.BossDamageBonusTicks;
+                QualityInfusionBonus = masterExtraStats.QualityInfusionBonus;
                 _cardStoredInteractableInfo = masterExtraStats.CardStoredInteractableInfo;
+                _parryStoredProjectileInfo = masterExtraStats.ParryStoredProjectileInfo;
                 masterExtraStats.GetItemUpgradeIndices(_upgradeItemIndices);
             }
         }
@@ -49,7 +56,9 @@ namespace ItemQualities.SaveData
             context.Writer.Write(SteakBonus);
             context.WritePackedUInt32((uint)SpeedOnPickupBonus);
             context.WritePackedUInt32((uint)BossDamageBonusTicks);
+            context.WritePackedUInt32(QualityInfusionBonus);
             _cardStoredInteractableInfo.Serialize(context);
+            _parryStoredProjectileInfo.Serialize(context);
 
             context.WritePackedUInt32((uint)_upgradeItemIndices.Count);
             foreach (ItemIndex itemIndex in _upgradeItemIndices)
@@ -64,7 +73,18 @@ namespace ItemQualities.SaveData
             SteakBonus = context.Reader.ReadSingle();
             SpeedOnPickupBonus = (int)context.ReadPackedUInt32();
             BossDamageBonusTicks = (int)context.ReadPackedUInt32();
+
+            if (context.SerializedVersion > 1)
+            {
+                QualityInfusionBonus = context.ReadPackedUInt32();
+            }
+
             _cardStoredInteractableInfo.Deserialize(context);
+
+            if (context.SerializedVersion > 0)
+            {
+                _parryStoredProjectileInfo.Deserialize(context);
+            }
 
             int itemUpgradeCount = (int)context.ReadPackedUInt32();
             ListUtils.EnsureCapacity(_upgradeItemIndices, itemUpgradeCount);

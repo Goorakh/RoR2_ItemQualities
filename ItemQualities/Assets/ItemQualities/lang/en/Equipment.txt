@@ -151,7 +151,7 @@
         
         "EQUIPMENT_MOLOTOV_UNCOMMON_NAME": "Molotov (7-Pack) <sprite name=\"QualityUncommon\">",
         "EQUIPMENT_MOLOTOV_UNCOMMON_PICKUP": "Throw <sprite name=\"Quality\"> 7 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
-        "EQUIPMENT_MOLOTOV_UNCOMMON_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>7</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>250% damage per second</style>. Molotov area grows by <sprite name=\"Quality\"> <style=cIsDamage>140%</style> over time.",
+        "EQUIPMENT_MOLOTOV_UNCOMMON_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>7</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>300% damage per second</style>. Molotov area grows by <sprite name=\"Quality\"> <style=cIsDamage>160%</style> over time.",
         
         "EQUIPMENT_MOLOTOV_RARE_NAME": "Molotov (8-Pack) <sprite name=\"QualityRare\">",
         "EQUIPMENT_MOLOTOV_RARE_PICKUP": "Throw <sprite name=\"Quality\"> 8 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
@@ -159,11 +159,11 @@
         
         "EQUIPMENT_MOLOTOV_EPIC_NAME": "Molotov (9-Pack) <sprite name=\"QualityEpic\">",
         "EQUIPMENT_MOLOTOV_EPIC_PICKUP": "Throw <sprite name=\"Quality\"> 9 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
-        "EQUIPMENT_MOLOTOV_EPIC_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>9</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>400% damage per second</style>. Molotov area grows by <sprite name=\"Quality\"> <style=cIsDamage>650%</style> over time.",
+        "EQUIPMENT_MOLOTOV_EPIC_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>9</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>300% damage per second</style>. Molotov area grows by <sprite name=\"Quality\"> <style=cIsDamage>600%</style> over time.",
         
         "EQUIPMENT_MOLOTOV_LEGENDARY_NAME": "Molotov (10-Pack) <sprite name=\"QualityLegendary\">",
         "EQUIPMENT_MOLOTOV_LEGENDARY_PICKUP": "Throw <sprite name=\"Quality\"> 10 flaming molotovs that ignite enemies upon shattering.\n<sprite name=\"Quality\"> Increase molotov damage and size.",
-        "EQUIPMENT_MOLOTOV_LEGENDARY_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>10</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>500% damage per second</style>. Molotov area grows by <sprite name=\"Quality\"> <style=cIsDamage>1100%</style> over time.",
+        "EQUIPMENT_MOLOTOV_LEGENDARY_DESC": "Throw <sprite name=\"Quality\"> <style=cIsDamage>10</style> molotov cocktails that <style=cIsDamage>ignites</style> enemies for <style=cIsDamage>500% base damage</style>. Each molotov leaves a burning area for <sprite name=\"Quality\"> <style=cIsDamage>300% damage per second</style>. Molotov area grows by <sprite name=\"Quality\"> <style=cIsDamage>800%</style> over time.",
         
         "EQUIPMENT_CRITONUSE_UNCOMMON_PICKUP": "Gain 100% Critical Strike Chance for <sprite name=\"Quality\"> 10 seconds.\nReveals weak-spots on all enemies for <sprite name=\"Quality\"> 10 seconds.",
         "EQUIPMENT_CRITONUSE_UNCOMMON_DESC": "Gain <style=cIsDamage>+100% Critical Strike Chance</style> for <sprite name=\"Quality\"> 10 seconds.\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for <sprite name=\"Quality\"> 10 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+50% critical strike damage</style>.",
@@ -178,16 +178,16 @@
         "EQUIPMENT_CRITONUSE_LEGENDARY_DESC": "Gain <style=cIsDamage>+100% Critical Strike Chance</style> for <sprite name=\"Quality\"> 16 seconds.\nReveals <sprite name=\"Quality\"> <style=cIsDamage>Weak Points</style> on all enemies for <sprite name=\"Quality\"> 16 seconds. Hits on a <style=cIsDamage>Weak Point</style> are always <style=cIsDamage>critical hits</style> and have an additional <sprite name=\"Quality\"> <style=cIsDamage>+250% critical strike damage</style>.",
         
         "EQUIPMENT_BFG_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
-        "EQUIPMENT_BFG_UNCOMMON_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 40m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 25m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
+        "EQUIPMENT_BFG_UNCOMMON_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 45m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 30m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy. <sprite name=\"Quality\"> <style=cIsUtility>125</style> second cooldown.",
         
         "EQUIPMENT_BFG_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
-        "EQUIPMENT_BFG_RARE_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 45m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 30m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
+        "EQUIPMENT_BFG_RARE_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 55m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 40m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy. <sprite name=\"Quality\"> <style=cIsUtility>110</style> second cooldown.",
         
         "EQUIPMENT_BFG_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
-        "EQUIPMENT_BFG_EPIC_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 55m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 40m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
+        "EQUIPMENT_BFG_EPIC_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 75m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 60m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy. <sprite name=\"Quality\"> <style=cIsUtility>95</style> second cooldown.",
         
         "EQUIPMENT_BFG_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase energy ball range and size. Energy ball tracks enemies.",
-        "EQUIPMENT_BFG_LEGENDARY_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 60m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 45m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy.",
+        "EQUIPMENT_BFG_LEGENDARY_DESC": "Fires preon tendrils, zapping enemies within <sprite name=\"Quality\"> 85m for up to <style=cIsDamage>600% damage/second</style>. On contact, detonate in an enormous <sprite name=\"Quality\"> 70m explosion for <style=cIsDamage>4000% damage</style>. The projectile <style=cIsUtility>tracks</style> the last hit enemy. <sprite name=\"Quality\"> <style=cIsUtility>80</style> second cooldown.",
         
         "EQUIPMENT_BLACKHOLE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase black hole size, duration, and strength.",
         "EQUIPMENT_BLACKHOLE_UNCOMMON_DESC": "Fire a black hole that <style=cIsUtility>draws enemies within <sprite name=\"Quality\"> 40m into its center</style>. Lasts <sprite name=\"Quality\"> 14 seconds. Increases black hole pull strength by <sprite name=\"Quality\"> <style=cIsUtility>200%</style>.",
@@ -261,17 +261,17 @@
         "EQUIPMENT_DRONEBACKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
         "EQUIPMENT_DRONEBACKUP_LEGENDARY_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>8 Strike Drones</style> to fight for you. Lasts 25 seconds.",
         
-        "EQUIPMENT_GOLDGAT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
-        "EQUIPMENT_GOLDGAT_UNCOMMON_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>20%</style>.",
+        "EQUIPMENT_GOLDGAT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Bullets can ricochet to nearby enemies. Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_UNCOMMON_DESC": "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>10th</style> bullet <style=cIsUtility>ricochets</style> <sprite name=\"Quality\"> <style=cIsUtility>once</style> to nearby enemies. Increases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>20%</style>.",
         
-        "EQUIPMENT_GOLDGAT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
-        "EQUIPMENT_GOLDGAT_RARE_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>40%</style>.",
+        "EQUIPMENT_GOLDGAT_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Bullets can ricochet to nearby enemies. Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_RARE_DESC": "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>9th</style> bullet <style=cIsUtility>ricochets</style> up to <sprite name=\"Quality\"> <style=cIsUtility>3 times</style> to nearby enemies. Increases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>40%</style>.",
         
-        "EQUIPMENT_GOLDGAT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
-        "EQUIPMENT_GOLDGAT_EPIC_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>80%</style>.",
+        "EQUIPMENT_GOLDGAT_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Bullets can ricochet to nearby enemies. Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_EPIC_DESC": "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>8th</style> bullet <style=cIsUtility>ricochets</style> up to <sprite name=\"Quality\"> <style=cIsUtility>6 times</style> to nearby enemies. Increases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>80%</style>.",
         
-        "EQUIPMENT_GOLDGAT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase max fire rate.",
-        "EQUIPMENT_GOLDGAT_LEGENDARY_DESC": "{0}\nIncreases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>150%</style>.",
+        "EQUIPMENT_GOLDGAT_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Bullets can ricochet to nearby enemies. Increase max fire rate.",
+        "EQUIPMENT_GOLDGAT_LEGENDARY_DESC": "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>7th</style> bullet <style=cIsUtility>ricochets</style> up to <sprite name=\"Quality\"> <style=cIsUtility>10 times</style> to nearby enemies. Increases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>150%</style>.",
 
         "EQUIPMENT_FIREBALLDASH_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase damage and explosion radius for every enemy hit.",
         "EQUIPMENT_FIREBALLDASH_UNCOMMON_DESC": "Turn into a <style=cIsDamage>draconic fireball</style> for <style=cIsDamage>5</style> seconds. Deal <style=cIsDamage>500% damage</style> on impact. Detonates at the end for <style=cIsDamage>800% damage</style>, plus an additional <sprite name=\"Quality\"> <style=cIsDamage>300% damage</style> and <sprite name=\"Quality\"> <style=cIsDamage>0.5m explosion radius</style> for every enemy hit.",
@@ -299,17 +299,17 @@
 
         "QUALITY_BUG_BLOCK_DAMAGE_HITMARKER": "MISS!",
 
-        "EQUIPMENT_PARRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
-        "EQUIPMENT_PARRY_UNCOMMON_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>50%</style> increased damage.",
+        "EQUIPMENT_PARRY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activating your primary skill fires the captured projectile.",
+        "EQUIPMENT_PARRY_UNCOMMON_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it. Using your <style=cIsUtility>primary skill</style> <style=cIsDamage>fires</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>50%</style> increased damage.",
 
-        "EQUIPMENT_PARRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
-        "EQUIPMENT_PARRY_RARE_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>150%</style> increased damage.",
+        "EQUIPMENT_PARRY_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activating your primary skill fires the captured projectile.",
+        "EQUIPMENT_PARRY_RARE_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it. Using your <style=cIsUtility>primary skill</style> <style=cIsDamage>fires</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>150%</style> increased damage.",
 
-        "EQUIPMENT_PARRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
-        "EQUIPMENT_PARRY_EPIC_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>300%</style> increased damage.",
+        "EQUIPMENT_PARRY_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activating your primary skill fires the captured projectile.",
+        "EQUIPMENT_PARRY_EPIC_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it. Using your <style=cIsUtility>primary skill</style> <style=cIsDamage>fires</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>300%</style> increased damage.",
 
-        "EQUIPMENT_PARRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activate the equipment again to fire the captured projectile.",
-        "EQUIPMENT_PARRY_LEGENDARY_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it, upon next activation, <style=cIsDamage>fire</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>900%</style> increased damage.",
+        "EQUIPMENT_PARRY_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Parrying any projectile captures it, activating your primary skill fires the captured projectile.",
+        "EQUIPMENT_PARRY_LEGENDARY_DESC": "{0}\nParrying any projectile <style=cIsUtility>captures</style> it. Using your <style=cIsUtility>primary skill</style> <style=cIsDamage>fires</style> the captured projectile with <sprite name=\"Quality\"> <style=cIsDamage>900%</style> increased damage.",
         
         "EQUIPMENT_HEALANDREVIVE_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Permanently upgrades a random item to uncommon <sprite name=\"QualityUncommon\"> quality upon reviving.",
         "EQUIPMENT_HEALANDREVIVE_UNCOMMON_DESC": "{0}\nWhen used to revive yourself or an ally, <style=cIsUtility>permanently</style> upgrade all instances of a random item into uncommon <sprite name=\"QualityUncommon\"> quality for the rest of the run.",
@@ -329,16 +329,16 @@
         "QUALITY_HEALANDREVIVE_PICKUP_NOTIFICATION_UPGRADED_LEGENDARY": "This item has been <style=cShrine>upgraded</style> <sprite name=\"QualityLegendary\">",
         
         "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
-        "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>1</style> second.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_UNCOMMON_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. The sprout lasts for <sprite name=\"Quality\"> <style=cIsUtility>6</style> seconds.",
         
         "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
-        "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>2</style> seconds.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_RARE_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. The sprout lasts for <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds.",
         
         "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
-        "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>5</style> seconds.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_EPIC_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. The sprout lasts for <sprite name=\"Quality\"> <style=cIsUtility>15</style> seconds.",
         
         "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Lures nearby enemies to attack the sprout, all damage dealt to it is converted into healing.",
-        "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. Increases sprout duration by <sprite name=\"Quality\"> <style=cIsUtility>10</style> seconds.",
+        "EQUIPMENT_HEALANDREVIVECONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>Lures</style> nearby enemies to attack the sprout, <style=cIsHealing>heal</style> for <style=cIsHealing>20%</style> of all damage dealt to it. The sprout lasts for <sprite name=\"Quality\"> <style=cIsUtility>20</style> seconds.",
 
         "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Activate to give a Fuel Array to an enemy, explodes for huge damage to <color=#FF7F7F>EVERYONE</color>.",
         "EQUIPMENT_QUESTVOLATILEBATTERY_UNCOMMON_DESC": "{0}\nGive another Fuel Array to an enemy, after going below <style=cIsUtility>50% hp</style> the enemy <style=cIsDamage>explodes</style> for <sprite name=\"Quality\"> <style=cIsDamage>4000% damage</style> to <color=#FF7F7F>EVERYONE</color> in a <style=cIsUtility>30m</style> radius. <sprite name=\"Quality\"> <style=cIsUtility>40</style> second cooldown.",

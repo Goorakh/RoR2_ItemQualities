@@ -5,6 +5,7 @@ using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using UnityEngine.Networking;
 
 namespace ItemQualities
@@ -28,7 +29,7 @@ namespace ItemQualities
         private CharacterMaster _master;
 
         private CharacterBody _cachedBody;
-        private CharacterBodyExtraStatsTracker _bodyExtraStatsComponent;
+        private CharacterBodyExtraStatsTracker _cachedBodyStats;
 
         [SyncVar(hook = nameof(hookSetSteakBonus))]
         public float SteakBonus;
@@ -39,8 +40,28 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetBossDamageBonusTicks))]
         public int BossDamageBonusTicks;
 
+        [SyncVar(hook = nameof(hookSetQualityInfusionBonus))]
+        public uint QualityInfusionBonus;
+
         [SyncVar]
-        public StoredInteractableInfo CardStoredInteractableInfo = StoredInteractableInfo.None;
+        private StoredInteractableInfo _cardStoredInteractableInfo = StoredInteractableInfo.None;
+        public StoredInteractableInfo CardStoredInteractableInfo
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _cardStoredInteractableInfo;
+            [Server]
+            set => _cardStoredInteractableInfo = value;
+        }
+
+        [SyncVar(hook = nameof(hookSetParryStoredProjectileInfo))]
+        private ParryStoredProjectileInfo _parryStoredProjectileInfo = ParryStoredProjectileInfo.None;
+        public ParryStoredProjectileInfo ParryStoredProjectileInfo
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _parryStoredProjectileInfo;
+            [Server]
+            set => _parryStoredProjectileInfo = value;
+        }
 
         public ItemCollection ConductorItemStacks = ItemCollection.Create();
 
@@ -65,6 +86,7 @@ namespace ItemQualities
 
         public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
         public event Action<CharacterMasterExtraStatsTracker> OnBossDamageBonusTicksChanged;
+        public event Action<CharacterMasterExtraStatsTracker> OnParryStoredProjectileInfoChanged;
 
         private void Awake()
         {
@@ -91,9 +113,9 @@ namespace ItemQualities
         private void OnEnable()
         {
             _master.onBodyStart += setBody;
-            _master.onBodyDestroyed += setBody;
+            _master.onBodyDestroyed += onBodyDestroyed;
 
-            if (_master.inventory)
+            if (!ReferenceEquals(_master.inventory, null))
             {
                 _master.inventory.onInventoryChanged += onInventoryChanged;
             }
@@ -106,9 +128,9 @@ namespace ItemQualities
         private void OnDisable()
         {
             _master.onBodyStart -= setBody;
-            _master.onBodyDestroyed -= setBody;
+            _master.onBodyDestroyed -= onBodyDestroyed;
 
-            if (_master.inventory)
+            if (!ReferenceEquals(_master.inventory, null))
             {
                 _master.inventory.onInventoryChanged -= onInventoryChanged;
             }
@@ -118,22 +140,27 @@ namespace ItemQualities
             setBody(null);
         }
 
+        private void onBodyDestroyed(CharacterBody body)
+        {
+            setBody(null);
+        }
+
         private void setBody(CharacterBody body)
         {
-            if (_cachedBody == body)
+            if (ReferenceEquals(_cachedBody, body))
                 return;
 
-            if (_bodyExtraStatsComponent)
+            if (!ReferenceEquals(_cachedBodyStats, null))
             {
-                _bodyExtraStatsComponent.OnIncomingDamageServer -= onIncomingDamageServer;
+                _cachedBodyStats.OnIncomingDamageServer -= onIncomingDamageServer;
             }
 
             _cachedBody = body;
-            _bodyExtraStatsComponent = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
+            _cachedBodyStats = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
 
-            if (_bodyExtraStatsComponent)
+            if (!ReferenceEquals(_cachedBodyStats, null))
             {
-                _bodyExtraStatsComponent.OnIncomingDamageServer += onIncomingDamageServer;
+                _cachedBodyStats.OnIncomingDamageServer += onIncomingDamageServer;
             }
         }
 
@@ -305,7 +332,7 @@ namespace ItemQualities
                     {
                         if (canUpgrade(itemIndex))
                         {
-                            availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountEffective(itemIndex));
+                            availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountTemp(itemIndex));
                         }
                     }
                 }
@@ -451,7 +478,9 @@ namespace ItemQualities
             SteakBonus = masterSaveData.SteakBonus;
             SpeedOnPickupBonus = masterSaveData.SpeedOnPickupBonus;
             BossDamageBonusTicks = masterSaveData.BossDamageBonusTicks;
-            CardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+            QualityInfusionBonus = masterSaveData.QualityInfusionBonus;
+            _cardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+            _parryStoredProjectileInfo = masterSaveData.ParryStoredProjectileInfo;
 
             _upgradeItemIndices.Clear();
             foreach (ItemIndex upgradeItemIndex in masterSaveData.UpgradeItemIndices)
@@ -493,6 +522,28 @@ namespace ItemQualities
             if (changed)
             {
                 OnBossDamageBonusTicksChanged?.Invoke(this);
+            }
+        }
+
+        private void hookSetParryStoredProjectileInfo(ParryStoredProjectileInfo newParryStoredProjectileInfo)
+        {
+            bool changed = _parryStoredProjectileInfo != newParryStoredProjectileInfo;
+            _parryStoredProjectileInfo = newParryStoredProjectileInfo;
+
+            if (changed)
+            {
+                OnParryStoredProjectileInfoChanged?.Invoke(this);
+            }
+        }
+
+        private void hookSetQualityInfusionBonus(uint newQualityInfusionBonus)
+        {
+            bool changed = QualityInfusionBonus != newQualityInfusionBonus;
+            QualityInfusionBonus = newQualityInfusionBonus;
+
+            if (changed)
+            {
+                markBodyStatsDirty();
             }
         }
     }
