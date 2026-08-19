@@ -10,6 +10,7 @@ namespace EntityStates.SprintArmorDash
         private float _lastValidInputTime = float.NegativeInfinity;
 
         private CharacterBody _attachedBody;
+        private new InputBankTest inputBank;
 
         public override void OnEnter()
         {
@@ -20,6 +21,7 @@ namespace EntityStates.SprintArmorDash
                 return;
 
             _attachedBody = networkedBodyAttachment.attachedBody;
+            inputBank = _attachedBody.inputBank;
         }
 
         public override void Update()
@@ -37,15 +39,22 @@ namespace EntityStates.SprintArmorDash
 
         private void UpdateAuthority()
         {
-            if (!_attachedBody.HasBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown) && _attachedBody.inputBank.rawMoveUp.justPressed)
+            if (!_attachedBody.HasBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown) && inputBank.interact.down)
             {
-                float timeSinceLastInput = age - _lastValidInputTime;
-                if (timeSinceLastInput <= DoubleTapWindow)
+                if (inputBank.rawMoveUp.justPressed)
                 {
-                    outer.SetNextState(new SprintArmorDashDashingState());
-                }
+                    float timeSinceLastInput = age - _lastValidInputTime;
+                    if (timeSinceLastInput <= DoubleTapWindow)
+                    {
+                        outer.SetNextState(new SprintArmorDashDashingState());
+                    }
 
-                _lastValidInputTime = age;
+                    _lastValidInputTime = age;
+                }
+            }
+            else
+            {
+                _lastValidInputTime = float.NegativeInfinity;
             }
         }
     }

@@ -65,6 +65,9 @@
 * Infusion:
     * Fixed quality infusion health contributing to regular infusion's limit.
 
+* Rose Buckler:
+    * Default dash input changed to hold interact + double tap forward.
+
 * Pocket I.C.B.M:
     * Now fires a small missile when using a skill that has at least 5s cooldown.
 
