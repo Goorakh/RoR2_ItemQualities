@@ -41,7 +41,7 @@ namespace ItemQualities.Items
                 Array.Sort(_bleedEquipments);
             }
 
-            On.RoR2.GlobalEventManager.ProcessHitEnemy += ProcessHitEnemy;
+            On.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
             On.RoR2.DotController.InflictDot_refInflictDotInfo += DotController_InflictDot_refInflictDotInfo;
         }
 
@@ -74,7 +74,7 @@ namespace ItemQualities.Items
             orig(ref inflictDotInfo);
         }
 
-        static void ProcessHitEnemy(On.RoR2.GlobalEventManager.orig_ProcessHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
+        private static void GlobalEventManager_ProcessHitEnemy(On.RoR2.GlobalEventManager.orig_ProcessHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
             orig(self, damageInfo, victim);
 
