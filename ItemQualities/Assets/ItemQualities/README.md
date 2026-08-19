@@ -36,13 +36,14 @@ Includes a 25% increased difficulty scaling to balance out the more powerful on-
 
 This mod is in beta, Quality boss items and other features will be added at some point in the future.
 
-## Recommended mods
+## Recommended/Supported mods
 These are mods we recommend you use in combination with Quality, though they are not required.
 
 * [Properly Persistent Profiles Patch Plugin](https://thunderstore.io/c/riskofrain2/p/Groove_Salad/ProperlyPersistentProfilesPatchPlugin/):
 	* Makes sure your logbook progress is not lost when launching a new profile. **IMPORTANT**: This mod does *not* work retroactively, if you launch the game at any point without it installed, progress will be lost unless manually backed up.
 * [Rebindables](https://thunderstore.io/c/riskofrain2/p/pseudopulse/Rebindables/):
 	* Allows button rebinding of some featues in Quality.
+* [ProperSave](https://thunderstore.io/c/riskofrain2/p/KingEnderBrine/ProperSave/)
 
 ## Credits
 
