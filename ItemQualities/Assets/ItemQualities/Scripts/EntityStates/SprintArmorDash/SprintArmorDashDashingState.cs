@@ -60,7 +60,7 @@ namespace EntityStates.SprintArmorDash
                     _ => 30,
                 };
 
-                for (int i = 0; i < cooldown; i++)
+                for (int i = 1; i <= cooldown; i++)
                 {
                     _attachedBody.AddTimedBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown, i);
                 }

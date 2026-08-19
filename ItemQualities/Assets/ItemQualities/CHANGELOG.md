@@ -67,6 +67,7 @@
 
 * Rose Buckler:
     * Default dash input changed to hold interact + double tap forward.
+    * Fixed dash cooldown being 1 second lower than intended.
 
 * Pocket I.C.B.M:
     * Now fires a small missile when using a skill that has at least 5s cooldown.
