@@ -90,6 +90,7 @@ namespace ItemQualities.Items
                                 spawnResult.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster))
                             {
                                 spawnedMaster.inventory.GiveItemsPermanent(ItemQualitiesContent.ItemQualityGroups.MinorConstructOnKillConstructItem, minorConstructOnKill);
+                                spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(minorConstructOnKill.HighestQuality));
                             }
                         }
                     }
