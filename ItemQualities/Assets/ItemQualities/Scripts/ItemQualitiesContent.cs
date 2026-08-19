@@ -195,6 +195,8 @@ namespace ItemQualities
 
             List<SkillDef> skillDefsList = new List<SkillDef>();
 
+            List<SkillFamily> skillFamiliesList = new List<SkillFamily>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -279,6 +281,9 @@ namespace ItemQualities
                     case SkillDef skillDef:
                         skillDefsList.Add(skillDef);
                         break;
+                    case SkillFamily skillFamily:
+                        skillFamiliesList.Add(skillFamily);
+                        break;
                 }
             }
 
@@ -322,6 +327,8 @@ namespace ItemQualities
             _contentPack.networkSoundEventDefs.Add(networkSoundEventsList.ToArray());
 
             _contentPack.skillDefs.Add(skillDefsList.ToArray());
+
+            _contentPack.skillFamilies.Add(skillFamiliesList.ToArray());
 
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
@@ -713,6 +720,46 @@ namespace ItemQualities
             public static ItemQualityGroup ShockNearby;
 
             public static ItemQualityGroup TreebotBuddy;
+
+            public static ItemQualityGroup MinorConstructOnKill;
+
+            public static ItemQualityGroup MinorConstructOnKillConstructItem;
+
+            public static ItemQualityGroup ConstructBubble;
+
+            public static ItemQualityGroup TitanGoldDuringTP;
+
+            public static ItemQualityGroup LightningStrikeOnHit;
+
+            public static ItemQualityGroup NovaOnLowHealth;
+
+            public static ItemQualityGroup ShockDamageAura;
+            
+            public static ItemQualityGroup SprintWisp;
+
+            public static ItemQualityGroup FireballsOnHit;
+
+            public static ItemQualityGroup BleedOnHitAndExplode;
+            
+            public static ItemQualityGroup ExtraEquipment;
+
+            public static ItemQualityGroup SiphonOnLowHealth;
+
+            public static ItemQualityGroup Knurl;
+
+            public static ItemQualityGroup Pearl;
+            
+            public static ItemQualityGroup ParentEgg;
+            
+            public static ItemQualityGroup ShinyPearl;
+
+            public static ItemQualityGroup RoboBallBuddy;
+
+            public static ItemQualityGroup RoboBallBuddyItem;
+
+            public static ItemQualityGroup BeetleGland;
+
+            public static ItemQualityGroup BeetleGlandGuardItem;
         }
 
         public static class Items
@@ -844,6 +891,12 @@ namespace ItemQualities
             public static BuffQualityGroup ArmorReductionOnHitCounter;
 
             public static BuffQualityGroup BearVoidFog;
+
+            public static BuffQualityGroup KnurlReady;
+
+            public static BuffQualityGroup KnurlCooldown;
+
+            public static BuffQualityGroup ParentEggOverheat;
         }
 
         public static class Buffs
@@ -875,6 +928,12 @@ namespace ItemQualities
             public static BuffDef ScorpionVenom;
 
             public static BuffDef Immobilized;
+
+            public static BuffDef ConstructBubble;
+
+            public static BuffDef ConstructBubbleCooldown;
+
+            public static BuffDef ShinyPearlLuck;
         }
 
         public static class Prefabs
@@ -898,6 +957,10 @@ namespace ItemQualities
             public static GameObject ParryProjectileDisplayUI;
 
             public static GameObject QualityBearVoidFogExplosion;
+
+            public static GameObject MinorConstructBubbleEffect;
+
+            public static GameObject PickupTransferOrbEffect;
         }
 
         public static class NetworkedPrefabs
@@ -949,6 +1012,10 @@ namespace ItemQualities
             public static GameObject QualityScrapper;
 
             public static GameObject QualityVolatileBatteryAttachment;
+
+            public static GameObject QualityMinorConstructOnKillAttachment;
+
+            public static GameObject VagrantNovaItemQualityAttachment;
         }
 
         public static class ProjectilePrefabs
@@ -963,6 +1030,10 @@ namespace ItemQualities
             public static Material HealCritBoost;
 
             public static Material QualityScrapper;
+
+            public static Material SprintWispQualityFire;
+
+            public static Material TrimSheetQualityEquipmentDrone;
         }
 
         public static class SpawnCards

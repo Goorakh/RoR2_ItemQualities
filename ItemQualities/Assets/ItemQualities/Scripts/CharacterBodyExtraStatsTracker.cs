@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver
+    public sealed class CharacterBodyExtraStatsTracker : NetworkBehaviour, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver, IOnDamageDealtServerReceiver
     {
         [SystemInitializer(typeof(BodyCatalog))]
         private static void Init()
@@ -56,6 +56,7 @@ namespace ItemQualities
         private TemporaryVisualEffect _qualityDeathMarkEffectInstance;
         private TemporaryVisualEffect _sprintArmorWeakenEffectInstance;
         private TemporaryVisualEffect _voidBearFogEffectInstance;
+        private TemporaryVisualEffect _constructBubbleEffectInstance;
 
         private TemporaryOverlayInstance _healCritBoostOverlay;
 
@@ -76,6 +77,8 @@ namespace ItemQualities
         public float ExecuteBossHealthFraction { get; private set; }
 
         public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
+
+        public float GenesisLoopActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
 
         public CharacterBody LastHitBody { get; private set; }
 
@@ -156,6 +159,8 @@ namespace ItemQualities
         public event Action<DamageInfo> OnIncomingDamageServer;
 
         public event Action<DamageReport> OnTakeDamageServer;
+
+        public event Action<DamageReport> OnDamageDealtServer;
 
         public event CharacterMotor.HitGroundDelegate OnHitGroundAuthority;
 
@@ -403,10 +408,12 @@ namespace ItemQualities
         {
             ItemQualityCounts executeLowHealthElite = default;
             ItemQualityCounts phasing = default;
+            ItemQualityCounts novaOnLowHealth = default;
             if (_body && _body.inventory)
             {
                 executeLowHealthElite = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite);
                 phasing = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
+                novaOnLowHealth = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth);
             }
 
             ExecuteBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
@@ -422,6 +429,32 @@ namespace ItemQualities
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
 
             StealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
+
+            float genesisLoopActivationThreshold;
+            switch (novaOnLowHealth.HighestQuality)
+            {
+                case QualityTier.None:
+                    genesisLoopActivationThreshold = HealthComponent.lowHealthFraction;
+                    break;
+                case QualityTier.Uncommon:
+                    genesisLoopActivationThreshold = 0.35f;
+                    break;
+                case QualityTier.Rare:
+                    genesisLoopActivationThreshold = 0.50f;
+                    break;
+                case QualityTier.Epic:
+                    genesisLoopActivationThreshold = 0.75f;
+                    break;
+                case QualityTier.Legendary:
+                    genesisLoopActivationThreshold = 0.90f;
+                    break;
+                default:
+                    Log.Warning($"Quality tier {novaOnLowHealth} is not implemented");
+                    genesisLoopActivationThreshold = HealthComponent.lowHealthFraction;
+                    break;
+            }
+
+            GenesisLoopActivationThreshold = genesisLoopActivationThreshold;
         }
 
         void IOnIncomingDamageServerReceiver.OnIncomingDamageServer(DamageInfo damageInfo)
@@ -470,6 +503,11 @@ namespace ItemQualities
             OnTakeDamageServer?.Invoke(damageReport);
         }
 
+        void IOnDamageDealtServerReceiver.OnDamageDealtServer(DamageReport damageReport)
+        {
+            OnDamageDealtServer?.Invoke(damageReport);
+        }
+
         private void onKilledOther(DamageReport damageReport)
         {
             if (damageReport.victimIsElite)
@@ -515,6 +553,7 @@ namespace ItemQualities
             updateTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
             updateTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
             updateTemporaryVisualEffect(ref _voidBearFogEffectInstance, CharacterBody.AssetReferences.voidFogMildEffectPrefab, _body.radius, _body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BearVoidFog).TotalQualityCount > 0);
+            updateTemporaryVisualEffect(ref _constructBubbleEffectInstance, ItemQualitiesContent.Prefabs.MinorConstructBubbleEffect, _body.bestFitActualRadius * 1.15f, _body.HasBuff(ItemQualitiesContent.Buffs.ConstructBubble));
 
             void updateTemporaryVisualEffect(ref TemporaryVisualEffect temporaryEffect, GameObject effectPrefab, float effectRadius, bool active)
             {

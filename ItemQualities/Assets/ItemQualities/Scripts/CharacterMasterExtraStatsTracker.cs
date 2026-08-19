@@ -63,6 +63,8 @@ namespace ItemQualities
             set => _parryStoredProjectileInfo = value;
         }
 
+        public ItemCollection ConductorItemStacks = ItemCollection.Create();
+
         private readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
 
         private List<PendingItemUpgrade> _pendingItemUpgrades;

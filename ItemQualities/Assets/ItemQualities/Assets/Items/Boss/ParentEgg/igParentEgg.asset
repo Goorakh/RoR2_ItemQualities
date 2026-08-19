@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igParentEgg
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 2ed530121eace7240ad4716be1e4688c
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseItem: {fileID: 0}
+  _uncommonItem: {fileID: 11400000, guid: 0dc348b6df98e0846ab80fd70f7c4d86, type: 2}
+  _rareItem: {fileID: 11400000, guid: 679083d9cd137944bb0e903200e2e5c2, type: 2}
+  _epicItem: {fileID: 11400000, guid: df2216958663a254590fd4c84e6e9af3, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 8408417e62b59e54fa97320a66fa9bc8, type: 2}

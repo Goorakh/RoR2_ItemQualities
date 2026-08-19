@@ -252,7 +252,6 @@ namespace ItemQualities
                     addedQualityDuplicatorMilitary = true;
                 }
 
-                /*
                 if (duplicatorWildCard != null && !addedQualityDuplicatorWild)
                 {
                     DirectorCard qualityDuplicatorWildCard = new DirectorCard
@@ -268,7 +267,6 @@ namespace ItemQualities
 
                     addedQualityDuplicatorWild = true;
                 }
-                */
             }
         }
 

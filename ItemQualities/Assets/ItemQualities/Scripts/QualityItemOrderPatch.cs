@@ -25,19 +25,6 @@ namespace ItemQualities
         private static void Init()
         {
             IL.RoR2.Inventory.SetItemAcquiredServer += Inventory_SetItemAcquiredServer;
-
-            Configs.Interface.EnableQualityItemSorting.SettingChanged += onEnableQualityItemSortingChanged;
-        }
-
-        private static void onEnableQualityItemSortingChanged(object sender, EventArgs e)
-        {
-            if (Configs.Interface.EnableQualityItemSorting.Value && NetworkServer.active)
-            {
-                foreach (Inventory inventory in UnityEngine.Object.FindObjectsByType<Inventory>(FindObjectsInactive.Include, FindObjectsSortMode.None))
-                {
-                    sortAllQualityItems(inventory);
-                }
-            }
         }
 
         private static void sortAllQualityItems(Inventory inventory)
@@ -182,13 +169,10 @@ namespace ItemQualities
 
             static void tryCustomInsertIndex(Inventory inventory, ItemIndex itemIndex)
             {
-                if (Configs.Interface.EnableQualityItemSorting.Value)
+                ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
+                if (itemGroupIndex != ItemQualityGroupIndex.Invalid)
                 {
-                    ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
-                    if (itemGroupIndex != ItemQualityGroupIndex.Invalid)
-                    {
-                        sortQualityItem(inventory, itemGroupIndex);
-                    }
+                    sortQualityItem(inventory, itemGroupIndex);
                 }
             }
         }

@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734bc0ec6d1a54f49a48e677f7623033, type: 3}
+  m_Name: igRoboBallBuddy
+  m_EditorClassIdentifier: 
+  BaseItemReference:
+    m_AssetGUID: 6c8e3f0b8eb48f647a5d6ab43f55597a
+    m_SubObjectName: 
+    m_SubObjectType: 
+  BaseItem: {fileID: 0}
+  _uncommonItem: {fileID: 11400000, guid: d15d533f60a93ba418365780e5a3b80a, type: 2}
+  _rareItem: {fileID: 11400000, guid: dceaf39b339e4324fbf90a46b139cef2, type: 2}
+  _epicItem: {fileID: 11400000, guid: 539aea950f1d5234faff5c42670214d2, type: 2}
+  _legendaryItem: {fileID: 11400000, guid: 884862d08d86b1a489c87579305a1ccc, type: 2}

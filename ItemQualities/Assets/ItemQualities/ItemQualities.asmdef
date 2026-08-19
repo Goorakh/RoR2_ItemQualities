@@ -14,6 +14,7 @@
     "precompiledReferences": [
         "BepInEx.dll",
         "RoR2.dll",
+        "Grumpy.dll",
         "Assembly-CSharp.dll",
         "RoR2BepInExPack.dll",
         "KinematicCharacterController.dll",
@@ -51,7 +52,8 @@
         "ShaderSwapper.dll",
         "RiskOfOptions.dll",
         "ProperSave.dll",
-        "Rebindables.dll"
+        "Rebindables.dll",
+        "MiscFixes.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

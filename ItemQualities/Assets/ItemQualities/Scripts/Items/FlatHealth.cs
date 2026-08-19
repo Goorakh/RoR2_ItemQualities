@@ -1,6 +1,7 @@
 ﻿using HG;
 using ItemQualities.ModCompatibility;
 using ItemQualities.Orbs;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
@@ -107,92 +108,13 @@ namespace ItemQualities.Items
         private static void onBossGroupDefeatedServer(BossGroup bossGroup)
         {
             // Ignore all boss groups that aren't the final phase
-            // TODO: Find a better way to do this
-            switch (bossGroup.name)
+            if (BossUtil.IsNonFinalPhase(bossGroup))
             {
-                // False Son, only phase 3
-                case "FSBF Phase1":
-                case "FSBF Phase2":
-
-                // Mithrix, only phase 4
-                case "BrotherEncounter, Phase 1":
-                case "BrotherEncounter, Phase 2":
-                case "BrotherEncounter, Phase 3":
-
-                // Voidling, only phase 3
-                case "VoidRaidCrabCombatEncounter Phase 1":
-                case "VoidRaidCrabCombatEncounter Phase 2":
-                    Log.Debug($"Non-final phase BossGroup {Util.GetGameObjectHierarchyName(bossGroup.gameObject)} defeated, ignoring");
-                    return;
+                Log.Debug($"Non-final phase BossGroup {Util.GetGameObjectHierarchyName(bossGroup.gameObject)} defeated, ignoring");
+                return;
             }
 
             Log.Debug($"BossGroup {Util.GetGameObjectHierarchyName(bossGroup.gameObject)} defeated");
-
-            TeamIndex bossTeam = TeamIndex.None;
-            Vector3 bossPosition = bossGroup.transform.position;
-            bool foundBossPosition = false;
-
-            foreach (NetworkInstanceId memberInstanceId in bossGroup.combatSquad.memberHistory)
-            {
-                GameObject memberMasterObject = NetworkServer.active ? NetworkServer.FindLocalObject(memberInstanceId) : ClientScene.FindLocalObject(memberInstanceId);
-                if (memberMasterObject && memberMasterObject.TryGetComponent(out CharacterMaster memberMaster))
-                {
-                    bossTeam = memberMaster.teamIndex;
-
-                    if (memberMaster.lostBodyToDeath)
-                    {
-                        bossPosition = memberMaster.deathFootPosition;
-                        foundBossPosition = true;
-                    }
-
-                    break;
-                }
-            }
-
-            if (bossGroup.TryGetComponent(out ScriptedCombatEncounter scriptedCombatEncounter))
-            {
-                bossTeam = scriptedCombatEncounter.teamIndex;
-
-                if (!foundBossPosition)
-                {
-                    Vector3? bestSpawnPosition = null;
-
-                    float bestSpawnCullChance = float.PositiveInfinity;
-                    float bestSpawnBaseHealth = float.NegativeInfinity;
-
-                    foreach (ScriptedCombatEncounter.SpawnInfo spawnInfo in scriptedCombatEncounter.spawns)
-                    {
-                        if (!spawnInfo.explicitSpawnPosition)
-                            continue;
-
-                        float baseHealth = 0f;
-                        if (spawnInfo.spawnCard &&
-                            spawnInfo.spawnCard.prefab &&
-                            spawnInfo.spawnCard.prefab.TryGetComponent(out CharacterMaster masterPrefab) &&
-                            masterPrefab.bodyPrefab &&
-                            masterPrefab.bodyPrefab.TryGetComponent(out CharacterBody bodyPrefab))
-                        {
-                            baseHealth = bodyPrefab.baseMaxHealth;
-                        }
-
-                        if (!bestSpawnPosition.HasValue ||
-                            baseHealth > bestSpawnBaseHealth ||
-                            (Mathf.Abs(baseHealth - bestSpawnBaseHealth) < 0.01f && spawnInfo.cullChance < bestSpawnCullChance))
-                        {
-                            bestSpawnBaseHealth = baseHealth;
-                            bestSpawnCullChance = spawnInfo.cullChance;
-
-                            bestSpawnPosition = spawnInfo.explicitSpawnPosition.position;
-                        }
-                    }
-
-                    if (bestSpawnPosition.HasValue)
-                    {
-                        bossPosition = bestSpawnPosition.Value;
-                        foundBossPosition = true;
-                    }
-                }
-            }
 
             TeamMask rewardTeams;
             if (bossGroup.TryGetComponent(out HoldoutZoneController holdoutZoneController))
@@ -200,19 +122,40 @@ namespace ItemQualities.Items
                 rewardTeams = TeamMask.none;
                 rewardTeams.AddTeam(holdoutZoneController.chargingTeam);
             }
-            else if (bossTeam != TeamIndex.None)
-            {
-                rewardTeams = TeamMask.allButNeutral;
-                rewardTeams.RemoveTeam(bossTeam);
-            }
             else
             {
-                // Fallback to Player team if we can't determine the team
-                rewardTeams = TeamMask.none;
-                rewardTeams.AddTeam(TeamIndex.Player);
+                TeamIndex bossTeam = TeamIndex.None;
+                if (bossGroup.TryGetComponent(out ScriptedCombatEncounter scriptedCombatEncounter))
+                {
+                    bossTeam = scriptedCombatEncounter.teamIndex;
+                }
+                else
+                {
+                    foreach (NetworkInstanceId memberInstanceId in bossGroup.combatSquad.memberHistory)
+                    {
+                        GameObject memberMasterObject = NetworkServer.active ? NetworkServer.FindLocalObject(memberInstanceId) : ClientScene.FindLocalObject(memberInstanceId);
+                        if (memberMasterObject && memberMasterObject.TryGetComponent(out CharacterMaster memberMaster))
+                        {
+                            bossTeam = memberMaster.teamIndex;
+                            break;
+                        }
+                    }
+                }
+
+                if (bossTeam != TeamIndex.None)
+                {
+                    rewardTeams = TeamMask.allButNeutral;
+                    rewardTeams.RemoveTeam(bossTeam);
+                }
+                else
+                {
+                    // Fallback to Player team if we can't determine the team
+                    rewardTeams = TeamMask.none;
+                    rewardTeams.AddTeam(TeamIndex.Player);
+                }
             }
 
-            Vector3 orbSpawnPosition = bossGroup.dropPosition ? bossGroup.dropPosition.position : bossPosition;
+            Vector3 orbSpawnPosition = BossUtil.GetBestRewardPosition(bossGroup);
 
             for (TeamIndex teamIndex = 0; (int)teamIndex < TeamsAPICompat.TeamsCount; teamIndex++)
             {
