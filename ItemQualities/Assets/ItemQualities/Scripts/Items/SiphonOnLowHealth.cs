@@ -1,54 +1,23 @@
-﻿using ItemQualities.ContentManagement;
-using ItemQualities.Utilities;
-using ItemQualities.Utilities.Extensions;
-using R2API;
+﻿using R2API;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
-using System.Collections;
 using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    internal static class SiphonOnLowHealth
-    {
-        public static GameObject ExplosionVFX { get; private set; }
-
-        [ContentInitializer]
-        private static IEnumerator LoadContent(ContentInitializerArgs args)
-        {
-            AsyncOperationHandle<GameObject> igniteExplosionVFXLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_IgniteOnKill.IgniteExplosionVFX_prefab);
-            igniteExplosionVFXLoad.OnSuccess(igniteExplosionVFX =>
-            {
-                ExplosionVFX = igniteExplosionVFXLoad.Result.InstantiateClone("SiphonOnLowHealthExplosionVFX", false);
-
-                Transform flames = ExplosionVFX.transform.Find("Flames");
-                if (flames)
-                {
-                    GameObject.Destroy(flames.gameObject);
-                }
-
-                Transform flash = ExplosionVFX.transform.Find("Flash");
-                if (flash)
-                {
-                    GameObject.Destroy(flash.gameObject);
-                }
-
-                if (ExplosionVFX.ExpectComponent(out ParticleSystem particleSystem))
-                {
-                    var main = particleSystem.main;
-                    main.startColor = new ParticleSystem.MinMaxGradient(new Color32(0x2D, 0x27, 0x19, 0xFF));
-                }
-
-                args.ContentPack.effectDefs.Add(new EffectDef(ExplosionVFX));
-            });
-
-            return igniteExplosionVFXLoad.AsProgressCoroutine(args.ProgressReceiver);
-        }
-    }
-
     public sealed class SiphonOnLowHealthQualityItemBehavior : QualityItemBodyBehavior, IOnDamageDealtServerReceiver
     {
+        private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
+
+        [SystemInitializer(typeof(EffectCatalogUtils))]
+        private static void Init()
+        {
+            _explosionEffectIndex = EffectCatalogUtils.FindEffectIndex("ClayGrenadierMortarExplosion");
+            if (_explosionEffectIndex == EffectIndex.Invalid)
+            {
+                Log.Warning("Failed to find ClayGrenadierMortarExplosion effect index");
+            }
+        }
+
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.SiphonOnLowHealth;
 
@@ -102,13 +71,16 @@ namespace ItemQualities.Items
                                                        (siphonOnLowHealth.EpicCount * 12f) +
                                                        (siphonOnLowHealth.LegendaryCount * 15f);
 
-                    EffectData effectData = new EffectData
+                    if (_explosionEffectIndex != EffectIndex.Invalid)
                     {
-                        origin = Body.corePosition,
-                        scale = explosionRadius,
-                    };
+                        EffectData effectData = new EffectData
+                        {
+                            origin = Body.corePosition,
+                            scale = explosionRadius,
+                        };
 
-                    EffectManager.SpawnEffect(SiphonOnLowHealth.ExplosionVFX, effectData, true);
+                        EffectManager.SpawnEffect(_explosionEffectIndex, effectData, true);
+                    }
 
                     DamageTypeCombo damageType = DamageType.ClayGoo;
                     damageType.AddModdedDamageType(DamageTypes.Lifesteal50);
