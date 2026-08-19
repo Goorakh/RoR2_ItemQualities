@@ -754,6 +754,10 @@ namespace ItemQualities
             public static ItemQualityGroup RoboBallBuddy;
 
             public static ItemQualityGroup RoboBallBuddyItem;
+
+            public static ItemQualityGroup BeetleGland;
+
+            public static ItemQualityGroup BeetleGlandGuardItem;
         }
 
         public static class Items
