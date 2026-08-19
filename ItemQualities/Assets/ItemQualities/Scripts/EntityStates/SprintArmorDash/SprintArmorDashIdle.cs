@@ -1,4 +1,5 @@
 using ItemQualities;
+using ItemQualities.ModCompatibility;
 using RoR2;
 
 namespace EntityStates.SprintArmorDash
@@ -11,6 +12,8 @@ namespace EntityStates.SprintArmorDash
 
         private CharacterBody _attachedBody;
         private new InputBankTest inputBank;
+
+        private bool canDash => _attachedBody && !_attachedBody.HasBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown);
 
         public override void OnEnter()
         {
@@ -31,22 +34,35 @@ namespace EntityStates.SprintArmorDash
             if (!_attachedBody)
                 return;
 
-            if (isAuthority)
+            if (_attachedBody.hasEffectiveAuthority)
             {
                 UpdateAuthority();
             }
         }
 
+        public override void FixedUpdate()
+        {
+            base.FixedUpdate();
+
+            if (!_attachedBody)
+                return;
+
+            if (_attachedBody.hasEffectiveAuthority)
+            {
+                FixedUpdateAuthority();
+            }
+        }
+
         private void UpdateAuthority()
         {
-            if (!_attachedBody.HasBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown) && inputBank.interact.down)
+            if (canDash && inputBank.interact.down)
             {
                 if (inputBank.rawMoveUp.justPressed)
                 {
                     float timeSinceLastInput = age - _lastValidInputTime;
                     if (timeSinceLastInput <= DoubleTapWindow)
                     {
-                        outer.SetNextState(new SprintArmorDashDashingState());
+                        StartDashAuthority();
                     }
 
                     _lastValidInputTime = age;
@@ -56,6 +72,19 @@ namespace EntityStates.SprintArmorDash
             {
                 _lastValidInputTime = float.NegativeInfinity;
             }
+        }
+
+        private void FixedUpdateAuthority()
+        {
+            if (canDash && RebindablesCompat.GetSprintArmorDashButtonState(inputBank).justPressed)
+            {
+                StartDashAuthority();
+            }
+        }
+
+        private void StartDashAuthority()
+        {
+            outer.SetNextState(new SprintArmorDashDashingState());
         }
     }
 }

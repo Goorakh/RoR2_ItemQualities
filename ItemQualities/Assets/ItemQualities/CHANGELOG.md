@@ -67,7 +67,8 @@
 
 * Rose Buckler:
     * Default dash input changed to hold interact + double tap forward.
-    * Fixed dash cooldown being 1 second lower than intended.
+    * Fixed dash cooldown being 1 second shorter than intended.
+    * Added support for a custom dash key if [Rebindables](https://thunderstore.io/c/riskofrain2/p/pseudopulse/Rebindables/) is installed.
 
 * Pocket I.C.B.M:
     * Now fires a small missile when using a skill that has at least 5s cooldown.
