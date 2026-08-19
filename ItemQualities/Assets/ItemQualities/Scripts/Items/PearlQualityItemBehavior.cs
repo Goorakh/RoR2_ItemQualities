@@ -6,19 +6,23 @@ namespace ItemQualities.Items
 {
     public sealed class PearlQualityItemBehavior : QualityItemBodyBehavior
     {
-        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+		[SystemInitializer]
+		private static void Init()
+		{
+            RecalculateStatsAPI.GetStatCoefficients += GetStatCoefficients;
+		}
+		
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server | QualityItemBehaviorUsageFlags.Client)]
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.Pearl;
 
         private void OnEnable()
         {
             Body.onRecalculateStats += RecalculateStats;
-            RecalculateStatsAPI.GetStatCoefficients += GetStatCoefficients;
         }
 
         private void OnDisable()
         {
             Body.onRecalculateStats -= RecalculateStats;
-            RecalculateStatsAPI.GetStatCoefficients -= GetStatCoefficients;
         }
 
         private void RecalculateStats(CharacterBody body)
