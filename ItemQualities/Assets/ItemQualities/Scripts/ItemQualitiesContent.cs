@@ -747,6 +747,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup Knurl;
 
+            public static ItemQualityGroup Pearl;
+            
             public static ItemQualityGroup ParentEgg;
             
             public static ItemQualityGroup ShinyPearl;
