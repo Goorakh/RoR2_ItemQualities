@@ -1,5 +1,7 @@
 ## \<Next Version\>
 
+* Added quality boss items.
+
 * Reworks (Click to reveal):
     * <details><summary>Shattering Justice</summary> Fires a short range piercing beam every 5th primary skill use.</details>
     * <details><summary>Spare Drone Parts</summary> Chance to give summoned drones a random elite effect. Chance for summoned drones to revive on death.</details>
