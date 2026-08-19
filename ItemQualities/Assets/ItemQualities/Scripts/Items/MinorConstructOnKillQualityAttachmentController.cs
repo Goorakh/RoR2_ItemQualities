@@ -67,54 +67,6 @@ namespace ItemQualities.Items
                 Vector3 attachedBodyPosition = _attachedBody.corePosition;
                 float sqrRadius = _maxRadius * _maxRadius;
 
-                /*ReadOnlyCollection<TeamComponent> allTeamMembers = TeamComponent.GetTeamMembers(_attachedBody.teamComponent.teamIndex);
-                int maxTargets = Mathf.Min(_maxTargets, allTeamMembers.Count);
-
-                int nearestTeamMembersCount = 0;
-                TeamMember[] nearestTeamMembers = new TeamMember[maxTargets];
-
-                foreach (TeamComponent teamComponent in allTeamMembers)
-                {
-                    if (ReferenceEquals(teamComponent.body, _attachedBody))
-                        continue;
-
-                    if (!teamComponent.body || !teamComponent.body.healthComponent || !teamComponent.body.healthComponent.alive)
-                        continue;
-
-                    if (teamComponent.body.hurtBoxGroup && teamComponent.body.hurtBoxGroup.hurtBoxesDeactivatorCounter > 0)
-                        continue;
-
-                    if (teamComponent.body.GetVisibilityLevel(_attachedBody) < VisibilityLevel.Revealed)
-                        continue;
-
-                    float teamMemberDistanceSqr = (teamComponent.body.corePosition - attachedBodyPosition).sqrMagnitude;
-                    if (teamMemberDistanceSqr <= sqrRadius)
-                    {
-                        TeamMember teamMember = new TeamMember(teamComponent.body, teamMemberDistanceSqr);
-                        int orderedTeamMemberIndex = Array.BinarySearch(nearestTeamMembers, 0, nearestTeamMembersCount, teamMember, TeamMember.DistanceComparer.Instance);
-
-                        if (orderedTeamMemberIndex < 0)
-                        {
-                            orderedTeamMemberIndex = ~orderedTeamMemberIndex;
-                        }
-
-                        if (nearestTeamMembersCount < maxTargets)
-                        {
-                            ArrayUtils.ArrayInsertNoResize(nearestTeamMembers, ++nearestTeamMembersCount, orderedTeamMemberIndex, teamMember);
-                        }
-                        else if (orderedTeamMemberIndex < maxTargets)
-                        {
-                            nearestTeamMembers[orderedTeamMemberIndex] = teamMember;
-                        }
-                    }
-                }
-
-                ListUtils.EnsureCapacity(nearbyBodies, nearestTeamMembersCount);
-                for (int i = 0; i < nearestTeamMembersCount; i++)
-                {
-                    nearbyBodies.Add(nearestTeamMembers[i].Body);
-                }*/
-
                 ReadOnlyCollection<TeamComponent> allTeamMembers = TeamComponent.GetTeamMembers(_attachedBody.teamComponent.teamIndex);
                 int maxTargets = Mathf.Min(_maxTargets, allTeamMembers.Count);
                 ListUtils.EnsureCapacity(nearbyTargets, maxTargets);
@@ -235,7 +187,7 @@ namespace ItemQualities.Items
             ItemQualityCounts stacks = new ItemQualityCounts();
             if (_attachedBody && _attachedBody.inventory)
             {
-                stacks = _attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MinorConstructOnKill);
+                stacks = _attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.MinorConstructOnKillConstructItem);
             }
 
             QualityTier prevAttachmentQualityTier = _attachmentQualityTier;
@@ -277,13 +229,13 @@ namespace ItemQualities.Items
                     _maxTargets = 0;
                     break;
                 case QualityTier.Uncommon:
-                    _maxTargets = 10;
+                    _maxTargets = 5;
                     break;
                 case QualityTier.Rare:
-                    _maxTargets = 20;
+                    _maxTargets = 10;
                     break;
                 case QualityTier.Epic:
-                    _maxTargets = 35;
+                    _maxTargets = 20;
                     break;
                 case QualityTier.Legendary:
                     _maxTargets = int.MaxValue;
@@ -326,7 +278,7 @@ namespace ItemQualities.Items
         {
             public readonly CharacterMaster Master;
 
-            CharacterBody _body;
+            private CharacterBody _body;
             public CharacterBody Body
             {
                 get

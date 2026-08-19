@@ -723,6 +723,8 @@ namespace ItemQualities
 
             public static ItemQualityGroup MinorConstructOnKill;
 
+            public static ItemQualityGroup MinorConstructOnKillConstructItem;
+
             public static ItemQualityGroup ConstructBubble;
 
             public static ItemQualityGroup TitanGoldDuringTP;
