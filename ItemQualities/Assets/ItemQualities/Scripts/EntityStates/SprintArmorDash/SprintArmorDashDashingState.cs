@@ -10,6 +10,10 @@ namespace EntityStates.SprintArmorDash
 {
     public sealed class SprintArmorDashDashingState : EntityState
     {
+        public static float DashSpeedCoefficient;
+
+        public static float DashEndSpeedCoefficient;
+
         private static readonly SphereSearch _dashSphereSearch = new SphereSearch();
 
         private static EffectIndex _blinkEffectIndex;
@@ -116,7 +120,7 @@ namespace EntityStates.SprintArmorDash
                         _motor.ApplyForceImpulse(new PhysForceInfo
                         {
                             resetVelocity = true,
-                            force = _dashDirection * (Time.deltaTime * _attachedBody.moveSpeed * 1000),
+                            force = _dashDirection * (_attachedBody.moveSpeed * DashSpeedCoefficient),
                             ignoreGroundStick = true,
                             massIsOne = true,
                         });
@@ -127,7 +131,7 @@ namespace EntityStates.SprintArmorDash
                         _motor.ApplyForceImpulse(new PhysForceInfo
                         {
                             resetVelocity = true,
-                            force = _dashDirection * (_attachedBody.moveSpeed * 3),
+                            force = _dashDirection * (_attachedBody.moveSpeed * DashEndSpeedCoefficient),
                             ignoreGroundStick = true,
                             massIsOne = true,
                         });

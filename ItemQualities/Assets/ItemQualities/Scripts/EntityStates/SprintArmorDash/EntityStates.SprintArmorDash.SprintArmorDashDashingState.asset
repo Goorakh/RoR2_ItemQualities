@@ -16,4 +16,12 @@ MonoBehaviour:
     assemblyQualifiedName: EntityStates.SprintArmorDash.SprintArmorDashDashingState,
       ItemQualities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   serializedFieldsCollection:
-    serializedFields: []
+    serializedFields:
+    - fieldName: DashSpeedCoefficient
+      fieldValue:
+        stringValue: 15
+        objectValue: {fileID: 0}
+    - fieldName: DashEndSpeedCoefficient
+      fieldValue:
+        stringValue: 3
+        objectValue: {fileID: 0}
