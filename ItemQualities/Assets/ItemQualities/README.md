@@ -39,8 +39,10 @@ This mod is in beta, Quality boss items and other features will be added at some
 ## Recommended mods
 These are mods we recommend you use in combination with Quality, though they are not required.
 
-* [Properly Persistent Profiles Patch Plugin](https://thunderstore.io/package/Groove_Salad/ProperlyPersistentProfilesPatchPlugin/)
+* [Properly Persistent Profiles Patch Plugin](https://thunderstore.io/c/riskofrain2/p/Groove_Salad/ProperlyPersistentProfilesPatchPlugin/):
 	* Makes sure your logbook progress is not lost when launching a new profile. **IMPORTANT**: This mod does *not* work retroactively, if you launch the game at any point without it installed, progress will be lost unless manually backed up.
+* [Rebindables](https://thunderstore.io/c/riskofrain2/p/pseudopulse/Rebindables/):
+	* Allows button rebinding of some featues in Quality.
 
 ## Credits
 

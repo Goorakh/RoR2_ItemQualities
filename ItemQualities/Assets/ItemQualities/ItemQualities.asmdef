@@ -21,6 +21,7 @@
         "HGUnityUtils.dll",
         "HGCSharpUtils.dll",
         "LegacyResourcesAPI.dll",
+        "Rewired_Core.dll",
         "Decalicious.dll",
         "Unity.Addressables.dll",
         "Mono.Cecil.dll",
@@ -51,6 +52,7 @@
         "ShaderSwapper.dll",
         "RiskOfOptions.dll",
         "ProperSave.dll",
+        "Rebindables.dll",
         "MiscFixes.dll"
     ],
     "autoReferenced": true,
