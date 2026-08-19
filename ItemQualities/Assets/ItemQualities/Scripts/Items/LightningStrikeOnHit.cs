@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class LightningStrikeOnHit
+    internal static class LightningStrikeOnHit
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += ProcessHitEnemy;
         }
@@ -22,7 +22,7 @@ namespace ItemQualities.Items
         private static void ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-            int characterBodyLoc = 0;
+            VariableDefinition characterBodyLoc = null;
 
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
@@ -34,7 +34,7 @@ namespace ItemQualities.Items
                 x => x.MatchLdfld(typeof(DamageInfo), nameof(DamageInfo.attacker)),
                 x => x.MatchCallOrCallvirt(typeof(GameObject), nameof(GameObject.GetComponent))
             ) || !c.TryGotoNext(MoveType.After,
-                x => x.MatchStloc(out characterBodyLoc)
+                x => x.MatchStloc(il, out characterBodyLoc)
             ))
             {
                 Log.Error("IL Hook failed!");
@@ -52,7 +52,7 @@ namespace ItemQualities.Items
             c.Emit(OpCodes.Ldloc, characterBodyLoc);
             c.Emit(OpCodes.Ldarg, damageInfoParameter);
             c.EmitDelegate<Func<GenericDamageOrb, CharacterBody, DamageInfo, GenericDamageOrb>>(upgradeLightning);
-            GenericDamageOrb upgradeLightning(GenericDamageOrb genericDamageOrb, CharacterBody characterBody, DamageInfo damageInfo)
+            static GenericDamageOrb upgradeLightning(GenericDamageOrb genericDamageOrb, CharacterBody characterBody, DamageInfo damageInfo)
             {
                 if (!characterBody)
                     return genericDamageOrb;
@@ -60,10 +60,10 @@ namespace ItemQualities.Items
                 ItemQualityCounts lightningStrikeOnHit = characterBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.LightningStrikeOnHit);
                 float upgradeChance = lightningStrikeOnHit.HighestQuality switch
                 {
-                    QualityTier.Uncommon => 10,
-                    QualityTier.Rare => 12,
-                    QualityTier.Epic => 14,
-                    QualityTier.Legendary => 16,
+                    QualityTier.Uncommon => 25,
+                    QualityTier.Rare => 50,
+                    QualityTier.Epic => 75,
+                    QualityTier.Legendary => 100,
                     _ => 0
                 };
 
@@ -86,19 +86,31 @@ namespace ItemQualities.Items
             c.Emit(OpCodes.Ldloc, characterBodyLoc);
             c.Emit(OpCodes.Ldarg, damageInfoParameter);
             c.EmitDelegate<Action<GenericDamageOrb, CharacterBody, DamageInfo>>(alterLightning);
-            void alterLightning(GenericDamageOrb genericDamageOrb, CharacterBody characterBody, DamageInfo damageInfo)
+            static void alterLightning(GenericDamageOrb genericDamageOrb, CharacterBody characterBody, DamageInfo damageInfo)
             {
-                if (!characterBody || damageInfo == null)
+                if (!characterBody || !characterBody.inventory || damageInfo == null)
                     return;
-                if (genericDamageOrb is not LightningUpgradeOrb)
-                    return;
-                ItemQualityCounts lightningStrikeOnHit = characterBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.LightningStrikeOnHit);
-                float damageCoeff = lightningStrikeOnHit.UncommonCount * 5 +
-                                    lightningStrikeOnHit.RareCount * 10 +
-                                    lightningStrikeOnHit.EpicCount * 15 +
-                                    lightningStrikeOnHit.LegendaryCount * 20;
 
-                genericDamageOrb.damageValue += Util.OnHitProcDamage(damageInfo.damage, characterBody.damage, damageCoeff);
+                if (genericDamageOrb is not LightningUpgradeOrb lightningUpgradeOrb)
+                    return;
+
+                ItemQualityCounts lightningStrikeOnHit = characterBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.LightningStrikeOnHit);
+
+                float damageCoeff = (lightningStrikeOnHit.UncommonCount * 8f) +
+                                    (lightningStrikeOnHit.RareCount * 12f) +
+                                    (lightningStrikeOnHit.EpicCount * 16f) +
+                                    (lightningStrikeOnHit.LegendaryCount * 25f);
+
+                lightningUpgradeOrb.damageValue += Util.OnHitProcDamage(damageInfo.damage, characterBody.damage, damageCoeff);
+
+                lightningUpgradeOrb.baseBlastRadius += lightningStrikeOnHit.HighestQuality switch
+                {
+                    QualityTier.Uncommon => 4f,
+                    QualityTier.Rare => 7f,
+                    QualityTier.Epic => 12f,
+                    QualityTier.Legendary => 17f,
+                    _ => 0f,
+                };
             }
         }
     }
