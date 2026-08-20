@@ -2,14 +2,10 @@
 using RoR2;
 using UnityEngine;
 
-namespace EntityStates.VagrantNovaItemQuality
+namespace EntityStates.VagrantNovaItemQualityStandalone
 {
-    public sealed class ChargingState : BaseVagrantNovaItemQualityState
+    public sealed class ChargingState : BaseVagrantNovaItemQualityStandaloneState
     {
-        public static float baseDuration = 1.5f;
-
-        public static string chargeSound;
-
         private float duration;
 
         private GameObject chargeVfxInstance;
@@ -22,7 +18,7 @@ namespace EntityStates.VagrantNovaItemQuality
 
             float attachedBodyAttackSpeed = attachedBody ? attachedBody.attackSpeed : 1f;
 
-            duration = baseDuration / attachedBodyAttackSpeed;
+            duration = VagrantNovaItemQuality.ChargingState.baseDuration / attachedBodyAttackSpeed;
 
             if (attachedBody)
             {
@@ -31,13 +27,13 @@ namespace EntityStates.VagrantNovaItemQuality
                 chargeVfxInstance = GameObject.Instantiate(VagrantMonster.ChargeMegaNova.chargingEffectPrefab, position, rotation);
                 chargeVfxInstance.transform.localScale = Vector3.one * 0.25f;
 
-                Util.PlayAttackSpeedSound(chargeSound, gameObject, (baseDuration / VagrantNovaItem.ChargeState.baseDuration) * attachedBodyAttackSpeed);
+                Util.PlayAttackSpeedSound(VagrantNovaItemQuality.ChargingState.chargeSound, gameObject, (VagrantNovaItemQuality.ChargingState.baseDuration / VagrantNovaItem.ChargeState.baseDuration) * attachedBodyAttackSpeed);
 
                 areaIndicatorVfxInstance = GameObject.Instantiate(VagrantMonster.ChargeMegaNova.areaIndicatorPrefab, position, rotation);
 
                 ObjectScaleCurve chargeEffectScaleCurve = areaIndicatorVfxInstance.GetComponent<ObjectScaleCurve>();
                 chargeEffectScaleCurve.timeMax = duration;
-                chargeEffectScaleCurve.baseScale = Vector3.one * (ExplodeOnDeath.GetExplosionRadius(DetonateState.blastRadius, attachedBody) * 2f);
+                chargeEffectScaleCurve.baseScale = Vector3.one * (ExplodeOnDeath.GetExplosionRadius(VagrantNovaItemQuality.DetonateState.blastRadius, attachedBody) * 2f);
 
                 areaIndicatorVfxInstance.GetComponent<AnimateShaderAlpha>().timeMax = duration;
             }

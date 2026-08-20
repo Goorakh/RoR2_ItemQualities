@@ -1,6 +1,5 @@
 ﻿using ItemQualities;
 using ItemQualities.Utilities;
-using ItemQualities.Utilities.Extensions;
 using RoR2;
 
 namespace EntityStates.VagrantNovaItemQuality

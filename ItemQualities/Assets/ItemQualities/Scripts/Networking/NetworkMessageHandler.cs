@@ -10,6 +10,7 @@ namespace ItemQualities.Networking
         {
             NetworkingAPI.RegisterMessageType<GatewayPickupTeleportMessage>();
             NetworkingAPI.RegisterMessageType<SetBuffCountMessage>();
+            NetworkingAPI.RegisterMessageType<NovaOnLowHealthClientBlastAttackMessage>();
         }
     }
 }

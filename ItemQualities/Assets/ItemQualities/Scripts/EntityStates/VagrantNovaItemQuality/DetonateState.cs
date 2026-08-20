@@ -1,13 +1,49 @@
 ﻿using ItemQualities;
+using ItemQualities.ContentManagement;
 using ItemQualities.Items;
+using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
+using R2API;
 using RoR2;
+using RoR2BepInExPack.GameAssetPathsBetter;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Rendering.PostProcessing;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace EntityStates.VagrantNovaItemQuality
 {
     public sealed class DetonateState : BaseVagrantNovaItemQualityState
     {
+        public static GameObject explosionEffectPrefab { get; private set; }
+
+        [ContentInitializer]
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
+        {
+            AsyncOperationHandle<GameObject> vagrantNovaExplosionLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Vagrant.VagrantNovaExplosion_prefab);
+            vagrantNovaExplosionLoad.OnSuccess(vagrantNovaExplosionPrefab =>
+            {
+                explosionEffectPrefab = EffectScalingFixer.CreateFixedScalingCopy(vagrantNovaExplosionPrefab, 40f, "MiniVagrantNovaExplosion");
+
+                Light light = explosionEffectPrefab.GetComponentInChildren<Light>();
+                if (light)
+                {
+                    light.gameObject.SetActive(false);
+                }
+
+                PostProcessVolume ppVolume = explosionEffectPrefab.GetComponentInChildren<PostProcessVolume>();
+                if (ppVolume)
+                {
+                    ppVolume.gameObject.SetActive(false);
+                }
+
+                args.ContentPack.effectDefs.Add(new EffectDef(explosionEffectPrefab));
+            });
+
+            return vagrantNovaExplosionLoad.AsProgressCoroutine(args.ProgressReceiver);
+        }
+
         public static float blastRadius;
 
         public static float blastProcCoefficient;
@@ -26,6 +62,8 @@ namespace EntityStates.VagrantNovaItemQuality
 
             duration = baseDuration;
 
+            float radius = ExplodeOnDeath.GetExplosionRadius(blastRadius, attachedBody);
+
             if (NetworkServer.active && attachedBody)
             {
                 ItemQualityCounts itemCounts = GetItemCounts();
@@ -34,15 +72,10 @@ namespace EntityStates.VagrantNovaItemQuality
                     itemCounts.UncommonCount = 1;
                 }
 
-                float damageCoefficient = (7f * itemCounts.UncommonCount) +
-                                          (15f * itemCounts.RareCount) +
-                                          (30f * itemCounts.EpicCount) +
-                                          (60f * itemCounts.LegendaryCount);
-
                 new BlastAttack
                 {
                     attacker = attachedBody.gameObject,
-                    baseDamage = attachedBody.damage * damageCoefficient,
+                    baseDamage = attachedBody.damage * NovaOnLowHealth.GetMiniNovaDamageCoefficient(itemCounts),
                     baseForce = blastForce,
                     bonusForce = Vector3.zero,
                     attackerFiltering = AttackerFiltering.NeverHitSelf,
@@ -54,7 +87,7 @@ namespace EntityStates.VagrantNovaItemQuality
                     position = attachedBody.corePosition,
                     procChainMask = new ProcChainMask(),
                     procCoefficient = blastProcCoefficient,
-                    radius = ExplodeOnDeath.GetExplosionRadius(blastRadius, attachedBody),
+                    radius = radius,
                     losType = BlastAttack.LoSType.NearestHit,
                     teamIndex = attachedBody.teamComponent.teamIndex,
                 }.Fire();
@@ -62,7 +95,8 @@ namespace EntityStates.VagrantNovaItemQuality
 
             EffectData effectData = new EffectData
             {
-                origin = attachedBody ? attachedBody.corePosition : transform.position
+                origin = attachedBody ? attachedBody.corePosition : transform.position,
+                scale = radius,
             };
 
             if (attachedBody)
@@ -70,7 +104,7 @@ namespace EntityStates.VagrantNovaItemQuality
                 effectData.SetHurtBoxReference(attachedBody.mainHurtBox);
             }
 
-            EffectManager.SpawnEffect(VagrantMonster.FireMegaNova.novaEffectPrefab, effectData, false);
+            EffectManager.SpawnEffect(explosionEffectPrefab, effectData, false);
 
             Util.PlaySound(explosionSound, gameObject);
         }

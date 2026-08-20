@@ -17,6 +17,8 @@ namespace ItemQualities
 
         public static ModdedProcType Knurl { get; private set; } = ModdedProcType.Invalid;
 
+        public static ModdedProcType NovaOnLowHealthBlast { get; private set; } = ModdedProcType.Invalid;
+
         [SystemInitializer]
         private static void Init()
         {
@@ -26,6 +28,7 @@ namespace ItemQualities
             Bug = ProcTypeAPI.ReserveProcType();
             Crowbar = ProcTypeAPI.ReserveProcType();
             Knurl = ProcTypeAPI.ReserveProcType();
+            NovaOnLowHealthBlast = ProcTypeAPI.ReserveProcType();
         }
     }
 }
