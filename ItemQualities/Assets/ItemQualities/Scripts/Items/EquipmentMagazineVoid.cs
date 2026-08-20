@@ -121,4 +121,29 @@ namespace ItemQualities.Items
             }
         }
     }
+
+    public sealed class BoostDamageVoidQualityItemBehavior : QualityItemBodyBehavior
+    {
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server | QualityItemBehaviorUsageFlags.Client)]
+        private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.BoostDamageVoid;
+
+        private bool wasVoid;
+
+        private void OnEnable()
+        {
+            wasVoid = (Body.bodyFlags & CharacterBody.BodyFlags.Void) != 0;
+            if (!wasVoid)
+            {
+                Body.bodyFlags |= CharacterBody.BodyFlags.Void;
+            }
+        }
+
+        private void OnDisable()
+        {
+            if (!wasVoid)
+            {
+                Body.bodyFlags &= ~CharacterBody.BodyFlags.Void;
+            }
+        }
+    }
 }
