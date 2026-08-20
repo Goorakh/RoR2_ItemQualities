@@ -49,16 +49,16 @@ namespace ItemQualities.Items
 
             float venomChance = permanentDebuffOnHit.HighestQuality switch
             {
-                QualityTier.Uncommon => 2,
-                QualityTier.Rare => 3,
-                QualityTier.Epic => 4,
-                QualityTier.Legendary => 5,
+                QualityTier.Uncommon => 5f,
+                QualityTier.Rare => 8f,
+                QualityTier.Epic => 12f,
+                QualityTier.Legendary => 15f,
                 _ => 0
             };
 
             if (RollUtil.CheckRoll(venomChance, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
-                DotController.InflictDot(damageReport.victim.gameObject, damageReport.attacker, damageReport.damageInfo.inflictedHurtbox, _scorpionVenomDot, 10 * damageReport.damageInfo.procCoefficient, 1f, maxStacksFromAttacker);
+                DotController.InflictDot(damageReport.victim.gameObject, damageReport.attacker, damageReport.damageInfo.inflictedHurtbox, _scorpionVenomDot, 10f * damageReport.damageInfo.procCoefficient, 1f, maxStacksFromAttacker);
             }
         }
 

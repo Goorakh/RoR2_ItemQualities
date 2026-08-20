@@ -82,6 +82,13 @@
         * Epic: 5 (+5 per stack) -> 8 (+8 per stack)
         * Legendary: 7 (+7 per stack) -> 10 (+10 per stack)
 
+* Symbiotic Scorpion:
+    * Venom chance:
+        * Uncommon: 2% -> 5%
+        * Rare: 3% -> 8%
+        * Epic: 4% -> 12%
+        * Legendary: 5% -> 15%
+
 * Preon Accumulator:
     * Explosion/zap radius:
         * Uncommon: +5m -> +10m
