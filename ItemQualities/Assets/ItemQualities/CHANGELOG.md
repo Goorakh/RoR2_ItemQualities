@@ -8,6 +8,7 @@
     * <details><summary>Safer Spaces</summary> On block, apply a fog to nearby enemies that increases damage from all void-based attacks.</details>
     * <details><summary>The Crowdfunder</summary> Bullets can ricochet to nearby enemies. Increased max fire rate (same stats as previous version)</details>
     * <details><summary>Power Elixir</summary> Chance to throw a potion at enemies that inflicts a dot. Chance increases with all consumed items and equipment in your inventory.</details>
+    * <details><summary>Rejuvenation Rack</summary> All healing grants temporary invulnerability.</details>
 
 * Medkit:
     * Fixed healing zone being invisible for non-host players.
