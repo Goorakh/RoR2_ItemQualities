@@ -100,15 +100,23 @@
 
 * Preon Accumulator:
     * Explosion/zap radius:
-        * Uncommon: +5m -> +10m
-        * Rare: +10m -> +20m
-        * Epic: +20m -> +40m
-        * Legendary: +25m -> +50m
+        * Uncommon: +5m -> +7m
+        * Rare: +10m -> +15m
+        * Epic: +20m -> +25m
+        * Legendary: +25m -> +35m
+    * Increased orb duration for all qualities:
+        * 10s -> 30s
+    * Added damage increase over time:
+        * Uncommon: +1.5%/s
+        * Rare: +3%/s
+        * Epic: +6%/s
+        * Legendary: +10%/s
     * Base cooldown: 140s ->
         * Uncommon: 125s
         * Rare: 110s
         * Epic: 95s
         * Legendary: 80s
+    * Removed explosion damage falloff for all qualities
 
 * Molotov:
     * Puddle burn damage:
