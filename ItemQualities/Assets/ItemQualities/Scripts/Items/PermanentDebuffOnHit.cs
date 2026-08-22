@@ -80,9 +80,9 @@ namespace ItemQualities.Items
                                       (permanentDebuffOnHit.LegendaryCount * 2f);
 
             int activeDots = 0;
-            for (int i = 0; i < DotAPI.VanillaDotCount + DotAPI.CustomDotCount; i++)
+            for (DotController.DotIndex dotIndex = 0; (int)dotIndex < DotAPI.VanillaDotCount + DotAPI.CustomDotCount; dotIndex++)
             {
-                if (self.HasDotActive((DotController.DotIndex)i))
+                if (self.HasDotActive(dotIndex))
                 {
                     activeDots++;
                 }
