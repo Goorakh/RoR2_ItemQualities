@@ -89,14 +89,7 @@ namespace ItemQualities.Equipments
                     projectileSimple.lifetime = lifetime;
 
                     ProjectileSteerTowardTarget projectileSteerTowardTarget = qualityProjectilePrefab.AddComponent<ProjectileSteerTowardTarget>();
-                    projectileSteerTowardTarget.rotationSpeed = qualityTier switch
-                    {
-                        QualityTier.Uncommon => 15f,
-                        QualityTier.Rare => 20f,
-                        QualityTier.Epic => 25f,
-                        QualityTier.Legendary => 30f,
-                        _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
-                    };
+                    projectileSteerTowardTarget.rotationSpeed = 90f;
 
                     ProjectileDirectionalTargetFinder projectileDirectionalTargetFinder = qualityProjectilePrefab.AddComponent<ProjectileDirectionalTargetFinder>();
                     projectileDirectionalTargetFinder.lookRange = 600f;
