@@ -205,17 +205,17 @@
         "ITEM_EQUIPMENTMAGAZINE_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to immediately recharge held equipment.",
         "ITEM_EQUIPMENTMAGAZINE_LEGENDARY_DESC": "{0}\nActivating an <style=cIsUtility>equipment</style> has a <sprite name=\"Quality\"> <style=cIsUtility>60%</style> <style=cStack>(+60% per stack)</style> chance to immediately recharge it.",
 
-        "ITEM_HEALINGPOTION_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed.",
-        "ITEM_HEALINGPOTION_UNCOMMON_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>20%</style> <style=cStack>(+20% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style>.",
+        "ITEM_HEALINGPOTION_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to throw a potion at enemies that inflicts a chemical burn. Chance increases with more consumed items in your inventory.",
+        "ITEM_HEALINGPOTION_UNCOMMON_DESC": "{0}\n<style=cIsUtility>5%</style> chance on hit to throw a <style=cIsDamage>potion</style> at the enemy that explodes in a <style=cIsUtility>15m</style> radius and inflicts all enemies hit with <style=cIsDamage>chemical burn</style> for <sprite name=\"Quality\"> <style=cIsDamage>250% <style=cStack>(+250% per stack)</style></style> damage. The chance to throw a potion increases by <sprite name=\"Quality\"> <style=cIsUtility>0.5%</style> for every <style=cIsUtility>consumed</style> item or equipment in your inventory.",
 
-        "ITEM_HEALINGPOTION_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed.",
-        "ITEM_HEALINGPOTION_RARE_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>35%</style> <style=cStack>(+35% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style>.",
+        "ITEM_HEALINGPOTION_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to throw a potion at enemies that inflicts a chemical burn. Chance increases with more consumed items in your inventory.",
+        "ITEM_HEALINGPOTION_RARE_DESC": "{0}\n<style=cIsUtility>5%</style> chance on hit to throw a <style=cIsDamage>potion</style> at the enemy that explodes in a <style=cIsUtility>15m</style> radius and inflicts all enemies hit with <style=cIsDamage>chemical burn</style> for <sprite name=\"Quality\"> <style=cIsDamage>600% <style=cStack>(+600% per stack)</style></style> damage. The chance to throw a potion increases by <sprite name=\"Quality\"> <style=cIsUtility>1%</style> for every <style=cIsUtility>consumed</style> item or equipment in your inventory.",
 
-        "ITEM_HEALINGPOTION_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed.",
-        "ITEM_HEALINGPOTION_EPIC_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>50%</style> <style=cStack>(+50% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style>.",
+        "ITEM_HEALINGPOTION_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to throw a potion at enemies that inflicts a chemical burn. Chance increases with more consumed items in your inventory.",
+        "ITEM_HEALINGPOTION_EPIC_DESC": "{0}\n<style=cIsUtility>5%</style> chance on hit to throw a <style=cIsDamage>potion</style> at the enemy that explodes in a <style=cIsUtility>15m</style> radius and inflicts all enemies hit with <style=cIsDamage>chemical burn</style> for <sprite name=\"Quality\"> <style=cIsDamage>1000% <style=cStack>(+1000% per stack)</style></style> damage. The chance to throw a potion increases by <sprite name=\"Quality\"> <style=cIsUtility>3%</style> for every <style=cIsUtility>consumed</style> item or equipment in your inventory.",
 
-        "ITEM_HEALINGPOTION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to prevent elixirs being consumed.",
-        "ITEM_HEALINGPOTION_LEGENDARY_DESC": "{0}\n<sprite name=\"Quality\"> <style=cIsUtility>75%</style> <style=cStack>(+75% per stack)</style> chance to prevent an elixir from being <style=cIsUtility>consumed</style>.",
+        "ITEM_HEALINGPOTION_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Chance to throw a potion at enemies that inflicts a chemical burn. Chance increases with more consumed items in your inventory.",
+        "ITEM_HEALINGPOTION_LEGENDARY_DESC": "{0}\n<style=cIsUtility>5%</style> chance on hit to throw a <style=cIsDamage>potion</style> at the enemy that explodes in a <style=cIsUtility>15m</style> radius and inflicts all enemies hit with <style=cIsDamage>chemical burn</style> for <sprite name=\"Quality\"> <style=cIsDamage>1600% <style=cStack>(+1600% per stack)</style></style> damage. The chance to throw a potion increases by <sprite name=\"Quality\"> <style=cIsUtility>5%</style> for every <style=cIsUtility>consumed</style> item or equipment in your inventory.",
 
         "ITEM_HEALINGPOTIONCONSUMED_UNCOMMON_PICKUP": "An empty container for an Elixir. <sprite name=\"Quality\"> Refreshing. Does nothing.",
         "ITEM_HEALINGPOTIONCONSUMED_UNCOMMON_DESC": "An empty container for an Elixir. <sprite name=\"Quality\"> Refreshing. Does nothing.",

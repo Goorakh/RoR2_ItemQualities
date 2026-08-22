@@ -934,6 +934,8 @@ namespace ItemQualities
             public static BuffDef ConstructBubbleCooldown;
 
             public static BuffDef ShinyPearlLuck;
+
+            public static BuffDef ChemicalBurn;
         }
 
         public static class Prefabs
@@ -961,6 +963,10 @@ namespace ItemQualities
             public static GameObject MinorConstructBubbleEffect;
 
             public static GameObject PickupTransferOrbEffect;
+
+            public static GameObject ChemicalBurnEffect;
+
+            public static GameObject HealingPotionOrbEffect;
         }
 
         public static class NetworkedPrefabs
@@ -1036,6 +1042,8 @@ namespace ItemQualities
             public static Material SprintWispQualityFire;
 
             public static Material TrimSheetQualityEquipmentDrone;
+
+            public static Material ChemicalGooOverlay;
         }
 
         public static class SpawnCards
