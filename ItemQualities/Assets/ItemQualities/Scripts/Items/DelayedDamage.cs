@@ -46,16 +46,25 @@ namespace ItemQualities.Items
             if (!report.attackerBody || !report.attackerBody.inventory || !report.victimBody)
                 return;
 
+            bool sureProc = report.damageInfo.procChainMask.HasProc(ProcType.SureProc);
+
             ItemQualityCounts delayedDamage = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DelayedDamage);
 
             if (delayedDamage.TotalQualityCount > 0)
             {
-                float chance = (delayedDamage.UncommonCount * 1f) +
-                               (delayedDamage.RareCount * 1.5f) +
-                               (delayedDamage.EpicCount * 2f) +
-                               (delayedDamage.LegendaryCount * 2.5f);
+                float chance = delayedDamage.HighestQuality switch
+                {
+                    QualityTier.Uncommon => 10f,
+                    QualityTier.Rare => 25f,
+                    QualityTier.Epic => 50f,
+                    QualityTier.Legendary => 75f,
+                    _ => 0f,
+                };
 
-                if (RollUtil.CheckRoll(chance * report.damageInfo.procCoefficient, report.attackerMaster, report.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+                int maxStacks = delayedDamage.TotalCount * 10;
+
+                if (report.victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff).TotalQualityCount < maxStacks &&
+                    RollUtil.CheckRoll(chance * report.damageInfo.procCoefficient, report.attackerMaster, sureProc))
                 {
                     report.victimBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff.GetBuffDef(delayedDamage.HighestQuality));
                 }

@@ -62,6 +62,13 @@
 
 * Warped Echo:
     * Fixed Sentry Key drops being repeated on Conduit Canyon.
+    * Chance to apply echo:
+        * Uncommon: 1% (+1% per stack) -> 10%
+        * Rare: 1.5% (+1.5% per stack) -> 25%
+        * Epic: 2% (+2% per stack) -> 50%
+        * Legendary: 2.5% (+2.5% per stack) -> 75%
+    * Max echo stacks:
+        * All quality tiers: Unlimited -> 10 (+10 per stack)
 
 * Ukulele:
     * Fixed not being able to apply the charge effect to multiple enemies at once.
