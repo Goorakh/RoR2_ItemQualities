@@ -70,6 +70,9 @@
     * Max echo stacks:
         * All quality tiers: Unlimited -> 10 (+10 per stack)
 
+* Singularity Band:
+    * Fixed end explosion range not scaling with size.
+
 * Ukulele:
     * Fixed not being able to apply the charge effect to multiple enemies at once.
 
