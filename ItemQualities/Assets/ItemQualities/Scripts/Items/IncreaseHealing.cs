@@ -1,5 +1,6 @@
 ﻿using ItemQualities.Utilities.Extensions;
 using RoR2;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
@@ -18,7 +19,8 @@ namespace ItemQualities.Items
                 ItemQualityCounts increaseHealing = healthComponent.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.IncreaseHealing);
                 if (increaseHealing.TotalQualityCount > 0)
                 {
-                    float healFraction = amount / healthComponent.fullHealth;
+                    const float maxHealFraction = 1f;
+                    float healFraction = Mathf.Min(maxHealFraction, amount / healthComponent.fullHealth);
 
                     float invincibilityDurationPerFullHeal = (increaseHealing.UncommonCount * 2f) +
                                                              (increaseHealing.RareCount * 5f) +
