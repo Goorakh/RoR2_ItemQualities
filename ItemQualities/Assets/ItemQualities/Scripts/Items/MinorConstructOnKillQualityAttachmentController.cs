@@ -98,30 +98,30 @@ namespace ItemQualities.Items
                 }
             }
 
+            // If both lists are empty, there cannot be any difference in targets, no checking necessary
             if (_currentTargets.Count > 0 || nearbyTargets.Count > 0)
             {
-                bool targetsChanged = false;
+                using var _0 = ListPool<TargetInfo>.RentCollection(out List<TargetInfo> lostTargets);
+                ListUtils.EnsureCapacity(lostTargets, _currentTargets.Count);
 
-                foreach (TargetInfo targetInfo in nearbyTargets)
-                {
-                    if (!_currentTargets.Contains(targetInfo))
-                    {
-                        onTargetFound(targetInfo);
-                        targetsChanged = true;
-                    }
-                }
+                using var _1 = ListPool<TargetInfo>.RentCollection(out List<TargetInfo> discoveredTargets);
+                ListUtils.EnsureCapacity(discoveredTargets, nearbyTargets.Count);
 
-                foreach (TargetInfo targetInfo in _currentTargets)
-                {
-                    if (!nearbyTargets.Contains(targetInfo))
-                    {
-                        onTargetLost(targetInfo);
-                        targetsChanged = true;
-                    }
-                }
+                ListUtils.FindExclusiveEntriesByValue(_currentTargets, nearbyTargets, lostTargets, discoveredTargets);
 
+                bool targetsChanged = discoveredTargets.Count > 0 || lostTargets.Count > 0;
                 if (targetsChanged)
                 {
+                    foreach (TargetInfo targetInfo in discoveredTargets)
+                    {
+                        onTargetFound(targetInfo);
+                    }
+
+                    foreach (TargetInfo targetInfo in lostTargets)
+                    {
+                        onTargetLost(targetInfo);
+                    }
+
                     ListUtils.CloneTo(nearbyTargets, _currentTargets);
 
                     updateTetherTargets();
@@ -250,28 +250,6 @@ namespace ItemQualities.Items
         void INetworkedBodyAttachmentListener.OnAttachedBodyDiscovered(NetworkedBodyAttachment networkedBodyAttachment, CharacterBody attachedBody)
         {
             setAttachedBody(attachedBody);
-        }
-
-        private readonly struct TeamMember
-        {
-            public readonly CharacterBody Body;
-            public readonly float SqrDistance;
-
-            public TeamMember(CharacterBody body, float sqrDistance)
-            {
-                Body = body;
-                SqrDistance = sqrDistance;
-            }
-
-            public sealed class DistanceComparer : IComparer<TeamMember>
-            {
-                public static DistanceComparer Instance { get; } = new DistanceComparer();
-
-                public int Compare(TeamMember x, TeamMember y)
-                {
-                    return x.SqrDistance.CompareTo(y.SqrDistance);
-                }
-            }
         }
 
         private sealed class TargetInfo : IEquatable<TargetInfo>
