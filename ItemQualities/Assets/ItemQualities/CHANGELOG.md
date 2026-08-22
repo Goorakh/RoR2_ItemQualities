@@ -1,4 +1,4 @@
-## \<Next Version\>
+## 0.8.0 Changes:
 
 * Added quality boss items.
 
