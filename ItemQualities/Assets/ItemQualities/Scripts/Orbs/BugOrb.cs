@@ -5,7 +5,7 @@ namespace ItemQualities.Orbs
 {
     public sealed class BugOrb : GenericDamageOrb
     {
-        static readonly float _baseSpeed = 60f;
+        private static readonly float _baseSpeed = 60f;
 
         public override GameObject GetOrbEffect()
         {

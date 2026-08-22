@@ -12,11 +12,11 @@ namespace EntityStates.SprintArmorDash
 {
     public sealed class SprintArmorDashBounce : EntityState
     {
-        static readonly SphereSearch _dashSphereSearch = new SphereSearch();
+        private static readonly SphereSearch _dashSphereSearch = new SphereSearch();
 
-        static EffectIndex _hitEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _hitEffectIndex = EffectIndex.Invalid;
 
-        CharacterBody _attachedBody;
+        private CharacterBody _attachedBody;
 
         [NonSerialized]
         public Vector3 dashDirection;
@@ -25,7 +25,7 @@ namespace EntityStates.SprintArmorDash
         public Vector3 attackPos;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _hitEffectIndex = EffectCatalogUtils.FindEffectIndex("OmniImpactVFX");
             if (_hitEffectIndex == EffectIndex.Invalid)

@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class JumpDamageStrike
+    internal static class JumpDamageStrike
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Items.JumpDamageStrikeBodyBehavior.DischargeEffects += JumpDamageStrikeBodyBehavior_DischargeEffects;
         }
 
-        static void JumpDamageStrikeBodyBehavior_DischargeEffects(ILContext il)
+        private static void JumpDamageStrikeBodyBehavior_DischargeEffects(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

@@ -128,7 +128,7 @@ namespace EntityStates.FriendUnit
             }
         }
 
-        void onMovementHit(ref CharacterMotor.MovementHitInfo movementHitInfo)
+        private void onMovementHit(ref CharacterMotor.MovementHitInfo movementHitInfo)
         {
             outer.SetNextState(new FriendUnitPuntImpact
             {

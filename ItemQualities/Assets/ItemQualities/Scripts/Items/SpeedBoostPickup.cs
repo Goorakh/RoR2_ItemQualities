@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class SpeedBoostPickup
+    internal static class SpeedBoostPickup
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.ElusiveAntlersPickup.OnTriggerStay += ElusiveAntlersPickup_OnTriggerStay;
         }
 
-        static void ElusiveAntlersPickup_OnTriggerStay(ILContext il)
+        private static void ElusiveAntlersPickup_OnTriggerStay(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -79,7 +79,7 @@ namespace ItemQualities.Items
                 if (speedBoostPickup.TotalQualityCount > 0 &&
                     body.GetBuffCount(DLC2Content.Buffs.ElusiveAntlersBuff) >= Mathf.Min(6, body.GetElusiveAntlersCurrentMaxStack()))
                 {
-                    float invisibilityDuration = (1f * speedBoostPickup.UncommonCount) + 
+                    float invisibilityDuration = (1f * speedBoostPickup.UncommonCount) +
                                                  (3f * speedBoostPickup.RareCount) +
                                                  (6f * speedBoostPickup.EpicCount) +
                                                  (8f * speedBoostPickup.LegendaryCount);

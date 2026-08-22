@@ -1,20 +1,69 @@
 ﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
 using System;
 
 namespace ItemQualities.Equipments
 {
-    static class TeamWarCry
+    internal static class TeamWarCry
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
-            IL.RoR2.EquipmentSlot.FireTeamWarCry += EquipmentSlot_FireTeamWarCry;
+            On.RoR2.EquipmentSlot.FireTeamWarCry += On_EquipmentSlot_FireTeamWarCry;
+            IL.RoR2.EquipmentSlot.FireTeamWarCry += IL_EquipmentSlot_FireTeamWarCry;
+
+            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void EquipmentSlot_FireTeamWarCry(ILContext il)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        {
+            BuffQualityCounts teamWarCry = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.TeamWarCry);
+            QualityTier qualityTier = teamWarCry.HighestQuality;
+            if (qualityTier == QualityTier.None)
+                return;
+
+            float cooldownReduction = qualityTier switch
+            {
+                QualityTier.Uncommon => 2f,
+                QualityTier.Rare => 5f,
+                QualityTier.Epic => 8f,
+                QualityTier.Legendary => 15f,
+                _ => throw new NotImplementedException(),
+            };
+
+            args.allSkills.cooldownFlatReduction += cooldownReduction;
+        }
+
+        private static bool On_EquipmentSlot_FireTeamWarCry(On.RoR2.EquipmentSlot.orig_FireTeamWarCry orig, EquipmentSlot self)
+        {
+            bool success = orig(self);
+
+            if (success)
+            {
+                QualityTier qualityTier = self.GetCurrentEquipmentActionQualityTier();
+                if (qualityTier != QualityTier.None)
+                {
+                    foreach (TeamComponent item in TeamComponent.GetTeamMembers(self.characterBody.teamComponent.teamIndex))
+                    {
+                        foreach (GenericSkill skill in item.body.skillLocator.AllSkills)
+                        {
+                            if (skill.stock < skill.maxStock)
+                            {
+                                skill.AddOneStock();
+                                item.body.OnSkillCooldown(skill);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return success;
+        }
+
+        private static void IL_EquipmentSlot_FireTeamWarCry(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

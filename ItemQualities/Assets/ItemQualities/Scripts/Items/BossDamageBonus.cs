@@ -7,16 +7,16 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class BossDamageBonus
+    internal static class BossDamageBonus
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static void onCharacterDeathGlobal(DamageReport report)
+        private static void onCharacterDeathGlobal(DamageReport report)
         {
             if (report.victimBody && report.victimBody.HasBuff(ItemQualitiesContent.Buffs.MiniBossMarker))
             {
@@ -32,7 +32,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void applyTicks(CharacterMaster attackerMaster)
+        private static void applyTicks(CharacterMaster attackerMaster)
         {
             ItemQualityCounts bossDamageBonus = attackerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
 
@@ -54,7 +54,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
@@ -119,14 +119,15 @@ namespace ItemQualities.Items
                 if (isMiniBoss)
                 {
                     CharacterBody attackerBody = damageInfo?.attacker ? damageInfo.attacker.GetComponent<CharacterBody>() : null;
-                    if (attackerBody && attackerBody.master && attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats)) {
+                    if (attackerBody && attackerBody.master && attackerBody.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
+                    {
                         ItemQualityCounts bossDamageBonus = attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);
 
-                        damageMultiplier +=  masterExtraStats.BossDamageBonusTicks * (
-                                            bossDamageBonus.UncommonCount * 0.01f +
-                                            bossDamageBonus.EpicCount * 0.0125f +
-                                            bossDamageBonus.RareCount * 0.015f +
-                                            bossDamageBonus.LegendaryCount * 0.02f);
+                        damageMultiplier += masterExtraStats.BossDamageBonusTicks * (
+                                            (bossDamageBonus.UncommonCount * 0.01f) +
+                                            (bossDamageBonus.EpicCount * 0.0125f) +
+                                            (bossDamageBonus.RareCount * 0.015f) +
+                                            (bossDamageBonus.LegendaryCount * 0.02f));
                     }
                 }
 

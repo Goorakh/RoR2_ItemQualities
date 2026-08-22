@@ -9,35 +9,35 @@ namespace ItemQualities.Items
     public sealed class TPHealingNovaHoldoutZoneController : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.HoldoutZoneController.Awake += HoldoutZoneController_Awake;
         }
 
-        static void HoldoutZoneController_Awake(On.RoR2.HoldoutZoneController.orig_Awake orig, HoldoutZoneController self)
+        private static void HoldoutZoneController_Awake(On.RoR2.HoldoutZoneController.orig_Awake orig, HoldoutZoneController self)
         {
             orig(self);
             self.EnsureComponent<TPHealingNovaHoldoutZoneController>();
         }
 
-        HoldoutZoneController _holdoutZoneController;
+        private HoldoutZoneController _holdoutZoneController;
 
-        void Awake()
+        private void Awake()
         {
             _holdoutZoneController = GetComponent<HoldoutZoneController>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _holdoutZoneController.calcChargeRate += applyRate;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _holdoutZoneController.calcChargeRate -= applyRate;
         }
 
-        void applyRate(ref float rate)
+        private void applyRate(ref float rate)
         {
             if (!_holdoutZoneController)
                 return;

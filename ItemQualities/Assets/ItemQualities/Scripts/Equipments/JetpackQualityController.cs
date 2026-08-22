@@ -9,14 +9,14 @@ namespace ItemQualities.Equipments
     [RequireComponent(typeof(NetworkedBodyAttachment))]
     public sealed class JetpackQualityController : MonoBehaviour
     {
-        NetworkedBodyAttachment _bodyAttachment;
+        private NetworkedBodyAttachment _bodyAttachment;
 
-        int _bugsPerPickup;
+        private int _bugsPerPickup;
 
-        float _pickupSpawnInterval;
-        float _pickupSpawnTimer;
+        private float _pickupSpawnInterval;
+        private float _pickupSpawnTimer;
 
-        QualityTier _activeQualityTier = QualityTier.None;
+        private QualityTier _activeQualityTier = QualityTier.None;
         public QualityTier ActiveQualityTier
         {
             get => _activeQualityTier;
@@ -53,12 +53,12 @@ namespace ItemQualities.Equipments
             }
         }
 
-        void Awake()
+        private void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (!NetworkServer.active || _activeQualityTier == QualityTier.None)
                 return;
@@ -71,7 +71,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        void trySpawnNearbyPickup()
+        private void trySpawnNearbyPickup()
         {
             if (!_bodyAttachment)
                 return;

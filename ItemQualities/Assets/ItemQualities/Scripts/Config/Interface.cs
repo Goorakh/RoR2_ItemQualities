@@ -1,5 +1,4 @@
 ﻿using BepInEx.Configuration;
-using RiskOfOptions;
 using RiskOfOptions.Options;
 using System.Runtime.CompilerServices;
 
@@ -9,19 +8,19 @@ namespace ItemQualities
     {
         public static class Interface
         {
-            const string SectionName = "UI";
+            private const string SectionName = "UI";
 
-            public static ConfigEntry<bool> EnableQualityItemSorting { get; private set; }
+            
 
             internal static void Init(ConfigFile configFile)
             {
-                EnableQualityItemSorting = configFile.Bind(new ConfigDefinition(SectionName, "Enable Quality Item Grouping"), true, new ConfigDescription("If enabled, all quality items (including non-quality item) will be sorted and grouped together in inventories."));
+                
             }
 
             [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
             internal static void InitRiskOfOptions()
             {
-                ModSettingsManager.AddOption(new CheckBoxOption(EnableQualityItemSorting), ModGuid, ModName);
+                
             }
         }
     }

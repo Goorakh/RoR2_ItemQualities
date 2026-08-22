@@ -11,10 +11,10 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class ItemCostQualityPatch
+    internal static class ItemCostQualityPatch
     {
         [SystemInitializer(typeof(CostTypeCatalog))]
-        static void Init()
+        private static void Init()
         {
             CostTypeDef itemCostDef = CostTypeCatalog.GetCostTypeDef(CostTypeIndex.WhiteItem);
             if (itemCostDef?.isAffordable?.Method != null)
@@ -40,8 +40,8 @@ namespace ItemQualities
             IL.RoR2.OptionChestBehavior.ItemDrop += OptionChestBehavior_ItemDrop;
         }
 
-        delegate bool CostTypeCatalog_IsAffordableItem_orig(CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context);
-        static bool CostTypeCatalog_IsAffordableItem(CostTypeCatalog_IsAffordableItem_orig orig, CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context)
+        private delegate bool CostTypeCatalog_IsAffordableItem_orig(CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context);
+        private static bool CostTypeCatalog_IsAffordableItem(CostTypeCatalog_IsAffordableItem_orig orig, CostTypeDef costTypeDef, CostTypeDef.IsAffordableContext context)
         {
             return orig(costTypeDef, context) &&
                    context.activator &&
@@ -50,7 +50,7 @@ namespace ItemQualities
                    activatorBody.inventory.HasAtLeastXTotalNonQualityItemsOfTierForPurchase(costTypeDef.itemTier, context.cost);
         }
 
-        static void CostTypeCatalog_PayCostItems(ILContext il)
+        private static void CostTypeCatalog_PayCostItems(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -134,7 +134,7 @@ namespace ItemQualities
 
         private delegate void SetTransformedItemQualityDelegate(ref Inventory.ItemTransformation itemTransformation);
 
-        static QualityTier getOutputQualityTierFromCost(GameObject dropperObject)
+        private static QualityTier getOutputQualityTierFromCost(GameObject dropperObject)
         {
             if (!dropperObject ||
                 !dropperObject.TryGetComponent(out ObjectPurchaseContext purchaseContext) ||
@@ -171,7 +171,7 @@ namespace ItemQualities
             return highestInputQualityTier;
         }
 
-        static PickupIndex tryUpgradeQualityFromCost(PickupIndex intendedDropPickupIndex, GameObject dropperObject)
+        private static PickupIndex tryUpgradeQualityFromCost(PickupIndex intendedDropPickupIndex, GameObject dropperObject)
         {
             QualityTier outputQualityTier = getOutputQualityTierFromCost(dropperObject);
 
@@ -187,7 +187,7 @@ namespace ItemQualities
             return dropPickupIndex;
         }
 
-        static void OptionChestBehavior_ItemDrop(ILContext il)
+        private static void OptionChestBehavior_ItemDrop(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -223,7 +223,7 @@ namespace ItemQualities
             }
         }
 
-        static void ShopTerminalBehavior_DropPickup(ILContext il)
+        private static void ShopTerminalBehavior_DropPickup(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -248,7 +248,7 @@ namespace ItemQualities
             }
         }
 
-        static void ChestBehavior_BaseItemDrop(ILContext il)
+        private static void ChestBehavior_BaseItemDrop(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

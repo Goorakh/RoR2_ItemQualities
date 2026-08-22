@@ -1,5 +1,4 @@
-﻿using BepInEx;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.UI;
 using RoR2BepInExPack.GameAssetPaths.Version_1_39_0;
@@ -18,25 +17,25 @@ namespace ItemQualities.UI
 
         public GameObject DisplayRoot;
 
-        TooltipContext _context;
+        private TooltipContext _context;
 
-        void Awake()
+        private void Awake()
         {
             _context = GetComponent<TooltipContext>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _context.OnTooltipProviderDiscovered += rebuild;
             rebuild();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _context.OnTooltipProviderDiscovered -= rebuild;
         }
 
-        void rebuild()
+        private void rebuild()
         {
             EquipmentIcon equipmentIcon = _context.SourceTooltipProvider ? _context.SourceTooltipProvider.GetComponent<EquipmentIcon>() : null;
             Inventory inventory = equipmentIcon ? equipmentIcon.targetInventory : null;

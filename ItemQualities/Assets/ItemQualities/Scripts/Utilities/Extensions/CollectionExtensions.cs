@@ -8,16 +8,16 @@ namespace ItemQualities.Utilities.Extensions
 {
     internal static class CollectionExtensions
     {
-        static class SharedSingleElementArray<T>
+        private static class SharedSingleElementArray<T>
         {
             public static readonly T[] Array = new T[1];
         }
 
         public static void Add<T>(this NamedAssetCollection<T> namedAssetCollection, T value)
         {
-            // OPTIMIZATION: Use shared array for passing info into collection to avoid allocations.
+            // Use shared array for passing info into collection to avoid allocations.
             // This is reliant on the fact that .Add() does not store a reference to the array and simply copies elements from it.
-            ref readonly T[] array = ref SharedSingleElementArray<T>.Array;
+            T[] array = SharedSingleElementArray<T>.Array;
             array[0] = value;
             try
             {
@@ -41,6 +41,20 @@ namespace ItemQualities.Utilities.Extensions
             where TList : IList<T>
         {
             return list != null && (uint)index < list.Count ? list[index] : defaultValue;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool TryGetSafe<T, TList>(this TList list, int index, out T value)
+            where TList : IList<T>
+        {
+            if (list != null && (uint)index < list.Count)
+            {
+                value = list[index];
+                return true;
+            }
+
+            value = default;
+            return false;
         }
 
         public static int IndexOf<T, TList, TComparer>(this TList list, T item, TComparer equalityComparer)

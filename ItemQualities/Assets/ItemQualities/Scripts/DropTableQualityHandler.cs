@@ -11,14 +11,14 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class DropTableQualityHandler
+    internal static class DropTableQualityHandler
     {
-        static readonly WeightedSelection<QualityTier> _tierSelection = new WeightedSelection<QualityTier>();
+        private static readonly WeightedSelection<QualityTier> _tierSelection = new WeightedSelection<QualityTier>();
 
-        static bool _allowQualityGeneration = true;
+        private static bool _allowQualityGeneration = true;
 
-        static CharacterMaster _currentDropGenerationOwnerMaster = null;
-        static TeamIndex _currentDropGenerationTeamAffiliation = TeamIndex.None;
+        private static CharacterMaster _currentDropGenerationOwnerMaster = null;
+        private static TeamIndex _currentDropGenerationTeamAffiliation = TeamIndex.None;
 
         static DropTableQualityHandler()
         {
@@ -29,7 +29,7 @@ namespace ItemQualities
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.PickupDropTable.GeneratePickup += PickupDropTable_GeneratePickup;
             On.RoR2.PickupDropTable.GenerateDistinctPickups += PickupDropTable_GenerateDistinctPickups;
@@ -78,7 +78,7 @@ namespace ItemQualities
             return new PickupRollInfo(rollOwnerMaster, teamAffiliation);
         }
 
-        static bool pickupCheckNotAIBlacklist(PickupIndex pickupIndex)
+        private static bool pickupCheckNotAIBlacklist(PickupIndex pickupIndex)
         {
             PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
 
@@ -89,7 +89,7 @@ namespace ItemQualities
             return true;
         }
 
-        static QualityTier rollQuality(Xoroshiro128Plus rng)
+        private static QualityTier rollQuality(Xoroshiro128Plus rng)
         {
             return _tierSelection.Evaluate(rng.nextNormalizedFloat);
         }
@@ -106,7 +106,7 @@ namespace ItemQualities
             return currentQualityTier;
         }
 
-        static PickupIndex tryUpgradeQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, CharacterMaster master = null, Func<PickupIndex, bool> isPickupAllowedFunc = null)
+        private static PickupIndex tryUpgradeQuality(PickupIndex pickupIndex, Xoroshiro128Plus rng, CharacterMaster master = null, Func<PickupIndex, bool> isPickupAllowedFunc = null)
         {
             rng = new Xoroshiro128Plus(rng.nextUlong);
 
@@ -159,7 +159,7 @@ namespace ItemQualities
             return qualityPickupIndex;
         }
 
-        static void On_ShopTerminalBehavior_GenerateNewPickupServer_bool(On.RoR2.ShopTerminalBehavior.orig_GenerateNewPickupServer_bool orig, ShopTerminalBehavior self, bool newHidden)
+        private static void On_ShopTerminalBehavior_GenerateNewPickupServer_bool(On.RoR2.ShopTerminalBehavior.orig_GenerateNewPickupServer_bool orig, ShopTerminalBehavior self, bool newHidden)
         {
             try
             {
@@ -173,7 +173,8 @@ namespace ItemQualities
                         case CostTypeIndex.RedItem:
                         case CostTypeIndex.Equipment:
                         case CostTypeIndex.VolatileBattery:
-                        case CostTypeIndex.LunarItemOrEquipment:
+                        // Because there are no quality lunars, we can just roll quality on things that take them as cost
+                        //case CostTypeIndex.LunarItemOrEquipment:
                         case CostTypeIndex.BossItem:
                         case CostTypeIndex.ArtifactShellKillerItem:
                         case CostTypeIndex.TreasureCacheItem:
@@ -196,7 +197,7 @@ namespace ItemQualities
             }
         }
 
-        static void ArenaMissionController_AddItemStack(On.RoR2.ArenaMissionController.orig_AddItemStack orig, ArenaMissionController self)
+        private static void ArenaMissionController_AddItemStack(On.RoR2.ArenaMissionController.orig_AddItemStack orig, ArenaMissionController self)
         {
             try
             {
@@ -209,7 +210,7 @@ namespace ItemQualities
             }
         }
 
-        static void MonsterTeamGainsItemsArtifactManager_GrantMonsterTeamItem(On.RoR2.Artifacts.MonsterTeamGainsItemsArtifactManager.orig_GrantMonsterTeamItem orig)
+        private static void MonsterTeamGainsItemsArtifactManager_GrantMonsterTeamItem(On.RoR2.Artifacts.MonsterTeamGainsItemsArtifactManager.orig_GrantMonsterTeamItem orig)
         {
             try
             {
@@ -222,7 +223,7 @@ namespace ItemQualities
             }
         }
 
-        static void InfiniteTowerRun_AdvanceWave(On.RoR2.InfiniteTowerRun.orig_AdvanceWave orig, InfiniteTowerRun self)
+        private static void InfiniteTowerRun_AdvanceWave(On.RoR2.InfiniteTowerRun.orig_AdvanceWave orig, InfiniteTowerRun self)
         {
             try
             {
@@ -235,7 +236,7 @@ namespace ItemQualities
             }
         }
 
-        static void ScavengerItemGranter_Start(On.RoR2.ScavengerItemGranter.orig_Start orig, ScavengerItemGranter self)
+        private static void ScavengerItemGranter_Start(On.RoR2.ScavengerItemGranter.orig_Start orig, ScavengerItemGranter self)
         {
             try
             {
@@ -248,7 +249,7 @@ namespace ItemQualities
             }
         }
 
-        static void Salvage_DropTempItemServer(On.EntityStates.Drifter.Salvage.orig_DropTempItemServer orig, EntityStates.Drifter.Salvage self)
+        private static void Salvage_DropTempItemServer(On.EntityStates.Drifter.Salvage.orig_DropTempItemServer orig, EntityStates.Drifter.Salvage self)
         {
             try
             {
@@ -263,7 +264,7 @@ namespace ItemQualities
             }
         }
 
-        static bool EquipmentSlot_FireBossHunter(On.RoR2.EquipmentSlot.orig_FireBossHunter orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireBossHunter(On.RoR2.EquipmentSlot.orig_FireBossHunter orig, EquipmentSlot self)
         {
             try
             {
@@ -278,7 +279,7 @@ namespace ItemQualities
             }
         }
 
-        static Func<PickupIndex, bool> getDropTableFilterFunc(PickupDropTable pickupDropTable)
+        private static Func<PickupIndex, bool> getDropTableFilterFunc(PickupDropTable pickupDropTable)
         {
             if (!pickupDropTable)
                 return null;
@@ -333,8 +334,8 @@ namespace ItemQualities
 
             return pickupPassesFilter;
         }
-        
-        static UniquePickup PickupDropTable_GeneratePickup(On.RoR2.PickupDropTable.orig_GeneratePickup orig, PickupDropTable self, Xoroshiro128Plus rng)
+
+        private static UniquePickup PickupDropTable_GeneratePickup(On.RoR2.PickupDropTable.orig_GeneratePickup orig, PickupDropTable self, Xoroshiro128Plus rng)
         {
             UniquePickup dropPickupIndex = orig(self, rng);
 
@@ -346,7 +347,7 @@ namespace ItemQualities
             return dropPickupIndex;
         }
 
-        static void PickupDropTable_GenerateDistinctPickups(On.RoR2.PickupDropTable.orig_GenerateDistinctPickups orig, PickupDropTable self, List<UniquePickup> dest, int desiredCount, Xoroshiro128Plus rng, bool allowLoop)
+        private static void PickupDropTable_GenerateDistinctPickups(On.RoR2.PickupDropTable.orig_GenerateDistinctPickups orig, PickupDropTable self, List<UniquePickup> dest, int desiredCount, Xoroshiro128Plus rng, bool allowLoop)
         {
             orig(self, dest, desiredCount, rng, allowLoop);
 
@@ -361,7 +362,7 @@ namespace ItemQualities
             }
         }
 
-        static void ChestBehavior_PickFromList(ILContext il)
+        private static void ChestBehavior_PickFromList(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -397,7 +398,7 @@ namespace ItemQualities
             }
         }
 
-        static void FindItem_OnEnter(ILContext il)
+        private static void FindItem_OnEnter(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -420,7 +421,7 @@ namespace ItemQualities
             }
         }
 
-        static void Inventory_GiveRandomItems(ILContext il)
+        private static void Inventory_GiveRandomItems(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -440,7 +441,7 @@ namespace ItemQualities
             }
         }
 
-        static void MultiShopController_CreateTerminals(ILContext il)
+        private static void MultiShopController_CreateTerminals(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -471,7 +472,7 @@ namespace ItemQualities
             c.Emit(OpCodes.Ldloc, isHiddenTempVar);
         }
 
-        static void ScavBackpackBehavior_PickFromList(ILContext il)
+        private static void ScavBackpackBehavior_PickFromList(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -501,7 +502,7 @@ namespace ItemQualities
             }
         }
 
-        static void IL_ShopTerminalBehavior_GenerateNewPickupServer_bool(ILContext il)
+        private static void IL_ShopTerminalBehavior_GenerateNewPickupServer_bool(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -521,7 +522,7 @@ namespace ItemQualities
             }
         }
 
-        static void ShrineChanceBehavior_AddShrineStack(ILContext il)
+        private static void ShrineChanceBehavior_AddShrineStack(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -543,7 +544,7 @@ namespace ItemQualities
             }
         }
 
-        static void BossGroup_DropRewards(ILContext il)
+        private static void BossGroup_DropRewards(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -570,7 +571,7 @@ namespace ItemQualities
             }
         }
 
-        static void Inventory_GiveRandomEquipment(ILContext il)
+        private static void Inventory_GiveRandomEquipment(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -608,7 +609,7 @@ namespace ItemQualities
             }
         }
 
-        static void MasterDropDroplet_DropItems(ILContext il)
+        private static void MasterDropDroplet_DropItems(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

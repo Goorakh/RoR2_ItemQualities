@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ItemQualities.Utilities.Extensions
 {
-    static class EntityStateExtensions
+    internal static class EntityStateExtensions
     {
         public static bool TryGetComponent(this EntityState entityState, Type componentType, out Component component)
         {

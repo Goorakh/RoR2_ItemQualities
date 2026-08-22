@@ -6,12 +6,12 @@ namespace ItemQualities.Items
     public sealed class AttackSpeedOnCritQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.AttackSpeedOnCrit;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (NetworkServer.active)
             {

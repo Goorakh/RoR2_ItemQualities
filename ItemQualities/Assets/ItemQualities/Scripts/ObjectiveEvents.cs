@@ -88,7 +88,7 @@ namespace ItemQualities
         public static event Action<HoldoutZoneController> OnVoidStagePillarChargedServer;
         public static event Action<HoldoutZoneController> OnFinalVoidStagePillarChargedServer;
 
-        static void VoidStageMissionController_Start(ILContext il)
+        private static void VoidStageMissionController_Start(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -119,7 +119,7 @@ namespace ItemQualities
             c.Emit(OpCodes.Ldloc, voidBatterySpawnRequestVar);
             c.Emit(OpCodes.Ldloc, eventsControllerVar);
             c.EmitDelegate<Action<DirectorSpawnRequest, VoidStageMissionControllerEvents>>(addVoidBatterySpawnedEventListener);
-            
+
             static void addVoidBatterySpawnedEventListener(DirectorSpawnRequest voidBatterySpawnRequest, VoidStageMissionControllerEvents eventsController)
             {
                 if (eventsController)

@@ -7,18 +7,20 @@ namespace ItemQualities
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct ItemQualityCounts : IEquatable<ItemQualityCounts>
     {
+        public static readonly ItemQualityCounts zero = new ItemQualityCounts(0, 0, 0, 0, 0);
+
         [FieldOffset(0)]
-        fixed int _itemCounts[(int)QualityTier.Count + 1];
+        private fixed int _itemCounts[(int)QualityTier.Count + 1];
 
         [FieldOffset(0)]
         public int BaseItemCount;
 
         [FieldOffset(sizeof(int) * 1)]
         public int UncommonCount;
-        
+
         [FieldOffset(sizeof(int) * 2)]
         public int RareCount;
-        
+
         [FieldOffset(sizeof(int) * 3)]
         public int EpicCount;
 
@@ -126,18 +128,20 @@ namespace ItemQualities
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct TempItemQualityCounts : IEquatable<TempItemQualityCounts>
     {
+        public static readonly TempItemQualityCounts zero = new TempItemQualityCounts(0, 0, 0, 0, 0);
+
         [FieldOffset(0)]
-        fixed float _itemCounts[(int)QualityTier.Count + 1];
+        private fixed float _itemCounts[(int)QualityTier.Count + 1];
 
         [FieldOffset(0)]
         public float BaseItemCount;
-        
+
         [FieldOffset(sizeof(int) * 1)]
         public float UncommonCount;
-        
+
         [FieldOffset(sizeof(int) * 2)]
         public float RareCount;
-        
+
         [FieldOffset(sizeof(int) * 3)]
         public float EpicCount;
 

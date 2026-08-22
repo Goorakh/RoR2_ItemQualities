@@ -2,7 +2,7 @@
 
 <img src="https://github.com/Goorakh/RoR2_ItemQualities/blob/main/ThunderstoreContent/Items.gif?raw=true" />
 
-Introduces 4 new qualities for all white, green, red, and void items: Uncommon, Rare, Epic, and Legendary, each with unique additional effects on top of their standard versions.
+Introduces 4 new qualities for all equipments, all standard (white, green, red, void, and boss) items: Uncommon, Rare, Epic, and Legendary, each with unique additional effects on top of their standard versions.
 
 Quality items stack in both their quality effect and as another instance of the non-quality item. For example, having 3 regular Tougher Times and 2 Uncommon Tougher Times will give the same block chance as if you just had 5 regular Tougher Times.
 
@@ -32,15 +32,14 @@ Quality items can also be scrapped to produce Quality Scrap, these act just the 
 
 Includes a 25% increased difficulty scaling to balance out the more powerful on-average items, can be disabled in config.
 
-#
-
-This mod is in beta, Quality boss items and other features will be added at some point in the future.
-
-## Recommended mods
+## Recommended/Supported mods
 These are mods we recommend you use in combination with Quality, though they are not required.
 
-* [Properly Persistent Profiles Patch Plugin](https://thunderstore.io/package/Groove_Salad/ProperlyPersistentProfilesPatchPlugin/)
+* [Properly Persistent Profiles Patch Plugin](https://thunderstore.io/c/riskofrain2/p/Groove_Salad/ProperlyPersistentProfilesPatchPlugin/):
 	* Makes sure your logbook progress is not lost when launching a new profile. **IMPORTANT**: This mod does *not* work retroactively, if you launch the game at any point without it installed, progress will be lost unless manually backed up.
+* [Rebindables](https://thunderstore.io/c/riskofrain2/p/pseudopulse/Rebindables/):
+	* Allows button rebinding of some featues in Quality.
+* [ProperSave](https://thunderstore.io/c/riskofrain2/p/KingEnderBrine/ProperSave/)
 
 ## Credits
 

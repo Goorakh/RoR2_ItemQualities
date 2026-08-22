@@ -1,5 +1,4 @@
 ﻿using RoR2;
-using RoR2.Audio;
 using RoR2.ContentManagement;
 using System;
 using System.Collections.Generic;
@@ -15,11 +14,11 @@ namespace ItemQualities
     [RequireComponent(typeof(ShopTerminalBehavior))]
     public sealed class QualityDuplicatorBehavior : NetworkBehaviour, IInteractable, IHologramContentProvider
     {
-        static EffectIndex _itemTakenOrbEffectIndex = EffectIndex.Invalid;
-        static EffectIndex _regeneratingScrapExplosionDisplayEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _itemTakenOrbEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _regeneratingScrapExplosionDisplayEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _itemTakenOrbEffectIndex = EffectCatalogUtils.FindEffectIndex("ItemTakenOrbEffect");
             if (_itemTakenOrbEffectIndex == EffectIndex.Invalid)
@@ -45,23 +44,23 @@ namespace ItemQualities
         public UnityEvent<Interactor> OnPurchase;
 
         [SyncVar]
-        bool _available = true;
+        private bool _available = true;
 
-        Xoroshiro128Plus _rng;
+        private Xoroshiro128Plus _rng;
 
-        AsyncOperationHandle<GameObject> _hologramContentPrefabLoad;
+        private AsyncOperationHandle<GameObject> _hologramContentPrefabLoad;
 
-        PickupPickerController _pickerController;
+        private PickupPickerController _pickerController;
 
-        NetworkUIPromptController _promptController;
+        private NetworkUIPromptController _promptController;
 
-        ShopTerminalBehavior _terminalBehavior;
+        private ShopTerminalBehavior _terminalBehavior;
 
-        readonly List<PickupIndex> _selectedPickups = new List<PickupIndex>();
+        private readonly List<PickupIndex> _selectedPickups = new List<PickupIndex>();
 
         public static event Action<QualityDuplicatorBehavior, Interactor, IReadOnlyList<PickupIndex>> OnPickupsSelectedForPurchase;
 
-        void Awake()
+        private void Awake()
         {
             _terminalBehavior = GetComponent<ShopTerminalBehavior>();
             _pickerController = GetComponent<PickupPickerController>();
@@ -71,7 +70,7 @@ namespace ItemQualities
             _hologramContentPrefabLoad = AssetAsyncReferenceManager<GameObject>.LoadAsset(HologramContentPrefab);
         }
 
-        void Start()
+        private void Start()
         {
             if (NetworkServer.active)
             {
@@ -79,12 +78,12 @@ namespace ItemQualities
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             AssetAsyncReferenceManager<GameObject>.UnloadAsset(HologramContentPrefab);
         }
 
-        void onPromptDisplayEnd(NetworkUIPromptController promptController, LocalUser localUser, CameraRigController cameraRig)
+        private void onPromptDisplayEnd(NetworkUIPromptController promptController, LocalUser localUser, CameraRigController cameraRig)
         {
             _selectedPickups.Clear();
             _pickerController.enabled = false;
@@ -181,7 +180,7 @@ namespace ItemQualities
         }
 
         [Server]
-        static void createItemTakenOrb(Vector3 effectOrigin, GameObject targetObject, ItemIndex itemIndex)
+        private static void createItemTakenOrb(Vector3 effectOrigin, GameObject targetObject, ItemIndex itemIndex)
         {
             if (_itemTakenOrbEffectIndex != EffectIndex.Invalid)
             {
@@ -249,13 +248,13 @@ namespace ItemQualities
             */
         }
 
-        bool canBeAffordedByInteractor(Interactor interactor)
+        private bool canBeAffordedByInteractor(Interactor interactor)
         {
             CostTypeDef costTypeDef = CostTypeCatalog.GetCostTypeDef(CostTypeIndex);
             return costTypeDef.IsAffordable(Cost, interactor);
         }
-        
-        bool hasAmbiguousPayment(Interactor interactor)
+
+        private bool hasAmbiguousPayment(Interactor interactor)
         {
             CharacterBody activatorBody = interactor ? interactor.GetComponent<CharacterBody>() : null;
             Inventory activatorInventory = activatorBody ? activatorBody.inventory : null;

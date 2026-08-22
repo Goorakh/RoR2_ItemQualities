@@ -1,6 +1,5 @@
 ﻿using HG;
 using RoR2;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -9,20 +8,20 @@ namespace ItemQualities
     public sealed class GenericNetworkedObjectAttachment : NetworkBehaviour
     {
         [SyncVar(hook = nameof(onSyncAttachedToObject))]
-        GameObject _attachedToObject;
+        private GameObject _attachedToObject;
 
         [SyncVar(hook = nameof(onSyncAttachedObjectChildName))]
-        string _attachedToObjectChildName;
+        private string _attachedToObjectChildName;
 
         public bool ShouldParentToAttachedObject = true;
 
         public bool ForceHostAuthority;
 
-		NetworkIdentity _networkIdentity;
+        private NetworkIdentity _networkIdentity;
 
-        CharacterBody _attachmentBody;
+        private CharacterBody _attachmentBody;
 
-        bool _attached;
+        private bool _attached;
 
         public GameObject AttachedToObject => _attachedToObject;
 
@@ -69,7 +68,7 @@ namespace ItemQualities
             }
         }
 
-        void onAttachedObjectAssigned()
+        private void onAttachedObjectAssigned()
         {
             if (_attached)
             {
@@ -95,7 +94,7 @@ namespace ItemQualities
             }
         }
 
-        void parentToObject()
+        private void parentToObject()
         {
             if (_attachedToObject)
             {
@@ -165,7 +164,7 @@ namespace ItemQualities
             HasEffectiveAuthority = Util.HasEffectiveAuthority(_networkIdentity);
         }
 
-        void onSyncAttachedToObject(GameObject value)
+        private void onSyncAttachedToObject(GameObject value)
         {
             if (NetworkServer.active)
             {
@@ -176,7 +175,7 @@ namespace ItemQualities
             onAttachedObjectAssigned();
         }
 
-        void onSyncAttachedObjectChildName(string newName)
+        private void onSyncAttachedObjectChildName(string newName)
         {
             _attachedToObjectChildName = newName;
             if (ShouldParentToAttachedObject)

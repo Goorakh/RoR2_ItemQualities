@@ -6,16 +6,16 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class RunExtraStatsHooks
+    internal static class RunExtraStatsHooks
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Run.RecalculateDifficultyCoefficentInternal += Run_RecalculateDifficultyCoefficentInternal;
             IL.RoR2.InfiniteTowerRun.RecalculateDifficultyCoefficentInternal += Run_RecalculateDifficultyCoefficentInternal;
         }
 
-        static void Run_RecalculateDifficultyCoefficentInternal(ILContext il)
+        private static void Run_RecalculateDifficultyCoefficentInternal(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

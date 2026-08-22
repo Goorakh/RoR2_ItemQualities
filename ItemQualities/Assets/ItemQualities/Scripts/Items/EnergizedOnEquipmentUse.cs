@@ -6,15 +6,15 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class EnergizedOnEquipmentUse
+    internal static class EnergizedOnEquipmentUse
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
-        static void EquipmentSlot_OnEquipmentExecuted(ILContext il)
+        private static void EquipmentSlot_OnEquipmentExecuted(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

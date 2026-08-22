@@ -9,28 +9,28 @@ namespace ItemQualities
     public sealed class InstantiateAddressablePrefab : MonoBehaviour
     {
         [SerializeField]
-        Transform _parent;
+        private Transform _parent;
 
         [SerializeField]
-        AssetReferenceGameObject _prefabAddress = new AssetReferenceGameObject(string.Empty);
+        private AssetReferenceGameObject _prefabAddress = new AssetReferenceGameObject(string.Empty);
 
         [SerializeField]
-        bool _allowAsyncLoad = false;
+        private bool _allowAsyncLoad = false;
 
         [SerializeField]
-        AsyncReferenceHandleUnloadType _prefabUnloadType = AsyncReferenceHandleUnloadType.OnSceneUnload;
+        private AsyncReferenceHandleUnloadType _prefabUnloadType = AsyncReferenceHandleUnloadType.OnSceneUnload;
 
         [SerializeField]
-        bool _instantiateOnAwake = true;
+        private bool _instantiateOnAwake = true;
 
-        GameObject _createdInstance;
+        private GameObject _createdInstance;
 
-        readonly AssetOrDirectReference<GameObject> _prefabReference = new AssetOrDirectReference<GameObject>();
+        private readonly AssetOrDirectReference<GameObject> _prefabReference = new AssetOrDirectReference<GameObject>();
 
         public event Action<GameObject> OnInstantiated;
         public event Action OnInstanceDestroyed;
 
-        void Awake()
+        private void Awake()
         {
             _prefabReference.unloadType = _prefabUnloadType;
             _prefabReference.address = _prefabAddress;
@@ -41,7 +41,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             _prefabReference.Reset();
 
@@ -65,17 +65,17 @@ namespace ItemQualities
             }
         }
 
-        void onPrefabReferenceDiscovered(GameObject prefab)
+        private void onPrefabReferenceDiscovered(GameObject prefab)
         {
             instantiatePrefab(prefab);
         }
 
-        void onPrefabReferenceLost(GameObject prefab)
+        private void onPrefabReferenceLost(GameObject prefab)
         {
             destroyInstance();
         }
 
-        void instantiatePrefab(GameObject prefab)
+        private void instantiatePrefab(GameObject prefab)
         {
             if (_createdInstance)
             {
@@ -88,7 +88,7 @@ namespace ItemQualities
             OnInstantiated?.Invoke(_createdInstance);
         }
 
-        void destroyInstance()
+        private void destroyInstance()
         {
             if (!_createdInstance)
                 return;

@@ -1,50 +1,27 @@
 ﻿using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.Projectile;
-using UnityEngine.Networking;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public sealed class ElementalRingVoidBlackHoleProjectileController : NetworkBehaviour
+    public sealed class ElementalRingVoidBlackHoleProjectileController : MonoBehaviour
     {
-        [SyncVar]
-        float _scaleMultiplier = 1f;
+        private ProjectileController _projectileController;
+        private RadialForce _radialForce;
+        private ProjectileExplosion _projectileExplosion;
 
-        bool _appliedScaleMultiplier;
-
-        RadialForce _radialForce;
-
-        void Awake()
+        private void Awake()
         {
-            if (TryGetComponent(out RadialForce radialForce))
-            {
-                _radialForce = radialForce;
-            }
-            else
-            {
-                Log.Error($"{Util.GetGameObjectHierarchyName(gameObject)} is missing RadialForce component");
-                enabled = false;
-            }
-
-            if (NetworkServer.active)
-            {
-                if (TryGetComponent(out ProjectileController projectileController))
-                {
-                    projectileController.onInitialized += onInitializedServer;
-                }
-                else
-                {
-                    Log.Error($"{Util.GetGameObjectHierarchyName(gameObject)} is missing ProjectileController component");
-                    enabled = false;
-                }
-            }
+            _projectileController = GetComponent<ProjectileController>();
+            _radialForce = GetComponent<RadialForce>();
+            _projectileExplosion = GetComponent<ProjectileExplosion>();
         }
 
-        [Server]
-        void onInitializedServer(ProjectileController projectileController)
+        private void Start()
         {
             ItemQualityCounts elementalRingVoid = default;
-            if (projectileController && projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
+            if (_projectileController.owner && _projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
             {
                 elementalRingVoid = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid);
             }
@@ -73,30 +50,13 @@ namespace ItemQualities.Items
                     break;
             }
 
-            _scaleMultiplier = scaleMultiplier;
-
             if (scaleMultiplier > 1f)
             {
                 transform.localScale *= scaleMultiplier;
+
+                _radialForce.radius *= scaleMultiplier;
+                _projectileExplosion.blastRadius *= scaleMultiplier;
             }
-
-            applyScaleMultiplier();
-        }
-
-        public override void OnStartClient()
-        {
-            base.OnStartClient();
-            applyScaleMultiplier();
-        }
-
-        void applyScaleMultiplier()
-        {
-            if (_appliedScaleMultiplier)
-                return;
-
-            _radialForce.radius *= _scaleMultiplier;
-
-            _appliedScaleMultiplier = true;
         }
     }
 }

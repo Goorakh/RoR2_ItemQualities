@@ -10,29 +10,29 @@ namespace ItemQualities
         [Tooltip("Added to SpecialObjectAttributes.childObjectsToDisable of the attached interactable object.")]
         public GameObject[] ChildObjectsToDisable = Array.Empty<GameObject>();
 
-        EffectComponent _effectComponent;
+        private EffectComponent _effectComponent;
 
-        GameObject _attachedToObject;
+        private GameObject _attachedToObject;
 
-        SpecialObjectAttributes _attachedToObjectAttributes;
+        private SpecialObjectAttributes _attachedToObjectAttributes;
 
-        void Awake()
+        private void Awake()
         {
             _effectComponent = GetComponent<EffectComponent>();
             _effectComponent.OnEffectComponentReset += onReset;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             setAttachedObject(null);
         }
 
-        void onReset(bool hasEffectData)
+        private void onReset(bool hasEffectData)
         {
             setAttachedObject(hasEffectData && _effectComponent.effectData != null ? _effectComponent.effectData.ResolveNetworkedObjectReference() : null);
         }
 
-        void setAttachedObject(GameObject attachToObject)
+        private void setAttachedObject(GameObject attachToObject)
         {
             if (_attachedToObject == attachToObject)
                 return;

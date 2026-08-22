@@ -6,55 +6,46 @@ namespace ItemQualities.Items
     public sealed class WarCryOnMultiKillQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.WarCryOnMultiKill;
         }
 
-        CharacterBodyExtraStatsTracker _bodyExtraStats;
+        private bool _hadWarCryBuff;
 
-        bool _hadWarCryBuff;
+        private bool hasWarCryBuff => Body.HasBuff(RoR2Content.Buffs.WarCryBuff) || Body.HasBuff(RoR2Content.Buffs.TeamWarCry);
 
-        bool hasWarCryBuff => Body.HasBuff(RoR2Content.Buffs.WarCryBuff) || Body.HasBuff(RoR2Content.Buffs.TeamWarCry);
-
-        protected override void Awake()
+        private void OnEnable()
         {
-            base.Awake();
-
-            _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
-        }
-
-        void OnEnable()
-        {
-            _bodyExtraStats.OnKilledOther += onKilledOther;
+            BodyStats.OnKilledOther += onKilledOther;
 
             _hadWarCryBuff = false;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
-            _bodyExtraStats.OnKilledOther -= onKilledOther;
+            BodyStats.OnKilledOther -= onKilledOther;
 
             setWarCryBuffCount(0);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             bool hasBuff = hasWarCryBuff;
             if (hasBuff != _hadWarCryBuff)
             {
-                setWarCryBuffCount(hasBuff ? _bodyExtraStats.EliteKillCount : 0);
+                setWarCryBuffCount(hasBuff ? BodyStats.EliteKillCount : 0);
                 _hadWarCryBuff = hasBuff;
             }
         }
 
-        void onKilledOther(DamageReport damageReport)
+        private void onKilledOther(DamageReport damageReport)
         {
             if (damageReport.victimIsElite)
             {
                 if (hasWarCryBuff)
                 {
-                    setWarCryBuffCount(_bodyExtraStats.EliteKillCount);
+                    setWarCryBuffCount(BodyStats.EliteKillCount);
                 }
             }
         }
@@ -63,10 +54,10 @@ namespace ItemQualities.Items
         {
             base.OnStacksChanged();
 
-            setWarCryBuffCount(hasWarCryBuff ? _bodyExtraStats.EliteKillCount : 0);
+            setWarCryBuffCount(hasWarCryBuff ? BodyStats.EliteKillCount : 0);
         }
 
-        void setWarCryBuffCount(int count)
+        private void setWarCryBuffCount(int count)
         {
             int currentBuffCount = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.MultikillWarCryBuff).TotalQualityCount;
             if (currentBuffCount != count)

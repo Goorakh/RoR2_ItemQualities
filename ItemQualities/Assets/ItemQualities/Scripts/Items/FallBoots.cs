@@ -8,15 +8,15 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class FallBoots
+    internal static class FallBoots
     {
         [SystemInitializer]
-        static void Init()
-        {      
+        private static void Init()
+        {
             IL.EntityStates.Headstompers.HeadstompersFall.DoStompExplosionAuthority += HeadstompersFall_DoStompExplosionAuthority;
         }
 
-        static void HeadstompersFall_DoStompExplosionAuthority(ILContext il)
+        private static void HeadstompersFall_DoStompExplosionAuthority(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

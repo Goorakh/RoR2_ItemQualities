@@ -7,17 +7,13 @@ using RoR2;
 using RoR2.UI;
 using System;
 using System.Collections;
-using System.Linq;
 
 namespace ItemQualities.Items
 {
-    static class ItemHooks
+    internal static class ItemHooks
     {
-        public delegate void ModifyDamageDelegate(ref float damageValue, DamageInfo damageInfo);
-        public static event ModifyDamageDelegate TakeDamageModifier;
-
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.Inventory.UpdateEffectiveItemStacks += Inventory_UpdateEffectiveItemStacks;
 
@@ -30,7 +26,7 @@ namespace ItemQualities.Items
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void Inventory_UpdateEffectiveItemStacks(ILContext il)
+        private static void Inventory_UpdateEffectiveItemStacks(ILContext il)
         {
             if (!il.Method.TryFindParameter<ItemIndex>(out ParameterDefinition itemIndexParameter))
             {
@@ -106,7 +102,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ItemInventoryDisplay_OnInventoryChanged(ILContext il)
+        private static void ItemInventoryDisplay_OnInventoryChanged(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -141,7 +137,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void CharacterModel_UpdateItemDisplay(ILContext il)
+        private static void CharacterModel_UpdateItemDisplay(ILContext il)
         {
             if (!il.Method.TryFindParameter<Inventory>(out ParameterDefinition inventoryParameter))
             {
@@ -180,7 +176,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
@@ -201,26 +197,28 @@ namespace ItemQualities.Items
             }
 
             c.Emit(OpCodes.Ldloca, damageValueVar);
+            c.Emit(OpCodes.Ldarg_0);
             c.Emit(OpCodes.Ldarg, damageInfoParameter);
-            c.EmitDelegate<ModifyDamageDelegate>(invokeModifyDamage);
+            c.EmitDelegate<ModifyDamageDelegate>(modifyDamage);
 
-            static void invokeModifyDamage(ref float damageValue, DamageInfo damageInfo)
+            static void modifyDamage(ref float damageValue, HealthComponent victim, DamageInfo damageInfo)
             {
-                foreach (ModifyDamageDelegate takeDamageModifier in TakeDamageModifier.GetInvocationList().OfType<ModifyDamageDelegate>())
+                try
                 {
-                    try
-                    {
-                        takeDamageModifier?.Invoke(ref damageValue, damageInfo);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error_NoCallerPrefix($"Failed to invoke TakeDamageModifier: {ex}");
-                    }
+                    EquipmentMagazineVoid.ModifyTakeDamage(ref damageValue, victim, damageInfo);
+                    Tooth.TakeDamageModifier(ref damageValue, victim, damageInfo);
+                    BearVoid.TakeDamageModifier(ref damageValue, victim, damageInfo);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error_NoCallerPrefix($"Failed to invoke TakeDamageModifier: {ex}");
                 }
             }
         }
 
-        static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)
+        private delegate void ModifyDamageDelegate(ref float damageValue, HealthComponent victim, DamageInfo damageInfo);
+
+        private static IEnumerator CharacterMaster_HighlightNewItem(On.RoR2.CharacterMaster.orig_HighlightNewItem orig, CharacterMaster self, ItemIndex itemIndex)
         {
             return orig(self, QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None));
         }
@@ -238,15 +236,24 @@ namespace ItemQualities.Items
             return false;
         }
 
-        public static bool TryFindNextItemCountVariable(ILCursor c, Type itemDeclaringType, string itemName, out VariableDefinition itemCountVariable)
+        public static bool TryGotoNextItemCountVariable(ILCursor c, Type itemDeclaringType, string itemName, out VariableDefinition itemCountVariable)
         {
-            int itemCountVariableIndex = -1;
-            if (c.TryFindNext(out ILCursor[] foundCursors,
-                              x => x.MatchLdsfld(itemDeclaringType, itemName),
-                              x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective)),
-                              x => x.MatchStloc(out itemCountVariableIndex) && c.Context.Method.Body.Variables[itemCountVariableIndex].VariableType.Is(typeof(int))))
+            static bool matchCallGetItemCountMethod(Instruction x)
             {
-                itemCountVariable = c.Context.Method.Body.Variables[itemCountVariableIndex];
+                return x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCount)) ||
+                       x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective)) ||
+                       x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountChanneled)) ||
+                       x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountPermanent)) ||
+                       x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountTemp));
+            }
+
+            VariableDefinition _itemCountVariable = null;
+            if (c.TryGotoNext(MoveType.After,
+                              x => x.MatchLdsfld(itemDeclaringType, itemName),
+                              matchCallGetItemCountMethod,
+                              x => x.MatchStloc<int>(c.Context, out _itemCountVariable)))
+            {
+                itemCountVariable = _itemCountVariable;
                 return true;
             }
 

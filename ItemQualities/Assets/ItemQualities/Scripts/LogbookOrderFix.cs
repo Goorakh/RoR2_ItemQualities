@@ -6,15 +6,15 @@ using System.Collections.Generic;
 
 namespace ItemQualities
 {
-    static class LogbookOrderFix
+    internal static class LogbookOrderFix
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.UI.LogBook.LogBookController.BuildPickupEntries += LogBookController_BuildPickupEntries;
         }
 
-        static Entry[] LogBookController_BuildPickupEntries(On.RoR2.UI.LogBook.LogBookController.orig_BuildPickupEntries orig, Dictionary<ExpansionDef, bool> expansionAvailability)
+        private static Entry[] LogBookController_BuildPickupEntries(On.RoR2.UI.LogBook.LogBookController.orig_BuildPickupEntries orig, Dictionary<ExpansionDef, bool> expansionAvailability)
         {
             Entry[] entries = orig(expansionAvailability);
 

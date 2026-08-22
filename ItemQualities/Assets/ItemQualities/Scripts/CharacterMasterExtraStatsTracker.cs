@@ -5,7 +5,7 @@ using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using System.Runtime.CompilerServices;
 using UnityEngine.Networking;
 
 namespace ItemQualities
@@ -15,7 +15,7 @@ namespace ItemQualities
         public static readonly float ItemUpgradeDelay = 0.4f;
 
         [SystemInitializer(typeof(MasterCatalog))]
-        static void Init()
+        private static void Init()
         {
             foreach (CharacterMaster master in MasterCatalog.allMasters)
             {
@@ -26,10 +26,10 @@ namespace ItemQualities
             }
         }
 
-        CharacterMaster _master;
+        private CharacterMaster _master;
 
-        CharacterBody _cachedBody;
-        CharacterBodyExtraStatsTracker _bodyExtraStatsComponent;
+        private CharacterBody _cachedBody;
+        private CharacterBodyExtraStatsTracker _cachedBodyStats;
 
         [SyncVar(hook = nameof(hookSetSteakBonus))]
         public float SteakBonus;
@@ -40,13 +40,35 @@ namespace ItemQualities
         [SyncVar(hook = nameof(hookSetBossDamageBonusTicks))]
         public int BossDamageBonusTicks;
 
+        [SyncVar(hook = nameof(hookSetQualityInfusionBonus))]
+        public uint QualityInfusionBonus;
+
         [SyncVar]
-        public StoredInteractableInfo CardStoredInteractableInfo = StoredInteractableInfo.None;
+        private StoredInteractableInfo _cardStoredInteractableInfo = StoredInteractableInfo.None;
+        public StoredInteractableInfo CardStoredInteractableInfo
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _cardStoredInteractableInfo;
+            [Server]
+            set => _cardStoredInteractableInfo = value;
+        }
 
-        readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
+        [SyncVar(hook = nameof(hookSetParryStoredProjectileInfo))]
+        private ParryStoredProjectileInfo _parryStoredProjectileInfo = ParryStoredProjectileInfo.None;
+        public ParryStoredProjectileInfo ParryStoredProjectileInfo
+        {
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            get => _parryStoredProjectileInfo;
+            [Server]
+            set => _parryStoredProjectileInfo = value;
+        }
 
-        List<PendingItemUpgrade> _pendingItemUpgrades;
-        struct PendingItemUpgrade
+        public ItemCollection ConductorItemStacks = ItemCollection.Create();
+
+        private readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
+
+        private List<PendingItemUpgrade> _pendingItemUpgrades;
+        private struct PendingItemUpgrade
         {
             public readonly ItemIndex UpgradeItemIndex;
 
@@ -59,13 +81,14 @@ namespace ItemQualities
             }
         }
 
-        int _stageIncomingDamageInstanceCountServer;
+        private int _stageIncomingDamageInstanceCountServer;
         public int StageDamageInstancesTakenCount => _stageIncomingDamageInstanceCountServer;
 
         public event Action<CharacterMasterExtraStatsTracker> OnStageDamageInstancesTakenCountChangedServer;
         public event Action<CharacterMasterExtraStatsTracker> OnBossDamageBonusTicksChanged;
+        public event Action<CharacterMasterExtraStatsTracker> OnParryStoredProjectileInfoChanged;
 
-        void Awake()
+        private void Awake()
         {
             _master = GetComponent<CharacterMaster>();
 
@@ -77,7 +100,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             ComponentCache.Remove(gameObject, this);
 
@@ -87,12 +110,12 @@ namespace ItemQualities
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _master.onBodyStart += setBody;
-            _master.onBodyDestroyed += setBody;
+            _master.onBodyDestroyed += onBodyDestroyed;
 
-            if (_master.inventory)
+            if (!ReferenceEquals(_master.inventory, null))
             {
                 _master.inventory.onInventoryChanged += onInventoryChanged;
             }
@@ -102,12 +125,12 @@ namespace ItemQualities
             setBody(_master.GetBody());
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             _master.onBodyStart -= setBody;
-            _master.onBodyDestroyed -= setBody;
+            _master.onBodyDestroyed -= onBodyDestroyed;
 
-            if (_master.inventory)
+            if (!ReferenceEquals(_master.inventory, null))
             {
                 _master.inventory.onInventoryChanged -= onInventoryChanged;
             }
@@ -117,26 +140,31 @@ namespace ItemQualities
             setBody(null);
         }
 
-        void setBody(CharacterBody body)
+        private void onBodyDestroyed(CharacterBody body)
         {
-            if (_cachedBody == body)
+            setBody(null);
+        }
+
+        private void setBody(CharacterBody body)
+        {
+            if (ReferenceEquals(_cachedBody, body))
                 return;
 
-            if (_bodyExtraStatsComponent)
+            if (!ReferenceEquals(_cachedBodyStats, null))
             {
-                _bodyExtraStatsComponent.OnIncomingDamageServer -= onIncomingDamageServer;
+                _cachedBodyStats.OnIncomingDamageServer -= onIncomingDamageServer;
             }
 
             _cachedBody = body;
-            _bodyExtraStatsComponent = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
+            _cachedBodyStats = body ? body.GetComponentCached<CharacterBodyExtraStatsTracker>() : null;
 
-            if (_bodyExtraStatsComponent)
+            if (!ReferenceEquals(_cachedBodyStats, null))
             {
-                _bodyExtraStatsComponent.OnIncomingDamageServer += onIncomingDamageServer;
+                _cachedBodyStats.OnIncomingDamageServer += onIncomingDamageServer;
             }
         }
 
-        void onInventoryChanged()
+        private void onInventoryChanged()
         {
             if (NetworkServer.active)
             {
@@ -145,7 +173,7 @@ namespace ItemQualities
         }
 
         [Server]
-        bool checkAllItemQualityUpgrades()
+        private bool checkAllItemQualityUpgrades()
         {
             bool hasAnyPendingUpgrade = false;
 
@@ -161,7 +189,7 @@ namespace ItemQualities
         }
 
         [Server]
-        bool checkItemQualityUpgrade(ItemIndex upgradedItemIndex)
+        private bool checkItemQualityUpgrade(ItemIndex upgradedItemIndex)
         {
             if (_pendingItemUpgrades.Any(p => p.UpgradeItemIndex == upgradedItemIndex))
                 return true;
@@ -188,7 +216,7 @@ namespace ItemQualities
             return hasAnyUpgradableItem;
         }
 
-        static Inventory.ItemTransformation getUpgradeItemTransformation(ItemIndex originalItemIndex, ItemIndex upgradedItemIndex)
+        private static Inventory.ItemTransformation getUpgradeItemTransformation(ItemIndex originalItemIndex, ItemIndex upgradedItemIndex)
         {
             QualityTier upgradeQualityTier = QualityCatalog.GetQualityTier(upgradedItemIndex);
 
@@ -304,7 +332,7 @@ namespace ItemQualities
                     {
                         if (canUpgrade(itemIndex))
                         {
-                            availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountEffective(itemIndex));
+                            availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountTemp(itemIndex));
                         }
                     }
                 }
@@ -377,7 +405,7 @@ namespace ItemQualities
             return upgradedItemIndex;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -415,7 +443,7 @@ namespace ItemQualities
             }
         }
 
-        void onServerStageBegin(Stage stage)
+        private void onServerStageBegin(Stage stage)
         {
             if (_stageIncomingDamageInstanceCountServer != 0)
             {
@@ -424,7 +452,7 @@ namespace ItemQualities
             }
         }
 
-        void onIncomingDamageServer(DamageInfo damageInfo)
+        private void onIncomingDamageServer(DamageInfo damageInfo)
         {
             if (damageInfo.damage > 0f &&
                 !damageInfo.delayedDamageSecondHalf &&
@@ -436,7 +464,7 @@ namespace ItemQualities
             }
         }
 
-        void markBodyStatsDirty()
+        private void markBodyStatsDirty()
         {
             if (_cachedBody)
             {
@@ -450,7 +478,9 @@ namespace ItemQualities
             SteakBonus = masterSaveData.SteakBonus;
             SpeedOnPickupBonus = masterSaveData.SpeedOnPickupBonus;
             BossDamageBonusTicks = masterSaveData.BossDamageBonusTicks;
-            CardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+            QualityInfusionBonus = masterSaveData.QualityInfusionBonus;
+            _cardStoredInteractableInfo = masterSaveData.CardStoredInteractableInfo;
+            _parryStoredProjectileInfo = masterSaveData.ParryStoredProjectileInfo;
 
             _upgradeItemIndices.Clear();
             foreach (ItemIndex upgradeItemIndex in masterSaveData.UpgradeItemIndices)
@@ -462,7 +492,7 @@ namespace ItemQualities
             }
         }
 
-        void hookSetSteakBonus(float steakBonus)
+        private void hookSetSteakBonus(float steakBonus)
         {
             bool changed = SteakBonus != steakBonus;
             SteakBonus = steakBonus;
@@ -473,7 +503,7 @@ namespace ItemQualities
             }
         }
 
-        void hookSetSpeedOnPickupBonus(int speedOnPickupBonus)
+        private void hookSetSpeedOnPickupBonus(int speedOnPickupBonus)
         {
             bool changed = SpeedOnPickupBonus != speedOnPickupBonus;
             SpeedOnPickupBonus = speedOnPickupBonus;
@@ -484,7 +514,7 @@ namespace ItemQualities
             }
         }
 
-        void hookSetBossDamageBonusTicks(int bossDamageBonusTicks)
+        private void hookSetBossDamageBonusTicks(int bossDamageBonusTicks)
         {
             bool changed = BossDamageBonusTicks != bossDamageBonusTicks;
             BossDamageBonusTicks = bossDamageBonusTicks;
@@ -492,6 +522,28 @@ namespace ItemQualities
             if (changed)
             {
                 OnBossDamageBonusTicksChanged?.Invoke(this);
+            }
+        }
+
+        private void hookSetParryStoredProjectileInfo(ParryStoredProjectileInfo newParryStoredProjectileInfo)
+        {
+            bool changed = _parryStoredProjectileInfo != newParryStoredProjectileInfo;
+            _parryStoredProjectileInfo = newParryStoredProjectileInfo;
+
+            if (changed)
+            {
+                OnParryStoredProjectileInfoChanged?.Invoke(this);
+            }
+        }
+
+        private void hookSetQualityInfusionBonus(uint newQualityInfusionBonus)
+        {
+            bool changed = QualityInfusionBonus != newQualityInfusionBonus;
+            QualityInfusionBonus = newQualityInfusionBonus;
+
+            if (changed)
+            {
+                markBodyStatsDirty();
             }
         }
     }

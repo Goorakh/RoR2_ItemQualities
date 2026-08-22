@@ -5,15 +5,15 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Equipments
 {
-    static class HealAndReviveConsumed
+    internal static class HealAndReviveConsumed
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.EquipmentSlot.FireSproutOfLife += EquipmentSlot_FireSproutOfLife;
         }
 
-        static bool EquipmentSlot_FireSproutOfLife(On.RoR2.EquipmentSlot.orig_FireSproutOfLife orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireSproutOfLife(On.RoR2.EquipmentSlot.orig_FireSproutOfLife orig, EquipmentSlot self)
         {
             bool success = orig(self);
 
@@ -31,13 +31,13 @@ namespace ItemQualities.Equipments
                                 durationIncrease = 1f;
                                 break;
                             case QualityTier.Rare:
-                                durationIncrease = 2f;
-                                break;
-                            case QualityTier.Epic:
                                 durationIncrease = 5f;
                                 break;
-                            case QualityTier.Legendary:
+                            case QualityTier.Epic:
                                 durationIncrease = 10f;
+                                break;
+                            case QualityTier.Legendary:
+                                durationIncrease = 15f;
                                 break;
                             default:
                                 durationIncrease = 0f;

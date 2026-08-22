@@ -1,5 +1,4 @@
 ﻿using BepInEx.Configuration;
-using RiskOfOptions;
 using RiskOfOptions.Options;
 
 namespace ItemQualities
@@ -9,12 +8,12 @@ namespace ItemQualities
         public static class Debug
         {
 #if DEBUG
-            const string SectionName = "Debug";
+            private const string SectionName = "Debug";
 
-            static ConfigEntry<bool> _logItemQualitiesConfig;
+            private static ConfigEntry<bool> _logItemQualitiesConfig;
             public static bool LogItemQualities => _logItemQualitiesConfig?.Value ?? false;
 
-            static ConfigEntry<bool> _enableDebugDraw;
+            private static ConfigEntry<bool> _enableDebugDraw;
             public static bool EnableDebugDraw => _enableDebugDraw?.Value ?? false;
 
             internal static void Init(ConfigFile configFile)
@@ -26,9 +25,9 @@ namespace ItemQualities
 
             internal static void InitRiskOfOptions()
             {
-                ModSettingsManager.AddOption(new CheckBoxOption(_logItemQualitiesConfig), ModGuid, ModName);
+                addOption(new CheckBoxOption(_logItemQualitiesConfig));
 
-                ModSettingsManager.AddOption(new CheckBoxOption(_enableDebugDraw), ModGuid, ModName);
+                addOption(new CheckBoxOption(_enableDebugDraw));
             }
 #else
             public const bool LogItemQualities = false;

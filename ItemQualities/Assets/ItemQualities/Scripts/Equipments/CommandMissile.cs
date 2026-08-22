@@ -8,12 +8,12 @@ using System.Linq;
 
 namespace ItemQualities.Equipments
 {
-    static class CommandMissile
+    internal static class CommandMissile
     {
-        static EquipmentIndex[] _missileEquipments = Array.Empty<EquipmentIndex>();
+        private static EquipmentIndex[] _missileEquipments = Array.Empty<EquipmentIndex>();
 
         [SystemInitializer(typeof(QualityCatalog))]
-        static void Init()
+        private static void Init()
         {
             HashSet<EquipmentIndex> missileEquipments = new HashSet<EquipmentIndex>(EquipmentCatalog.equipmentCount);
             for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
@@ -47,7 +47,7 @@ namespace ItemQualities.Equipments
             IL.RoR2.EquipmentSlot.FireCommandMissile += EquipmentSlot_FireCommandMissile;
         }
 
-        static void EquipmentSlot_FireCommandMissile(ILContext il)
+        private static void EquipmentSlot_FireCommandMissile(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -103,7 +103,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static int getMissileCount(CharacterMaster master)
+        private static int getMissileCount(CharacterMaster master)
         {
             int missileItemCount = 0;
 
@@ -111,7 +111,7 @@ namespace ItemQualities.Equipments
             {
                 foreach (ItemIndex itemIndex in ItemCatalog.GetItemsWithTag(ItemTags.MissileRelated))
                 {
-                    missileItemCount += master.inventory.GetItemCountEffective(itemIndex);
+                    missileItemCount += master.inventory.CalculateEffectiveItemStacks(itemIndex);
                 }
             }
 

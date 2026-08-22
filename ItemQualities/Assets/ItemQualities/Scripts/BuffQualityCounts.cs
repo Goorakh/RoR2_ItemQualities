@@ -8,7 +8,7 @@ namespace ItemQualities
     public unsafe struct BuffQualityCounts : IEquatable<BuffQualityCounts>
     {
         [FieldOffset(0)]
-        fixed int _buffCounts[(int)QualityTier.Count + 1];
+        private fixed int _buffCounts[(int)QualityTier.Count + 1];
 
         [FieldOffset(0)]
         public int BaseCount;

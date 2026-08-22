@@ -3,12 +3,12 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class BarrierOnCooldown
+    internal static class BarrierOnCooldown
     {
-        static EffectIndex _barrierOnCooldownProcEffect = EffectIndex.Invalid;
+        private static EffectIndex _barrierOnCooldownProcEffect = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _barrierOnCooldownProcEffect = EffectCatalogUtils.FindEffectIndex("BarrierOnCooldownProc");
             if (_barrierOnCooldownProcEffect == EffectIndex.Invalid)
@@ -50,7 +50,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static float getMaxBarrier(CharacterBody body)
+        private static float getMaxBarrier(CharacterBody body)
         {
             float maxBarrier = body.maxBarrier;
 
@@ -72,7 +72,7 @@ namespace ItemQualities.Items
             return maxBarrier;
         }
 
-        static void onServerEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
+        private static void onServerEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
         {
             if (!equipmentSlot || equipmentIndex == EquipmentIndex.None)
                 return;

@@ -6,12 +6,12 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class TPHealingNova
+    internal static class TPHealingNova
     {
-        static SceneIndex _limboSceneIndex = SceneIndex.Invalid;
+        private static SceneIndex _limboSceneIndex = SceneIndex.Invalid;
 
         [SystemInitializer(typeof(SceneCatalog))]
-        static void Init()
+        private static void Init()
         {
             _limboSceneIndex = SceneCatalog.FindSceneIndex("limbo");
             if (_limboSceneIndex == SceneIndex.Invalid)
@@ -24,13 +24,13 @@ namespace ItemQualities.Items
             Stage.onServerStageBegin += onServerStageBegin;
         }
 
-        static void GoldshoresBossfight_SpawnBoss(On.EntityStates.Missions.Goldshores.GoldshoresBossfight.orig_SpawnBoss orig, EntityStates.Missions.Goldshores.GoldshoresBossfight self)
+        private static void GoldshoresBossfight_SpawnBoss(On.EntityStates.Missions.Goldshores.GoldshoresBossfight.orig_SpawnBoss orig, EntityStates.Missions.Goldshores.GoldshoresBossfight self)
         {
             orig(self);
             tryInitializeGoldshoresNovaManagers(self.scriptedCombatEncounter);
         }
 
-        static void onServerStageBegin(Stage stage)
+        private static void onServerStageBegin(Stage stage)
         {
             if (!NetworkServer.active || !stage)
                 return;
@@ -39,7 +39,7 @@ namespace ItemQualities.Items
             stage.StartCoroutine(tryInitializeStageNovaManagers(sceneIndex));
         }
 
-        static GameObject createHealNovaManager(BossGroup bossGroup, Transform parent, Vector3 position, float radius)
+        private static GameObject createHealNovaManager(BossGroup bossGroup, Transform parent, Vector3 position, float radius)
         {
             GameObject healNovaManager = new GameObject("HealNovaManager");
             healNovaManager.transform.SetParent(parent);
@@ -51,7 +51,7 @@ namespace ItemQualities.Items
             return healNovaManager;
         }
 
-        static IEnumerator tryInitializeStageNovaManagers(SceneIndex sceneIndex)
+        private static IEnumerator tryInitializeStageNovaManagers(SceneIndex sceneIndex)
         {
             yield return new WaitForFixedUpdate();
             tryInitializeMoonNovaManagers();
@@ -74,7 +74,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void tryInitializeHeartNovaManagers()
+        private static void tryInitializeHeartNovaManagers()
         {
             GameObject solusWebMissionController = GameObject.Find("SolusWebMissionController");
             if (!solusWebMissionController)
@@ -93,7 +93,7 @@ namespace ItemQualities.Items
             createHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 150f);
         }
 
-        static void tryInitializeHauntNovaManagers()
+        private static void tryInitializeHauntNovaManagers()
         {
             if (!SolutionalHauntReferences.singletonInstance)
                 return;
@@ -111,7 +111,7 @@ namespace ItemQualities.Items
             createHealNovaManager(bossGroup, bossGroup.transform, arenaCenterPosition, 250f);
         }
 
-        static void tryInitializeMoonNovaManagers()
+        private static void tryInitializeMoonNovaManagers()
         {
             if (!SceneInfo.instance)
                 return;
@@ -140,7 +140,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static IEnumerator tryInitializeVoidRaidNovaManagers()
+        private static IEnumerator tryInitializeVoidRaidNovaManagers()
         {
             while (VoidRaidGauntletController.instance && !VoidRaidGauntletController.instance.hasShuffled)
             {
@@ -190,7 +190,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void tryInitializeMeridianNovaManagers()
+        private static void tryInitializeMeridianNovaManagers()
         {
             if (!MeridianEventTriggerInteraction.instance)
                 return;
@@ -231,7 +231,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void tryInitializeGoldshoresNovaManagers(ScriptedCombatEncounter combatEncounter)
+        private static void tryInitializeGoldshoresNovaManagers(ScriptedCombatEncounter combatEncounter)
         {
             if (combatEncounter && combatEncounter.TryGetComponent(out BossGroup bossGroup))
             {
@@ -239,7 +239,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void tryInitializeLimboNovaManagers()
+        private static void tryInitializeLimboNovaManagers()
         {
             GameObject scavLunarEncounter = GameObject.Find("ScavLunarEncounter");
             if (!scavLunarEncounter)

@@ -14,18 +14,18 @@ namespace ItemQualities.Buffs
 {
     public abstract class QualityBuffBodyBehavior : MonoBehaviour
     {
-        static BuffIndex[] _allBuffsToCheck = Array.Empty<BuffIndex>();
+        private static BuffIndex[] _allBuffsToCheck = Array.Empty<BuffIndex>();
 
-        static readonly QualityGroupBehaviorCollection[] _behaviorCollectionsLookup = new QualityGroupBehaviorCollection[(int)QualityBuffBehaviorUsageFlags.All];
+        private static readonly QualityGroupBehaviorCollection[] _behaviorCollectionsLookup = new QualityGroupBehaviorCollection[(int)QualityBuffBehaviorUsageFlags.All];
 
-        static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
+        private static readonly Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo> _bodyQualityBehaviorInfoLookup = new Dictionary<UnityObjectWrapperKey<CharacterBody>, BodyBehaviorInfo>();
 
-        static CharacterBody _earlyAssignmentBody;
-        static BuffQualityCounts _earlyAssignmentStacks;
+        private static CharacterBody _earlyAssignmentBody;
+        private static BuffQualityCounts _earlyAssignmentStacks;
 
         public CharacterBody Body { get; private set; }
 
-        BuffQualityCounts _stacks;
+        private BuffQualityCounts _stacks;
         public ref readonly BuffQualityCounts Stacks
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -46,7 +46,7 @@ namespace ItemQualities.Buffs
         }
 
         [SystemInitializer(typeof(QualityCatalog))]
-        static void Init()
+        private static void Init()
         {
             Span<List<QualityGroupBehaviorInfo>> qualityGroupBehaviorsByUsageLookup = new List<QualityGroupBehaviorInfo>[(int)QualityBuffBehaviorUsageFlags.All];
             foreach (ref List<QualityGroupBehaviorInfo> qualityGroupBehaviors in qualityGroupBehaviorsByUsageLookup)
@@ -189,7 +189,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static QualityBuffBehaviorUsageFlags getBehaviorFlagsForBody(CharacterBody body)
+        private static QualityBuffBehaviorUsageFlags getBehaviorFlagsForBody(CharacterBody body)
         {
             QualityBuffBehaviorUsageFlags usageFlags = QualityBuffBehaviorUsageFlags.None;
 
@@ -212,12 +212,12 @@ namespace ItemQualities.Buffs
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static int getBehaviorCollectionIndex(CharacterBody body)
+        private static int getBehaviorCollectionIndex(CharacterBody body)
         {
             return (int)getBehaviorFlagsForBody(body) - 1;
         }
 
-        static void onBodyStartGlobal(CharacterBody body)
+        private static void onBodyStartGlobal(CharacterBody body)
         {
             if (!_bodyQualityBehaviorInfoLookup.ContainsKey(body))
             {
@@ -237,7 +237,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void onBodyDestroyGlobal(CharacterBody body)
+        private static void onBodyDestroyGlobal(CharacterBody body)
         {
             if (_bodyQualityBehaviorInfoLookup.Remove(body, out BodyBehaviorInfo behaviorInfo))
             {
@@ -245,7 +245,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void onBodyBuffCountChangedGlobal(CharacterBody body, BuffIndex buffIndex, int newCount)
+        private static void onBodyBuffCountChangedGlobal(CharacterBody body, BuffIndex buffIndex, int newCount)
         {
             if (Array.BinarySearch(_allBuffsToCheck, buffIndex) >= 0 &&
                 _bodyQualityBehaviorInfoLookup.TryGetValue(body, out BodyBehaviorInfo behaviorInfo))
@@ -254,7 +254,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void refreshBodyQualityBehaviors(CharacterBody body, in BodyBehaviorInfo bodyBehaviorInfo)
+        private static void refreshBodyQualityBehaviors(CharacterBody body, in BodyBehaviorInfo bodyBehaviorInfo)
         {
             if (body)
             {
@@ -281,7 +281,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void updateBuffStacks(CharacterBody body, ref QualityBuffBodyBehavior buffBehavior, Type qualityBehaviorType, in BuffQualityCounts buffCounts)
+        private static void updateBuffStacks(CharacterBody body, ref QualityBuffBodyBehavior buffBehavior, Type qualityBehaviorType, in BuffQualityCounts buffCounts)
         {
             bool hasBehavior = !ReferenceEquals(buffBehavior, null);
             bool shouldHaveBehavior = buffCounts.TotalQualityCount > 0;
@@ -321,7 +321,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        readonly struct BodyBehaviorInfo
+        private readonly struct BodyBehaviorInfo
         {
             public readonly QualityBuffBodyBehavior[] BehaviorComponents;
 
@@ -334,7 +334,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        readonly struct QualityGroupBehaviorInfo
+        private readonly struct QualityGroupBehaviorInfo
         {
             public readonly BuffQualityGroupIndex BuffGroupIndex;
 
@@ -347,7 +347,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        readonly struct QualityGroupBehaviorCollection
+        private readonly struct QualityGroupBehaviorCollection
         {
             public readonly QualityGroupBehaviorInfo[] Behaviors;
 

@@ -9,15 +9,15 @@ using System.Collections.Generic;
 
 namespace ItemQualities.Items
 {
-    static class CloverVoid
+    internal static class CloverVoid
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.CharacterMaster.TryCloverVoidUpgrades += CharacterMaster_TryCloverVoidUpgrades;
         }
 
-        static void CharacterMaster_TryCloverVoidUpgrades(ILContext il)
+        private static void CharacterMaster_TryCloverVoidUpgrades(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -193,7 +193,9 @@ namespace ItemQualities.Items
 
                 QualityTier maxUpgradableQualityTier = cloverVoid.HighestQuality - 1;
 
-                List<QualityTier> upgradableItemQualityTiers = new List<QualityTier>(startingItemCount);
+                using var _ = ListPool<QualityTier>.RentCollection(out List<QualityTier> upgradableItemQualityTiers);
+                ListUtils.EnsureCapacity(upgradableItemQualityTiers, startingItemCount);
+
                 for (QualityTier qualityTier = QualityTier.None; qualityTier <= maxUpgradableQualityTier; qualityTier++)
                 {
                     int qualityCount = upgradeItemQualities[qualityTier];

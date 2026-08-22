@@ -9,11 +9,11 @@ using System;
 
 namespace ItemQualities.Equipments
 {
-    static class Lightning
+    internal static class Lightning
     {
-        static readonly FixedConditionalWeakTable<LightningStrikeOrb, LightningOrbQualityInfo> _lightningOrbQualityInfoLookup = new FixedConditionalWeakTable<LightningStrikeOrb, LightningOrbQualityInfo>();
+        private static readonly FixedConditionalWeakTable<LightningStrikeOrb, LightningOrbQualityInfo> _lightningOrbQualityInfoLookup = new FixedConditionalWeakTable<LightningStrikeOrb, LightningOrbQualityInfo>();
 
-        sealed class LightningOrbQualityInfo
+        private sealed class LightningOrbQualityInfo
         {
             public QualityTier QualityTier = QualityTier.None;
 
@@ -27,13 +27,13 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireLightning += EquipmentSlot_FireLightning;
             On.RoR2.Orbs.LightningStrikeOrb.OnArrival += LightningStrikeOrb_OnArrival;
         }
 
-        static void EquipmentSlot_FireLightning(ILContext il)
+        private static void EquipmentSlot_FireLightning(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -47,7 +47,7 @@ namespace ItemQualities.Equipments
             c.Emit(OpCodes.Dup);
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Action<LightningStrikeOrb, EquipmentSlot>>(setOrbQualityTier);
-            
+
             static void setOrbQualityTier(LightningStrikeOrb lightningStrikeOrb, EquipmentSlot equipmentSlot)
             {
                 if (lightningStrikeOrb == null || !equipmentSlot)
@@ -89,7 +89,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void LightningStrikeOrb_OnArrival(On.RoR2.Orbs.LightningStrikeOrb.orig_OnArrival orig, LightningStrikeOrb self)
+        private static void LightningStrikeOrb_OnArrival(On.RoR2.Orbs.LightningStrikeOrb.orig_OnArrival orig, LightningStrikeOrb self)
         {
             orig(self);
 

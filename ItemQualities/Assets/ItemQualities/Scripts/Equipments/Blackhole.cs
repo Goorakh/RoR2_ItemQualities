@@ -15,12 +15,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class Blackhole
+    internal static class Blackhole
     {
-        static readonly GameObject[] _qualityProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> gravSphereProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Blackhole.GravSphere_prefab);
             gravSphereProjectileLoad.OnSuccess(gravSphereProjectilePrefab =>
@@ -120,12 +120,12 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireBlackhole += EquipmentSlot_FireBlackhole;
         }
 
-        static void EquipmentSlot_FireBlackhole(ILContext il)
+        private static void EquipmentSlot_FireBlackhole(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

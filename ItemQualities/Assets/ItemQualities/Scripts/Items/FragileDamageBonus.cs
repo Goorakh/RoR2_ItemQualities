@@ -1,43 +1,92 @@
 ﻿using ItemQualities.Utilities.Extensions;
+using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
 using RoR2;
+using System;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class FragileDamageBonus
+    internal static class FragileDamageBonus
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
-            RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
 
             IL.RoR2.HealthComponent.UpdateLastHitTime += HealthComponent_UpdateLastHitTime;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
-            if (!sender.inventory)
-                return;
-
-            ItemQualityCounts fragileDamageBonus = sender.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus);
-            if (fragileDamageBonus.TotalQualityCount > 0)
+            if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                BuffQualityCounts fragileDamageBonusBuff = sender.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff);
-                if (fragileDamageBonusBuff.TotalQualityCount > 0)
-                {
-                    float damageBonusPerBuff = (0.07f * fragileDamageBonus.UncommonCount) +
-                                               (0.10f * fragileDamageBonus.RareCount) +
-                                               (0.15f * fragileDamageBonus.EpicCount) +
-                                               (0.20f * fragileDamageBonus.LegendaryCount);
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
+                return;
+            }
 
-                    args.damageMultAdd += damageBonusPerBuff;
+            ILCursor c = new ILCursor(il);
+
+            if (!ItemHooks.TryGotoNextItemCountVariable(c, typeof(DLC1Content.Items), nameof(DLC1Content.Items.FragileDamageBonus), out VariableDefinition fragileDamageBonusCountVar))
+            {
+                Log.PatchError(il, "Failed to find FragileDamageBonus itemCount variable");
+                return;
+            }
+
+            /*
+             *  // 1f + (float)itemCountEffective5 * 0.2f
+             *  IL_0CC7: ldc.r4    1
+             *  IL_0CCC: ldloc.s   V_42
+             *  IL_0CCE: conv.r4
+             *  IL_0CCF: ldc.r4    0.2
+             *  IL_0CD4: mul
+             *  IL_0CD5: add
+             */
+
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdcR4(out _),
+                               x => x.MatchLdloc(fragileDamageBonusCountVar),
+                               x => x.MatchConvR4(),
+                               x => x.MatchLdcR4(out _),
+                               x => x.MatchMul(),
+                               x => x.MatchAdd()))
+            {
+                Log.PatchError(il, "Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldarg, damageInfoParameter);
+
+            c.EmitDelegate<Func<float, DamageInfo, float>>(getWatchDamage);
+
+            static float getWatchDamage(float fragileDamageBonusValue, DamageInfo damageInfo)
+            {
+                GameObject attacker = damageInfo?.attacker;
+                CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
+                Inventory attackerInventory = attackerBody ? attackerBody.inventory : null;
+                TeamIndex attackerTeam = TeamComponent.GetObjectTeam(attacker);
+
+                if (attackerInventory)
+                {
+                    ItemQualityCounts fragileDamageBonus = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FragileDamageBonus);
+                    BuffQualityCounts fragileDamageBonusBuff = attackerBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.FragileDamageBonusBuff);
+                    if (fragileDamageBonus.TotalQualityCount > 0 && fragileDamageBonusBuff.TotalQualityCount > 0)
+                    {
+                        float damageBonus = (0.10f * fragileDamageBonus.UncommonCount) +
+                                            (0.20f * fragileDamageBonus.RareCount) +
+                                            (0.40f * fragileDamageBonus.EpicCount) +
+                                            (0.60f * fragileDamageBonus.LegendaryCount);
+
+                        fragileDamageBonusValue += damageBonus;
+                    }
                 }
+
+                return fragileDamageBonusValue;
             }
         }
 
-        static void HealthComponent_UpdateLastHitTime(ILContext il)
+        private static void HealthComponent_UpdateLastHitTime(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -53,7 +102,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloca(typeof(Inventory.ItemTransformation.TryTransformResult), il, out watchItemTransformationResultVar),
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -96,6 +145,6 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate bool ConsumeQualityWatchesDelegate(bool result, HealthComponent healthComponent, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult);
+        private delegate bool ConsumeQualityWatchesDelegate(bool result, HealthComponent healthComponent, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult);
     }
 }

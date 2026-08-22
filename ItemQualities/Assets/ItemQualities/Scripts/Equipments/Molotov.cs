@@ -16,12 +16,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class Molotov
+    internal static class Molotov
     {
-        static readonly GameObject[] _qualityMolotovClusterProjectilePrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityMolotovClusterProjectilePrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> molotovClusterProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_Molotov.MolotovClusterProjectile_prefab);
             molotovClusterProjectileLoad.OnSuccess(molotovClusterProjectilePrefab =>
@@ -34,10 +34,10 @@ namespace ItemQualities.Equipments
 
                     float scaleMult = qualityTier switch
                     {
-                        QualityTier.Uncommon => 1.6f,
-                        QualityTier.Rare => 2.0f,
-                        QualityTier.Epic => 3.0f,
-                        QualityTier.Legendary => 4.0f,
+                        QualityTier.Uncommon => 1.3f,
+                        QualityTier.Rare => 2f,
+                        QualityTier.Epic => 3.5f,
+                        QualityTier.Legendary => 4.5f,
                         _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
                     };
 
@@ -95,15 +95,7 @@ namespace ItemQualities.Equipments
 
                             if (qualityMolotovDotZoneProjectile.TryGetComponent(out ProjectileDotZone dotZone))
                             {
-                                dotZone.damageCoefficient += qualityTier switch
-                                {
-                                    QualityTier.Uncommon => 0.5f,
-                                    QualityTier.Rare => 1.0f,
-                                    QualityTier.Epic => 2.0f,
-                                    QualityTier.Legendary => 3.0f,
-                                    _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
-                                };
-
+                                dotZone.damageCoefficient += 1f;
                                 lifetime = dotZone.lifetime;
                             }
                             else
@@ -119,14 +111,7 @@ namespace ItemQualities.Equipments
                                 ObjectScaleCurve dotZoneScaleCurve = dotZoneFX.gameObject.AddComponent<ObjectScaleCurve>();
                                 dotZoneScaleCurve.timeMax = lifetime + 0.5f;
                                 dotZoneScaleCurve.useOverallCurveOnly = true;
-                                dotZoneScaleCurve.overallCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, qualityTier switch
-                                {
-                                    QualityTier.Uncommon => 1.5f,
-                                    QualityTier.Rare => 2f,
-                                    QualityTier.Epic => 2.5f,
-                                    QualityTier.Legendary => 3f,
-                                    _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
-                                });
+                                dotZoneScaleCurve.overallCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 2f);
                             }
                             else
                             {
@@ -162,12 +147,12 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireMolotov += EquipmentSlot_FireMolotov;
         }
 
-        static void EquipmentSlot_FireMolotov(ILContext il)
+        private static void EquipmentSlot_FireMolotov(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

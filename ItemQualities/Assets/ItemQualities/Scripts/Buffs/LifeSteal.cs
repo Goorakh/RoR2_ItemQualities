@@ -1,17 +1,16 @@
 ﻿using ItemQualities.Utilities.Extensions;
-using R2API;
 using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Buffs
 {
-    static class LifeSteal
+    internal static class LifeSteal
     {
         public const float LifeStealSpeedDuration = 60f;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             BuffHooks.OnBuffFirstStackGainedGlobal += onBuffFirstStackGainedGlobal;
             BuffHooks.OnBuffFinalStackLostGlobal += onBuffFinalStackLostGlobal;
@@ -19,7 +18,7 @@ namespace ItemQualities.Buffs
             HealthComponent.onCharacterHealServer += onCharacterHealServer;
         }
 
-        static void onBuffFirstStackGainedGlobal(CharacterBody body, BuffDef buffDef)
+        private static void onBuffFirstStackGainedGlobal(CharacterBody body, BuffDef buffDef)
         {
             if (!NetworkServer.active)
                 return;
@@ -48,8 +47,8 @@ namespace ItemQualities.Buffs
 
             body.ClearTimedBuffs(ItemQualitiesContent.Buffs.LifeStealSpeed);
         }
-        
-        static void onBuffFinalStackLostGlobal(CharacterBody body, BuffDef buffDef)
+
+        private static void onBuffFinalStackLostGlobal(CharacterBody body, BuffDef buffDef)
         {
             if (!NetworkServer.active)
                 return;
@@ -84,7 +83,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        static void onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
+        private static void onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
         {
             BuffQualityCounts lifeSteal = healthComponent.body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.LifeSteal);
 

@@ -10,9 +10,9 @@ namespace ItemQualities
 {
     internal static class EffectScalingFixer
     {
-        static bool _contentLock = false;
+        private static bool _contentLock = false;
 
-        static readonly Dictionary<GameObject, Dictionary<int, EffectDef>> _fixedScalingPrefabCaches = new();
+        private static readonly Dictionary<GameObject, Dictionary<int, EffectDef>> _fixedScalingPrefabCaches = new();
 
         public static void AddToContentPack(ContentPack contentPack)
         {
@@ -55,8 +55,7 @@ namespace ItemQualities
                 return null;
             }
 
-            Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew
-                <Dictionary<GameObject, Dictionary<int, EffectDef>>, GameObject, Dictionary<int, EffectDef>>(effectPrefab);
+            Dictionary<int, EffectDef> scaledPrefabsCache = _fixedScalingPrefabCaches.GetOrAddNew(effectPrefab);
 
             int dictionaryKey = (int)(defaultRadius * 10);
             if (scaledPrefabsCache.TryGetValue(dictionaryKey, out EffectDef cachedScaledEffectDef))
@@ -67,12 +66,14 @@ namespace ItemQualities
             return effectDef;
         }
 
-        public static GameObject CreateFixedScalingCopy(GameObject prefab, float defaultRadius)
+        public static GameObject CreateFixedScalingCopy(GameObject prefab, float defaultRadius, string nameToSet = null)
         {
-            GameObject scaleFixExplosionEffectPrefab = prefab.InstantiateClone($"{prefab.name}_ScaleFix_x{defaultRadius:F1}", false);
+            GameObject scaleFixExplosionEffectPrefab = prefab.InstantiateClone(nameToSet ?? $"{prefab.name}_ScaleFix_x{defaultRadius:F1}", false);
 
             if (scaleFixExplosionEffectPrefab.TryGetComponent(out EffectComponent effectComponent))
+            {
                 effectComponent.applyScale = true;
+            }
 
             if (scaleFixExplosionEffectPrefab.transform.childCount > 0)
             {

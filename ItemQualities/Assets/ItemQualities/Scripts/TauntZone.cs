@@ -11,7 +11,7 @@ namespace ItemQualities
     [RequireComponent(typeof(TeamFilter))]
     public sealed class TauntZone : MonoBehaviour
     {
-        static SphereSearch _sphereSearch;
+        private static SphereSearch _sphereSearch;
 
         public CharacterBody Attacker;
 
@@ -29,12 +29,12 @@ namespace ItemQualities
         [Min(0)]
         public float HitEntitiesClearInterval = 1f;
 
-        float _tauntTimer;
-        float _hitEntitiesListClearTimer;
+        private float _tauntTimer;
+        private float _hitEntitiesListClearTimer;
 
-        List<HealthComponent> _hitEntities;
+        private List<HealthComponent> _hitEntities;
 
-        void Awake()
+        private void Awake()
         {
             if (NetworkServer.active)
             {
@@ -48,7 +48,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (_hitEntities != null)
             {
@@ -56,7 +56,7 @@ namespace ItemQualities
             }
         }
 
-        void Start()
+        private void Start()
         {
             if (NetworkServer.active)
             {
@@ -64,7 +64,7 @@ namespace ItemQualities
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -84,7 +84,7 @@ namespace ItemQualities
             }
         }
 
-        void doTauntNearby()
+        private void doTauntNearby()
         {
             if (!NetworkServer.active)
             {
@@ -140,7 +140,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDrawGizmos()
+        private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(transform.position, Range);
         }

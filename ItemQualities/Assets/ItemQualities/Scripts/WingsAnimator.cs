@@ -6,13 +6,13 @@ namespace ItemQualities
     public sealed class WingsAnimator : MonoBehaviour
     {
         [SerializeField]
-        Animator _animator;
+        private Animator _animator;
 
         public bool Ready = true;
 
         public float FlyRate = 4f;
 
-        void OnEnable()
+        private void OnEnable()
         {
             if (_animator)
             {

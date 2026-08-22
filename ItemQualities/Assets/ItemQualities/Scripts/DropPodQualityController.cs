@@ -8,16 +8,16 @@ using UnityEngine.Networking;
 
 namespace ItemQualities
 {
-    public class DropPodQualityController : MonoBehaviour
+    public sealed class DropPodQualityController : MonoBehaviour
     {
-        bool appliedQuality;
-        bool hidQuality;
+        private bool appliedQuality;
+        private bool hidQuality;
 
-        GenericPickupController _pickupController;
-        Transform _qualityPickupDisplay;
+        private GenericPickupController _pickupController;
+        private Transform _qualityPickupDisplay;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.EntityStates.SurvivorPod.BatteryPanel.Opening.OnEnter += Opening_OnEnter;
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_SurvivorPod.SurvivorPod_prefab).OnSuccess(SurvivorPod =>
@@ -48,7 +48,7 @@ namespace ItemQualities
             }
         }
 
-        bool getWorldPickupAndController()
+        private bool getWorldPickupAndController()
         {
             if (_pickupController && _qualityPickupDisplay)
                 return true;
@@ -69,6 +69,7 @@ namespace ItemQualities
             {
                 return true;
             }
+
             return false;
         }
 
@@ -89,13 +90,13 @@ namespace ItemQualities
             GenericPickupController pickupController = worldPickup.GetComponent<GenericPickupController>();
             if (!pickupController || pickupController.pickup == null)
                 return;
-            
+
             Transform qualityPickupDisplay = worldPickup.Find("PickupDisplay/QualityPickupDisplay(Clone)");
             if (qualityPickupDisplay)
             {
                 qualityPickupDisplay.gameObject.SetActive(true);
             }
-            
+
             EquipmentIndex equipmentIndex = PickupCatalog.GetPickupDef(pickupController.pickup.pickupIndex)?.equipmentIndex ?? EquipmentIndex.None;
             if (QualityCatalog.GetQualityTier(equipmentIndex) > QualityTier.None)
             {

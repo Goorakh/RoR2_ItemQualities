@@ -13,16 +13,16 @@ namespace ItemQualities
 
         public float HighlightStrength = 1f;
 
-        TemporaryVisualEffect _visualEffect;
+        private TemporaryVisualEffect _visualEffect;
 
-        Highlight _highlight;
+        private Highlight _highlight;
 
-        void Awake()
+        private void Awake()
         {
             _visualEffect = GetComponent<TemporaryVisualEffect>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             CharacterModel attachedCharacterModel = null;
             if (_visualEffect && _visualEffect.healthComponent)
@@ -70,7 +70,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (_highlight)
             {

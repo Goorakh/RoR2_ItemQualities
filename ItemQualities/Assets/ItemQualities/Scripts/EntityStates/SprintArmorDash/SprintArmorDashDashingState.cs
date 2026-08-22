@@ -10,18 +10,22 @@ namespace EntityStates.SprintArmorDash
 {
     public sealed class SprintArmorDashDashingState : EntityState
     {
-        static readonly SphereSearch _dashSphereSearch = new SphereSearch();
+        public static float DashSpeedCoefficient;
 
-        static EffectIndex _blinkEffectIndex;
+        public static float DashEndSpeedCoefficient;
 
-        CharacterBody _attachedBody;
-        IPhysMotor _motor;
+        private static readonly SphereSearch _dashSphereSearch = new SphereSearch();
 
-        Vector3 _dashDirection;
-        bool _stoppedDash;
+        private static EffectIndex _blinkEffectIndex;
+
+        private CharacterBody _attachedBody;
+        private IPhysMotor _motor;
+
+        private Vector3 _dashDirection;
+        private bool _stoppedDash;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _blinkEffectIndex = EffectCatalogUtils.FindEffectIndex("HuntressBlinkEffect");
             if (_blinkEffectIndex == EffectIndex.Invalid)
@@ -60,7 +64,7 @@ namespace EntityStates.SprintArmorDash
                     _ => 30,
                 };
 
-                for (int i = 0; i < cooldown; i++)
+                for (int i = 1; i <= cooldown; i++)
                 {
                     _attachedBody.AddTimedBuff(ItemQualitiesContent.Buffs.SprintArmorDashCooldown, i);
                 }
@@ -116,7 +120,7 @@ namespace EntityStates.SprintArmorDash
                         _motor.ApplyForceImpulse(new PhysForceInfo
                         {
                             resetVelocity = true,
-                            force = _dashDirection * (Time.deltaTime * _attachedBody.moveSpeed * 1000),
+                            force = _dashDirection * (_attachedBody.moveSpeed * DashSpeedCoefficient),
                             ignoreGroundStick = true,
                             massIsOne = true,
                         });
@@ -127,7 +131,7 @@ namespace EntityStates.SprintArmorDash
                         _motor.ApplyForceImpulse(new PhysForceInfo
                         {
                             resetVelocity = true,
-                            force = _dashDirection * (_attachedBody.moveSpeed * 3),
+                            force = _dashDirection * (_attachedBody.moveSpeed * DashEndSpeedCoefficient),
                             ignoreGroundStick = true,
                             massIsOne = true,
                         });
@@ -146,7 +150,7 @@ namespace EntityStates.SprintArmorDash
             }
         }
 
-        void tryAttack()
+        private void tryAttack()
         {
             using var _ = ListPool<HurtBox>.RentCollection(out List<HurtBox> hurtBoxes);
 

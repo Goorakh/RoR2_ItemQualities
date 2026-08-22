@@ -27,14 +27,14 @@ namespace ItemQualities
         [Min(0f)]
         public float CleanseEffectInterval = 0.5f;
 
-        NetworkedBodyAttachment _bodyAttachment;
+        private NetworkedBodyAttachment _bodyAttachment;
 
-        float _cleanseTimer = 0f;
-        float _cleanseEffectTimer = 0f;
+        private float _cleanseTimer = 0f;
+        private float _cleanseEffectTimer = 0f;
 
-        AsyncOperationHandle<GameObject> _cleanseEffectPrefabLoad;
+        private AsyncOperationHandle<GameObject> _cleanseEffectPrefabLoad;
 
-        void Awake()
+        private void Awake()
         {
             _bodyAttachment = GetComponent<NetworkedBodyAttachment>();
 
@@ -44,23 +44,23 @@ namespace ItemQualities
             }
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             AssetAsyncReferenceManager<GameObject>.UnloadAsset(CleanseEffectPrefabReference);
             _cleanseEffectPrefabLoad = default;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkClient.active)
             {
@@ -89,7 +89,7 @@ namespace ItemQualities
             }
         }
 
-        void doCleanse()
+        private void doCleanse()
         {
             CharacterBody body = _bodyAttachment.attachedBody;
             if (!body)
@@ -109,7 +109,7 @@ namespace ItemQualities
             CleanseSystem.CleanseBodyServer(args.characterBody, args);
         }
 
-        void spawnCleanseEffect()
+        private void spawnCleanseEffect()
         {
             CharacterBody body = _bodyAttachment.attachedBody;
             if (!body)

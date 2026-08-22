@@ -8,11 +8,11 @@ namespace ItemQualities
 {
     public sealed class IgnoredCollisionsProvider : MonoBehaviour
     {
-        static readonly HashSet<ObjectCollisionManager> _dirtyCollisionManagers = new HashSet<ObjectCollisionManager>();
+        private static readonly HashSet<ObjectCollisionManager> _dirtyCollisionManagers = new HashSet<ObjectCollisionManager>();
 
         public Collider[] Colliders = Array.Empty<Collider>();
 
-        IObjectCollideFilter _collisionWhitelistFilter;
+        private IObjectCollideFilter _collisionWhitelistFilter;
         public IObjectCollideFilter CollisionWhitelistFilter
         {
             get
@@ -48,24 +48,24 @@ namespace ItemQualities
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             CollisionWhitelistFilter = null;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
             markAllObjectCollisionManagersDirty();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
             markAllObjectCollisionManagersDirty();
         }
 
-        static void markAllObjectCollisionManagersDirty()
+        private static void markAllObjectCollisionManagersDirty()
         {
             foreach (ObjectCollisionManager collisionManager in InstanceTracker.GetInstancesList<ObjectCollisionManager>())
             {
@@ -73,7 +73,7 @@ namespace ItemQualities
             }
         }
 
-        static void markObjectCollisionManagerDirty(ObjectCollisionManager collisionManager)
+        private static void markObjectCollisionManagerDirty(ObjectCollisionManager collisionManager)
         {
             if (_dirtyCollisionManagers.Add(collisionManager) && _dirtyCollisionManagers.Count == 1)
             {
@@ -81,7 +81,7 @@ namespace ItemQualities
             }
         }
 
-        static void refreshAllDirtyCollisionManagers()
+        private static void refreshAllDirtyCollisionManagers()
         {
             foreach (ObjectCollisionManager collisionManager in _dirtyCollisionManagers)
             {

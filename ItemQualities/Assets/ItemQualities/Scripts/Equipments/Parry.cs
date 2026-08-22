@@ -10,12 +10,12 @@ using VultureHunter;
 
 namespace ItemQualities.Equipments
 {
-    static class Parry
+    internal static class Parry
     {
-        static int[] _projectileIndexConversions = Array.Empty<int>();
+        private static int[] _projectileIndexConversions = Array.Empty<int>();
 
         [SystemInitializer(typeof(ProjectileCatalog))]
-        static void Init()
+        private static void Init()
         {
             int projectileCount = ProjectileCatalog.projectilePrefabCount;
 
@@ -87,15 +87,15 @@ namespace ItemQualities.Equipments
             }
 
             On.RoR2.HealthComponent.ProcParry += HealthComponent_ProcParry;
-            On.RoR2.EquipmentSlot.FireParry += EquipmentSlot_FireParry;
         }
 
-        static void HealthComponent_ProcParry(On.RoR2.HealthComponent.orig_ProcParry orig, HealthComponent self, DamageInfo damageInfo)
+        private static void HealthComponent_ProcParry(On.RoR2.HealthComponent.orig_ProcParry orig, HealthComponent self, DamageInfo damageInfo)
         {
             orig(self, damageInfo);
 
             int parriedProjectileIndex = -1;
             float parriedProjectileDamage = 0f;
+            float parriedProjectileForce = 0f;
             if (damageInfo.inflictor)
             {
                 if (damageInfo.inflictor.TryGetComponent(out ProjectileController inflictorProjectileController))
@@ -106,6 +106,7 @@ namespace ItemQualities.Equipments
                 if (damageInfo.inflictor.TryGetComponent(out ProjectileDamage projectileDamage))
                 {
                     parriedProjectileDamage = projectileDamage.damage;
+                    parriedProjectileForce = projectileDamage.force;
                 }
             }
 
@@ -119,86 +120,115 @@ namespace ItemQualities.Equipments
                 Log.Debug($"{Util.GetBestBodyName(self.gameObject)} parried {ProjectileCatalog.GetProjectilePrefab(parriedProjectileIndex)} from {Util.GetBestBodyName(damageInfo.attacker)}");
             }
 
-            if (self.body && self.body.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
+            if (self.body && self.body.master && self.body.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterStats))
             {
-                bodyExtraStats.ParryStoredProjectileIndex = parriedProjectileIndex;
-                bodyExtraStats.ParryStoredProjectileAttackerBodyIndex = parriedProjectileIndex != -1 ? BodyCatalog.FindBodyIndex(damageInfo.attacker) : BodyIndex.None;
-                bodyExtraStats.ParryStoredProjectileDamage = parriedProjectileDamage;
-                bodyExtraStats.ParryStoredProjectileCrit = damageInfo.crit;
+                if (parriedProjectileIndex != -1)
+                {
+                    masterStats.ParryStoredProjectileInfo = new ParryStoredProjectileInfo
+                    {
+                        ProjectileIndex = parriedProjectileIndex,
+                        Damage = parriedProjectileDamage,
+                        Crit = damageInfo.crit,
+                        Force = parriedProjectileForce,
+                        AttackerBodyIndex = BodyCatalog.FindBodyIndex(damageInfo.attacker),
+                        QualityTier = self.body.inventory.GetActiveEquipmentQualityTier(),
+                    };
+                }
+                else
+                {
+                    masterStats.ParryStoredProjectileInfo = ParryStoredProjectileInfo.None;
+                }
+            }
+        }
+    }
+
+    public sealed class ParryQualityEquipmentBehavior : QualityEquipmentBodyBehavior
+    {
+        [EquipmentGroupAssociation(QualityEquipmentBehaviorUsageFlags.Authority, AllowOffhand = true)]
+        private static EquipmentQualityGroup GetEquipmentGroup() => ItemQualitiesContent.EquipmentQualityGroups.Parry;
+
+        private CharacterMasterExtraStatsTracker _masterStats;
+
+        private bool _skillOverrideActive;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _masterStats = BodyStats ? BodyStats.MasterExtraStatsTracker : null;
+        }
+
+        private void OnEnable()
+        {
+            if (!ReferenceEquals(_masterStats, null))
+            {
+                _masterStats.OnParryStoredProjectileInfoChanged += onParryStoredProjectileInfoChanged;
+            }
+
+            Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
+
+            refreshSkillOverride();
+        }
+
+        private void OnDisable()
+        {
+            if (!ReferenceEquals(_masterStats, null))
+            {
+                _masterStats.OnParryStoredProjectileInfoChanged -= onParryStoredProjectileInfoChanged;
+            }
+
+            Body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
+
+            trySetSkillOverride(false);
+        }
+
+        private void onSkillActivatedAuthority(GenericSkill skill)
+        {
+            if (ReferenceEquals(Body.skillLocator.primary, skill))
+            {
+                // While the client waits for the parried projectile info to be reset on their end, don't let the override skill execute more than once.
+                trySetSkillOverride(false);
             }
         }
 
-        static bool EquipmentSlot_FireParry(On.RoR2.EquipmentSlot.orig_FireParry orig, EquipmentSlot self)
+        private void onParryStoredProjectileInfoChanged(CharacterMasterExtraStatsTracker masterStats)
         {
-            int storedProjectileIndex = -1;
-            float storedProjectileDamage = 0f;
-            bool storedProjectileCrit = false;
-            if (self.characterBody && self.characterBody.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
-            {
-                if (bodyExtraStats.ParryStoredProjectileIndex != -1)
-                {
-                    storedProjectileIndex = bodyExtraStats.ParryStoredProjectileIndex;
-                    storedProjectileDamage = bodyExtraStats.ParryStoredProjectileDamage;
-                    storedProjectileCrit = bodyExtraStats.ParryStoredProjectileCrit;
+            refreshSkillOverride();
+        }
 
-                    bodyExtraStats.ParryStoredProjectileIndex = -1;
-                    bodyExtraStats.ParryStoredProjectileAttackerBodyIndex = BodyIndex.None;
-                    bodyExtraStats.ParryStoredProjectileDamage = 0f;
-                    bodyExtraStats.ParryStoredProjectileCrit = false;
+        private void refreshSkillOverride()
+        {
+            trySetSkillOverride(_masterStats && _masterStats.ParryStoredProjectileInfo.ProjectileIndex != -1);
+        }
+
+        private void trySetSkillOverride(bool enabled)
+        {
+            if (_skillOverrideActive == enabled)
+            {
+                return;
+            }
+
+            GenericSkill primarySkill = Body.skillLocator.primary;
+            if (enabled)
+            {
+                if (!ReferenceEquals(primarySkill, null))
+                {
+                    primarySkill.SetSkillOverride(this, ItemQualitiesContent.SkillDefs.ParryProjectileSkill, GenericSkill.SkillOverridePriority.Contextual);
+                }
+                else
+                {
+                    // There is no primary skill, therefore we don't have an override, despite what the argument says
+                    enabled = false;
+                }
+            }
+            else
+            {
+                if (!ReferenceEquals(primarySkill, null))
+                {
+                    primarySkill.UnsetSkillOverride(this, ItemQualitiesContent.SkillDefs.ParryProjectileSkill, GenericSkill.SkillOverridePriority.Contextual);
                 }
             }
 
-            QualityTier qualityTier = self.GetCurrentEquipmentActionQualityTier();
-            if (qualityTier > QualityTier.None && storedProjectileIndex != -1)
-            {
-                float damageCoefficient;
-                switch (qualityTier)
-                {
-                    case QualityTier.Uncommon:
-                        damageCoefficient = 1.5f;
-                        break;
-                    case QualityTier.Rare:
-                        damageCoefficient = 2.5f;
-                        break;
-                    case QualityTier.Epic:
-                        damageCoefficient = 4f;
-                        break;
-                    case QualityTier.Legendary:
-                        damageCoefficient = 10f;
-                        break;
-                    default:
-                        damageCoefficient = 1f;
-                        Log.Warning($"Quality tier {qualityTier} is not implemented");
-                        break;
-                }
-
-                Ray aimRay = self.characterBody.inputBank.GetAimRay();
-
-                GameObject projectilePrefab = ProjectileCatalog.GetProjectilePrefab(storedProjectileIndex);
-
-                FireProjectileInfo fireProjectileInfo = new FireProjectileInfo
-                {
-                    projectilePrefab = projectilePrefab,
-                    position = aimRay.origin,
-                    rotation = Util.QuaternionSafeLookRotation(aimRay.direction),
-                    owner = self.gameObject,
-                    damage = storedProjectileDamage * damageCoefficient,
-                    crit = storedProjectileCrit || self.characterBody.RollCrit(),
-                    damageColorIndex = DamageColorIndex.Item,
-                };
-
-                if (!projectilePrefab.TryGetComponent(out ProjectileDamage projectileDamage) ||
-                    (projectileDamage.damageType.damageSource & DamageSource.SkillMask) == 0)
-                {
-                    // In order for this projectile to behave like a normal survivor attack it needs a skill damage source, so just pretend its a primary and hopefully this doesn't cause any unintended side effects :)
-                    // This will not override the projectile's set damage type, only the DamageSource
-                    fireProjectileInfo.damageTypeOverride = DamageSource.Primary;
-                }
-
-                ProjectileManager.instance.FireProjectile(fireProjectileInfo);
-            }
-
-            return orig(self);
+            _skillOverrideActive = enabled;
         }
     }
 }

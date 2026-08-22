@@ -1,32 +1,21 @@
-using EntityStates.QuestVolatileBattery;
-using EntityStates.QuestVolatileBatteryQuality;
-using HG;
-using ItemQualities.ContentManagement;
 using ItemQualities.Items;
-using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using R2API;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class QuestVolatileBattery
+    internal static class QuestVolatileBattery
     {
-        static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
-
-        static GameObject _qualityVolatileBatteryAttachmentPrefab;
+        private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             On.RoR2.EquipmentSlot.PerformEquipmentAction += EquipmentSlot_PerformEquipmentAction;
@@ -38,27 +27,6 @@ namespace ItemQualities.Equipments
             {
                 Log.Error("Failed to find VolatileBatteryExplosion effect index");
             }
-        }
-
-        [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
-        {
-            AsyncOperationHandle<GameObject> questVolatileBatteryAttachmentLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_QuestVolatileBattery.QuestVolatileBatteryAttachment_prefab);
-            questVolatileBatteryAttachmentLoad.OnSuccess(questVolatileBatteryAttachmentPrefab =>
-            {
-                _qualityVolatileBatteryAttachmentPrefab = questVolatileBatteryAttachmentPrefab.InstantiateClone("QualityVolatileBatteryAttachment", true);
-
-                _qualityVolatileBatteryAttachmentPrefab.EnsureComponent<QualityTierContext>();
-                _qualityVolatileBatteryAttachmentPrefab.EnsureComponent<GenericOwnership>();
-
-                EntityStateMachine stateMachine = _qualityVolatileBatteryAttachmentPrefab.GetComponent<EntityStateMachine>();
-                stateMachine.initialStateType = new EntityStates.SerializableEntityStateType(typeof(QuestVolatileBatteryQualityMonitor));
-                stateMachine.mainStateType = new EntityStates.SerializableEntityStateType(typeof(QuestVolatileBatteryQualityMonitor));
-
-                args.ContentPack.networkedObjectPrefabs.Add(_qualityVolatileBatteryAttachmentPrefab);
-            });
-
-            return questVolatileBatteryAttachmentLoad.AsProgressCoroutine(args.ProgressReceiver);
         }
 
         private static void GenericPickupController_Start(On.RoR2.GenericPickupController.orig_Start orig, GenericPickupController self)
@@ -90,7 +58,7 @@ namespace ItemQualities.Equipments
             orig(self, activator);
         }
 
-        static void EquipmentSlot_UpdateTargets(ILContext il)
+        private static void EquipmentSlot_UpdateTargets(ILContext il)
         {
             if (!il.Method.TryFindParameter<EquipmentIndex>("targetingEquipmentIndex", out ParameterDefinition targetingEquipmentIndexParameter))
             {
@@ -116,11 +84,11 @@ namespace ItemQualities.Equipments
             c.EmitDelegate<Func<EquipmentSlot, EquipmentIndex, bool>>(shouldTargetEnemy);
             c.Emit(OpCodes.Brtrue, targetEnemyLabel);
 
-            bool shouldTargetEnemy(EquipmentSlot equipmentSlot, EquipmentIndex targetingEquipmentIndex)
+            static bool shouldTargetEnemy(EquipmentSlot equipmentSlot, EquipmentIndex targetingEquipmentIndex)
             {
                 if (equipmentSlot.GetActiveEquipmentQualityTier() == QualityTier.None)
                     return false;
-                
+
                 EquipmentQualityGroupIndex targetingEquipmentGroup = QualityCatalog.FindEquipmentQualityGroupIndex(targetingEquipmentIndex);
                 if (targetingEquipmentGroup == ItemQualitiesContent.EquipmentQualityGroups.QuestVolatileBattery.GroupIndex)
                 {
@@ -131,7 +99,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
+        private static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
             if (orig(self, equipmentDef))
                 return true;
@@ -145,13 +113,19 @@ namespace ItemQualities.Equipments
                 {
                     self.UpdateTargets(RoR2Content.Equipment.QuestVolatileBattery.equipmentIndex, false);
 
-                    GameObject volatileBatteryAttachment = GameObject.Instantiate(_qualityVolatileBatteryAttachmentPrefab);
+                    CharacterBody ownerBody = self.GetComponent<CharacterBody>();
 
-                    volatileBatteryAttachment.GetComponent<QualityTierContext>().QualityTier = qualityTier;
+                    GameObject volatileBatteryAttachment = GameObject.Instantiate(ItemQualitiesContent.NetworkedPrefabs.QualityVolatileBatteryAttachment);
+
+                    volatileBatteryAttachment.GetComponentCached<QualityTierContext>().QualityTier = qualityTier;
 
                     volatileBatteryAttachment.GetComponent<GenericOwnership>().ownerObject = self.gameObject;
 
-                    volatileBatteryAttachment.GetComponent<NetworkedBodyAttachment>().AttachToGameObjectAndSpawn(targetObject);
+                    QuestVolatileBatteryAttachment questVolatileBatteryAttachment = volatileBatteryAttachment.GetComponent<QuestVolatileBatteryAttachment>();
+                    questVolatileBatteryAttachment.victimObject = targetObject;
+                    questVolatileBatteryAttachment.crit = ownerBody && ownerBody.RollCrit();
+
+                    NetworkServer.Spawn(volatileBatteryAttachment);
 
                     return true;
                 }
@@ -160,25 +134,32 @@ namespace ItemQualities.Equipments
             return false;
         }
 
-        public static void Detonate(GameObject victimObject, float damageMultiplier = 1f)
+        public static void Detonate(GameObject inflictor, float damageMultiplier = 1f)
         {
             if (!NetworkServer.active)
                 return;
 
-            QualityTierContext qualityTierContext = victimObject.GetComponent<QualityTierContext>();
-            if (!qualityTierContext || qualityTierContext.QualityTier <= QualityTier.None)
+            QualityTier qualityTier = QualityTierContext.GetQualityTier(inflictor);
+            if (qualityTier == QualityTier.None)
                 return;
 
-            CharacterBody ownerBody = null;
-            if (victimObject.TryGetComponent(out GenericOwnership ownership) && ownership.ownerObject)
+            CharacterBody attackerBody = null;
+            if (inflictor.TryGetComponent(out GenericOwnership ownership) && ownership.ownerObject)
             {
-                ownerBody = ownership.ownerObject.GetComponent<CharacterBody>();
+                attackerBody = ownership.ownerObject.GetComponent<CharacterBody>();
             }
 
-            CharacterBody victimBody = victimObject.GetComponent<CharacterBody>();
-            GenericPickupController victimPickupController = victimObject.GetComponentInParent<GenericPickupController>();
+            CharacterBody victimBody = null;
+            bool crit = false;
+            if (inflictor.TryGetComponent(out QuestVolatileBatteryAttachment questVolatileBatteryAttachment))
+            {
+                victimBody = questVolatileBatteryAttachment.victimBody;
+                crit = questVolatileBatteryAttachment.crit;
+            }
 
-            float damageCoefficient = qualityTierContext.QualityTier switch
+            GenericPickupController victimPickupController = inflictor.GetComponentInParent<GenericPickupController>();
+
+            float damageCoefficient = qualityTier switch
             {
                 QualityTier.Uncommon => 40f,
                 QualityTier.Rare => 50f,
@@ -189,7 +170,7 @@ namespace ItemQualities.Equipments
 
             damageCoefficient *= damageMultiplier;
 
-            Vector3 explosionPosition = victimObject.transform.position;
+            Vector3 explosionPosition = inflictor.transform.position;
             if (victimBody)
             {
                 explosionPosition = victimBody.corePosition;
@@ -199,7 +180,7 @@ namespace ItemQualities.Equipments
                 explosionPosition = victimPickupController.pickupDisplay.transform.position;
             }
 
-            float explosionRadius = ExplodeOnDeath.GetExplosionRadius(30f, ownerBody);
+            float explosionRadius = ExplodeOnDeath.GetExplosionRadius(30f, attackerBody);
 
             EffectManager.SpawnEffect(_explosionEffectIndex, new EffectData
             {
@@ -210,23 +191,21 @@ namespace ItemQualities.Equipments
             BlastAttack blastAttack = new BlastAttack();
             blastAttack.position = explosionPosition + UnityEngine.Random.onUnitSphere;
             blastAttack.falloffModel = BlastAttack.FalloffModel.None;
-            blastAttack.attacker = victimObject;
-            blastAttack.inflictor = victimObject;
+            blastAttack.inflictor = inflictor;
             blastAttack.radius = explosionRadius;
 
-            if (ownerBody)
+            if (attackerBody)
             {
-                blastAttack.attacker = ownerBody.gameObject;
-                blastAttack.baseDamage = ownerBody.damage * damageCoefficient;
-                blastAttack.teamIndex = ownerBody.teamComponent.teamIndex;
-                blastAttack.crit = ownerBody.RollCrit();
+                blastAttack.attacker = attackerBody.gameObject;
+                blastAttack.baseDamage = attackerBody.damage * damageCoefficient;
+                blastAttack.teamIndex = attackerBody.teamComponent.teamIndex;
             }
             else
             {
                 blastAttack.baseDamage = Run.instance.teamlessDamageCoefficient * damageCoefficient;
-                blastAttack.crit = false;
             }
 
+            blastAttack.crit = crit;
             blastAttack.damageColorIndex = DamageColorIndex.Item;
             blastAttack.baseForce = 5000f;
             blastAttack.bonusForce = Vector3.zero;

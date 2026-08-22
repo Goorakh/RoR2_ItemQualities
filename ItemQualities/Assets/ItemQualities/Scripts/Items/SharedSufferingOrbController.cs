@@ -13,12 +13,12 @@ namespace ItemQualities.Items
         [SyncVar(hook = nameof(hookSetRadius))]
         public float BlastRadius = 5f;
 
-        GenericOwnership _ownership;
-        Deployable _deployable;
+        private GenericOwnership _ownership;
+        private Deployable _deployable;
 
-        CharacterBody _ownerBody;
+        private CharacterBody _ownerBody;
 
-        void Awake()
+        private void Awake()
         {
             if (NetworkServer.active)
             {
@@ -41,7 +41,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void Start()
+        private void Start()
         {
             CharacterBody ownerBody = null;
             if (_ownership)
@@ -65,7 +65,7 @@ namespace ItemQualities.Items
             refreshIndicator();
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (_deployable)
             {
@@ -73,7 +73,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onUndeploy()
+        private void onUndeploy()
         {
             if (TryGetComponent(out HealthComponent healthComponent))
             {
@@ -82,7 +82,7 @@ namespace ItemQualities.Items
         }
 
         [Server]
-        void recalculateRadius()
+        private void recalculateRadius()
         {
             Inventory ownerInventory = _ownerBody ? _ownerBody.inventory : null;
 
@@ -108,7 +108,7 @@ namespace ItemQualities.Items
             BlastRadius = radius;
         }
 
-        void refreshIndicator()
+        private void refreshIndicator()
         {
             if (RadiusIndicator)
             {
@@ -117,7 +117,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void hookSetRadius(float radius)
+        private void hookSetRadius(float radius)
         {
             BlastRadius = radius;
             refreshIndicator();

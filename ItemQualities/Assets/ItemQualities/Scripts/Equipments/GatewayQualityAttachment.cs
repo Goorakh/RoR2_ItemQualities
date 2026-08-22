@@ -20,10 +20,10 @@ namespace ItemQualities.Equipments
     [RequireComponent(typeof(NetworkedBodyAttachment))]
     public sealed class GatewayQualityAttachment : NetworkBehaviour, INetworkedBodyAttachmentListener
     {
-        static GameObject _gatewayPickupPrefab;
+        private static GameObject _gatewayPickupPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> elusiveAntlersPickupLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC2_Items_SpeedBoostPickup.ElusiveAntlersPickup_prefab);
             elusiveAntlersPickupLoad.OnSuccess(elusiveAntlersPickupPrefab =>
@@ -80,7 +80,7 @@ namespace ItemQualities.Equipments
         }
 
         [SyncVar]
-        int _qualityTierInt;
+        private int _qualityTierInt;
         public QualityTier QualityTier
         {
             [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -101,26 +101,26 @@ namespace ItemQualities.Equipments
         public const int MaxPickups = 30;
 
         [SyncVar]
-        bool _pickupLimitReached;
+        private bool _pickupLimitReached;
         public bool PickupLimitReached => _pickupLimitReached;
 
-        int _numActivePickupsServer;
+        private int _numActivePickupsServer;
 
-        float _spawnTimer;
+        private float _spawnTimer;
 
-        CharacterBody _attachedBody;
+        private CharacterBody _attachedBody;
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -160,7 +160,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        bool tryGetNextPickupPositionAuthority(out Vector3 pickupPosition)
+        private bool tryGetNextPickupPositionAuthority(out Vector3 pickupPosition)
         {
             if (!_attachedBody)
             {
@@ -192,7 +192,7 @@ namespace ItemQualities.Equipments
             return false;
         }
 
-        void createPickupAuthority(Vector3 pickupPosition)
+        private void createPickupAuthority(Vector3 pickupPosition)
         {
             if (NetworkServer.active)
             {
@@ -205,12 +205,12 @@ namespace ItemQualities.Equipments
         }
 
         [Command]
-        void CmdCreatePickup(Vector3 pickupPosition)
+        private void CmdCreatePickup(Vector3 pickupPosition)
         {
             createPickupServer(pickupPosition);
         }
 
-        GameObject createPickupServer(Vector3 pickupPosition)
+        private GameObject createPickupServer(Vector3 pickupPosition)
         {
             if (_pickupLimitReached)
                 return null;

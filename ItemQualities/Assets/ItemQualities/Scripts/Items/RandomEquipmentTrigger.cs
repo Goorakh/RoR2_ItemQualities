@@ -6,15 +6,15 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class RandomEquipmentTrigger
+    internal static class RandomEquipmentTrigger
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
-        static void EquipmentSlot_OnEquipmentExecuted(ILContext il)
+        private static void EquipmentSlot_OnEquipmentExecuted(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -135,6 +135,6 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate void OnEquipmentActionPerformedDelegate(bool success, ref int qualityTierIndex);
+        private delegate void OnEquipmentActionPerformedDelegate(bool success, ref int qualityTierIndex);
     }
 }

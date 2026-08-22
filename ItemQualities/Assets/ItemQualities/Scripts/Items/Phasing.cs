@@ -8,12 +8,12 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class Phasing
+    internal static class Phasing
     {
-        static EffectIndex _stealthKitProcEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _stealthKitProcEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _stealthKitProcEffectIndex = EffectCatalogUtils.FindEffectIndex("ProcStealthkit");
             if (_stealthKitProcEffectIndex == EffectIndex.Invalid)
@@ -26,7 +26,7 @@ namespace ItemQualities.Items
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        static void onServerDamageDealt(DamageReport damageReport)
+        private static void onServerDamageDealt(DamageReport damageReport)
         {
             if (damageReport?.damageInfo == null)
                 return;
@@ -62,7 +62,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void PhasingBodyBehavior_FixedUpdate(ILContext il)
+        private static void PhasingBodyBehavior_FixedUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

@@ -22,25 +22,25 @@ using Random = UnityEngine.Random;
 
 namespace ItemQualities.Items
 {
-    static class SharedSuffering
+    internal static class SharedSuffering
     {
-        static DeployableSlot _sharedSufferingOrbSlot = DeployableSlot.None;
+        private static DeployableSlot _sharedSufferingOrbSlot = DeployableSlot.None;
 
-        static GameObject _sharedSufferingOrbProjectilePrefab;
+        private static GameObject _sharedSufferingOrbProjectilePrefab;
 
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
-        static void EarlyInit()
+        private static void EarlyInit()
         {
             _sharedSufferingOrbSlot = DeployableAPI.RegisterDeployableSlot(getSharedSufferingOrbLimit);
         }
 
-        static int getSharedSufferingOrbLimit(CharacterMaster self, int swarmsMultiplier)
+        private static int getSharedSufferingOrbLimit(CharacterMaster self, int swarmsMultiplier)
         {
             return 3;
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> timeCrystalBodyLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_WeeklyRun.TimeCrystalBody_prefab);
             AsyncOperationHandle<GameObject> minorConstructOnKillProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC1_MinorConstructOnKill.MinorConstructOnKillProjectile_prefab);
@@ -223,14 +223,14 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.Items.SharedSufferingItemBehaviour.TryAdd += SharedSufferingItemBehaviour_TryAdd;
 
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static bool SharedSufferingItemBehaviour_TryAdd(On.RoR2.Items.SharedSufferingItemBehaviour.orig_TryAdd orig, SharedSufferingItemBehaviour self, CharacterBody newTarget)
+        private static bool SharedSufferingItemBehaviour_TryAdd(On.RoR2.Items.SharedSufferingItemBehaviour.orig_TryAdd orig, SharedSufferingItemBehaviour self, CharacterBody newTarget)
         {
             // Fix IndexOutOfRangeException in SharedSufferingManager if trying to add a body not on any team
             if (newTarget && newTarget.teamComponent && newTarget.teamComponent.teamIndex != TeamIndex.None)
@@ -241,14 +241,14 @@ namespace ItemQualities.Items
             return false;
         }
 
-        static void onCharacterDeathGlobal(DamageReport damageReport)
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (!NetworkServer.active)
                 return;
 
             if (!damageReport.attackerBody || !damageReport.attackerBody.inventory)
                 return;
-            
+
             ItemQualityCounts sharedSuffering = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SharedSuffering);
             if (sharedSuffering.TotalQualityCount > 0)
             {

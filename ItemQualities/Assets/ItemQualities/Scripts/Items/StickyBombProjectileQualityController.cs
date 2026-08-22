@@ -11,7 +11,7 @@ namespace ItemQualities.Items
     public sealed class StickyBombProjectileQualityController : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_StickyBomb.StickyBomb_prefab).OnSuccess(stickyBombPrefab =>
             {
@@ -19,7 +19,7 @@ namespace ItemQualities.Items
             });
         }
 
-        void Start()
+        private void Start()
         {
             if (!TryGetComponent(out ProjectileController projectileController))
                 return;

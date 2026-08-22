@@ -11,12 +11,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class SprintArmor
+    internal static class SprintArmor
     {
         public static GameObject BucklerDefenseBigPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> bucklerDefenseLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_SprintArmor.BucklerDefense_prefab);
             bucklerDefenseLoad.OnSuccess(bucklerDefense =>
@@ -59,12 +59,12 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory)
                 return;

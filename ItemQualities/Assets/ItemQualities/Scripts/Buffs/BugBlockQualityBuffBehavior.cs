@@ -6,14 +6,14 @@ namespace ItemQualities.Buffs
     public sealed class BugBlockQualityBuffBehavior : QualityBuffBodyBehavior
     {
         [BuffGroupAssociation(QualityBuffBehaviorUsageFlags.Server)]
-        static BuffQualityGroup GetBuffGroup()
+        private static BuffQualityGroup GetBuffGroup()
         {
             return ItemQualitiesContent.BuffQualityGroups.BugBlock;
         }
 
-        GameObject _swarmAttachmentObj;
+        private GameObject _swarmAttachmentObj;
 
-        void OnDisable()
+        private void OnDisable()
         {
             setSwarmAttachmentActive(false);
         }
@@ -25,7 +25,7 @@ namespace ItemQualities.Buffs
             setSwarmAttachmentActive(Stacks.TotalQualityCount > 0);
         }
 
-        void setSwarmAttachmentActive(bool shouldBeActive)
+        private void setSwarmAttachmentActive(bool shouldBeActive)
         {
             bool hasSwarmActive = _swarmAttachmentObj;
             if (hasSwarmActive != shouldBeActive)

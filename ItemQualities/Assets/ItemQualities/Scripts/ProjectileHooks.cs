@@ -5,18 +5,18 @@ using System.Linq;
 
 namespace ItemQualities
 {
-    static class ProjectileHooks
+    internal static class ProjectileHooks
     {
         public delegate void ProjectileEventDelegate(ProjectileController projectileController);
         public static event ProjectileEventDelegate OnProjectileLinkedToGhostGlobal;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.Projectile.ProjectileController.Start += ProjectileController_Start;
         }
 
-        static void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self)
+        private static void ProjectileController_Start(On.RoR2.Projectile.ProjectileController.orig_Start orig, ProjectileController self)
         {
             orig(self);
 

@@ -9,17 +9,17 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class IceRing
+    internal static class IceRing
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             ExecuteAPI.CalculateExecuteThresholdForViewer += calculateExecuteThreshold;
 
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
         }
 
-        static void calculateExecuteThreshold(CharacterBody victimBody, CharacterBody viewerBody, ref float highestExecuteThreshold)
+        private static void calculateExecuteThreshold(CharacterBody victimBody, CharacterBody viewerBody, ref float highestExecuteThreshold)
         {
             if (!victimBody || !victimBody.healthComponent || !viewerBody)
                 return;
@@ -35,7 +35,7 @@ namespace ItemQualities.Items
             return getFreezeExecuteThreshold(HealthComponent.frozenExecuteThreshold, attackerBody);
         }
 
-        static float getFreezeExecuteThreshold(float defaultFreezeThreshold, CharacterBody attackerBody)
+        private static float getFreezeExecuteThreshold(float defaultFreezeThreshold, CharacterBody attackerBody)
         {
             float freezeThreshold = defaultFreezeThreshold;
 
@@ -57,7 +57,7 @@ namespace ItemQualities.Items
             return freezeThreshold;
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

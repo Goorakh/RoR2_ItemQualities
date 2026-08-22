@@ -4,10 +4,10 @@ using RoR2;
 
 namespace ItemQualities.Items
 {
-    static class AttackSpeedPerNearbyAllyOrEnemy
+    internal static class AttackSpeedPerNearbyAllyOrEnemy
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.AttackSpeedPerNearbyCollider.UpdateValues += AttackSpeedPerNearbyCollider_UpdateValues;
 
@@ -16,7 +16,7 @@ namespace ItemQualities.Items
             RecalculateStatsAPI.GetStatCoefficients += RecalculateStatsAPI_GetStatCoefficients;
         }
 
-        static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void RecalculateStatsAPI_GetStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory)
                 return;
@@ -71,7 +71,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void AttackSpeedPerNearbyCollider_UpdateValues(On.RoR2.AttackSpeedPerNearbyCollider.orig_UpdateValues orig, AttackSpeedPerNearbyCollider self, int itemCount, out float diameter)
+        private static void AttackSpeedPerNearbyCollider_UpdateValues(On.RoR2.AttackSpeedPerNearbyCollider.orig_UpdateValues orig, AttackSpeedPerNearbyCollider self, int itemCount, out float diameter)
         {
             orig(self, itemCount, out diameter);
 
@@ -129,7 +129,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void AttackSpeedPerNearbyCollider_SetIndicatorDiameter(On.RoR2.AttackSpeedPerNearbyCollider.orig_SetIndicatorDiameter orig, AttackSpeedPerNearbyCollider self, float diameter)
+        private static void AttackSpeedPerNearbyCollider_SetIndicatorDiameter(On.RoR2.AttackSpeedPerNearbyCollider.orig_SetIndicatorDiameter orig, AttackSpeedPerNearbyCollider self, float diameter)
         {
             if (self.TryGetComponent(out AttackSpeedPerNearbyColliderQualityController qualityController) && !qualityController.HandleSetDiameter(diameter))
                 return;

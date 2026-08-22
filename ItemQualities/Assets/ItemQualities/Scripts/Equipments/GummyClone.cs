@@ -11,7 +11,6 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
@@ -58,33 +57,36 @@ namespace ItemQualities.Equipments
 
             IL.RoR2.Projectile.GummyCloneProjectile.SpawnGummyClone += GummyCloneProjectile_SpawnGummyClone;
 
-            On.RoR2.CharacterMaster.SetUpGummyClone += CharacterMaster_SetUpGummyClone;
+            IL.RoR2.CharacterMaster.SetUpGummyClone += CharacterMaster_SetUpGummyClone;
         }
 
-        private static void CharacterMaster_SetUpGummyClone(On.RoR2.CharacterMaster.orig_SetUpGummyClone orig, CharacterMaster self)
+        private static void CharacterMaster_SetUpGummyClone(ILContext il)
         {
-            try
+            ILCursor c = new ILCursor(il);
+
+            /*
+             *  // base.gameObject.AddComponent<MasterSuicideOnTimer>();
+             *  IL_0047: ldarg.0
+             *  IL_0048: call      instance class [UnityEngine.CoreModule]UnityEngine.GameObject [UnityEngine.CoreModule]UnityEngine.Component::get_gameObject()
+             *  IL_004D: callvirt  instance !!0 [UnityEngine.CoreModule]UnityEngine.GameObject::AddComponent<class RoR2.MasterSuicideOnTimer>()
+             */
+
+            if (!c.TryGotoNext(MoveType.AfterLabel,
+                               x => x.MatchLdarg(0),
+                               x => x.MatchCallOrCallvirt<Component>("get_" + nameof(Component.gameObject)),
+                               x => x.MatchCallOrCallvirt(CommonReflectionCache.AddComponent.OfType<MasterSuicideOnTimer>.Method)))
             {
-                // Check if this is a quality goobo, just to be safe
-                if (NetworkServer.active &&
-                    self &&
-                    self.inventory &&
-                    self.inventory.GetItemCountEffective(DLC1Content.Items.GummyCloneIdentifier) > 0 &&
-                    self.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier).TotalQualityCount > 0)
-                {
-                    // If this master has already died, let the component be re-added
-                    if (self.TryGetComponent(out MasterSuicideOnTimer masterSuicideOnTimer) && masterSuicideOnTimer.hasDied)
-                    {
-                        GameObject.DestroyImmediate(masterSuicideOnTimer);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error_NoCallerPrefix(e.ToString());
+                Log.Error("Failed to find patch location");
+                return;
             }
 
-            orig(self);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<CharacterMaster>>(setupGummyCloneReviveHandling);
+
+            static void setupGummyCloneReviveHandling(CharacterMaster gummyCloneMaster)
+            {
+                gummyCloneMaster.EnsureComponent<ResetMasterSuicideOnTimerOnRevive>();
+            }
         }
 
         private static void EquipmentSlot_FireGummyClone(ILContext il)
@@ -160,7 +162,7 @@ namespace ItemQualities.Equipments
                             ItemIndex qualityItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, qualityTier);
                             if (qualityItemIndex == itemIndex)
                                 continue;
-                            
+
                             int qualityItemCountPermanent = ownerBody.inventory.GetItemCountPermanent(qualityItemIndex) + qualityItemCountAccumulator;
                             float qualityTempItemRawValue = ownerBody.inventory.GetTempItemRawValue(qualityItemIndex) + qualityTempItemRawValueAccumulator;
 

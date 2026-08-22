@@ -7,7 +7,6 @@ using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using R2API;
 using RoR2;
-using RoR2.EntityLogic;
 using RoR2.UI;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
@@ -19,16 +18,16 @@ namespace ItemQualities
 {
     public static class CustomTransformationTypes
     {
-        const CharacterMasterNotificationQueue.TransformationType StartIndex = (CharacterMasterNotificationQueue.TransformationType)104; // Chosen at random, just needs to be unique
+        private const CharacterMasterNotificationQueue.TransformationType StartIndex = (CharacterMasterNotificationQueue.TransformationType)104; // Chosen at random, just needs to be unique
         public const CharacterMasterNotificationQueue.TransformationType QualityUpgradeUncommon = StartIndex + 0;
         public const CharacterMasterNotificationQueue.TransformationType QualityUpgradeRare = StartIndex + 1;
         public const CharacterMasterNotificationQueue.TransformationType QualityUpgradeEpic = StartIndex + 2;
         public const CharacterMasterNotificationQueue.TransformationType QualityUpgradeLegendary = StartIndex + 3;
 
-        static readonly GameObject[] _qualityUpgradeTransformationNotificationPrefabs = new GameObject[(int)QualityTier.Count];
+        private static readonly GameObject[] _qualityUpgradeTransformationNotificationPrefabs = new GameObject[(int)QualityTier.Count];
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> genericTransformationNotificationPanelLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_UI.GenericTransformationNotificationPanel_prefab);
             genericTransformationNotificationPanelLoad.OnSuccess(genericTransformationNotificationPanelPrefab =>
@@ -45,7 +44,7 @@ namespace ItemQualities
         }
 
         [SystemInitializer(typeof(QualityCatalog))]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.UI.NotificationUIController.SetUpNotification += NotificationUIController_SetUpNotification;
 
@@ -63,7 +62,7 @@ namespace ItemQualities
             }
         }
 
-        static void NotificationUIController_SetUpNotification(ILContext il)
+        private static void NotificationUIController_SetUpNotification(ILContext il)
         {
             if (!il.Method.TryFindParameter<CharacterMasterNotificationQueue.NotificationInfo>(out ParameterDefinition notificationInfoParameter))
             {
@@ -121,6 +120,6 @@ namespace ItemQualities
             }
         }
 
-        delegate void CheckCustomTransformationTypeDelegate(CharacterMasterNotificationQueue.NotificationInfo notificationInfo, ref GameObject transformationNotificationPrefab);
+        private delegate void CheckCustomTransformationTypeDelegate(CharacterMasterNotificationQueue.NotificationInfo notificationInfo, ref GameObject transformationNotificationPrefab);
     }
 }

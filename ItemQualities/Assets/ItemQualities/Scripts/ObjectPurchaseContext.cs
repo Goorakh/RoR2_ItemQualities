@@ -10,13 +10,13 @@ namespace ItemQualities
     public sealed class ObjectPurchaseContext : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.CostTypeDef.PayCost += CostTypeDef_PayCost;
             QualityDuplicatorBehavior.OnPickupsSelectedForPurchase += QualityDuplicatorBehavior_OnPickupsSelectedForPurchase;
         }
 
-        static void CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost orig, CostTypeDef self, CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
+        private static void CostTypeDef_PayCost(On.RoR2.CostTypeDef.orig_PayCost orig, CostTypeDef self, CostTypeDef.PayCostContext context, CostTypeDef.PayCostResults result)
         {
             orig(self, context, result);
 
@@ -28,7 +28,7 @@ namespace ItemQualities
             purchaseContext.Results = purchaseResult;
         }
 
-        static void QualityDuplicatorBehavior_OnPickupsSelectedForPurchase(QualityDuplicatorBehavior qualityDuplicatorBehavior, Interactor activator, IReadOnlyList<PickupIndex> pickupsSpent)
+        private static void QualityDuplicatorBehavior_OnPickupsSelectedForPurchase(QualityDuplicatorBehavior qualityDuplicatorBehavior, Interactor activator, IReadOnlyList<PickupIndex> pickupsSpent)
         {
             CostTypeDef.PayCostResults payCostResult = new CostTypeDef.PayCostResults();
             foreach (PickupIndex pickupIndex in pickupsSpent)

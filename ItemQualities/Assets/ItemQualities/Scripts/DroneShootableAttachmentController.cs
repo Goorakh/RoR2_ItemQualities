@@ -10,10 +10,10 @@ namespace ItemQualities
     [RequireComponent(typeof(NetworkedBodyAttachment))]
     public sealed class DroneShootableAttachmentController : NetworkBehaviour, IOnKilledServerReceiver, IOnIncomingDamageServerReceiver, IOnTakeDamageServerReceiver, INetworkedBodyAttachmentListener
     {
-        NetworkedBodyAttachment _bodyAttachment;
+        private NetworkedBodyAttachment _bodyAttachment;
 
-        CharacterMaster _cachedOwnerMaster;
-        CharacterBody _cachedOwnerBody;
+        private CharacterMaster _cachedOwnerMaster;
+        private CharacterBody _cachedOwnerBody;
 
         public GameObject HitEffectPrefab;
 
@@ -32,27 +32,27 @@ namespace ItemQualities
         public IgnoredCollisionsProvider IgnoredCollisionsProvider;
 
         [SyncVar(hook = nameof(hookSetStoredDamage))]
-        float _storedDamage;
+        private float _storedDamage;
 
-        float _maxStoredDamage = 1f;
+        private float _maxStoredDamage = 1f;
 
-        float _storedDamageMultiplier = 1f;
+        private float _storedDamageMultiplier = 1f;
 
-        float _minRadius;
-        float _maxRadius;
+        private float _minRadius;
+        private float _maxRadius;
 
-        Run.FixedTimeStamp _lastDamageTimeStamp = Run.FixedTimeStamp.positiveInfinity;
-        Run.FixedTimeStamp _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.positiveInfinity;
+        private Run.FixedTimeStamp _lastDamageTimeStamp = Run.FixedTimeStamp.positiveInfinity;
+        private Run.FixedTimeStamp _maxStoredDamageReachedTimeStamp = Run.FixedTimeStamp.positiveInfinity;
 
-        Run.FixedTimeStamp _lastExplosionTimeStamp = Run.FixedTimeStamp.negativeInfinity;
+        private Run.FixedTimeStamp _lastExplosionTimeStamp = Run.FixedTimeStamp.negativeInfinity;
 
-        bool _limitsDirty = false;
+        private bool _limitsDirty = false;
 
-        bool _wasHurtBoxesDisabled;
+        private bool _wasHurtBoxesDisabled;
 
-        MaterialPropertyBlock _propertyBlock;
+        private MaterialPropertyBlock _propertyBlock;
 
-        void Awake()
+        private void Awake()
         {
             _propertyBlock = new MaterialPropertyBlock();
 
@@ -60,7 +60,7 @@ namespace ItemQualities
             recalculateLimits();
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (_bodyAttachment.attachedBody && _bodyAttachment.attachedBody.master)
             {
@@ -72,7 +72,7 @@ namespace ItemQualities
             setOwnerMaster(null);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (_limitsDirty)
             {
@@ -104,7 +104,7 @@ namespace ItemQualities
             }
         }
 
-        bool shouldDetonate()
+        private bool shouldDetonate()
         {
             if (_storedDamage > 0)
             {
@@ -118,7 +118,7 @@ namespace ItemQualities
             return false;
         }
 
-        bool shouldDisableHurtBoxes()
+        private bool shouldDisableHurtBoxes()
         {
             if (_lastExplosionTimeStamp.timeSince <= 10f)
                 return true;
@@ -143,7 +143,7 @@ namespace ItemQualities
         }
 
         [Server]
-        void detonate()
+        private void detonate()
         {
             if (_storedDamage > 0f)
             {
@@ -240,7 +240,7 @@ namespace ItemQualities
             Destroy(gameObject);
         }
 
-        void recalculateLimits()
+        private void recalculateLimits()
         {
             float minRadius = 0f;
             float maxRadius = 15f;
@@ -285,7 +285,7 @@ namespace ItemQualities
                                         (2f * dronesDropDynamite.RareCount) +
                                         (4f * dronesDropDynamite.EpicCount) +
                                         (6f * dronesDropDynamite.LegendaryCount);
-                
+
                 maxRadius += (5f * dronesDropDynamite.UncommonCount) +
                              (10f * dronesDropDynamite.RareCount) +
                              (15f * dronesDropDynamite.EpicCount) +
@@ -307,7 +307,7 @@ namespace ItemQualities
             refreshIndicator();
         }
 
-        void refreshIndicator()
+        private void refreshIndicator()
         {
             float damageFraction = Mathf.Clamp01(_storedDamage / _maxStoredDamage);
             float radius = Mathf.Lerp(_minRadius, _maxRadius, damageFraction);
@@ -339,7 +339,7 @@ namespace ItemQualities
             }
         }
 
-        void setOwnerMaster(CharacterMaster ownerMaster)
+        private void setOwnerMaster(CharacterMaster ownerMaster)
         {
             if (_cachedOwnerMaster == ownerMaster)
                 return;
@@ -363,7 +363,7 @@ namespace ItemQualities
             _limitsDirty = true;
         }
 
-        void setOwnerBody(CharacterBody ownerBody)
+        private void setOwnerBody(CharacterBody ownerBody)
         {
             if (_cachedOwnerBody == ownerBody)
                 return;
@@ -383,7 +383,7 @@ namespace ItemQualities
             _limitsDirty = true;
         }
 
-        void onOwnerBodyRecalculateStats(CharacterBody body)
+        private void onOwnerBodyRecalculateStats(CharacterBody body)
         {
             _limitsDirty = true;
         }
@@ -416,15 +416,15 @@ namespace ItemQualities
             setOwnerMaster(ownerMaster);
         }
 
-        void hookSetStoredDamage(float storedDamage)
+        private void hookSetStoredDamage(float storedDamage)
         {
             _storedDamage = storedDamage;
             refreshIndicator();
         }
 
-        sealed class ShooterObjectCollideFilter : IObjectCollideFilter, IDisposable
+        private sealed class ShooterObjectCollideFilter : IObjectCollideFilter, IDisposable
         {
-            readonly CharacterBody _attachedBody;
+            private readonly CharacterBody _attachedBody;
 
             public event Action<ObjectCollisionManager> OnFilterDirty;
 
@@ -448,7 +448,7 @@ namespace ItemQualities
                 OnFilterDirty = null;
             }
 
-            void onJoinTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
+            private void onJoinTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
             {
                 if (OnFilterDirty != null &&
                     _attachedBody &&
@@ -459,7 +459,7 @@ namespace ItemQualities
                 }
             }
 
-            void onLeaveTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
+            private void onLeaveTeamGlobal(TeamComponent teamComponent, TeamIndex teamIndex)
             {
                 if (OnFilterDirty != null &&
                     _attachedBody &&
@@ -470,7 +470,7 @@ namespace ItemQualities
                 }
             }
 
-            void onMinionOwnerChangedGlobal(MinionOwnership minionOwnership)
+            private void onMinionOwnerChangedGlobal(MinionOwnership minionOwnership)
             {
                 if (OnFilterDirty != null && minionOwnership.TryGetComponent(out CharacterMaster master))
                 {
@@ -482,7 +482,7 @@ namespace ItemQualities
                 }
             }
 
-            bool bodyPassesFilter(CharacterBody body)
+            private bool bodyPassesFilter(CharacterBody body)
             {
                 return body &&
                        body != _attachedBody &&

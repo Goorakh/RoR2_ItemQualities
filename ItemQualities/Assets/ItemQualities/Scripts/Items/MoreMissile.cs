@@ -1,19 +1,24 @@
-﻿using ItemQualities.Utilities;
+﻿using ItemQualities.ContentManagement;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
+using R2API;
 using RoR2;
 using RoR2.Projectile;
+using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
+using System.Collections;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class MoreMissile
+    internal static class MoreMissile
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.MissileUtils.FireMissile_Vector3_CharacterBody_ProcChainMask_GameObject_float_bool_GameObject_DamageColorIndex_Vector3_float_bool += MissileUtils_FireMissile;
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
@@ -36,7 +41,7 @@ namespace ItemQualities.Items
             return RollUtil.GetOverflowRoll(moreMissileChance, attackerBody.master, sureProc);
         }
 
-        static void MissileUtils_FireMissile(ILContext il)
+        private static void MissileUtils_FireMissile(ILContext il)
         {
             if (!il.Method.TryFindParameter<CharacterBody>("attackerBody", out ParameterDefinition attackerBodyParameter))
             {
@@ -113,7 +118,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void GlobalEventManager_ProcessHitEnemy(ILContext il)
+        private static void GlobalEventManager_ProcessHitEnemy(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
@@ -145,6 +150,67 @@ namespace ItemQualities.Items
                 }
 
                 return missileCount;
+            }
+        }
+    }
+
+    public sealed class MoreMissileQualityItemBehavior : QualityItemBodyBehavior
+    {
+        private static GameObject _missileProjectilePrefab;
+
+        [ContentInitializer]
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
+        {
+            AsyncOperationHandle<GameObject> missileProjectileLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Drones.MicroMissileProjectile_prefab);
+            missileProjectileLoad.OnSuccess(missileProjectilePrefab =>
+            {
+                _missileProjectilePrefab = missileProjectilePrefab.InstantiateClone("QualityMoreMissileProjectile");
+
+                if (_missileProjectilePrefab.ExpectComponent(out ProjectileController projectileController))
+                {
+                    projectileController.procCoefficient = 0f;
+                }
+
+                if (_missileProjectilePrefab.ExpectComponent(out MissileController missileController))
+                {
+                    missileController.maxVelocity = 25f;
+                }
+
+                args.ContentPack.projectilePrefabs.Add(_missileProjectilePrefab);
+            });
+
+            return missileProjectileLoad.AsProgressCoroutine(args.ProgressReceiver);
+        }
+
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Authority)]
+        private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.MoreMissile;
+
+        private void OnEnable()
+        {
+            Body.onSkillActivatedAuthority += onSkillActivatedAuthority;
+        }
+
+        private void OnDisable()
+        {
+            Body.onSkillActivatedAuthority -= onSkillActivatedAuthority;
+        }
+
+        private void onSkillActivatedAuthority(GenericSkill skill)
+        {
+            if (skill.baseRechargeInterval >= 5f)
+            {
+                float damageCoefficient = Stacks.HighestQuality switch
+                {
+                    QualityTier.Uncommon => 1.5f,
+                    QualityTier.Rare => 2.5f,
+                    QualityTier.Epic => 4f,
+                    QualityTier.Legendary => 5f,
+                    _ => throw new NotImplementedException()
+                };
+
+                float damage = Body.damage * damageCoefficient;
+
+                MissileUtils.FireMissile(Body.corePosition, Body, new ProcChainMask(), null, damage, Body.RollCrit(), _missileProjectilePrefab, DamageColorIndex.Item, false);
             }
         }
     }

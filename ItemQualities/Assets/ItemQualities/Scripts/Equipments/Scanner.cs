@@ -13,12 +13,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class Scanner
+    internal static class Scanner
     {
-        static InteractableSpawnCard _iscChest1Stealthed;
+        private static InteractableSpawnCard _iscChest1Stealthed;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> chest2LoadHandle = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Chest2.Chest2_prefab);
             AsyncOperationHandle<Material> cloakedMaterialLoadHandle = AddressableUtil.LoadAssetAsync<Material>(RoR2_Base_Common.matCloakedEffect_mat);
@@ -33,7 +33,7 @@ namespace ItemQualities.Equipments
                 yield break;
 
             GameObject chest2CloakedPrefab = chest2LoadHandle.Result.InstantiateClone("Chest2StealthedVariant");
-            
+
             if (chest2CloakedPrefab.TryGetComponent(out PurchaseInteraction purchaseInteraction))
             {
                 purchaseInteraction.costType = CostTypeIndex.None;
@@ -94,7 +94,7 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<InteractableSpawnCard>(RoR2_Base_Chest1StealthedVariant.iscChest1Stealthed_asset).OnSuccess(cloakedChestSpawnCard =>
             {
@@ -117,7 +117,7 @@ namespace ItemQualities.Equipments
             SpawnUtils.OnSceneReadyForSpawnsServer += onSceneReadyForSpawnsServer;
         }
 
-        static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
+        private static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
         {
             if (SceneInfo.instance.countsAsStage || SceneInfo.instance.sceneDef.allowItemsToSpawnObjects)
             {

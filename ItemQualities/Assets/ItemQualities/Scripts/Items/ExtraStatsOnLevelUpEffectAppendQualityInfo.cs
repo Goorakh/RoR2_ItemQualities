@@ -11,7 +11,7 @@ namespace ItemQualities.Items
     public sealed class ExtraStatsOnLevelUpEffectAppendQualityInfo : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC2_Items_ExtraStatsOnLevelUp.ExtraStatsOnLevelUpScrapEffect_prefab).OnSuccess(scrapEffect =>
             {
@@ -19,12 +19,12 @@ namespace ItemQualities.Items
             });
         }
 
-        EffectComponent _effectComponent;
-        MultiTextRiserController _textRiserController;
+        private EffectComponent _effectComponent;
+        private MultiTextRiserController _textRiserController;
 
-        List<string> _appendedTextRiserStrings;
+        private List<string> _appendedTextRiserStrings;
 
-        void Awake()
+        private void Awake()
         {
             _effectComponent = GetComponent<EffectComponent>();
             _textRiserController = GetComponent<MultiTextRiserController>();
@@ -48,14 +48,14 @@ namespace ItemQualities.Items
             _appendedTextRiserStrings = ListPool<string>.RentCollection();
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             _effectComponent.OnEffectComponentReset -= onReset;
 
             _appendedTextRiserStrings = ListPool<string>.ReturnCollection(_appendedTextRiserStrings);
         }
 
-        void onReset(bool hasEffectData)
+        private void onReset(bool hasEffectData)
         {
             if (_appendedTextRiserStrings == null)
                 return;

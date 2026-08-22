@@ -16,22 +16,22 @@ namespace ItemQualities
 
         public string HudOverlayChildLocatorEntry;
 
-        OverlayController _hudOverlayController;
+        private OverlayController _hudOverlayController;
 
         public NetworkedBodyAttachment BodyAttachment { get; private set; }
 
-        HashSet<CharacterBodyExtraStatsTracker> _bodiesWithWeakPointsEnabledServer;
+        private HashSet<CharacterBodyExtraStatsTracker> _bodiesWithWeakPointsEnabledServer;
 
-        CharacterBody _attachedBody;
+        private CharacterBody _attachedBody;
 
-        float _cachedWeakPointCritMultBonus;
+        private float _cachedWeakPointCritMultBonus;
 
-        void Awake()
+        private void Awake()
         {
             BodyAttachment = GetComponent<NetworkedBodyAttachment>();
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
 
@@ -55,7 +55,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (_hudOverlayController != null)
             {
@@ -73,7 +73,7 @@ namespace ItemQualities
             InstanceTracker.Remove(this);
         }
 
-        void setAttachedBody(CharacterBody attachedBody)
+        private void setAttachedBody(CharacterBody attachedBody)
         {
             if (_attachedBody == attachedBody)
                 return;
@@ -116,12 +116,12 @@ namespace ItemQualities
             }
         }
 
-        void onAttachedBodyRecalculateStats(CharacterBody attachedBody)
+        private void onAttachedBodyRecalculateStats(CharacterBody attachedBody)
         {
             refreshAttachedBodyBuffs();
         }
 
-        void refreshAttachedBodyBuffs()
+        private void refreshAttachedBodyBuffs()
         {
             float weakPointCritMultiplierBonus = 0f;
 
@@ -134,7 +134,7 @@ namespace ItemQualities
             setWeakPointCritMultiplierBonus(weakPointCritMultiplierBonus);
         }
 
-        void setWeakPointCritMultiplierBonus(float weakPointCritMultiplierBonus)
+        private void setWeakPointCritMultiplierBonus(float weakPointCritMultiplierBonus)
         {
             float weakPointCritMultiplierBonusDiff = weakPointCritMultiplierBonus - _cachedWeakPointCritMultBonus;
             if (Mathf.Abs(weakPointCritMultiplierBonusDiff) < Mathf.Epsilon)
@@ -153,7 +153,7 @@ namespace ItemQualities
             }
         }
 
-        void onBodyStartGlobal(CharacterBody body)
+        private void onBodyStartGlobal(CharacterBody body)
         {
             if (body.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
             {
@@ -161,7 +161,7 @@ namespace ItemQualities
             }
         }
 
-        void onBodyDestroyGlobal(CharacterBody body)
+        private void onBodyDestroyGlobal(CharacterBody body)
         {
             if (body.TryGetComponentCached(out CharacterBodyExtraStatsTracker bodyExtraStats))
             {
@@ -169,19 +169,19 @@ namespace ItemQualities
             }
         }
 
-        void refreshWeakPointsActive(CharacterBodyExtraStatsTracker bodyExtraStats)
+        private void refreshWeakPointsActive(CharacterBodyExtraStatsTracker bodyExtraStats)
         {
             setWeakPointActive(bodyExtraStats, shouldEnableWeakPoints(bodyExtraStats.Body));
         }
 
-        bool shouldEnableWeakPoints(CharacterBody body)
+        private bool shouldEnableWeakPoints(CharacterBody body)
         {
             return body &&
                    _attachedBody &&
                    FriendlyFireManager.ShouldDirectHitProceed(body.healthComponent, _attachedBody.teamComponent.teamIndex);
         }
 
-        void setWeakPointActive(CharacterBodyExtraStatsTracker bodyExtraStats, bool active)
+        private void setWeakPointActive(CharacterBodyExtraStatsTracker bodyExtraStats, bool active)
         {
             if (_bodiesWithWeakPointsEnabledServer == null || ReferenceEquals(bodyExtraStats, null))
                 return;

@@ -15,18 +15,20 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class HealthBarHooks
+    internal static class HealthBarHooks
     {
-        readonly struct AdditionalBarInfos
+        private readonly struct AdditionalBarInfos
         {
             public static readonly FieldInfo[] LowHealthUnderBarInfoFields = new FieldInfo[]
             {
                 typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthUnderBarInfo)),
+                typeof(AdditionalBarInfos).GetField(nameof(GenesisLoopLowHealthUnderBarInfo)),
             };
 
             public static readonly FieldInfo[] LowHealthOverBarInfoFields = new FieldInfo[]
             {
                 typeof(AdditionalBarInfos).GetField(nameof(StealthKitLowHealthOverBarInfo)),
+                typeof(AdditionalBarInfos).GetField(nameof(GenesisLoopLowHealthOverBarInfo)),
             };
 
             public static readonly FieldInfo[] ShieldOverlayBarInfoFields = new FieldInfo[]
@@ -49,6 +51,9 @@ namespace ItemQualities
             public readonly HealthBar.BarInfo StealthKitLowHealthUnderBarInfo;
             public readonly HealthBar.BarInfo StealthKitLowHealthOverBarInfo;
 
+            public readonly HealthBar.BarInfo GenesisLoopLowHealthUnderBarInfo;
+            public readonly HealthBar.BarInfo GenesisLoopLowHealthOverBarInfo;
+
             public readonly HealthBar.BarInfo TemporaryShieldBarInfo;
 
             public readonly HealthBar.BarInfo TemporaryHealthBarInfo;
@@ -59,6 +64,8 @@ namespace ItemQualities
 
             public AdditionalBarInfos(in HealthBar.BarInfo stealthKitLowHealthUnderBarInfo,
                                       in HealthBar.BarInfo stealthKitLowHealthOverBarInfo,
+                                      in HealthBar.BarInfo genesisLoopLowHealthUnderBarInfo,
+                                      in HealthBar.BarInfo genesisLoopLowHealthOverBarInfo,
                                       in HealthBar.BarInfo temporaryShieldBarInfo,
                                       in HealthBar.BarInfo temporaryHealthBarInfo,
                                       in HealthBar.BarInfo barrierOverflowBarInfo)
@@ -72,8 +79,10 @@ namespace ItemQualities
                 }
 
                 setBarInfo(out StealthKitLowHealthUnderBarInfo, stealthKitLowHealthUnderBarInfo);
-
                 setBarInfo(out StealthKitLowHealthOverBarInfo, stealthKitLowHealthOverBarInfo);
+
+                setBarInfo(out GenesisLoopLowHealthUnderBarInfo, genesisLoopLowHealthUnderBarInfo);
+                setBarInfo(out GenesisLoopLowHealthOverBarInfo, genesisLoopLowHealthOverBarInfo);
 
                 setBarInfo(out TemporaryShieldBarInfo, temporaryShieldBarInfo);
 
@@ -85,10 +94,10 @@ namespace ItemQualities
             }
         }
 
-        static readonly Dictionary<Sprite, Sprite> _barToGreyscaleBarrierBarLookup = new Dictionary<Sprite, Sprite>();
-        static readonly HashSet<Sprite> _greyscaleBars = new HashSet<Sprite>();
+        private static readonly Dictionary<Sprite, Sprite> _barToGreyscaleBarrierBarLookup = new Dictionary<Sprite, Sprite>();
+        private static readonly HashSet<Sprite> _greyscaleBars = new HashSet<Sprite>();
 
-        static Sprite getGreyscaleBar(Sprite bar)
+        private static Sprite getGreyscaleBar(Sprite bar)
         {
             if (_barToGreyscaleBarrierBarLookup.TryGetValue(bar, out Sprite greyscaleBar))
                 return greyscaleBar;
@@ -122,7 +131,7 @@ namespace ItemQualities
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.UI.HealthBar.CheckInventory += HealthBar_CheckInventory;
 
@@ -131,7 +140,7 @@ namespace ItemQualities
             IL.RoR2.HealthComponent.GetHealthBarValues += HealthComponent_GetHealthBarValues;
         }
 
-        static void HealthBar_CheckInventory(ILContext il)
+        private static void HealthBar_CheckInventory(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -175,6 +184,7 @@ namespace ItemQualities
                     }
 
                     handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.Phasing);
+                    handleCustomQualityLowHealthThreshold(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth);
                 }
 
                 if (ignoreLowHealthItemIndices.Count == 0)
@@ -219,7 +229,7 @@ namespace ItemQualities
             {
                 c.Emit(OpCodes.Ldloca, ignoreLowHealthItemIndicesVar);
                 c.EmitDelegate<CheckInventoryCleanupDelegate>(cleanup);
-                
+
                 static void cleanup(ref HashSet<ItemIndex> ignoreLowHealthItemIndices)
                 {
                     if (ignoreLowHealthItemIndices != null)
@@ -242,9 +252,9 @@ namespace ItemQualities
             }
         }
 
-        delegate void CheckInventoryCleanupDelegate(ref HashSet<ItemIndex> ignoreLowHealthItemIndices);
+        private delegate void CheckInventoryCleanupDelegate(ref HashSet<ItemIndex> ignoreLowHealthItemIndices);
 
-        static void HealthBar_ApplyBars(ILContext il)
+        private static void HealthBar_ApplyBars(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -410,7 +420,7 @@ namespace ItemQualities
             }
         }
 
-        static AdditionalBarInfos collectBarInfos(HealthBar healthBar)
+        private static AdditionalBarInfos collectBarInfos(HealthBar healthBar)
         {
             HealthComponent healthComponent = healthBar ? healthBar.source : null;
             CharacterBody body = healthComponent ? healthComponent.body : null;
@@ -448,6 +458,17 @@ namespace ItemQualities
             if (phasing.TotalQualityCount > 0)
             {
                 setupHealthThresholdBarInfos(ref stealthKitLowHealthUnderBarInfo, ref stealthKitLowHealthOverBarInfo, extraStatsTracker.StealthKitActivationThreshold);
+            }
+
+            HealthBar.BarInfo genesisLoopLowHealthUnderBarInfo = lowHealthUnderBarInfoTemplate;
+            HealthBar.BarInfo genesisLoopLowHealthOverBarInfo = lowHealthOverBarInfoTemplate;
+            genesisLoopLowHealthUnderBarInfo.enabled = false;
+            genesisLoopLowHealthOverBarInfo.enabled = false;
+
+            ItemQualityCounts novaOnLowHealth = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth);
+            if (novaOnLowHealth.TotalQualityCount > 0)
+            {
+                setupHealthThresholdBarInfos(ref genesisLoopLowHealthUnderBarInfo, ref genesisLoopLowHealthOverBarInfo, extraStatsTracker.GenesisLoopActivationThreshold);
             }
 
             HealthBar.BarInfo temporaryShieldBarInfo = shieldBarInfoTemplate;
@@ -532,10 +553,16 @@ namespace ItemQualities
                 }
             }
 
-            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo, stealthKitLowHealthOverBarInfo, temporaryShieldBarInfo, temporaryHealthBarInfo, barrierOverflowBarInfo);
+            return new AdditionalBarInfos(stealthKitLowHealthUnderBarInfo,
+                                          stealthKitLowHealthOverBarInfo,
+                                          genesisLoopLowHealthUnderBarInfo,
+                                          genesisLoopLowHealthOverBarInfo,
+                                          temporaryShieldBarInfo,
+                                          temporaryHealthBarInfo,
+                                          barrierOverflowBarInfo);
         }
 
-        static void HealthComponent_GetHealthBarValues(ILContext il)
+        private static void HealthComponent_GetHealthBarValues(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

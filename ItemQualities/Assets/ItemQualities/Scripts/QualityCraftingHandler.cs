@@ -16,12 +16,12 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class QualityCraftingHandler
+    internal static class QualityCraftingHandler
     {
-        static readonly HashSet<CraftableDef> _qualityCraftableDefs = new HashSet<CraftableDef>();
+        private static readonly HashSet<CraftableDef> _qualityCraftableDefs = new HashSet<CraftableDef>();
 
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
-        static void Init()
+        private static void Init()
         {
             SystemInitializerInjector.InjectDependency(typeof(CraftableCatalog), typeof(QualityCatalog));
 
@@ -30,13 +30,13 @@ namespace ItemQualities
             IL.RoR2.CraftableCatalog.SetCraftableDefs += CraftableCatalog_SetCraftableDefs;
         }
 
-        static void CraftableCatalog_Init(On.RoR2.CraftableCatalog.orig_Init orig)
+        private static void CraftableCatalog_Init(On.RoR2.CraftableCatalog.orig_Init orig)
         {
             appendQualityCraftableDefs(ref ContentManager._craftableDefs);
             orig();
         }
 
-        static void appendQualityCraftableDefs(ref CraftableDef[] allCraftableDefs)
+        private static void appendQualityCraftableDefs(ref CraftableDef[] allCraftableDefs)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -300,7 +300,7 @@ namespace ItemQualities
                 }
 
                 sb.AppendLine($"{craftableDef.name} ({craftableDef.GetPickupDefFromResult()?.pickupIndex ?? PickupIndex.none}):");
-                
+
                 foreach (PickupIndex[] ingredients in allValidIngredientCombinations)
                 {
                     sb.AppendLine("\t" + string.Join(" + ", ingredients));
@@ -316,7 +316,7 @@ namespace ItemQualities
 #endif
         }
 
-        static UnityEngine.Object getPickupDefObject(PickupIndex pickupIndex)
+        private static UnityEngine.Object getPickupDefObject(PickupIndex pickupIndex)
         {
             PickupDef qualityResultPickup = PickupCatalog.GetPickupDef(pickupIndex);
             if (qualityResultPickup != null)
@@ -334,7 +334,7 @@ namespace ItemQualities
             return null;
         }
 
-        static void CraftableCatalog_SetCraftableDefs(ILContext il)
+        private static void CraftableCatalog_SetCraftableDefs(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

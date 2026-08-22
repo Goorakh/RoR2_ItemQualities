@@ -12,10 +12,10 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class Plant
+    internal static class Plant
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Plant.InterstellarDeskPlant_prefab).OnSuccess(deskPlantPrefab =>
             {
@@ -26,7 +26,7 @@ namespace ItemQualities.Items
             On.RoR2.DeskPlantController.MainState.OnEnter += MainState_OnEnter;
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
@@ -59,7 +59,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void MainState_OnEnter(On.RoR2.DeskPlantController.MainState.orig_OnEnter orig, EntityStates.BaseState _self)
+        private static void MainState_OnEnter(On.RoR2.DeskPlantController.MainState.orig_OnEnter orig, EntityStates.BaseState _self)
         {
             orig(_self);
 

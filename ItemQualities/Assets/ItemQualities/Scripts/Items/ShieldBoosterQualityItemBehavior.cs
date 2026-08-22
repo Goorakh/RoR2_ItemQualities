@@ -7,34 +7,25 @@ namespace ItemQualities.Items
     public sealed class ShieldBoosterQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.ShieldBooster;
         }
 
-        CharacterBodyExtraStatsTracker _bodyExtraStats;
+        private float _boosterFraction;
 
-        float _boosterFraction;
-
-        protected override void Awake()
+        private void OnEnable()
         {
-            base.Awake();
-
-            _bodyExtraStats = this.GetComponentCached<CharacterBodyExtraStatsTracker>();
-        }
-
-        void OnEnable()
-        {
-            _bodyExtraStats.OnTakeDamageServer += onTakeDamageServer;
+            BodyStats.OnTakeDamageServer += onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal += onShieldBoosterBreakServerGlobal;
 
             _boosterFraction = 0f;
             updateBuffCount();
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
-            _bodyExtraStats.OnTakeDamageServer -= onTakeDamageServer;
+            BodyStats.OnTakeDamageServer -= onTakeDamageServer;
             ShieldBooster.OnShieldBoosterBreakServerGlobal -= onShieldBoosterBreakServerGlobal;
 
             Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.ShieldBoosterBuff);
@@ -47,7 +38,7 @@ namespace ItemQualities.Items
             updateBuffCount();
         }
 
-        void onTakeDamageServer(DamageReport damageReport)
+        private void onTakeDamageServer(DamageReport damageReport)
         {
             if (damageReport.damageDealt > 0f && Body.healthComponent.shield > 0f)
             {
@@ -78,7 +69,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onShieldBoosterBreakServerGlobal(CharacterBody body)
+        private void onShieldBoosterBreakServerGlobal(CharacterBody body)
         {
             if (body == Body)
             {
@@ -87,7 +78,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void updateBuffCount()
+        private void updateBuffCount()
         {
             ref readonly ItemQualityCounts shieldBooster = ref Stacks;
 

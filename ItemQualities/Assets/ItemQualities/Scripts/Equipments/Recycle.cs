@@ -9,17 +9,17 @@ using UnityEngine;
 
 namespace ItemQualities.Equipments
 {
-    static class Recycle
+    internal static class Recycle
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
             IL.RoR2.EquipmentSlot.FireRecycle += IL_EquipmentSlot_FireRecycle;
             On.RoR2.EquipmentSlot.FireRecycle += On_EquipmentSlot_FireRecycle;
         }
 
-        static void EquipmentSlot_UpdateTargets(ILContext il)
+        private static void EquipmentSlot_UpdateTargets(ILContext il)
         {
             if (!il.Method.TryFindParameter<EquipmentIndex>(out ParameterDefinition targetingEquipmentIndexParameter))
             {
@@ -182,9 +182,9 @@ namespace ItemQualities.Equipments
             }
         }
 
-        delegate bool TryCheckTargetRecyclableObjectIsRecyclableDelegate(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex, out bool isTargetObjectRecyclable);
+        private delegate bool TryCheckTargetRecyclableObjectIsRecyclableDelegate(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex, out bool isTargetObjectRecyclable);
 
-        static void IL_EquipmentSlot_FireRecycle(ILContext il)
+        private static void IL_EquipmentSlot_FireRecycle(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -252,7 +252,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool On_EquipmentSlot_FireRecycle(On.RoR2.EquipmentSlot.orig_FireRecycle orig, EquipmentSlot self)
+        private static bool On_EquipmentSlot_FireRecycle(On.RoR2.EquipmentSlot.orig_FireRecycle orig, EquipmentSlot self)
         {
             if (orig(self))
                 return true;

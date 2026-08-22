@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class LaserTurbine
+    internal static class LaserTurbine
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.LaserTurbineController.OnOwnerKilledOtherServer += LaserTurbineController_OnOwnerKilledOtherServer;
             On.EntityStates.LaserTurbine.AimState.Update += AimState_Update;
@@ -54,7 +54,7 @@ namespace ItemQualities.Items
             return explosionRadius;
         }
 
-        static void LaserTurbineController_OnOwnerKilledOtherServer(ILContext il)
+        private static void LaserTurbineController_OnOwnerKilledOtherServer(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

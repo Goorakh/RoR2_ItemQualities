@@ -1,7 +1,6 @@
 ﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
-using MonoMod.RuntimeDetour;
 using MonoMod.Utils;
 using System;
 using System.Collections.Generic;
@@ -11,7 +10,7 @@ namespace ItemQualities.Utilities
 {
     internal static class EventUtils
     {
-        static readonly Dictionary<FieldInfo, Delegate> _invokeDelegateCache = new Dictionary<FieldInfo, Delegate>();
+        private static readonly Dictionary<FieldInfo, Delegate> _invokeDelegateCache = new Dictionary<FieldInfo, Delegate>();
 
         public static TDelegate GetInvokeMethodDelegate<TDelegate>(Type eventDeclaringType, string eventName)
             where TDelegate : Delegate
@@ -100,7 +99,7 @@ namespace ItemQualities.Utilities
                 c.Emit(OpCodes.Brtrue, eventFieldNotNullLabel);
 
                 c.Emit(OpCodes.Pop);
-                
+
                 if (delegateInvokeMethod.ReturnType != typeof(void))
                 {
                     c.Emit(OpCodes.Ldstr, $"Attempting to invoke delegate {eventDelegateField.DeclaringType.FullName}.{eventDelegateField.Name} ({delegateType.FullName}) without a delegate instance, the default value for the return type ({delegateInvokeMethod.ReturnType.FullName}) will be returned");

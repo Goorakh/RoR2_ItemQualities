@@ -6,12 +6,12 @@ namespace ItemQualities.Items
     public sealed class MoveSpeedOnKillQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.MoveSpeedOnKill;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (NetworkServer.active)
             {

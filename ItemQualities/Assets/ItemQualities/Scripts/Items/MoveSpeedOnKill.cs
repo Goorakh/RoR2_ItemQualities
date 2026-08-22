@@ -5,17 +5,17 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class MoveSpeedOnKill
+    internal static class MoveSpeedOnKill
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender.inventory)
                 return;
@@ -31,7 +31,7 @@ namespace ItemQualities.Items
             args.moveSpeedMultAdd += moveSpeedPerBuff * killMoveSpeedBuff.TotalQualityCount;
         }
 
-        static void onCharacterDeathGlobal(DamageReport damageReport)
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (!NetworkServer.active || damageReport == null)
                 return;

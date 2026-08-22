@@ -8,12 +8,12 @@ namespace ItemQualities
     {
         public QualityTier QualityTier = QualityTier.None;
 
-        void Awake()
+        private void Awake()
         {
             ComponentCache.Add(gameObject, this);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             ComponentCache.Remove(gameObject, this);
         }

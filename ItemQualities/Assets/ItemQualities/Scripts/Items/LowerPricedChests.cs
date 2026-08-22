@@ -9,10 +9,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class LowerPricedChests
+    internal static class LowerPricedChests
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.CharacterMaster.TrySaleStar += CharacterMaster_TrySaleStar;
 
@@ -22,7 +22,7 @@ namespace ItemQualities.Items
             IL.RoR2.RouletteChestController.EjectPickupServer += RouletteChestController_EjectPickupServer;
         }
 
-        static void CharacterMaster_TrySaleStar(On.RoR2.CharacterMaster.orig_TrySaleStar orig, CharacterMaster self)
+        private static void CharacterMaster_TrySaleStar(On.RoR2.CharacterMaster.orig_TrySaleStar orig, CharacterMaster self)
         {
             orig(self);
 
@@ -49,12 +49,12 @@ namespace ItemQualities.Items
             }
         }
 
-        sealed class QualitySaleStarState
+        private sealed class QualitySaleStarState
         {
             public ItemQualityCounts SaleStarsSpent;
         }
 
-        static void PurchaseInteraction_OnInteractionBegin(ILContext il)
+        private static void PurchaseInteraction_OnInteractionBegin(ILContext il)
         {
             if (!il.Method.TryFindParameter<Interactor>(out ParameterDefinition interactorParameter))
             {
@@ -155,9 +155,9 @@ namespace ItemQualities.Items
             }
         }
 
-        delegate bool ConsumeQualitySaleStarsDelegate(bool result, Interactor activator, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult, QualitySaleStarState saleStarState);
+        private delegate bool ConsumeQualitySaleStarsDelegate(bool result, Interactor activator, in Inventory.ItemTransformation itemTransformation, ref Inventory.ItemTransformation.TryTransformResult consumeTransformResult, QualitySaleStarState saleStarState);
 
-        static QualityTier[] generateQualityDropTiersFromSaleStars(GameObject purchasedObject, int dropCount, bool useFirstInteractionCost, Xoroshiro128Plus rng)
+        private static QualityTier[] generateQualityDropTiersFromSaleStars(GameObject purchasedObject, int dropCount, bool useFirstInteractionCost, Xoroshiro128Plus rng)
         {
             QualityTier[] dropQualityTiers = Array.Empty<QualityTier>();
 
@@ -204,8 +204,8 @@ namespace ItemQualities.Items
             return dropQualityTiers;
         }
 
-        delegate UniquePickup TryUpgradePickupQualityFromSaleStarsDelegate(UniquePickup pickup, QualityTier[] saleStarDropQualityTiers, ref int pickupSequenceIndex);
-        static UniquePickup tryUpgradePickupQualityFromSaleStars(UniquePickup pickup, QualityTier[] saleStarDropQualityTiers, ref int pickupSequenceIndex)
+        private delegate UniquePickup TryUpgradePickupQualityFromSaleStarsDelegate(UniquePickup pickup, QualityTier[] saleStarDropQualityTiers, ref int pickupSequenceIndex);
+        private static UniquePickup tryUpgradePickupQualityFromSaleStars(UniquePickup pickup, QualityTier[] saleStarDropQualityTiers, ref int pickupSequenceIndex)
         {
             QualityTier pickupQuality = QualityCatalog.GetQualityTier(pickup.pickupIndex);
 
@@ -225,7 +225,7 @@ namespace ItemQualities.Items
             return pickup;
         }
 
-        static void ChestBehavior_BaseItemDrop(ILContext il)
+        private static void ChestBehavior_BaseItemDrop(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -262,7 +262,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void RouletteChestController_EjectPickupServer(ILContext il)
+        private static void RouletteChestController_EjectPickupServer(ILContext il)
         {
             if (!il.Method.TryFindParameter<UniquePickup>(out ParameterDefinition pickupParameter))
             {

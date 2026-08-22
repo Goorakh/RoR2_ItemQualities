@@ -13,7 +13,7 @@ namespace ItemQualities.Utilities.Extensions
 {
     internal static class PatchExtensions
     {
-        static FieldInfo _cachedDecimalZeroFieldInfo;
+        private static FieldInfo _cachedDecimalZeroFieldInfo;
 
         /// <summary>
         /// Emits instructions to unconditionally skip the method call directly ahead of the cursor and moves after it.
@@ -554,6 +554,26 @@ namespace ItemQualities.Utilities.Extensions
             {
                 cursor.Emit(OpCodes.Ldloc, variables[i]);
             }
+        }
+
+        public static void RetargetHandlerEnd(this ExceptionHandler exceptionHandler, Instruction newHandlerEnd)
+        {
+            for (Instruction instr = exceptionHandler.TryStart; instr != exceptionHandler.TryEnd; instr = instr.Next)
+            {
+                if (instr.MatchLeaveAny(exceptionHandler.HandlerEnd))
+                {
+                    instr.Operand = newHandlerEnd;
+                }
+            }
+
+            exceptionHandler.HandlerEnd = newHandlerEnd;
+        }
+
+        public static bool MatchLeaveAny(this Instruction instr, Instruction targetInstruction)
+        {
+            ILLabel label;
+            return (instr.MatchLeave(out label) && label?.Target == targetInstruction) ||
+                   (instr.MatchLeaveS(out label) && label?.Target == targetInstruction);
         }
 
         public static bool MatchAny(this Instruction instr, out Instruction instruction)

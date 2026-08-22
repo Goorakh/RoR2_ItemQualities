@@ -10,15 +10,15 @@ using System.Reflection;
 
 namespace ItemQualities.Items
 {
-    static class FreeChest
+    internal static class FreeChest
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.SceneDirector.PopulateScene += SceneDirector_PopulateScene;
         }
 
-        static void SceneDirector_PopulateScene(ILContext il)
+        private static void SceneDirector_PopulateScene(ILContext il)
         {
             MethodInfo masterEnumeratorCurrentGetter = typeof(IEnumerator<CharacterMaster>).GetProperty(nameof(IEnumerator.Current))?.GetMethod;
             if (masterEnumeratorCurrentGetter == null)

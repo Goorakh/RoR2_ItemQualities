@@ -1,58 +1,38 @@
 ﻿using ItemQualities.Utilities.Extensions;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
 using RoR2;
-using System;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class IncreaseHealing
+    internal static class IncreaseHealing
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
-            IL.RoR2.HealthComponent.Heal += HealthComponent_Heal;
+            HealthComponent.onCharacterHealServer += onCharacterHealServer;
         }
 
-        static void HealthComponent_Heal(ILContext il)
+        private static void onCharacterHealServer(HealthComponent healthComponent, float amount, ProcChainMask procChainMask)
         {
-            ILCursor c = new ILCursor(il);
-
-            if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.increaseHealing)),
-                               x => x.MatchStarg(out _)))
+            if (healthComponent && healthComponent.body && healthComponent.body.inventory)
             {
-                Log.Error("Failed to find IncreaseHealing item location");
-                return;
-            }
-
-            c.Goto(foundCursors[1].Next, MoveType.Before); // starg amount
-
-            if (!c.TryGotoPrev(MoveType.Before,
-                               x => x.MatchMul()))
-            {
-                Log.Error("Failed to find patch location");
-                return;
-            }
-
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<float, HealthComponent, float>>(getHealingIncrease);
-
-            static float getHealingIncrease(float healingIncrease, HealthComponent healthComponent)
-            {
-                if (healthComponent && healthComponent.body && healthComponent.body.inventory)
+                ItemQualityCounts increaseHealing = healthComponent.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.IncreaseHealing);
+                if (increaseHealing.TotalQualityCount > 0)
                 {
-                    ItemQualityCounts increaseHealing = healthComponent.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.IncreaseHealing);
-                    if (increaseHealing.TotalQualityCount > 0)
+                    const float maxHealFraction = 1f;
+                    float healFraction = Mathf.Min(maxHealFraction, amount / healthComponent.fullHealth);
+
+                    float invincibilityDurationPerFullHeal = (increaseHealing.UncommonCount * 2f) +
+                                                             (increaseHealing.RareCount * 5f) +
+                                                             (increaseHealing.EpicCount * 10f) +
+                                                             (increaseHealing.LegendaryCount * 15f);
+
+                    float invincibilityDuration = invincibilityDurationPerFullHeal * healFraction;
+                    if (invincibilityDuration >= 1f / 60f)
                     {
-                        healingIncrease += ((1.5f - 1f) * increaseHealing.UncommonCount) +
-                                           ((2.0f - 1f) * increaseHealing.RareCount) +
-                                           ((3.0f - 1f) * increaseHealing.EpicCount) +
-                                           ((4.0f - 1f) * increaseHealing.LegendaryCount);
+                        healthComponent.body.AddTimedBuff(RoR2Content.Buffs.Immune, invincibilityDuration);
                     }
                 }
-
-                return healingIncrease;
             }
         }
     }

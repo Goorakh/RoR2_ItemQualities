@@ -10,7 +10,7 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Equipments
 {
-    static class CritOnUse
+    internal static class CritOnUse
     {
         public const float WeakPointRadius = 1.2f;
         public const float WeakPointRadiusSqr = WeakPointRadius * WeakPointRadius;
@@ -35,7 +35,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool isWeakPointHit(DamageInfo damageInfo)
+        private static bool isWeakPointHit(DamageInfo damageInfo)
         {
             return damageInfo.inflictedHurtbox &&
                    damageInfo.inflictedHurtbox.enabled &&
@@ -46,7 +46,7 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireCritOnUse += EquipmentSlot_FireCritOnUse;
 
@@ -56,7 +56,7 @@ namespace ItemQualities.Equipments
             BuffHooks.OnBuffFinalStackLostGlobal += onBuffFinalStackLostGlobal;
         }
 
-        static void onBuffFirstStackGainedGlobal(CharacterBody body, BuffDef buffDef)
+        private static void onBuffFirstStackGainedGlobal(CharacterBody body, BuffDef buffDef)
         {
             if (!NetworkServer.active)
                 return;
@@ -67,7 +67,7 @@ namespace ItemQualities.Equipments
 
             if (buffGroupIndex != ItemQualitiesContent.BuffQualityGroups.FullCrit.GroupIndex)
                 return;
-            
+
             for (QualityTier buffQualityTier = QualityTier.None; buffQualityTier < QualityTier.Count; buffQualityTier++)
             {
                 BuffIndex qualityBuffIndex = QualityCatalog.GetBuffIndexOfQuality(buffIndex, buffQualityTier);
@@ -89,7 +89,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void onBuffFinalStackLostGlobal(CharacterBody body, BuffDef buffDef)
+        private static void onBuffFinalStackLostGlobal(CharacterBody body, BuffDef buffDef)
         {
             if (!NetworkServer.active)
                 return;
@@ -100,7 +100,7 @@ namespace ItemQualities.Equipments
 
             if (buffGroupIndex != ItemQualitiesContent.BuffQualityGroups.FullCrit.GroupIndex || qualityTier == QualityTier.None)
                 return;
-            
+
             for (QualityTier buffQualityTier = 0; buffQualityTier < QualityTier.Count; buffQualityTier++)
             {
                 BuffIndex qualityBuffIndex = QualityCatalog.GetBuffIndexOfQuality(buffIndex, buffQualityTier);
@@ -117,7 +117,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void EquipmentSlot_FireCritOnUse(ILContext il)
+        private static void EquipmentSlot_FireCritOnUse(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -184,7 +184,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void IL_HealthComponent_TakeDamageProcess(ILContext il)
+        private static void IL_HealthComponent_TakeDamageProcess(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {

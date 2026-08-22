@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class Scrap
+    internal static class Scrap
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.ScrapperController.BeginScrapping_UniquePickup += GenericReplaceScrapPickupPatch;
 
@@ -56,9 +56,9 @@ namespace ItemQualities.Items
             return false;
         }
 
-        static PickupIndex _scrapperPanelShowingPickupIndexContext = PickupIndex.none;
+        private static PickupIndex _scrapperPanelShowingPickupIndexContext = PickupIndex.none;
 
-        static void ScrapperInfoPanelHelper_ShowInfo(On.RoR2.UI.ScrapperInfoPanelHelper.orig_ShowInfo orig, ScrapperInfoPanelHelper self, MPButton button, PickupDef pickupDef)
+        private static void ScrapperInfoPanelHelper_ShowInfo(On.RoR2.UI.ScrapperInfoPanelHelper.orig_ShowInfo orig, ScrapperInfoPanelHelper self, MPButton button, PickupDef pickupDef)
         {
             if (pickupDef != null)
             {
@@ -75,7 +75,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ScrapperInfoPanelHelper_ShowTierInfoInternal_MPButton_ItemTier_int(ILContext il)
+        private static void ScrapperInfoPanelHelper_ShowTierInfoInternal_MPButton_ItemTier_int(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

@@ -5,17 +5,17 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class ArmorPlate
+    internal static class ArmorPlate
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender)
                 return;
@@ -26,7 +26,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void onServerDamageDealt(DamageReport damageReport)
+        private static void onServerDamageDealt(DamageReport damageReport)
         {
             if (!NetworkServer.active || damageReport?.damageInfo == null)
                 return;

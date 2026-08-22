@@ -14,12 +14,14 @@
     "precompiledReferences": [
         "BepInEx.dll",
         "RoR2.dll",
+        "Grumpy.dll",
         "Assembly-CSharp.dll",
         "RoR2BepInExPack.dll",
         "KinematicCharacterController.dll",
         "HGUnityUtils.dll",
         "HGCSharpUtils.dll",
         "LegacyResourcesAPI.dll",
+        "Rewired_Core.dll",
         "Decalicious.dll",
         "Unity.Addressables.dll",
         "Mono.Cecil.dll",
@@ -49,7 +51,9 @@
         "AK.Wwise.Unity.Timeline.dll",
         "ShaderSwapper.dll",
         "RiskOfOptions.dll",
-        "ProperSave.dll"
+        "ProperSave.dll",
+        "Rebindables.dll",
+        "MiscFixes.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

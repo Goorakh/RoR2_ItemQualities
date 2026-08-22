@@ -15,20 +15,20 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class Feather
+    internal static class Feather
     {
-        static GameObject _featherEffectOut;
-        static GameObject _featherEffectLast;
+        private static GameObject _featherEffectOut;
+        private static GameObject _featherEffectLast;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
             IL.EntityStates.GenericCharacterMain.ProcessJump_bool += FeatherEffect;
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> featherEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Feather.FeatherEffect_prefab);
 
@@ -53,7 +53,7 @@ namespace ItemQualities.Items
             change_color(_featherEffectLast.transform.Find("Ring"), new Color(1, 0.05f, 0));
             args.ContentPack.effectDefs.Add(new EffectDef(_featherEffectLast));
 
-            void change_color(Transform child, Color color)
+            static void change_color(Transform child, Color color)
             {
                 if (!child)
                     return;
@@ -84,7 +84,7 @@ namespace ItemQualities.Items
             c.EmitDelegate<Func<GameObject, GenericCharacterMain, GameObject>>(changeFeatherEffect);
         }
 
-        static GameObject changeFeatherEffect(GameObject prefab, GenericCharacterMain self)
+        private static GameObject changeFeatherEffect(GameObject prefab, GenericCharacterMain self)
         {
             CharacterBody body = self?.characterBody;
             if (body || !body.inventory)
@@ -115,7 +115,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (!sender)
                 return;

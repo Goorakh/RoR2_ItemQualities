@@ -1,5 +1,4 @@
 ﻿using HG;
-using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.Projectile;
 using System;
@@ -11,7 +10,7 @@ namespace ItemQualities
     public sealed class ObjectCollisionManager : MonoBehaviour
     {
         [SystemInitializer(typeof(ProjectileCatalog), typeof(BodyCatalog))]
-        static void Init()
+        private static void Init()
         {
             foreach (GameObject bodyPrefab in BodyCatalog.allBodyPrefabs)
             {
@@ -44,11 +43,11 @@ namespace ItemQualities
         public CharacterBody OwnerBody { get; private set; }
 
         [SerializeField]
-        Collider[] _ourColliders = Array.Empty<Collider>();
+        private Collider[] _ourColliders = Array.Empty<Collider>();
 
-        HashSet<Collider> _ignoringCollisionsWith;
+        private HashSet<Collider> _ignoringCollisionsWith;
 
-        void Awake()
+        private void Awake()
         {
             Body = GetComponent<CharacterBody>();
             ProjectileController = GetComponent<ProjectileController>();
@@ -62,7 +61,7 @@ namespace ItemQualities
             ComponentCache.Add(gameObject, this);
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             _ignoringCollisionsWith = SetPool<Collider>.ReturnCollection(_ignoringCollisionsWith);
 
@@ -74,21 +73,21 @@ namespace ItemQualities
             ComponentCache.Remove(gameObject, this);
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             InstanceTracker.Add(this);
 
             IgnoredCollisionsProvider.RefreshObjectCollisions(this);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             InstanceTracker.Remove(this);
 
             SetIgnoredColliders(Array.Empty<Collider>());
         }
 
-        void onInitialized(ProjectileController projectileController)
+        private void onInitialized(ProjectileController projectileController)
         {
             OwnerBody = projectileController.owner ? projectileController.owner.GetComponent<CharacterBody>() : null;
 
@@ -143,11 +142,11 @@ namespace ItemQualities
             }
         }
 
-        void setIgnoringCollisionsWith(Collider otherCollider, bool ignore)
+        private void setIgnoringCollisionsWith(Collider otherCollider, bool ignore)
         {
             if (!otherCollider)
                 return;
-            
+
             foreach (Collider collider in _ourColliders)
             {
                 if (collider)

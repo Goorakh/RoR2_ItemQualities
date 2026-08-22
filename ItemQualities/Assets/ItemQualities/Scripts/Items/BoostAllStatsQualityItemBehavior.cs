@@ -10,10 +10,10 @@ namespace ItemQualities.Items
 {
     public sealed class BoostAllStatsQualityItemBehavior : QualityItemBodyBehavior
     {
-        static BuffIndex[] _validBuffIndices = Array.Empty<BuffIndex>();
+        private static BuffIndex[] _validBuffIndices = Array.Empty<BuffIndex>();
 
         [SystemInitializer(typeof(BuffCatalog))]
-        static void Init()
+        private static void Init()
         {
             List<BuffIndex> validBuffIncides = new List<BuffIndex>(BuffCatalog.buffCount);
 
@@ -30,14 +30,14 @@ namespace ItemQualities.Items
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.BoostAllStats;
         }
 
-        float _buffCheckTimer = 0f;
+        private float _buffCheckTimer = 0f;
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (NetworkServer.active)
             {
@@ -52,7 +52,7 @@ namespace ItemQualities.Items
             Body.ConvertQualityBuffsToTier(ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff, Stacks.HighestQuality);
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (!NetworkServer.active)
                 return;
@@ -75,7 +75,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void setBuffActive(bool active)
+        private void setBuffActive(bool active)
         {
             bool isActive = Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BoostAllStatsBuff).TotalQualityCount > 0;
             if (active != isActive)

@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    static class CustomInteractableHandler
+    internal static class CustomInteractableHandler
     {
         [SystemInitializer(typeof(CustomCostTypeIndex))]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.ClassicStageInfo.RebuildCards += ClassicStageInfo_RebuildCards;
 
@@ -65,7 +65,7 @@ namespace ItemQualities
             setInteractableCostType(ItemQualitiesContent.SpawnCards.QualityDuplicatorWild, CustomCostTypeIndex.BossItemQuality);
         }
 
-        static void ClassicStageInfo_RebuildCards(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)
+        private static void ClassicStageInfo_RebuildCards(On.RoR2.ClassicStageInfo.orig_RebuildCards orig, ClassicStageInfo self, DirectorCardCategorySelection forcedMonsterCategory, DirectorCardCategorySelection forcedInteractableCategory)
         {
             orig(self, forcedMonsterCategory, forcedInteractableCategory);
 
@@ -75,7 +75,7 @@ namespace ItemQualities
             }
         }
 
-        static void tryAddCustomInteractables(DirectorCardCategorySelection dccs)
+        private static void tryAddCustomInteractables(DirectorCardCategorySelection dccs)
         {
             bool addedQualityEquipmentBarrel = false;
             bool addedQualityChest1 = false;
@@ -252,7 +252,6 @@ namespace ItemQualities
                     addedQualityDuplicatorMilitary = true;
                 }
 
-                /*
                 if (duplicatorWildCard != null && !addedQualityDuplicatorWild)
                 {
                     DirectorCard qualityDuplicatorWildCard = new DirectorCard
@@ -268,11 +267,10 @@ namespace ItemQualities
 
                     addedQualityDuplicatorWild = true;
                 }
-                */
             }
         }
 
-        static bool matchDirectorCard(DirectorCard directorCard, string spawnCardName, string spawnCardGuid)
+        private static bool matchDirectorCard(DirectorCard directorCard, string spawnCardName, string spawnCardGuid)
         {
             if (directorCard == null)
                 return false;

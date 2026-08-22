@@ -7,10 +7,10 @@ namespace ItemQualities.Orbs
 {
     public sealed class VoidDeathOrb : Orb
     {
-        static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalog))]
-        static void Init()
+        private static void Init()
         {
             _orbEffectIndex = EffectCatalog.FindEffectIndexFromPrefab(ItemQualitiesContent.Prefabs.VoidDeathOrbEffect);
             if (_orbEffectIndex == EffectIndex.Invalid)
@@ -64,6 +64,8 @@ namespace ItemQualities.Orbs
                         damageColorIndex = DamageColorIndex.Void,
                         damageType = DamageType.VoidDeath | DamageType.BypassBlock | DamageType.Silent
                     };
+
+                    damageInfo.damageType.AddModdedDamageType(DamageTypes.Void);
 
                     victim.TakeDamage(damageInfo);
                     GlobalEventManager.instance.OnHitEnemy(damageInfo, victim.gameObject);

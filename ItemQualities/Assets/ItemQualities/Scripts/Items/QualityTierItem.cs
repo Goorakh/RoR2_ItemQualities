@@ -1,24 +1,20 @@
-﻿using ItemQualities.Utilities;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using MonoMod.RuntimeDetour;
 using RoR2;
-using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Reflection;
 using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class QualityTierItem
+    internal static class QualityTierItem
     {
-        static Texture2D _defaultElitesRamp;
-
-        static readonly int _overrideQualityRampIndex = -1;
+        private static readonly int _overrideQualityRampIndex = -1;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.Util.GetBestBodyName += Util_GetBestBodyName;
 
@@ -30,11 +26,6 @@ namespace ItemQualities.Items
                 {
                     Priority = -100
                 });
-
-                AddressableUtil.LoadAssetAsync<Texture2D>(RoR2_Base_Common_GlobalTextures.texRampElites_psd).OnSuccess(rampElites =>
-                {
-                    _defaultElitesRamp = rampElites;
-                });
             }
             else
             {
@@ -44,7 +35,7 @@ namespace ItemQualities.Items
             MasterSummon.onServerMasterSummonGlobal += onServerMasterSummonGlobal;
         }
 
-        static void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
+        private static void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
         {
             if (!summonReport.summonMasterInstance || !summonReport.summonMasterInstance.inventory)
                 return;
@@ -62,7 +53,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static string Util_GetBestBodyName(On.RoR2.Util.orig_GetBestBodyName orig, GameObject bodyObject)
+        private static string Util_GetBestBodyName(On.RoR2.Util.orig_GetBestBodyName orig, GameObject bodyObject)
         {
             string bodyName = orig(bodyObject);
 
@@ -83,7 +74,7 @@ namespace ItemQualities.Items
             return bodyName;
         }
 
-        static void CharacterModel_UpdateMaterials(ILContext il)
+        private static void CharacterModel_UpdateMaterials(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -124,29 +115,12 @@ namespace ItemQualities.Items
                 else
                 {
                     Texture eliteRamp = propertyStorage.GetTexture(ShaderProperties._EliteRamp);
-                    if (isQualityRampTexture(eliteRamp))
+                    if (QualityCatalog.IsQualityRampTexture(eliteRamp))
                     {
-                        propertyStorage.SetTexture(ShaderProperties._EliteRamp, _defaultElitesRamp);
+                        propertyStorage.SetTexture(ShaderProperties._EliteRamp, CommonTextures.DefaultElitesRamp);
                     }
                 }
             }
-        }
-
-        static bool isQualityRampTexture(Texture texture)
-        {
-            if (texture)
-            {
-                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
-                {
-                    QualityTierDef qualityTierDef = QualityCatalog.GetQualityTierDef(qualityTier);
-                    if (qualityTierDef.colorRampTexture == texture)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
     }
 }

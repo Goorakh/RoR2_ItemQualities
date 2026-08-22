@@ -1,5 +1,4 @@
-﻿using HG;
-using ItemQualities.ContentManagement;
+﻿using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
@@ -63,44 +62,53 @@ namespace ItemQualities.Items
                 if (!medkitHealingWard)
                 {
                     GameObject healingWardInstance = GameObject.Instantiate(_healingWardPrefab, interactableObject.transform.position, Quaternion.identity);
-                    
+
                     medkitHealingWard = healingWardInstance.GetComponent<MedkitHealingWardController>();
 
                     TeamFilter teamFilter = healingWardInstance.GetComponent<TeamFilter>();
                     teamFilter.teamIndex = interactorBody.teamComponent.teamIndex;
 
                     medkitHealingWard.InteractableObject = interactableObject;
+
+                    NetworkServer.Spawn(healingWardInstance);
                 }
 
-                float radius = (10f * medkit.UncommonCount) +
-                               (20f * medkit.RareCount) +
-                               (35f * medkit.EpicCount) +
-                               (50f * medkit.LegendaryCount);
-
+                float radius = (7f * medkit.UncommonCount) +
+                               (15f * medkit.RareCount) +
+                               (25f * medkit.EpicCount) +
+                               (40f * medkit.LegendaryCount);
+                
                 float healFractionPerSecond;
+                float duration;
                 switch (medkit.HighestQuality)
                 {
                     case QualityTier.Uncommon:
                         healFractionPerSecond = 0.05f;
+                        duration = 15f;
                         break;
                     case QualityTier.Rare:
                         healFractionPerSecond = 0.10f;
+                        duration = 30f;
                         break;
                     case QualityTier.Epic:
                         healFractionPerSecond = 0.20f;
+                        duration = 45f;
                         break;
                     case QualityTier.Legendary:
                         healFractionPerSecond = 0.30f;
+                        duration = 60f;
                         break;
                     default:
                         healFractionPerSecond = 0f;
+                        duration = 0f;
                         Log.Warning($"Quality tier {medkit.HighestQuality} is not implemented");
                         break;
                 }
 
-                medkitHealingWard.HealingWard.Networkradius += radius;
+                medkitHealingWard.RadiusStackCount++;
+                medkitHealingWard.HealingWard.Networkradius += radius / Mathf.Pow(medkitHealingWard.RadiusStackCount, 1.33f);
                 medkitHealingWard.HealingWard.healFraction = healFractionPerSecond * medkitHealingWard.HealingWard.interval;
-                medkitHealingWard.ResetDuration(60f);
+                medkitHealingWard.ResetDuration(duration);
             }
         }
     }
@@ -109,6 +117,8 @@ namespace ItemQualities.Items
     {
         [SyncVar(hook = nameof(syncInteractableObject))]
         public GameObject InteractableObject;
+
+        public int RadiusStackCount;
 
         public HealingWard HealingWard { get; private set; }
 

@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class IncreaseDamageOnMultiKill
+    internal static class IncreaseDamageOnMultiKill
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.CharacterBody.AddIncreasedDamageMultiKillTime += CharacterBody_AddIncreasedDamageMultiKillTime;
             IL.RoR2.IncreaseDamageOnMultiKillItemDisplayUpdater.UpdateKillCounterText += IncreaseDamageOnMultiKillItemDisplayUpdater_UpdateKillCounterText;
@@ -18,7 +18,7 @@ namespace ItemQualities.Items
             IL.RoR2.CharacterBody.UpdateMultiKill += CharacterBody_UpdateMultiKill;
         }
 
-        static float getChronicExpansionBuffResetTime(float baseDuration, CharacterBody body)
+        private static float getChronicExpansionBuffResetTime(float baseDuration, CharacterBody body)
         {
             Inventory inventory = body ? body.inventory : null;
             if (inventory)
@@ -36,7 +36,7 @@ namespace ItemQualities.Items
             return baseDuration;
         }
 
-        static void CharacterBody_AddIncreasedDamageMultiKillTime(ILContext il)
+        private static void CharacterBody_AddIncreasedDamageMultiKillTime(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -51,7 +51,7 @@ namespace ItemQualities.Items
             c.EmitDelegate<Func<float, CharacterBody, float>>(getChronicExpansionBuffResetTime);
         }
 
-        static void IncreaseDamageOnMultiKillItemDisplayUpdater_UpdateKillCounterText(ILContext il)
+        private static void IncreaseDamageOnMultiKillItemDisplayUpdater_UpdateKillCounterText(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -72,7 +72,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void CharacterBody_UpdateMultiKill(ILContext il)
+        private static void CharacterBody_UpdateMultiKill(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

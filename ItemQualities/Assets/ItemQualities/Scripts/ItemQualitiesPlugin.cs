@@ -1,6 +1,7 @@
 using BepInEx;
 using BepInEx.Bootstrap;
 using HG.Reflection;
+using ItemQualities.ModCompatibility;
 using R2API.Utils;
 using System.Diagnostics;
 using System.IO;
@@ -24,20 +25,23 @@ namespace ItemQualities
     [BepInDependency(R2API.DotAPI.PluginGUID)]
     [BepInDependency(R2API.ItemAPI.PluginGUID)]
     [BepInDependency(R2API.Networking.NetworkingAPI.PluginGUID)]
+    [BepInDependency(MiscFixes.MiscFixesPlugin.PluginGUID)]
     [BepInDependency(RiskOfOptions.PluginInfo.PLUGIN_GUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInDependency(ProperSave.ProperSavePlugin.GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(ModCompatibility.DamageSourceForEnemies.GUID, BepInDependency.DependencyFlags.SoftDependency)]
+    [BepInDependency(Rebindables.Rebindables.PluginGUID, BepInDependency.DependencyFlags.SoftDependency)]
     [BepInPlugin(PluginGUID, PluginName, PluginVersion)]
     public sealed class ItemQualitiesPlugin : BaseUnityPlugin
     {
         public const string PluginName = "ItemQualities";
         public const string PluginAuthor = "Gorakh";
         public const string PluginGUID = "com." + PluginAuthor + "." + PluginName;
-        public const string PluginVersion = "0.7.8";
+        public const string PluginVersion = "0.8.0";
 
-        static ItemQualitiesPlugin _instance;
+        private static ItemQualitiesPlugin _instance;
         public static ItemQualitiesPlugin Instance => _instance;
 
-        void Awake()
+        private void Awake()
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
 
@@ -52,6 +56,11 @@ namespace ItemQualities
                 Configs.InitRiskOfOptions();
             }
 
+            if (RebindablesCompat.Enabled)
+            {
+                RebindablesCompat.RegisterKeybinds();
+            }
+
             ItemQualitiesContent contentProvider = new ItemQualitiesContent();
             contentProvider.Register();
 
@@ -63,7 +72,7 @@ namespace ItemQualities
             Log.Message_NoCallerPrefix($"Initialized in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             SingletonHelper.Unassign(ref _instance, this);
         }

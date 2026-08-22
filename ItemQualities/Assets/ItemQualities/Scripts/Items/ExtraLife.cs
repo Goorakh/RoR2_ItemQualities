@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class ExtraLife
+    internal static class ExtraLife
     {
-        static EffectIndex _reviveEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _reviveEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(QualityCatalog), typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _reviveEffectIndex = EffectCatalogUtils.FindEffectIndex("HippoRezEffect");
             if (_reviveEffectIndex == EffectIndex.Invalid)
@@ -23,7 +23,7 @@ namespace ItemQualities.Items
             On.RoR2.CharacterMaster.TrueKill_GameObject_GameObject_DamageTypeCombo += CharacterMaster_TrueKill_GameObject_GameObject_DamageTypeCombo;
         }
 
-        static void CharacterMaster_TryReviveOnBodyDeath(ILContext il)
+        private static void CharacterMaster_TryReviveOnBodyDeath(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -159,7 +159,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void CharacterMaster_TrueKill_GameObject_GameObject_DamageTypeCombo(On.RoR2.CharacterMaster.orig_TrueKill_GameObject_GameObject_DamageTypeCombo orig, CharacterMaster self, GameObject killerOverride, GameObject inflictorOverride, DamageTypeCombo damageTypeOverride)
+        private static void CharacterMaster_TrueKill_GameObject_GameObject_DamageTypeCombo(On.RoR2.CharacterMaster.orig_TrueKill_GameObject_GameObject_DamageTypeCombo orig, CharacterMaster self, GameObject killerOverride, GameObject inflictorOverride, DamageTypeCombo damageTypeOverride)
         {
             if (self && self.inventory)
             {

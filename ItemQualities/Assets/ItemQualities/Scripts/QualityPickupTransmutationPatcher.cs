@@ -1,15 +1,14 @@
 ﻿using HG;
-using ItemQualities.Utilities.Extensions;
 using R2API.Utils;
 using RoR2;
 using System.Collections.Generic;
 
 namespace ItemQualities
 {
-    static class QualityPickupTransmutationPatcher
+    internal static class QualityPickupTransmutationPatcher
     {
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
-        static void Init()
+        private static void Init()
         {
             SystemInitializerInjector.InjectDependency(typeof(PickupTransmutationManager), typeof(QualityCatalog));
 
@@ -18,7 +17,7 @@ namespace ItemQualities
             On.RoR2.Util.RollTemporaryItemFromItemIndex += Util_RollTemporaryItemFromItemIndex;
         }
 
-        static void PickupTransmutationManager_RebuildPickupGroups(On.RoR2.PickupTransmutationManager.orig_RebuildPickupGroups orig)
+        private static void PickupTransmutationManager_RebuildPickupGroups(On.RoR2.PickupTransmutationManager.orig_RebuildPickupGroups orig)
         {
             orig();
 
@@ -77,7 +76,7 @@ namespace ItemQualities
             Log.Debug($"Added {newPickupGroups.Count} quality pickup group(s)");
         }
 
-        static ItemIndex Util_RollTemporaryItemFromItemIndex(On.RoR2.Util.orig_RollTemporaryItemFromItemIndex orig, ItemIndex itemIndex)
+        private static ItemIndex Util_RollTemporaryItemFromItemIndex(On.RoR2.Util.orig_RollTemporaryItemFromItemIndex orig, ItemIndex itemIndex)
         {
             return orig(QualityCatalog.GetItemIndexOfQuality(itemIndex, QualityTier.None));
         }

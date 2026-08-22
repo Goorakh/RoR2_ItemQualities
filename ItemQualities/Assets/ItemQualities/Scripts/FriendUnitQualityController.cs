@@ -9,10 +9,10 @@ namespace ItemQualities
 {
     public sealed class FriendUnitQualityController : MonoBehaviour
     {
-        static readonly string _qualityInteractContextToken = "FRIENDUNIT_QUALITY_PET_CONTEXT";
+        private static readonly string _qualityInteractContextToken = "FRIENDUNIT_QUALITY_PET_CONTEXT";
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             if (DLC3Content.BodyPrefabs.FriendUnitBody)
             {
@@ -25,25 +25,25 @@ namespace ItemQualities
             }
         }
 
-        CharacterBody _body;
+        private CharacterBody _body;
 
-        GenericInteraction _genericInteraction;
+        private GenericInteraction _genericInteraction;
 
-        FriendUnitController _friendUnitController;
+        private FriendUnitController _friendUnitController;
 
-        EntityStateMachine _bodyStateMachine;
+        private EntityStateMachine _bodyStateMachine;
 
-        CharacterMaster _ownerMaster;
+        private CharacterMaster _ownerMaster;
 
-        bool _qualityBehaviorActive;
+        private bool _qualityBehaviorActive;
 
-        string _defaultInteractContextToken;
+        private string _defaultInteractContextToken;
 
         public bool IsQualityBehaviorActive => _qualityBehaviorActive;
 
         public InteractionProcFilter InteractionProcFilter { get; private set; }
 
-        void Awake()
+        private void Awake()
         {
             _body = GetComponent<CharacterBody>();
             _genericInteraction = GetComponent<GenericInteraction>();
@@ -53,7 +53,7 @@ namespace ItemQualities
             _bodyStateMachine = EntityStateMachine.FindByCustomName(gameObject, "Body");
         }
 
-        void Start()
+        private void Start()
         {
             if (_body.master)
             {
@@ -64,7 +64,7 @@ namespace ItemQualities
             }
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (_body.master)
             {
@@ -75,7 +75,7 @@ namespace ItemQualities
             setOwnerMaster(null);
         }
 
-        void setOwnerMaster(CharacterMaster ownerMaster)
+        private void setOwnerMaster(CharacterMaster ownerMaster)
         {
             if (_ownerMaster == ownerMaster)
                 return;
@@ -94,7 +94,7 @@ namespace ItemQualities
             }
         }
 
-        void onOwnerInventoryChanged()
+        private void onOwnerInventoryChanged()
         {
             ItemQualityCounts physicsProjectile = default;
             if (_ownerMaster && _ownerMaster.inventory)
@@ -105,7 +105,7 @@ namespace ItemQualities
             setQualityBehaviorActive(physicsProjectile.TotalQualityCount > 0);
         }
 
-        void setQualityBehaviorActive(bool active)
+        private void setQualityBehaviorActive(bool active)
         {
             if (_qualityBehaviorActive == active)
                 return;
@@ -133,7 +133,7 @@ namespace ItemQualities
             }
         }
 
-        void onQualityInteract(Interactor interactor)
+        private void onQualityInteract(Interactor interactor)
         {
             CharacterBody interactorBody = interactor ? interactor.GetComponent<CharacterBody>() : null;
             if (!interactorBody || !interactorBody.inputBank)

@@ -17,10 +17,10 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class DronesDropDynamite
+    internal static class DronesDropDynamite
     {
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> droneBallDotZoneLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_Drone_Tech.DroneBallDotZone_prefab);
             AsyncOperationHandle<GameObject> droneTechBodyLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_Drone_Tech.DroneTechBody_prefab);

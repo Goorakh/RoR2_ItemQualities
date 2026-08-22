@@ -15,14 +15,20 @@ namespace ItemQualities
 
         public static ModdedProcType Crowbar { get; private set; } = ModdedProcType.Invalid;
 
+        public static ModdedProcType Knurl { get; private set; } = ModdedProcType.Invalid;
+
+        public static ModdedProcType NovaOnLowHealthBlast { get; private set; } = ModdedProcType.Invalid;
+
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IncreasePrimaryDamage = ProcTypeAPI.ReserveProcType();
             Immobilize = ProcTypeAPI.ReserveProcType();
             VoidDeathOrbProcType = ProcTypeAPI.ReserveProcType();
             Bug = ProcTypeAPI.ReserveProcType();
             Crowbar = ProcTypeAPI.ReserveProcType();
+            Knurl = ProcTypeAPI.ReserveProcType();
+            NovaOnLowHealthBlast = ProcTypeAPI.ReserveProcType();
         }
     }
 }

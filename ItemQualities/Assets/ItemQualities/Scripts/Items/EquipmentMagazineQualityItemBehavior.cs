@@ -6,22 +6,22 @@ namespace ItemQualities.Items
     public sealed class EquipmentMagazineQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.EquipmentMagazine;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             EquipmentSlot.onServerEquipmentActivated += onEquipmentActivated;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             EquipmentSlot.onServerEquipmentActivated -= onEquipmentActivated;
         }
 
-        void onEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
+        private void onEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
         {
             if (Body.equipmentSlot != equipmentSlot || equipmentIndex == EquipmentIndex.None)
                 return;

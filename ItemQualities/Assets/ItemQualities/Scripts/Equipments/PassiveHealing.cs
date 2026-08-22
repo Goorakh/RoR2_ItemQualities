@@ -18,18 +18,18 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
 {
-    static class PassiveHealing
+    internal static class PassiveHealing
     {
-        static GameObject _thrownObjectProjectileSilentPrefab;
+        private static GameObject _thrownObjectProjectileSilentPrefab;
 
-        static GameObject _teleportEffectPrefab;
+        private static GameObject _teleportEffectPrefab;
 
-        static DeployableSlot _woodspriteCloneDeployableSlot = DeployableSlot.None;
+        private static DeployableSlot _woodspriteCloneDeployableSlot = DeployableSlot.None;
 
         private static readonly Func<ItemIndex, bool> itemCopyFilterDelegate = itemCopyFilter;
 
         [InitDuringStartupPhase(GameInitPhase.PreFrame)]
-        static void EarlyInit()
+        private static void EarlyInit()
         {
             _woodspriteCloneDeployableSlot = DeployableAPI.RegisterDeployableSlot(getWoodspriteCloneLimit);
         }
@@ -39,7 +39,7 @@ namespace ItemQualities.Equipments
             return Inventory.DefaultItemCopyFilter(itemIndex) || itemIndex == DLC3Content.Items.DroneUpgradeHidden.itemIndex;
         }
 
-        static int getWoodspriteCloneLimit(CharacterMaster master, int swarmsMultiplier)
+        private static int getWoodspriteCloneLimit(CharacterMaster master, int swarmsMultiplier)
         {
             QualityTier passiveHealingQualityTier = QualityTier.None;
             if (!master.inventory.GetEquipmentDisabled())
@@ -73,7 +73,7 @@ namespace ItemQualities.Equipments
         }
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             ParallelProgressCoroutine coroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
 
@@ -143,12 +143,45 @@ namespace ItemQualities.Equipments
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
+            IL.EntityStates.Drone.DroneJunk.Surprise.DropTempItemServer += Surprise_DropTempItemServer;
             IL.RoR2.EquipmentSlot.FirePassiveHealing += EquipmentSlot_FirePassiveHealing;
         }
 
-        static void EquipmentSlot_FirePassiveHealing(ILContext il)
+        private static void Surprise_DropTempItemServer(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            VariableDefinition uniquePickupVar = null;
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchLdloc<UniquePickup>(il, out uniquePickupVar),
+                               x => x.MatchLdloc<Vector3>(il, out _), // position
+                               x => x.MatchLdarg<Vector3>(il, out _), // velocity
+                               x => x.MatchCallOrCallvirt<PickupDropletController>(nameof(PickupDropletController.CreatePickupDroplet))))
+            {
+                Log.Error("Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Ldloca, uniquePickupVar);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<ModifyTempItemPickupDelegate>(modifyTempItemPickup);
+
+            static void modifyTempItemPickup(ref UniquePickup pickup, EntityStates.Drone.DroneJunk.Surprise surpriseState)
+            {
+                if (surpriseState.characterBody &&
+                    surpriseState.characterBody.inventory &&
+                    surpriseState.characterBody.inventory.GetItemCountEffective(RoR2Content.Items.Ghost) > 0)
+                {
+                    pickup.decayValue *= 1f / 4f;
+                }
+            }
+        }
+
+        private delegate void ModifyTempItemPickupDelegate(ref UniquePickup pickup, EntityStates.Drone.DroneJunk.Surprise surpriseState);
+
+        private static void EquipmentSlot_FirePassiveHealing(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -181,7 +214,7 @@ namespace ItemQualities.Equipments
                 GameObject cloneMasterPrefab = MasterCatalog.GetMasterPrefab(cloneMasterIndex);
                 if (!cloneMasterPrefab)
                     return;
-                
+
                 Vector3 cloneSpawnPosition = targetBody.footPosition;
                 Quaternion cloneSpawnRotation = ((Component)targetBody).transform.rotation;
                 if (targetBody.characterDirection)
@@ -310,7 +343,7 @@ namespace ItemQualities.Equipments
                             break;
                     }
 
-                    spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.TrueKillOnTimer, cloneDuration);
+                    spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.KillOnTimer, cloneDuration);
 
                     Deployable deployable = spawnedMaster.EnsureComponent<Deployable>();
                     deployable.onUndeploy ??= new UnityEvent();

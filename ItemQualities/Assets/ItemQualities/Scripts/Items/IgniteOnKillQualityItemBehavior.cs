@@ -16,18 +16,18 @@ namespace ItemQualities.Items
 {
     public sealed class IgniteOnKillQualityItemBehavior : QualityItemBodyBehavior
     {
-        static GameObject _fireAuraPrefab;
+        private static GameObject _fireAuraPrefab;
 
-        static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
+        private static readonly SphereSearch _igniteOnKillSphereSearch = new SphereSearch();
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> icicleAuraLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Icicle.IcicleAura_prefab);
 
             ParallelProgressCoroutine prefabsLoadCoroutine = new ParallelProgressCoroutine(args.ProgressReceiver);
             prefabsLoadCoroutine.Add(icicleAuraLoad);
-            
+
             yield return prefabsLoadCoroutine;
 
             if (icicleAuraLoad.Status != AsyncOperationStatus.Succeeded || !icicleAuraLoad.Result)
@@ -91,15 +91,15 @@ namespace ItemQualities.Items
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.IgniteOnKill;
         }
 
-        IcicleAuraController _icicleAura;
-        GameObject _fireAuraObj;
+        private IcicleAuraController _icicleAura;
+        private GameObject _fireAuraObj;
 
-        void OnEnable()
+        private void OnEnable()
         {
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
 
@@ -111,7 +111,7 @@ namespace ItemQualities.Items
             NetworkServer.Spawn(_fireAuraObj);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
 
@@ -122,7 +122,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void onCharacterDeathGlobal(DamageReport damageReport)
+        private void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (damageReport == null || damageReport.attackerBody != Body || !_icicleAura)
                 return;
@@ -171,7 +171,7 @@ namespace ItemQualities.Items
             }
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (!NetworkServer.active)
                 return;

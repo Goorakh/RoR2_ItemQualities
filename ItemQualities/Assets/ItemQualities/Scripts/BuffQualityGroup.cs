@@ -1,5 +1,4 @@
-﻿using HG;
-using ItemQualities.ContentManagement;
+﻿using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -33,16 +32,16 @@ namespace ItemQualities
         internal BuffDef BaseBuff;
 
         [SerializeField]
-        BuffDef _uncommonBuff;
+        private BuffDef _uncommonBuff;
 
         [SerializeField]
-        BuffDef _rareBuff;
+        private BuffDef _rareBuff;
 
         [SerializeField]
-        BuffDef _epicBuff;
+        private BuffDef _epicBuff;
 
         [SerializeField]
-        BuffDef _legendaryBuff;
+        private BuffDef _legendaryBuff;
 
         [Tooltip("If set, all quality buffs in this group will be treated as an instance of the base buff by the game.")]
         public bool InheritBaseBuffBehavior = true;
@@ -59,7 +58,7 @@ namespace ItemQualities
 
         public BuffIndex LegendaryBuffIndex => _legendaryBuff ? _legendaryBuff.buffIndex : BuffIndex.None;
 
-        bool checkCanModify()
+        private bool checkCanModify()
         {
             if (QualityCatalog.Availability.available)
             {
@@ -372,7 +371,7 @@ namespace ItemQualities
 
 #if UNITY_EDITOR
         [ContextMenu("Generate BuffDefs")]
-        void GenerateBuffs()
+        private void GenerateBuffs()
         {
             string baseBuffName = name;
             if (baseBuffName.StartsWith("bg"))

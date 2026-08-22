@@ -2,7 +2,7 @@
 
 namespace ItemQualities
 {
-    static class ShaderProperties
+    internal static class ShaderProperties
     {
         public static readonly int _Color = Shader.PropertyToID("_Color");
 

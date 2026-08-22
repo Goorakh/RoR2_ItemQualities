@@ -8,13 +8,13 @@ namespace ItemQualities
     [RequireComponent(typeof(ProjectileController))]
     public sealed class ProjectileInstantiateDeployableOnImpact : MonoBehaviour, IProjectileImpactBehavior
     {
-        ProjectileController _projectileController;
+        private ProjectileController _projectileController;
 
         public DeployableSlot DeployableSlot = DeployableSlot.None;
 
         public GameObject DeployablePrefab;
 
-        void Awake()
+        private void Awake()
         {
             _projectileController = GetComponent<ProjectileController>();
         }

@@ -172,6 +172,12 @@
       "source": "embedded",
       "dependencies": {}
     },
+    "pseudopulse-rebindables": {
+      "version": "file:Rebindables",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "pseudopulse-seekerspatcher": {
       "version": "file:SeekersPatcher",
       "depth": 0,

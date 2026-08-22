@@ -6,12 +6,12 @@ namespace ItemQualities.Items
     public sealed class EnergizedOnEquipmentUseItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.EnergizedOnEquipmentUse;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             if (Body.inventory && Body.inventory.GetItemCountEffective(RoR2Content.Items.EnergizedOnEquipmentUse) > 0)
             {

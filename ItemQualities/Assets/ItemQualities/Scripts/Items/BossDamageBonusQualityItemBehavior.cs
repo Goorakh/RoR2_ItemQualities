@@ -9,14 +9,14 @@ namespace ItemQualities.Items
     public sealed class BossDamageBonusQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
-        static ItemQualityGroup GetItemGroup()
+        private static ItemQualityGroup GetItemGroup()
         {
             return ItemQualitiesContent.ItemQualityGroups.BossDamageBonus;
         }
 
-        float _updateMiniBossTimer = 0f;
+        private float _updateMiniBossTimer = 0f;
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             _updateMiniBossTimer -= Time.fixedDeltaTime;
 
@@ -49,7 +49,7 @@ namespace ItemQualities.Items
             }
         }
 
-        CharacterBody findBestMiniBoss()
+        private CharacterBody findBestMiniBoss()
         {
             CharacterBody highestHealthBody = null;
             TeamMask teamMask = TeamMask.allButNeutral;
@@ -90,22 +90,22 @@ namespace ItemQualities.Items
             return highestHealthBody;
         }
 
-        sealed class MinibossController : MonoBehaviour, IOnTakeDamageServerReceiver
+        private sealed class MinibossController : MonoBehaviour, IOnTakeDamageServerReceiver
         {
-            CharacterBody _body;
-            GameObject _miniBossBodyAttachmentObj;
+            private CharacterBody _body;
+            private GameObject _miniBossBodyAttachmentObj;
 
-            void Awake()
+            private void Awake()
             {
                 _body = GetComponent<CharacterBody>();
-                
+
                 _miniBossBodyAttachmentObj = Instantiate(ItemQualitiesContent.NetworkedPrefabs.MiniBossBodyAttachment);
 
                 NetworkedBodyAttachment miniBossAttachment = _miniBossBodyAttachmentObj.GetComponent<NetworkedBodyAttachment>();
                 miniBossAttachment.AttachToGameObjectAndSpawn(gameObject);
             }
 
-            void OnEnable()
+            private void OnEnable()
             {
                 if (_body && _body.healthComponent)
                 {
@@ -113,7 +113,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            void OnDisable()
+            private void OnDisable()
             {
                 if (_body && _body.healthComponent)
                 {
@@ -121,7 +121,7 @@ namespace ItemQualities.Items
                 }
             }
 
-            void OnDestroy()
+            private void OnDestroy()
             {
                 if (_body)
                 {
@@ -132,7 +132,7 @@ namespace ItemQualities.Items
                 _miniBossBodyAttachmentObj = null;
             }
 
-            void FixedUpdate()
+            private void FixedUpdate()
             {
                 if (!_body ||
                     !_body.healthComponent ||

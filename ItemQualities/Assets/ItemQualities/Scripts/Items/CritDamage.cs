@@ -11,9 +11,9 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class CritDamage
+    internal static class CritDamage
     {
-        static readonly DamageColorIndex[] _critDamageColors = new DamageColorIndex[]
+        private static readonly DamageColorIndex[] _critDamageColors = new DamageColorIndex[]
         {
             ColorsAPI.RegisterDamageColor(new Color(1f, 0.9f, 0.9f)),
             ColorsAPI.RegisterDamageColor(new Color(1f, 0.7f, 0.7f)),
@@ -24,12 +24,12 @@ namespace ItemQualities.Items
         };
 
         [SystemInitializer(typeof(CritOnUse))]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
 
-        static void HealthComponent_TakeDamageProcess(ILContext il)
+        private static void HealthComponent_TakeDamageProcess(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParmemter))
             {

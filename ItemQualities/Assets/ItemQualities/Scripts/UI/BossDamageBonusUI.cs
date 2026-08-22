@@ -11,16 +11,16 @@ namespace ItemQualities.UI
 
         public GameObject MarkerSectionPrefab;
 
-        UIElementAllocator<BossDamageBonusTickController> _tickAllocator;
+        private UIElementAllocator<BossDamageBonusTickController> _tickAllocator;
 
-        int _maxTicksPerSection;
+        private int _maxTicksPerSection;
 
-        HUD _hud;
+        private HUD _hud;
 
-        CharacterMaster _targetMaster;
-        CharacterMasterExtraStatsTracker _targetMasterStats;
+        private CharacterMaster _targetMaster;
+        private CharacterMasterExtraStatsTracker _targetMasterStats;
 
-        void Awake()
+        private void Awake()
         {
             _hud = GetComponentInParent<HUD>();
 
@@ -29,21 +29,21 @@ namespace ItemQualities.UI
             _maxTicksPerSection = MarkerSectionPrefab.GetComponent<BossDamageBonusTickController>().NumberSprites.Length;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             setTargetMaster(_hud.targetMaster);
 
             HUD.onHudTargetChangedGlobal += onHudTargetChangedGlobal;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             HUD.onHudTargetChangedGlobal -= onHudTargetChangedGlobal;
 
             setTargetMaster(null);
         }
 
-        void onHudTargetChangedGlobal(HUD hud)
+        private void onHudTargetChangedGlobal(HUD hud)
         {
             if (hud != _hud)
                 return;
@@ -51,7 +51,7 @@ namespace ItemQualities.UI
             setTargetMaster(hud.targetMaster);
         }
 
-        void setTargetMaster(CharacterMaster master)
+        private void setTargetMaster(CharacterMaster master)
         {
             if (_targetMaster == master)
                 return;
@@ -82,17 +82,17 @@ namespace ItemQualities.UI
             refreshTicks();
         }
 
-        void onBossDamageBonusTicksChanged(CharacterMasterExtraStatsTracker masterExtraStats)
+        private void onBossDamageBonusTicksChanged(CharacterMasterExtraStatsTracker masterExtraStats)
         {
             refreshTicks();
         }
 
-        void onTargetInventoryChanged()
+        private void onTargetInventoryChanged()
         {
             refreshTicks();
         }
 
-        void refreshTicks()
+        private void refreshTicks()
         {
             ItemQualityCounts bossDamageBonus = default;
             if (_targetMaster && _targetMaster.inventory)

@@ -11,10 +11,10 @@ using UnityEngine;
 namespace ItemQualities
 {
 #if DEBUG
-    static class InteractableDebugger
+    internal static class InteractableDebugger
     {
         [ConCommand(commandName = "test_interactable_appearences", flags = ConVarFlags.SenderMustBeServer)]
-        static void CCStartInteractableDebugging(ConCommandArgs args)
+        private static void CCStartInteractableDebugging(ConCommandArgs args)
         {
             if (!Run.instance)
             {
@@ -51,24 +51,24 @@ namespace ItemQualities
             appearenceTester.TestInteractableNames = interactableNames.ToArray();
         }
 
-        sealed class InteractableAppearenceTester : MonoBehaviour
+        private sealed class InteractableAppearenceTester : MonoBehaviour
         {
             public string[] TestInteractableNames = Array.Empty<string>();
 
-            readonly List<InteractableAppearenceInfo> _interactableAppearences = new List<InteractableAppearenceInfo>();
+            private readonly List<InteractableAppearenceInfo> _interactableAppearences = new List<InteractableAppearenceInfo>();
 
-            readonly HashSet<SceneIndex> _searchedSceneIndices = new HashSet<SceneIndex>();
+            private readonly HashSet<SceneIndex> _searchedSceneIndices = new HashSet<SceneIndex>();
 
-            int _stageSearchCount;
+            private int _stageSearchCount;
 
-            bool _scenePopulated;
+            private bool _scenePopulated;
 
-            void Start()
+            private void Start()
             {
                 StartCoroutine(runTestRoutine());
             }
 
-            void OnEnable()
+            private void OnEnable()
             {
                 SceneDirector.onPostPopulateSceneServer += onPostPopulateSceneServer;
 
@@ -78,7 +78,7 @@ namespace ItemQualities
                 }
             }
 
-            void OnDisable()
+            private void OnDisable()
             {
                 SceneDirector.onPostPopulateSceneServer -= onPostPopulateSceneServer;
 
@@ -168,12 +168,12 @@ namespace ItemQualities
                 Log.Info(resultBuilder.ToString());
             }
 
-            void onPostPopulateSceneServer(SceneDirector sceneDirector)
+            private void onPostPopulateSceneServer(SceneDirector sceneDirector)
             {
                 _scenePopulated = true;
             }
 
-            IEnumerator runTestRoutine()
+            private IEnumerator runTestRoutine()
             {
                 while (_stageSearchCount < 100)
                 {
@@ -184,7 +184,7 @@ namespace ItemQualities
                     _searchedSceneIndices.Add(currentSceneIndex);
 
                     Dictionary<string, InteractableAppearenceInfo> appearenceInfoByInteractableName = new Dictionary<string, InteractableAppearenceInfo>(TestInteractableNames.Length);
-                    
+
                     foreach (PurchaseInteraction purchaseInteraction in InstanceTracker.GetInstancesList<PurchaseInteraction>())
                     {
                         string interactableObjectName = purchaseInteraction.name;
@@ -223,7 +223,7 @@ namespace ItemQualities
                 Destroy(this);
             }
 
-            sealed class InteractableAppearenceInfo
+            private sealed class InteractableAppearenceInfo
             {
                 public string InteractableName;
                 public int InteractableCount;

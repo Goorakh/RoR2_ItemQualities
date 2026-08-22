@@ -8,10 +8,10 @@ using UnityEngine;
 
 namespace ItemQualities.UI
 {
-    sealed class UIInstantiator : MonoBehaviour
+    internal sealed class UIInstantiator : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_UI.HUDSimple_prefab).OnSuccess(hudPrefab =>
             {
@@ -19,7 +19,7 @@ namespace ItemQualities.UI
             });
         }
 
-        void Awake()
+        private void Awake()
         {
             HUD hud = GetComponent<HUD>();
 
@@ -29,6 +29,8 @@ namespace ItemQualities.UI
 
             Instantiate(ItemQualitiesContent.Prefabs.HitlistMarkersUI, bottomRightClusterTransform);
 
+            // Parry projectile display over equipment
+            /*
             EquipmentIcon mainEquipmentIcon = hud.equipmentIcons.FirstOrDefault(e => !e.displayAlternateEquipment);
             if (mainEquipmentIcon && mainEquipmentIcon.displayRoot)
             {
@@ -38,6 +40,7 @@ namespace ItemQualities.UI
                 ParryStoredProjectileDisplay parryProjectileDisplay = parryProjectileDisplayUI.GetComponent<ParryStoredProjectileDisplay>();
                 parryProjectileDisplay.ParentEquipmentIcon = mainEquipmentIcon;
             }
+            */
 
             enabled = false;
         }

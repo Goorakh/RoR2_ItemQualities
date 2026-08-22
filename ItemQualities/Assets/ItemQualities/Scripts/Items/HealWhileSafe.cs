@@ -1,25 +1,21 @@
 ﻿using ItemQualities.Orbs;
 using ItemQualities.Utilities.Extensions;
-using Mono.Cecil.Cil;
-using MonoMod.Cil;
-using R2API;
 using RoR2;
 using RoR2.Orbs;
-using System;
 using UnityEngine;
 using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class HealWhileSafe
+    internal static class HealWhileSafe
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static void onCharacterDeathGlobal(DamageReport damageReport)
+        private static void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (!NetworkServer.active || damageReport?.damageInfo == null)
                 return;

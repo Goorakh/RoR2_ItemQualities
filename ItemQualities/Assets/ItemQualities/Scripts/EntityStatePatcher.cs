@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace ItemQualities
 {
-    static class EntityStatePatcher
+    internal static class EntityStatePatcher
     {
         public struct PatcherInfo
         {
@@ -17,7 +17,7 @@ namespace ItemQualities
             public ILContext.Manipulator Manipulator;
         }
 
-        static readonly List<PatcherInfo> _patchers = new List<PatcherInfo>();
+        private static readonly List<PatcherInfo> _patchers = new List<PatcherInfo>();
 
         public static void AddPatcher(in PatcherInfo patcherInfo)
         {
@@ -36,14 +36,14 @@ namespace ItemQualities
             }
         }
 
-        static void onLoad()
+        private static void onLoad()
         {
             executePatchers();
             _patchers.Clear();
             RoR2Application.onLoad -= onLoad;
         }
 
-        static void executePatchers()
+        private static void executePatchers()
         {
             HashSet<Type> allEntityStateTypes = new HashSet<Type>(EntityStateCatalog.stateIndexToType.Length);
 
@@ -133,7 +133,7 @@ namespace ItemQualities
             Log.Debug($"Applied {numAppliedHooks} entity state patch(es)");
         }
 
-        sealed class ManipulatorGroup
+        private sealed class ManipulatorGroup
         {
             public readonly ILContext.Manipulator[] Manipulators;
 

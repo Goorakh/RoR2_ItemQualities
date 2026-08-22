@@ -7,10 +7,10 @@ namespace ItemQualities.Orbs
 {
     public sealed class SteakOrb : Orb
     {
-        static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
+        private static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
 
         [SystemInitializer(typeof(EffectCatalogUtils))]
-        static void Init()
+        private static void Init()
         {
             _orbEffectIndex = EffectCatalogUtils.FindEffectIndex("InfusionOrbEffect");
             if (_orbEffectIndex == EffectIndex.Invalid)
@@ -21,7 +21,7 @@ namespace ItemQualities.Orbs
 
         public float SteakBonus;
 
-        CharacterMasterExtraStatsTracker _targetMasterStats;
+        private CharacterMasterExtraStatsTracker _targetMasterStats;
 
         public override void Begin()
         {
@@ -34,7 +34,7 @@ namespace ItemQualities.Orbs
                     origin = origin,
                     genericFloat = duration
                 };
-                
+
                 effectData.SetHurtBoxReference(target);
 
                 EffectManager.SpawnEffect(_orbEffectIndex, effectData, true);

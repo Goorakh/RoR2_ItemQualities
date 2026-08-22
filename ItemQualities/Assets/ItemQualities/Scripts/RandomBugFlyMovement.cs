@@ -4,7 +4,7 @@ namespace ItemQualities
 {
     public sealed class RandomBugFlyMovement : MonoBehaviour
     {
-        Vector3 _basePosition;
+        private Vector3 _basePosition;
 
         [Tooltip("The maximum distance from the center position the bug can move")]
         public float MaxDistance;
@@ -24,26 +24,26 @@ namespace ItemQualities
         public AnimationCurve MoveCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
 
         // global state
-        State _currentState;
-        float _timer;
+        private State _currentState;
+        private float _timer;
 
         // moving state
-        float _moveTotalDuration;
-        Vector3 _lastPosition;
-        Vector3 _targetPosition;
+        private float _moveTotalDuration;
+        private Vector3 _lastPosition;
+        private Vector3 _targetPosition;
 
-        void OnEnable()
+        private void OnEnable()
         {
             _basePosition = transform.localPosition;
             setState(State.Idle);
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             transform.localPosition = _basePosition;
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             switch (_currentState)
             {
@@ -70,7 +70,7 @@ namespace ItemQualities
             }
         }
 
-        void setState(State state)
+        private void setState(State state)
         {
             _currentState = state;
 
@@ -82,7 +82,7 @@ namespace ItemQualities
                 case State.Moving:
                     _lastPosition = transform.localPosition;
                     _targetPosition = _basePosition + (Random.insideUnitSphere * MaxDistance);
-                    Vector3 moveVector = (_lastPosition - _targetPosition);
+                    Vector3 moveVector = _lastPosition - _targetPosition;
                     _moveTotalDuration = moveVector.magnitude / MoveSpeed;
                     _timer = _moveTotalDuration;
 
@@ -97,7 +97,7 @@ namespace ItemQualities
             }
         }
 
-        enum State : byte
+        private enum State : byte
         {
             Idle,
             Moving

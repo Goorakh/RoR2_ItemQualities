@@ -13,7 +13,7 @@ namespace ItemQualities.Items
     public sealed class BandolierQualityInfo : NetworkBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Bandolier.AmmoPack_prefab).OnSuccess(bandolierPrefab =>
             {
@@ -46,19 +46,19 @@ namespace ItemQualities.Items
         }
 
         [TargetRpc]
-        void TargetApplyAmmoPack(NetworkConnection connection, GameObject recipient, int extraSkillCharges)
+        private void TargetApplyAmmoPack(NetworkConnection connection, GameObject recipient, int extraSkillCharges)
         {
             applyAmmoPack(recipient, extraSkillCharges);
         }
 
-        static void applyAmmoPack(GameObject recipient, int extraSkillCharges)
+        private static void applyAmmoPack(GameObject recipient, int extraSkillCharges)
         {
             if (!recipient)
                 return;
 
             if (!recipient.TryGetComponent(out SkillLocator skillLocator))
                 return;
-            
+
             List<GenericSkill> skills = new List<GenericSkill>(4);
 
             void tryAddSkill(GenericSkill genericSkill)

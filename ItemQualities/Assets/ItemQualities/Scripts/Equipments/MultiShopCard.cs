@@ -8,32 +8,31 @@ using RoR2.Audio;
 using RoR2.DirectionalSearch;
 using RoR2.UI;
 using System;
-using System.Linq;
 using UnityEngine;
 
 namespace ItemQualities.Equipments
 {
-    static class MultiShopCard
+    internal static class MultiShopCard
     {
-        static readonly InteractableSearch _sharedInteractableSearch = new InteractableSearch
+        private static readonly InteractableSearch _sharedInteractableSearch = new InteractableSearch
         {
             requireCanCopy = true,
             forbidDuplicated = true,
         };
 
-        static readonly float _interactableSearchMinDistance = 0f;
-        static readonly float _interactableSearchMaxDistance = 15f;
+        private static readonly float _interactableSearchMinDistance = 0f;
+        private static readonly float _interactableSearchMaxDistance = 15f;
 
-        static readonly float _interactableSearchMinAngle = 0f;
-        static readonly float _interactableSearchMaxAngle = 12.5f;
+        private static readonly float _interactableSearchMinAngle = 0f;
+        private static readonly float _interactableSearchMaxAngle = 12.5f;
 
-        static readonly bool _interactableSearchFilterByLoS = false;
-        static readonly bool _interactableSearchFilterByDistinctEntity = true;
+        private static readonly bool _interactableSearchFilterByLoS = false;
+        private static readonly bool _interactableSearchFilterByDistinctEntity = true;
 
-        static readonly SortMode _interactableSearchSortMode = SortMode.Angle;
+        private static readonly SortMode _interactableSearchSortMode = SortMode.Angle;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
 
@@ -46,7 +45,7 @@ namespace ItemQualities.Equipments
             SpawnUtils.OnSceneReadyForSpawnsServer += onSceneReadyForSpawnsServer;
         }
 
-        static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
+        private static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
         {
             if (SceneInfo.instance.countsAsStage || SceneInfo.instance.sceneDef.allowItemsToSpawnObjects)
             {
@@ -167,7 +166,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void EquipmentSlot_UpdateTargets(ILContext il)
+        private static void EquipmentSlot_UpdateTargets(ILContext il)
         {
             if (!il.Method.TryFindParameter<EquipmentIndex>("targetingEquipmentIndex", out ParameterDefinition targetingEquipmentIndexParameter))
             {
@@ -239,7 +238,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
+        private static bool EquipmentSlot_PerformEquipmentAction(On.RoR2.EquipmentSlot.orig_PerformEquipmentAction orig, EquipmentSlot self, EquipmentDef equipmentDef)
         {
             bool result = orig(self, equipmentDef);
 
@@ -288,7 +287,7 @@ namespace ItemQualities.Equipments
             return result;
         }
 
-        static void EquipmentIcon_SetDisplayData(ILContext il)
+        private static void EquipmentIcon_SetDisplayData(ILContext il)
         {
             if (!il.Method.TryFindParameter<EquipmentIcon.DisplayData>(out ParameterDefinition displayDataParameter))
             {
@@ -348,7 +347,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static void SummonMasterBehavior_OnEquipmentSpentOnPurchase(ILContext il)
+        private static void SummonMasterBehavior_OnEquipmentSpentOnPurchase(ILContext il)
         {
             if (!il.Method.TryFindParameter<Interactor>(out ParameterDefinition interactorParameter))
             {

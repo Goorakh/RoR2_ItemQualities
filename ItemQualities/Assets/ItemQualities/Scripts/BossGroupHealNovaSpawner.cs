@@ -16,10 +16,10 @@ namespace ItemQualities
     [RequireComponent(typeof(TeamFilter))]
     public sealed class BossGroupHealNovaSpawner : NetworkBehaviour
     {
-        static GameObject _pulsePrefab;
+        private static GameObject _pulsePrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> novaPulseLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_TPHealingNova.TeleporterHealNovaPulse_prefab);
             novaPulseLoad.OnSuccess(novaPulse =>
@@ -43,18 +43,18 @@ namespace ItemQualities
         [SyncVar]
         public float NovaRadius = 100f;
 
-        TeamFilter _teamFilter;
+        private TeamFilter _teamFilter;
 
-        float _lastPulseFraction;
+        private float _lastPulseFraction;
 
-        float _pulseAvailableTimer = 0f;
+        private float _pulseAvailableTimer = 0f;
 
-        void Awake()
+        private void Awake()
         {
             _teamFilter = GetComponent<TeamFilter>();
         }
 
-        void Start()
+        private void Start()
         {
             if (NetworkServer.active)
             {
@@ -62,12 +62,12 @@ namespace ItemQualities
             }
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             transform.DetachChildren();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
             if (NetworkServer.active)
             {
@@ -75,7 +75,7 @@ namespace ItemQualities
             }
         }
 
-        void fixedUpdateServer(float deltaTime)
+        private void fixedUpdateServer(float deltaTime)
         {
             if (_pulseAvailableTimer > 0f)
             {
@@ -102,11 +102,11 @@ namespace ItemQualities
             }
         }
 
-        float getCurrentBossProgressFraction()
+        private float getCurrentBossProgressFraction()
         {
             if (!BossGroup || !BossGroup.combatSquad)
                 return 0f;
-            
+
             if (BossGroup.combatSquad.defeatedServer)
                 return 1f;
 
@@ -119,7 +119,7 @@ namespace ItemQualities
             return bossGroupProgressFraction;
         }
 
-        static float getNextPulseFraction(int pulseCount, float lastPulseFraction)
+        private static float getNextPulseFraction(int pulseCount, float lastPulseFraction)
         {
             float pulseSegmentFraction = 1f / (pulseCount + 1);
             for (int i = 0; i < pulseCount; i++)
@@ -134,7 +134,7 @@ namespace ItemQualities
             return 1f;
         }
 
-        void spawnPulse()
+        private void spawnPulse()
         {
             GameObject pulseObj = Instantiate(_pulsePrefab, transform.position, transform.rotation, transform);
 
@@ -153,7 +153,7 @@ namespace ItemQualities
         }
 
         [ClientRpc]
-        void RpcSetPosition(Vector3 position)
+        private void RpcSetPosition(Vector3 position)
         {
             transform.position = position;
         }

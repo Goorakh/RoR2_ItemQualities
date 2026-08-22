@@ -7,15 +7,15 @@ using System;
 
 namespace ItemQualities.Items
 {
-    static class KnockBackHitEnemies
+    internal static class KnockBackHitEnemies
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.KnockbackFinUtil.ModifyDamageInfo += KnockbackFinUtil_ModifyDamageInfo;
         }
 
-        static void KnockbackFinUtil_ModifyDamageInfo(ILContext il)
+        private static void KnockbackFinUtil_ModifyDamageInfo(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

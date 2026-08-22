@@ -155,8 +155,7 @@ namespace ItemQualities.Items
             {
                 OnOwnerLostGlobal?.Invoke(this);
 
-                MinionHooks.OnMinionGroupMemberDiscoveredGlobal -= onMinionGroupMemberDiscoveredGlobal;
-                MinionHooks.OnMinionGroupMemberLostGlobal -= onMinionGroupMemberLostGlobal;
+                MasterSummon.onServerMasterSummonGlobal -= onServerMasterSummonGlobal;
 
                 MinionOwnership.MinionGroup ownerMinionGroup = MinionOwnership.MinionGroup.FindGroup(_ownerMasterNetworkId);
                 if (ownerMinionGroup != null)
@@ -192,26 +191,17 @@ namespace ItemQualities.Items
                     }
                 }
 
-                MinionHooks.OnMinionGroupMemberDiscoveredGlobal += onMinionGroupMemberDiscoveredGlobal;
-                MinionHooks.OnMinionGroupMemberLostGlobal += onMinionGroupMemberLostGlobal;
+                MasterSummon.onServerMasterSummonGlobal += onServerMasterSummonGlobal;
 
                 OnOwnerDiscoveredGlobal?.Invoke(this);
             }
         }
 
-        private void onMinionGroupMemberDiscoveredGlobal(MinionOwnership.MinionGroup minionGroup, CharacterMaster ownerMaster, CharacterMaster memberMaster)
+        private void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
         {
-            if (ReferenceEquals(_ownerMaster, ownerMaster))
+            if (ReferenceEquals(summonReport.leaderMasterInstance, _ownerMaster))
             {
-                onMinionMasterDiscovered(memberMaster);
-            }
-        }
-
-        private void onMinionGroupMemberLostGlobal(MinionOwnership.MinionGroup minionGroup, CharacterMaster ownerMaster, CharacterMaster memberMaster)
-        {
-            if (ReferenceEquals(_ownerMaster, ownerMaster))
-            {
-                onMinionMasterLost(memberMaster);
+                onMinionMasterDiscovered(summonReport.summonMasterInstance);
             }
         }
 

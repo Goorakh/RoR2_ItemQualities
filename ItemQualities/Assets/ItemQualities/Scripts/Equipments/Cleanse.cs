@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace ItemQualities.Equipments
 {
-    static class Cleanse
+    internal static class Cleanse
     {
         [SystemInitializer(typeof(BuffCatalog))]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.EquipmentSlot.FireCleanse += EquipmentSlot_FireCleanse;
 
@@ -24,7 +24,7 @@ namespace ItemQualities.Equipments
             }
         }
 
-        static bool EquipmentSlot_FireCleanse(On.RoR2.EquipmentSlot.orig_FireCleanse orig, EquipmentSlot self)
+        private static bool EquipmentSlot_FireCleanse(On.RoR2.EquipmentSlot.orig_FireCleanse orig, EquipmentSlot self)
         {
             bool result = orig(self);
 

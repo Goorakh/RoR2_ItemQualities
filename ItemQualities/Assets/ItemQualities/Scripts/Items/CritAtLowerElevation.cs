@@ -10,12 +10,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class CritAtLowerElevation
+    internal static class CritAtLowerElevation
     {
-        static GameObject _forceDownEffectPrefab;
+        private static GameObject _forceDownEffectPrefab;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> critAtLowerElevationFullEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_Items_CritAtLowerElevation.CritAtLowerElevationFullEffect_prefab);
             critAtLowerElevationFullEffectLoad.OnSuccess(critAtLowerElevationFullEffect =>
@@ -45,12 +45,12 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
-        static void onServerDamageDealt(DamageReport damageReport)
+        private static void onServerDamageDealt(DamageReport damageReport)
         {
             if (damageReport?.damageInfo == null || damageReport.damageDealt <= 0 || damageReport.damageInfo.procCoefficient <= 0)
                 return;

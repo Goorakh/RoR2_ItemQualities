@@ -6,17 +6,17 @@ using System;
 
 namespace ItemQualities
 {
-    static class AttackCollisionHooks
+    internal static class AttackCollisionHooks
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             On.RoR2.BulletAttack.DefaultFilterCallbackImplementation += BulletAttack_DefaultFilterCallbackImplementation;
             On.RoR2.OverlapAttack.HurtBoxPassesFilter += OverlapAttack_HurtBoxPassesFilter;
             IL.RoR2.BlastAttack.CollectHits += BlastAttack_CollectHits;
         }
 
-        static bool BulletAttack_DefaultFilterCallbackImplementation(On.RoR2.BulletAttack.orig_DefaultFilterCallbackImplementation orig, BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo)
+        private static bool BulletAttack_DefaultFilterCallbackImplementation(On.RoR2.BulletAttack.orig_DefaultFilterCallbackImplementation orig, BulletAttack bulletAttack, ref BulletAttack.BulletHit hitInfo)
         {
             if (!orig(bulletAttack, ref hitInfo))
                 return false;
@@ -37,7 +37,7 @@ namespace ItemQualities
             return true;
         }
 
-        static bool OverlapAttack_HurtBoxPassesFilter(On.RoR2.OverlapAttack.orig_HurtBoxPassesFilter orig, OverlapAttack self, HurtBox hurtBox)
+        private static bool OverlapAttack_HurtBoxPassesFilter(On.RoR2.OverlapAttack.orig_HurtBoxPassesFilter orig, OverlapAttack self, HurtBox hurtBox)
         {
             if (!orig(self, hurtBox))
                 return false;
@@ -58,7 +58,7 @@ namespace ItemQualities
             return true;
         }
 
-        static void BlastAttack_CollectHits(ILContext il)
+        private static void BlastAttack_CollectHits(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

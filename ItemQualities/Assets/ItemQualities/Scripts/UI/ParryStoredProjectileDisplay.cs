@@ -20,50 +20,50 @@ namespace ItemQualities.UI
         [NonSerialized]
         public EquipmentIcon ParentEquipmentIcon;
 
-        float _highPosition;
+        private float _highPosition;
 
-        Vector3 _positionVelocity;
+        private Vector3 _positionVelocity;
 
-        HUD _hud;
+        private HUD _hud;
 
-        MemoizedGetComponentCached<CharacterBodyExtraStatsTracker> _targetBodyExtraStats;
+        private MemoizedGetComponentCached<CharacterMasterExtraStatsTracker> _targetMasterStats;
 
         public new RectTransform transform => base.transform as RectTransform;
 
-        void Awake()
+        private void Awake()
         {
             _highPosition = transform.anchoredPosition.y;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             _hud = GetComponentInParent<HUD>();
         }
 
-        void OnTransformParentChanged()
+        private void OnTransformParentChanged()
         {
             _hud = GetComponentInParent<HUD>();
         }
 
-        void FixedUpdate()
+        private void FixedUpdate()
         {
-            GameObject targetBodyObject = _hud ? _hud.targetBodyObject : null;
+            CharacterMaster targetMaster = _hud ? _hud.targetMaster : null;
+            GameObject targetMasterObject = targetMaster ? targetMaster.gameObject : null;
 
-            CharacterBodyExtraStatsTracker targetBodyExtraStats = _targetBodyExtraStats.Get(targetBodyObject);
-            CharacterBody targetBody = targetBodyExtraStats ? targetBodyExtraStats.Body : null;
+            CharacterMasterExtraStatsTracker targetMasterExtraStats = _targetMasterStats.Get(targetMasterObject);
 
-            bool shouldDisplay = targetBodyExtraStats &&
-                                 targetBodyExtraStats.ParryStoredProjectileIndex != -1 &&
-                                 targetBody &&
-                                 targetBody.inventory &&
-                                 targetBody.inventory.currentEquipmentIndex == DLC3Content.Equipment.Parry.equipmentIndex &&
-                                 targetBody.inventory.GetActiveEquipmentQualityTier() > QualityTier.None;
+            bool shouldDisplay = targetMasterExtraStats &&
+                                 targetMasterExtraStats.ParryStoredProjectileInfo.ProjectileIndex != -1 &&
+                                 targetMaster &&
+                                 targetMaster.inventory &&
+                                 targetMaster.inventory.currentEquipmentIndex == DLC3Content.Equipment.Parry.equipmentIndex &&
+                                 targetMaster.inventory.GetActiveEquipmentQualityTier() > QualityTier.None;
 
             DisplayRoot.SetActive(shouldDisplay);
 
             if (shouldDisplay)
             {
-                CharacterBody parriedBodyPrefab = BodyCatalog.GetBodyPrefabBodyComponent(targetBodyExtraStats.ParryStoredProjectileAttackerBodyIndex);
+                CharacterBody parriedBodyPrefab = BodyCatalog.GetBodyPrefabBodyComponent(targetMasterExtraStats.ParryStoredProjectileInfo.AttackerBodyIndex);
 
                 Texture parriedBodyPortrait = null;
 

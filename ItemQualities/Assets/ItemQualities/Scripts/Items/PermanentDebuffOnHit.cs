@@ -7,12 +7,12 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class PermanentDebuffOnHit
+    internal static class PermanentDebuffOnHit
     {
-        static DotController.DotIndex _scorpionVenomDot;
+        private static DotController.DotIndex _scorpionVenomDot;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             DotController.DotDef dotDef = new DotController.DotDef
             {
@@ -49,20 +49,20 @@ namespace ItemQualities.Items
 
             float venomChance = permanentDebuffOnHit.HighestQuality switch
             {
-                QualityTier.Uncommon => 2,
-                QualityTier.Rare => 3,
-                QualityTier.Epic => 4,
-                QualityTier.Legendary => 5,
+                QualityTier.Uncommon => 5f,
+                QualityTier.Rare => 8f,
+                QualityTier.Epic => 12f,
+                QualityTier.Legendary => 15f,
                 _ => 0
             };
 
             if (RollUtil.CheckRoll(venomChance, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
-                DotController.InflictDot(damageReport.victim.gameObject, damageReport.attacker, damageReport.damageInfo.inflictedHurtbox, _scorpionVenomDot, 10 * damageReport.damageInfo.procCoefficient, 1f, maxStacksFromAttacker);
+                DotController.InflictDot(damageReport.victim.gameObject, damageReport.attacker, damageReport.damageInfo.inflictedHurtbox, _scorpionVenomDot, 10f * damageReport.damageInfo.procCoefficient, 1f, maxStacksFromAttacker);
             }
         }
 
-        static void dealVenomDamage(DotController self, DotController.PendingDamage pendingDamage)
+        private static void dealVenomDamage(DotController self, DotController.PendingDamage pendingDamage)
         {
             GameObject attacker = pendingDamage.attackerObject;
             CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
@@ -74,15 +74,15 @@ namespace ItemQualities.Items
             if (permanentDebuffOnHit.TotalQualityCount <= 0)
                 return;
 
-            float damageCoefficient = permanentDebuffOnHit.UncommonCount * 0.5f +
-                                        permanentDebuffOnHit.RareCount * 1f +
-                                        permanentDebuffOnHit.EpicCount * 1.5f +
-                                        permanentDebuffOnHit.LegendaryCount * 2f;
+            float damageCoefficient = (permanentDebuffOnHit.UncommonCount * 0.5f) +
+                                      (permanentDebuffOnHit.RareCount * 1f) +
+                                      (permanentDebuffOnHit.EpicCount * 1.5f) +
+                                      (permanentDebuffOnHit.LegendaryCount * 2f);
 
             int activeDots = 0;
-            for (int i = 0; i < DotAPI.VanillaDotCount + DotAPI.CustomDotCount; i++)
+            for (DotController.DotIndex dotIndex = 0; (int)dotIndex < DotAPI.VanillaDotCount + DotAPI.CustomDotCount; dotIndex++)
             {
-                if (self.HasDotActive((DotController.DotIndex)i))
+                if (self.HasDotActive(dotIndex))
                 {
                     activeDots++;
                 }

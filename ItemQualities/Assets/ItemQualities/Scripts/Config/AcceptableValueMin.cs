@@ -7,7 +7,7 @@ namespace ItemQualities.Config
     {
         public T MinValue { get; }
 
-        readonly string _cachedMinValueString;
+        private readonly string _cachedMinValueString;
 
         public AcceptableValueMin(T minValue, string customValueFormat = null) : base(typeof(T))
         {

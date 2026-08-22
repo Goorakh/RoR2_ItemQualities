@@ -14,9 +14,9 @@ namespace ItemQualities.ContentManagement
 {
     internal sealed class ExtendedContentPack
     {
-        readonly ContentPack _innerContentPack;
+        private readonly ContentPack _innerContentPack;
 
-        readonly NamedAssetCollection[] _extendedAssetCollections = Array.Empty<NamedAssetCollection>();
+        private readonly NamedAssetCollection[] _extendedAssetCollections = Array.Empty<NamedAssetCollection>();
 
         public ExtendedContentPack(ContentPack contentPack)
         {
@@ -104,6 +104,10 @@ namespace ItemQualities.ContentManagement
         public NamedAssetCollection<EntitlementDef> entitlementDefs => _innerContentPack.entitlementDefs;
 
         public NamedAssetCollection<MiscPickupDef> miscPickupDefs => _innerContentPack.miscPickupDefs;
+
+        public NamedAssetCollection<DroneDef> droneDefs => _innerContentPack.droneDefs;
+
+        public NamedAssetCollection<CraftableDef> craftableDefs => _innerContentPack.craftableDefs;
 
         public NamedAssetCollection<Type> entityStateTypes => _innerContentPack.entityStateTypes;
 

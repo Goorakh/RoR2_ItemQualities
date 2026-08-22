@@ -13,12 +13,12 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
 {
-    static class SpeedOnPickup
+    internal static class SpeedOnPickup
     {
-        static InteractableSpawnCard _iscSpeedOnPickupBarrel;
+        private static InteractableSpawnCard _iscSpeedOnPickupBarrel;
 
         [ContentInitializer]
-        static IEnumerator LoadContent(ContentInitializerArgs args)
+        private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
             AsyncOperationHandle<GameObject> barrelLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_Barrel1.Barrel1_prefab);
             AsyncOperationHandle<Sprite> barrelIconLoad = AddressableUtil.LoadAssetAsync<Sprite>(RoR2_Base_Common_MiscIcons.texBarrelIcon_png);
@@ -207,14 +207,14 @@ namespace ItemQualities.Items
         }
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             SpawnUtils.OnSceneReadyForSpawnsServer += onSceneReadyForSpawnsServer;
 
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
-        static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
+        private static void onSceneReadyForSpawnsServer(SceneDirector sceneDirector)
         {
             if (!_iscSpeedOnPickupBarrel)
                 return;
@@ -240,7 +240,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
+        private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)
         {
             if (sender.master &&
                 sender.master.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats) &&

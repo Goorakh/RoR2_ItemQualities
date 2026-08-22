@@ -9,12 +9,12 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class Talisman
+    internal static class Talisman
     {
-        static Action<Inventory> _invokeInventoryOnEquipmentExternalRestockServer;
+        private static Action<Inventory> _invokeInventoryOnEquipmentExternalRestockServer;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             _invokeInventoryOnEquipmentExternalRestockServer = EventUtils.GetInvokeMethodDelegate<Action<Inventory>>(typeof(Inventory), nameof(Inventory.onEquipmentExternalRestockServer));
 
@@ -39,10 +39,10 @@ namespace ItemQualities.Items
                                            (talisman.RareCount * 2) +
                                            (talisman.EpicCount * 3) +
                                            (talisman.LegendaryCount * 4);
-                    
+
                     EquipmentState equipmentState = attackerInventory.GetEquipment(attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
                     equipmentState.charges = HGMath.ByteSafeAdd(equipmentState.charges, (byte)Math.Min(temporaryCharges, byte.MaxValue));
-                    
+
                     if (equipmentState.charges > attackerInventory.GetEquipmentSlotMaxCharges())
                     {
                         equipmentState.chargeFinishTime = Run.FixedTimeStamp.positiveInfinity;
@@ -54,7 +54,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {

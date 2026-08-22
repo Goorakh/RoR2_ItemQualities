@@ -1,4 +1,3 @@
-using HG;
 using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
@@ -6,6 +5,7 @@ using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2.ContentManagement;
 using RoR2.Projectile;
+using RoR2.Skills;
 using ShaderSwapper;
 using System;
 using System.Collections;
@@ -25,12 +25,12 @@ namespace ItemQualities
 {
     public sealed class ItemQualitiesContent : IContentPackProvider
     {
-        readonly ExtendedContentPack _contentPack = new ExtendedContentPack();
+        private readonly ExtendedContentPack _contentPack = new ExtendedContentPack();
 
         public string identifier => ItemQualitiesPlugin.PluginGUID;
 
-        QualityContagiousItemHelper _qualityContagiousItemHelper;
-        ProjectileExplosionEffectScaleFixHelper _projectileExplosionEffectScaleFixHelper;
+        private QualityContagiousItemHelper _qualityContagiousItemHelper;
+        private ProjectileExplosionEffectScaleFixHelper _projectileExplosionEffectScaleFixHelper;
 
         internal ItemQualitiesContent()
         {
@@ -41,7 +41,7 @@ namespace ItemQualities
             ContentManager.collectContentPackProviders += collectContentPackProviders;
         }
 
-        void collectContentPackProviders(ContentManager.AddContentPackProviderDelegate addContentPackProvider)
+        private void collectContentPackProviders(ContentManager.AddContentPackProviderDelegate addContentPackProvider)
         {
             addContentPackProvider(this);
         }
@@ -99,10 +99,12 @@ namespace ItemQualities
 
             populateTypeFields(typeof(NetworkSoundEvents), _contentPack.networkSoundEventDefs, fieldName => "nse" + fieldName);
 
+            populateTypeFields(typeof(SkillDefs), _contentPack.skillDefs);
+
             Log.Debug($"Finalized content in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        IEnumerator loadAssetBundleContentAsync<TProgress>(TProgress progressReceiver)
+        private IEnumerator loadAssetBundleContentAsync<TProgress>(TProgress progressReceiver)
             where TProgress : IProgress<float>
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
@@ -191,6 +193,10 @@ namespace ItemQualities
 
             List<NetworkSoundEventDef> networkSoundEventsList = new List<NetworkSoundEventDef>();
 
+            List<SkillDef> skillDefsList = new List<SkillDef>();
+
+            List<SkillFamily> skillFamiliesList = new List<SkillFamily>();
+
             foreach (UnityEngine.Object obj in assetBundleAssets)
             {
                 switch (obj)
@@ -272,6 +278,12 @@ namespace ItemQualities
                     case NetworkSoundEventDef networkSoundEventDef:
                         networkSoundEventsList.Add(networkSoundEventDef);
                         break;
+                    case SkillDef skillDef:
+                        skillDefsList.Add(skillDef);
+                        break;
+                    case SkillFamily skillFamily:
+                        skillFamiliesList.Add(skillFamily);
+                        break;
                 }
             }
 
@@ -314,10 +326,14 @@ namespace ItemQualities
 
             _contentPack.networkSoundEventDefs.Add(networkSoundEventsList.ToArray());
 
+            _contentPack.skillDefs.Add(skillDefsList.ToArray());
+
+            _contentPack.skillFamilies.Add(skillFamiliesList.ToArray());
+
             Log.Debug($"Loaded asset bundle contents in {stopwatch.Elapsed.TotalMilliseconds:F0}ms");
         }
 
-        IEnumerator runContentLoadCallbacks<TProgress>(TProgress progressReceiver)
+        private IEnumerator runContentLoadCallbacks<TProgress>(TProgress progressReceiver)
             where TProgress : IProgress<float>
         {
             ParallelProgressCoroutine callbackParallelCoroutine = new ParallelProgressCoroutine(progressReceiver);
@@ -381,7 +397,7 @@ namespace ItemQualities
             yield break;
         }
 
-        static void populateTypeFields<TAsset>(Type typeToPopulate, NamedAssetCollection<TAsset> assets, Func<string, string> fieldNameToAssetNameConverter = null)
+        private static void populateTypeFields<TAsset>(Type typeToPopulate, NamedAssetCollection<TAsset> assets, Func<string, string> fieldNameToAssetNameConverter = null)
         {
             foreach (FieldInfo fieldInfo in typeToPopulate.GetFields(BindingFlags.Static | BindingFlags.Public))
             {
@@ -594,7 +610,7 @@ namespace ItemQualities
             public static ItemQualityGroup Icicle;
 
             public static ItemQualityGroup OutOfCombatArmor;
-            
+
             public static ItemQualityGroup BoostAllStats;
 
             public static ItemQualityGroup GhostOnKill;
@@ -608,7 +624,7 @@ namespace ItemQualities
             public static ItemQualityGroup CritDamage;
 
             public static ItemQualityGroup IncreaseHealing;
-            
+
             public static ItemQualityGroup NovaOnHeal;
 
             public static ItemQualityGroup LaserTurbine;
@@ -618,7 +634,7 @@ namespace ItemQualities
             public static ItemQualityGroup BossDamageBonus;
 
             public static ItemQualityGroup PermanentDebuffOnHit;
-            
+
             public static ItemQualityGroup SpeedBoostPickup;
 
             public static ItemQualityGroup BounceNearby;
@@ -628,7 +644,7 @@ namespace ItemQualities
             public static ItemQualityGroup Talisman;
 
             public static ItemQualityGroup DroneWeapons;
-            
+
             public static ItemQualityGroup BarrageOnBoss;
 
             public static ItemQualityGroup CloverVoid;
@@ -638,7 +654,7 @@ namespace ItemQualities
             public static ItemQualityGroup BoostDamageVoid;
 
             public static ItemQualityGroup IgniteOnKill;
-            
+
             public static ItemQualityGroup BleedOnHitVoid;
 
             public static ItemQualityGroup VoidMegaCrabItem;
@@ -650,7 +666,7 @@ namespace ItemQualities
             public static ItemQualityGroup BearVoid;
 
             public static ItemQualityGroup ArmorReductionOnHit;
-            
+
             public static ItemQualityGroup SlowOnHitVoid;
 
             public static ItemQualityGroup ElementalRingVoid;
@@ -704,6 +720,46 @@ namespace ItemQualities
             public static ItemQualityGroup ShockNearby;
 
             public static ItemQualityGroup TreebotBuddy;
+
+            public static ItemQualityGroup MinorConstructOnKill;
+
+            public static ItemQualityGroup MinorConstructOnKillConstructItem;
+
+            public static ItemQualityGroup ConstructBubble;
+
+            public static ItemQualityGroup TitanGoldDuringTP;
+
+            public static ItemQualityGroup LightningStrikeOnHit;
+
+            public static ItemQualityGroup NovaOnLowHealth;
+
+            public static ItemQualityGroup ShockDamageAura;
+            
+            public static ItemQualityGroup SprintWisp;
+
+            public static ItemQualityGroup FireballsOnHit;
+
+            public static ItemQualityGroup BleedOnHitAndExplode;
+            
+            public static ItemQualityGroup ExtraEquipment;
+
+            public static ItemQualityGroup SiphonOnLowHealth;
+
+            public static ItemQualityGroup Knurl;
+
+            public static ItemQualityGroup Pearl;
+            
+            public static ItemQualityGroup ParentEgg;
+            
+            public static ItemQualityGroup ShinyPearl;
+
+            public static ItemQualityGroup RoboBallBuddy;
+
+            public static ItemQualityGroup RoboBallBuddyItem;
+
+            public static ItemQualityGroup BeetleGland;
+
+            public static ItemQualityGroup BeetleGlandGuardItem;
         }
 
         public static class Items
@@ -714,7 +770,9 @@ namespace ItemQualities
 
             public static ItemDef SquidUpgradeHidden;
 
-            public static ItemDef TrueKillOnTimer;
+            public static ItemDef KillOnTimer;
+
+            public static ItemDef QualityDroneWeaponsRandomElite;
         }
 
         public static class EquipmentQualityGroups
@@ -764,13 +822,13 @@ namespace ItemQualities
             public static EquipmentQualityGroup Jetpack;
 
             public static EquipmentQualityGroup Parry;
-            
+
             public static EquipmentQualityGroup HealAndRevive;
 
             public static EquipmentQualityGroup HealAndReviveConsumed;
 
             public static EquipmentQualityGroup QuestVolatileBattery;
-            
+
             public static EquipmentQualityGroup Fruit;
 
             public static EquipmentQualityGroup Gateway;
@@ -821,7 +879,7 @@ namespace ItemQualities
             public static BuffQualityGroup LifeSteal;
 
             public static BuffQualityGroup BugBlock;
-            
+
             public static BuffQualityGroup Warbanner;
 
             public static BuffQualityGroup DelayedDamageDebuff;
@@ -829,6 +887,16 @@ namespace ItemQualities
             public static BuffQualityGroup CrowbarCharge;
 
             public static BuffQualityGroup TeleportOnLowHealthOrbCharge;
+
+            public static BuffQualityGroup ArmorReductionOnHitCounter;
+
+            public static BuffQualityGroup BearVoidFog;
+
+            public static BuffQualityGroup KnurlReady;
+
+            public static BuffQualityGroup KnurlCooldown;
+
+            public static BuffQualityGroup ParentEggOverheat;
         }
 
         public static class Buffs
@@ -858,8 +926,16 @@ namespace ItemQualities
             public static BuffDef LifeStealSpeed;
 
             public static BuffDef ScorpionVenom;
-            
+
             public static BuffDef Immobilized;
+
+            public static BuffDef ConstructBubble;
+
+            public static BuffDef ConstructBubbleCooldown;
+
+            public static BuffDef ShinyPearlLuck;
+
+            public static BuffDef ChemicalBurn;
         }
 
         public static class Prefabs
@@ -877,10 +953,20 @@ namespace ItemQualities
             public static GameObject BugBlockProcEffect;
 
             public static GameObject BugOrbEffect;
-            
+
             public static GameObject HitlistMarkersUI;
 
             public static GameObject ParryProjectileDisplayUI;
+
+            public static GameObject QualityBearVoidFogExplosion;
+
+            public static GameObject MinorConstructBubbleEffect;
+
+            public static GameObject PickupTransferOrbEffect;
+
+            public static GameObject ChemicalBurnEffect;
+
+            public static GameObject HealingPotionOrbEffect;
         }
 
         public static class NetworkedPrefabs
@@ -922,7 +1008,7 @@ namespace ItemQualities
             public static GameObject HealAndReviveSproutAttachment;
 
             public static GameObject QuestVolatileBatteryPickup;
-            
+
             public static GameObject SprintArmorDashAttachment;
 
             public static GameObject GatewayQualityAttachment;
@@ -930,6 +1016,14 @@ namespace ItemQualities
             public static GameObject RecyclableObjectAttachment;
 
             public static GameObject QualityScrapper;
+
+            public static GameObject QualityVolatileBatteryAttachment;
+
+            public static GameObject QualityMinorConstructOnKillAttachment;
+
+            public static GameObject VagrantNovaItemQualityAttachment;
+
+            public static GameObject MiniVagrantNovaBlast;
         }
 
         public static class ProjectilePrefabs
@@ -944,6 +1038,12 @@ namespace ItemQualities
             public static Material HealCritBoost;
 
             public static Material QualityScrapper;
+
+            public static Material SprintWispQualityFire;
+
+            public static Material TrimSheetQualityEquipmentDrone;
+
+            public static Material ChemicalGooOverlay;
         }
 
         public static class SpawnCards
@@ -989,6 +1089,11 @@ namespace ItemQualities
         public static class NetworkSoundEvents
         {
             public static NetworkSoundEventDef DuplicateInteractable;
+        }
+
+        public static class SkillDefs
+        {
+            public static SkillDef ParryProjectileSkill;
         }
     }
 }

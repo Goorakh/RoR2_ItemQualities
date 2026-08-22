@@ -1,5 +1,4 @@
-﻿using HG;
-using ItemQualities.Items;
+﻿using ItemQualities.Items;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
@@ -12,7 +11,7 @@ namespace ItemQualities.UI
     public sealed class DuplicatorItemShareUIController : MonoBehaviour
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_UI.HUDSimple_prefab).OnSuccess(hudPrefab =>
             {
@@ -20,16 +19,16 @@ namespace ItemQualities.UI
             });
         }
 
-        HUD _hud;
-        ChildLocator _childLocator;
+        private HUD _hud;
+        private ChildLocator _childLocator;
 
-        GameObject _itemShareInventoryDisplayRoot;
-        ItemInventoryDisplay _itemShareInventoryDisplay;
+        private GameObject _itemShareInventoryDisplayRoot;
+        private ItemInventoryDisplay _itemShareInventoryDisplay;
 
-        CharacterMaster _currentTargetMaster;
-        QualityDuplicatorMinionInventoryController _currentTargetMinionInventoryController;
+        private CharacterMaster _currentTargetMaster;
+        private QualityDuplicatorMinionInventoryController _currentTargetMinionInventoryController;
 
-        void Awake()
+        private void Awake()
         {
             _hud = GetComponent<HUD>();
             _childLocator = GetComponent<ChildLocator>();
@@ -52,21 +51,21 @@ namespace ItemQualities.UI
             _itemShareInventoryDisplayRoot.SetActive(false);
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
             setTargetMaster(_hud.targetMaster);
 
             HUD.onHudTargetChangedGlobal += onHudTargetChangedGlobal;
         }
 
-        void OnDisable()
+        private void OnDisable()
         {
             HUD.onHudTargetChangedGlobal -= onHudTargetChangedGlobal;
 
             setTargetMaster(null);
         }
 
-        void onHudTargetChangedGlobal(HUD hud)
+        private void onHudTargetChangedGlobal(HUD hud)
         {
             if (!ReferenceEquals(hud, _hud))
                 return;
@@ -74,7 +73,7 @@ namespace ItemQualities.UI
             setTargetMaster(hud.targetMaster);
         }
 
-        void setTargetMaster(CharacterMaster newTargetMaster)
+        private void setTargetMaster(CharacterMaster newTargetMaster)
         {
             if (ReferenceEquals(_currentTargetMaster, newTargetMaster))
                 return;
@@ -92,7 +91,7 @@ namespace ItemQualities.UI
                 QualityDuplicatorMinionInventoryController.OnOwnerDiscoveredGlobal += onDuplicatorMinionInventoryOwnerDiscoveredGlobal;
                 QualityDuplicatorMinionInventoryController.OnOwnerLostGlobal += onDuplicatorMinionInventoryOwnerLostGlobal;
             }
-            
+
             setCurrentMinionInventoryController(QualityDuplicatorMinionInventoryController.FindMinionInventoryController(_currentTargetMaster));
         }
 
@@ -112,7 +111,7 @@ namespace ItemQualities.UI
             }
         }
 
-        void setCurrentMinionInventoryController(QualityDuplicatorMinionInventoryController duplicatorAttachment)
+        private void setCurrentMinionInventoryController(QualityDuplicatorMinionInventoryController duplicatorAttachment)
         {
             if (ReferenceEquals(_currentTargetMinionInventoryController, duplicatorAttachment))
                 return;

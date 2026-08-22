@@ -7,12 +7,12 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class GoldOnHurt
+    internal static class GoldOnHurt
     {
-        static GameObject _goldPackPrefab;
+        private static GameObject _goldPackPrefab;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             Addressables.LoadAssetAsync<GameObject>(RoR2_Base_BonusGoldPackOnKill.BonusMoneyPack_prefab).OnSuccess(prefab =>
             {
@@ -22,7 +22,7 @@ namespace ItemQualities.Items
             GlobalEventManager.OnInteractionsGlobal += onInteractGlobal;
         }
 
-        static void onInteractGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
+        private static void onInteractGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
         {
             if (!NetworkServer.active)
                 return;

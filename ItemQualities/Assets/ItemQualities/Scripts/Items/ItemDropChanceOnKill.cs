@@ -8,17 +8,17 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    static class ItemDropChanceOnKill
+    internal static class ItemDropChanceOnKill
     {
-        static BasicPickupDropTable _sonorousQualityDropTable;
+        private static BasicPickupDropTable _sonorousQualityDropTable;
 
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {

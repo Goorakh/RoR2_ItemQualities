@@ -12,9 +12,11 @@ using UnityEngine;
 
 namespace ItemQualities
 {
-    public static class DamageTypes
+    public static partial class DamageTypes
     {
         public static DamageAPI.ModdedDamageType Frost6s { get; private set; }
+
+        public static DamageAPI.ModdedDamageType ProcOnly { get; private set; }
 
         public static DamageAPI.ModdedDamageType ForceAddToSharedSuffering { get; private set; }
 
@@ -23,15 +25,24 @@ namespace ItemQualities
         // TODO: Exclude Echo on-kills from achievement tracking
         public static DamageAPI.ModdedDamageType Echo { get; private set; }
 
+        public static DamageAPI.ModdedDamageType Void { get; private set; }
+
+        public static DamageAPI.ModdedDamageType Lifesteal50 { get; private set; }
+
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             Frost6s = DamageAPI.ReserveDamageType();
+            ProcOnly = DamageAPI.ReserveDamageType();
             ForceAddToSharedSuffering = DamageAPI.ReserveDamageType();
             BypassDrops = DamageAPI.ReserveDamageType();
             Echo = DamageAPI.ReserveDamageType();
+            Void = DamageAPI.ReserveDamageType();
+            Lifesteal50 = DamageAPI.ReserveDamageType();
 
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
+
+            IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess_ProcOnlyPatch;
 
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
 
@@ -40,12 +51,15 @@ namespace ItemQualities
             On.RoR2.Artifacts.SacrificeArtifactManager.OnServerCharacterDeath += SacrificeArtifactManager_OnServerCharacterDeath;
             On.RoR2.Artifacts.TeamDeathArtifactManager.OnServerCharacterDeathGlobal += TeamDeathArtifactManager_OnServerCharacterDeathGlobal;
 
+            On.RoR2.ArtifactTrialMissionController.CombatState.OnCharacterDeathGlobal += CombatState_OnCharacterDeathGlobal;
+            On.PowerOrbKeySpawner.SpawnKey += PowerOrbKeySpawner_SpawnKey;
+
             On.RoR2.GlobalDeathRewards.OnCharacterDeathGlobal += GlobalDeathRewards_OnCharacterDeathGlobal;
 
             On.RoR2.Stats.StatManager.OnCharacterDeath += StatManager_OnCharacterDeath;
         }
 
-        static void onServerDamageDealt(DamageReport damageReport)
+        private static void onServerDamageDealt(DamageReport damageReport)
         {
             if (damageReport?.damageInfo == null)
                 return;
@@ -53,6 +67,7 @@ namespace ItemQualities
             DamageInfo damageInfo = damageReport.damageInfo;
 
             GameObject attacker = damageReport.attacker;
+            CharacterBody attackerBody = damageReport.attackerBody;
 
             CharacterBody victimBody = damageReport.victimBody;
             HealthComponent victimHealthComponent = damageReport.victim;
@@ -82,22 +97,82 @@ namespace ItemQualities
                         }
                     }
                 }
+
+                float lifestealCoefficient = 0f;
+                if (damageInfo.damageType.HasModdedDamageType(Lifesteal50))
+                {
+                    lifestealCoefficient += 0.5f;
+                }
+
+                if (lifestealCoefficient > 0f)
+                {
+                    if (attackerBody && attackerBody.healthComponent)
+                    {
+                        attackerBody.healthComponent.Heal(damageReport.damageDealt * lifestealCoefficient, new ProcChainMask());
+                    }
+                }
+            }
+        }
+
+        private static void HealthComponent_TakeDamageProcess_ProcOnlyPatch(ILContext il)
+        {
+            if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
+            {
+                Log.Error("Failed to find DamageInfo parameter");
+                return;
+            }
+
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.PermanentCurse)),
+                               x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.TakeDamageForce))))
+            {
+                Log.Error("Failed to find patch end location");
+                return;
+            }
+
+            c.Goto(foundCursors[0].Next, MoveType.Before); // ldsfld RoR2Content.Buffs.PermanentCurse
+
+            ILLabel startHurtBlockLabel = default;
+            if (!c.TryGotoPrev(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.delayedDamageSecondHalf))) ||
+                !c.TryGotoNext(x => x.MatchBrtrue(out startHurtBlockLabel)))
+            {
+                Log.Error("Failed to find patch start location");
+                return;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After); // call HealthComponent.TakeDamageForce
+            c.MoveAfterLabels();
+            ILLabel endHurtBlockLabel = c.MarkLabel();
+
+            c.Goto(startHurtBlockLabel.Target, MoveType.AfterLabel);
+
+            c.Emit(OpCodes.Ldarg, damageInfoParameter);
+            c.EmitDelegate<Func<DamageInfo, bool>>(shouldDealDamage);
+            c.Emit(OpCodes.Brfalse, endHurtBlockLabel);
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static bool shouldDealDamage(DamageInfo damageInfo)
+            {
+                bool isProcOnly = damageInfo != null && damageInfo.HasModdedDamageType(ProcOnly);
+                return !isProcOnly;
             }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static bool shouldBypassDrops(DamageReport damageReport)
+        private static bool shouldBypassDrops(DamageReport damageReport)
         {
             return damageReport.damageInfo.damageType.HasModdedDamageType(BypassDrops) || isEchoed(damageReport);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        static bool isEchoed(DamageReport damageReport)
+        private static bool isEchoed(DamageReport damageReport)
         {
             return damageReport.damageInfo.damageType.HasModdedDamageType(Echo);
         }
 
-        static void GlobalEventManager_OnCharacterDeath(ILContext il)
+        private static void GlobalEventManager_OnCharacterDeath(ILContext il)
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
@@ -292,7 +367,7 @@ namespace ItemQualities
             }
         }
 
-        static void BombArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.BombArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)
+        private static void BombArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.BombArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)
         {
             if (!isEchoed(damageReport))
             {
@@ -300,7 +375,7 @@ namespace ItemQualities
             }
         }
 
-        static void DoppelgangerInvasionManager_OnCharacterDeathGlobal(On.RoR2.Artifacts.DoppelgangerInvasionManager.orig_OnCharacterDeathGlobal orig, DoppelgangerInvasionManager self, DamageReport damageReport)
+        private static void DoppelgangerInvasionManager_OnCharacterDeathGlobal(On.RoR2.Artifacts.DoppelgangerInvasionManager.orig_OnCharacterDeathGlobal orig, DoppelgangerInvasionManager self, DamageReport damageReport)
         {
             if (!shouldBypassDrops(damageReport))
             {
@@ -308,7 +383,7 @@ namespace ItemQualities
             }
         }
 
-        static void SacrificeArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.SacrificeArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)
+        private static void SacrificeArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.SacrificeArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)
         {
             if (!shouldBypassDrops(damageReport))
             {
@@ -316,7 +391,7 @@ namespace ItemQualities
             }
         }
 
-        static void TeamDeathArtifactManager_OnServerCharacterDeathGlobal(On.RoR2.Artifacts.TeamDeathArtifactManager.orig_OnServerCharacterDeathGlobal orig, DamageReport damageReport)
+        private static void TeamDeathArtifactManager_OnServerCharacterDeathGlobal(On.RoR2.Artifacts.TeamDeathArtifactManager.orig_OnServerCharacterDeathGlobal orig, DamageReport damageReport)
         {
             if (!isEchoed(damageReport))
             {
@@ -324,7 +399,7 @@ namespace ItemQualities
             }
         }
 
-        static void GlobalDeathRewards_OnCharacterDeathGlobal(On.RoR2.GlobalDeathRewards.orig_OnCharacterDeathGlobal orig, GlobalDeathRewards self, DamageReport damageReport)
+        private static void CombatState_OnCharacterDeathGlobal(On.RoR2.ArtifactTrialMissionController.CombatState.orig_OnCharacterDeathGlobal orig, EntityStates.EntityState self, DamageReport damageReport)
         {
             if (!shouldBypassDrops(damageReport))
             {
@@ -332,7 +407,23 @@ namespace ItemQualities
             }
         }
 
-        static void StatManager_OnCharacterDeath(On.RoR2.Stats.StatManager.orig_OnCharacterDeath orig, DamageReport damageReport)
+        private static void PowerOrbKeySpawner_SpawnKey(On.PowerOrbKeySpawner.orig_SpawnKey orig, PowerOrbKeySpawner self, DamageReport damageReport)
+        {
+            if (!shouldBypassDrops(damageReport))
+            {
+                orig(self, damageReport);
+            }
+        }
+
+        private static void GlobalDeathRewards_OnCharacterDeathGlobal(On.RoR2.GlobalDeathRewards.orig_OnCharacterDeathGlobal orig, GlobalDeathRewards self, DamageReport damageReport)
+        {
+            if (!shouldBypassDrops(damageReport))
+            {
+                orig(self, damageReport);
+            }
+        }
+
+        private static void StatManager_OnCharacterDeath(On.RoR2.Stats.StatManager.orig_OnCharacterDeath orig, DamageReport damageReport)
         {
             if (!isEchoed(damageReport))
             {

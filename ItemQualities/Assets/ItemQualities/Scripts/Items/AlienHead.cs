@@ -5,15 +5,15 @@ using UnityEngine.Networking;
 
 namespace ItemQualities.Items
 {
-    static class AlienHead
+    internal static class AlienHead
     {
         [SystemInitializer]
-        static void Init()
+        private static void Init()
         {
             GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
         }
 
-        static void onCharacterDeathGlobal(DamageReport deathReport)
+        private static void onCharacterDeathGlobal(DamageReport deathReport)
         {
             if (!NetworkServer.active)
                 return;

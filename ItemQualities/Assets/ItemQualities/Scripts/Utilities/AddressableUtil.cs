@@ -10,7 +10,7 @@ namespace ItemQualities.Utilities
 {
     public static class AddressableUtil
     {
-        static readonly Dictionary<Type, AssetAsyncReferenceManagerInstance> _assetAsyncReferenceManagerCache = new Dictionary<Type, AssetAsyncReferenceManagerInstance>();
+        private static readonly Dictionary<Type, AssetAsyncReferenceManagerInstance> _assetAsyncReferenceManagerCache = new Dictionary<Type, AssetAsyncReferenceManagerInstance>();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static AsyncOperationHandle<T> LoadTempAssetAsync<T>(string assetKey) where T : UnityEngine.Object
@@ -42,13 +42,20 @@ namespace ItemQualities.Utilities
             return assetAsyncReferenceManager.LoadAssetAsync(assetReference, unloadType);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void UnloadAsset<T>(AssetReferenceT<T> assetReference)
+            where T : UnityEngine.Object
+        {
+            AssetAsyncReferenceManager<T>.UnloadAsset(assetReference);
+        }
+
         public static void UnloadAsset(AssetReference assetReference, Type assetType)
         {
             AssetAsyncReferenceManagerInstance assetAsyncReferenceManager = getOrCreateAssetAsyncReferenceManager(assetType);
             assetAsyncReferenceManager.UnloadAsset(assetReference);
         }
-        
-        static AssetAsyncReferenceManagerInstance getOrCreateAssetAsyncReferenceManager(Type assetType)
+
+        private static AssetAsyncReferenceManagerInstance getOrCreateAssetAsyncReferenceManager(Type assetType)
         {
             if (!_assetAsyncReferenceManagerCache.TryGetValue(assetType, out AssetAsyncReferenceManagerInstance assetAsyncReferenceManager))
             {
@@ -58,21 +65,21 @@ namespace ItemQualities.Utilities
             return assetAsyncReferenceManager;
         }
 
-        sealed class AssetAsyncReferenceManagerInstance
+        private sealed class AssetAsyncReferenceManagerInstance
         {
-            static readonly FieldInfo _assetReferenceSubObjectTypeField = typeof(AssetReference).GetField("m_SubObjectType", BindingFlags.Instance | BindingFlags.NonPublic);
+            private static readonly FieldInfo _assetReferenceSubObjectTypeField = typeof(AssetReference).GetField("m_SubObjectType", BindingFlags.Instance | BindingFlags.NonPublic);
 
             public Type AssetType { get; }
 
-            readonly Type _assetAsyncReferenceManagerType;
+            private readonly Type _assetAsyncReferenceManagerType;
 
-            readonly Type _desiredAssetReferenceType;
+            private readonly Type _desiredAssetReferenceType;
 
-            readonly MethodInfo _loadAssetMethod;
+            private readonly MethodInfo _loadAssetMethod;
 
-            readonly MethodInfo _unloadAssetMethod;
+            private readonly MethodInfo _unloadAssetMethod;
 
-            readonly MethodInfo _handleConverterMethod;
+            private readonly MethodInfo _handleConverterMethod;
 
             public AssetAsyncReferenceManagerInstance(Type assetType)
             {
@@ -102,7 +109,7 @@ namespace ItemQualities.Utilities
                 _unloadAssetMethod.Invoke(null, new object[] { assetReference });
             }
 
-            void ensureDesiredAssetReferenceType(ref AssetReference assetReference)
+            private void ensureDesiredAssetReferenceType(ref AssetReference assetReference)
             {
                 if (assetReference == null)
                     return;
