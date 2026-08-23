@@ -7,6 +7,8 @@ namespace ItemQualities.Orbs
 {
     public sealed class HealingPotionOrb : Orb
     {
+        public float speed = 60f;
+
         public float damageValue;
 
         public GameObject attacker;
@@ -31,7 +33,7 @@ namespace ItemQualities.Orbs
         {
             base.Begin();
 
-            duration = 0.6f;
+            duration = Mathf.Max(0.5f, distanceToTarget / speed);
 
             EffectData effectData = new EffectData
             {
