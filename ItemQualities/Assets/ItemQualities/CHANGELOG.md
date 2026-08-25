@@ -1,3 +1,11 @@
+## \<Next Version\>
+
+<details>
+<summary>Titanic Knurl:</summary>
+
+* Fixed 0 proc attacks being able to create an Earthquake.
+</details>
+
 ## 0.8.0 Changes:
 
 * Added quality boss items.

@@ -3,12 +3,10 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
-using RoR2.ContentManagement;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
-using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
@@ -40,6 +38,9 @@ namespace ItemQualities.Items
         private static void GlobalEventManager_ProcessHitEnemy(On.RoR2.GlobalEventManager.orig_ProcessHitEnemy orig, GlobalEventManager self, DamageInfo damageInfo, GameObject victim)
         {
             orig(self, damageInfo, victim);
+
+            if (damageInfo.procCoefficient <= 0f)
+                return;
 
             if (!damageInfo.attacker || !damageInfo.attacker.TryGetComponent(out CharacterBody attackerBody) || !attackerBody.inventory)
                 return;
