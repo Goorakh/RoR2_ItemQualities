@@ -55,13 +55,13 @@ namespace ItemQualities.Items
                 float chance = delayedDamage.HighestQuality switch
                 {
                     QualityTier.Uncommon => 10f,
-                    QualityTier.Rare => 25f,
-                    QualityTier.Epic => 50f,
-                    QualityTier.Legendary => 75f,
+                    QualityTier.Rare => 15f,
+                    QualityTier.Epic => 20f,
+                    QualityTier.Legendary => 25f,
                     _ => 0f,
                 };
 
-                int maxStacks = delayedDamage.TotalCount * 10;
+                int maxStacks = delayedDamage.TotalCount * 3;
 
                 if (report.victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff).TotalQualityCount < maxStacks &&
                     RollUtil.CheckRoll(chance * report.damageInfo.procCoefficient, report.attackerMaster, sureProc))

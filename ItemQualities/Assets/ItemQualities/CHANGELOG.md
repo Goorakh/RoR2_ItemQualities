@@ -6,6 +6,15 @@
 * Fixed 0 proc attacks being able to create an Earthquake.
 </details>
 
+* Warped Echo:
+    * Chance to apply echo:
+        * Uncommon: 10% -> 10%
+        * Rare: 25% -> 15%
+        * Epic: 50% -> 20%
+        * Legendary 75% -> 25%
+    * Max stacks of echo:
+        * 10 (+10 per stack) -> 3 (+3 per stack)
+
 ## 0.8.0 Changes:
 
 * Added quality boss items.
