@@ -18,7 +18,7 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(inventory));
 
             if (!itemGroup)
-                return default;
+                return ItemQualityCounts.zero;
 
             int baseItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.BaseItemIndex);
             int uncommonItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.UncommonItemIndex);
@@ -41,7 +41,7 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(inventory));
 
             if (!itemGroup)
-                return default;
+                return ItemQualityCounts.zero;
 
             int uncommonItemCount = inventory.GetItemCountEffective(itemGroup.UncommonItemIndex);
             int rareItemCount = inventory.GetItemCountEffective(itemGroup.RareItemIndex);
@@ -66,7 +66,7 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(inventory));
 
             if (!itemGroup)
-                return default;
+                return ItemQualityCounts.zero;
 
             int baseItemCount = inventory.GetItemCountPermanent(itemGroup.BaseItemIndex);
             int uncommonItemCount = inventory.GetItemCountPermanent(itemGroup.UncommonItemIndex);
@@ -110,7 +110,7 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(inventory));
 
             if (!itemGroup)
-                return default;
+                return ItemQualityCounts.zero;
 
             int baseItemCount = inventory.GetItemCountTemp(itemGroup.BaseItemIndex);
             int uncommonItemCount = inventory.GetItemCountTemp(itemGroup.UncommonItemIndex);
@@ -133,7 +133,7 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(inventory));
 
             if (!itemGroup)
-                return default;
+                return TempItemQualityCounts.zero;
 
             float baseDecayValue = inventory.GetTempItemDecayValue(itemGroup.BaseItemIndex);
             float uncommonDecayValue = inventory.GetTempItemDecayValue(itemGroup.UncommonItemIndex);
@@ -156,7 +156,7 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(inventory));
 
             if (!itemGroup)
-                return default;
+                return TempItemQualityCounts.zero;
 
             float baseRawValue = inventory.GetTempItemRawValue(itemGroup.BaseItemIndex);
             float uncommonRawValue = inventory.GetTempItemRawValue(itemGroup.UncommonItemIndex);
@@ -200,7 +200,7 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(inventory));
 
             if (!itemGroup)
-                return default;
+                return ItemQualityCounts.zero;
 
             int baseItemCount = inventory.GetItemCountChanneled(itemGroup.BaseItemIndex);
             int uncommonItemCount = inventory.GetItemCountChanneled(itemGroup.UncommonItemIndex);

@@ -107,7 +107,7 @@ namespace ItemQualities.Items
                 CharacterBody ownerBody = owner ? owner.GetComponent<CharacterBody>() : null;
                 Inventory ownerInventory = ownerBody ? ownerBody.inventory : null;
 
-                return ownerInventory ? ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Firework) : default;
+                return ownerInventory ? ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Firework) : ItemQualityCounts.zero;
             }
 
             VariableDefinition shouldFireLargeFireworkVar = il.AddVariable<bool>();

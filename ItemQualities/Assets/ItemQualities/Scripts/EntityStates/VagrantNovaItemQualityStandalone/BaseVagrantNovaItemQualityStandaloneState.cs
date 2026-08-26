@@ -13,7 +13,7 @@ namespace EntityStates.VagrantNovaItemQualityStandalone
 
         protected ItemQualityCounts GetItemCounts()
         {
-            return attachedBody && attachedBody.inventory ? attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth) : default;
+            return attachedBody && attachedBody.inventory ? attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth) : ItemQualityCounts.zero;
         }
 
         public override void OnEnter()

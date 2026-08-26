@@ -38,7 +38,7 @@ namespace ItemQualities.Buffs
             _earlyAssignmentBody = null;
 
             _stacks = _earlyAssignmentStacks;
-            _earlyAssignmentStacks = default;
+            _earlyAssignmentStacks = BuffQualityCounts.zero;
         }
 
         protected virtual void OnStacksChanged()
@@ -299,7 +299,7 @@ namespace ItemQualities.Buffs
                     finally
                     {
                         _earlyAssignmentBody = null;
-                        _earlyAssignmentStacks = default;
+                        _earlyAssignmentStacks = BuffQualityCounts.zero;
                     }
 
                     buffBehavior.OnStacksChanged();

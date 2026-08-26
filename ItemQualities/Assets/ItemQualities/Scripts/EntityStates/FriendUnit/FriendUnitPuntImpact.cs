@@ -73,7 +73,7 @@ namespace EntityStates.FriendUnit
             {
                 CharacterMaster master = characterBody.master;
 
-                ItemQualityCounts physicsProjectile = default;
+                ItemQualityCounts physicsProjectile = ItemQualityCounts.zero;
                 if (master && master.minionOwnership.ownerMaster && master.minionOwnership.ownerMaster.inventory)
                 {
                     physicsProjectile = master.minionOwnership.ownerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PhysicsProjectile);

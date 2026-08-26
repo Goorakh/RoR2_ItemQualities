@@ -19,7 +19,7 @@ namespace ItemQualities
 
         private void Start()
         {
-            ItemQualityCounts teleportOnLowHealth = default;
+            ItemQualityCounts teleportOnLowHealth = ItemQualityCounts.zero;
             if (_projectileController.owner && _projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
             {
                 teleportOnLowHealth = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth);

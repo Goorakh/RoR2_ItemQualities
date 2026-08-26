@@ -96,7 +96,7 @@ namespace ItemQualities
 
         private void onOwnerInventoryChanged()
         {
-            ItemQualityCounts physicsProjectile = default;
+            ItemQualityCounts physicsProjectile = ItemQualityCounts.zero;
             if (_ownerMaster && _ownerMaster.inventory)
             {
                 physicsProjectile = _ownerMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PhysicsProjectile);

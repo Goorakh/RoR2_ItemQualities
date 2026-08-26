@@ -86,7 +86,7 @@ namespace ItemQualities.Items
         {
             Inventory ownerInventory = _ownerBody ? _ownerBody.inventory : null;
 
-            ItemQualityCounts sharedSuffering = default;
+            ItemQualityCounts sharedSuffering = ItemQualityCounts.zero;
             if (ownerInventory)
             {
                 sharedSuffering = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SharedSuffering);

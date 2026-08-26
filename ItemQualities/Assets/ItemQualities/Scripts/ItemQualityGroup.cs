@@ -144,7 +144,7 @@ namespace ItemQualities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsEffective(Inventory inventory)
         {
-            return inventory ? inventory.GetItemCountsEffective(this) : default;
+            return inventory ? inventory.GetItemCountsEffective(this) : ItemQualityCounts.zero;
         }
 
         [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsPermanent) + "() instead")]
@@ -152,7 +152,7 @@ namespace ItemQualities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsPermanent(Inventory inventory)
         {
-            return inventory ? inventory.GetItemCountsPermanent(this) : default;
+            return inventory ? inventory.GetItemCountsPermanent(this) : ItemQualityCounts.zero;
         }
 
         [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsTemp) + "() instead")]
@@ -160,7 +160,7 @@ namespace ItemQualities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsTemp(Inventory inventory)
         {
-            return inventory ? inventory.GetItemCountsTemp(this) : default;
+            return inventory ? inventory.GetItemCountsTemp(this) : ItemQualityCounts.zero;
         }
 
         [Obsolete("Use " + nameof(InventoryExtensions) + "." + nameof(InventoryExtensions.GetItemCountsChanneled) + "() instead")]
@@ -168,7 +168,7 @@ namespace ItemQualities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ItemQualityCounts GetItemCountsChanneled(Inventory inventory)
         {
-            return inventory ? inventory.GetItemCountsChanneled(this) : default;
+            return inventory ? inventory.GetItemCountsChanneled(this) : ItemQualityCounts.zero;
         }
 
         [Obsolete("Use " + nameof(ItemQualityUtils) + "." + nameof(ItemQualityUtils.GetTeamItemCounts) + "() instead")]

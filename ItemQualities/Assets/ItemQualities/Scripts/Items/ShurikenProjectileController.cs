@@ -22,7 +22,7 @@ namespace ItemQualities.Items
 
         private void onInitialized(ProjectileController projectileController)
         {
-            ItemQualityCounts primarySkillShuriken = default;
+            ItemQualityCounts primarySkillShuriken = ItemQualityCounts.zero;
             if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
             {
                 primarySkillShuriken = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken);

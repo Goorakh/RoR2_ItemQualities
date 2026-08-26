@@ -80,7 +80,7 @@ namespace ItemQualities.Items
             {
                 CharacterBody body = _bodyAttachment ? _bodyAttachment.attachedBody : null;
 
-                BuffQualityCounts lanternBuffCounts = body ? body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff) : default;
+                BuffQualityCounts lanternBuffCounts = body ? body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff) : BuffQualityCounts.zero;
                 if (lanternBuffCounts != _lastLanternBuffCounts)
                 {
                     updateBuffCounts();
@@ -158,7 +158,7 @@ namespace ItemQualities.Items
                 _lanternCollider.ServerUpdateValuesFromInventory();
             }
 
-            BuffQualityCounts lanternBuffCounts = default;
+            BuffQualityCounts lanternBuffCounts = BuffQualityCounts.zero;
             if (_bodyAttachment.attachedBody)
             {
                 lanternBuffCounts = _bodyAttachment.attachedBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.AttackSpeedPerNearbyAllyOrEnemyBuff);

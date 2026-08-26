@@ -70,7 +70,7 @@ namespace ItemQualities
             private set => _weakPointHurtBoxIndexPlusOne = (byte)(value + 1);
         }
 
-        public ItemQualityCounts LastExtraStatsOnLevelUpCounts = default;
+        public ItemQualityCounts LastExtraStatsOnLevelUpCounts = ItemQualityCounts.zero;
 
         public CharacterBody Body => _body;
 
@@ -406,9 +406,9 @@ namespace ItemQualities
 
         private void recalculateExtraStats()
         {
-            ItemQualityCounts executeLowHealthElite = default;
-            ItemQualityCounts phasing = default;
-            ItemQualityCounts novaOnLowHealth = default;
+            ItemQualityCounts executeLowHealthElite = ItemQualityCounts.zero;
+            ItemQualityCounts phasing = ItemQualityCounts.zero;
+            ItemQualityCounts novaOnLowHealth = ItemQualityCounts.zero;
             if (_body && _body.inventory)
             {
                 executeLowHealthElite = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite);

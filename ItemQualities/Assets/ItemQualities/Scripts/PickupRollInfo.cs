@@ -20,7 +20,7 @@ namespace ItemQualities
 
             bool isPlayer = IsPlayerAffiliation;
 
-            ItemQualityCounts clover = default;
+            ItemQualityCounts clover = ItemQualityCounts.zero;
             if (master)
             {
                 if (master.inventory)
@@ -30,7 +30,7 @@ namespace ItemQualities
             }
             else
             {
-                ItemQualityCounts teamInventoryCloverCounts = default;
+                ItemQualityCounts teamInventoryCloverCounts = ItemQualityCounts.zero;
 
                 foreach (EnemyInfoPanelInventoryProvider enemyInventoryProvider in InstanceTracker.GetInstancesList<EnemyInfoPanelInventoryProvider>())
                 {

@@ -47,7 +47,7 @@ namespace ItemQualities.Utilities.Extensions
                 throw new ArgumentNullException(nameof(body));
 
             if (!buffGroup)
-                return default;
+                return BuffQualityCounts.zero;
 
             int baseCount = body.GetBuffCountRaw(buffGroup.BaseBuffIndex);
             int uncommonCount = body.GetBuffCountRaw(buffGroup.UncommonBuffIndex);

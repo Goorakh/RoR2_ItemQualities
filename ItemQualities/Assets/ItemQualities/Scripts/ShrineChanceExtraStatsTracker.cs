@@ -46,7 +46,7 @@ namespace ItemQualities
 
         private void refreshMaxPurchases()
         {
-            ItemQualityCounts totalChanceDollCounts = default;
+            ItemQualityCounts totalChanceDollCounts = ItemQualityCounts.zero;
 
             foreach (PlayerCharacterMasterController playerMaster in PlayerCharacterMasterController.instances)
             {

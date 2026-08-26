@@ -94,7 +94,7 @@ namespace ItemQualities.UI
 
         private void refreshTicks()
         {
-            ItemQualityCounts bossDamageBonus = default;
+            ItemQualityCounts bossDamageBonus = ItemQualityCounts.zero;
             if (_targetMaster && _targetMaster.inventory)
             {
                 bossDamageBonus = _targetMaster.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.BossDamageBonus);

@@ -258,7 +258,7 @@ namespace ItemQualities
                     damageStat = ownerBody.damage;
                 }
 
-                ItemQualityCounts dronesDropDynamite = default;
+                ItemQualityCounts dronesDropDynamite = ItemQualityCounts.zero;
 
                 if (_cachedOwnerMaster.inventory)
                 {

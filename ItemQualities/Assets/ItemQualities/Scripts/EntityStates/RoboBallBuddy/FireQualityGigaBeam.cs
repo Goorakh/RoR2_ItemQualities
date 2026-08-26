@@ -57,7 +57,7 @@ namespace EntityStates.RoboBallBuddy
 
             base.OnEnter();
 
-            ItemQualityCounts roboBallBuddyItem = default;
+            ItemQualityCounts roboBallBuddyItem = ItemQualityCounts.zero;
             if (characterBody && characterBody.inventory)
             {
                 roboBallBuddyItem = characterBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.RoboBallBuddyItem);

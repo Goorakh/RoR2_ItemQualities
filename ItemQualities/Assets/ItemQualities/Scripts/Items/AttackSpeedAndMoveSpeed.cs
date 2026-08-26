@@ -49,7 +49,7 @@ namespace ItemQualities.Items
             if (_currentCallBonusType != BonusType.None)
                 return;
 
-            ItemQualityCounts attackSpeedAndMoveSpeed = default;
+            ItemQualityCounts attackSpeedAndMoveSpeed = ItemQualityCounts.zero;
             if (self && self.inventory)
             {
                 attackSpeedAndMoveSpeed = self.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.AttackSpeedAndMoveSpeed);

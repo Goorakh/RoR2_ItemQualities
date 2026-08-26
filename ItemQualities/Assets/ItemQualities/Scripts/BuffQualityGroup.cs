@@ -139,7 +139,7 @@ namespace ItemQualities
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public BuffQualityCounts GetBuffCounts(CharacterBody body)
         {
-            return body ? body.GetBuffCounts(this) : default;
+            return body ? body.GetBuffCounts(this) : BuffQualityCounts.zero;
         }
 
         [Obsolete("Use " + nameof(CharacterBodyExtensions) + "." + nameof(CharacterBodyExtensions.GetBuffCounts) + "() instead")]

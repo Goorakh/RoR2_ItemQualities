@@ -7,7 +7,7 @@ namespace EntityStates.VagrantNovaItemQuality
     {
         protected ItemQualityCounts GetItemCounts()
         {
-            return attachedBody && attachedBody.inventory ? attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth) : default;
+            return attachedBody && attachedBody.inventory ? attachedBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth) : ItemQualityCounts.zero;
         }
     }
 }

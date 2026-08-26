@@ -39,7 +39,7 @@ namespace ItemQualities.Items
         [Server]
         private void onInitializedServer(ProjectileController projectileController)
         {
-            ItemQualityCounts fireRing = default;
+            ItemQualityCounts fireRing = ItemQualityCounts.zero;
             if (projectileController.owner && projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
             {
                 fireRing = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.FireRing);

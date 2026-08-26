@@ -85,7 +85,7 @@ namespace ItemQualities.Equipments
                     ProcChainMask procChainMask = damageReport.damageInfo.procChainMask;
                     procChainMask.AddModdedProc(ProcTypes.Bug);
 
-                    int moreMissileCount = damageReport.attackerBody.inventory ? damageReport.attackerBody.inventory.GetItemCountEffective(DLC1Content.Items.MoreMissile) : default;
+                    int moreMissileCount = damageReport.attackerBody.inventory ? damageReport.attackerBody.inventory.GetItemCountEffective(DLC1Content.Items.MoreMissile) : 0;
 
                     float damageValue = Util.OnHitProcDamage(damageReport.damageInfo.damage, damageReport.attackerBody.damage, damageCoefficient) * MissileUtils.GetMoreMissileDamageMultiplier(moreMissileCount);
 

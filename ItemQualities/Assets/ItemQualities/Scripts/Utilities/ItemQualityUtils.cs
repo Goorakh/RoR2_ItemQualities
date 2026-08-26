@@ -13,9 +13,9 @@ namespace ItemQualities.Utilities
         public static ItemQualityCounts GetTeamItemCounts(ItemQualityGroup itemGroup, TeamIndex teamIndex, bool requireAlive, bool requireConnected = true)
         {
             if (!itemGroup)
-                return default;
+                return ItemQualityCounts.zero;
 
-            ItemQualityCounts itemCounts = default;
+            ItemQualityCounts itemCounts = ItemQualityCounts.zero;
 
             foreach (CharacterMaster master in CharacterMaster.readOnlyInstancesList)
             {

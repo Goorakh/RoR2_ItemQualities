@@ -20,7 +20,7 @@ namespace ItemQualities.Items
 
         private void Start()
         {
-            ItemQualityCounts elementalRingVoid = default;
+            ItemQualityCounts elementalRingVoid = ItemQualityCounts.zero;
             if (_projectileController.owner && _projectileController.owner.TryGetComponent(out CharacterBody ownerBody) && ownerBody.inventory)
             {
                 elementalRingVoid = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ElementalRingVoid);

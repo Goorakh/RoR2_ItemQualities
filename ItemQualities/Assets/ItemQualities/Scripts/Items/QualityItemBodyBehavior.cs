@@ -41,7 +41,7 @@ namespace ItemQualities.Items
             _earlyAssignmentBodyStats = null;
 
             _stacks = _earlyAssignmentStacks;
-            _earlyAssignmentStacks = default;
+            _earlyAssignmentStacks = ItemQualityCounts.zero;
         }
 
         protected virtual void OnStacksChanged()
@@ -284,7 +284,7 @@ namespace ItemQualities.Items
                     {
                         _earlyAssignmentBody = null;
                         _earlyAssignmentBodyStats = null;
-                        _earlyAssignmentStacks = default;
+                        _earlyAssignmentStacks = ItemQualityCounts.zero;
                     }
 
                     itemBehavior.OnStacksChanged();

@@ -47,7 +47,7 @@ namespace ItemQualities
 
         private void refreshMaxPurchases()
         {
-            ItemQualityCounts totalWarbondsCounts = default;
+            ItemQualityCounts totalWarbondsCounts = ItemQualityCounts.zero;
 
             foreach (PlayerCharacterMasterController playerMaster in PlayerCharacterMasterController.instances)
             {

@@ -7,6 +7,8 @@ namespace ItemQualities
     [StructLayout(LayoutKind.Explicit)]
     public unsafe struct BuffQualityCounts : IEquatable<BuffQualityCounts>
     {
+        public static readonly BuffQualityCounts zero = new BuffQualityCounts(0, 0, 0, 0, 0);
+
         [FieldOffset(0)]
         private fixed int _buffCounts[(int)QualityTier.Count + 1];
 

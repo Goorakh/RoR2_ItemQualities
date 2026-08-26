@@ -54,7 +54,7 @@ namespace ItemQualities.Items
                 CharacterMaster attackerMaster = damageReport.attackerMaster;
                 Inventory attackerInventory = attackerMaster ? attackerMaster.inventory : null;
 
-                ItemQualityCounts bandolier = default;
+                ItemQualityCounts bandolier = ItemQualityCounts.zero;
                 if (attackerInventory)
                 {
                     bandolier = attackerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Bandolier);

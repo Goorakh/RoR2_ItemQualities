@@ -66,7 +66,7 @@ namespace ItemQualities
                     teamFilter.teamIndex = activatorBody ? activatorBody.teamComponent.teamIndex : TeamIndex.None;
                 }
 
-                ItemQualityCounts speedOnPickup = default;
+                ItemQualityCounts speedOnPickup = ItemQualityCounts.zero;
                 if (activatorInventory)
                 {
                     speedOnPickup = activatorInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.SpeedOnPickup);
