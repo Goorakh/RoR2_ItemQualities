@@ -181,11 +181,11 @@ namespace ItemQualities.Items
         {
             get
             {
-                ref readonly var stacks = ref Stacks;
+                ref readonly ItemQualityCounts stacks = ref Stacks;
                 return (stacks.UncommonCount * 1) + // 10%
                        (stacks.RareCount * 2) +     // 20%
                        (stacks.EpicCount * 3) +     // 30%
-                       (stacks.LegendaryCount * 5); // 40%
+                       (stacks.LegendaryCount * 4); // 40%
             }
         }
 
@@ -294,9 +294,35 @@ namespace ItemQualities.Items
                         }
 
                         EquipmentState equipmentState = Body.inventory.GetEquipment(slot, set);
-                        if (equipmentState.equipmentIndex != EquipmentIndex.None)
+
+                        EquipmentIndex equipmentIndex = equipmentState.equipmentIndex;
+                        QualityTier equipmentQualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
+                        EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
+
+                        if (equipmentGroupIndex != EquipmentQualityGroupIndex.Invalid)
                         {
-                            heldEquipments.Add(equipmentState.equipmentIndex);
+                            EquipmentQualityGroupIndex convertToEquipmentGroupIndex = EquipmentQualityGroupIndex.Invalid;
+                            if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.BossHunter.GroupIndex)
+                            {
+                                convertToEquipmentGroupIndex = ItemQualitiesContent.EquipmentQualityGroups.BossHunterConsumed.GroupIndex;
+                            }
+                            else if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.HealAndRevive.GroupIndex)
+                            {
+                                convertToEquipmentGroupIndex = ItemQualitiesContent.EquipmentQualityGroups.HealAndReviveConsumed.GroupIndex;
+                            }
+
+                            if (convertToEquipmentGroupIndex != EquipmentQualityGroupIndex.Invalid)
+                            {
+                                EquipmentQualityGroup convertToEquipmentGroup = QualityCatalog.GetEquipmentQualityGroup(convertToEquipmentGroupIndex);
+
+                                equipmentIndex = convertToEquipmentGroup.GetEquipmentIndex(equipmentQualityTier);
+                                equipmentGroupIndex = convertToEquipmentGroup.GroupIndex;
+                            }
+                        }
+
+                        if (equipmentIndex != EquipmentIndex.None)
+                        {
+                            heldEquipments.Add(equipmentIndex);
                         }
                     }
                 }
@@ -476,7 +502,7 @@ namespace ItemQualities.Items
                             position = OwnerItemBehavior.Body.corePosition,
                             placementMode = DirectorPlacementRule.PlacementMode.Approximate,
                             minDistance = 5f,
-                            maxDistance = 20f,
+                            maxDistance = 35f,
                         };
 
                         DirectorSpawnRequest spawnRequest = new DirectorSpawnRequest(ExtraEquipment.QualityEquipmentDroneSpawnCard, placementRule, OwnerItemBehavior._rng)

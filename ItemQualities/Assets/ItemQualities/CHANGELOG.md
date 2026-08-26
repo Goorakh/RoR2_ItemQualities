@@ -6,6 +6,12 @@
 * Fixed 0 proc attacks being able to create an Earthquake.
 </details>
 
+<details>
+<summary>Functional Coupler:</summary>
+
+* Fixed spawned equipment drones being able to infinitely use consumable equipment.
+</details>
+
 * Warped Echo:
     * Chance to apply echo:
         * Uncommon: 10% -> 10%
