@@ -546,19 +546,24 @@ namespace ItemQualities
 
         private static void BossGroup_DropRewards(ILContext il)
         {
+            patchDropListForQuality(il);
+            static void patchDropListForQuality(ILContext il)
+            {
+                // Patch legeacy boss drops system to roll for quality
+
             ILCursor c = new ILCursor(il);
 
             MethodInfo nextElementUniformPickupIndexList = typeof(Xoroshiro128Plus).GetMethods().FirstOrDefault(m => m.Name == nameof(Xoroshiro128Plus.NextElementUniform) && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType.IsGenericType && m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(List<>))?.MakeGenericMethod(typeof(PickupIndex));
             if (nextElementUniformPickupIndexList == null)
             {
-                Log.Error("Failed to find method Xoroshiro128Plus.NextElementUniform<T>(List<T>)");
+                    Log.PatchError(il, "Failed to find method Xoroshiro128Plus.NextElementUniform<T>(List<T>)");
                 return;
             }
 
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt(nextElementUniformPickupIndexList)))
             {
-                Log.Error("Failed to find patch location");
+                    Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -569,7 +574,79 @@ namespace ItemQualities
             {
                 return tryUpgradeQuality(originalPickupIndex, bossGroup.rng);
             }
+            }
+
+            patchBossItemQualities(il);
+            static void patchBossItemQualities(ILContext il)
+            {
+                // Patch boss item drops to inherit the quality of the already rolled item
+
+                ILCursor c = new ILCursor(il);
+
+                /*
+                 * // uniquePickup = this.dropTable.GeneratePickup(this.rng);
+                 * IL_005E: ldarg.0
+                 * IL_005F: ldfld     class RoR2.PickupDropTable RoR2.BossGroup::dropTable
+                 * IL_0064: ldarg.0
+                 * IL_0065: ldfld     class [HGCSharpUtils]Xoroshiro128Plus RoR2.BossGroup::rng
+                 * IL_006A: callvirt  instance valuetype RoR2.UniquePickup RoR2.PickupDropTable::GeneratePickup(class [HGCSharpUtils]Xoroshiro128Plus)
+                 * IL_006F: stloc.1
+                 */
+
+                VariableDefinition rollPickupVar = null;
+                if (!c.TryGotoNext(MoveType.After,
+                                   x => x.MatchLdarg(0),
+                                   x => x.MatchLdfld<BossGroup>(nameof(BossGroup.dropTable)),
+                                   x => x.MatchLdarg(0),
+                                   x => x.MatchLdfld<BossGroup>(nameof(BossGroup.rng)),
+                                   x => x.MatchCallOrCallvirt<PickupDropTable>(nameof(PickupDropTable.GeneratePickup)),
+                                   x => x.MatchStloc(il, out rollPickupVar)))
+                {
+                    Log.PatchError(il, "Failed to find roll pickup variable");
+                    return;
+                }
+
+                VariableDefinition dropPickupVar = null;
+                if (!c.TryGotoNext(MoveType.After,
+                                   x => x.MatchLdloc(rollPickupVar),
+                                   x => x.MatchStloc(il, out dropPickupVar)))
+                {
+                    Log.PatchError(il, "Failed to find drop pickup variable");
+                    return;
+                }
+
+                int dropPickupPatchCount = 0;
+                while (c.TryGotoNext(MoveType.After,
+                                     x => x.MatchStloc(dropPickupVar)))
+                {
+                    // Patch any assignment to the drop pickup to make sure it matches the quality of the rolled pickup
+
+                    c.Emit(OpCodes.Ldloca, dropPickupVar);
+                    c.Emit(OpCodes.Ldloca, rollPickupVar);
+                    c.EmitDelegate<SetDropPickupQualityTierDelegate>(setDropPickupQualityTier);
+
+                    static void setDropPickupQualityTier(ref UniquePickup dropPickup, in UniquePickup rollPickup)
+                    {
+                        // Normally we wouldn't do this, and instead letting the max of the two quality be what is chosen,
+                        // but here we've already rolled the quality for the entire bossgroup drop, so we discard anything we rolled for the boss items' qualities.
+                        dropPickup = dropPickup.WithQualityTier(QualityCatalog.GetQualityTier(rollPickup.pickupIndex));
+                    }
+
+                    dropPickupPatchCount++;
         }
+
+                if (dropPickupPatchCount == 0)
+                {
+                    Log.PatchError(il, "Failed to find drop pickup patch location");
+                }
+                else
+                {
+                    Log.Debug($"Found {dropPickupPatchCount} drop pickup patch location(s)");
+                }
+            }
+        }
+
+        private delegate void SetDropPickupQualityTierDelegate(ref UniquePickup dropPickup, in UniquePickup rollPickup);
 
         private static void Inventory_GiveRandomEquipment(ILContext il)
         {

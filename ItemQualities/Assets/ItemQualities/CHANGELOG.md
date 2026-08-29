@@ -1,5 +1,7 @@
 ## \<Next Version\> Changes:
 
+* Fixed boss item qualities being rolled separately from every other item dropped from a teleporter event.
+
 <details>
 <summary>Titanic Knurl:</summary>
 
