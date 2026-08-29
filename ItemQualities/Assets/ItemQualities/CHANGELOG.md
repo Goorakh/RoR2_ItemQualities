@@ -19,6 +19,12 @@
 * Fixed sun effect sometimes lingering on an enemy after death.
 </details>
 
+<details>
+<summary>Queen's Gland:</summary>
+
+* Fixed knockback inflicted on the Beetle Guard being transferred to you.
+</details>
+
 * Warped Echo:
     * Chance to apply echo:
         * Uncommon: 10% -> 10%

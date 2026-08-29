@@ -124,6 +124,8 @@ namespace ItemQualities.Items
 
                     repeatDamageInfo.position = transform.InverseTransformPoint(repeatDamageInfo.position);
 
+                    repeatDamageInfo.force = Vector3.zero;
+
                     repeatDamageInfos[i] = repeatDamageInfo;
                 }
 
