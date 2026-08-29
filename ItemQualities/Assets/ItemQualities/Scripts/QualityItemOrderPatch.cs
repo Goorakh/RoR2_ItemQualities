@@ -6,14 +6,12 @@ using RoR2;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using UnityEngine;
-using UnityEngine.Networking;
 
 namespace ItemQualities
 {
     internal static class QualityItemOrderPatch
     {
-        private static readonly IComparer<ItemIndex> _itemQualityComparer = Comparer<ItemIndex>.Create((a, b) =>
+        private static readonly Comparer<ItemIndex> _itemQualityComparer = Comparer<ItemIndex>.Create((a, b) =>
         {
             QualityTier qualityTierA = QualityCatalog.GetQualityTier(a);
             QualityTier qualityTierB = QualityCatalog.GetQualityTier(b);
@@ -27,60 +25,17 @@ namespace ItemQualities
             IL.RoR2.Inventory.SetItemAcquiredServer += Inventory_SetItemAcquiredServer;
         }
 
-        private static void sortAllQualityItems(Inventory inventory)
+        private static bool sortQualityItem(Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
             using var _1 = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> tempItemAcquisitionOrder);
-            tempItemAcquisitionOrder.AddRange(inventory.itemAcquisitionOrder);
+            ListUtils.CloneTo(inventory.itemAcquisitionOrder, tempItemAcquisitionOrder);
 
             bool itemOrderChanged = false;
 
             try
             {
                 using var _2 = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> sortedItemsInGroup);
-
-                for (int i = 0; i < tempItemAcquisitionOrder.Count; i++)
-                {
-                    ItemIndex itemIndex = tempItemAcquisitionOrder[i];
-                    ItemQualityGroupIndex itemGroupIndex = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
-                    if (itemGroupIndex == ItemQualityGroupIndex.Invalid)
-                        continue;
-
-                    extractAndSortAllItemsInGroup(itemGroupIndex, i, tempItemAcquisitionOrder, sortedItemsInGroup, out int groupStartIndex);
-
-                    tempItemAcquisitionOrder.InsertRange(groupStartIndex, sortedItemsInGroup);
-                    i = Math.Max(i, groupStartIndex) + sortedItemsInGroup.Count - 1;
-
-                    sortedItemsInGroup.Clear();
-
-                    itemOrderChanged = true;
-                }
-            }
-            catch (Exception e)
-            {
-                Log.Error_NoCallerPrefix(e.ToString());
-                return;
-            }
-
-            if (itemOrderChanged)
-            {
-                inventory.itemAcquisitionOrder.Clear();
-                inventory.itemAcquisitionOrder.AddRange(tempItemAcquisitionOrder);
-                inventory.SetDirtyBit(Inventory.itemAcquisitionOrderDirtyBit);
-
-                inventory.HandleInventoryChanged();
-            }
-        }
-
-        private static void sortQualityItem(Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
-        {
-            using var _1 = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> tempItemAcquisitionOrder);
-            tempItemAcquisitionOrder.AddRange(inventory.itemAcquisitionOrder);
-
-            bool itemOrderChanged = false;
-
-            try
-            {
-                using var _2 = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> sortedItemsInGroup);
+                ListUtils.EnsureCapacity(sortedItemsInGroup, (int)QualityTier.Count + 1);
 
                 extractAndSortAllItemsInGroup(itemGroupIndex, 0, tempItemAcquisitionOrder, sortedItemsInGroup, out int groupStartIndex);
                 if (sortedItemsInGroup.Count > 0)
@@ -93,17 +48,15 @@ namespace ItemQualities
             catch (Exception e)
             {
                 Log.Error_NoCallerPrefix(e.ToString());
-                return;
+                return false;
             }
 
             if (itemOrderChanged)
             {
-                inventory.itemAcquisitionOrder.Clear();
-                inventory.itemAcquisitionOrder.AddRange(tempItemAcquisitionOrder);
-                inventory.SetDirtyBit(Inventory.itemAcquisitionOrderDirtyBit);
-
-                inventory.HandleInventoryChanged();
+                ListUtils.CloneTo(tempItemAcquisitionOrder, inventory.itemAcquisitionOrder);
             }
+
+            return itemOrderChanged;
         }
 
         private static void extractAndSortAllItemsInGroup(ItemQualityGroupIndex itemGroupIndex, int startSearchIndex, List<ItemIndex> itemsList, List<ItemIndex> extractedGroup, out int firstFoundIndex)
