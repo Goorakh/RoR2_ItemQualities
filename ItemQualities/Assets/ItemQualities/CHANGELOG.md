@@ -1,4 +1,4 @@
-## \<Next Version\>
+## \<Next Version\> Changes:
 
 <details>
 <summary>Titanic Knurl:</summary>
@@ -20,6 +20,13 @@
         * Legendary 75% -> 25%
     * Max stacks of echo:
         * 10 (+10 per stack) -> 3 (+3 per stack)
+
+* Pocket I.C.B.M.:
+    * Skill missile damage:
+        * Uncommon: 150% -> 100%
+        * Rare: 250% -> 150%
+        * Epic: 400% -> 250%
+        * Legendary: 500% -> 350%
 
 ## 0.8.0 Changes:
 
