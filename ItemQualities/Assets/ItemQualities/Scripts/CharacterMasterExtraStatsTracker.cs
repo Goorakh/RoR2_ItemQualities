@@ -314,7 +314,7 @@ namespace ItemQualities
 
             using (ListPool<ItemIndex>.RentCollection(out List<ItemIndex> permanentItemIndices))
             {
-                _master.inventory.permanentItemStacks.GetNonZeroIndices(permanentItemIndices);
+                _master.inventory.permanentItemStacks.GetNonZeroIndicesFixed(permanentItemIndices);
                 availableUpgradeItemsSelection.EnsureCapacity(permanentItemIndices.Count);
                 foreach (ItemIndex itemIndex in permanentItemIndices)
                 {
@@ -330,7 +330,7 @@ namespace ItemQualities
             {
                 using (ListPool<ItemIndex>.RentCollection(out List<ItemIndex> temporaryItemIndices))
                 {
-                    _master.inventory.tempItemsStorage.GetNonZeroIndices(temporaryItemIndices);
+                    _master.inventory.tempItemsStorage.GetNonZeroIndicesFixed(temporaryItemIndices);
                     availableUpgradeItemsSelection.EnsureCapacity(temporaryItemIndices.Count);
                     foreach (ItemIndex itemIndex in temporaryItemIndices)
                     {

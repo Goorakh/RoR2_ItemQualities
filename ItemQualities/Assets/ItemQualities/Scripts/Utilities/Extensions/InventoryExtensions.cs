@@ -1,6 +1,9 @@
-﻿using RoR2;
+﻿using HG;
+using RoR2;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace ItemQualities.Utilities.Extensions
 {
@@ -265,6 +268,48 @@ namespace ItemQualities.Utilities.Extensions
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Fixed version of <see cref="SparseArrayStruct{TElement, TImpl}.GetNonDefaultIndices{T}(List{T})"/> that doesn't overpopulate <paramref name="dest"/>.
+        /// </summary>
+        /// <typeparam name="TElement"></typeparam>
+        /// <typeparam name="TImpl"></typeparam>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="sparseArray"></param>
+        /// <param name="dest"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void GetNonZeroIndicesFixed<TElement, TImpl, T>(this in SparseArrayStruct<TElement, TImpl> sparseArray, List<T> dest)
+            where TElement : IEquatable<TElement>
+            where TImpl : ISparseArrayImpl<TElement>
+            where T : struct
+        {
+            Span<SparseIndex> nonDefaultIndices = sparseArray.nonDefaultIndices.AsSpan(0, sparseArray.nonDefaultIndicesCount);
+            
+            ListUtils.EnsureCapacity(dest, dest.Count + nonDefaultIndices.Length);
+            ListUtils.AddRange(dest, MemoryMarshal.Cast<SparseIndex, T>(nonDefaultIndices));
+        }
+
+        /// <summary>
+        /// Fixed version of <see cref="ItemCollection.GetNonZeroIndices(List{ItemIndex})"/> that doesn't overpopulate <paramref name="dest"/>.
+        /// </summary>
+        /// <param name="itemCollection"></param>
+        /// <param name="dest"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void GetNonZeroIndicesFixed(this in ItemCollection itemCollection, List<ItemIndex> dest)
+        {
+            itemCollection.inner.GetNonZeroIndicesFixed(dest);
+        }
+
+        /// <summary>
+        /// Fixed version of <see cref="Inventory.TempItemsStorage.GetNonZeroIndices(List{ItemIndex})"/> that doesn't overpopulate <paramref name="dest"/>.
+        /// </summary>
+        /// <param name="tempItemCollection"></param>
+        /// <param name="dest"></param>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        internal static void GetNonZeroIndicesFixed(this in Inventory.TempItemsStorage tempItemCollection, List<ItemIndex> dest)
+        {
+            tempItemCollection.tempItemStacks.GetNonZeroIndicesFixed(dest);
         }
     }
 }

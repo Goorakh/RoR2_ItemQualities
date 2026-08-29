@@ -11,7 +11,7 @@ using UnityEngine;
 
 namespace ItemQualities.Items
 {
-    public static class ShockDamageAura
+    internal static class ShockDamageAura
     {
         [SystemInitializer]
         private static void Init()
@@ -55,7 +55,7 @@ namespace ItemQualities.Items
             if (shockDamageAura.TotalQualityCount == 0)
             {
                 using var _ = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> conductorItemIndices);
-                extraStats.ConductorItemStacks.GetNonZeroIndices(conductorItemIndices);
+                extraStats.ConductorItemStacks.GetNonZeroIndicesFixed(conductorItemIndices);
                 extraStats.ConductorItemStacks.Clear();
 
                 foreach (ItemIndex itemIndex in conductorItemIndices)
