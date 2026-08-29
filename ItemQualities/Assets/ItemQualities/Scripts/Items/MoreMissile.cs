@@ -205,7 +205,7 @@ namespace ItemQualities.Items
                     QualityTier.Rare => 1.5f,
                     QualityTier.Epic => 2.5f,
                     QualityTier.Legendary => 3.5f,
-                    _ => throw new NotImplementedException()
+                    _ => 0f
                 };
 
                 float damage = Body.damage * damageCoefficient;
