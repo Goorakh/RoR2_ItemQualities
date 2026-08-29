@@ -14,6 +14,11 @@
 * Fixed spawned equipment drones being able to infinitely use consumable equipment.
 </details>
 
+<summary>Planula:</summary>
+
+* Fixed sun effect sometimes lingering on an enemy after death.
+</details>
+
 * Warped Echo:
     * Chance to apply echo:
         * Uncommon: 10% -> 10%

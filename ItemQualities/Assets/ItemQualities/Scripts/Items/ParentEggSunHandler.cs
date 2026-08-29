@@ -46,10 +46,15 @@ namespace ItemQualities
             if (pointLight && pointLight.TryGetComponent(out Light light))
             {
                 light.range = 100;
-                light.intensity = 1f;
+                light.intensity = 0.2f;
             }
 
             args.ContentPack.networkedObjectPrefabs.Add(sunPrefab);
+        }
+
+        private void OnDestroy()
+        {
+            Destroy(_sunInstance);
         }
 
         private void Start()
@@ -97,27 +102,27 @@ namespace ItemQualities
                 }
             }
         }
-    }
 
-    public sealed class VisualRadiusHandler : MonoBehaviour
-    {
-        private void Awake()
+        private sealed class VisualRadiusHandler : MonoBehaviour
         {
-            if (TryGetComponent(out GenericOwnership ownership))
+            private void Awake()
             {
-                ownership.onOwnerChanged += OwnerChanged;
-            }
-        }
-
-        private void OwnerChanged(GameObject owner)
-        {
-            if (owner.TryGetComponent(out CharacterBody body))
-            {
-                int maxDistance = ParentEgg.SunRange(body);
-                Transform visualRadius = transform.Find("VfxRoot/Mesh/AreaIndicator");
-                if (visualRadius)
+                if (TryGetComponent(out GenericOwnership ownership))
                 {
-                    visualRadius.localScale = Vector3.one * (maxDistance * 2);
+                    ownership.onOwnerChanged += OwnerChanged;
+                }
+            }
+
+            private void OwnerChanged(GameObject owner)
+            {
+                if (owner.TryGetComponent(out CharacterBody body))
+                {
+                    int maxDistance = ParentEgg.SunRange(body);
+                    Transform visualRadius = transform.Find("VfxRoot/Mesh/AreaIndicator");
+                    if (visualRadius)
+                    {
+                        visualRadius.localScale = Vector3.one * (maxDistance * 2);
+                    }
                 }
             }
         }
