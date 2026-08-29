@@ -99,6 +99,65 @@ namespace ItemQualities.Items
         }
     }
 
+    public sealed class MinorConstructOnKillQualityItemBehavior : QualityItemBodyBehavior
+    {
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.MinorConstructOnKill;
+
+        private void OnEnable()
+        {
+            EquipmentSlot.onServerEquipmentActivated += onEquipmentActivated;
+        }
+
+        private void OnDisable()
+        {
+            EquipmentSlot.onServerEquipmentActivated -= onEquipmentActivated;
+        }
+
+        private void onEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
+        {
+            if (!ReferenceEquals(Body.equipmentSlot, equipmentSlot) || equipmentIndex == EquipmentIndex.None)
+            {
+                return;
+            }
+
+            if (Body.master.IsDeployableLimited(DeployableSlot.MinorConstructOnKill))
+            {
+                return;
+            }
+
+            ref readonly ItemQualityCounts minorConstructOnKill = ref Stacks;
+
+            float minorConstructChance = minorConstructOnKill.HighestQuality switch
+            {
+                QualityTier.Uncommon => 20f,
+                QualityTier.Rare => 30f,
+                QualityTier.Epic => 65f,
+                QualityTier.Legendary => 100f,
+                _ => 0f,
+            };
+
+            if (RollUtil.CheckRoll(minorConstructChance, Body.master, false))
+            {
+                Vector3 direction = Quaternion.AngleAxis(UnityEngine.Random.Range(0, 360), Vector3.up) * Quaternion.AngleAxis(-80f, Vector3.right) * Vector3.forward;
+                FireProjectileInfo fireProjectileInfo = new FireProjectileInfo
+                {
+                    projectilePrefab = GlobalEventManager.CommonAssets.minorConstructOnKillProjectile,
+                    position = Body.corePosition,
+                    rotation = Util.QuaternionSafeLookRotation(direction),
+                    procChainMask = default(ProcChainMask),
+                    owner = gameObject,
+                    damage = 0f,
+                    crit = false,
+                    force = 0f,
+                    damageColorIndex = DamageColorIndex.Item
+                };
+
+                ProjectileManager.instance.FireProjectile(fireProjectileInfo);
+            }
+        }
+    }
+
     public sealed class MinorConstructOnKillConstructItemQualityItemBehavior : QualityItemBodyBehavior
     {
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]

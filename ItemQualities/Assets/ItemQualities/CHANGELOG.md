@@ -20,6 +20,13 @@
 * An Overgrown Quality Printer now also spawns when completing a Primordial Teleporter.
 </details>
 
+<details>
+<summary>Defense Nucleus:</summary>
+
+* Added chance to spawn a construct on equipment use.
+</details>
+
+<details>
 <summary>Planula:</summary>
 
 * Fixed sun effect sometimes lingering on an enemy after death.
