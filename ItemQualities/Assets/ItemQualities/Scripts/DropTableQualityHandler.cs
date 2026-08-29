@@ -308,7 +308,11 @@ namespace ItemQualities
 
             bool pickupPassesFilter(PickupIndex pickupIndex)
             {
+                QualityTier pickupQualityTier = QualityCatalog.GetQualityTier(pickupIndex);
                 PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
+
+                PickupDef baseQualityPickup = PickupCatalog.GetPickupDef(QualityCatalog.GetPickupIndexOfQuality(pickupIndex, QualityTier.None));
+                ItemDef baseQualityItem = baseQualityPickup != null ? ItemCatalog.GetItemDef(baseQualityPickup.itemIndex) : null;
 
                 ItemDef itemDef = ItemCatalog.GetItemDef(pickupDef != null ? pickupDef.itemIndex : ItemIndex.None);
                 if (itemDef)
@@ -318,13 +322,27 @@ namespace ItemQualities
                         foreach (ItemTag requiredItemTag in requiredItemTags)
                         {
                             if (!itemDef.ContainsTag(requiredItemTag))
+                            {
                                 return false;
+                            }
                         }
 
                         foreach (ItemTag bannedItemTag in bannedItemTags)
                         {
-                            if (itemDef.ContainsTag(bannedItemTag))
+                            ItemDef itemToCheck = itemDef;
+
+                            // All quality items have the WorldUnique tag, so if it is banned, check if the base item has the tag instead,
+                            // since that's what the filter is actually asking for.
+                            bool forwardTagCheckToBaseItem = bannedItemTag == ItemTag.WorldUnique;
+                            if (forwardTagCheckToBaseItem && baseQualityItem)
+                            {
+                                itemToCheck = baseQualityItem;
+                            }
+
+                            if (itemToCheck.ContainsTag(bannedItemTag))
+                            {
                                 return false;
+                            }
                         }
                     }
                 }
@@ -551,29 +569,29 @@ namespace ItemQualities
             {
                 // Patch legeacy boss drops system to roll for quality
 
-            ILCursor c = new ILCursor(il);
+                ILCursor c = new ILCursor(il);
 
-            MethodInfo nextElementUniformPickupIndexList = typeof(Xoroshiro128Plus).GetMethods().FirstOrDefault(m => m.Name == nameof(Xoroshiro128Plus.NextElementUniform) && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType.IsGenericType && m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(List<>))?.MakeGenericMethod(typeof(PickupIndex));
-            if (nextElementUniformPickupIndexList == null)
-            {
+                MethodInfo nextElementUniformPickupIndexList = typeof(Xoroshiro128Plus).GetMethods().FirstOrDefault(m => m.Name == nameof(Xoroshiro128Plus.NextElementUniform) && m.GetParameters().Length == 1 && m.GetParameters()[0].ParameterType.IsGenericType && m.GetParameters()[0].ParameterType.GetGenericTypeDefinition() == typeof(List<>))?.MakeGenericMethod(typeof(PickupIndex));
+                if (nextElementUniformPickupIndexList == null)
+                {
                     Log.PatchError(il, "Failed to find method Xoroshiro128Plus.NextElementUniform<T>(List<T>)");
-                return;
-            }
+                    return;
+                }
 
-            if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchCallOrCallvirt(nextElementUniformPickupIndexList)))
-            {
+                if (!c.TryGotoNext(MoveType.After,
+                                   x => x.MatchCallOrCallvirt(nextElementUniformPickupIndexList)))
+                {
                     Log.PatchError(il, "Failed to find patch location");
-                return;
-            }
+                    return;
+                }
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<PickupIndex, BossGroup, PickupIndex>>(pickQuality);
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Func<PickupIndex, BossGroup, PickupIndex>>(pickQuality);
 
-            static PickupIndex pickQuality(PickupIndex originalPickupIndex, BossGroup bossGroup)
-            {
-                return tryUpgradeQuality(originalPickupIndex, bossGroup.rng);
-            }
+                static PickupIndex pickQuality(PickupIndex originalPickupIndex, BossGroup bossGroup)
+                {
+                    return tryUpgradeQuality(originalPickupIndex, bossGroup.rng);
+                }
             }
 
             patchBossItemQualities(il);
@@ -633,7 +651,7 @@ namespace ItemQualities
                     }
 
                     dropPickupPatchCount++;
-        }
+                }
 
                 if (dropPickupPatchCount == 0)
                 {

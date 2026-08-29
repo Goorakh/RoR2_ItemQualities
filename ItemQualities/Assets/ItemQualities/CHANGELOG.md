@@ -30,6 +30,8 @@
         * Epic: 400% -> 250%
         * Legendary: 500% -> 350%
 
+* Fixed Solus Heart not being able to drop a quality item reward.
+
 ## 0.8.0 Changes:
 
 * Added quality boss items.
