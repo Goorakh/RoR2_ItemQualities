@@ -1,4 +1,4 @@
-## \<Next Version\> Changes:
+## 0.8.1 Changes:
 
 * Fixed boss item qualities being rolled separately from every other item dropped from a teleporter event.
 
