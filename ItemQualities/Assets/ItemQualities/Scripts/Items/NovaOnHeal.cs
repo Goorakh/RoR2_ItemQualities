@@ -55,10 +55,10 @@ namespace ItemQualities.Items
 
                     devilOrb.procCoefficient = Mathf.Max(devilOrb.procCoefficient, procCoefficient);
 
-                    float damageIncrease = (0.4f * novaOnHeal.UncommonCount) +
-                                           (0.8f * novaOnHeal.RareCount) +
-                                           (1.0f * novaOnHeal.EpicCount) +
-                                           (1.5f * novaOnHeal.LegendaryCount);
+                    float damageIncrease = (1.0f * novaOnHeal.UncommonCount) +
+                                           (2.0f * novaOnHeal.RareCount) +
+                                           (3.0f * novaOnHeal.EpicCount) +
+                                           (4.0f * novaOnHeal.LegendaryCount);
 
                     if (damageIncrease > 0f)
                     {

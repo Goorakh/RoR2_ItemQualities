@@ -47,6 +47,13 @@
         * Epic: 400% -> 250%
         * Legendary: 500% -> 350%
 
+* N'kuhana's Opinion:
+    * Skull damage increase:
+        * Uncommon: 40% (+40% per stack) -> 100% (+100% per stack)
+        * Rare: 80% (+80% per stack) -> 200% (+100% per stack)
+        * Epic: 100% (+100% per stack) -> 300% (+100% per stack)
+        * Legendary: 150% (+150% per stack) -> 400% (+100% per stack)
+
 * Fixed Solus Heart not being able to drop a quality item reward.
 
 ## 0.8.0 Changes:
