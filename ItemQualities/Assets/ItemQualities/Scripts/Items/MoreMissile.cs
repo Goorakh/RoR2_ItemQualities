@@ -201,10 +201,10 @@ namespace ItemQualities.Items
             {
                 float damageCoefficient = Stacks.HighestQuality switch
                 {
-                    QualityTier.Uncommon => 1.0f,
-                    QualityTier.Rare => 1.5f,
-                    QualityTier.Epic => 2.5f,
-                    QualityTier.Legendary => 3.5f,
+                    QualityTier.Uncommon => 0.5f,
+                    QualityTier.Rare => 1.0f,
+                    QualityTier.Epic => 1.5f,
+                    QualityTier.Legendary => 2.0f,
                     _ => 0f
                 };
 

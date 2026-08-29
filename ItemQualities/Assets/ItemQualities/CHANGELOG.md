@@ -49,10 +49,10 @@
 
 * Pocket I.C.B.M.:
     * Skill missile damage:
-        * Uncommon: 150% -> 100%
-        * Rare: 250% -> 150%
-        * Epic: 400% -> 250%
-        * Legendary: 500% -> 350%
+        * Uncommon: 150% -> 50%
+        * Rare: 250% -> 100%
+        * Epic: 400% -> 150%
+        * Legendary: 500% -> 200%
 
 * N'kuhana's Opinion:
     * Skull damage increase:
