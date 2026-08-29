@@ -220,9 +220,20 @@ namespace ItemQualities.Items
 
         private static void onBossGroupDefeatedServer(BossGroup bossGroup)
         {
-            // Don't spawn for teleporters
-            if (bossGroup.GetComponent<TeleporterInteraction>())
-                return;
+            if (bossGroup.TryGetComponent(out TeleporterInteraction teleporterInteraction))
+            {
+                SceneExitController sceneExitController = teleporterInteraction.sceneExitController;
+
+                bool isLunarTeleporter = sceneExitController &&
+                                         sceneExitController.destinationScene &&
+                                         sceneExitController.destinationScene.sceneDefIndex == SceneCatalog.FindSceneIndex("moon2");
+
+                // Allow spawning on the Primordial Teleporter
+                if (!isLunarTeleporter)
+                {
+                    return;
+                }
+            }
 
             // Spawn is handled manually for solus heart
             if (bossGroup.GetComponent<SolusWebMissionController>())

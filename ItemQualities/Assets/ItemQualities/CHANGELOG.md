@@ -14,6 +14,12 @@
 * Fixed spawned equipment drones being able to infinitely use consumable equipment.
 </details>
 
+<details>
+<summary>Halcyon Seed:</summary>
+
+* An Overgrown Quality Printer now also spawns when completing a Primordial Teleporter.
+</details>
+
 <summary>Planula:</summary>
 
 * Fixed sun effect sometimes lingering on an enemy after death.
