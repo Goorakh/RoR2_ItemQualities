@@ -63,7 +63,7 @@ namespace ItemQualities
             set => _parryStoredProjectileInfo = value;
         }
 
-        public ItemCollection ConductorItemStacks = ItemCollection.Create();
+        public ItemCollection ConductorItemStacks;
 
         private readonly SyncListUInt _upgradeItemIndices = new SyncListUInt();
 
@@ -92,6 +92,8 @@ namespace ItemQualities
         {
             _master = GetComponent<CharacterMaster>();
 
+            ConductorItemStacks = ItemCollection.Create();
+
             ComponentCache.Add(gameObject, this);
 
             if (NetworkServer.active)
@@ -103,6 +105,8 @@ namespace ItemQualities
         private void OnDestroy()
         {
             ComponentCache.Remove(gameObject, this);
+
+            ConductorItemStacks.Dispose();
 
             if (_pendingItemUpgrades != null)
             {
