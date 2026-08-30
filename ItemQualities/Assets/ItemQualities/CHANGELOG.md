@@ -1,3 +1,7 @@
+## \<Next Version\> Changes:
+
+* Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
+
 ## 0.8.1 Changes:
 
 * Fixed boss item qualities being rolled separately from every other item dropped from a teleporter event.
