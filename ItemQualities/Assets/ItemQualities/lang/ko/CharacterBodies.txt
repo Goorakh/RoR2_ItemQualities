@@ -1,0 +1,6 @@
+﻿{
+    strings:
+    {
+        "QUALITY_SHARED_SUFFERING_ORB_BODY_NAME": "네트워크 수정",
+    }
+}
