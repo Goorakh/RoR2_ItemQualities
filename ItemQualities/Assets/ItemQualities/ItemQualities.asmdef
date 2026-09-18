@@ -53,7 +53,8 @@
         "RiskOfOptions.dll",
         "ProperSave.dll",
         "Rebindables.dll",
-        "MiscFixes.dll"
+        "MiscFixes.dll",
+        "FathomlessVoidling.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
