@@ -140,7 +140,7 @@ namespace ItemQualities.Items
 
                         if (result.spawnedInstance.TryGetComponent(out CharacterMaster spawnedMaster) && spawnedMaster.inventory)
                         {
-                            spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill, (int)squid.HighestQuality + 1);
+                            spawnedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.Items.SquidUpgradeChanceOnKill, (int)squid.HighestQuality);
 
                             int boostDamageCount = (3 * squid.UncommonCount) +
                                                    (4 * squid.RareCount) +
