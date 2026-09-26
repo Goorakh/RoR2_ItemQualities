@@ -2,6 +2,9 @@
 
 * Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
 
+* Reworks (Click to reveal):
+    * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks activate the scythe.</details>
+
 <details>
 <summary>Old Guillotine:</summary>
 
