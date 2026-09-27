@@ -1,12 +1,15 @@
 ## \<Next Version\> Changes:
 
-* Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
+* Reworks (Click to reveal):
+    * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>
 
 <details>
 <summary>Old Guillotine:</summary>
 
 * Fixed Solus Heart and Umbral Mithrix not being executable
 </details>
+
+* Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
 
 ## 0.8.1 Changes:
 
