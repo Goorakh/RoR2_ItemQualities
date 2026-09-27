@@ -1,7 +1,7 @@
 ## \<Next Version\> Changes:
 
 * Reworks (Click to reveal):
-    * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks activate the scythe.</details>
+    * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>
 
 <details>
 <summary>Old Guillotine:</summary>
