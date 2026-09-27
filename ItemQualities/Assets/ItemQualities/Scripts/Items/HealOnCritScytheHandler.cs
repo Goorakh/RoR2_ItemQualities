@@ -78,7 +78,7 @@ namespace ItemQualities
                 {
                     attacker = genericOwnership.ownerObject,
                     inflictor = gameObject,
-                    teamIndex = TeamComponent.GetObjectTeam(_attack.attacker),
+                    teamIndex = ownerBody.teamComponent.teamIndex,
                     hitBoxGroup = hitBoxGroup,
                     damage = ownerBody.baseDamage * damageCoefficient,
                     damageType = DamageTypeCombo.Generic,
