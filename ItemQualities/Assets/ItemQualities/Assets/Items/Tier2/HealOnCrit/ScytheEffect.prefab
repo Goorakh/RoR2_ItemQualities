@@ -212,8 +212,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1376541883891937447}
   - component: {fileID: 4662110061162092104}
-  - component: {fileID: 8202571808279763588}
-  - component: {fileID: 7431621511780319462}
   m_Layer: 0
   m_Name: ModelBase
   m_TagString: Untagged
@@ -259,33 +257,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &8202571808279763588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1758193438342813375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b47f3d89c7f284429637364d13277fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7431621511780319462
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1758193438342813375}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -1294804675, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  groupName: ScytheSwing
-  hitBoxes:
-  - {fileID: 2135802751894100310}
 --- !u!1 &5994581965723708585
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,6 +313,8 @@ GameObject:
   - component: {fileID: 4484976018036457368}
   - component: {fileID: 3454663667105726432}
   - component: {fileID: 5896663970557131243}
+  - component: {fileID: 8508421032095680086}
+  - component: {fileID: 170776877901528131}
   m_Layer: 0
   m_Name: ScytheEffect
   m_TagString: Untagged
@@ -410,3 +383,30 @@ MonoBehaviour:
   m_Script: {fileID: -1193882409, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8508421032095680086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133152688836114266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b47f3d89c7f284429637364d13277fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &170776877901528131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133152688836114266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: -1294804675, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  groupName: ScytheSwing
+  hitBoxes:
+  - {fileID: 2135802751894100310}

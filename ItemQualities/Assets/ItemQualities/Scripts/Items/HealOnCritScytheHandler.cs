@@ -12,9 +12,14 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities
 {
-    public class HealOnCritScytheHandler : MonoBehaviour
+    [RequireComponent(typeof(GenericOwnership))]
+    public sealed class HealOnCritScytheHandler : MonoBehaviour
     {
         public static GameObject swingTrailPrefab = null;
+
+        public HitBoxGroup hitBoxGroup;
+
+        private GenericOwnership genericOwnership;
 
         private OverlapAttack _attack = null;
         private float _timer = 0;
@@ -42,54 +47,73 @@ namespace ItemQualities
             args.ContentPack.prefabs.Add(swingTrailPrefab);
         }
 
+        private void Awake()
+        {
+            genericOwnership = GetComponent<GenericOwnership>();
+        }
+
         private void Start()
         {
-            if (!transform.parent || !transform.parent.TryGetComponent(out GenericOwnership ownership))
-                return;
-            if (!ownership.ownerObject || !ownership.ownerObject.TryGetComponent(out CharacterBody body))
-                return;
-            if (!body.inventory)
-                return;
+            CharacterBody ownerBody = genericOwnership.ownerObject ? genericOwnership.ownerObject.GetComponent<CharacterBody>() : null;
+            if (ownerBody)
+            {
+                ItemQualityCounts healOnCrit;
+                if (ownerBody.inventory)
+                {
+                    healOnCrit = ownerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.HealOnCrit);
+                }
+                else
+                {
+                    healOnCrit = ItemQualityCounts.zero;
+                }
 
-            ItemQualityCounts healOnCrit = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.HealOnCrit);
-            float damageCoeff = healOnCrit.UncommonCount * 6 +
-                                healOnCrit.RareCount * 9 +
-                                healOnCrit.EpicCount * 12 +
-                                healOnCrit.LegendaryCount * 15;
+                float damageCoefficient = (healOnCrit.UncommonCount * 6) +
+                                          (healOnCrit.RareCount * 9) +
+                                          (healOnCrit.EpicCount * 12) +
+                                          (healOnCrit.LegendaryCount * 15);
 
-            _attack = new OverlapAttack();
-            _attack.attacker = ownership.ownerObject;
-            _attack.inflictor = ownership.ownerObject;
-            _attack.teamIndex = TeamComponent.GetObjectTeam(_attack.attacker);
-            _attack.damage = body.baseDamage * damageCoeff;
-            _attack.isCrit = true;
-            _attack.hitBoxGroup = GetComponent<HitBoxGroup>();
+                _attack = new OverlapAttack
+                {
+                    attacker = genericOwnership.ownerObject,
+                    inflictor = gameObject,
+                    teamIndex = TeamComponent.GetObjectTeam(_attack.attacker),
+                    hitBoxGroup = hitBoxGroup,
+                    damage = ownerBody.baseDamage * damageCoefficient,
+                    damageType = DamageTypeCombo.Generic,
+                    isCrit = true,
+                    damageColorIndex = DamageColorIndex.Item,
+                    attackerFiltering = AttackerFiltering.NeverHitSelf,
+                    procCoefficient = 1f,
+                    procChainMask = new ProcChainMask(),
+                };
+            }
+
+            Util.PlaySound("Play_halcyonite_skill1_swing", gameObject);
         }
         
         private void FixedUpdate()
         {
-            if (NetworkServer.active)
-            {
-                _attack?.Fire();
-            }
-
-            if (_timer == 0)
-            {
-                Util.PlaySound("Play_halcyonite_skill1_swing", gameObject);
-            }
-            
-            if (_timer >= 0.11f && !_spawnedTrail)
-            {
-                _spawnedTrail = true;
-                GameObject trail = GameObject.Instantiate(swingTrailPrefab, transform.position, transform.rotation);
-                trail.GetComponent<ScaleParticleSystemDuration>().newDuration = 0.1f;
-            }
             _timer += Time.fixedDeltaTime;
-        }
 
-        private void DestroyGameObject()
-        {
-            Destroy(gameObject);
+            if (_attack != null)
+            {
+                if (NetworkServer.active)
+                {
+                    _attack.Fire();
+                }
+
+                if (_timer >= 0.11f && !_spawnedTrail)
+                {
+                    _spawnedTrail = true;
+                    GameObject trail = GameObject.Instantiate(swingTrailPrefab, transform.position, transform.rotation);
+                    trail.GetComponent<ScaleParticleSystemDuration>().newDuration = 0.1f;
+                }
+            }
+
+            if (_timer >= 0.2f && NetworkServer.active)
+            {
+                Destroy(gameObject);
+            }
         }
     }
 }
