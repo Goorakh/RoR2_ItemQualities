@@ -171,7 +171,7 @@ namespace ItemQualities.Items
                 lookDirection.y = 0f;
                 lookDirection.Normalize();
 
-                GameObject scytheEffect = Instantiate(ItemQualitiesContent.NetworkedPrefabs.ScytheEffect, report.attackerBody.corePosition, Util.QuaternionSafeLookRotation(lookDirection, Vector3.up));
+                GameObject scytheEffect = Instantiate(ItemQualitiesContent.NetworkedPrefabs.ScytheMeleeSwing, report.attackerBody.corePosition, Util.QuaternionSafeLookRotation(lookDirection, Vector3.up));
 
                 GenericOwnership genericOwnership = scytheEffect.GetComponent<GenericOwnership>();
                 genericOwnership.ownerObject = report.attackerBody.gameObject;

@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 8508421032095680086}
   - component: {fileID: 170776877901528131}
   m_Layer: 0
-  m_Name: ScytheEffect
+  m_Name: ScytheMeleeSwing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
