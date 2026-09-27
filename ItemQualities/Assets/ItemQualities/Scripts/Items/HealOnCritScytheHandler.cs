@@ -19,6 +19,8 @@ namespace ItemQualities
 
         public HitBoxGroup hitBoxGroup;
 
+        public float forceScalar;
+
         private GenericOwnership genericOwnership;
 
         private OverlapAttack _attack = null;
@@ -99,6 +101,7 @@ namespace ItemQualities
             {
                 if (NetworkServer.active)
                 {
+                    _attack.forceVector = -transform.right * forceScalar;
                     _attack.Fire();
                 }
 
