@@ -1,8 +1,4 @@
-﻿using ItemQualities.Utilities;
-using ItemQualities.Utilities.Extensions;
-using RoR2;
-using RoR2BepInExPack.GameAssetPaths.Version_1_39_0;
-using System.Collections.Generic;
+﻿using RoR2;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -15,33 +11,6 @@ namespace ItemQualities.Items
         [SystemInitializer(typeof(QualityCatalog))]
         private static void  Init()
         {
-            AddressableUtil.LoadAssetAsync<Material>(RoR2_Base_Common_VFX.matGhostEffect_mat).OnSuccess(ghostMat =>
-            {
-                if (!ItemQualitiesContent.NetworkedPrefabs.ScytheEffect.TryGetComponent(out ChildLocator childLocator))
-                    return;
-                if (!childLocator.TryFindChild("mdlScytheMesh", out Transform scytheMesh))
-                    return;
-                if (!scytheMesh.TryGetComponent(out MeshRenderer meshRenderer))
-                    return;
-                List<Material> materials = new List<Material>
-                {
-                    ghostMat
-                };
-                meshRenderer.SetSharedMaterials(materials);
-            });
-
-            AddressableUtil.LoadAssetAsync<Mesh>(RoR2_Base_HealOnCrit.mdlScythe_fbx).OnSuccess(scytheDisplay =>
-            {
-                if (!ItemQualitiesContent.NetworkedPrefabs.ScytheEffect.TryGetComponent(out ChildLocator childLocator))
-                    return;
-                if (!childLocator.TryFindChild("mdlScytheMesh", out Transform scytheMesh))
-                    return;
-                if (!scytheMesh.TryGetComponent(out MeshFilter meshFilter))
-                    return;
-
-                meshFilter.mesh = scytheDisplay;
-            });
-
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
