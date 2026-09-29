@@ -2,6 +2,13 @@
 
 * Reworks (Click to reveal):
     * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>
+    
+<details>
+<summary>Defense Nucleus:</summary>
+
+* Fixed bubble being visible and tinting the scren when zooming in as Railgunner.
+* Reduced the opacity of the bubble.
+</details>
 
 * Old Guillotine:
     * Fixed Solus Heart and Umbral Mithrix not being executable.
