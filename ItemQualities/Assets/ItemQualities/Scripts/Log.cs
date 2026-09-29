@@ -1,4 +1,5 @@
 using BepInEx.Logging;
+using ItemQualities.Utilities.Extensions;
 using MonoMod.Cil;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
@@ -96,7 +97,7 @@ namespace ItemQualities
             lock (_logLock)
             {
                 _sharedStringBuilder.Clear();
-                _sharedStringBuilder.Append($"Patch error for method: {cursor.Method.FullName}:{cursor.Index:X4} at ");
+                _sharedStringBuilder.Append($"Patch error for method: {cursor.Method.FullName} ({cursor.Next.SafeToString()}) at ");
                 AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
                 _sharedStringBuilder.Append(data);
 
