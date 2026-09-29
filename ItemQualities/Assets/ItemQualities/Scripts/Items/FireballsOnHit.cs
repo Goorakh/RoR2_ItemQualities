@@ -41,7 +41,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find damageInfo parameter");
+                Log.PatchError(il, "Failed to find damageInfo parameter");
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace ItemQualities.Items
                 c.Emit(OpCodes.Ldarg, damageInfoParameter);
                 c.EmitDelegate<Func<int, DamageInfo, int>>(increaseFireballCount);
             } else {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
 
             int increaseFireballCount(int fireballs, DamageInfo damageInfo)

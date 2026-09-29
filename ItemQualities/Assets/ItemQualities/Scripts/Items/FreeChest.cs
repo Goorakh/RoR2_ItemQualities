@@ -23,7 +23,7 @@ namespace ItemQualities.Items
             MethodInfo masterEnumeratorCurrentGetter = typeof(IEnumerator<CharacterMaster>).GetProperty(nameof(IEnumerator.Current))?.GetMethod;
             if (masterEnumeratorCurrentGetter == null)
             {
-                Log.Error("Failed to find CharacterMaster enumerator Current getter");
+                Log.PatchError(il, "Failed to find CharacterMaster enumerator Current getter");
                 return;
             }
 
@@ -34,14 +34,14 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.FreeChest)),
                                x => x.MatchStloc(typeof(int), il, out freeChestSpawnCountVar)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
             c.Goto(foundCursors[0].Next, MoveType.Before);
             if (!c.TryGotoPrev(MoveType.After, x => x.MatchCallOrCallvirt(masterEnumeratorCurrentGetter)))
             {
-                Log.Error("Failed to find master iterator variable");
+                Log.PatchError(il, "Failed to find master iterator variable");
                 return;
             }
 

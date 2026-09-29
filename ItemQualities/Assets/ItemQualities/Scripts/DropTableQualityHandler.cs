@@ -408,7 +408,7 @@ namespace ItemQualities
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -423,7 +423,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<EntityStates.ScavMonster.FindItem>(nameof(EntityStates.ScavMonster.FindItem.dropPickup))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -446,7 +446,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.GetPickupDef))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -466,7 +466,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<ShopTerminalBehavior>(nameof(ShopTerminalBehavior.SetPickup))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -512,7 +512,7 @@ namespace ItemQualities
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -527,7 +527,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt(out MethodReference method) && method?.Name?.StartsWith("<GenerateNewPickupServer>g__Pick") == true))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -549,7 +549,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt(pickupIndexSelectionEvaluate)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -676,7 +676,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.SetEquipmentIndex))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -712,7 +712,7 @@ namespace ItemQualities
                                x => x.MatchLdfld<MasterDropDroplet>(nameof(MasterDropDroplet.pickupsToDrop)),
                                x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.FindPickupIndex))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

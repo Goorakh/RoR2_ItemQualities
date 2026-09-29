@@ -126,13 +126,13 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<CharacterBody>(out ParameterDefinition pickupBodyParameter))
             {
-                Log.Error("Failed to find pickupBody parameter");
+                Log.PatchError(il, "Failed to find pickupBody parameter");
                 return;
             }
 
             if (!il.Method.TryFindParameter<float>("countToAdd", out ParameterDefinition countToAddParameter))
             {
-                Log.Error("Failed to find countToAdd parameter");
+                Log.PatchError(il, "Failed to find countToAdd parameter");
                 return;
             }
 

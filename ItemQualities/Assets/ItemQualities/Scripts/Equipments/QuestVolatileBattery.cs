@@ -62,7 +62,7 @@ namespace ItemQualities.Equipments
         {
             if (!il.Method.TryFindParameter<EquipmentIndex>("targetingEquipmentIndex", out ParameterDefinition targetingEquipmentIndexParameter))
             {
-                Log.Error("Failed to find 'targetingEquipmentIndex' parameter");
+                Log.PatchError(il, "Failed to find 'targetingEquipmentIndex' parameter");
                 return;
             }
 
@@ -75,7 +75,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchCallOrCallvirt<EquipmentDef>("get_" + nameof(EquipmentDef.equipmentIndex)),
                                x => x.MatchBeq(out targetEnemyLabel)))
             {
-                Log.Error("Failed to find target patch location");
+                Log.PatchError(il, "Failed to find target patch location");
                 return;
             }
 

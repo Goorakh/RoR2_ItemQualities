@@ -117,7 +117,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -129,7 +129,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParam))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -159,7 +159,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {

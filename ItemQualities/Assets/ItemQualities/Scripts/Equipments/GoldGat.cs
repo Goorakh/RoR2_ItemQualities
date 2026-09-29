@@ -56,7 +56,7 @@ namespace ItemQualities.Equipments
                 if (!c.TryGotoNext(MoveType.Before,
                                    x => x.MatchCallOrCallvirt<BulletAttack>(nameof(BulletAttack.Fire))))
                 {
-                    Log.Error("Failed to find BulletAttack patch location");
+                    Log.PatchError(il, "Failed to find BulletAttack patch location");
                     return;
                 }
 
@@ -135,7 +135,7 @@ namespace ItemQualities.Equipments
 
                 if (patchCount == 0)
                 {
-                    Log.Error("Failed to find maxFireFrequency patch location");
+                    Log.PatchError(il, "Failed to find maxFireFrequency patch location");
                     return;
                 }
                 else

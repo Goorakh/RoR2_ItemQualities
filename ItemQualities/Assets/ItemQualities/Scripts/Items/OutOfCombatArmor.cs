@@ -55,7 +55,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -64,7 +64,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchStfld<CharacterBody>(nameof(CharacterBody.outOfDangerStopwatch))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

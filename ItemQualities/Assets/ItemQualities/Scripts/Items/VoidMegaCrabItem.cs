@@ -24,7 +24,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdfld<VoidMegaCrabItemBehavior>(nameof(VoidMegaCrabItemBehavior.spawnTimer)),
                                x => x.MatchDiv()))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

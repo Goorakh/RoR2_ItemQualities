@@ -28,7 +28,7 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.HasBuff)),
                                x => x.MatchLdcR4(1.5f)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -101,13 +101,13 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<CharacterMaster>("attackerMaster", out ParameterDefinition attackerMasterParameter))
             {
-                Log.Error("Failed to find attackerMaster parameter");
+                Log.PatchError(il, "Failed to find attackerMaster parameter");
                 return;
             }
 
             if (!il.Method.TryFindParameter<CharacterBody>("victimBody", out ParameterDefinition victimBodyParameter))
             {
-                Log.Error("Failed to find attackerMaster parameter");
+                Log.PatchError(il, "Failed to find attackerMaster parameter");
                 return;
             }
 
@@ -116,7 +116,7 @@ namespace ItemQualities.Items
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.HasBuff)),
                                x => x.MatchBrtrue(out _)))
             {
-                Log.Error("Failed to find DeathMark buff check location");
+                Log.PatchError(il, "Failed to find DeathMark buff check location");
                 return;
             }
 
@@ -161,7 +161,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.AddTimedBuff))))
             {
-                Log.Error("Failed to find DeathMark buff apply location");
+                Log.PatchError(il, "Failed to find DeathMark buff apply location");
                 return;
             }
 
@@ -173,7 +173,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdcI4(4),
                                x => x.MatchBlt(out _)))
             {
-                Log.Error("Failed to find debuffCount variable");
+                Log.PatchError(il, "Failed to find debuffCount variable");
                 return;
             }
 

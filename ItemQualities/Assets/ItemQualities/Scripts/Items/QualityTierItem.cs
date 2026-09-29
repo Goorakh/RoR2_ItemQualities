@@ -83,14 +83,14 @@ namespace ItemQualities.Items
                                x => x.MatchLdfld<CharacterModel>(nameof(CharacterModel.propertyStorage)),
                                x => x.MatchLdsfld(typeof(CommonShaderProperties), nameof(CommonShaderProperties._EliteIndex))))
             {
-                Log.Error("Failed to find patch start location");
+                Log.PatchError(il, "Failed to find patch start location");
                 return;
             }
 
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<MaterialPropertyBlock>(nameof(MaterialPropertyBlock.SetFloat))))
             {
-                Log.Error("Failed to find patch end location");
+                Log.PatchError(il, "Failed to find patch end location");
                 return;
             }
 

@@ -75,7 +75,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error("Failed to find buff roll interval patch location");
+                Log.PatchError(il, "Failed to find buff roll interval patch location");
             }
 
             int patchCount = 0;

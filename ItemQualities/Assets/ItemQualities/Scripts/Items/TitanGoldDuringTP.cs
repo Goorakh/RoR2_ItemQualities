@@ -86,7 +86,7 @@ namespace ItemQualities.Items
                     }
                     catch (Exception e)
                     {
-                        Log.Error_NoCallerPrefix($"Failed to resolve GoldTitanManager.TryStartChannelingTitansServer onSpawnedServer method: {e}");
+                        Log.PatchError(il, $"Failed to resolve onSpawnedServer method: {e}");
                     }
 
                     if (onSpawnedServerMethod != null)
@@ -102,14 +102,14 @@ namespace ItemQualities.Items
                         }
                         catch (Exception e)
                         {
-                            Log.Error_NoCallerPrefix($"Failed to apply GoldTitanManager.TryStartChannelingTitansServer onSpawnedServer hook: {e}");
+                            Log.PatchError(il, $"Failed to apply onSpawnedServer hook: {e}");
                             hook?.Dispose();
                         }
                     }
                 }
                 else
                 {
-                    Log.Error("Failed to find onSpawnedServer method in GoldTitanManager.TryStartChannelingTitansServer");
+                    Log.PatchError(il, "Failed to find onSpawnedServer method");
                 }
             }
             else

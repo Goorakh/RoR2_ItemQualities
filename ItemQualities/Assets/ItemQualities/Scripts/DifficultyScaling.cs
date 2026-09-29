@@ -34,7 +34,7 @@ namespace ItemQualities
 
             if (patchCount == 0)
             {
-                Log.Error($"Failed to find patch location for {il.Method.FullName}");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {

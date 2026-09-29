@@ -167,7 +167,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<ItemIndex>(out ParameterDefinition itemIndexParameter))
             {
-                Log.Error("Failed to find ItemIndex parameter");
+                Log.PatchError(il, "Failed to find ItemIndex parameter");
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace ItemQualities.Items
                               x => x.MatchLdcI4(0),
                               x => x.MatchStloc<int>(il, out stackNumVar)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

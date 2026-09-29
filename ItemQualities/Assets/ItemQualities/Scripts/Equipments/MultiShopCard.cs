@@ -170,7 +170,7 @@ namespace ItemQualities.Equipments
         {
             if (!il.Method.TryFindParameter<EquipmentIndex>("targetingEquipmentIndex", out ParameterDefinition targetingEquipmentIndexParameter))
             {
-                Log.Error("Failed to find 'targetingEquipmentIndex' parameter");
+                Log.PatchError(il, "Failed to find 'targetingEquipmentIndex' parameter");
                 return;
             }
 
@@ -229,12 +229,12 @@ namespace ItemQualities.Equipments
                 }
                 else
                 {
-                    Log.Error("Failed to find target if-else end location");
+                    Log.PatchError(il, "Failed to find target if-else end location");
                 }
             }
             else
             {
-                Log.Error("Failed to find target patch location");
+                Log.PatchError(il, "Failed to find target patch location");
             }
         }
 
@@ -291,7 +291,7 @@ namespace ItemQualities.Equipments
         {
             if (!il.Method.TryFindParameter<EquipmentIcon.DisplayData>(out ParameterDefinition displayDataParameter))
             {
-                Log.Error("Failed to find DisplayData parameter");
+                Log.PatchError(il, "Failed to find DisplayData parameter");
                 return;
             }
 
@@ -300,7 +300,7 @@ namespace ItemQualities.Equipments
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchStfld<TooltipProvider>(nameof(TooltipProvider.bodyColor))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -351,13 +351,13 @@ namespace ItemQualities.Equipments
         {
             if (!il.Method.TryFindParameter<Interactor>(out ParameterDefinition interactorParameter))
             {
-                Log.Error("Failed to find interactor parameter");
+                Log.PatchError(il, "Failed to find interactor parameter");
                 return;
             }
 
             if (!il.Method.TryFindParameter<EquipmentIndex>(out ParameterDefinition equipmentIndexParameter))
             {
-                Log.Error("Failed to find equipmentIndex parameter");
+                Log.PatchError(il, "Failed to find equipmentIndex parameter");
                 return;
             }
 
@@ -368,7 +368,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchCallOrCallvirt<SummonMasterBehavior>(nameof(SummonMasterBehavior.OpenSummonReturnMaster)),
                                x => x.MatchStloc(il, out summonedMasterVar)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

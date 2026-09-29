@@ -152,7 +152,7 @@ namespace ItemQualities.Items
                                x => x.MatchCallOrCallvirt<ItemDef>("get_" + nameof(ItemDef.itemIndex)),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.CalculateEffectiveItemStacks))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

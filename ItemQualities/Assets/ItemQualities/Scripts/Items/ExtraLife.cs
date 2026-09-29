@@ -41,7 +41,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloca(extraLifeItemTransformationVarIndex),
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.ExtraLife))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

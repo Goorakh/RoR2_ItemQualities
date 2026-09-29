@@ -20,7 +20,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -30,7 +30,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.Behemoth)),
                                x => x.MatchCallOrCallvirt<BlastAttack>(nameof(BlastAttack.Fire))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

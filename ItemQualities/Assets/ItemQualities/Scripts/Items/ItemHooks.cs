@@ -30,7 +30,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<ItemIndex>(out ParameterDefinition itemIndexParameter))
             {
-                Log.Error("Failed to find ItemIndex parameter");
+                Log.PatchError(il, "Failed to find ItemIndex parameter");
                 return;
             }
 
@@ -41,7 +41,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdflda<Inventory>(nameof(Inventory.effectiveItemStacks)),
                                x => x.MatchCallOrCallvirt<ItemCollection>(nameof(ItemCollection.SetStackValue))))
             {
-                Log.Error("Failed to find effectiveItemStacks.SetStackValue call");
+                Log.PatchError(il, "Failed to find effectiveItemStacks.SetStackValue call");
                 return;
             }
 
@@ -67,7 +67,7 @@ namespace ItemQualities.Items
             if (!c.TryFindPrev(out foundCursors,
                                x => x.MatchLdloc(typeof(int), il, out effectiveItemCountVar)))
             {
-                Log.Error("Failed to find effectiveItemCount variable");
+                Log.PatchError(il, "Failed to find effectiveItemCount variable");
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace ItemQualities.Items
                                x => x.MatchCall(typeof(Math), nameof(Math.Clamp)),
                                x => x.MatchCallOrCallvirt<Inventory>("get_" + nameof(Inventory.inventoryDisabled))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.WriteItemStacks))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -141,7 +141,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<Inventory>(out ParameterDefinition inventoryParameter))
             {
-                Log.Error("Failed to find inventory parameter");
+                Log.PatchError(il, "Failed to find inventory parameter");
                 return;
             }
 
@@ -153,7 +153,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloc(typeof(ItemIndex), il, out itemIndexVar),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.CalculateEffectiveItemStacks))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -192,7 +192,7 @@ namespace ItemQualities.Items
                 !c.TryGotoNext(MoveType.After,
                                x => x.MatchStloc(typeof(float), il, out damageValueVar)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

@@ -23,7 +23,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -35,7 +35,7 @@ namespace ItemQualities.Items
                                x => x.MatchStloc(typeof(List<HurtBox>), il, out foundTargetsListVar),
                                x => x.MatchCallOrCallvirt<BounceOrb>(nameof(BounceOrb.SearchForTargets))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

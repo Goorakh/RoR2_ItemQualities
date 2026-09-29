@@ -1334,7 +1334,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -1364,7 +1364,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -1394,7 +1394,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -1433,7 +1433,7 @@ namespace ItemQualities.Items
                                x => x.MatchImplicitConversion<UnityEngine.Object, bool>(),
                                x => x.MatchBrfalse(out afterSpawnBlastEffectLabel)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -1475,7 +1475,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -1494,7 +1494,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld<EntityStates.FalseSon.ClubGroundSlam>(nameof(EntityStates.FalseSon.ClubGroundSlam.blastVFXScaleMultiplier)),
                                x => x.MatchMul()))
             {
-                Log.Error("Failed to find effect scale patch location");
+                Log.PatchError(il, "Failed to find effect scale patch location");
                 return;
             }
 
@@ -1512,7 +1512,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld<EntityStates.FalseSon.ChargedClubSwing>(nameof(EntityStates.FalseSon.ChargedClubSwing.blastVFXScaleMultiplier)),
                                x => x.MatchMul()))
             {
-                Log.Error("Failed to find effect scale patch location");
+                Log.PatchError(il, "Failed to find effect scale patch location");
                 return;
             }
 
@@ -1565,7 +1565,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdstr("Prefabs/Effects/ImpactEffects/LightningStrikeImpact"),
                                x => x.MatchCallOrCallvirt(typeof(OrbStorageUtility), nameof(OrbStorageUtility.Get))))
             {
-                Log.Error("Failed to find impact prefab patch location");
+                Log.PatchError(il, "Failed to find impact prefab patch location");
                 return;
             }
 
@@ -1589,7 +1589,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchNewobj<EffectData>()))
             {
-                Log.Error("Failed to find impact effect patch location");
+                Log.PatchError(il, "Failed to find impact effect patch location");
                 return;
             }
 
@@ -1618,7 +1618,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdstr("Prefabs/Effects/ImpactEffects/SimpleLightningStrikeImpact"),
                                x => x.MatchCallOrCallvirt(typeof(OrbStorageUtility), nameof(OrbStorageUtility.Get))))
             {
-                Log.Error("Failed to find impact prefab patch location");
+                Log.PatchError(il, "Failed to find impact prefab patch location");
                 return;
             }
 
@@ -1644,7 +1644,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchNewobj<EffectData>()))
             {
-                Log.Error("Failed to find impact effect patch location");
+                Log.PatchError(il, "Failed to find impact effect patch location");
                 return;
             }
 
@@ -1679,7 +1679,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -1696,7 +1696,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdfld<MeteorStormController>(nameof(MeteorStormController.warningEffectPrefab))))
             {
-                Log.Error("Failed to find warning prefab patch location");
+                Log.PatchError(il, "Failed to find warning prefab patch location");
                 return;
             }
 
@@ -1730,7 +1730,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdfld<MeteorStormController>(nameof(MeteorStormController.impactEffectPrefab))))
             {
-                Log.Error("Failed to find impact prefab patch location");
+                Log.PatchError(il, "Failed to find impact prefab patch location");
                 return;
             }
 
@@ -1757,7 +1757,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoPrev(MoveType.After,
                                x => x.MatchNewobj<EffectData>()))
             {
-                Log.Error("Failed to find impact effect patch location");
+                Log.PatchError(il, "Failed to find impact effect patch location");
                 return;
             }
 
@@ -1783,7 +1783,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdfld<MeteorStormController>(nameof(MeteorStormController.travelEffectPrefab))))
             {
-                Log.Error("Failed to find travel prefab patch location");
+                Log.PatchError(il, "Failed to find travel prefab patch location");
                 return;
             }
 
@@ -1810,7 +1810,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchNewobj<EffectData>()))
             {
-                Log.Error("Failed to find travel effect patch location");
+                Log.PatchError(il, "Failed to find travel effect patch location");
                 return;
             }
 
@@ -1839,7 +1839,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld<EntityStates.BrotherMonster.FistSlam>(nameof(EntityStates.BrotherMonster.FistSlam.slamImpactEffect)),
                                x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SimpleMuzzleFlash))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -1877,7 +1877,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld<EntityStates.BrotherMonster.WeaponSlam>(nameof(EntityStates.BrotherMonster.WeaponSlam.slamImpactEffect)),
                                x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SimpleMuzzleFlash))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -1916,7 +1916,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<EffectData>(nameof(EffectData.scale))))
             {
-                Log.Error("Failed to find effect scale patch location");
+                Log.PatchError(il, "Failed to find effect scale patch location");
                 return;
             }
 
@@ -1946,7 +1946,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld<EntityStates.GolemMonster.FireLaser>(nameof(EntityStates.GolemMonster.FireLaser.hitEffectPrefab)),
                                x => x.MatchLdloc(typeof(EffectData), il, out effectDataVar)))
             {
-                Log.Error("Failed to find hit effect scale patch location");
+                Log.PatchError(il, "Failed to find hit effect scale patch location");
                 return;
             }
 
@@ -1987,7 +1987,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld<EntityStates.Halcyonite.TriLaser>(nameof(EntityStates.Halcyonite.TriLaser.hitEffectPrefab)),
                                x => x.MatchLdloc(typeof(EffectData), il, out effectDataVar)))
             {
-                Log.Error("Failed to find hit effect scale patch location");
+                Log.PatchError(il, "Failed to find hit effect scale patch location");
                 return;
             }
 
@@ -2036,7 +2036,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error("Failed to find blink effect scale set patch location");
+                Log.PatchError(il, "Failed to find blink effect scale set patch location");
             }
 
             if (c.TryGotoNext(MoveType.After,
@@ -2052,7 +2052,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error("Failed to find blink effect prefab patch location");
+                Log.PatchError(il, "Failed to find blink effect prefab patch location");
             }
         }
 
@@ -2067,7 +2067,7 @@ namespace ItemQualities.Items
                                x => x.MatchImplicitConversion<UnityEngine.Object, bool>(),
                                x => x.MatchBrfalse(out afterInstantiateBlinkDestinationInstanceLabel)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -2094,7 +2094,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld<EntityStates.ImpBossMonster.GroundPound>(nameof(EntityStates.ImpBossMonster.GroundPound.slamEffectPrefab)),
                                x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SimpleMuzzleFlash))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -2147,7 +2147,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error("Failed to find blink effect scale set patch location");
+                Log.PatchError(il, "Failed to find blink effect scale set patch location");
             }
 
             if (c.TryGotoNext(MoveType.After,
@@ -2163,7 +2163,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error("Failed to find blink effect prefab patch location");
+                Log.PatchError(il, "Failed to find blink effect prefab patch location");
             }
         }
 
@@ -2184,7 +2184,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -2202,7 +2202,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchNewobj<EffectData>()))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -2228,7 +2228,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloc(out projectileExplosionComponentVarIndex),
                                x => x.MatchLdfld<ProjectileExplosion>(nameof(ProjectileExplosion.blastRadius))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -2253,7 +2253,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.AfterLabel,
                                x => x.MatchCallOrCallvirt(typeof(NetworkServer), nameof(NetworkServer.Spawn))))
             {
-                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -2385,7 +2385,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error($"Failed to find body parameter for {c.Context.Method.FullName}");
+                Log.PatchError(c.Context, "Failed to find body parameter");
                 c.Emit(OpCodes.Ldnull);
             }
         }
@@ -2404,7 +2404,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error($"Failed to find DamageInfo parameter for {c.Context.Method.FullName}");
+                Log.PatchError(c.Context, "Failed to find DamageInfo parameter");
                 c.Emit(OpCodes.Ldnull);
             }
         }
@@ -2436,7 +2436,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error($"Failed to find DamageReport parameter for {c.Context.Method.FullName}");
+                Log.PatchError(c.Context, "Failed to find DamageReport parameter");
                 c.Emit(OpCodes.Ldnull);
             }
         }
@@ -2605,7 +2605,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0 || effectDataPatchCount != patchCount)
             {
-                Log.Error($"{il.Method.FullName}: Failed to find valid patch location(s) (found {patchCount} radius location(s), {effectDataPatchCount} effect radius location(s))");
+                Log.PatchError(il, $"Failed to find valid patch location(s) (found {patchCount} radius location(s), {effectDataPatchCount} effect radius location(s))");
             }
             else
             {
@@ -2631,7 +2631,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -2659,7 +2659,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -2685,7 +2685,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {

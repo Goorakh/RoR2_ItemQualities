@@ -21,7 +21,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -31,7 +31,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.ChainLightningVoid)),
                                x => x.MatchCallOrCallvirt<OrbManager>(nameof(OrbManager.AddOrb))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

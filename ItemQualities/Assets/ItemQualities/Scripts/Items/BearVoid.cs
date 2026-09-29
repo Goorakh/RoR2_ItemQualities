@@ -79,7 +79,7 @@ namespace ItemQualities.Items
 
             if (!c.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(DLC1Content.Buffs), nameof(DLC1Content.Buffs.BearVoidReady)),
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.RemoveBuff))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

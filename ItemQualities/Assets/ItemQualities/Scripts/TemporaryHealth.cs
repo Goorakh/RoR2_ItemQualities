@@ -37,14 +37,14 @@ namespace ItemQualities
                                x => x.MatchSub(),
                                x => x.MatchCallOrCallvirt<HealthComponent>("set_" + nameof(HealthComponent.Networkshield))))
             {
-                Log.Error("Failed to find damageDealt variable index");
+                Log.PatchError(il, "Failed to find damageDealt variable index");
                 return;
             }
 
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<GlobalEventManager>(nameof(GlobalEventManager.ServerDamageDealt))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

@@ -21,7 +21,7 @@ namespace ItemQualities.Equipments
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<Chat.BodyChatMessage>(nameof(Chat.BodyChatMessage.token))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
