@@ -42,13 +42,11 @@ namespace ItemQualities
             _logSource = logSource;
         }
 
-        private static StringBuilder buildCallerLogString(string callerPath, string callerMemberName, int callerLineNumber, string data)
+        private static void AppendLogPrefix(StringBuilder stringBuilder, string callerPath, string callerMemberName, int callerLineNumber)
         {
-            return _sharedStringBuilder.Clear()
-                                       .Append(callerPath, _cachedCallerPathPrefixLength, callerPath.Length - _cachedCallerPathPrefixLength)
-                                       .Append(":").Append(callerLineNumber)
-                                       .Append(" (").Append(callerMemberName).Append("): ")
-                                       .Append(data);
+            stringBuilder.Append(callerPath, _cachedCallerPathPrefixLength, callerPath.Length - _cachedCallerPathPrefixLength)
+                         .Append(":").Append(callerLineNumber)
+                         .Append(" (").Append(callerMemberName).Append("): ");
         }
 
         [Conditional("DEBUG")]
@@ -56,7 +54,11 @@ namespace ItemQualities
         {
             lock (_logLock)
             {
-                _logSource.LogDebug(buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data));
+                _sharedStringBuilder.Clear();
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
+
+                _logSource.LogDebug(_sharedStringBuilder.ToString());
             }
         }
 
@@ -73,7 +75,11 @@ namespace ItemQualities
         {
             lock (_logLock)
             {
-                _logSource.LogError(buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data));
+                _sharedStringBuilder.Clear();
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
+
+                _logSource.LogError(_sharedStringBuilder.ToString());
             }
         }
 
@@ -85,14 +91,29 @@ namespace ItemQualities
             }
         }
 
+        internal static void PatchError(ILCursor cursor, string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
+        {
+            lock (_logLock)
+            {
+                _sharedStringBuilder.Clear();
+                _sharedStringBuilder.Append($"Patch error for method: {cursor.Method.FullName}:{cursor.Index:X4} at ");
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
+
+                _logSource.LogError(_sharedStringBuilder.ToString());
+            }
+        }
+
         internal static void PatchError(ILContext context, string data, [CallerFilePath] string callerPath = "", [CallerMemberName] string callerMemberName = "", [CallerLineNumber] int callerLineNumber = -1)
         {
             lock (_logLock)
             {
-                StringBuilder sb = buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data);
-                sb.Insert(0, $"Patch error for method: {context.Method.FullName} at ");
+                _sharedStringBuilder.Clear();
+                _sharedStringBuilder.Append($"Patch error for method: {context.Method.FullName} at ");
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
 
-                _logSource.LogError(sb);
+                _logSource.LogError(_sharedStringBuilder.ToString());
             }
         }
 
@@ -100,7 +121,11 @@ namespace ItemQualities
         {
             lock (_logLock)
             {
-                _logSource.LogFatal(buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data));
+                _sharedStringBuilder.Clear();
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
+
+                _logSource.LogFatal(_sharedStringBuilder.ToString());
             }
         }
 
@@ -116,7 +141,11 @@ namespace ItemQualities
         {
             lock (_logLock)
             {
-                _logSource.LogInfo(buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data));
+                _sharedStringBuilder.Clear();
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
+
+                _logSource.LogInfo(_sharedStringBuilder.ToString());
             }
         }
 
@@ -132,7 +161,11 @@ namespace ItemQualities
         {
             lock (_logLock)
             {
-                _logSource.LogMessage(buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data));
+                _sharedStringBuilder.Clear();
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
+
+                _logSource.LogMessage(_sharedStringBuilder.ToString());
             }
         }
 
@@ -148,7 +181,11 @@ namespace ItemQualities
         {
             lock (_logLock)
             {
-                _logSource.LogWarning(buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data));
+                _sharedStringBuilder.Clear();
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
+
+                _logSource.LogWarning(_sharedStringBuilder.ToString());
             }
         }
 
@@ -169,7 +206,11 @@ namespace ItemQualities
 
             lock (_logLock)
             {
-                _logSource.Log(level, buildCallerLogString(callerPath, callerMemberName, callerLineNumber, data));
+                _sharedStringBuilder.Clear();
+                AppendLogPrefix(_sharedStringBuilder, callerPath, callerMemberName, callerLineNumber);
+                _sharedStringBuilder.Append(data);
+
+                _logSource.Log(level, _sharedStringBuilder.ToString());
             }
         }
 
