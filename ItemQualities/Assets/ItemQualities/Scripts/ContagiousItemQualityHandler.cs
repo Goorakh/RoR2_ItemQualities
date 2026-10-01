@@ -27,7 +27,7 @@ namespace ItemQualities
                                x => x.MatchLdsfld(typeof(ContagiousItemManager), nameof(ContagiousItemManager._transformationInfos)),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -43,7 +43,7 @@ namespace ItemQualities
                                x => x.MatchLdsfld(typeof(ContagiousItemManager), nameof(ContagiousItemManager.originalToTransformed)),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

@@ -108,7 +108,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error(il.Method.Name + " IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
         }
@@ -132,7 +132,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error(il.Method.Name + " IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
         }

@@ -75,7 +75,7 @@ namespace ItemQualities.Items
                     x => x.MatchCall(typeof(LegacyResourcesAPI), "Load")
                 ))
             {
-                Log.Error(il.Method.Name + " IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
 

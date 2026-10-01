@@ -45,12 +45,12 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<CharacterBody>("attackerBody", out ParameterDefinition attackerBodyParameter))
             {
-                Log.Error("Failed to find attackerBody parameter");
+                Log.PatchError(il, "Failed to find attackerBody parameter");
             }
 
             if (!il.Method.TryFindParameter<ProcChainMask>(out ParameterDefinition procChainMaskParameter))
             {
-                Log.Error("Failed to find ProcChainMaskParameter");
+                Log.PatchError(il, "Failed to find ProcChainMaskParameter");
             }
 
             ILCursor c = new ILCursor(il);
@@ -58,7 +58,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<ProjectileManager>(nameof(ProjectileManager.FireProjectile))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -133,7 +133,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.MoreMissile)),
                                x => x.MatchLdcI4(3)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

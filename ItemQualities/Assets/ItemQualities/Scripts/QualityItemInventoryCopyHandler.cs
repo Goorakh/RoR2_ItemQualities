@@ -48,7 +48,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<Func<ItemIndex, bool>>(out ParameterDefinition filterParameter))
             {
-                Log.Error("Failed to find filter parameter");
+                Log.PatchError(il, "Failed to find filter parameter");
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace ItemQualities
                                x => x.MatchLdloc<ItemIndex>(il, out itemIndexVar),
                                x => x.MatchLdelemI4()))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -112,13 +112,13 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<Inventory>("other", out ParameterDefinition otherInventoryParameter))
             {
-                Log.Error("Failed to find other inventory parameter");
+                Log.PatchError(il, "Failed to find other inventory parameter");
                 return;
             }
 
             if (!il.Method.TryFindParameter<Func<ItemIndex, bool>>(out ParameterDefinition filterParameter))
             {
-                Log.Error("Failed to find filter parameter");
+                Log.PatchError(il, "Failed to find filter parameter");
                 return;
             }
 
@@ -214,7 +214,7 @@ namespace ItemQualities
                                x => x.MatchLdloc<ItemIndex>(il, out itemIndexVar),
                                x => x.MatchCallOrCallvirt<ItemCollection>(nameof(ItemCollection.GetStackValue))))
             {
-                Log.Error("Failed to find stack value patch location");
+                Log.PatchError(il, "Failed to find stack value patch location");
                 return;
             }
 

@@ -34,7 +34,7 @@ namespace ItemQualities
                                x => x.MatchCallOrCallvirt<Component>("get_" + nameof(Component.gameObject)),
                                x => x.MatchCallOrCallvirt(CommonReflectionCache.AddComponent.OfType<MasterSuicideOnTimer>.Method)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

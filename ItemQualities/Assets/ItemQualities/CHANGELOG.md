@@ -1,12 +1,22 @@
 ## \<Next Version\> Changes:
 
-* Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
-
+* Reworks (Click to reveal):
+    * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>
+    
 <details>
-<summary>Old Guillotine:</summary>
+<summary>Defense Nucleus:</summary>
 
-* Fixed Solus Heart and Umbral Mithrix not being executable
+* Fixed bubble being visible and tinting the scren when zooming in as Railgunner.
+* Reduced the opacity of the bubble.
 </details>
+
+* Old Guillotine:
+    * Fixed Solus Heart and Umbral Mithrix not being executable.
+
+* Power Elixir:
+    * Fixed Chemical Burn counting as 2 debuffs for Death Mark.
+
+* Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
 
 ## 0.8.1 Changes:
 

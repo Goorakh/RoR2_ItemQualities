@@ -22,7 +22,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -32,7 +32,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(DLC2Content.Items), nameof(DLC2Content.Items.ItemDropChanceOnKill)),
                                x => x.MatchBle(out _)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -109,7 +109,7 @@ namespace ItemQualities.Items
 
             if (dropTablePatchCount == 0)
             {
-                Log.Error("Failed to find drop table patch location");
+                Log.PatchError(il, "Failed to find drop table patch location");
             }
             else
             {

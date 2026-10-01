@@ -98,7 +98,7 @@ namespace ItemQualities
                                x => x.MatchLdloc<DirectorSpawnRequest>(il, out voidBatterySpawnRequestVar),
                                x => x.MatchCallOrCallvirt<DirectorCore>(nameof(DirectorCore.TrySpawnObject))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

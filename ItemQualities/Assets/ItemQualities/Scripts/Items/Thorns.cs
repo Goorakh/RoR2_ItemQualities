@@ -27,7 +27,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdfld<HealthComponent.ItemCounts>(nameof(HealthComponent.ItemCounts.thorns)),
                                x => x.MatchStfld<LightningOrb>(nameof(LightningOrb.damageValue))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

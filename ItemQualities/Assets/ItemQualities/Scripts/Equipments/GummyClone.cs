@@ -76,7 +76,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchCallOrCallvirt<Component>("get_" + nameof(Component.gameObject)),
                                x => x.MatchCallOrCallvirt(CommonReflectionCache.AddComponent.OfType<MasterSuicideOnTimer>.Method)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -97,7 +97,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdstr("Prefabs/Projectiles/GummyCloneProjectile"),
                                x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -124,7 +124,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdcI4(out _),
                                x => x.MatchCallOrCallvirt<MasterCopySpawnCard>(nameof(MasterCopySpawnCard.GiveItem))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

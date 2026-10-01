@@ -38,7 +38,7 @@ namespace ItemQualities.Equipments
                                    x => x.MatchNewobj<EquipmentSlot.UserTargetInfo>(),
                                    x => x.MatchStfld<EquipmentSlot>(nameof(EquipmentSlot.currentTarget))))
                 {
-                    Log.Error("Failed to find target search patch location");
+                    Log.PatchError(il, "Failed to find target search patch location");
                 }
                 else if (targetingEquipmentIndexParameter != null)
                 {
@@ -134,7 +134,7 @@ namespace ItemQualities.Equipments
                     }
                     else
                     {
-                        Log.Error("Failed to find targetting indicator patch location");
+                        Log.PatchError(il, "Failed to find targetting indicator patch location");
                     }
                 }
             }
@@ -173,7 +173,7 @@ namespace ItemQualities.Equipments
 
                 if (patchCount == 0)
                 {
-                    Log.Error("Failed to find GenericPickupController.Recycled patch location");
+                    Log.PatchError(il, "Failed to find GenericPickupController.Recycled patch location");
                 }
                 else
                 {
@@ -218,7 +218,7 @@ namespace ItemQualities.Equipments
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find recyclable patch location");
+                Log.PatchError(il, "Failed to find recyclable patch location");
             }
             else
             {
@@ -248,7 +248,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find pickup group patch location");
+                Log.PatchError(il, "Failed to find pickup group patch location");
             }
         }
 

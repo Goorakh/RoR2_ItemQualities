@@ -357,7 +357,7 @@ namespace ItemQualities.Buffs
             }
             else
             {
-                Log.Error("Failed to find OnBuffFinalStackLost patch location");
+                Log.PatchError(il, "Failed to find OnBuffFinalStackLost patch location");
             }
 
             c.Goto(0, MoveType.Before);
@@ -398,7 +398,7 @@ namespace ItemQualities.Buffs
             }
             else
             {
-                Log.Error("Failed to find OnBuffFirstStackGained patch location");
+                Log.PatchError(il, "Failed to find OnBuffFirstStackGained patch location");
             }
         }
 
@@ -528,11 +528,11 @@ namespace ItemQualities.Buffs
 
             if (!anyPatchAttempted)
             {
-                Log.Error($"{il.Method.FullName}: Method is not valid for patch");
+                Log.PatchError(il, "Method is not valid for patch");
             }
             else if (!anyPatchSucceeded)
             {
-                Log.Error($"{il.Method.FullName}: Failed to find any patch location");
+                Log.PatchError(il, "Failed to find any patch location");
             }
         }
 

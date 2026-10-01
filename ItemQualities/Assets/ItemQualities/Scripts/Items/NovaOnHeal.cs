@@ -26,7 +26,7 @@ namespace ItemQualities.Items
                                x => x.MatchStloc(typeof(DevilOrb), il, out devilOrbVar),
                                x => x.MatchStfld<DevilOrb>(nameof(DevilOrb.isCrit))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

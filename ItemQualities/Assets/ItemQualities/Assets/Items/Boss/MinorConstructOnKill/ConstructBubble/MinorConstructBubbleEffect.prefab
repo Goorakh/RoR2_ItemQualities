@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 1514148393783401399}
   - component: {fileID: 3603309479342220323}
   - component: {fileID: 1321819812015253769}
-  - component: {fileID: 3161344006430278738}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -64,7 +63,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6044943682181855606, guid: 98a624c23ce55d14592720828ff9e551, type: 3}
+  - {fileID: 2100000, guid: f58dd1e8822ca0f459e5c8571206c0bd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -235,31 +234,6 @@ MonoBehaviour:
   timeMax: 0.2
   ignoreResetOnEnable: 0
   loop: 0
---- !u!114 &3161344006430278738
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 655555252708889276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 099ecf8d44d7a9644b7beb48d3648467, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  FieldAssignments:
-  - _targetObject: {fileID: 1514148393783401399}
-    _targetObjectComponent: {fileID: 0}
-    TargetObjectComponentType:
-      assemblyQualifiedName: 
-    FieldName: sharedMaterial
-    AssetReference:
-      m_AssetGUID: 854cfb30da27f424a9e3097335c61020
-      m_SubObjectName: 
-      m_SubObjectType: 
-    AssetTypeOverride:
-      assemblyQualifiedName: 
-  _hasLoaded: 0
 --- !u!1 &1078166110325248091
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,10 +244,9 @@ GameObject:
   m_Component:
   - component: {fileID: 557236797484049728}
   - component: {fileID: 1682644613349987915}
+  - component: {fileID: 2471506506647101044}
   - component: {fileID: 3015527481202403078}
-  - component: {fileID: 3961537084957303060}
   - component: {fileID: 7761193699012836647}
-  - component: {fileID: 7523702533641930221}
   m_Layer: 0
   m_Name: MinorConstructBubbleEffect
   m_TagString: Untagged
@@ -314,12 +287,24 @@ MonoBehaviour:
   visualTransform: {fileID: 2075857231696444562}
   enterComponents:
   - {fileID: 3603309479342220323}
-  - {fileID: 3015527481202403078}
+  - {fileID: 7761193699012836647}
   exitComponents:
   - {fileID: 1321819812015253769}
-  - {fileID: 7761193699012836647}
+  - {fileID: 3015527481202403078}
   visualState: 0
   healthComponent: {fileID: 0}
+--- !u!114 &2471506506647101044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078166110325248091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 733712478, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &3015527481202403078
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -335,37 +320,18 @@ MonoBehaviour:
   action:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3961537084957303060}
-        m_TargetAssemblyTypeName: RoR2.PlaySoundOnEvent, RoR2
+      - m_Target: {fileID: 2471506506647101044}
+        m_TargetAssemblyTypeName: RoR2.EventFunctions, RoR2
         m_MethodName: PlaySound
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Play_minorConstruct_hide
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &3961537084957303060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078166110325248091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -287833090, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggeringEvent: 0
-  akSoundEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  soundEvent: Play_minorConstruct_hide
-  ShowDebug: 0
 --- !u!114 &7761193699012836647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,37 +347,18 @@ MonoBehaviour:
   action:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7523702533641930221}
-        m_TargetAssemblyTypeName: RoR2.PlaySoundOnEvent, RoR2
+      - m_Target: {fileID: 2471506506647101044}
+        m_TargetAssemblyTypeName: RoR2.EventFunctions, RoR2
         m_MethodName: PlaySound
-        m_Mode: 1
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Play_minorConstruct_attack_bodyOpen
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &7523702533641930221
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078166110325248091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: -287833090, guid: 951ce57ad999ac1f040a4dceb5f8b763, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  triggeringEvent: 0
-  akSoundEvent:
-    idInternal: 0
-    valueGuidInternal: 
-    WwiseObjectReference: {fileID: 0}
-  soundEvent: Play_minorConstruct_attack_bodyOpen
-  ShowDebug: 0
 --- !u!1 &7884403671844631356
 GameObject:
   m_ObjectHideFlags: 0

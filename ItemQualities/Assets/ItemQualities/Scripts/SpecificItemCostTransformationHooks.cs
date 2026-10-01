@@ -84,7 +84,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<CostTypeDef.IsAffordableContext>(out ParameterDefinition contextParameter))
             {
-                Log.Error("Failed to find IsAffordableContext parameter");
+                Log.PatchError(il, "Failed to find IsAffordableContext parameter");
                 return;
             }
 
@@ -93,7 +93,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt(_getTransformationForSpecificItemCostMethod)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -111,7 +111,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contextParameter))
             {
-                Log.Error("Failed to find IsAffordableContext parameter");
+                Log.PatchError(il, "Failed to find IsAffordableContext parameter");
                 return;
             }
 
@@ -120,7 +120,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt(_getTransformationForSpecificItemCostMethod)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

@@ -79,7 +79,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdloc(out _),
                                x => x.MatchBrfalse(out afterHealAndReviveLabel)))
             {
-                Log.Error("Failed to find HealAndRevive location");
+                Log.PatchError(il, "Failed to find HealAndRevive location");
                 return;
             }
 
@@ -135,7 +135,7 @@ namespace ItemQualities.Equipments
 
             if (staticEquipmentDefPatchCount == 0)
             {
-                Log.Error("Failed to find static equipment reference patch location");
+                Log.PatchError(il, "Failed to find static equipment reference patch location");
             }
             else
             {
@@ -195,7 +195,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find revive patch location");
+                Log.PatchError(il, "Failed to find revive patch location");
             }
 
             c.Goto(0);
@@ -246,7 +246,7 @@ namespace ItemQualities.Equipments
 
                 if (staticEquipmentDefPatchCount == 0)
                 {
-                    Log.Error("Failed to find consume equipment reference patch location");
+                    Log.PatchError(il, "Failed to find consume equipment reference patch location");
                 }
                 else
                 {
@@ -255,7 +255,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find consume patch location");
+                Log.PatchError(il, "Failed to find consume patch location");
             }
         }
     }

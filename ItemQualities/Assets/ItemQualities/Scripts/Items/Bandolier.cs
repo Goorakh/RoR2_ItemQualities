@@ -29,7 +29,7 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.Bandolier)),
                                x => x.MatchCallOrCallvirt(typeof(NetworkServer), nameof(NetworkServer.Spawn))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -81,14 +81,14 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<Collider>(out ParameterDefinition otherColliderParameter))
             {
-                Log.Error("Failed to find Collider parameter");
+                Log.PatchError(il, "Failed to find Collider parameter");
                 return;
             }
 
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<SkillLocator>(nameof(SkillLocator.ApplyAmmoPack))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -116,7 +116,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<GenericSkill>("get_" + nameof(GenericSkill.maxStock))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

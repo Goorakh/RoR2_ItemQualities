@@ -72,7 +72,7 @@ namespace ItemQualities
                                x => x.MatchLdloc<DamageTypeCombo>(il, out fogDamageTypeVar),
                                x => x.MatchStfld<DamageInfo>(nameof(DamageInfo.damageType))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -95,7 +95,7 @@ namespace ItemQualities
                                                         nameof(DLC1Content.Items.ExplodeOnDeathVoid),
                                                         out VariableDefinition explodeOnDeathVoidCountVariable))
             {
-                Log.Error("Failed to find ExplodeOnDeathVoid item count variable");
+                Log.PatchError(il, "Failed to find ExplodeOnDeathVoid item count variable");
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace ItemQualities
                                x => x.MatchLdcI4(0),
                                x => x.MatchBle(out afterExplodeOnDeathVoidLabel)))
             {
-                Log.Error("Failed to find ExplodeOnDeathVoid item count check location");
+                Log.PatchError(il, "Failed to find ExplodeOnDeathVoid item count check location");
                 return;
             }
 
@@ -113,7 +113,7 @@ namespace ItemQualities
                                x => x.MatchCallOrCallvirt(CommonReflectionCache.GetComponent.OfType<DelayBlast>.Method))
                 || !c.IsBefore(afterExplodeOnDeathVoidLabel.Target))
             {
-                Log.Error("Failed to find ExplodeOnDeathVoid DelayBlast patch location");
+                Log.PatchError(il, "Failed to find ExplodeOnDeathVoid DelayBlast patch location");
                 return;
             }
 

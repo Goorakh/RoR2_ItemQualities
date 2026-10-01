@@ -1022,6 +1022,8 @@ namespace ItemQualities
             public static GameObject VagrantNovaItemQualityAttachment;
 
             public static GameObject MiniVagrantNovaBlast;
+
+            public static GameObject ScytheMeleeSwing;
         }
 
         public static class ProjectilePrefabs

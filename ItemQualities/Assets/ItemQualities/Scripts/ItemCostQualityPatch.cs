@@ -89,7 +89,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error("Failed to find quality item filter patch location");
+                    Log.PatchError(il, "Failed to find quality item filter patch location");
                 }
             }
 
@@ -127,7 +127,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error("Failed to find item transformation quality patch location");
+                    Log.PatchError(il, "Failed to find item transformation quality patch location");
                 }
             }
         }
@@ -194,7 +194,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<GenericPickupController.CreatePickupInfo>(nameof(GenericPickupController.CreatePickupInfo.pickerOptions))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -230,7 +230,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdfld<ShopTerminalBehavior>(nameof(ShopTerminalBehavior.pickup))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -255,7 +255,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<GenericPickupController.CreatePickupInfo>("set_" + nameof(GenericPickupController.CreatePickupInfo.pickup))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

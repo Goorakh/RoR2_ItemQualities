@@ -42,7 +42,7 @@ namespace ItemQualities
                                x => x.MatchCallOrCallvirt<EffectData>(nameof(EffectData.SetChildLocatorTransformReference)),
                                x => x.MatchAny(out skipSetEffectMuzzleReferenceInstruction)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

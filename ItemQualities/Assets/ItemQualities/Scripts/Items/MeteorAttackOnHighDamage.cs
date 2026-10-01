@@ -87,7 +87,7 @@ namespace ItemQualities.Items
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.radius))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -113,7 +113,7 @@ namespace ItemQualities.Items
                                x => x.MatchStloc(typeof(EffectData), il, out meteorImpactEffectDataVar),
                                x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SpawnEffect))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -137,7 +137,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -149,7 +149,7 @@ namespace ItemQualities.Items
                                x => x.MatchStfld<EffectData>(nameof(EffectData.scale)),
                                x => x.MatchCallOrCallvirt(typeof(EffectManager), nameof(EffectManager.SpawnEffect))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
