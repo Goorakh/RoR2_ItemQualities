@@ -58,7 +58,7 @@ namespace ItemQualities.Items
                 ChangeMaterial(_soulStrikeEffect.transform.GetChild(5), args.ContentPack.materials.Find("matOmniHitsparkSoulStrike"));
                 ChangeMaterial(_soulStrikeEffect.transform.Find("OmniSparks"), args.ContentPack.materials.Find("matOmniHitsparkSoulStrike"));
 
-                void ChangeMaterial(Transform child, Material newMaterial)
+                static void ChangeMaterial(Transform child, Material newMaterial)
                 {
                     if (child && child.TryGetComponent(out ParticleSystemRenderer particleSystemRenderer))
                     {
@@ -91,12 +91,14 @@ namespace ItemQualities.Items
                 return;
 
             int maxBuffGain = 100 - report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls);
-            for (int i = 0; i < Math.Min((int)(damage / report.victimBody.maxHealth * 50), maxBuffGain); i++)
+            int damagePercent = (int)(damage / report.victimBody.maxHealth * 100 / 2);
+            for (int i = 0; i < Math.Min(damagePercent, maxBuffGain); i++)
             {
                 report.attackerBody.AddBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
             }
         }
 
+        //hook after last damagecolor overwrite
         private static void IL_HealthComponent_TakeDamageProcess(ILContext il)
         {
             ILCursor c = new ILCursor(il);
@@ -105,7 +107,7 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -114,7 +116,7 @@ namespace ItemQualities.Items
                 x => x.MatchStloc(out damageLoc)
             ))
             {
-                Log.Error("Failed to find damage field location");
+                Log.PatchError(il, "Failed to find damage field location");
                 return;
             }
 
@@ -124,7 +126,7 @@ namespace ItemQualities.Items
                 x => x.MatchBrfalse(out label)
             ))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -169,7 +171,9 @@ namespace ItemQualities.Items
                     QualityTier.Legendary => 1,
                     _ => 0
                 };
-                for (int soul = 0; soul < Mathf.Min(soulDrainMax, attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls)); soul++)
+
+                int soulsToDrain = Mathf.Min(soulDrainMax, attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls));
+                for (int soul = 0; soul < soulsToDrain ; soul++)
                 {
                     attackerBody.RemoveBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
                 }
@@ -180,7 +184,7 @@ namespace ItemQualities.Items
                                         (deathMark.LegendaryCount * 4);
 
                 float baseLevelMaxHealth = attackerBody.baseMaxHealth + (attackerBody.levelMaxHealth * (attackerBody.level - 1));
-                float damageCoeff = ((attackerBody.maxHealth - baseLevelMaxHealth) * 0.01f * stackDamageCoeff) + 0.5f;
+                float damageCoeff = Mathf.Max((attackerBody.maxHealth - baseLevelMaxHealth) * 0.01f * stackDamageCoeff, 0) + 0.5f;
                 return damage * (damageCoeff + 1);
             }
             return damage;
