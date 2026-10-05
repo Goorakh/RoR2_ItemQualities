@@ -77,6 +77,8 @@ namespace ItemQualities
 
         public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
 
+        public float AirControlBonus { get; private set; } = 1f;
+
         public float GenesisLoopActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
 
         public CharacterBody LastHitBody { get; private set; }
@@ -398,11 +400,13 @@ namespace ItemQualities
             ItemQualityCounts executeLowHealthElite = ItemQualityCounts.zero;
             ItemQualityCounts phasing = ItemQualityCounts.zero;
             ItemQualityCounts novaOnLowHealth = ItemQualityCounts.zero;
+            ItemQualityCounts jumpBoost = ItemQualityCounts.zero;
             if (_body && _body.inventory)
             {
                 executeLowHealthElite = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite);
                 phasing = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
                 novaOnLowHealth = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth);
+                jumpBoost = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
             }
 
             ExecuteBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
@@ -418,6 +422,15 @@ namespace ItemQualities
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
 
             StealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
+
+            float airControlBonus = 0f;
+
+            if (jumpBoost.TotalQualityCount > 0 && IsPerformingQuailJump && !Body.inputBank.jump.down)
+            {
+                airControlBonus += 0.50f;
+            }
+
+            AirControlBonus = airControlBonus;
 
             float genesisLoopActivationThreshold;
             switch (novaOnLowHealth.HighestQuality)

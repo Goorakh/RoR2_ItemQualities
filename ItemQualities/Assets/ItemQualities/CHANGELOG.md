@@ -1,5 +1,8 @@
 ## \<Next Version\> Changes:
 
+* Wax Quail:
+    * Releasing jump increases air control
+
 * Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
 
 <details>
