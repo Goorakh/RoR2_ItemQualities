@@ -130,7 +130,7 @@ namespace ItemQualities.Items
             }
         }
 
-        static void ApplyAirControlModifiersPatch(ILContext il)
+        private static void ApplyAirControlModifiersPatch(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
@@ -156,6 +156,15 @@ namespace ItemQualities.Items
                 }
 
                 patchCount++;
+            }
+
+            if (patchCount == 0)
+            {
+                Log.PatchError(il, "Failed to find patch location");
+            }
+            else
+            {
+                Log.Debug($"[{il.Method.FullName}] Found {patchCount} patch location(s)");
             }
         }
     }
