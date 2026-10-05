@@ -81,7 +81,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdstr("Prefabs/NetworkedObjects/FireballVehicle"),
                                x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -112,7 +112,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchCallOrCallvirt<OverlapAttack>(nameof(OverlapAttack.Fire)),
                                x => x.MatchBrfalse(out _)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

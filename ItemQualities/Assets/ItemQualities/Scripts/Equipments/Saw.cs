@@ -58,7 +58,7 @@ namespace ItemQualities.Equipments
                 if (!c.TryGotoNext(MoveType.Before,
                                    x => x.MatchCallOrCallvirt(out fireSingleSawMethodRef) && fireSingleSawMethodRef != null && fireSingleSawMethodRef.Name.StartsWith("<FireSaw>g__FireSingleSaw|")))
                 {
-                    Log.Error("Failed to find FireSaw FireSingleSaw local method");
+                    Log.PatchError(il, "Failed to find FireSaw FireSingleSaw local method");
                 }
                 else
                 {
@@ -74,7 +74,7 @@ namespace ItemQualities.Equipments
 
                     if (fireSingleSawMethod == null)
                     {
-                        Log.Error("Failed to resolve FireSaw FireSingleSaw local method");
+                        Log.PatchError(il, "Failed to resolve FireSaw FireSingleSaw local method");
                     }
                     else
                     {
@@ -96,7 +96,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdstr("Prefabs/Projectiles/Sawmerang"),
                                x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load))))
             {
-                Log.Error("Failed to find saw projectile prefab patch location");
+                Log.PatchError(il, "Failed to find saw projectile prefab patch location");
                 return;
             }
 
@@ -137,7 +137,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchCallOrCallvirt(out _), // call FireSingleSaw
                                x => x.MatchAny(out afterFireMiddleSawInstruction)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

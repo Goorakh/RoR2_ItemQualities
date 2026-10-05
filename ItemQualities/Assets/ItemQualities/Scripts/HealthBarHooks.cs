@@ -200,7 +200,7 @@ namespace ItemQualities
                                x => x.MatchCallOrCallvirt(typeof(ItemCatalog), nameof(ItemCatalog.GetItemsWithTag)),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountEffective))))
             {
-                Log.Error($"Failed to find patch location");
+                Log.PatchError(il, $"Failed to find patch location");
                 return;
             }
 
@@ -208,7 +208,7 @@ namespace ItemQualities
 
             if (!c.TryFindForeachVariable(out VariableDefinition itemIndexForeachVar))
             {
-                Log.Error($"Failed to find itemIndex foreach variable");
+                Log.PatchError(il, $"Failed to find itemIndex foreach variable");
                 return;
             }
 
@@ -244,7 +244,7 @@ namespace ItemQualities
 
             if (retPatchCount == 0)
             {
-                Log.Error("Failed to find ret patch location");
+                Log.PatchError(il, "Failed to find ret patch location");
             }
             else
             {
@@ -262,21 +262,21 @@ namespace ItemQualities
 
             if (!c.TryGotoNext(x => x.MatchCallOrCallvirt(out handleBarMethodRef) && handleBarMethodRef?.Name?.StartsWith("<ApplyBars>g__HandleBar|") == true))
             {
-                Log.Error("Failed to find HandleBar method");
+                Log.PatchError(il, "Failed to find HandleBar method");
                 return;
             }
 
             MethodBase handleBarMethod = handleBarMethodRef.ResolveReflection();
             if (handleBarMethod == null)
             {
-                Log.Error($"Failed to resolve HandleBar method: {handleBarMethodRef.FullName}");
+                Log.PatchError(il, $"Failed to resolve HandleBar method: {handleBarMethodRef.FullName}");
                 return;
             }
 
             int localsVarIndex = -1;
             if (!c.TryGotoPrev(x => x.MatchLdloca(out localsVarIndex)))
             {
-                Log.Error("Failed to find locals variable");
+                Log.PatchError(il, "Failed to find locals variable");
                 return;
             }
 
@@ -294,7 +294,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<HealthBar.BarInfoCollection>(nameof(HealthBar.BarInfoCollection.GetActiveCount))))
             {
-                Log.Error("Failed to find bar count patch location");
+                Log.PatchError(il, "Failed to find bar count patch location");
                 return;
             }
 
@@ -334,7 +334,7 @@ namespace ItemQualities
             }
             else
             {
-                Log.Error("Failed to find low health under bars patch location");
+                Log.PatchError(il, "Failed to find low health under bars patch location");
             }
 
             if (c.TryFindNext(out foundCursors,
@@ -351,7 +351,7 @@ namespace ItemQualities
             }
             else
             {
-                Log.Error("Failed to find low health over bars patch location");
+                Log.PatchError(il, "Failed to find low health over bars patch location");
             }
 
             if (c.TryFindNext(out foundCursors,
@@ -368,7 +368,7 @@ namespace ItemQualities
             }
             else
             {
-                Log.Error("Failed to find shield bars patch location");
+                Log.PatchError(il, "Failed to find shield bars patch location");
             }
 
             if (c.TryFindNext(out foundCursors,
@@ -385,7 +385,7 @@ namespace ItemQualities
             }
             else
             {
-                Log.Error("Failed to find health bar patch location");
+                Log.PatchError(il, "Failed to find health bar patch location");
             }
 
             if (c.TryFindNext(out foundCursors,
@@ -402,7 +402,7 @@ namespace ItemQualities
             }
             else
             {
-                Log.Error("Failed to find barrier bar patch location");
+                Log.PatchError(il, "Failed to find barrier bar patch location");
             }
 
             c.Index = -1;
@@ -416,7 +416,7 @@ namespace ItemQualities
             }
             else
             {
-                Log.Error("Failed to find end bars patch location");
+                Log.PatchError(il, "Failed to find end bars patch location");
             }
         }
 

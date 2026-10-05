@@ -31,7 +31,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdfld<HealthComponent>(nameof(HealthComponent.shield)),
                                x => x.MatchBgtUn(out _)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

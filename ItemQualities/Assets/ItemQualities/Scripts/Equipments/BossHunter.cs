@@ -63,7 +63,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find drop patch location");
+                Log.PatchError(il, "Failed to find drop patch location");
             }
 
             c.Goto(0);
@@ -99,7 +99,7 @@ namespace ItemQualities.Equipments
 
             if (staticEquipmentPatchCount == 0)
             {
-                Log.Error("Failed to find static equipment reference patch location");
+                Log.PatchError(il, "Failed to find static equipment reference patch location");
             }
             else
             {

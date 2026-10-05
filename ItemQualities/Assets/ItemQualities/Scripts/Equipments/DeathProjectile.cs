@@ -113,7 +113,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdstr("Prefabs/Projectiles/DeathProjectile"),
                                x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -212,7 +212,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find elite buff patch location");
+                Log.PatchError(il, "Failed to find elite buff patch location");
             }
 
             c.Goto(0, MoveType.Before);
@@ -238,7 +238,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find damage report patch location");
+                Log.PatchError(il, "Failed to find damage report patch location");
             }
         }
     }

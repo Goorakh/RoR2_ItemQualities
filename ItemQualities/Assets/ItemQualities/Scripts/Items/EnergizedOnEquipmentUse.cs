@@ -21,7 +21,7 @@ namespace ItemQualities.Items
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.Energized))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

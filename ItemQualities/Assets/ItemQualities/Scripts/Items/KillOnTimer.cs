@@ -61,7 +61,7 @@ namespace ItemQualities.Items
                                x => x.MatchAnd(),
                                x => x.MatchBrfalse(out invalidDroneLabel)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -93,7 +93,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdcI4(out _),
                                x => x.MatchBgt(out invalidDroneLabel)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

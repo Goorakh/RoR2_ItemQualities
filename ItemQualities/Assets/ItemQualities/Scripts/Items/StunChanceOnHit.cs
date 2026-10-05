@@ -117,13 +117,13 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
             if (!il.Method.TryFindParameter<GameObject>("victim", out ParameterDefinition victimParameter))
             {
-                Log.Error("Failed to find victim parameter");
+                Log.PatchError(il, "Failed to find victim parameter");
                 return;
             }
 
@@ -145,7 +145,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error(il.Method.Name + " IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
 
@@ -168,7 +168,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -193,7 +193,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("stungrenade IL Hook failed!");
+                    Log.PatchError(il, "stungrenade IL Hook failed!");
                 }
             }
 
@@ -214,7 +214,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("freezeonhit IL Hook failed!");
+                    Log.PatchError(il, "freezeonhit IL Hook failed!");
                 }
             }
 
@@ -235,7 +235,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("shockonhit IL Hook failed!");
+                    Log.PatchError(il, "shockonhit IL Hook failed!");
                 }
             }
 
@@ -257,7 +257,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("stunbullet IL Hook failed!");
+                    Log.PatchError(il, "stunbullet IL Hook failed!");
                 }
             }
 
@@ -278,7 +278,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("immobilizestate IL Hook failed!");
+                    Log.PatchError(il, "immobilizestate IL Hook failed!");
                 }
             }
 

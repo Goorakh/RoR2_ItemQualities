@@ -24,7 +24,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdcR4(out _),
                                x => x.MatchNewobj<DegreeSlices>()))
             {
-                Log.Error("Failed to find droneCount variable");
+                Log.PatchError(il, "Failed to find droneCount variable");
                 return;
             }
 

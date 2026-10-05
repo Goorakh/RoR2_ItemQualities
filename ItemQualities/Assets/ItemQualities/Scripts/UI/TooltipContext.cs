@@ -21,7 +21,7 @@ namespace ItemQualities.UI
         {
             if (!il.Method.TryFindParameter<TooltipProvider>(out ParameterDefinition tooltipProviderParameter))
             {
-                Log.Error("Failed to find TooltipProvider parameter");
+                Log.PatchError(il, "Failed to find TooltipProvider parameter");
                 return;
             }
 
@@ -34,7 +34,7 @@ namespace ItemQualities.UI
                                x => x.MatchLdfld<TooltipController>(nameof(TooltipController.extraUIPos)),
                                x => x.MatchCallOrCallvirt<UnityEngine.Object>(nameof(UnityEngine.Object.Instantiate))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

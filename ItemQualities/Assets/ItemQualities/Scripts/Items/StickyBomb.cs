@@ -51,7 +51,7 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -60,7 +60,7 @@ namespace ItemQualities.Items
                                x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.OnHitProcDamage)),
                                x => x.MatchCallOrCallvirt<ProjectileManager>(nameof(ProjectileManager.FireProjectileWithoutDamageType))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

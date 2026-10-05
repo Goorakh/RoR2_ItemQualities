@@ -99,7 +99,7 @@ namespace ItemQualities
             MethodInfo itemIndexListAddMethod = typeof(List<ItemIndex>).GetMethod(nameof(List<ItemIndex>.Add));
             if (itemIndexListAddMethod == null)
             {
-                Log.Error("Failed to find List<ItemIndex> index getter method");
+                Log.PatchError(il, "Failed to find List<ItemIndex> index getter method");
                 return;
             }
 
@@ -112,7 +112,7 @@ namespace ItemQualities
                                x => x.MatchLdarg(out itemIndexParameterIndex),
                                x => x.MatchCallOrCallvirt(itemIndexListAddMethod)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

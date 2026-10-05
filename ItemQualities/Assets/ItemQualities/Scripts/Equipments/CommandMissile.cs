@@ -55,7 +55,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchAdd(),
                                x => x.MatchStfld<EquipmentSlot>(nameof(EquipmentSlot.remainingMissiles))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

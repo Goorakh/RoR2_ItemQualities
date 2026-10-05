@@ -353,7 +353,7 @@ namespace ItemQualities
 
             if (!recipeEntryLocalIndexMatchSuccess)
             {
-                Log.Error("Failed to find RecipeEntry loop variable");
+                Log.PatchError(il, "Failed to find RecipeEntry loop variable");
                 return;
             }
 
@@ -372,7 +372,7 @@ namespace ItemQualities
 
             if (!pickupDefLocalIndexMatchSuccess)
             {
-                Log.Error("Failed to find PickupDef loop variable");
+                Log.PatchError(il, "Failed to find PickupDef loop variable");
                 return;
             }
 
@@ -381,7 +381,7 @@ namespace ItemQualities
                                x => x.MatchCallOrCallvirt<RecipeIngredient>(nameof(RecipeIngredient.Validate)),
                                x => x.MatchBrfalse(out ingredientInvalidLabel)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

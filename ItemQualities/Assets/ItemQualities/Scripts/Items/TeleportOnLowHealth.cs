@@ -83,7 +83,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloca<Inventory.ItemTransformation.TryTransformResult>(il, out tryTransformResultVar),
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
-                Log.Error("Failed to find transmitter consume transformation call");
+                Log.PatchError(il, "Failed to find transmitter consume transformation call");
                 return;
             }
 
@@ -92,7 +92,7 @@ namespace ItemQualities.Items
                                        x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationVar),
                                        x => x.MatchInitobj<Inventory.ItemTransformation>()))
             {
-                Log.Error("Failed to find ItemTransformation variable");
+                Log.PatchError(il, "Failed to find ItemTransformation variable");
                 return;
             }
 

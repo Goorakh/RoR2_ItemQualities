@@ -162,7 +162,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find projectile prefab patch location");
+                Log.PatchError(il, "Failed to find projectile prefab patch location");
             }
             else
             {
@@ -198,7 +198,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find damage coefficient patch location");
+                Log.PatchError(il, "Failed to find damage coefficient patch location");
             }
             else
             {

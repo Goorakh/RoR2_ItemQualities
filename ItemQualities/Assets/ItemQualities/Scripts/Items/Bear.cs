@@ -20,7 +20,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<IOnIncomingDamageServerReceiver>(nameof(IOnIncomingDamageServerReceiver.OnIncomingDamageServer))))
             {
-                Log.Error("Failed to find OnIncomingDamageServer call location");
+                Log.PatchError(il, "Failed to find OnIncomingDamageServer call location");
                 return;
             }
 
@@ -38,7 +38,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdfld(out FieldReference field) && field?.FieldType?.Is(typeof(DamageInfo)) == true,
                                x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.rejected))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

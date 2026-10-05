@@ -22,7 +22,7 @@ namespace ItemQualities.Items
         [ContentInitializer]
         private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
-            AsyncOperationHandle<GameObject> warbannerWardLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_WardOnLevel.WarbannerWard_prefab);
+            AsyncOperationHandle<GameObject> warbannerWardLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_WardOnLevel.WarbannerWard_prefab);
             warbannerWardLoad.OnSuccess(warbannerWard =>
             {
                 warbannerWard.AddComponent<WardOnLevelGrowingBuff>().enabled = false;
@@ -108,7 +108,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error(il.Method.Name + " IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
         }
@@ -132,7 +132,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error(il.Method.Name + " IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
         }
@@ -140,10 +140,13 @@ namespace ItemQualities.Items
         private static void addGrowingBuff(GameObject banner, CharacterBody body)
         {
             ItemQualityCounts wardOnLevel = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WardOnLevel);
-            if (wardOnLevel.TotalQualityCount > 0)
+            if (wardOnLevel.TotalQualityCount > 0 && banner.TryGetComponent(out WardOnLevelGrowingBuff wardOnLevelGrowingBuff))
             {
-                banner.GetComponent<BuffWard>().buffDef = null;
-                WardOnLevelGrowingBuff wardOnLevelGrowingBuff = banner.GetComponent<WardOnLevelGrowingBuff>();
+                if (banner.TryGetComponent(out BuffWard buffWard))
+                {
+                    buffWard.buffDef = null;
+                }
+
                 wardOnLevelGrowingBuff.enabled = true;
                 wardOnLevelGrowingBuff.buff = ItemQualitiesContent.BuffQualityGroups.Warbanner.GetBuffDef(wardOnLevel.HighestQuality);
                 wardOnLevelGrowingBuff.maxStacks = (wardOnLevel.UncommonCount * 30) +

@@ -22,7 +22,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.RandomEquipmentTrigger)),
                                x => x.MatchCallOrCallvirt<EquipmentSlot>(nameof(EquipmentSlot.PerformEquipmentAction))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

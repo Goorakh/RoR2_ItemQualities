@@ -71,7 +71,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (c.Next == null || !c.Next.MatchCallOrCallvirt(out MethodReference nextMethodCall))
             {
-                Log.Error($"Failed to find method call to skip: {c.Context.Method.FullName} at instruction {c.Next.SafeToString()} ({c.Index})");
+                Log.PatchError(c, "Failed to find method call to skip");
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (method == null)
             {
-                Log.Error($"Failed to resolve method '{nextMethodCall.FullName}': {c.Context.Method.FullName} at instruction {c.Next.SafeToString()} ({c.Index})");
+                Log.PatchError(c, $"Failed to resolve method '{nextMethodCall.FullName}'");
                 return;
             }
 
@@ -610,7 +610,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (il.Method?.Body?.Variables == null)
             {
-                Log.Error($"Attempting to match ldloc instruction on method without a body: {il.Method.FullName}");
+                Log.PatchError(il, "Attempting to match ldloc instruction on method without a body");
                 variableDefinition = null;
                 return false;
             }
@@ -655,7 +655,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (il.Method?.Body?.Variables == null)
             {
-                Log.Error($"Attempting to match ldloca instruction on method without a body: {il.Method.FullName}");
+                Log.PatchError(il, "Attempting to match ldloca instruction on method without a body");
                 variableDefinition = null;
                 return false;
             }
@@ -700,7 +700,7 @@ namespace ItemQualities.Utilities.Extensions
 
             if (il.Method?.Body?.Variables == null)
             {
-                Log.Error($"Attempting to match stloc instruction on method without a body: {il.Method.FullName}");
+                Log.PatchError(il, "Attempting to match stloc instruction on method without a body");
                 variableDefinition = null;
                 return false;
             }

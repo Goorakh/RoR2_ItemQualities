@@ -24,7 +24,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.damageType))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

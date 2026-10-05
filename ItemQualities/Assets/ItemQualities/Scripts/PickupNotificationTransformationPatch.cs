@@ -25,7 +25,7 @@ namespace ItemQualities
                                x => x.MatchLdfld<GenericPickupController.PickupMessage>(nameof(GenericPickupController.PickupMessage.masterGameObject)),
                                x => x.MatchStloc(il, out masterObjectVar)))
             {
-                Log.Error("Failed to find masterObject variable");
+                Log.PatchError(il, "Failed to find masterObject variable");
             }
 
             c.Goto(0);
@@ -35,7 +35,7 @@ namespace ItemQualities
                                x => x.MatchLdfld<GenericPickupController.PickupMessage>(nameof(GenericPickupController.PickupMessage.pickupState)),
                                x => x.MatchStloc(il, out pickupVar)))
             {
-                Log.Error("Failed to find pickup variable");
+                Log.PatchError(il, "Failed to find pickup variable");
             }
 
             c.Goto(0);
@@ -43,7 +43,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<CharacterMasterNotificationQueue>(nameof(CharacterMasterNotificationQueue.PushPickupNotification))))
             {
-                Log.Error("Failed to find PushPickupNotification call");
+                Log.PatchError(il, "Failed to find PushPickupNotification call");
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace ItemQualities
                                x => matchBranchAny(x, out skipPushPickupNotificationLabel) &&
                                il.IndexOf(skipPushPickupNotificationLabel.Target) > il.IndexOf(pushPickupNotificationCallInstruction)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

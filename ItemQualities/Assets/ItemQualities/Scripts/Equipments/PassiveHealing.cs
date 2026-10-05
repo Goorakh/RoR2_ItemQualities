@@ -160,7 +160,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdarg<Vector3>(il, out _), // velocity
                                x => x.MatchCallOrCallvirt<PickupDropletController>(nameof(PickupDropletController.CreatePickupDroplet))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -188,7 +188,7 @@ namespace ItemQualities.Equipments
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<HealingFollowerController>(nameof(HealingFollowerController.AssignNewTarget))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

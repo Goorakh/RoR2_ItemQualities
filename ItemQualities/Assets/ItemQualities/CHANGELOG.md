@@ -1,15 +1,26 @@
 ## \<Next Version\> Changes:
 
+* Reworks (Click to reveal):
+    * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>
+    * <details><summary>Death Mark</summary> Chance to inflict a soul strike, dealing damage based on bonus health. Chance increases with previous executes.</details>
+    
+<details>
+<summary>Defense Nucleus:</summary>
+
+* Fixed bubble being visible and tinting the scren when zooming in as Railgunner.
+* Reduced the opacity of the bubble.
+</details>
+
+* Old Guillotine:
+    * Fixed Solus Heart and Umbral Mithrix not being executable.
+
 * Wax Quail:
-    * Releasing jump increases air control
+    * Releasing jump increases air control.
+
+* Power Elixir:
+    * Fixed Chemical Burn counting as 2 debuffs for Death Mark.
 
 * Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
-
-<details>
-<summary>Old Guillotine:</summary>
-
-* Fixed Solus Heart and Umbral Mithrix not being executable
-</details>
 
 ## 0.8.1 Changes:
 

@@ -24,7 +24,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(DLC2Content.Buffs), nameof(DLC2Content.Buffs.ElusiveAntlersBuff)),
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.AddTimedBuff))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -42,7 +42,7 @@ namespace ItemQualities.Items
 
                 if (!il.Method.TryFindParameter<Collider>(out ParameterDefinition otherColliderParameter))
                 {
-                    Log.Error("Failed to find Collider parameter");
+                    Log.PatchError(il, "Failed to find Collider parameter");
                     return;
                 }
 

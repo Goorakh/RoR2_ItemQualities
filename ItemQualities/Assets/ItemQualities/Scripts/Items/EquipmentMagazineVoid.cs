@@ -24,7 +24,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.AfterLabel,
                                x => x.MatchCallOrCallvirt<MasterSummon>(nameof(MasterSummon.Perform))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

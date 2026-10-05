@@ -22,7 +22,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<Run>("set_" + nameof(Run.ambientLevel))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

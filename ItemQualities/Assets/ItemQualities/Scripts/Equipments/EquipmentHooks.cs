@@ -136,7 +136,7 @@ namespace ItemQualities.Equipments
                     }
                     catch (Exception e)
                     {
-                        Log.Error_NoCallerPrefix($"Failed to resolve EntityStates.SolusAmalgamator.DetatchState.SummonDetachable onSpawnedServer method: {e}");
+                        Log.PatchError(il, $"Failed to resolve onSpawnedServer method: {e}");
                     }
 
                     if (onSpawnedServerMethod != null)
@@ -146,7 +146,7 @@ namespace ItemQualities.Equipments
                 }
                 else
                 {
-                    Log.Error("Failed to find onSpawnedServer method in EntityStates.SolusAmalgamator.DetatchState.SummonDetachable");
+                    Log.PatchError(il, "Failed to find onSpawnedServer method");
                 }
             }
             else
@@ -294,14 +294,14 @@ namespace ItemQualities.Equipments
                                x => x.MatchCallOrCallvirt<EquipmentDef>("get_" + nameof(EquipmentDef.equipmentIndex)),
                                x => x.MatchBneUn(out healAndReviveBlockEndLabel)))
             {
-                Log.Error("Failed to find seed of life equipment check location");
+                Log.PatchError(il, "Failed to find seed of life equipment check location");
                 return;
             }
 
             if (!c.TryGotoPrev(MoveType.After,
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetEquipment))))
             {
-                Log.Error("Failed to find seed of life equipment state location");
+                Log.PatchError(il, "Failed to find seed of life equipment state location");
                 return;
             }
 
@@ -339,7 +339,7 @@ namespace ItemQualities.Equipments
 
             if (equipmentReferencePatchCount == 0)
             {
-                Log.Error("Failed to find quality seed of life patch location");
+                Log.PatchError(il, "Failed to find quality seed of life patch location");
             }
             else
             {
@@ -360,7 +360,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
         }
 
@@ -392,7 +392,7 @@ namespace ItemQualities.Equipments
 
             if (patchCount == 0)
             {
-                Log.Error($"{il.Method.FullName}: Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -410,7 +410,7 @@ namespace ItemQualities.Equipments
                 (!method.DeclaringType.Is(typeof(Inventory)) && !method.DeclaringType.Is(typeof(EquipmentSlot))) ||
                 (!method.ReturnType.Is(typeof(EquipmentState)) && !method.ReturnType.Is(typeof(EquipmentIndex))))
             {
-                Log.Error($"{c.Method.FullName}:{c.Index:X4} Cursor must be placed before a call that gets an EquipmentIndex/State from an Inventory/EquipmentSlot instance");
+                Log.PatchError(c, "Cursor must be placed before a call that gets an EquipmentIndex/State from an Inventory/EquipmentSlot instance");
                 return;
             }
 
@@ -475,7 +475,7 @@ namespace ItemQualities.Equipments
 
             if (patchCount == 0)
             {
-                Log.Error($"{il.Method.FullName} Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {

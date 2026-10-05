@@ -86,7 +86,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdcR4(PrimarySkillShurikenBehavior.totalReloadTime)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

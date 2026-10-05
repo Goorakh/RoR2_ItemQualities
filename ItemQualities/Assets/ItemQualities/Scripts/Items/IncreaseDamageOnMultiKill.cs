@@ -43,7 +43,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<CharacterBody>(nameof(CharacterBody.increasedDamageKillTimer))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdfld<IncreaseDamageOnMultiKillItemDisplayUpdater>(nameof(IncreaseDamageOnMultiKillItemDisplayUpdater.resetTime))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -82,7 +82,7 @@ namespace ItemQualities.Items
                                x => x.MatchStfld<CharacterBody>(nameof(CharacterBody.increasedDamageKillTimer)),
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.SetBuffCount))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

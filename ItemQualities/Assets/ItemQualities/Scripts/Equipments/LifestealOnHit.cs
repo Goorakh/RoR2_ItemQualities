@@ -21,7 +21,7 @@ namespace ItemQualities.Equipments
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.LifeSteal))))
             {
-                Log.Error("Failed to find buff patch location");
+                Log.PatchError(il, "Failed to find buff patch location");
                 return;
             }
 
@@ -49,7 +49,7 @@ namespace ItemQualities.Equipments
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdcR4(out _)))
             {
-                Log.Error("Failed to find duration patch location");
+                Log.PatchError(il, "Failed to find duration patch location");
                 return;
             }
 
