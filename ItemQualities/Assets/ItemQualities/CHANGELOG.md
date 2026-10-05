@@ -14,6 +14,9 @@
 * Old Guillotine:
     * Fixed Solus Heart and Umbral Mithrix not being executable.
 
+* Wax Quail:
+    * Releasing jump increases air control.
+
 * Power Elixir:
     * Fixed Chemical Burn counting as 2 debuffs for Death Mark.
 
