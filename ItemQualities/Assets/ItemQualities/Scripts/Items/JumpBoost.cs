@@ -48,7 +48,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(x => x.MatchLdstr("Prefabs/Effects/BoostJumpEffect")) ||
                 !c.TryGotoPrev(x => x.MatchLdloc(typeof(bool), il, out isQuailJumpVar)))
             {
-                Log.Error("Failed to find isQuailJump variable");
+                Log.PatchError(il, "Failed to find isQuailJump variable");
                 return;
             }
 
@@ -66,7 +66,7 @@ namespace ItemQualities.Items
                 x => x.MatchDiv(),
                 x => x.MatchStloc(typeof(float), il, out horizontalJumpVelocityScaleVar)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -113,7 +113,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<GenericCharacterMain>(nameof(GenericCharacterMain.ApplyJumpVelocity))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
