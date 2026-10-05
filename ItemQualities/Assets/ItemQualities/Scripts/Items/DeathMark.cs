@@ -80,6 +80,24 @@ namespace ItemQualities.Items
 
             IL.RoR2.HealthComponent.TakeDamageProcess += IL_HealthComponent_TakeDamageProcess;
             GlobalEventManager.onServerCharacterExecuted += OnServerCharacterExecuted;
+            On.RoR2.MasterSummon.Perform += MasterSummon_Perform;
+        }
+
+        private static CharacterMaster MasterSummon_Perform(On.RoR2.MasterSummon.orig_Perform orig, MasterSummon self)
+        {
+            CharacterMaster result = orig(self);
+
+            if (result && result.inventory && result.inventory.GetItemCountEffective(RoR2Content.Items.Ghost) > 0 &&
+            self.summonerBodyObject && self.summonerBodyObject.TryGetComponent(out CharacterBody body) && body.inventory)
+            {
+                ItemQualityCounts deathMark = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DeathMark);
+                if (deathMark.TotalQualityCount > 0)
+                {
+                    body.AddBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
+                }
+            }
+
+            return result;
         }
 
         private static void OnServerCharacterExecuted(DamageReport report, float damage)

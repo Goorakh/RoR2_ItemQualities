@@ -68,10 +68,10 @@ namespace ItemQualities.Items
             if (qualityTier == QualityTier.None)
                 return;
 
-            float spreadRadius = (15f * immuneToDebuff.UncommonCount) +
-                                 (25f * immuneToDebuff.RareCount) +
-                                 (35f * immuneToDebuff.EpicCount) +
-                                 (50f * immuneToDebuff.LegendaryCount);
+            float spreadRadius = (25f * immuneToDebuff.UncommonCount) +
+                                 (50f * immuneToDebuff.RareCount) +
+                                 (75f * immuneToDebuff.EpicCount) +
+                                 (100f * immuneToDebuff.LegendaryCount);
 
             int buffStackCount;
             switch (qualityTier)
