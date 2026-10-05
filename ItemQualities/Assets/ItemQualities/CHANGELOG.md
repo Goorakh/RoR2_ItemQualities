@@ -12,7 +12,7 @@
 </details>
 
 * Ben's Raincoat:
-    * Buff reflect radius:
+    * Increased debuff reflect radius:
         * Uncommon: 15m -> 25m
         * Rare: 25m -> 50m
         * Epic: 35m -> 75m
