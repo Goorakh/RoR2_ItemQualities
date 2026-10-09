@@ -9,7 +9,7 @@
 <details>
 <summary>Defense Nucleus:</summary>
 
-* Fixed bubble being visible and tinting the scren when zooming in as Railgunner.
+* Fixed bubble being visible and tinting the screen when zooming in as Railgunner.
 * Reduced the opacity of the bubble.
 </details>
 
