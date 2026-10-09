@@ -65,16 +65,16 @@ namespace ItemQualities
 
         public static CostTypeIndex BossItemQuality { get; private set; } = CostTypeIndex.None;
 
-        [SystemInitializer(typeof(CostTypeCatalog), typeof(EffectCatalogUtils), typeof(NetworkSoundEventCatalog))]
+        [SystemInitializer(typeof(CostTypeCatalog), typeof(EffectCatalog), typeof(NetworkSoundEventCatalog))]
         private static void Init()
         {
-            _regeneratingScrapDisplayExplosionEffectIndex = EffectCatalogUtils.FindEffectIndex("RegeneratingScrapExplosionDisplay");
+            _regeneratingScrapDisplayExplosionEffectIndex = EffectCatalog.FindEffectIndex("RegeneratingScrapExplosionDisplay");
             if (_regeneratingScrapDisplayExplosionEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find RegeneratingScrapExplosionDisplay effect index");
             }
 
-            _regeneratingScrapPrinterExplosionEffectIndex = EffectCatalogUtils.FindEffectIndex("RegeneratingScrapExplosionInPrinter");
+            _regeneratingScrapPrinterExplosionEffectIndex = EffectCatalog.FindEffectIndex("RegeneratingScrapExplosionInPrinter");
             if (_regeneratingScrapPrinterExplosionEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find RegeneratingScrapExplosionInPrinter effect index");
@@ -307,13 +307,14 @@ namespace ItemQualities
                         newItemIndex = ItemIndex.None,
                         maxToTransform = 1,
                         forbidTempItems = true,
+                        forbidRentItems = true,
                         transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.None,
                     };
 
                     if (QualityCatalog.FindItemQualityGroupIndex(takeItemTransformation.originalItemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
                     {
                         takeItemTransformation.newItemIndex = ItemQualitiesContent.ItemQualityGroups.RegeneratingScrapConsumed.GetItemIndex(QualityCatalog.GetQualityTier(takeItemTransformation.originalItemIndex));
-                        takeItemTransformation.transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default;
+                        takeItemTransformation.transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.ConsumedItem;
                     }
 
                     if (takeItemTransformation.TryTransform(context.activatorInventory, out Inventory.ItemTransformation.TryTransformResult tryTransformResult))

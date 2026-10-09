@@ -20,7 +20,7 @@ namespace ItemQualities
                 bodyPrefab.EnsureComponent<CharacterBodyExtraStatsTracker>();
             }
 
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
@@ -539,20 +539,9 @@ namespace ItemQualities
 
         public void UpdateAllTemporaryVisualEffects()
         {
-            updateTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
-            updateTemporaryVisualEffect(ref _voidBearFogEffectInstance, CharacterBody.AssetReferences.voidFogMildEffectPrefab, _body.radius, _body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BearVoidFog).TotalQualityCount > 0);
-            updateTemporaryVisualEffect(ref _constructBubbleEffectInstance, ItemQualitiesContent.Prefabs.MinorConstructBubbleEffect, _body.bestFitActualRadius * 1.15f, _body.HasBuff(ItemQualitiesContent.Buffs.ConstructBubble));
-
-            void updateTemporaryVisualEffect(ref TemporaryVisualEffect temporaryEffect, GameObject effectPrefab, float effectRadius, bool active)
-            {
-                _body.UpdateSingleTemporaryVisualEffect(ref temporaryEffect, effectPrefab, effectRadius, active);
-
-                // Fix temp effects not spawning if disabled and re-enabled within the exit duration
-                if (!active && temporaryEffect && temporaryEffect.visualState == TemporaryVisualEffect.VisualState.Exit)
-                {
-                    temporaryEffect = null;
-                }
-            }
+            _body.UpdateSingleTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
+            _body.UpdateSingleTemporaryVisualEffect(ref _voidBearFogEffectInstance, CharacterBody.AssetReferences.voidFogMildEffectPrefab, _body.radius, _body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BearVoidFog).TotalQualityCount > 0);
+            _body.UpdateSingleTemporaryVisualEffect(ref _constructBubbleEffectInstance, ItemQualitiesContent.Prefabs.MinorConstructBubbleEffect, _body.bestFitActualRadius * 1.15f, _body.HasBuff(ItemQualitiesContent.Buffs.ConstructBubble));
         }
 
         public void OnQuailJumpAuthority()

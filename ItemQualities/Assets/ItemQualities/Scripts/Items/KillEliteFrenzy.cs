@@ -11,7 +11,7 @@ namespace ItemQualities.Items
         private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
         }
 
         private static void getStatCoefficients(CharacterBody sender, RecalculateStatsAPI.StatHookEventArgs args)

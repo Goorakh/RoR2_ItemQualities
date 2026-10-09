@@ -28,14 +28,14 @@ namespace ItemQualities.Buffs
 
             On.RoR2.CharacterBody.GetBuffCount_BuffIndex += CharacterBody_GetBuffCount_BuffIndex;
             On.RoR2.CharacterBody.ClearTimedBuffs_BuffIndex += CharacterBody_ClearTimedBuffs_BuffIndex;
-            On.RoR2.CharacterBody.RemoveBuff_BuffIndex += CharacterBody_RemoveBuff_BuffIndex;
+            On.RoR2.CharacterBody.RemoveBuffInternal += CharacterBody_RemoveBuffInternal;
             On.RoR2.CharacterBody.ClearAllBuffs += CharacterBody_ClearAllBuffs;
 
             On.RoR2.UI.BuffDisplay.AllocateIcons += BuffDisplay_AllocateIcons;
 
             IL.RoR2.CharacterBody.SetBuffCount += CharacterBody_SetBuffCount;
 
-            IL.RoR2.CharacterBody.RemoveBuff_BuffIndex += patchBuffEqualityComparison;
+            IL.RoR2.CharacterBody.RemoveBuffInternal += patchBuffEqualityComparison;
             IL.RoR2.CharacterBody.OnBuffFinalStackLost += patchBuffEqualityComparison;
             IL.RoR2.CharacterBody.AddOrRemoveEliteItemBehavior += patchBuffEqualityComparison;
             IL.RoR2.CharacterBody.OnBuffFirstStackGained += patchBuffEqualityComparison;
@@ -175,7 +175,7 @@ namespace ItemQualities.Buffs
             }
         }
 
-        private static void CharacterBody_RemoveBuff_BuffIndex(On.RoR2.CharacterBody.orig_RemoveBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        private static void CharacterBody_RemoveBuffInternal(On.RoR2.CharacterBody.orig_RemoveBuffInternal orig, CharacterBody self, BuffIndex buffType, int count)
         {
             if (!_disableBuffCountHooksForBodies.Contains(self))
             {
@@ -208,7 +208,7 @@ namespace ItemQualities.Buffs
                 }
             }
 
-            orig(self, buffType);
+            orig(self, buffType, count);
         }
 
         private static void CharacterBody_ClearAllBuffs(On.RoR2.CharacterBody.orig_ClearAllBuffs orig, CharacterBody self, BuffDef buffToSet)

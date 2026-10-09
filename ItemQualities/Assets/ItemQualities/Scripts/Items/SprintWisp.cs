@@ -170,10 +170,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _explosionEffectIndex = EffectCatalogUtils.FindEffectIndex("OmniExplosionVFXArchWisp");
+            _explosionEffectIndex = EffectCatalog.FindEffectIndex("OmniExplosionVFXArchWisp");
             if (_explosionEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find explosion effect index");

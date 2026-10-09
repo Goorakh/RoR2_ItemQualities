@@ -24,10 +24,10 @@ namespace EntityStates.SprintArmorDash
         [NonSerialized]
         public Vector3 attackPos;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _hitEffectIndex = EffectCatalogUtils.FindEffectIndex("OmniImpactVFX");
+            _hitEffectIndex = EffectCatalog.FindEffectIndex("OmniImpactVFX");
             if (_hitEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find hit effect index");

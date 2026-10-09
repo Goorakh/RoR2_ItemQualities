@@ -17,7 +17,7 @@ namespace ItemQualities.Items
         {
             IL.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
 
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
 
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }

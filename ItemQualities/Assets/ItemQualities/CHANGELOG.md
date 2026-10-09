@@ -1,5 +1,7 @@
 ## \<Next Version\> Changes:
 
+* Updated for HC
+
 * Reworks (Click to reveal):
     * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>
     * <details><summary>Death Mark</summary> Chance to inflict a soul strike, dealing damage based on bonus health. Chance increases with previous executes.</details>
@@ -12,7 +14,7 @@
 </details>
 
 * Old Guillotine:
-    * Fixed Solus Heart and Umbral Mithrix not being executable.
+    * Umbral Mithrix can now be executed.
 
 * Power Elixir:
     * Fixed Chemical Burn counting as 2 debuffs for Death Mark.

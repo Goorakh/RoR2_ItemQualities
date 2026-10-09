@@ -22,7 +22,7 @@ namespace EntityStates.RoboBallBuddy
             AsyncOperationHandle<GameObject> impactEffectLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_DLC3_SolusWing.OverheatBeamImpactEffect_prefab);
             impactEffectLoad.OnSuccess(impactEffectPrefab =>
             {
-                _impactEffectPrefab = impactEffectPrefab.InstantiateClone("QualityGigaBeamImpact");
+                _impactEffectPrefab = impactEffectPrefab.InstantiateClone("QualityGigaBeamImpact", false);
                 _impactEffectPrefab.transform.localScale = Vector3.one * 4f;
 
                 args.ContentPack.effectDefs.Add(new EffectDef(_impactEffectPrefab));

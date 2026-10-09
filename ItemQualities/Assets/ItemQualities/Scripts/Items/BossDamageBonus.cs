@@ -13,7 +13,7 @@ namespace ItemQualities.Items
         private static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
         }
 
         private static void onCharacterDeathGlobal(DamageReport report)

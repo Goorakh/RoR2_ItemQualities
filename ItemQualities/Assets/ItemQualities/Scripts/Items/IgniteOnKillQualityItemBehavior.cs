@@ -101,7 +101,7 @@ namespace ItemQualities.Items
 
         private void OnEnable()
         {
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
 
             _fireAuraObj = Instantiate(_fireAuraPrefab, transform.position, Quaternion.identity);
 
@@ -113,7 +113,7 @@ namespace ItemQualities.Items
 
         private void OnDisable()
         {
-            GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer -= onCharacterDeathGlobal;
 
             if (_icicleAura)
             {
@@ -206,6 +206,7 @@ namespace ItemQualities.Items
                             attackerObject = Body.gameObject,
                             totalDamage = Body.damage * 1f,
                             dotIndex = DotController.DotIndex.Burn,
+                            hitHurtBox = hurtBox,
                             damageMultiplier = 1f
                         };
 

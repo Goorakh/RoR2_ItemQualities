@@ -250,7 +250,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find glacial death patch location");
+                    Log.PatchError(il, "Failed to find glacial death patch location");
                 }
             }
 
@@ -278,7 +278,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find malachite death patch location");
+                    Log.PatchError(il, "Failed to find malachite death patch location");
                 }
             }
 
@@ -295,8 +295,7 @@ namespace ItemQualities
                  */
 
                 ILLabel afterSoulWispSpawnLabel = null;
-                if (c.TryGotoNext(MoveType.AfterLabel,
-                                  x => x.MatchCallOrCallvirt<RunArtifactManager>("get_" + nameof(RunArtifactManager.instance)),
+                if (c.TryGotoNext(MoveType.After,
                                   x => x.MatchCallOrCallvirt(typeof(RoR2Content.Artifacts), "get_" + nameof(RoR2Content.Artifacts.wispOnDeath)),
                                   x => x.MatchCallOrCallvirt<RunArtifactManager>(nameof(RunArtifactManager.IsArtifactEnabled)),
                                   x => x.MatchBrfalse(out afterSoulWispSpawnLabel)))
@@ -306,7 +305,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find soul wisp spawn patch location");
+                    Log.PatchError(il, "Failed to find soul wisp spawn patch location");
                 }
             }
 
@@ -334,7 +333,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find mending death patch location");
+                    Log.PatchError(il, "Failed to find mending death patch location");
                 }
             }
 
@@ -362,7 +361,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find voidtouched death patch location");
+                    Log.PatchError(il, "Failed to find voidtouched death patch location");
                 }
             }
         }

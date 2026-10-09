@@ -13,13 +13,13 @@ namespace ItemQualities.Items
 
         private void OnEnable()
         {
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
             BodyStats.OnHitGroundServer += onHitGroundServer;
         }
 
         private void OnDisable()
         {
-            GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer -= onCharacterDeathGlobal;
             BodyStats.OnHitGroundServer -= onHitGroundServer;
         }
 

@@ -31,7 +31,7 @@ namespace ItemQualities.Items
                 return;
 
             // Ignore printed or non-permanent items
-            if (context.controller.Duplicated || context.controller.pickup.isTempItem)
+            if (context.controller.Duplicated || context.controller.pickup.isTempItem || context.controller.pickup.isRental)
                 return;
 
             PickupDef pickupDef = PickupCatalog.GetPickupDef(context.pickup.pickupIndex);

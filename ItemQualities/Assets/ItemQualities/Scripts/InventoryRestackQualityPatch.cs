@@ -120,6 +120,7 @@ namespace ItemQualities
 
                 // Fix fake items from quality counting towards restackable items
                 if (inventory.GetItemCountPermanent(itemIndex) == 0 &&
+                    inventory.GetItemCountRented(itemIndex) == 0 &&
                     inventory.GetItemCountTemp(itemIndex) == 0)
                 {
                     return false;

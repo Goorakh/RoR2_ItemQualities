@@ -1,4 +1,5 @@
 ﻿using HG;
+using HG.Coroutines;
 using ItemQualities.ContentManagement;
 using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
@@ -24,100 +25,132 @@ namespace ItemQualities.Equipments
         [ContentInitializer]
         private static IEnumerator LoadContent(ContentInitializerArgs args)
         {
+            PartitionedProgress<ReadableProgress<float>> progress = new PartitionedProgress<ReadableProgress<float>>(args.ProgressReceiver);
+            ProgressPartition bfgProjectilePrefabLoadProgress = progress.AddPartition();
+            ProgressPartition bfgProjectileGhostPrefabLoadProgress = progress.AddPartition();
+
             AsyncOperationHandle<GameObject> bfgProjectilePrefabLoad = AddressableUtil.LoadTempAssetAsync<GameObject>(RoR2_Base_BFG.BeamSphere_prefab);
-            bfgProjectilePrefabLoad.OnSuccess(projectilePrefab =>
+            yield return bfgProjectilePrefabLoad.AsProgressCoroutine(bfgProjectilePrefabLoadProgress);
+
+            if (!bfgProjectilePrefabLoad.AssertLoaded())
             {
-                if (!projectilePrefab.ExpectComponent(out ProjectileController projectileController))
+                yield break;
+            }
+
+            GameObject projectilePrefab = bfgProjectilePrefabLoad.Result;
+
+            if (!projectilePrefab.ExpectComponent(out ProjectileController projectileController))
+            {
+                yield break;
+            }
+
+            if (!projectilePrefab.ExpectComponent(out ProjectileImpactExplosion projectileExplosion))
+            {
+                yield break;
+            }
+
+            float baseBlastRadius = projectileExplosion.blastRadius;
+
+            GameObject projectileGhostPrefab;
+            {
+                CoroutineResult<GameObject> result = CoroutineResultPool<GameObject>.instance.Request();
+                try
                 {
-                    return;
-                }
+                    yield return AddressableUtil.LoadTempAssetOrDirectReferenceAsync(projectileController.ghostPrefabAddress, projectileController.ghostPrefab, bfgProjectileGhostPrefabLoadProgress, result);
 
-                if (!projectilePrefab.ExpectComponent(out ProjectileImpactExplosion projectileExplosion))
+                    projectileGhostPrefab = result.Value;
+                }
+                finally
                 {
-                    return;
+                    CoroutineResultPool<GameObject>.instance.Return(result);
                 }
+            }
 
-                float baseBlastRadius = projectileExplosion.blastRadius;
-
-                GameObject qualityProjectileGhostPrefab = EffectScalingFixer.CreateFixedScalingCopy(projectileController.ghostPrefab, 1f);
+            GameObject qualityProjectileGhostPrefab;
+            if (projectileGhostPrefab)
+            {
+                qualityProjectileGhostPrefab = EffectScalingFixer.CreateFixedScalingCopy(projectileGhostPrefab, 1f);
                 qualityProjectileGhostPrefab.name = "Quality" + qualityProjectileGhostPrefab.name;
                 if (qualityProjectileGhostPrefab.ExpectComponent(out ProjectileGhostController qualityProjectileGhostController))
                 {
                     qualityProjectileGhostController.inheritScaleFromProjectile = true;
                 }
+            }
+            else
+            {
+                Log.Error("Failed to find BFG projectile ghost prefab");
+                qualityProjectileGhostPrefab = projectileGhostPrefab;
+            }
 
-                GameObject qualityProjectileImpactEffect = EffectScalingFixer.CreateFixedScalingCopy(projectileExplosion.impactEffect, baseBlastRadius);
-                qualityProjectileImpactEffect.name = "Quality" + qualityProjectileImpactEffect.name;
+            GameObject qualityProjectileImpactEffect = EffectScalingFixer.CreateFixedScalingCopy(projectileExplosion.impactEffect, baseBlastRadius);
+            qualityProjectileImpactEffect.name = "Quality" + qualityProjectileImpactEffect.name;
 
-                args.ContentPack.effectDefs.Add(new EffectDef(qualityProjectileImpactEffect));
+            args.ContentPack.effectDefs.Add(new EffectDef(qualityProjectileImpactEffect));
 
-                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+            {
+                float blastRadiusIncrease = qualityTier switch
                 {
-                    float blastRadiusIncrease = qualityTier switch
-                    {
-                        QualityTier.Uncommon => 10f,
-                        QualityTier.Rare => 15f,
-                        QualityTier.Epic => 25f,
-                        QualityTier.Legendary => 35f,
-                        _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
-                    };
+                    QualityTier.Uncommon => 10f,
+                    QualityTier.Rare => 15f,
+                    QualityTier.Epic => 25f,
+                    QualityTier.Legendary => 35f,
+                    _ => throw new NotImplementedException($"Quality tier {qualityTier} is not implemented")
+                };
 
-                    float scaleMultiplier = (baseBlastRadius + blastRadiusIncrease) / baseBlastRadius;
+                float scaleMultiplier = (baseBlastRadius + blastRadiusIncrease) / baseBlastRadius;
 
-                    const float lifetime = 30f;
+                const float lifetime = 30f;
 
-                    GameObject qualityProjectilePrefab = projectilePrefab.InstantiateClone(projectilePrefab.name + qualityTier.ToString());
-                    qualityProjectilePrefab.transform.localScale *= scaleMultiplier;
+                GameObject qualityProjectilePrefab = projectilePrefab.InstantiateClone(projectilePrefab.name + qualityTier.ToString());
+                qualityProjectilePrefab.transform.localScale *= scaleMultiplier;
 
-                    // Original prefab is already checked for this component, so no need to check it on the clone
-                    ProjectileController qualityProjectileController = qualityProjectilePrefab.GetComponent<ProjectileController>();
-                    qualityProjectileController.ghostPrefab = qualityProjectileGhostPrefab;
+                // Original prefab is already checked for this component, so no need to check it on the clone
+                ProjectileController qualityProjectileController = qualityProjectilePrefab.GetComponent<ProjectileController>();
+                qualityProjectileController.ghostPrefab = qualityProjectileGhostPrefab;
 
-                    ProjectileImpactExplosion qualityProjectileExplosion = qualityProjectilePrefab.GetComponent<ProjectileImpactExplosion>();
-                    qualityProjectileExplosion.blastRadius += blastRadiusIncrease;
-                    qualityProjectileExplosion.impactEffect = qualityProjectileImpactEffect;
-                    qualityProjectileExplosion.falloffModel = BlastAttack.FalloffModel.None;
-                    qualityProjectileExplosion.lifetime = lifetime;
+                ProjectileImpactExplosion qualityProjectileExplosion = qualityProjectilePrefab.GetComponent<ProjectileImpactExplosion>();
+                qualityProjectileExplosion.blastRadius += blastRadiusIncrease;
+                qualityProjectileExplosion.impactEffect = qualityProjectileImpactEffect;
+                qualityProjectileExplosion.falloffModel = BlastAttack.FalloffModel.None;
+                qualityProjectileExplosion.lifetime = lifetime;
 
-                    if (qualityProjectilePrefab.ExpectComponent(out ProjectileProximityBeamController qualityProjectileBeamController))
-                    {
-                        qualityProjectileBeamController.attackRange += blastRadiusIncrease;
-                    }
-
-                    ProjectileSimple projectileSimple = qualityProjectilePrefab.GetComponent<ProjectileSimple>();
-                    projectileSimple.updateAfterFiring = true;
-                    projectileSimple.lifetime = lifetime;
-
-                    ProjectileSteerTowardTarget projectileSteerTowardTarget = qualityProjectilePrefab.AddComponent<ProjectileSteerTowardTarget>();
-                    projectileSteerTowardTarget.rotationSpeed = 90f;
-
-                    ProjectileDirectionalTargetFinder projectileDirectionalTargetFinder = qualityProjectilePrefab.AddComponent<ProjectileDirectionalTargetFinder>();
-                    projectileDirectionalTargetFinder.lookRange = 600f;
-                    projectileDirectionalTargetFinder.lookCone = 180f;
-                    projectileDirectionalTargetFinder.targetSearchInterval = 1f;
-                    projectileDirectionalTargetFinder.onlySearchIfNoTarget = true;
-                    projectileDirectionalTargetFinder.allowTargetLoss = false;
-                    projectileDirectionalTargetFinder.testLoS = true;
-
-                    float damageBonusCoefficientPerSecond = qualityTier switch
-                    {
-                        QualityTier.Uncommon => 0.015f,
-                        QualityTier.Rare => 0.03f,
-                        QualityTier.Epic => 0.06f,
-                        QualityTier.Legendary => 0.10f,
-                        _ => throw new NotImplementedException()
-                    };
-
-                    BFGQualityController qualityController = qualityProjectilePrefab.AddComponent<BFGQualityController>();
-                    qualityController.DamageBonusCoefficientPerSecond = damageBonusCoefficientPerSecond;
-
-                    _qualityProjectilePrefabs[(int)qualityTier] = qualityProjectilePrefab;
+                if (qualityProjectilePrefab.ExpectComponent(out ProjectileProximityBeamController qualityProjectileBeamController))
+                {
+                    qualityProjectileBeamController.attackRange += blastRadiusIncrease;
                 }
 
-                args.ContentPack.projectilePrefabs.Add(_qualityProjectilePrefabs);
-            });
+                ProjectileSimple projectileSimple = qualityProjectilePrefab.GetComponent<ProjectileSimple>();
+                projectileSimple.updateAfterFiring = true;
+                projectileSimple.lifetime = lifetime;
 
-            return bfgProjectilePrefabLoad.AsProgressCoroutine(args.ProgressReceiver);
+                ProjectileSteerTowardTarget projectileSteerTowardTarget = qualityProjectilePrefab.AddComponent<ProjectileSteerTowardTarget>();
+                projectileSteerTowardTarget.rotationSpeed = 90f;
+
+                ProjectileDirectionalTargetFinder projectileDirectionalTargetFinder = qualityProjectilePrefab.AddComponent<ProjectileDirectionalTargetFinder>();
+                projectileDirectionalTargetFinder.lookRange = 600f;
+                projectileDirectionalTargetFinder.lookCone = 180f;
+                projectileDirectionalTargetFinder.targetSearchInterval = 1f;
+                projectileDirectionalTargetFinder.onlySearchIfNoTarget = true;
+                projectileDirectionalTargetFinder.allowTargetLoss = false;
+                projectileDirectionalTargetFinder.testLoS = true;
+
+                float damageBonusCoefficientPerSecond = qualityTier switch
+                {
+                    QualityTier.Uncommon => 0.015f,
+                    QualityTier.Rare => 0.03f,
+                    QualityTier.Epic => 0.06f,
+                    QualityTier.Legendary => 0.10f,
+                    _ => throw new NotImplementedException()
+                };
+
+                BFGQualityController qualityController = qualityProjectilePrefab.AddComponent<BFGQualityController>();
+                qualityController.DamageBonusCoefficientPerSecond = damageBonusCoefficientPerSecond;
+
+                _qualityProjectilePrefabs[(int)qualityTier] = qualityProjectilePrefab;
+            }
+
+            args.ContentPack.projectilePrefabs.Add(_qualityProjectilePrefabs);
         }
 
         private static readonly FixedConditionalWeakTable<EquipmentSlot, EquipmentSlotBFGQualityInfo> _equipmentSlotQualityInfoLookup = new FixedConditionalWeakTable<EquipmentSlot, EquipmentSlotBFGQualityInfo>();

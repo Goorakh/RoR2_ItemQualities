@@ -15,7 +15,7 @@ namespace ItemQualities.Items
         {
             _rootAreaDeployableSlot = DeployableAPI.RegisterDeployableSlot(getRootAreaLimit);
 
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
         }
 
         private static int getRootAreaLimit(CharacterMaster self, int deployableCountMultiplier)

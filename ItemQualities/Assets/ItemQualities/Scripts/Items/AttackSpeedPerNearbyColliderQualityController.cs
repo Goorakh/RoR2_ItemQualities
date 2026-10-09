@@ -58,7 +58,7 @@ namespace ItemQualities.Items
         {
             if (NetworkServer.active)
             {
-                GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+                GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
 
                 updateBuffCounts();
             }
@@ -71,7 +71,7 @@ namespace ItemQualities.Items
 
         private void OnDisable()
         {
-            GlobalEventManager.onCharacterDeathGlobal -= onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer -= onCharacterDeathGlobal;
         }
 
         private void FixedUpdate()

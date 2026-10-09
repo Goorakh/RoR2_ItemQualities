@@ -154,19 +154,22 @@ namespace ItemQualities.Equipments
                     {
                         ItemIndex itemIndex = allBaseQualityIems[i];
 
-                        int qualityItemCountAccumulator = 0;
+                        int qualityPermanentItemCountAccumulator = 0;
+                        int qualityRentalItemCountAccumulator = 0;
                         float qualityTempItemRawValueAccumulator = 0f;
 
+                        // All quality items
                         for (QualityTier qualityTier = QualityTier.Count - 1; qualityTier >= 0; qualityTier--)
                         {
                             ItemIndex qualityItemIndex = QualityCatalog.GetItemIndexOfQuality(itemIndex, qualityTier);
                             if (qualityItemIndex == itemIndex)
                                 continue;
 
-                            int qualityItemCountPermanent = ownerBody.inventory.GetItemCountPermanent(qualityItemIndex) + qualityItemCountAccumulator;
+                            int qualityItemCountPermanent = ownerBody.inventory.GetItemCountPermanent(qualityItemIndex) + qualityPermanentItemCountAccumulator;
+                            int qualityItemCountRental = ownerBody.inventory.GetItemCountRented(qualityItemIndex) + qualityRentalItemCountAccumulator;
                             float qualityTempItemRawValue = ownerBody.inventory.GetTempItemRawValue(qualityItemIndex) + qualityTempItemRawValueAccumulator;
 
-                            if (qualityItemCountPermanent > 0 || qualityTempItemRawValue > 0f)
+                            if (qualityItemCountPermanent > 0 || qualityItemCountRental > 0 || qualityTempItemRawValue > 0f)
                             {
                                 bool qualityItemPassesFilter = itemCopyFilter(qualityItemIndex);
 
@@ -174,13 +177,27 @@ namespace ItemQualities.Equipments
                                 {
                                     if (qualityItemPassesFilter)
                                     {
-                                        qualityItemCountAccumulator = 0;
+                                        qualityPermanentItemCountAccumulator = 0;
 
                                         spawnCard.GiveItem(qualityItemIndex, shouldCopyItemCount ? qualityItemCountPermanent : 1);
                                     }
                                     else
                                     {
-                                        qualityItemCountAccumulator += qualityItemCountPermanent;
+                                        qualityPermanentItemCountAccumulator += qualityItemCountPermanent;
+                                    }
+                                }
+
+                                if (qualityItemCountRental > 0)
+                                {
+                                    if (qualityItemPassesFilter)
+                                    {
+                                        qualityRentalItemCountAccumulator = 0;
+
+                                        spawnCard.srcRentalItemStacks[(int)qualityItemIndex] += shouldCopyItemCount ? qualityItemCountRental : 1;
+                                    }
+                                    else
+                                    {
+                                        qualityRentalItemCountAccumulator += qualityItemCountRental;
                                     }
                                 }
 
@@ -200,14 +217,23 @@ namespace ItemQualities.Equipments
                             }
                         }
 
+                        // Base item
                         if (itemCopyFilter(itemIndex))
                         {
-                            int itemCount = ownerBody.inventory.GetItemCountPermanent(itemIndex) + qualityItemCountAccumulator;
-                            qualityItemCountAccumulator = 0;
+                            int permanentItemCount = ownerBody.inventory.GetItemCountPermanent(itemIndex) + qualityPermanentItemCountAccumulator;
+                            qualityPermanentItemCountAccumulator = 0;
 
-                            if (itemCount > 0)
+                            if (permanentItemCount > 0)
                             {
-                                spawnCard.GiveItem(itemIndex, shouldCopyItemCount ? itemCount : 1);
+                                spawnCard.GiveItem(itemIndex, shouldCopyItemCount ? permanentItemCount : 1);
+                            }
+
+                            int rentalItemCount = ownerBody.inventory.GetItemCountRented(itemIndex) + qualityRentalItemCountAccumulator;
+                            qualityRentalItemCountAccumulator = 0;
+
+                            if (rentalItemCount > 0)
+                            {
+                                spawnCard.srcRentalItemStacks[(int)itemIndex] += shouldCopyItemCount ? rentalItemCount : 1;
                             }
 
                             float tempItemRawValue = ownerBody.inventory.GetTempItemRawValue(itemIndex) + qualityTempItemRawValueAccumulator;

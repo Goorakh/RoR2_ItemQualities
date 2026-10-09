@@ -22,9 +22,9 @@ namespace ItemQualities.Items
         {
             On.RoR2.Items.ImmuneToDebuffBehavior.OverrideDot += ImmuneToDebuffBehavior_OverrideDot;
 
-            IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += handleDebuffBuffReflectPatch;
             IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float_int += handleDebuffBuffReflectPatch;
             IL.RoR2.CharacterBody.AddTimedBuffDontRefreshDuration += handleDebuffBuffReflectPatch;
+            IL.RoR2.CharacterBody.AddTimedBuffInternal += handleDebuffBuffReflectPatch;
             IL.RoR2.CharacterBody.ExtendTimedBuffIfPresent_BuffDef_float_float += handleDebuffBuffReflectPatch;
         }
 

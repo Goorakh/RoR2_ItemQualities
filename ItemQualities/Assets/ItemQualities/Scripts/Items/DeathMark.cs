@@ -86,13 +86,20 @@ namespace ItemQualities.Items
         {
             if (report == null || !report.attackerBody || !report.victimBody)
                 return;
+
             ItemQualityCounts deathMark = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DeathMark);
             if (deathMark.TotalQualityCount == 0)
                 return;
 
-            int maxBuffGain = 100 - report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls);
-            int damagePercent = (int)(damage / report.victimBody.maxHealth * 100 / 2);
-            for (int i = 0; i < Math.Min(damagePercent, maxBuffGain); i++)
+            const int maxBuffs = 100;
+            int maxBuffsToAdd = maxBuffs - report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls);
+
+            float executeFraction = damage / report.victim.fullCombinedHealth;
+            float executeHealthPercent = executeFraction * 100f;
+            int desiredBuffsToAdd = (int)(executeHealthPercent * 0.5f);
+
+            int buffsToAdd = Mathf.Min(desiredBuffsToAdd, maxBuffsToAdd);
+            for (int i = 0; i < buffsToAdd; i++)
             {
                 report.attackerBody.AddBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
             }
@@ -142,10 +149,13 @@ namespace ItemQualities.Items
         {
             if ((damageInfo.damageType.damageTypeExtended & DamageTypeExtended.BypassDamageCalculations) != 0)
                 return damage;
+
             if (!damageInfo.attacker)
                 return damage;
+
             if (!damageInfo.attacker.TryGetComponent(out CharacterBody attackerBody))
                 return damage;
+
             if (!attackerBody.master)
                 return damage;
 
@@ -153,8 +163,8 @@ namespace ItemQualities.Items
             if (deathMark.TotalQualityCount == 0)
                 return damage;
 
-            float SoulStrikeChance = 5 + attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls);
-            if (RollUtil.CheckRoll(SoulStrikeChance, attackerBody.master, damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+            float soulStrikeChance = 5 + attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls);
+            if (RollUtil.CheckRoll(soulStrikeChance * damageInfo.procCoefficient, attackerBody.master, damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
                 damageInfo.damageColorIndex = damageInfo.crit ? _soulStrikeCritColor : _soulStrikeColor;
                 EffectManager.SpawnEffect(_soulStrikeEffect, new EffectData

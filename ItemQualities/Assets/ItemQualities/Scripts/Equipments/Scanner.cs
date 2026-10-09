@@ -127,13 +127,15 @@ namespace ItemQualities.Equipments
                 {
                     if (master.inventory && !master.inventory.GetEquipmentDisabled())
                     {
-                        int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
+                        int equipmentSlotCount = master.inventory.equipmentSlotCount;
+                        int equipmentSetCount = master.inventory.equipmentSetCount;
                         for (uint slot = 0; slot < equipmentSlotCount; slot++)
                         {
-                            int equipmentSetCount = master.inventory.GetEquipmentSetCount(slot);
                             for (uint set = 0; set < equipmentSetCount; set++)
                             {
-                                EquipmentState equipmentState = master.inventory.GetEquipment(slot, set);
+                                EquipmentLocation location = new EquipmentLocation { slot = slot, set = set };
+
+                                EquipmentState equipmentState = master.inventory.GetEquipment(location);
 
                                 QualityTier equipmentQualityTier = QualityCatalog.GetQualityTier(equipmentState.equipmentIndex);
                                 EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentState.equipmentIndex);

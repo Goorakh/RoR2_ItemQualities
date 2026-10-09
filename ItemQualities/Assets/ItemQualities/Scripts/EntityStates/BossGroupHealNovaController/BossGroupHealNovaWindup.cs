@@ -7,10 +7,10 @@ namespace EntityStates.BossGroupHealNovaController
     {
         private static EffectIndex _chargeEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _chargeEffectIndex = EffectCatalogUtils.FindEffectIndex("ChargeTPHealingNova");
+            _chargeEffectIndex = EffectCatalog.FindEffectIndex("ChargeTPHealingNova");
             if (_chargeEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find charge effect index");

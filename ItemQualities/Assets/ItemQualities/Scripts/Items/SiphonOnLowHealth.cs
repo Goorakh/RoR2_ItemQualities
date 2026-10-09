@@ -8,10 +8,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _explosionEffectIndex = EffectCatalogUtils.FindEffectIndex("ClayGrenadierMortarExplosion");
+            _explosionEffectIndex = EffectCatalog.FindEffectIndex("ClayGrenadierMortarExplosion");
             if (_explosionEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find ClayGrenadierMortarExplosion effect index");

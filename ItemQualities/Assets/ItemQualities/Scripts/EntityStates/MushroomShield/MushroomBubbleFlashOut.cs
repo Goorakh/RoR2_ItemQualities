@@ -7,10 +7,10 @@ namespace EntityStates.MushroomShield
     {
         private static EffectIndex _bubbleShieldEndEffect = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _bubbleShieldEndEffect = EffectCatalogUtils.FindEffectIndex("BubbleShieldEndEffect");
+            _bubbleShieldEndEffect = EffectCatalog.FindEffectIndex("BubbleShieldEndEffect");
             if (_bubbleShieldEndEffect == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find charge effect index");

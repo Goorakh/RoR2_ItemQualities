@@ -9,10 +9,10 @@ namespace ItemQualities.Orbs
     {
         private static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _orbEffectIndex = EffectCatalogUtils.FindEffectIndex("InfusionOrbEffect");
+            _orbEffectIndex = EffectCatalog.FindEffectIndex("InfusionOrbEffect");
             if (_orbEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find orb effect index");

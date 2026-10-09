@@ -179,7 +179,7 @@ namespace ItemQualities.Items
                     return;
 
                 ItemIndex startingItemIndex = itemTransformation.originalItemIndex;
-                int startingItemCount = inventory.CalculateEffectiveItemStacks(startingItemIndex);
+                int startingItemCount = inventory.GetItemCountTotal(startingItemIndex);
 
                 QualityTier startingQualityTier = QualityCatalog.GetQualityTier(startingItemIndex);
 

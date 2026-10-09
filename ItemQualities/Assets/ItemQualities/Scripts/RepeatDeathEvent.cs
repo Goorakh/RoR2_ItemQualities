@@ -10,10 +10,10 @@ namespace ItemQualities
     {
         private static EffectIndex _deathEventTickEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _deathEventTickEffectIndex = EffectCatalogUtils.FindEffectIndex("DeathProjectileTickEffect");
+            _deathEventTickEffectIndex = EffectCatalog.FindEffectIndex("DeathProjectileTickEffect");
             if (_deathEventTickEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find death tick effect index");

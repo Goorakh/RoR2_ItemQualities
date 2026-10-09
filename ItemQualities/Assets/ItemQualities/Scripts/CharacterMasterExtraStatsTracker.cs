@@ -314,7 +314,7 @@ namespace ItemQualities
 
             using (ListPool<ItemIndex>.RentCollection(out List<ItemIndex> permanentItemIndices))
             {
-                _master.inventory.permanentItemStacks.GetNonZeroIndicesFixed(permanentItemIndices);
+                _master.inventory.permanentItemStacks.GetNonZeroIndices(permanentItemIndices);
                 availableUpgradeItemsSelection.EnsureCapacity(permanentItemIndices.Count);
                 foreach (ItemIndex itemIndex in permanentItemIndices)
                 {
@@ -325,12 +325,26 @@ namespace ItemQualities
                 }
             }
 
+            // No permanent items can be upgrades, try rentals
+            using (ListPool<ItemIndex>.RentCollection(out List<ItemIndex> rentalItemIndices))
+            {
+                _master.inventory.rentalItemStacks.GetNonZeroIndices(rentalItemIndices);
+                availableUpgradeItemsSelection.EnsureCapacity(rentalItemIndices.Count);
+                foreach (ItemIndex itemIndex in rentalItemIndices)
+                {
+                    if (canUpgrade(itemIndex))
+                    {
+                        availableUpgradeItemsSelection.AddChoice(itemIndex, _master.inventory.GetItemCountRented(itemIndex));
+                    }
+                }
+            }
+
             // If no permanent items can be upgraded, try temps
             if (availableUpgradeItemsSelection.Count == 0)
             {
                 using (ListPool<ItemIndex>.RentCollection(out List<ItemIndex> temporaryItemIndices))
                 {
-                    _master.inventory.tempItemsStorage.GetNonZeroIndicesFixed(temporaryItemIndices);
+                    _master.inventory.tempItemsStorage.GetNonZeroIndices(temporaryItemIndices);
                     availableUpgradeItemsSelection.EnsureCapacity(temporaryItemIndices.Count);
                     foreach (ItemIndex itemIndex in temporaryItemIndices)
                     {

@@ -58,7 +58,7 @@ namespace ItemQualities.Items
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.StickyBomb)),
                                x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.OnHitProcDamage)),
-                               x => x.MatchCallOrCallvirt<ProjectileManager>(nameof(ProjectileManager.FireProjectileWithoutDamageType))))
+                               x => x.MatchCallOrCallvirt<ProjectileManager>(nameof(ProjectileManager.FireProjectile))))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;

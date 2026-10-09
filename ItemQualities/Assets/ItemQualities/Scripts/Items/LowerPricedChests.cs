@@ -118,6 +118,7 @@ namespace ItemQualities.Items
                             {
                                 a.permanentStacks += b.permanentStacks;
                                 a.temporaryStacksValue += b.temporaryStacksValue;
+                                a.rentalStacks += b.rentalStacks;
                                 a.totalStacks += b.totalStacks;
                             }
 

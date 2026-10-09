@@ -111,19 +111,22 @@ namespace ItemQualities.Equipments
             {
                 foreach (ItemIndex itemIndex in ItemCatalog.GetItemsWithTag(ItemTags.MissileRelated))
                 {
-                    missileItemCount += master.inventory.CalculateEffectiveItemStacks(itemIndex);
+                    missileItemCount += master.inventory.GetItemCountTotal(itemIndex);
                 }
             }
 
             if (!master.inventory.GetEquipmentDisabled())
             {
                 int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
+                int equipmentSetCount = master.inventory.GetEquipmentSetCount();
+
                 for (uint slot = 0; slot < equipmentSlotCount; slot++)
                 {
-                    int equipmentSetCount = master.inventory.GetEquipmentSetCount(slot);
                     for (uint set = 0; set < equipmentSetCount; set++)
                     {
-                        EquipmentState equipmentState = master.inventory.GetEquipment(slot, set);
+                        EquipmentLocation equipmentLocation = new EquipmentLocation { slot = slot, set = set };
+
+                        EquipmentState equipmentState = master.inventory.GetEquipment(equipmentLocation);
                         if (equipmentState.equipmentIndex != EquipmentIndex.None &&
                             Array.BinarySearch(_missileEquipments, equipmentState.equipmentIndex) >= 0)
                         {

@@ -378,20 +378,6 @@ namespace ItemQualities.Items
                     }
                 }
             }
-
-            // Remove duplicate notification
-            {
-                c.Goto(0);
-                if (c.TryGotoNext(MoveType.Before,
-                                  x => x.MatchCallOrCallvirt<CharacterMasterNotificationQueue>(nameof(CharacterMasterNotificationQueue.SendTransformNotification))))
-                {
-                    c.EmitSkipMethodCall();
-                }
-                else
-                {
-                    Log.Warning("[Duplicate Notification Fix] Failed to find duplicate CharacterMasterNotificationQueue.SendTransformNotification call, it was likely removed");
-                }
-            }
         }
 
         private delegate bool IsQualityRegeneratingScrapDelegate(ItemDef itemDef, WeightedSelection<ItemIndex>[] qualityScrapSelections, out WeightedSelection<ItemIndex> targetQualityScrapSelection);

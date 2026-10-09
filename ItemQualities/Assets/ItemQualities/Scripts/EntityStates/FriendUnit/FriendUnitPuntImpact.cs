@@ -12,10 +12,10 @@ namespace EntityStates.FriendUnit
     {
         private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _explosionEffectIndex = EffectCatalogUtils.FindEffectIndex("OmniExplosionVFXRoboBallDeath");
+            _explosionEffectIndex = EffectCatalog.FindEffectIndex("OmniExplosionVFXRoboBallDeath");
             if (_explosionEffectIndex == EffectIndex.Invalid)
             {
                 Log.Error("Failed to find explosion effect index");

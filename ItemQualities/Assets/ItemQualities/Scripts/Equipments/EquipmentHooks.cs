@@ -82,14 +82,24 @@ namespace ItemQualities.Equipments
                 Log.Error("Failed to find Inventory.currentEquipmentIndex getter method");
             }
 
-            MethodInfo alternateEquipmentIndexGetter = typeof(Inventory).GetProperty(nameof(Inventory.alternateEquipmentIndex))?.GetMethod;
-            if (alternateEquipmentIndexGetter != null)
+            MethodInfo nextSetEquipmentIndexGetter = typeof(Inventory).GetProperty(nameof(Inventory.nextSetEquipmentIndex))?.GetMethod;
+            if (nextSetEquipmentIndexGetter != null)
             {
-                new Hook(alternateEquipmentIndexGetter, new hook_Inventory_get_alternateEquipmentIndex(Inventory_get_alternateEquipmentIndex));
+                new Hook(nextSetEquipmentIndexGetter, new hook_Inventory_get_nextSetEquipmentIndex(Inventory_get_nextSetEquipmentIndex));
             }
             else
             {
-                Log.Error("Failed to find Inventory.alternateEquipmentIndex getter method");
+                Log.Error("Failed to find Inventory.nextSetEquipmentIndex getter method");
+            }
+
+            MethodInfo nextSlotEquipmentIndexGetter = typeof(Inventory).GetProperty(nameof(Inventory.nextSlotEquipmentIndex))?.GetMethod;
+            if (nextSlotEquipmentIndexGetter != null)
+            {
+                new Hook(nextSlotEquipmentIndexGetter, new hook_Inventory_get_nextSlotEquipmentIndex(Inventory_get_nextSlotEquipmentIndex));
+            }
+            else
+            {
+                Log.Error("Failed to find Inventory.nextSlotEquipmentIndex getter method");
             }
 
             On.RoR2.Inventory.GetActiveEquipment += Inventory_GetActiveEquipment;
@@ -115,82 +125,6 @@ namespace ItemQualities.Equipments
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GenericPatchAllGetEquipmentQuality;
 
             IL.RoR2.CharacterBody.OnInventoryChanged += CharacterBody_OnInventoryChanged;
-
-            MethodInfo summonDetachableMethod = typeof(EntityStates.SolusAmalgamator.DetatchState).GetMethod(nameof(EntityStates.SolusAmalgamator.DetatchState.SummonDetachable), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            if (summonDetachableMethod != null)
-            {
-                using DynamicMethodDefinition dmd = new DynamicMethodDefinition(summonDetachableMethod);
-                using ILContext il = new ILContext(dmd.Definition);
-
-                ILCursor c = new ILCursor(il);
-
-                MethodReference onSpawnedServerMethodRef = null;
-                if (c.TryGotoNext(x => x.MatchLdftn(out onSpawnedServerMethodRef),
-                                  x => x.MatchNewobj<Action<SpawnCard.SpawnResult>>(),
-                                  x => x.MatchStfld<DirectorSpawnRequest>(nameof(DirectorSpawnRequest.onSpawnedServer))))
-                {
-                    MethodBase onSpawnedServerMethod = null;
-                    try
-                    {
-                        onSpawnedServerMethod = onSpawnedServerMethodRef.ResolveReflection();
-                    }
-                    catch (Exception e)
-                    {
-                        Log.PatchError(il, $"Failed to resolve onSpawnedServer method: {e}");
-                    }
-
-                    if (onSpawnedServerMethod != null)
-                    {
-                        new ILHook(onSpawnedServerMethod, GenericPatchAllGetEquipmentQuality);
-                    }
-                }
-                else
-                {
-                    Log.PatchError(il, "Failed to find onSpawnedServer method");
-                }
-            }
-            else
-            {
-                Log.Error("Failed to find method EntityStates.SolusAmalgamator.DetatchState.SummonDetachable");
-            }
-
-            MethodInfo spawnMineMethod = typeof(EntityStates.MinePod.MinePlant).GetMethod(nameof(EntityStates.MinePod.MinePlant.SpawnMine), BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
-            if (spawnMineMethod != null)
-            {
-                using DynamicMethodDefinition dmd = new DynamicMethodDefinition(spawnMineMethod);
-                using ILContext il = new ILContext(dmd.Definition);
-
-                ILCursor c = new ILCursor(il);
-
-                MethodReference onSpawnedServerMethodRef = null;
-                if (c.TryGotoNext(x => x.MatchLdftn(out onSpawnedServerMethodRef),
-                                  x => x.MatchNewobj<Action<SpawnCard.SpawnResult>>(),
-                                  x => x.MatchStfld<DirectorSpawnRequest>(nameof(DirectorSpawnRequest.onSpawnedServer))))
-                {
-                    MethodBase onSpawnedServerMethod = null;
-                    try
-                    {
-                        onSpawnedServerMethod = onSpawnedServerMethodRef.ResolveReflection();
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error_NoCallerPrefix($"Failed to resolve EntityStates.MinePod.MinePlant.SpawnMine onSpawnedServer method: {e}");
-                    }
-
-                    if (onSpawnedServerMethod != null)
-                    {
-                        new ILHook(onSpawnedServerMethod, GenericPatchAllGetEquipmentQuality);
-                    }
-                }
-                else
-                {
-                    Log.Error("Failed to find onSpawnedServer method in EntityStates.MinePod.MinePlant.SpawnMine");
-                }
-            }
-            else
-            {
-                Log.Error("Failed to find method EntityStates.MinePod.MinePlant.SpawnMine");
-            }
 
             MethodInfo equipmentPayCostMethod = CostTypeCatalog.GetCostTypeDef(CostTypeIndex.Equipment)?.payCost?.Method;
             if (equipmentPayCostMethod != null)
@@ -272,9 +206,16 @@ namespace ItemQualities.Equipments
             return QualityCatalog.GetEquipmentIndexOfQuality(orig(self), QualityTier.None);
         }
 
-        private delegate EquipmentIndex orig_Inventory_get_alternateEquipmentIndex(Inventory self);
-        private delegate EquipmentIndex hook_Inventory_get_alternateEquipmentIndex(orig_Inventory_get_alternateEquipmentIndex orig, Inventory self);
-        private static EquipmentIndex Inventory_get_alternateEquipmentIndex(orig_Inventory_get_alternateEquipmentIndex orig, Inventory self)
+        private delegate EquipmentIndex orig_Inventory_get_nextSetEquipmentIndex(Inventory self);
+        private delegate EquipmentIndex hook_Inventory_get_nextSetEquipmentIndex(orig_Inventory_get_nextSetEquipmentIndex orig, Inventory self);
+        private static EquipmentIndex Inventory_get_nextSetEquipmentIndex(orig_Inventory_get_nextSetEquipmentIndex orig, Inventory self)
+        {
+            return QualityCatalog.GetEquipmentIndexOfQuality(orig(self), QualityTier.None);
+        }
+
+        private delegate EquipmentIndex orig_Inventory_get_nextSlotEquipmentIndex(Inventory self);
+        private delegate EquipmentIndex hook_Inventory_get_nextSlotEquipmentIndex(orig_Inventory_get_nextSlotEquipmentIndex orig, Inventory self);
+        private static EquipmentIndex Inventory_get_nextSlotEquipmentIndex(orig_Inventory_get_nextSlotEquipmentIndex orig, Inventory self)
         {
             return QualityCatalog.GetEquipmentIndexOfQuality(orig(self), QualityTier.None);
         }
@@ -372,7 +313,8 @@ namespace ItemQualities.Equipments
             {
                 return x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetActiveEquipment)) ||
                        x.MatchCallOrCallvirt<Inventory>("get_" + nameof(Inventory.currentEquipmentIndex)) ||
-                       x.MatchCallOrCallvirt<Inventory>("get_" + nameof(Inventory.alternateEquipmentIndex)) ||
+                       x.MatchCallOrCallvirt<Inventory>("get_" + nameof(Inventory.nextSetEquipmentIndex)) ||
+                       x.MatchCallOrCallvirt<Inventory>("get_" + nameof(Inventory.nextSlotEquipmentIndex)) ||
                        x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetEquipmentIndex)) ||
                        x.MatchCallOrCallvirt<EquipmentSlot>("get_" + nameof(EquipmentSlot.equipmentIndex));
             }

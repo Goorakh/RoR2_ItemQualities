@@ -7,10 +7,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _barrierOnCooldownProcEffect = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _barrierOnCooldownProcEffect = EffectCatalogUtils.FindEffectIndex("BarrierOnCooldownProc");
+            _barrierOnCooldownProcEffect = EffectCatalog.FindEffectIndex("BarrierOnCooldownProc");
             if (_barrierOnCooldownProcEffect == EffectIndex.Invalid)
             {
                 Log.Error("Failed to find Eclipse Lite proc effect index");

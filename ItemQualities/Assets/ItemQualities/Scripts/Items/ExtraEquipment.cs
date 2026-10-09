@@ -131,26 +131,26 @@ namespace ItemQualities.Items
         [InitDuringStartupPhase(GameInitPhase.PreSplash)]
         private static void Init()
         {
-            IL.RoR2.Inventory.UpdateEquipmentSetCount += Inventory_UpdateEquipmentSetCount;
+            IL.RoR2.Inventory.RecalculateEquipmentSetsServer += Inventory_RecalculateEquipmentSetsServer;
         }
 
-        private static void Inventory_UpdateEquipmentSetCount(ILContext il)
+        private static void Inventory_RecalculateEquipmentSetsServer(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
-            /*  int num = this.CalculateEffectiveItemStacks(DLC3Content.Items.ExtraEquipment.itemIndex);
-             *  IL_0000: ldarg.0
-             *  IL_0001: ldsfld    class RoR2.ItemDef RoR2.DLC3Content/Items::ExtraEquipment
-             *  IL_0006: callvirt  instance valuetype RoR2.ItemIndex RoR2.ItemDef::get_itemIndex()
-             *  IL_000B: call      instance int32 RoR2.Inventory::CalculateEffectiveItemStacks(valuetype RoR2.ItemIndex)
-             *  IL_0010: stloc.0
+            /*  b = HGMath.ByteSafeAddUInt(b, (uint)this.GetItemCountTotal(DLC3Content.Items.ExtraEquipment));
+             *  IL_0017: ldloc.0
+             *  IL_0018: ldarg.0
+             *  IL_0019: ldsfld    class RoR2.ItemDef RoR2.DLC3Content/Items::ExtraEquipment
+             *  IL_001E: call      instance int32 RoR2.Inventory::GetItemCountTotal(class RoR2.ItemDef)
+             *  IL_0023: call      uint8 HGMath::ByteSafeAddUInt(uint8, uint32)
+             *  IL_0028: stloc.0
              */
 
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdarg(0),
                                x => x.MatchLdsfld(typeof(DLC3Content.Items), nameof(DLC3Content.Items.ExtraEquipment)),
-                               x => x.MatchCallOrCallvirt<ItemDef>("get_" + nameof(ItemDef.itemIndex)),
-                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.CalculateEffectiveItemStacks))))
+                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountTotal))))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;
@@ -162,7 +162,7 @@ namespace ItemQualities.Items
 
             static int getQualityEffectiveItemStacks(Inventory inventory)
             {
-                return inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExtraEquipment).TotalQualityCount;
+                return inventory.GetItemCountsTotal(ItemQualitiesContent.ItemQualityGroups.ExtraEquipment).TotalQualityCount;
             }
         }
     }
@@ -172,12 +172,13 @@ namespace ItemQualities.Items
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.ExtraEquipment;
 
-        private static bool IsEquipmentDrone(CharacterMaster master)
+        private static bool IsEquipmentDrone(MasterCatalog.MasterIndex masterIndex)
         {
-            return master && master.masterIndex.isValid && (master.masterIndex == MasterCatalog.FindMasterIndex("EquipmentDroneMaster") || master.masterIndex == MasterCatalog.FindMasterIndex("QualityEquipmentDroneMaster"));
+            return masterIndex == MasterCatalog.FindMasterIndex("EquipmentDroneMaster") ||
+                   masterIndex == MasterCatalog.FindMasterIndex("QualityEquipmentDroneMaster");
         }
 
-        public int targetBoostEquipmentRechargeCount
+        public int droneBoostEquipmentRechargeCount
         {
             get
             {
@@ -189,287 +190,373 @@ namespace ItemQualities.Items
             }
         }
 
-        private QualityTier _lastEquipmentDroneQualityTier = QualityTier.None;
-        private int _lastEquipmentDroneEquipmentRechargeCount = 0;
-        private EquipmentDroneSlot[] _equipmentDrones = Array.Empty<EquipmentDroneSlot>();
-
-        private int _equipmentDroneCount;
-        private float _equipmentDroneRespawnTimer = 0f;
+        private readonly EquipmentMap<EquipmentDroneSpawner> equipmentDroneSpawners = new EquipmentMap<EquipmentDroneSpawner>(1, 2);
 
         private Xoroshiro128Plus _rng;
+
+        private int previousDroneBoostEquipmentRechargeCount = 0;
+        private QualityTier previousQualityTier = QualityTier.None;
+        private EquipmentLocation previousEquipmentLocation = EquipmentLocation.invalid;
 
         private void OnEnable()
         {
             _rng = new Xoroshiro128Plus(Run.instance.seed ^ 2495764536);
 
-            _lastEquipmentDroneQualityTier = QualityTier.None;
+            equipmentDroneSpawners.onEquipmentLost += onEquipmentDroneSpawnerLost;
 
-            _equipmentDroneCount = 0;
-            _equipmentDroneRespawnTimer = 0f;
-
-            Body.onInventoryChanged += onInventoryChanged;
             onInventoryChanged();
+
+            if (Body && Body.inventory)
+            {
+                Body.inventory.onInventoryChanged += onInventoryChanged;
+                Body.inventory.onActiveEquipmentLocationChanged += onActiveEquipmentLocationChanged;
+            }
 
             MasterSummon.onServerMasterSummonGlobal += onServerMasterSummonGlobal;
         }
 
         private void OnDisable()
         {
-            Body.onInventoryChanged -= onInventoryChanged;
-
             MasterSummon.onServerMasterSummonGlobal -= onServerMasterSummonGlobal;
 
-            for (int i = 0; i < _equipmentDrones.Length; i++)
+            if (!ReferenceEquals(Body?.inventory, null))
             {
-                ref EquipmentDroneSlot droneSlot = ref _equipmentDrones[i];
-                if (droneSlot != null)
-                {
-                    droneSlot.Clear();
-                    droneSlot = null;
-                }
+                Body.inventory.onInventoryChanged -= onInventoryChanged;
+                Body.inventory.onActiveEquipmentLocationChanged -= onActiveEquipmentLocationChanged;
             }
 
-            MinionOwnership.MinionGroup minionGroup = Body.master ? MinionOwnership.MinionGroup.FindGroup(Body.master.netId) : null;
-            if (minionGroup != null)
-            {
-                for (int i = 0; i < minionGroup.memberCount; i++)
-                {
-                    MinionOwnership minion = minionGroup.members[i];
-                    if (minion &&
-                        minion.TryGetComponent(out CharacterMaster minionMaster) &&
-                        IsEquipmentDrone(minionMaster))
-                    {
-                        minionMaster.inventory.RemoveItemPermanent(RoR2Content.Items.BoostEquipmentRecharge, targetBoostEquipmentRechargeCount);
-                    }
-                }
-            }
-        }
-
-        private void FixedUpdate()
-        {
-            _equipmentDroneRespawnTimer -= Time.fixedDeltaTime;
-            if (_equipmentDroneRespawnTimer <= 0f)
-            {
-                _equipmentDroneRespawnTimer = 1f;
-
-                int respawnDroneIndex = -1;
-                for (int i = 0; i < _equipmentDroneCount; i++)
-                {
-                    EquipmentDroneSlot droneSlot = _equipmentDrones[i];
-                    if (droneSlot.IsEmpty && droneSlot.HeldEquipment != EquipmentIndex.None)
-                    {
-                        respawnDroneIndex = i;
-                        break;
-                    }
-                }
-
-                if (respawnDroneIndex != -1)
-                {
-                    _equipmentDrones[respawnDroneIndex].UpdateMaster();
-                }
-            }
+            // Will invoke onEquipmentLost event for all spawners
+            equipmentDroneSpawners.Resize(0, 0);
         }
 
         private void onInventoryChanged()
         {
-            var _ = ListPool<EquipmentIndex>.RentCollection(out List<EquipmentIndex> heldEquipments);
+            ref readonly ItemQualityCounts stacks = ref Stacks;
 
-            if (!Body.inventory.GetEquipmentDisabled())
+            uint slotCount = Body.inventory.equipmentSlotCount;
+            uint setCount = Body.inventory.accessibleEquipmentSetCount;
+
+            equipmentDroneSpawners.Resize(slotCount, setCount);
+
+            EquipmentLocation activeEquipmentLocation = Body.inventory.activeEquipmentLocation;
+
+            QualityTier qualityTier = stacks.HighestQuality;
+
+            ItemIndex previousQualityTierItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(previousQualityTier);
+            ItemIndex qualityTierItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(qualityTier);
+
+            for (uint slot = 0; slot < slotCount; slot++)
             {
-                byte activeEquipmentSlot = Body.inventory.activeEquipmentSlot;
-                byte activeEquipmentSet = ArrayUtils.GetSafe(Body.inventory.activeEquipmentSet, activeEquipmentSlot);
-
-                int slotCount = Body.inventory.GetEquipmentSlotCount();
-
-                ListUtils.EnsureCapacity(heldEquipments, slotCount * (Stacks.TotalCount + 1));
-
-                for (uint slot = 0; slot < slotCount; slot++)
+                for (uint set = 0; set < setCount; set++)
                 {
-                    for (uint set = 0, setCount = (uint)Body.inventory.GetEquipmentSetCount(slot); set < setCount; set++)
+                    EquipmentLocation location = new EquipmentLocation { slot = slot, set = set };
+                    EquipmentState equipmentState = Body.inventory.GetEquipment(location);
+
+                    ref EquipmentDroneSpawner droneSpawner = ref equipmentDroneSpawners[location];
+
+                    bool hasSpawner = droneSpawner != null;
+                    bool shouldHaveSpawner = !equipmentState.isDisabled && equipmentState.equipmentIndex != EquipmentIndex.None && location != activeEquipmentLocation;
+
+                    if (hasSpawner != shouldHaveSpawner)
                     {
-                        // Skip currently held equipment
-                        if (slot == activeEquipmentSlot && set == activeEquipmentSet)
+                        if (shouldHaveSpawner)
                         {
-                            continue;
-                        }
-
-                        EquipmentState equipmentState = Body.inventory.GetEquipment(slot, set);
-
-                        EquipmentIndex equipmentIndex = equipmentState.equipmentIndex;
-                        QualityTier equipmentQualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
-                        EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
-
-                        if (equipmentGroupIndex != EquipmentQualityGroupIndex.Invalid)
-                        {
-                            EquipmentQualityGroupIndex convertToEquipmentGroupIndex = EquipmentQualityGroupIndex.Invalid;
-                            if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.BossHunter.GroupIndex)
-                            {
-                                convertToEquipmentGroupIndex = ItemQualitiesContent.EquipmentQualityGroups.BossHunterConsumed.GroupIndex;
-                            }
-                            else if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.HealAndRevive.GroupIndex)
-                            {
-                                convertToEquipmentGroupIndex = ItemQualitiesContent.EquipmentQualityGroups.HealAndReviveConsumed.GroupIndex;
-                            }
-
-                            if (convertToEquipmentGroupIndex != EquipmentQualityGroupIndex.Invalid)
-                            {
-                                EquipmentQualityGroup convertToEquipmentGroup = QualityCatalog.GetEquipmentQualityGroup(convertToEquipmentGroupIndex);
-
-                                equipmentIndex = convertToEquipmentGroup.GetEquipmentIndex(equipmentQualityTier);
-                                equipmentGroupIndex = convertToEquipmentGroup.GroupIndex;
-                            }
-                        }
-
-                        if (equipmentIndex != EquipmentIndex.None)
-                        {
-                            heldEquipments.Add(equipmentIndex);
-                        }
-                    }
-                }
-            }
-
-            _equipmentDroneCount = heldEquipments.Count;
-            ArrayUtils.EnsureCapacity(ref _equipmentDrones, _equipmentDroneCount);
-
-            for (int i = 0; i < _equipmentDrones.Length; i++)
-            {
-                EquipmentDroneSlot droneSlot = _equipmentDrones[i] ??= new EquipmentDroneSlot(this);
-                if (i < _equipmentDroneCount)
-                {
-                    droneSlot.SetHeldEquipment(heldEquipments[i]);
-                }
-                else
-                {
-                    droneSlot.Clear();
-                }
-            }
-        }
-
-        protected override void OnStacksChanged()
-        {
-            base.OnStacksChanged();
-
-            QualityTier equipmentDroneQualityTier = Stacks.HighestQuality;
-            if (equipmentDroneQualityTier != _lastEquipmentDroneQualityTier)
-            {
-                ItemIndex previousQualityTierItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(_lastEquipmentDroneQualityTier);
-                ItemIndex qualityTierItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(equipmentDroneQualityTier);
-
-                foreach (EquipmentDroneSlot droneSlot in _equipmentDrones)
-                {
-                    if (droneSlot.Master && droneSlot.Master.inventory)
-                    {
-                        if (previousQualityTierItemIndex != ItemIndex.None)
-                        {
-                            new Inventory.ItemTransformation
-                            {
-                                originalItemIndex = previousQualityTierItemIndex,
-                                newItemIndex = qualityTierItemIndex,
-                                minToTransform = 1,
-                                maxToTransform = 1,
-                                allowWhenDisabled = true,
-                                transformationType = ItemTransformationTypeIndex.None,
-                            }.TryTransform(droneSlot.Master.inventory, out _);
+                            droneSpawner = new EquipmentDroneSpawner(Body.master, ExtraEquipment.QualityEquipmentDroneSpawnCard, 1f, _rng, 1);
+                            droneSpawner.SetHeldEquipmentServer(getHeldEquipmentIndex(equipmentState.equipmentIndex));
+                            droneSpawner.onDroneSpawnedServer += onDroneSpawnedServer;
                         }
                         else
                         {
-                            droneSlot.Master.inventory.GiveItemPermanent(qualityTierItemIndex);
+                            onEquipmentDroneSpawnerLost(droneSpawner, location);
+                            droneSpawner = null;
+                        }
+
+                        hasSpawner = shouldHaveSpawner;
+                    }
+
+                    if (hasSpawner)
+                    {
+                        if (qualityTier != previousQualityTier)
+                        {
+                            foreach (CharacterMaster droneMaster in droneSpawner.droneMasters)
+                            {
+                                if (previousQualityTierItemIndex != ItemIndex.None)
+                                {
+                                    new Inventory.ItemTransformation
+                                    {
+                                        originalItemIndex = previousQualityTierItemIndex,
+                                        newItemIndex = qualityTierItemIndex,
+                                        minToTransform = 1,
+                                        maxToTransform = 1,
+                                        allowWhenDisabled = true,
+                                        transformationType = ItemTransformationTypeIndex.None,
+                                    }.TryTransform(droneMaster.inventory, out _);
+                                }
+                                else
+                                {
+                                    droneMaster.inventory.GiveItemPermanent(qualityTierItemIndex);
+                                }
+                            }
                         }
                     }
                 }
-
-                _lastEquipmentDroneQualityTier = equipmentDroneQualityTier;
             }
 
-            int boostEquipmentRechargeCount = targetBoostEquipmentRechargeCount;
-            if (boostEquipmentRechargeCount != _lastEquipmentDroneEquipmentRechargeCount)
+            int newDroneBoostEquipmentRechargeCount = droneBoostEquipmentRechargeCount;
+            if (previousDroneBoostEquipmentRechargeCount != newDroneBoostEquipmentRechargeCount)
             {
+                int diff = newDroneBoostEquipmentRechargeCount - previousDroneBoostEquipmentRechargeCount;
+
                 MinionOwnership.MinionGroup minionGroup = Body.master ? MinionOwnership.MinionGroup.FindGroup(Body.master.netId) : null;
                 if (minionGroup != null)
                 {
-                    for (int i = 0; i < minionGroup.memberCount; i++)
+                    int minionCount = minionGroup.memberCount;
+                    for (int i = 0; i < minionCount; i++)
                     {
                         MinionOwnership minion = minionGroup.members[i];
                         if (minion &&
                             minion.TryGetComponent(out CharacterMaster minionMaster) &&
-                            IsEquipmentDrone(minionMaster))
+                            minionMaster.originalBodyPrefab &&
+                            minionMaster.originalBodyPrefab.TryGetComponent(out CharacterBody minionBodyPrefab) &&
+                            (minionBodyPrefab.bodyFlags & CharacterBody.BodyFlags.Mechanical) != 0)
                         {
-                            minionMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostEquipmentRecharge, boostEquipmentRechargeCount - _lastEquipmentDroneEquipmentRechargeCount);
+                            minionMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostEquipmentRecharge, diff);
                         }
                     }
                 }
 
-                _lastEquipmentDroneEquipmentRechargeCount = boostEquipmentRechargeCount;
+                previousDroneBoostEquipmentRechargeCount = newDroneBoostEquipmentRechargeCount;
+            }
+
+            previousQualityTier = qualityTier;
+        }
+
+        private void onDroneSpawnedServer(CharacterMaster droneMaster)
+        {
+            ItemIndex qualityTierItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(previousQualityTier);
+            if (qualityTierItemIndex != ItemIndex.None)
+            {
+                droneMaster.inventory.GiveItemPermanent(qualityTierItemIndex);
             }
         }
 
         private void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
         {
-            if (ReferenceEquals(Body.master, null) || !ReferenceEquals(summonReport.leaderMasterInstance, Body.master))
+            if (summonReport.summonMasterInstance && summonReport.summonBodyInstance && (summonReport.summonBodyInstance.bodyFlags & CharacterBody.BodyFlags.Mechanical) != 0)
+            {
+                summonReport.summonMasterInstance.inventory.GiveItemPermanent(RoR2Content.Items.BoostEquipmentRecharge, droneBoostEquipmentRechargeCount);
+            }
+        }
+
+        private void onEquipmentDroneSpawnerLost(in EquipmentDroneSpawner droneSpawner, in EquipmentLocation location)
+        {
+            if (droneSpawner != null)
+            {
+                droneSpawner.onDroneSpawnedServer -= onDroneSpawnedServer;
+
+                foreach (CharacterMaster master in droneSpawner.droneMasters)
+                {
+                    master.TrueKill();
+                }
+
+                droneSpawner.Dispose();
+            }
+        }
+
+        private EquipmentIndex getHeldEquipmentIndex(EquipmentIndex equipmentIndex)
+        {
+            QualityTier equipmentQualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
+            EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
+            if (equipmentGroupIndex != EquipmentQualityGroupIndex.Invalid)
+            {
+                EquipmentQualityGroupIndex convertToEquipmentGroupIndex = EquipmentQualityGroupIndex.Invalid;
+                if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.BossHunter.GroupIndex)
+                {
+                    convertToEquipmentGroupIndex = ItemQualitiesContent.EquipmentQualityGroups.BossHunterConsumed.GroupIndex;
+                }
+                else if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.HealAndRevive.GroupIndex)
+                {
+                    convertToEquipmentGroupIndex = ItemQualitiesContent.EquipmentQualityGroups.HealAndReviveConsumed.GroupIndex;
+                }
+
+                if (convertToEquipmentGroupIndex != EquipmentQualityGroupIndex.Invalid)
+                {
+                    EquipmentQualityGroup convertToEquipmentGroup = QualityCatalog.GetEquipmentQualityGroup(convertToEquipmentGroupIndex);
+
+                    equipmentIndex = convertToEquipmentGroup.GetEquipmentIndex(equipmentQualityTier);
+                    equipmentGroupIndex = convertToEquipmentGroup.GroupIndex;
+                }
+            }
+            else
+            {
+                if (equipmentIndex == DLC4Content.Equipment.SpawnAltar.equipmentIndex)
+                {
+                    // shrug
+                    equipmentIndex = EquipmentIndex.None;
+                }
+            }
+
+            return equipmentIndex;
+        }
+
+        private void onActiveEquipmentLocationChanged()
+        {
+            EquipmentLocation activeEquipmentLocation = Body.inventory.activeEquipmentLocation;
+            if (activeEquipmentLocation == previousEquipmentLocation)
             {
                 return;
             }
 
-            CharacterMaster summonedMaster = summonReport.summonMasterInstance;
-            if (summonedMaster && IsEquipmentDrone(summonedMaster))
+            if (previousEquipmentLocation.isValid)
             {
-                summonedMaster.inventory.GiveItemPermanent(RoR2Content.Items.BoostEquipmentRecharge, targetBoostEquipmentRechargeCount);
-            }
-        }
+                ref EquipmentDroneSpawner prevDroneSpawner = ref equipmentDroneSpawners[previousEquipmentLocation];
+                ref EquipmentDroneSpawner activeDroneSpawner = ref equipmentDroneSpawners[activeEquipmentLocation];
 
-        private sealed class EquipmentDroneSlot
-        {
-            public readonly ExtraEquipmentQualityItemBehavior OwnerItemBehavior;
+                (prevDroneSpawner, activeDroneSpawner) = (activeDroneSpawner, prevDroneSpawner);
 
-            public CharacterMaster Master { get; private set; }
-
-            public EquipmentIndex HeldEquipment { get; private set; } = EquipmentIndex.None;
-
-            public bool IsEmpty => !Master || Master.IsDeadAndOutOfLivesServer();
-
-            public EquipmentDroneSlot(ExtraEquipmentQualityItemBehavior ownerItemBehavior)
-            {
-                OwnerItemBehavior = ownerItemBehavior;
-            }
-
-            public void Clear()
-            {
-                SetHeldEquipmentInternal(EquipmentIndex.None, true);
-                UpdateMaster();
-            }
-
-            public void SetHeldEquipment(EquipmentIndex equipmentIndex)
-            {
-                SetHeldEquipmentInternal(equipmentIndex);
-            }
-
-            private void SetHeldEquipmentInternal(EquipmentIndex equipmentIndex, bool silent = false)
-            {
-                if (HeldEquipment != equipmentIndex)
+                // Update held equipments after swap
+                if (prevDroneSpawner != null)
                 {
-                    HeldEquipment = equipmentIndex;
-                    UpdateMasterHeldEquipment(silent);
+                    prevDroneSpawner.SetHeldEquipmentServer(getHeldEquipmentIndex(Body.inventory.GetEquipment(previousEquipmentLocation).equipmentIndex));
+                }
+
+                if (activeDroneSpawner != null)
+                {
+                    activeDroneSpawner.SetHeldEquipmentServer(getHeldEquipmentIndex(Body.inventory.GetEquipment(activeEquipmentLocation).equipmentIndex));
                 }
             }
 
-            private void UpdateMasterHeldEquipment(bool silent = false)
-            {
-                if (Master)
-                {
-                    Master.inventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(OwnerItemBehavior.Stacks.HighestQuality));
-                    Master.inventory.SetEquipmentIndex(HeldEquipment, HeldEquipment == EquipmentIndex.None);
+            previousEquipmentLocation = activeEquipmentLocation;
+        }
 
-                    CharacterBody droneBody = Master.GetBody();
-                    if (HeldEquipment != EquipmentIndex.None)
+        internal sealed class EquipmentDroneSpawner : IDisposable
+        {
+            public readonly SpawnCard spawnCard;
+            public readonly CharacterMaster ownerMaster;
+            public readonly int maxDrones;
+
+            public float spawnInterval;
+
+            private readonly Xoroshiro128Plus rng;
+
+            private float spawnStopwatch;
+
+            private List<CharacterMaster> spawnedDroneMasters;
+            public ReadOnlyList<CharacterMaster> droneMasters => spawnedDroneMasters;
+
+            private EquipmentIndex currentEquipmentIndex = EquipmentIndex.None;
+
+            public event Action<CharacterMaster> onDroneSpawnedServer;
+
+            public EquipmentDroneSpawner(CharacterMaster ownerMaster, SpawnCard spawnCard, float spawnInterval, Xoroshiro128Plus rng, int maxDrones)
+            {
+                this.spawnCard = spawnCard;
+                this.ownerMaster = ownerMaster;
+                this.spawnInterval = spawnInterval;
+                this.maxDrones = maxDrones;
+                this.rng = rng;
+
+                spawnStopwatch = rng.RangeFloat(0.3f, 1f) * spawnInterval;
+
+                spawnedDroneMasters = ListPool<CharacterMaster>.RentCollection();
+
+                RoR2Application.onFixedUpdate += onFixedUpdate;
+            }
+
+            public void Dispose()
+            {
+                RoR2Application.onFixedUpdate -= onFixedUpdate;
+
+                spawnedDroneMasters = ListPool<CharacterMaster>.ReturnCollection(spawnedDroneMasters);
+            }
+
+            private void onFixedUpdate()
+            {
+                spawnStopwatch -= Time.fixedDeltaTime;
+                if (spawnStopwatch <= 0f)
+                {
+                    spawnStopwatch = spawnInterval;
+
+                    int droneCount = 0;
+                    for (int i = spawnedDroneMasters.Count - 1; i >= 0; i--)
                     {
-                        if (!silent && ItemQualitiesContent.Prefabs.PickupTransferOrbEffect && droneBody)
+                        CharacterMaster master = spawnedDroneMasters[i];
+                        if (master && !master.IsDeadAndOutOfLivesServer())
+                        {
+                            droneCount++;
+                        }
+                        else
+                        {
+                            spawnedDroneMasters.RemoveAt(i);
+                        }
+                    }
+
+                    if (droneCount < maxDrones && ownerMaster && ownerMaster.TryGetBody(out CharacterBody ownerBody))
+                    {
+                        DirectorPlacementRule placementRule = new DirectorPlacementRule
+                        {
+                            position = ownerBody.corePosition,
+                            placementMode = DirectorPlacementRule.PlacementMode.Approximate,
+                            minDistance = 5f,
+                            maxDistance = 35f,
+                        };
+
+                        DirectorCore.instance.TrySpawnObject(new DirectorSpawnRequest(spawnCard, placementRule, rng)
+                        {
+                            ignoreTeamMemberLimit = true,
+                            summonerBodyObject = ownerBody.gameObject,
+                            teamIndexOverride = ownerBody.teamComponent.teamIndex,
+                            onSpawnedServer = onDroneSpawnedServerInternal,
+                        });
+                    }
+                }
+            }
+
+            private void onDroneSpawnedServerInternal(SpawnCard.SpawnResult spawnResult)
+            {
+                if (spawnResult.success && spawnResult.spawnedInstance && spawnResult.spawnedInstance.TryGetComponent(out CharacterMaster spawnedDroneMaster))
+                {
+                    if (currentEquipmentIndex != EquipmentIndex.None)
+                    {
+                        spawnedDroneMaster.inventory.SetEquipmentIndex(currentEquipmentIndex, spawnedDroneMaster.inventory.activeEquipmentLocation);
+                    }
+
+                    spawnedDroneMasters.Add(spawnedDroneMaster);
+
+                    onDroneSpawnedServer?.Invoke(spawnedDroneMaster);
+                }
+            }
+
+            public void SetHeldEquipmentServer(EquipmentIndex newEquipmentIndex)
+            {
+                if (currentEquipmentIndex == newEquipmentIndex)
+                {
+                    return;
+                }
+
+                currentEquipmentIndex = newEquipmentIndex;
+
+                CharacterBody ownerBody = ownerMaster ? ownerMaster.GetBody() : null;
+
+                foreach (CharacterMaster droneMaster in spawnedDroneMasters)
+                {
+                    if (!droneMaster || !droneMaster.inventory)
+                    {
+                        continue;
+                    }
+
+                    droneMaster.inventory.SetEquipmentIndex(newEquipmentIndex, droneMaster.inventory.activeEquipmentLocation);
+
+                    if (newEquipmentIndex != EquipmentIndex.None)
+                    {
+                        if (droneMaster.TryGetBody(out CharacterBody droneBody) && ItemQualitiesContent.Prefabs.PickupTransferOrbEffect && ownerBody)
                         {
                             const float TransferOrbEffectDuration = 1f;
 
                             EffectData effectData = new EffectData
                             {
-                                origin = OwnerItemBehavior.Body.corePosition,
-                                genericUInt = Util.IntToUintPlusOne(PickupCatalog.FindPickupIndex(HeldEquipment).value),
+                                origin = ownerBody.corePosition,
+                                genericUInt = Util.IntToUintPlusOne(PickupCatalog.FindPickupIndex(newEquipmentIndex).value),
                                 genericFloat = TransferOrbEffectDuration,
                             };
 
@@ -485,52 +572,6 @@ namespace ItemQualities.Items
                             EffectManager.SpawnEffect(ItemQualitiesContent.Prefabs.PickupTransferOrbEffect, effectData, true);
                         }
                     }
-                }
-            }
-
-            public void UpdateMaster()
-            {
-                bool hasDrone = !IsEmpty;
-                bool shouldHaveDrone = HeldEquipment != EquipmentIndex.None;
-
-                if (shouldHaveDrone != hasDrone)
-                {
-                    if (shouldHaveDrone)
-                    {
-                        DirectorPlacementRule placementRule = new DirectorPlacementRule
-                        {
-                            position = OwnerItemBehavior.Body.corePosition,
-                            placementMode = DirectorPlacementRule.PlacementMode.Approximate,
-                            minDistance = 5f,
-                            maxDistance = 35f,
-                        };
-
-                        DirectorSpawnRequest spawnRequest = new DirectorSpawnRequest(ExtraEquipment.QualityEquipmentDroneSpawnCard, placementRule, OwnerItemBehavior._rng)
-                        {
-                            summonerBodyObject = OwnerItemBehavior.gameObject,
-                            teamIndexOverride = OwnerItemBehavior.Body.teamComponent.teamIndex,
-                        };
-
-                        spawnRequest.onSpawnedServer += OnDroneSpawnedServer;
-
-                        DirectorCore.instance.TrySpawnObject(spawnRequest);
-                    }
-                    else
-                    {
-                        Master.TrueKill();
-                        Master = null;
-                    }
-
-                    hasDrone = shouldHaveDrone;
-                }
-            }
-
-            private void OnDroneSpawnedServer(SpawnCard.SpawnResult result)
-            {
-                if (result.success && result.spawnedInstance.TryGetComponent(out CharacterMaster master))
-                {
-                    Master = master;
-                    UpdateMasterHeldEquipment(true);
                 }
             }
         }
