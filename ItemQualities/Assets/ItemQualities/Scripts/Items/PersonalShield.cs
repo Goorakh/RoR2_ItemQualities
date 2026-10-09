@@ -15,7 +15,7 @@ namespace ItemQualities.Items
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
-            GlobalEventManager.OnInteractionsGlobal += onInteractGlobal;
+            GlobalEventManager.OnInteractionsPermittedForSpawnGlobal += onInteractGlobal;
 
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
         }
@@ -57,9 +57,6 @@ namespace ItemQualities.Items
 
         private static void onInteractGlobal(Interactor interactor, IInteractable interactable, GameObject @object)
         {
-            if (!SharedItemUtils.InteractableIsPermittedForSpawn(interactable))
-                return;
-
             CharacterBody body = interactor.GetComponent<CharacterBody>();
             if (!body || !body.inventory)
                 return;

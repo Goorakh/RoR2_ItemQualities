@@ -110,12 +110,16 @@ namespace ItemQualities.Items
 
             c.Goto(0);
 
-            if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchCallOrCallvirt<GenericCharacterMain>(nameof(GenericCharacterMain.ApplyJumpVelocity))))
+            ILLabel jumpSuccessLabel = null;
+            if (!c.TryFindNext(out foundCursors,
+                               x => x.MatchCallOrCallvirt<GenericCharacterMain>(nameof(GenericCharacterMain.TryPerformJump)),
+                               x => x.MatchBrtrue(out jumpSuccessLabel)))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;
             }
+
+            c.Goto(jumpSuccessLabel.Target, MoveType.AfterLabel);
 
             c.Emit(OpCodes.Ldarg_0);
             c.Emit(OpCodes.Ldloc, isQuailJumpVar);

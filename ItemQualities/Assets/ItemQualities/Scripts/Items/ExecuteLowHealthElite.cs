@@ -9,18 +9,26 @@ namespace ItemQualities.Items
 {
     internal static class ExecuteLowHealthElite
     {
-        public static List<BodyIndex> CanBypassImmunity = new List<BodyIndex>();
+        private static HashSet<BodyIndex> bypassExecuteImmunityBodies = new HashSet<BodyIndex>();
 
         [SystemInitializer(typeof(BodyCatalog))]
         private static void Init()
         {
             ExecuteAPI.CalculateExecuteThresholdForViewerBypassImmunity += calculateExecuteThreshold;
 
-            CanBypassImmunity.Add(BodyCatalog.FindBodyIndex("SolusHeartBody"));
+            static void addBypassExecuteImmunityBody(string bodyName)
+            {
+                BodyIndex bodyIndex = BodyCatalog.FindBodyIndex(bodyName);
+                if (bodyIndex != BodyIndex.None)
+                {
+                    bypassExecuteImmunityBodies.Add(bodyIndex);
+                }
+            }
+
             if (UmbralCompat.Enabled)
             {
-                CanBypassImmunity.Add(BodyCatalog.FindBodyIndex("BrotherBody"));
-                CanBypassImmunity.Add(BodyCatalog.FindBodyIndex("BrotherHurtBodyP3"));
+                addBypassExecuteImmunityBody("BrotherBody");
+                addBypassExecuteImmunityBody("BrotherHurtBodyP3");
             }
         }
 
@@ -28,7 +36,8 @@ namespace ItemQualities.Items
         {
             if (!victimBody || !viewerBody)
                 return;
-            if ((victimBody.bodyFlags & CharacterBody.BodyFlags.ImmuneToExecutes) != 0 && !CanBypassImmunity.Contains(victimBody.bodyIndex))
+
+            if ((victimBody.bodyFlags & CharacterBody.BodyFlags.ImmuneToExecutes) != 0 && !bypassExecuteImmunityBodies.Contains(victimBody.bodyIndex))
                 return;
 
             if ((victimBody.isBoss || victimBody.isChampion) && viewerBody.TryGetComponentCached(out CharacterBodyExtraStatsTracker viewerBodyExtraStats))

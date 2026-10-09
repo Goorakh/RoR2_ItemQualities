@@ -11,7 +11,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_refEquipmentLocation_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
         private static void EquipmentSlot_OnEquipmentExecuted(ILContext il)

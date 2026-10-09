@@ -44,13 +44,15 @@ namespace ItemQualities.Equipments
             QualityTier passiveHealingQualityTier = QualityTier.None;
             if (!master.inventory.GetEquipmentDisabled())
             {
-                int equipmentSlotCount = master.inventory.GetEquipmentSlotCount();
+                int equipmentSlotCount = master.inventory.equipmentSlotCount;
+                int equipmentSetCount = master.inventory.equipmentSetCount;
                 for (uint slot = 0; slot < equipmentSlotCount; slot++)
                 {
-                    int equipmentSetCount = master.inventory.GetEquipmentSetCount(slot);
                     for (uint set = 0; set < equipmentSetCount; set++)
                     {
-                        passiveHealingQualityTier = QualityCatalog.Max(passiveHealingQualityTier, master.inventory.GetEquipmentQualityTier(slot, set));
+                        EquipmentLocation location = new EquipmentLocation { slot = slot, set = set };
+
+                        passiveHealingQualityTier = QualityCatalog.Max(passiveHealingQualityTier, master.inventory.GetEquipmentQualityTier(location));
                     }
                 }
             }
@@ -171,8 +173,7 @@ namespace ItemQualities.Equipments
             static void modifyTempItemPickup(ref UniquePickup pickup, EntityStates.Drone.DroneJunk.Surprise surpriseState)
             {
                 if (surpriseState.characterBody &&
-                    surpriseState.characterBody.inventory &&
-                    surpriseState.characterBody.inventory.GetItemCountEffective(RoR2Content.Items.Ghost) > 0)
+                    surpriseState.characterBody.IsGhost())
                 {
                     pickup.decayValue *= 1f / 4f;
                 }

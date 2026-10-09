@@ -14,7 +14,7 @@ namespace ItemQualities.Equipments
     {
         private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
             IL.RoR2.EquipmentSlot.UpdateTargets += EquipmentSlot_UpdateTargets;
@@ -22,7 +22,7 @@ namespace ItemQualities.Equipments
             On.RoR2.GenericPickupController.Start += GenericPickupController_Start;
             On.RoR2.GenericPickupController.OnInteractionBegin += GenericPickupController_OnInteractionBegin;
 
-            _explosionEffectIndex = EffectCatalogUtils.FindEffectIndex("VolatileBatteryExplosion");
+            _explosionEffectIndex = EffectCatalog.FindEffectIndex("VolatileBatteryExplosion");
             if (_explosionEffectIndex == EffectIndex.Invalid)
             {
                 Log.Error("Failed to find VolatileBatteryExplosion effect index");

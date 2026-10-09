@@ -63,7 +63,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            _itemTransferOrbEffectIndex = EffectCatalogUtils.FindEffectIndex("ItemTransferOrbEffect");
+            _itemTransferOrbEffectIndex = EffectCatalog.FindEffectIndex("ItemTransferOrbEffect");
             if (_itemTransferOrbEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find ItemTransferOrbEffect effect index");
@@ -92,6 +92,12 @@ namespace ItemQualities.Items
 
             setOwnerMasterObject(_ownership.ownerObject);
             _ownership.onOwnerChanged += setOwnerMasterObject;
+
+            EffectDef itemTransferOrbEffect = EffectCatalog.GetEffectDef(_itemTransferOrbEffectIndex);
+            if (itemTransferOrbEffect != null)
+            {
+                itemTransferOrbEffect.Preload();
+            }
         }
 
         private void OnDisable()
@@ -213,7 +219,7 @@ namespace ItemQualities.Items
             {
                 for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
                 {
-                    recipientMaster.inventory.GiveItemPermanent(itemIndex, _minionMirrorInventory.CalculateEffectiveItemStacks(itemIndex));
+                    recipientMaster.inventory.GiveItemPermanent(itemIndex, _minionMirrorInventory.GetItemCountTotal(itemIndex));
                 }
             }
         }
@@ -226,7 +232,7 @@ namespace ItemQualities.Items
             {
                 for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
                 {
-                    recipientMaster.inventory.RemoveItemPermanent(itemIndex, _minionMirrorInventory.CalculateEffectiveItemStacks(itemIndex));
+                    recipientMaster.inventory.RemoveItemPermanent(itemIndex, _minionMirrorInventory.GetItemCountTotal(itemIndex));
                 }
             }
         }
@@ -256,7 +262,7 @@ namespace ItemQualities.Items
             for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
             {
                 ref int prevStack = ref _previousItemStacks[(int)itemIndex];
-                int currentStack = _minionMirrorInventory.CalculateEffectiveItemStacks(itemIndex);
+                int currentStack = _minionMirrorInventory.GetItemCountTotal(itemIndex);
                 if (prevStack != currentStack)
                 {
                     foreach (Inventory minionInventory in minionInventories)

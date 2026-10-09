@@ -76,7 +76,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            GlobalEventManager.OnInteractionsGlobal += onInteractionsGlobal;
+            GlobalEventManager.OnInteractionsPermittedForSpawnGlobal += onInteractionsGlobal;
             IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += WardOnLevelManager_OnCharacterLevelUp;
             IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter;
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
@@ -159,9 +159,6 @@ namespace ItemQualities.Items
         private static void onInteractionsGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
         {
             if (!NetworkServer.active)
-                return;
-
-            if (!SharedItemUtils.InteractableIsPermittedForSpawn(interactable))
                 return;
 
             CharacterBody interactorBody = interactor ? interactor.GetComponent<CharacterBody>() : null;

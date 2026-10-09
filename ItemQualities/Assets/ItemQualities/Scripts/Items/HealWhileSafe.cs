@@ -12,7 +12,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
         }
 
         private static void onCharacterDeathGlobal(DamageReport damageReport)

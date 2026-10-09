@@ -20,7 +20,7 @@ namespace ItemQualities.Items
 
             IL.RoR2.AmmoPickup.OnTriggerStay += AmmoPickup_OnTriggerStay;
 
-            IL.RoR2.UI.SkillIcon.Update += SkillIcon_Update;
+            IL.RoR2.UI.SkillIcon.LateUpdate += SkillIcon_LateUpdate;
         }
 
         private static void GlobalEventManager_OnCharacterDeath(ILContext il)
@@ -109,7 +109,7 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void SkillIcon_Update(ILContext il)
+        private static void SkillIcon_LateUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

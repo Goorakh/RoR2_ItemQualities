@@ -43,7 +43,7 @@ namespace ItemQualities
                 yield break;
             }
 
-            swingTrailPrefab = halcswingLoad.Result.InstantiateClone("swingTrail");
+            swingTrailPrefab = halcswingLoad.Result.InstantiateClone("swingTrail", false);
             swingTrailPrefab.transform.localScale = new Vector3(3, 1, 3);
 
             args.ContentPack.prefabs.Add(swingTrailPrefab);

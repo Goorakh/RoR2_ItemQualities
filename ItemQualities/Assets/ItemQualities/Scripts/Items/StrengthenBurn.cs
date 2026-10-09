@@ -53,7 +53,9 @@ namespace ItemQualities.Items
                             dotIndex = DotController.DotIndex.Burn,
                             totalDamage = burnDamageCoefficient * damageReport.attackerBody.damage,
                             damageMultiplier = 1f,
-                            maxStacksFromAttacker = maxBurnStacks
+                            maxStacksFromAttacker = maxBurnStacks,
+                            procChainMask = damageReport.damageInfo.procChainMask,
+                            hitHurtBox = damageReport.damageInfo.inflictedHurtbox,
                         };
 
                         if (damageReport.attackerMaster && damageReport.attackerMaster.inventory)

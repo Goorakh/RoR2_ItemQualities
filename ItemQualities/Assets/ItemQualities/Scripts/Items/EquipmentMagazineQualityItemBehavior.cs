@@ -13,15 +13,15 @@ namespace ItemQualities.Items
 
         private void OnEnable()
         {
-            EquipmentSlot.onServerEquipmentActivated += onEquipmentActivated;
+            EquipmentSlot.onServerEquipmentActivatedDetailed += onEquipmentActivated;
         }
 
         private void OnDisable()
         {
-            EquipmentSlot.onServerEquipmentActivated -= onEquipmentActivated;
+            EquipmentSlot.onServerEquipmentActivatedDetailed -= onEquipmentActivated;
         }
 
-        private void onEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex)
+        private void onEquipmentActivated(EquipmentSlot equipmentSlot, EquipmentIndex equipmentIndex, in EquipmentLocation location)
         {
             if (Body.equipmentSlot != equipmentSlot || equipmentIndex == EquipmentIndex.None)
                 return;
@@ -35,7 +35,7 @@ namespace ItemQualities.Items
 
             if (RollUtil.CheckRoll(Util.ConvertAmplificationPercentageIntoReductionPercentage(freeRestockChance), Body.master, false))
             {
-                Body.inventory.RestockEquipmentCharges(equipmentSlot.activeEquipmentSlot, equipmentSlot.activeEquipmentSet[equipmentSlot.activeEquipmentSlot], 1);
+                Body.inventory.RestockEquipmentCharges(location, 1);
             }
         }
     }

@@ -10,7 +10,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
@@ -34,7 +34,7 @@ namespace ItemQualities.Items
 
                 for (int i = 0; i < repeatCount; i++)
                 {
-                    GlobalEventManager.instance.OnCharacterDeath(report);
+                    GlobalEventManager.instance.TriggerCharacterDeathProc(report);
                 }
 
                 report.damageInfo.damageType.RemoveModdedDamageType(DamageTypes.Echo);

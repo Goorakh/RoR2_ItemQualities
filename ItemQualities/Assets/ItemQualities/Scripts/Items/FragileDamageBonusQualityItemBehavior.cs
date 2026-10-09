@@ -9,10 +9,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _watchBreakEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _watchBreakEffectIndex = EffectCatalogUtils.FindEffectIndex("DelicateWatchProcEffect");
+            _watchBreakEffectIndex = EffectCatalog.FindEffectIndex("DelicateWatchProcEffect");
             if (_watchBreakEffectIndex == EffectIndex.Invalid)
             {
                 Log.Error("Failed to find watch break effect index");

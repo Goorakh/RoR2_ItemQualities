@@ -24,10 +24,10 @@ namespace EntityStates.SprintArmorDash
         private Vector3 _dashDirection;
         private bool _stoppedDash;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _blinkEffectIndex = EffectCatalogUtils.FindEffectIndex("HuntressBlinkEffect");
+            _blinkEffectIndex = EffectCatalog.FindEffectIndex("HuntressBlinkEffect");
             if (_blinkEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find blink effect index");

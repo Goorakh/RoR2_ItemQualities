@@ -19,7 +19,7 @@ namespace ItemQualities.Items
         private static IEnumerator Init()
         {
             IL.RoR2.PrimarySkillShurikenBehavior.FixedUpdate += PrimarySkillShurikenBehavior_FixedUpdate;
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
 
             AsyncOperationHandle<GameObject> shurikenLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC1_PrimarySkillShuriken.ShurikenProjectile_prefab);
             AsyncOperationHandle<GameObject> shurikenGhostLoad = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_DLC1_PrimarySkillShuriken.ShurikenGhost_prefab);
@@ -84,7 +84,7 @@ namespace ItemQualities.Items
             ILCursor c = new ILCursor(il);
 
             if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdcR4(PrimarySkillShurikenBehavior.totalReloadTime)))
+                               x => x.MatchLdsfld<PrimarySkillShurikenBehavior>(nameof(PrimarySkillShurikenBehavior.totalReloadTime))))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;
@@ -103,16 +103,17 @@ namespace ItemQualities.Items
         {
             if (damageReport == null)
                 return;
+
             CharacterBody attackerBody = damageReport.attackerBody;
             CharacterMaster attackerMaster = damageReport.attackerMaster;
             if (!attackerMaster || !attackerBody || damageReport.damageInfo == null)
                 return;
+
             Inventory inventory = attackerBody.inventory;
             if (!inventory)
                 return;
 
             ItemQualityCounts primarySkillShuriken = inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.PrimarySkillShuriken);
-
             if (primarySkillShuriken.TotalQualityCount == 0)
                 return;
 

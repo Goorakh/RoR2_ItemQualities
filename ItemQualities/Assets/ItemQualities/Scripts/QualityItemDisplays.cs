@@ -30,7 +30,7 @@ namespace ItemQualities
                         continue;
                     }
 
-                    prefabDisplayQualityTier = inventory ? inventory.CalculateEffectiveItemStacks(itemGroupIndex).HighestQuality : QualityTier.None;
+                    prefabDisplayQualityTier = inventory ? inventory.GetItemCountsTotal(itemGroupIndex).HighestQuality : QualityTier.None;
                 }
                 else if (prefabDisplay.equipmentIndex != EquipmentIndex.None)
                 {

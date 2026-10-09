@@ -227,7 +227,7 @@ namespace ItemQualities.Items
         {
             On.RoR2.Items.SharedSufferingItemBehaviour.TryAdd += SharedSufferingItemBehaviour_TryAdd;
 
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
         }
 
         private static bool SharedSufferingItemBehaviour_TryAdd(On.RoR2.Items.SharedSufferingItemBehaviour.orig_TryAdd orig, SharedSufferingItemBehaviour self, CharacterBody newTarget)

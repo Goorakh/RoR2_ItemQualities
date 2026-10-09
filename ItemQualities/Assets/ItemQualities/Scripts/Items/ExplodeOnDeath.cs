@@ -949,7 +949,7 @@ namespace ItemQualities.Items
             return coroutine;
         }
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer]
         private static void Init()
         {
             static void beaconImpactIndicatorScaler(string beaconGuid)
@@ -999,7 +999,7 @@ namespace ItemQualities.Items
 
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Engi.EngiMine_prefab).OnSuccess(engiMinePrefab =>
             {
-                List<Transform> indicatorTransforms = new List<Transform>();
+                using var _ = ListPool<Transform>.RentCollection(out List<Transform> indicatorTransforms);
 
                 Transform weakIndicator = engiMinePrefab.transform.Find("WeakIndicator");
                 if (weakIndicator)
@@ -1047,7 +1047,7 @@ namespace ItemQualities.Items
 
             AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Captain.CaptainAirstrikeAltGhost_prefab).OnSuccess(captainAirstrikeAltGhostPrefab =>
             {
-                List<Transform> indicatorTransforms = new List<Transform>();
+                using var _ = ListPool<Transform>.RentCollection(out List<Transform> indicatorTransforms);
 
                 for (int i = captainAirstrikeAltGhostPrefab.transform.childCount - 1; i >= 0; i--)
                 {
@@ -1167,7 +1167,9 @@ namespace ItemQualities.Items
 
             On.RoR2.Items.JumpDamageStrikeBodyBehavior.GetRadius += JumpDamageStrikeBodyBehavior_GetRadius_ReplaceRadius;
 
-            IL.RoR2.Projectile.ProjectileExplosion.DetonateServer += getVisualBlastAttackRadiusManipulator(emitGetProjectileOwner);
+            IL.RoR2.Projectile.ProjectileExplosion.DetonateServer += getSimpleEffectDataScaleManipulator(emitGetProjectileOwner);
+            IL.RoR2.Projectile.ProjectileExplosion.PerformDamage += getSimpleBlastAttackRadiusManipulator(emitGetProjectileOwner);
+            IL.RoR2.Projectile.ProjectileImpactExplosionTorus.PerformDamage += getSimpleSphereSearchRadiusManipulator(emitGetProjectileOwner);
 
             IL.RoR2.SojournVehicle.EndSojournVehicle += getVisualBlastAttackRadiusManipulator(emitGetVehicleSeatPassengerBody);
 
@@ -1226,7 +1228,7 @@ namespace ItemQualities.Items
 
             IL.EntityStates.ParentMonster.GroundSlam.FixedUpdate += getSimpleBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody);
 
-            IL.EntityStates.AimThrowableBase.OnEnter += AimThrowableBase_OnEnter_ReplaceEndpointRadius;
+            IL.EntityStates.AimThrowableBaseAimOnly.PopulateTrajectoryInfo += AimThrowableBaseAimOnly_PopulateTrajectoryInfo;
 
             IL.RoR2.Projectile.LunarStakesLightningController.FireLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
             IL.RoR2.Projectile.LunarStakesLightningController.FireLastLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
@@ -2219,7 +2221,7 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void AimThrowableBase_OnEnter_ReplaceEndpointRadius(ILContext il)
+        private static void AimThrowableBaseAimOnly_PopulateTrajectoryInfo(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 

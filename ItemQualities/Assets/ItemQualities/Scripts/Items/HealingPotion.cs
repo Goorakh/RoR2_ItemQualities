@@ -133,7 +133,7 @@ namespace ItemQualities.Items
             int consumedItemCount = 0;
             foreach (ItemIndex consumedItemIndex in _consumedItemIndices)
             {
-                consumedItemCount += damageReport.attackerBody.inventory.CalculateEffectiveItemStacks(consumedItemIndex);
+                consumedItemCount += damageReport.attackerBody.inventory.GetItemCountTotal(consumedItemIndex);
             }
 
             foreach (EquipmentIndex consumedEquipmentIndex in _consumedEquipmentIndices)

@@ -199,8 +199,10 @@ namespace ItemQualities
                     if (equipment.pickupModelReference == null || !equipment.pickupModelReference.RuntimeKeyIsValid())
                         equipment.pickupModelReference = baseEquipment.pickupModelReference;
 
-                    if (!equipment.pickupIconSprite)
-                        equipment.pickupIconSprite = baseEquipment.pickupIconSprite;
+                    if (!equipment.pickupIconSprite && (equipment.pickupIconSpriteReference == null || !equipment.pickupIconSpriteReference.RuntimeKeyIsValid()))
+                    {
+                        equipment.pickupIconSpriteReference = baseEquipment.pickupIconSpriteReference;
+                    }
 
                     if (equipment.colorIndex == ColorCatalog.ColorIndex.None)
                         equipment.colorIndex = baseEquipment.colorIndex;
@@ -237,23 +239,25 @@ namespace ItemQualities
         {
             if (BaseEquipment)
             {
-                generateRuntimeAssets(BaseEquipment);
+                yield return generateRuntimeAssets(BaseEquipment, progressReceiver);
             }
             else if (BaseEquipmentReference != null && BaseEquipmentReference.RuntimeKeyIsValid())
             {
-                AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AssetAsyncReferenceManager<EquipmentDef>.LoadAsset(BaseEquipmentReference);
-                yield return progressReceiver != null ? baseEquipmentLoad.AsProgressCoroutine(progressReceiver) : baseEquipmentLoad;
+                PartitionedProgress<TProgress> totalProgress = progressReceiver != null ? new PartitionedProgress<TProgress>(progressReceiver) : null;
+                ProgressPartition loadEquipmentProgress = totalProgress?.AddPartition();
+                ProgressPartition loadEquipmentSpriteProgress = totalProgress?.AddPartition();
+
+                AsyncOperationHandle<EquipmentDef> baseEquipmentLoad = AddressableUtil.LoadTempAssetAsync(BaseEquipmentReference);
+                yield return loadEquipmentProgress != null ? baseEquipmentLoad.AsProgressCoroutine(loadEquipmentProgress) : baseEquipmentLoad;
 
                 if (baseEquipmentLoad.IsValid() && baseEquipmentLoad.Status == AsyncOperationStatus.Succeeded)
                 {
-                    generateRuntimeAssets(baseEquipmentLoad.Result);
+                    yield return generateRuntimeAssets(baseEquipmentLoad.Result, loadEquipmentSpriteProgress);
                 }
                 else
                 {
                     Log.Error($"Failed to load base equipment for quality group '{name}': {(baseEquipmentLoad.IsValid() ? baseEquipmentLoad.OperationException : "Invalid handle")}");
                 }
-
-                AssetAsyncReferenceManager<EquipmentDef>.UnloadAsset(BaseEquipmentReference);
             }
             else
             {
@@ -262,10 +266,27 @@ namespace ItemQualities
 
             progressReceiver?.Report(1f);
 
-            void generateRuntimeAssets(EquipmentDef baseEquipment)
+            IEnumerator generateRuntimeAssets<TGenerateProgress>(EquipmentDef baseEquipment, TGenerateProgress progressReceiver)
+                where TGenerateProgress : IProgress<float>
             {
                 string baseEquipmentName = baseEquipment.name;
-                Texture2D baseIconTexture = baseEquipment.pickupIconTexture as Texture2D;
+
+                Sprite baseIconSprite;
+                {
+                    CoroutineResult<Sprite> result = CoroutineResultPool<Sprite>.instance.Request();
+                    try
+                    {
+                        yield return AddressableUtil.LoadTempAssetOrDirectReferenceAsync(baseEquipment.pickupIconSpriteReference, baseEquipment.pickupIconSprite, progressReceiver, result);
+
+                        baseIconSprite = result.Value;
+                    }
+                    finally
+                    {
+                        CoroutineResultPool<Sprite>.instance.Return(result);
+                    }
+                }
+
+                Texture2D baseIconTexture = baseIconSprite.texture;
 
                 EquipmentDef createEquipment(QualityTier qualityTier)
                 {
@@ -297,6 +318,7 @@ namespace ItemQualities
                     else
                     {
                         equipmentDef.pickupIconSprite = baseEquipment.pickupIconSprite;
+                        equipmentDef.pickupIconSpriteReference = baseEquipment.pickupIconSpriteReference;
                     }
 
                     contentPack.equipmentDefs.Add(equipmentDef);
@@ -336,12 +358,10 @@ namespace ItemQualities
 
             string currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
 
-            AsyncOperationHandle<EquipmentDef> baseEquipmentLoadHandle = BaseEquipmentReference.LoadAssetAsync<EquipmentDef>();
-            using ScopedAsyncOperationHandle<EquipmentDef> baseEquipmentLoadScope = new ScopedAsyncOperationHandle<EquipmentDef>(baseEquipmentLoadHandle);
+            EquipmentDef baseEquipmentDef = BaseEquipmentReference.LoadAssetAsync().WaitForCompletion();
 
-            EquipmentDef baseEquipmentDef = baseEquipmentLoadHandle.WaitForCompletion();
-
-            Texture2D baseIconTexture = baseEquipmentDef.pickupIconSprite.texture;
+            Sprite baseIconSprite = baseEquipmentDef.pickupIconSpriteReference != null && baseEquipmentDef.pickupIconSpriteReference.RuntimeKeyIsValid() ? baseEquipmentDef.pickupIconSpriteReference.LoadAssetAsync().WaitForCompletion() : baseEquipmentDef.pickupIconSprite;
+            Texture2D baseIconTexture = baseIconSprite != null ? baseIconSprite.texture : null;
 
             EquipmentDef createEquipment(QualityTier qualityTier)
             {

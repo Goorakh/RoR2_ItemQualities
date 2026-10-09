@@ -89,6 +89,7 @@ namespace ItemQualities.Orbs
                         duration = HealingPotion.ChemicalBurnDuration,
                         damageMultiplier = dotDamageMultiplier,
                         hitHurtBox = hitPoint.hurtBox,
+                        procChainMask = procChainMask,
                     };
 
                     DotController.InflictDot(ref inflictDotInfo);
