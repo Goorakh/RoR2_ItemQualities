@@ -83,6 +83,8 @@ namespace ItemQualities
 
         public CharacterBody LastHitBody { get; private set; }
 
+        public float IncreaseHealingStoredEnergy;
+
         public bool HasEffectiveAuthority => Util.HasEffectiveAuthority(_netIdentity);
 
         [SyncVar(hook = nameof(hookSetIsPerformingQuailJump))]
@@ -100,6 +102,9 @@ namespace ItemQualities
                 }
             }
         }
+
+        [SyncVar]
+        public bool IncreaseHealingPreImmunityIndicator;
 
         public Run.FixedTimeStamp LastQuailLandTimeAuthority { get; private set; } = Run.FixedTimeStamp.positiveInfinity;
 
