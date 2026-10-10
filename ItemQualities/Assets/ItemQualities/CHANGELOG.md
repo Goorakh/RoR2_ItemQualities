@@ -3,6 +3,9 @@
 * Reworks (Click to reveal):
     * <details><summary>Rejuvenation Rack</summary> Store up healing, peridodically granting temporary invulnerability.</details>
 
+* Bustling Fungus:
+    * Fixed the bubble shield pushing you slightly when spawning.
+
 ## 0.8.2 Changes:
 
 * Updated for Hallowed Concepts.

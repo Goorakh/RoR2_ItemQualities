@@ -48,9 +48,8 @@ namespace ItemQualities.Items
 
             yield return prefabsLoadCoroutine;
 
-            if (bubbleShieldLoad.Status != AsyncOperationStatus.Succeeded || !bubbleShieldLoad.Result)
+            if (!bubbleShieldLoad.AssertLoaded())
             {
-                Log.Error($"Failed to load Engie Bubble Shield prefab: {bubbleShieldLoad.OperationException}");
                 yield break;
             }
 
@@ -63,10 +62,8 @@ namespace ItemQualities.Items
             Destroy(_bubbleShieldPrefab.GetComponent<ProjectileSimple>());
             Destroy(_bubbleShieldPrefab.GetComponent<Rigidbody>());
 
-            EntityStateMachine stateMachine = _bubbleShieldPrefab.GetComponent<EntityStateMachine>();
-            if (!stateMachine)
+            if (!_bubbleShieldPrefab.ExpectComponent(out EntityStateMachine stateMachine))
             {
-                Log.Error("Missing EntityStateMachine in MushroomShield");
                 yield break;
             }
 
@@ -90,6 +87,11 @@ namespace ItemQualities.Items
             if (_bubbleShieldPrefab.TryGetComponent(out BeginRapidlyActivatingAndDeactivating blinkController))
             {
                 blinkController.enabled = false;
+            }
+
+            if (_bubbleShieldPrefab.TryGetComponent(out CharacterBody bubbleShieldBody))
+            {
+                bubbleShieldBody.doNotReassignToTeamBasedCollisionLayer = true;
             }
 
             Deployable deployable = _bubbleShieldPrefab.EnsureComponent<Deployable>();
@@ -126,6 +128,7 @@ namespace ItemQualities.Items
             }
 
             args.ContentPack.networkedObjectPrefabs.Add(_bubbleShieldPrefab);
+            args.ContentPack.bodyPrefabs.Add(_bubbleShieldPrefab);
         }
 
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
