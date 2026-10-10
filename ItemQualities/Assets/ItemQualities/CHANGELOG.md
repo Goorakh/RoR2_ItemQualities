@@ -1,11 +1,15 @@
+## \<Next Version\> Changes:
+
+* Reworks (Click to reveal):
+    * <details><summary>Rejuvenation Rack</summary> Store up healing, peridodically granting temporary invulnerability.</details>
+
 ## 0.8.2 Changes:
 
-* Updated for HC
+* Updated for Hallowed Concepts.
 
 * Reworks (Click to reveal):
     * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>
     * <details><summary>Death Mark</summary> Chance to inflict a soul strike, dealing damage based on bonus health. Chance increases with previous executes and summoned ghosts.</details>
-    * <details><summary>Rejuvenation Rack</summary> Store up healing, peridodically granting temporary invulnerability.</details>
     
 <details>
 <summary>Defense Nucleus:</summary>
