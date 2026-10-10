@@ -1,4 +1,4 @@
-## \<Next Version\> Changes:
+## 0.8.2 Changes:
 
 * Updated for HC
 
