@@ -44,7 +44,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchStfld<EntityStates.TimedChest.Opening>(nameof(EntityStates.TimedChest.Opening.hasGrantedAchievement))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

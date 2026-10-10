@@ -55,7 +55,7 @@ namespace ItemQualities.Items
             if (shockDamageAura.TotalQualityCount == 0)
             {
                 using var _ = ListPool<ItemIndex>.RentCollection(out List<ItemIndex> conductorItemIndices);
-                extraStats.ConductorItemStacks.GetNonZeroIndicesFixed(conductorItemIndices);
+                extraStats.ConductorItemStacks.GetNonZeroIndices(conductorItemIndices);
                 extraStats.ConductorItemStacks.Clear();
 
                 foreach (ItemIndex itemIndex in conductorItemIndices)
@@ -134,8 +134,8 @@ namespace ItemQualities.Items
                     // Don't duplicate any objective-related items, these are likely used as a kind of "currency" or "key" and won't work when duplicated
                     itemDef.ContainsTag(ItemTag.ObjectiveRelated) ||
 
-                    // If item cannot be temporary, odds are it only works as permanent, so our fake item likely won't work either
-                    itemDef.DoesNotContainTag(ItemTag.CanBeTemporary) ||
+                    // If item cannot be temporary or rental, odds are it only works as permanent, so our fake item likely won't work either
+                    (itemDef.DoesNotContainTag(ItemTag.CanBeTemporary) && itemDef.DoesNotContainTag(ItemTag.CanBeRental)) ||
 
                     // No consumed items
                     itemDef.tier == ItemTier.NoTier)
@@ -167,7 +167,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<ItemIndex>(out ParameterDefinition itemIndexParameter))
             {
-                Log.Error("Failed to find ItemIndex parameter");
+                Log.PatchError(il, "Failed to find ItemIndex parameter");
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace ItemQualities.Items
                               x => x.MatchLdcI4(0),
                               x => x.MatchStloc<int>(il, out stackNumVar)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

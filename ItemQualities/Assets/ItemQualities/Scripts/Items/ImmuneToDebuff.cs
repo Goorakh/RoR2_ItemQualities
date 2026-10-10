@@ -22,9 +22,9 @@ namespace ItemQualities.Items
         {
             On.RoR2.Items.ImmuneToDebuffBehavior.OverrideDot += ImmuneToDebuffBehavior_OverrideDot;
 
-            IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float += handleDebuffBuffReflectPatch;
             IL.RoR2.CharacterBody.AddTimedBuff_BuffDef_float_int += handleDebuffBuffReflectPatch;
             IL.RoR2.CharacterBody.AddTimedBuffDontRefreshDuration += handleDebuffBuffReflectPatch;
+            IL.RoR2.CharacterBody.AddTimedBuffInternal += handleDebuffBuffReflectPatch;
             IL.RoR2.CharacterBody.ExtendTimedBuffIfPresent_BuffDef_float_float += handleDebuffBuffReflectPatch;
         }
 
@@ -68,10 +68,10 @@ namespace ItemQualities.Items
             if (qualityTier == QualityTier.None)
                 return;
 
-            float spreadRadius = (15f * immuneToDebuff.UncommonCount) +
-                                 (25f * immuneToDebuff.RareCount) +
-                                 (35f * immuneToDebuff.EpicCount) +
-                                 (50f * immuneToDebuff.LegendaryCount);
+            float spreadRadius = (25f * immuneToDebuff.UncommonCount) +
+                                 (50f * immuneToDebuff.RareCount) +
+                                 (75f * immuneToDebuff.EpicCount) +
+                                 (100f * immuneToDebuff.LegendaryCount);
 
             int buffStackCount;
             switch (qualityTier)
@@ -229,7 +229,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {

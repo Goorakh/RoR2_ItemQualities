@@ -20,7 +20,7 @@ namespace ItemQualities
                 bodyPrefab.EnsureComponent<CharacterBodyExtraStatsTracker>();
             }
 
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
         }
 
@@ -53,7 +53,6 @@ namespace ItemQualities
 
         private MemoizedGetComponentCached<CharacterMasterExtraStatsTracker> _memoizedMasterExtraStatsComponent;
 
-        private TemporaryVisualEffect _qualityDeathMarkEffectInstance;
         private TemporaryVisualEffect _sprintArmorWeakenEffectInstance;
         private TemporaryVisualEffect _voidBearFogEffectInstance;
         private TemporaryVisualEffect _constructBubbleEffectInstance;
@@ -77,6 +76,8 @@ namespace ItemQualities
         public float ExecuteBossHealthFraction { get; private set; }
 
         public float StealthKitActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
+
+        public float AirControlBonus { get; private set; } = 1f;
 
         public float GenesisLoopActivationThreshold { get; private set; } = HealthComponent.lowHealthFraction;
 
@@ -105,8 +106,6 @@ namespace ItemQualities
         public Vector3 LastQuailJumpVelocityAuthority { get; private set; } = Vector3.zero;
 
         public int QuailJumpComboAuthority { get; private set; }
-
-        public bool HasHadAnyQualityDeathMarkDebuffServer { get; private set; }
 
         public float LeechBuffReserveFraction { get; set; } = 0f;
 
@@ -247,14 +246,6 @@ namespace ItemQualities
 
         private void FixedUpdate()
         {
-            if (NetworkServer.active)
-            {
-                if (!HasHadAnyQualityDeathMarkDebuffServer && DeathMark.HasAnyQualityDeathMarkDebuff(_body))
-                {
-                    HasHadAnyQualityDeathMarkDebuffServer = true;
-                }
-            }
-
             if (HasEffectiveAuthority)
             {
                 if (QuailJumpComboAuthority > 0 && !IsPerformingQuailJump && LastQuailLandTimeAuthority.timeSince > 0.15f)
@@ -409,11 +400,13 @@ namespace ItemQualities
             ItemQualityCounts executeLowHealthElite = ItemQualityCounts.zero;
             ItemQualityCounts phasing = ItemQualityCounts.zero;
             ItemQualityCounts novaOnLowHealth = ItemQualityCounts.zero;
+            ItemQualityCounts jumpBoost = ItemQualityCounts.zero;
             if (_body && _body.inventory)
             {
                 executeLowHealthElite = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.ExecuteLowHealthElite);
                 phasing = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.Phasing);
                 novaOnLowHealth = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.NovaOnLowHealth);
+                jumpBoost = _body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.JumpBoost);
             }
 
             ExecuteBossHealthFraction = Util.ConvertAmplificationPercentageIntoReductionNormalized(amplificationNormal:
@@ -429,6 +422,15 @@ namespace ItemQualities
             stealthKitActivationThresholdIncrease *= Mathf.Pow(1f - 0.75f, phasing.LegendaryCount);
 
             StealthKitActivationThreshold = 1f - ((1f - HealthComponent.lowHealthFraction) * stealthKitActivationThresholdIncrease);
+
+            float airControlBonus = 0f;
+
+            if (jumpBoost.TotalQualityCount > 0 && IsPerformingQuailJump && !Body.inputBank.jump.down)
+            {
+                airControlBonus += 0.50f;
+            }
+
+            AirControlBonus = airControlBonus;
 
             float genesisLoopActivationThreshold;
             switch (novaOnLowHealth.HighestQuality)
@@ -550,21 +552,9 @@ namespace ItemQualities
 
         public void UpdateAllTemporaryVisualEffects()
         {
-            updateTemporaryVisualEffect(ref _qualityDeathMarkEffectInstance, ItemQualitiesContent.Prefabs.DeathMarkQualityEffect, _body.radius, DeathMark.HasAnyQualityDeathMarkDebuff(_body));
-            updateTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
-            updateTemporaryVisualEffect(ref _voidBearFogEffectInstance, CharacterBody.AssetReferences.voidFogMildEffectPrefab, _body.radius, _body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BearVoidFog).TotalQualityCount > 0);
-            updateTemporaryVisualEffect(ref _constructBubbleEffectInstance, ItemQualitiesContent.Prefabs.MinorConstructBubbleEffect, _body.bestFitActualRadius * 1.15f, _body.HasBuff(ItemQualitiesContent.Buffs.ConstructBubble));
-
-            void updateTemporaryVisualEffect(ref TemporaryVisualEffect temporaryEffect, GameObject effectPrefab, float effectRadius, bool active)
-            {
-                _body.UpdateSingleTemporaryVisualEffect(ref temporaryEffect, effectPrefab, effectRadius, active);
-
-                // Fix temp effects not spawning if disabled and re-enabled within the exit duration
-                if (!active && temporaryEffect && temporaryEffect.visualState == TemporaryVisualEffect.VisualState.Exit)
-                {
-                    temporaryEffect = null;
-                }
-            }
+            _body.UpdateSingleTemporaryVisualEffect(ref _sprintArmorWeakenEffectInstance, SprintArmor.BucklerDefenseBigPrefab, _body.bestFitActualRadius, _body.HasBuff(ItemQualitiesContent.Buffs.SprintArmorWeaken));
+            _body.UpdateSingleTemporaryVisualEffect(ref _voidBearFogEffectInstance, CharacterBody.AssetReferences.voidFogMildEffectPrefab, _body.radius, _body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.BearVoidFog).TotalQualityCount > 0);
+            _body.UpdateSingleTemporaryVisualEffect(ref _constructBubbleEffectInstance, ItemQualitiesContent.Prefabs.MinorConstructBubbleEffect, _body.bestFitActualRadius * 1.15f, _body.HasBuff(ItemQualitiesContent.Buffs.ConstructBubble));
         }
 
         public void OnQuailJumpAuthority()

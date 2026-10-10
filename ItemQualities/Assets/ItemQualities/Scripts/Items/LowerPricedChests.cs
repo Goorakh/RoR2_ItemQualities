@@ -58,7 +58,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<Interactor>(out ParameterDefinition interactorParameter))
             {
-                Log.Error("Failed to find Interactor parameter");
+                Log.PatchError(il, "Failed to find Interactor parameter");
                 return;
             }
 
@@ -79,7 +79,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloca(typeof(Inventory.ItemTransformation.TryTransformResult), il, out saleStarItemTransformationResultVar),
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
-                Log.Error("Failed to find sale star proc patch location");
+                Log.PatchError(il, "Failed to find sale star proc patch location");
                 return;
             }
 
@@ -118,6 +118,7 @@ namespace ItemQualities.Items
                             {
                                 a.permanentStacks += b.permanentStacks;
                                 a.temporaryStacksValue += b.temporaryStacksValue;
+                                a.rentalStacks += b.rentalStacks;
                                 a.totalStacks += b.totalStacks;
                             }
 
@@ -138,7 +139,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<CostTypeDef>(nameof(CostTypeDef.PayCost))))
             {
-                Log.Error("Failed to find PayCost patch location");
+                Log.PatchError(il, "Failed to find PayCost patch location");
                 return;
             }
 
@@ -258,7 +259,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
         }
 
@@ -266,7 +267,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<UniquePickup>(out ParameterDefinition pickupParameter))
             {
-                Log.Error("Failed to find PickupIndex parameter");
+                Log.PatchError(il, "Failed to find PickupIndex parameter");
                 return;
             }
 
@@ -301,7 +302,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
         }
     }

@@ -7,10 +7,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _restockEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _restockEffectIndex = EffectCatalogUtils.FindEffectIndex("AmmoPackPickupEffect");
+            _restockEffectIndex = EffectCatalog.FindEffectIndex("AmmoPackPickupEffect");
             if (_restockEffectIndex == EffectIndex.Invalid)
             {
                 Log.Error("Failed to find restock effect index");

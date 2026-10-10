@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("Failed to find tier2 droplist variable");
+                    Log.PatchError(il, "Failed to find tier2 droplist variable");
                 }
 
                 c.Index = 0;
@@ -52,7 +52,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("Failed to find tier3 droplist variable");
+                    Log.PatchError(il, "Failed to find tier3 droplist variable");
                 }
 
                 void patchDropList(VariableDefinition tierDropListVar, string name)
@@ -119,13 +119,13 @@ namespace ItemQualities.Items
                     }
                     else
                     {
-                        Log.Error($"Failed to find {name} available transformations set location");
+                        Log.PatchError(il, $"Failed to find {name} available transformations set location");
                     }
                 }
             }
             else
             {
-                Log.Error("Failed to find locals variable");
+                Log.PatchError(il, "Failed to find locals variable");
             }
 
             c.Index = 0;
@@ -135,13 +135,13 @@ namespace ItemQualities.Items
                                x => x.MatchLdfld<Inventory>(nameof(Inventory.itemAcquisitionOrder)),
                                x => x.MatchStloc(typeof(List<ItemIndex>), il, out upgradableItemListVar)))
             {
-                Log.Error("Failed to find upgradableItems list variable");
+                Log.PatchError(il, "Failed to find upgradableItems list variable");
             }
 
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<Inventory.ItemTransformation>(nameof(Inventory.ItemTransformation.TryTransform))))
             {
-                Log.Error("Failed to find ItemTransformation call location");
+                Log.PatchError(il, "Failed to find ItemTransformation call location");
                 return;
             }
 
@@ -150,7 +150,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloca(typeof(Inventory.ItemTransformation), il, out itemTransformationVar),
                                x => x.MatchInitobj<Inventory.ItemTransformation>()))
             {
-                Log.Error("Failed to find ItemTransformation variable");
+                Log.PatchError(il, "Failed to find ItemTransformation variable");
                 return;
             }
 
@@ -179,7 +179,7 @@ namespace ItemQualities.Items
                     return;
 
                 ItemIndex startingItemIndex = itemTransformation.originalItemIndex;
-                int startingItemCount = inventory.CalculateEffectiveItemStacks(startingItemIndex);
+                int startingItemCount = inventory.GetItemCountTotal(startingItemIndex);
 
                 QualityTier startingQualityTier = QualityCatalog.GetQualityTier(startingItemIndex);
 

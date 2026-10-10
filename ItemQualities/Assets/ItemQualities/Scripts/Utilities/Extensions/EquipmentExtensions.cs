@@ -33,18 +33,18 @@ namespace ItemQualities.Utilities.Extensions
             if (!inventory)
                 throw new ArgumentNullException(nameof(inventory));
 
-            byte slot = inventory.activeEquipmentSlot;
-            if (slot >= inventory.activeEquipmentSet.Length)
-                return QualityTier.None;
-
-            byte set = inventory.activeEquipmentSet[slot];
-
-            return inventory.GetEquipmentQualityTier(slot, set);
+            return inventory.GetEquipmentQualityTier(inventory.activeEquipmentLocation);
         }
 
+        [Obsolete("Use GetEquipmentQualityTier(Inventory, EquipmentLocation) instead")]
         public static QualityTier GetEquipmentQualityTier(this Inventory inventory, uint slot, uint set)
         {
-            EquipmentState equipmentState = inventory.GetEquipment(slot, set);
+            return GetEquipmentQualityTier(inventory, new EquipmentLocation { slot = slot, set = set });
+        }
+
+        public static QualityTier GetEquipmentQualityTier(this Inventory inventory, in EquipmentLocation location)
+        {
+            EquipmentState equipmentState = inventory.GetEquipment(location);
             return QualityCatalog.GetQualityTier(equipmentState.equipmentIndex);
         }
 
@@ -65,13 +65,15 @@ namespace ItemQualities.Utilities.Extensions
             if (!inventory)
                 throw new ArgumentNullException(nameof(inventory));
 
-            int equipmentSlotCount = inventory.GetEquipmentSlotCount();
+            int equipmentSlotCount = inventory.equipmentSlotCount;
+            int equipmentSetCount = inventory.equipmentSetCount;
             for (uint slot = 0; slot < equipmentSlotCount; slot++)
             {
-                int equipmentSetCount = inventory.GetEquipmentSetCount(slot);
                 for (uint set = 0; set < equipmentSetCount; set++)
                 {
-                    EquipmentState equipmentState = inventory.GetEquipment(slot, set);
+                    EquipmentLocation location = new EquipmentLocation { slot = slot, set = set };
+
+                    EquipmentState equipmentState = inventory.GetEquipment(location);
                     if (QualityCatalog.FindEquipmentQualityGroupIndex(equipmentState.equipmentIndex) == equipmentGroupIndex &&
                         QualityCatalog.GetQualityTier(equipmentState.equipmentIndex) >= minQualityTier)
                     {

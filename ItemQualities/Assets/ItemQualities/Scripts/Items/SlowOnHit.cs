@@ -23,13 +23,13 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
             if (!il.Method.TryFindParameter<GameObject>("victim", out ParameterDefinition victimParameter))
             {
-                Log.Error("Failed to find victim parameter");
+                Log.PatchError(il, "Failed to find victim parameter");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.SlowOnHit)),
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.AddTimedBuff))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

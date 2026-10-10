@@ -44,13 +44,15 @@ namespace ItemQualities.Equipments
         {
             if (self.inventory)
             {
-                int equipmentSlotCount = self.inventory.GetEquipmentSlotCount();
+                int equipmentSlotCount = self.inventory.equipmentSlotCount;
+                int equipmentSetCount = self.inventory.equipmentSetCount;
                 for (uint slot = 0; slot < equipmentSlotCount; slot++)
                 {
-                    int equipmentSetCount = self.inventory.GetEquipmentSetCount(slot);
                     for (uint set = 0; set < equipmentSetCount; set++)
                     {
-                        EquipmentState equipmentState = self.inventory.GetEquipment(slot, set);
+                        EquipmentLocation equipmentLocation = new EquipmentLocation { slot = slot, set = set };
+
+                        EquipmentState equipmentState = self.inventory.GetEquipment(equipmentLocation);
                         EquipmentIndex equipmentIndex = equipmentState.equipmentIndex;
                         QualityTier qualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
                         EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
@@ -58,7 +60,7 @@ namespace ItemQualities.Equipments
                         if (equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.HealAndRevive.GroupIndex && qualityTier > QualityTier.None)
                         {
                             EquipmentIndex consumedEquipmentIndex = ItemQualitiesContent.EquipmentQualityGroups.HealAndReviveConsumed.GetEquipmentIndex(qualityTier);
-                            self.inventory.SetEquipmentIndexForSlot(consumedEquipmentIndex, slot, set);
+                            self.inventory.SetEquipmentIndex(consumedEquipmentIndex, equipmentLocation);
                             CharacterMasterNotificationQueue.SendTransformNotification(self, equipmentIndex, consumedEquipmentIndex, CharacterMasterNotificationQueue.TransformationType.Default);
                         }
                     }
@@ -79,7 +81,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdloc(out _),
                                x => x.MatchBrfalse(out afterHealAndReviveLabel)))
             {
-                Log.Error("Failed to find HealAndRevive location");
+                Log.PatchError(il, "Failed to find HealAndRevive location");
                 return;
             }
 
@@ -135,7 +137,7 @@ namespace ItemQualities.Equipments
 
             if (staticEquipmentDefPatchCount == 0)
             {
-                Log.Error("Failed to find static equipment reference patch location");
+                Log.PatchError(il, "Failed to find static equipment reference patch location");
             }
             else
             {
@@ -195,7 +197,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find revive patch location");
+                Log.PatchError(il, "Failed to find revive patch location");
             }
 
             c.Goto(0);
@@ -246,7 +248,7 @@ namespace ItemQualities.Equipments
 
                 if (staticEquipmentDefPatchCount == 0)
                 {
-                    Log.Error("Failed to find consume equipment reference patch location");
+                    Log.PatchError(il, "Failed to find consume equipment reference patch location");
                 }
                 else
                 {
@@ -255,7 +257,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find consume patch location");
+                Log.PatchError(il, "Failed to find consume patch location");
             }
         }
     }

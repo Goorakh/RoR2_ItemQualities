@@ -147,7 +147,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find buff patch location");
+                Log.PatchError(il, "Failed to find buff patch location");
             }
 
             if (c.TryGotoNext(MoveType.Before,
@@ -180,7 +180,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find duration patch location");
+                Log.PatchError(il, "Failed to find duration patch location");
             }
         }
 
@@ -188,7 +188,7 @@ namespace ItemQualities.Equipments
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -235,7 +235,7 @@ namespace ItemQualities.Equipments
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {

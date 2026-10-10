@@ -77,6 +77,7 @@ PlayerSettings:
   androidMinimumWindowWidth: 400
   androidMinimumWindowHeight: 300
   androidFullscreenMode: 1
+  androidAutoRotationBehavior: 1
   defaultIsNativeResolution: 1
   macRetinaSupport: 1
   runInBackground: 1
@@ -138,7 +139,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 1.4.1
+  bundleVersion: 1.5.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -247,6 +248,7 @@ PlayerSettings:
   useCustomLauncherGradleManifest: 0
   useCustomBaseGradleTemplate: 0
   useCustomGradlePropertiesTemplate: 0
+  useCustomGradleSettingsTemplate: 0
   useCustomProguardFile: 0
   AndroidTargetArchitectures: 1
   AndroidTargetDevices: 0
@@ -267,11 +269,10 @@ PlayerSettings:
     banner: {fileID: 0}
   androidGamepadSupportLevel: 0
   chromeosInputEmulation: 1
-  AndroidMinifyWithR8: 0
   AndroidMinifyRelease: 0
   AndroidMinifyDebug: 0
   AndroidValidateAppBundleSize: 1
-  AndroidAppBundleSizeToValidate: 150
+  AndroidAppBundleSizeToValidate: 200
   m_BuildTargetIcons: []
   m_BuildTargetPlatformIcons: []
   m_BuildTargetBatching: []
@@ -551,19 +552,19 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   webGLPowerPreference: 2
   scriptingDefineSymbols:
-    Android: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    EmbeddedLinux: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    GameCoreXboxOne: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    Lumin: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    Nintendo Switch: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    PS4: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    PS5: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    Stadia: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    Standalone: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    WebGL: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    Windows Store Apps: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    XboxOne: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
-    tvOS: UNITY_POST_PROCESSING_STACK_V2;RISKOFRAIN2;TK_ADDRESSABLE;KINGENDERBRINE_PROPERSAVE
+    Android: RISKOFRAIN2;TK_ADDRESSABLE
+    EmbeddedLinux: RISKOFRAIN2;TK_ADDRESSABLE
+    GameCoreXboxOne: RISKOFRAIN2;TK_ADDRESSABLE
+    Lumin: RISKOFRAIN2;TK_ADDRESSABLE
+    Nintendo Switch: RISKOFRAIN2;TK_ADDRESSABLE
+    PS4: RISKOFRAIN2;TK_ADDRESSABLE
+    PS5: RISKOFRAIN2;TK_ADDRESSABLE
+    Stadia: RISKOFRAIN2;TK_ADDRESSABLE
+    Standalone: RISKOFRAIN2;TK_ADDRESSABLE
+    WebGL: RISKOFRAIN2;TK_ADDRESSABLE
+    Windows Store Apps: RISKOFRAIN2;TK_ADDRESSABLE
+    XboxOne: RISKOFRAIN2;TK_ADDRESSABLE
+    tvOS: RISKOFRAIN2;TK_ADDRESSABLE
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend: {}
@@ -603,6 +604,7 @@ PlayerSettings:
   metroTileBackgroundColor: {r: 0.13333334, g: 0.17254902, b: 0.21568628, a: 0}
   metroSplashScreenBackgroundColor: {r: 0.12941177, g: 0.17254902, b: 0.21568628, a: 1}
   metroSplashScreenUseBackgroundColor: 0
+  syncCapabilities: 0
   platformCapabilities: {}
   metroTargetDeviceFamilies: {}
   metroFTAName: 

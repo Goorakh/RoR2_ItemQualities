@@ -11,7 +11,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_refEquipmentLocation_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
         private static void EquipmentSlot_OnEquipmentExecuted(ILContext il)
@@ -22,7 +22,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.RandomEquipmentTrigger)),
                                x => x.MatchCallOrCallvirt<EquipmentSlot>(nameof(EquipmentSlot.PerformEquipmentAction))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

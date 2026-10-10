@@ -11,7 +11,7 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_byte_byte_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
+            IL.RoR2.EquipmentSlot.OnEquipmentExecuted_refEquipmentLocation_EquipmentIndex += EquipmentSlot_OnEquipmentExecuted;
         }
 
         private static void EquipmentSlot_OnEquipmentExecuted(ILContext il)
@@ -21,7 +21,7 @@ namespace ItemQualities.Items
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.Energized))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

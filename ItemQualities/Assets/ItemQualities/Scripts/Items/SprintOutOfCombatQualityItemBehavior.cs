@@ -9,10 +9,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _whipActivateEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _whipActivateEffectIndex = EffectCatalogUtils.FindEffectIndex("SprintActivate");
+            _whipActivateEffectIndex = EffectCatalog.FindEffectIndex("SprintActivate");
             if (_whipActivateEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find whip activate effect index");

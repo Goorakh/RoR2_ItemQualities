@@ -10,10 +10,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _reviveEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(QualityCatalog), typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(QualityCatalog), typeof(EffectCatalog))]
         private static void Init()
         {
-            _reviveEffectIndex = EffectCatalogUtils.FindEffectIndex("HippoRezEffect");
+            _reviveEffectIndex = EffectCatalog.FindEffectIndex("HippoRezEffect");
             if (_reviveEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find revive effect index");
@@ -41,7 +41,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloca(extraLifeItemTransformationVarIndex),
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.ExtraLife))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -75,7 +75,7 @@ namespace ItemQualities.Items
                             newItemIndex = qualityExtraLifeConsumedItemIndex,
                             minToTransform = 1,
                             maxToTransform = 1,
-                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
+                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.ConsumedItem
                         }.TryTake(master.inventory, out Inventory.ItemTransformation.TakeResult takeResult))
                         {
                             int deathEventCount;

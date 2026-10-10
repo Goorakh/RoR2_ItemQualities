@@ -40,7 +40,7 @@ namespace ItemQualities.Equipments
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchNewobj<LightningStrikeOrb>()))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

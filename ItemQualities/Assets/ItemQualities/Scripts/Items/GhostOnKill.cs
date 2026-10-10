@@ -23,7 +23,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                                x => x.MatchCallOrCallvirt(typeof(Util), nameof(Util.TryToCreateGhost)),
                                x => x.MatchPop()))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -119,7 +119,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<MasterSummon>(nameof(MasterSummon.position))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

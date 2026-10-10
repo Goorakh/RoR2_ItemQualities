@@ -52,11 +52,6 @@ namespace ItemQualities
                 {
                     purchaseInteraction.costType = costType;
                 }
-
-                if (spawnCard.prefab.TryGetComponent(out QualityDuplicatorBehavior qualityDuplicatorController))
-                {
-                    qualityDuplicatorController.CostTypeIndex = costType;
-                }
             }
 
             setInteractableCostType(ItemQualitiesContent.SpawnCards.QualityDuplicator, CustomCostTypeIndex.WhiteItemQuality);

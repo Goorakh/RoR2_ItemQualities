@@ -69,7 +69,7 @@ namespace ItemQualities
                                x => x.MatchImplicitConversion<UnityEngine.Object, bool>(),
                                x => x.MatchBrfalse(out hurtBoxInvalidLabel)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

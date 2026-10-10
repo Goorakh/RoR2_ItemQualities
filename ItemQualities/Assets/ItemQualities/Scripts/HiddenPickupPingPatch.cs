@@ -19,7 +19,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<PickupIndex>(out ParameterDefinition pickupIndexParameter))
             {
-                Log.Error("Failed to find PickupIndex parameter");
+                Log.PatchError(il, "Failed to find PickupIndex parameter");
                 return;
             }
 
@@ -28,7 +28,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdstr("?")))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

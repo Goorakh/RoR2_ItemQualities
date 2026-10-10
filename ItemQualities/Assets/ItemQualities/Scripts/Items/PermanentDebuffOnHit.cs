@@ -58,7 +58,7 @@ namespace ItemQualities.Items
 
             if (RollUtil.CheckRoll(venomChance, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
-                DotController.InflictDot(damageReport.victim.gameObject, damageReport.attacker, damageReport.damageInfo.inflictedHurtbox, _scorpionVenomDot, 10f * damageReport.damageInfo.procCoefficient, 1f, maxStacksFromAttacker);
+                DotController.InflictDot(damageReport.victim.gameObject, damageReport.attacker, damageReport.damageInfo.inflictedHurtbox, damageReport.damageInfo.procChainMask, _scorpionVenomDot, 10f * damageReport.damageInfo.procCoefficient, 1f, maxStacksFromAttacker);
             }
         }
 

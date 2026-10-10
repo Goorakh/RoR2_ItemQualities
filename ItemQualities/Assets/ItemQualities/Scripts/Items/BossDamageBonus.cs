@@ -13,7 +13,7 @@ namespace ItemQualities.Items
         private static void Init()
         {
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
         }
 
         private static void onCharacterDeathGlobal(DamageReport report)
@@ -58,7 +58,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdcR4(0.2f),
                                x => x.MatchMul()))
             {
-                Log.Error("Failed to find damage patch location");
+                Log.PatchError(il, "Failed to find damage patch location");
                 return;
             }
 
@@ -77,7 +77,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoPrev(MoveType.After,
                                x => x.MatchCallOrCallvirt<CharacterBody>("get_" + nameof(CharacterBody.isBoss))))
             {
-                Log.Error("Failed to find isBoss patch location");
+                Log.PatchError(il, "Failed to find isBoss patch location");
                 return;
             }
 

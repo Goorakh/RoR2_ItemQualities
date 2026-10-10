@@ -41,15 +41,12 @@ namespace ItemQualities.Items
         [SystemInitializer]
         private static void Init()
         {
-            GlobalEventManager.OnInteractionsGlobal += onInteractGlobal;
+            GlobalEventManager.OnInteractionsPermittedForSpawnGlobal += onInteractGlobal;
         }
 
         private static void onInteractGlobal(Interactor interactor, IInteractable interactable, GameObject interactableObject)
         {
             if (!NetworkServer.active)
-                return;
-
-            if (!SharedItemUtils.InteractableIsPermittedForSpawn(interactable))
                 return;
 
             if (!interactor || !interactor.TryGetComponent(out CharacterBody interactorBody) || !interactorBody.inventory)

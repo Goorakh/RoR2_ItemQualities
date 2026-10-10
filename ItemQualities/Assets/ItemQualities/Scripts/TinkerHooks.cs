@@ -107,7 +107,7 @@ namespace ItemQualities
             }
             else
             {
-                Log.Error("Failed to find transmutation group patch location");
+                Log.PatchError(il, "Failed to find transmutation group patch location");
             }
 
             // Fix for-loop returning rather than continuing when it encounters an option with no transmutation options
@@ -137,7 +137,7 @@ namespace ItemQualities
             }
             else
             {
-                Log.Error("Failed to find loop end location");
+                Log.PatchError(il, "Failed to find loop end location");
             }
         }
 
@@ -145,7 +145,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter(typeof(UniquePickup).MakeByRefType(), out ParameterDefinition pickupParameter))
             {
-                Log.Error("Failed to find pickup parameter");
+                Log.PatchError(il, "Failed to find pickup parameter");
                 return;
             }
 
@@ -155,7 +155,7 @@ namespace ItemQualities
                                x => x.MatchLdcI4((int)ItemTag.WorldUnique),
                                x => x.MatchCallOrCallvirt<ItemDef>(nameof(ItemDef.ContainsTag))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

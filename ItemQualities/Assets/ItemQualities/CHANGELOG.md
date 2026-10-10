@@ -1,3 +1,36 @@
+## \<Next Version\> Changes:
+
+* Updated for HC
+
+* Reworks (Click to reveal):
+    * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>
+    * <details><summary>Death Mark</summary> Chance to inflict a soul strike, dealing damage based on bonus health. Chance increases with previous executes and summoned ghosts.</details>
+    
+<details>
+<summary>Defense Nucleus:</summary>
+
+* Fixed bubble being visible and tinting the screen when zooming in as Railgunner.
+* Reduced the opacity of the bubble.
+</details>
+
+* Ben's Raincoat:
+    * Increased debuff reflect radius:
+        * Uncommon: 15m -> 25m
+        * Rare: 25m -> 50m
+        * Epic: 35m -> 75m
+        * Legendary 50m -> 100m
+
+* Old Guillotine:
+    * Umbral Mithrix can now be executed.
+
+* Wax Quail:
+    * Releasing jump increases air control.
+
+* Power Elixir:
+    * Fixed Chemical Burn counting as 2 debuffs for Death Mark.
+
+* Fixed Quality Boss Printers not being targetable by Quality Executive Card or Drifter Repossess.
+
 ## 0.8.1 Changes:
 
 * Fixed boss item qualities being rolled separately from every other item dropped from a teleporter event.

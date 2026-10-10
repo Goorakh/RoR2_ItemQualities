@@ -113,7 +113,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdstr("Prefabs/Projectiles/DeathProjectile"),
                                x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -212,16 +212,23 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find elite buff patch location");
+                Log.PatchError(il, "Failed to find elite buff patch location");
             }
 
             c.Goto(0, MoveType.Before);
+
+            /*
+             *  // GlobalEventManager.instance.TriggerCharacterDeathProc(damageReport);
+             *  IL_0119: ldsfld    class RoR2.GlobalEventManager RoR2.GlobalEventManager::'instance'
+             *  IL_011E: ldloc.1
+             *  IL_011F: callvirt  instance void RoR2.GlobalEventManager::TriggerCharacterDeathProc(class RoR2.DamageReport)
+             */
 
             VariableDefinition damageReportVar = null;
             if (c.TryGotoNext(MoveType.Before,
                               x => x.MatchLdsfld<GlobalEventManager>(nameof(GlobalEventManager.instance)),
                               x => x.MatchLdloc<DamageReport>(il, out damageReportVar),
-                              x => x.MatchCallOrCallvirt<GlobalEventManager>(nameof(GlobalEventManager.OnCharacterDeath))))
+                              x => x.MatchCallOrCallvirt<GlobalEventManager>(nameof(GlobalEventManager.TriggerCharacterDeathProc))))
             {
                 c.Emit(OpCodes.Ldarg_0);
                 c.Emit(OpCodes.Ldloc, damageReportVar);
@@ -238,7 +245,7 @@ namespace ItemQualities.Equipments
             }
             else
             {
-                Log.Error("Failed to find damage report patch location");
+                Log.PatchError(il, "Failed to find damage report patch location");
             }
         }
     }

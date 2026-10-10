@@ -60,7 +60,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<CostTypeDef.PayCostContext>(out ParameterDefinition contextParameter))
             {
-                Log.Error("Failed to find context parameter");
+                Log.PatchError(il, "Failed to find context parameter");
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
-                    Log.Error("[ItemTransformation Quality Patch] Failed to find item transformation patch location");
+                    Log.PatchError(il, "[ItemTransformation Quality Patch] Failed to find item transformation patch location");
                 }
             }
 
@@ -192,7 +192,7 @@ namespace ItemQualities.Items
                     }
                     else
                     {
-                        Log.Error("[Regenerating Scrap Priority] Failed to find priority scrap selection patch location");
+                        Log.PatchError(il, "[Regenerating Scrap Priority] Failed to find priority scrap selection patch location");
                     }
                 }
 
@@ -368,28 +368,14 @@ namespace ItemQualities.Items
                             }
                             else
                             {
-                                Log.Error("[Regenerating Scrap Priority] Failed to find take remainder regen scrap patch location");
+                                Log.PatchError(il, "[Regenerating Scrap Priority] Failed to find take remainder regen scrap patch location");
                             }
                         }
                     }
                     else
                     {
-                        Log.Error("[Regenerating Scrap Priority] Failed to find take priority regen scrap patch location");
+                        Log.PatchError(il, "[Regenerating Scrap Priority] Failed to find take priority regen scrap patch location");
                     }
-                }
-            }
-
-            // Remove duplicate notification
-            {
-                c.Goto(0);
-                if (c.TryGotoNext(MoveType.Before,
-                                  x => x.MatchCallOrCallvirt<CharacterMasterNotificationQueue>(nameof(CharacterMasterNotificationQueue.SendTransformNotification))))
-                {
-                    c.EmitSkipMethodCall();
-                }
-                else
-                {
-                    Log.Warning("[Duplicate Notification Fix] Failed to find duplicate CharacterMasterNotificationQueue.SendTransformNotification call, it was likely removed");
                 }
             }
         }

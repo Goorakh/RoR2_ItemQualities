@@ -78,6 +78,8 @@ namespace ItemQualities.ContentManagement
 
                         static IEnumerator runInitializerCoroutine(MethodInfo method, ContentInitializerArgs contentIntializerArgs)
                         {
+                            Log.Debug($"Beginning invoke for content initializer: {method.DeclaringType.FullName}");
+
                             object returnValue = method.Invoke(null, new object[] { contentIntializerArgs });
                             if (returnValue is IEnumerator enumerator)
                             {

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace ItemQualities
@@ -45,8 +46,7 @@ namespace ItemQualities
             // All the things that are too old to use a droptable...
             IL.RoR2.ChestBehavior.PickFromList += ChestBehavior_PickFromList;
             IL.EntityStates.ScavMonster.FindItem.OnEnter += FindItem_OnEnter;
-            IL.RoR2.Inventory.GiveRandomItems_int_bool_bool += Inventory_GiveRandomItems;
-            IL.RoR2.Inventory.GiveRandomItems_int_ItemTierArray += Inventory_GiveRandomItems;
+            IL.RoR2.Inventory.GiveRandomItems_GiveRandomItemsArgs += Inventory_GiveRandomItems_GiveRandomItemsArgs;
             IL.RoR2.MultiShopController.CreateTerminals += MultiShopController_CreateTerminals;
             IL.RoR2.ScavBackpackBehavior.PickFromList += ScavBackpackBehavior_PickFromList;
             IL.RoR2.ShopTerminalBehavior.GenerateNewPickupServer_bool += IL_ShopTerminalBehavior_GenerateNewPickupServer_bool;
@@ -408,7 +408,7 @@ namespace ItemQualities
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -423,7 +423,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<EntityStates.ScavMonster.FindItem>(nameof(EntityStates.ScavMonster.FindItem.dropPickup))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -439,19 +439,30 @@ namespace ItemQualities
             }
         }
 
-        private static void Inventory_GiveRandomItems(ILContext il)
+        private static void Inventory_GiveRandomItems_GiveRandomItemsArgs(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
+            /*
+             *  // PickupDef pickupDef = PickupCatalog.GetPickupDef(pickupIndex);
+             *  IL_0332: ldloc.s   V_10
+             *  IL_0334: call      class RoR2.PickupDef RoR2.PickupCatalog::GetPickupDef(valuetype RoR2.PickupIndex)
+             *  IL_0339: stloc.s   V_11
+             */
+
+            VariableDefinition pickupIndexVar = null;
             if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchLdloc<PickupIndex>(il, out pickupIndexVar),
                                x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.GetPickupDef))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
+            c.Emit(OpCodes.Ldloc, pickupIndexVar);
             c.Emit(OpCodes.Ldarg_0);
             c.EmitDelegate<Func<PickupIndex, Inventory, PickupIndex>>(pickQuality);
+            c.Emit(OpCodes.Stloc, pickupIndexVar);
 
             static PickupIndex pickQuality(PickupIndex originalPickupIndex, Inventory inventory)
             {
@@ -466,7 +477,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<ShopTerminalBehavior>(nameof(ShopTerminalBehavior.SetPickup))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -512,7 +523,7 @@ namespace ItemQualities
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {
@@ -527,7 +538,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt(out MethodReference method) && method?.Name?.StartsWith("<GenerateNewPickupServer>g__Pick") == true))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -549,7 +560,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt(pickupIndexSelectionEvaluate)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -671,14 +682,24 @@ namespace ItemQualities
             ILCursor c = new ILCursor(il);
 
             if (!il.Method.TryFindParameter<Xoroshiro128Plus>(out ParameterDefinition rngParameter))
-                rngParameter = null;
-
-            if (!c.TryGotoNext(MoveType.Before,
-                               x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.SetEquipmentIndex))))
             {
-                Log.Error("Failed to find patch location");
+                rngParameter = null;
+            }
+
+            // Match taking a random element from availableEquipmentDropList, cannot match instructions exact since we need to catch both UnityEngine.Random and Xoroshiro128Plus implementations
+
+            VariableDefinition pickupIndexVar = null;
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdfld<Run>(nameof(Run.availableEquipmentDropList)),
+                               x => x.MatchStloc<PickupIndex>(il, out pickupIndexVar)))
+            {
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
+
+            c.Goto(foundCursors[1].Next, MoveType.After); // stloc pickupIndexVar
+
+            c.Emit(OpCodes.Ldloc, pickupIndexVar);
 
             if (rngParameter != null)
             {
@@ -690,17 +711,13 @@ namespace ItemQualities
             }
 
             c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Func<EquipmentIndex, Xoroshiro128Plus, Inventory, EquipmentIndex>>(pickQuality);
+            c.EmitDelegate<Func<PickupIndex, Xoroshiro128Plus, Inventory, PickupIndex>>(pickQuality);
+            c.Emit(OpCodes.Stloc, pickupIndexVar);
 
-            static EquipmentIndex pickQuality(EquipmentIndex originalEquipmentIndex, Xoroshiro128Plus rng, Inventory inventory)
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static PickupIndex pickQuality(PickupIndex originalPickupIndex, Xoroshiro128Plus rng, Inventory inventory)
             {
-                PickupIndex originalPickupIndex = PickupCatalog.FindPickupIndex(originalEquipmentIndex);
-
-                PickupIndex qualityPickupIndex = tryUpgradeQuality(originalPickupIndex, rng ?? RoR2Application.rng, inventory ? inventory.GetComponent<CharacterMaster>() : null);
-                PickupDef qualityPickupDef = PickupCatalog.GetPickupDef(qualityPickupIndex);
-                EquipmentIndex qualityEquipmentIndex = qualityPickupDef != null ? qualityPickupDef.equipmentIndex : EquipmentIndex.None;
-
-                return qualityEquipmentIndex != EquipmentIndex.None ? qualityEquipmentIndex : originalEquipmentIndex;
+                return tryUpgradeQuality(originalPickupIndex, rng ?? RoR2Application.rng, inventory ? inventory.GetComponent<CharacterMaster>() : null);
             }
         }
 
@@ -712,7 +729,7 @@ namespace ItemQualities
                                x => x.MatchLdfld<MasterDropDroplet>(nameof(MasterDropDroplet.pickupsToDrop)),
                                x => x.MatchCallOrCallvirt(typeof(PickupCatalog), nameof(PickupCatalog.FindPickupIndex))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

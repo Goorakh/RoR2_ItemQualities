@@ -21,14 +21,14 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<CharacterBody>("attacker", out ParameterDefinition attackerBodyParameter))
             {
-                Log.Error("Failed to find attacker body parameter");
+                Log.PatchError(il, "Failed to find attacker body parameter");
                 return;
             }
 
             if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdcR4(0.1f)))
+                               x => x.MatchLdsfld(typeof(KnockbackFinUtil), nameof(KnockbackFinUtil.damageAddPerJuggle))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

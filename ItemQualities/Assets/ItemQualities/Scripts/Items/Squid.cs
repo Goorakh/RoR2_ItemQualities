@@ -17,7 +17,7 @@ namespace ItemQualities.Items
         {
             IL.RoR2.GlobalEventManager.OnInteractionBegin += GlobalEventManager_OnInteractionBegin;
 
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
 
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
@@ -97,7 +97,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<Interactor>(out ParameterDefinition interactorParameter))
             {
-                Log.Error("Failed to find Interactor parameter");
+                Log.PatchError(il, "Failed to find Interactor parameter");
                 return;
             }
 
@@ -110,7 +110,7 @@ namespace ItemQualities.Items
                                x => x.MatchStloc(typeof(DirectorSpawnRequest), il, out squidDirectorSpawnRequestVar),
                                x => x.MatchStfld<DirectorSpawnRequest>(nameof(DirectorSpawnRequest.onSpawnedServer))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

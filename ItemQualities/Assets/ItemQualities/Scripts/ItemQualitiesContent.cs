@@ -838,8 +838,6 @@ namespace ItemQualities
         {
             internal static ReadOnlyCollection<BuffQualityGroup> AllGroups = Empty<BuffQualityGroup>.ReadOnlyCollection;
 
-            public static BuffQualityGroup DeathMark;
-
             public static BuffQualityGroup Slow60;
 
             public static BuffQualityGroup KillMoveSpeed;
@@ -936,13 +934,13 @@ namespace ItemQualities
             public static BuffDef ShinyPearlLuck;
 
             public static BuffDef ChemicalBurn;
+
+            public static BuffDef DeathMarkSouls;
         }
 
         public static class Prefabs
         {
             public static GameObject QualityPickupDisplay;
-
-            public static GameObject DeathMarkQualityEffect;
 
             public static GameObject VoidDeathOrbEffect;
 
@@ -1024,6 +1022,8 @@ namespace ItemQualities
             public static GameObject VagrantNovaItemQualityAttachment;
 
             public static GameObject MiniVagrantNovaBlast;
+
+            public static GameObject ScytheMeleeSwing;
         }
 
         public static class ProjectilePrefabs
@@ -1044,6 +1044,8 @@ namespace ItemQualities
             public static Material TrimSheetQualityEquipmentDrone;
 
             public static Material ChemicalGooOverlay;
+
+            public static Material SoulStrikeStarTrail;
         }
 
         public static class SpawnCards

@@ -54,7 +54,7 @@ namespace ItemQualities.Items
 
             if (maxDistancePatchCount == 0)
             {
-                Log.Error("Failed to find maxDistance patch location");
+                Log.PatchError(il, "Failed to find maxDistance patch location");
             }
             else
             {
@@ -95,7 +95,7 @@ namespace ItemQualities.Items
 
             if (minimumDamageCoefficientPatchCount == 0)
             {
-                Log.Error("Failed to find minimumDamageCoefficient patch location");
+                Log.PatchError(il, "Failed to find minimumDamageCoefficient patch location");
             }
             else
             {
@@ -136,7 +136,7 @@ namespace ItemQualities.Items
 
             if (maximumDamageCoefficientPatchCount == 0)
             {
-                Log.Error("Failed to find maximumDamageCoefficient patch location");
+                Log.PatchError(il, "Failed to find maximumDamageCoefficient patch location");
             }
             else
             {

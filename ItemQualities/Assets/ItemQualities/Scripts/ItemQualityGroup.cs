@@ -243,8 +243,10 @@ namespace ItemQualities
                     if (item.pickupModelReference == null || !item.pickupModelReference.RuntimeKeyIsValid())
                         item.pickupModelReference = baseItem.pickupModelReference;
 
-                    if (!item.pickupIconSprite)
-                        item.pickupIconSprite = baseItem.pickupIconSprite;
+                    if (!item.pickupIconSprite && (item.pickupIconSpriteReference == null || !item.pickupIconSpriteReference.RuntimeKeyIsValid()))
+                    {
+                        item.pickupIconSpriteReference = baseItem.pickupIconSpriteReference;
+                    }
 
                     item.isConsumed = baseItem.isConsumed;
                     item.hidden = baseItem.hidden;
@@ -273,31 +275,48 @@ namespace ItemQualities
         {
             if (BaseItem)
             {
-                generateRuntimeAssets(BaseItem);
+                yield return generateRuntimeAssets(BaseItem, progressReceiver);
             }
             else if (BaseItemReference != null && BaseItemReference.RuntimeKeyIsValid())
             {
-                AsyncOperationHandle<ItemDef> baseItemLoad = AssetAsyncReferenceManager<ItemDef>.LoadAsset(BaseItemReference);
-                yield return progressReceiver != null ? baseItemLoad.AsProgressCoroutine(progressReceiver) : baseItemLoad;
+                PartitionedProgress<TProgress> totalProgress = progressReceiver != null ? new PartitionedProgress<TProgress>(progressReceiver) : null;
+                ProgressPartition loadItemProgress = totalProgress?.AddPartition();
+                ProgressPartition loadItemSpriteProgress = totalProgress?.AddPartition();
+
+                AsyncOperationHandle<ItemDef> baseItemLoad = AddressableUtil.LoadTempAssetAsync(BaseItemReference);
+                yield return loadItemProgress != null ? baseItemLoad.AsProgressCoroutine(loadItemProgress) : baseItemLoad;
 
                 if (baseItemLoad.IsValid() && baseItemLoad.Status == AsyncOperationStatus.Succeeded)
                 {
-                    generateRuntimeAssets(baseItemLoad.Result);
+                    yield return generateRuntimeAssets(baseItemLoad.Result, loadItemSpriteProgress);
                 }
                 else
                 {
                     Log.Error($"Failed to load base item for quality group '{name}': {(baseItemLoad.IsValid() ? baseItemLoad.OperationException : "Invalid handle")}");
                 }
-
-                AssetAsyncReferenceManager<ItemDef>.UnloadAsset(BaseItemReference);
             }
 
-            progressReceiver?.Report(1f);
-
-            void generateRuntimeAssets(ItemDef baseItem)
+            IEnumerator generateRuntimeAssets<TGenerateProgress>(ItemDef baseItem, TGenerateProgress progressReceiver)
+                where TGenerateProgress : IProgress<float>
             {
                 string baseItemName = baseItem.name;
-                Texture2D baseIconTexture = baseItem.pickupIconTexture as Texture2D;
+
+                Sprite baseIconSprite;
+                {
+                    CoroutineResult<Sprite> result = CoroutineResultPool<Sprite>.instance.Request();
+                    try
+                    {
+                        yield return AddressableUtil.LoadTempAssetOrDirectReferenceAsync(baseItem.pickupIconSpriteReference, baseItem.pickupIconSprite, progressReceiver, result);
+
+                        baseIconSprite = result.Value;
+                    }
+                    finally
+                    {
+                        CoroutineResultPool<Sprite>.instance.Return(result);
+                    }
+                }
+
+                Texture2D baseIconTexture = baseIconSprite.texture;
 
                 ItemDef createItem(QualityTier qualityTier)
                 {
@@ -335,6 +354,7 @@ namespace ItemQualities
                     else
                     {
                         itemDef.pickupIconSprite = baseItem.pickupIconSprite;
+                        itemDef.pickupIconSpriteReference = baseItem.pickupIconSpriteReference;
                     }
 
 #pragma warning disable CS0618 // Type or member is obsolete
@@ -379,18 +399,10 @@ namespace ItemQualities
 
             string currentDirectory = Path.GetDirectoryName(AssetDatabase.GetAssetPath(this));
 
-            AsyncOperationHandle<ItemDef> baseItemLoadHandle = default;
-            ItemDef baseItemDef = null;
-            if (BaseItemReference != null && BaseItemReference.RuntimeKeyIsValid())
-            {
-                baseItemLoadHandle = BaseItemReference.LoadAssetAsync<ItemDef>();
+            ItemDef baseItemDef = BaseItemReference.LoadAssetAsync().WaitForCompletion();
 
-                baseItemDef = baseItemLoadHandle.WaitForCompletion();
-            }
-
-            using ScopedAsyncOperationHandle<ItemDef> baseItemLoadScope = new ScopedAsyncOperationHandle<ItemDef>(baseItemLoadHandle);
-
-            Texture2D baseIconTexture = baseItemDef ? baseItemDef.pickupIconSprite.texture : null;
+            Sprite baseIconSprite = baseItemDef.pickupIconSpriteReference != null && baseItemDef.pickupIconSpriteReference.RuntimeKeyIsValid() ? baseItemDef.pickupIconSpriteReference.LoadAssetAsync().WaitForCompletion() : baseItemDef.pickupIconSprite;
+            Texture2D baseIconTexture = baseIconSprite != null ? baseIconSprite.texture : null;
 
             ItemDef createItem(QualityTier qualityTier)
             {

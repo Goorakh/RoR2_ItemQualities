@@ -20,7 +20,7 @@ namespace ItemQualities.Items
 
             IL.RoR2.AmmoPickup.OnTriggerStay += AmmoPickup_OnTriggerStay;
 
-            IL.RoR2.UI.SkillIcon.Update += SkillIcon_Update;
+            IL.RoR2.UI.SkillIcon.LateUpdate += SkillIcon_LateUpdate;
         }
 
         private static void GlobalEventManager_OnCharacterDeath(ILContext il)
@@ -29,7 +29,7 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.Bandolier)),
                                x => x.MatchCallOrCallvirt(typeof(NetworkServer), nameof(NetworkServer.Spawn))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -81,14 +81,14 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<Collider>(out ParameterDefinition otherColliderParameter))
             {
-                Log.Error("Failed to find Collider parameter");
+                Log.PatchError(il, "Failed to find Collider parameter");
                 return;
             }
 
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<SkillLocator>(nameof(SkillLocator.ApplyAmmoPack))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -109,14 +109,14 @@ namespace ItemQualities.Items
             }
         }
 
-        private static void SkillIcon_Update(ILContext il)
+        private static void SkillIcon_LateUpdate(ILContext il)
         {
             ILCursor c = new ILCursor(il);
 
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchCallOrCallvirt<GenericSkill>("get_" + nameof(GenericSkill.maxStock))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

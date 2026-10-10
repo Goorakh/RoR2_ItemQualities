@@ -27,7 +27,7 @@ namespace ItemQualities.Items
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.GetItemCountPermanent)),
                                x => x.MatchStloc(typeof(int), il, out extraStatsOnLevelUpItemCountVar)))
             {
-                Log.Error("Failed to find Prayer Beads item count variable");
+                Log.PatchError(il, "Failed to find Prayer Beads item count variable");
                 return;
             }
 
@@ -70,7 +70,7 @@ namespace ItemQualities.Items
 
             if (beadResetPatchCount == 0)
             {
-                Log.Error("Failed to find bead reset patch location");
+                Log.PatchError(il, "Failed to find bead reset patch location");
             }
             else
             {
@@ -84,7 +84,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdcI4(0),
                                x => x.MatchBle(out _)))
             {
-                Log.Error("Failed to find Prayer Bead proc patch location");
+                Log.PatchError(il, "Failed to find Prayer Bead proc patch location");
                 return;
             }
 

@@ -61,7 +61,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<AnimationEvent>(out ParameterDefinition animationEventParameter))
             {
-                Log.Error("Failed to find AnimationEvent parameter");
+                Log.PatchError(il, "Failed to find AnimationEvent parameter");
                 return;
             }
 
@@ -78,7 +78,7 @@ namespace ItemQualities
                                x => x.MatchNewobj<EffectData>(),
                                x => x.MatchStloc(typeof(EffectData), il, out effectDataVar)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

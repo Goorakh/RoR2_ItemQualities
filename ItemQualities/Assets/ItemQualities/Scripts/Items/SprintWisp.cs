@@ -75,7 +75,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchNewobj<DevilOrb>()))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -161,7 +161,7 @@ namespace ItemQualities.Items
             }
             else
             {
-                Log.Error("Failed to find devilOrb variable");
+                Log.PatchError(il, "Failed to find devilOrb variable");
             }
         }
     }
@@ -170,10 +170,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _explosionEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _explosionEffectIndex = EffectCatalogUtils.FindEffectIndex("OmniExplosionVFXArchWisp");
+            _explosionEffectIndex = EffectCatalog.FindEffectIndex("OmniExplosionVFXArchWisp");
             if (_explosionEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find explosion effect index");

@@ -26,7 +26,7 @@ namespace ItemQualities.Items
 
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -37,7 +37,7 @@ namespace ItemQualities.Items
                 x => x.MatchStloc(il, out characterBodyLoc)
             ))
             {
-                Log.Error("IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
 
@@ -45,7 +45,7 @@ namespace ItemQualities.Items
                 x => x.MatchNewobj(typeof(SimpleLightningStrikeOrb))
             ))
             {
-                Log.Error("IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
 
@@ -78,7 +78,7 @@ namespace ItemQualities.Items
                 x => x.MatchCallOrCallvirt(typeof(OrbManager), nameof(OrbManager.AddOrb))
             ))
             {
-                Log.Error("IL Hook failed!");
+                Log.PatchError(il, "IL Hook failed!");
                 return;
             }
 

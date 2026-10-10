@@ -66,7 +66,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<CharacterMasterNotificationQueue.NotificationInfo>(out ParameterDefinition notificationInfoParameter))
             {
-                Log.Error("Failed to find CharacterMasterNotificationQueue.NotificationInfo parameter");
+                Log.PatchError(il, "Failed to find CharacterMasterNotificationQueue.NotificationInfo parameter");
                 return;
             }
 
@@ -77,7 +77,7 @@ namespace ItemQualities
                                x => x.MatchLdfld<NotificationUIController>(nameof(NotificationUIController.genericTransformationNotificationPrefab)),
                                x => x.MatchStloc(il, out transformationNotificationPrefabVar)))
             {
-                Log.Error("Failed to find transformationNotificationPrefab variable");
+                Log.PatchError(il, "Failed to find transformationNotificationPrefab variable");
                 return;
             }
 
@@ -90,7 +90,7 @@ namespace ItemQualities
                                x => x.MatchSwitch(out _),
                                x => x.MatchBr(out afterTransformationTypeSwitchLabel)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

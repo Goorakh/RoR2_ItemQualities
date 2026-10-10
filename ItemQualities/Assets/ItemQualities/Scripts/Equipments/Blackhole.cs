@@ -133,7 +133,7 @@ namespace ItemQualities.Equipments
                                x => x.MatchLdstr("Prefabs/Projectiles/GravSphere"),
                                x => x.MatchCallOrCallvirt(typeof(LegacyResourcesAPI), nameof(LegacyResourcesAPI.Load))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

@@ -135,7 +135,7 @@ namespace ItemQualities.Items
                                x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.radius)),
                                x => x.MatchCallOrCallvirt<BlastAttack>(nameof(BlastAttack.Fire))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

@@ -1,21 +1,32 @@
-﻿using HG;
-using RoR2;
+﻿using RoR2;
 using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 
 namespace ItemQualities.Utilities.Extensions
 {
     public static class InventoryExtensions
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Obsolete("Use GetItemCountsTotal instead")]
         public static ItemQualityCounts CalculateEffectiveItemStacks(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
         {
-            return inventory.CalculateEffectiveItemStacks(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
+            return inventory.GetItemCountsTotal(itemGroupIndex);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [Obsolete("Use GetItemCountsTotal instead")]
         public static ItemQualityCounts CalculateEffectiveItemStacks(this Inventory inventory, ItemQualityGroup itemGroup)
+        {
+            return inventory.GetItemCountsTotal(itemGroup);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ItemQualityCounts GetItemCountsTotal(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
+        {
+            return inventory.GetItemCountsTotal(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
+        }
+
+        public static ItemQualityCounts GetItemCountsTotal(this Inventory inventory, ItemQualityGroup itemGroup)
         {
             if (!inventory)
                 throw new ArgumentNullException(nameof(inventory));
@@ -23,11 +34,11 @@ namespace ItemQualities.Utilities.Extensions
             if (!itemGroup)
                 return ItemQualityCounts.zero;
 
-            int baseItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.BaseItemIndex);
-            int uncommonItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.UncommonItemIndex);
-            int rareItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.RareItemIndex);
-            int epicItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.EpicItemIndex);
-            int legendaryItemCount = inventory.CalculateEffectiveItemStacks(itemGroup.LegendaryItemIndex);
+            int baseItemCount = inventory.GetItemCountTotal(itemGroup.BaseItemIndex);
+            int uncommonItemCount = inventory.GetItemCountTotal(itemGroup.UncommonItemIndex);
+            int rareItemCount = inventory.GetItemCountTotal(itemGroup.RareItemIndex);
+            int epicItemCount = inventory.GetItemCountTotal(itemGroup.EpicItemIndex);
+            int legendaryItemCount = inventory.GetItemCountTotal(itemGroup.LegendaryItemIndex);
 
             return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
         }
@@ -99,6 +110,50 @@ namespace ItemQualities.Utilities.Extensions
             inventory.GiveItemPermanent(itemGroup.RareItemIndex, counts.RareCount);
             inventory.GiveItemPermanent(itemGroup.EpicItemIndex, counts.EpicCount);
             inventory.GiveItemPermanent(itemGroup.LegendaryItemIndex, counts.LegendaryCount);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static ItemQualityCounts GetItemCountsRented(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex)
+        {
+            return inventory.GetItemCountsRented(QualityCatalog.GetItemQualityGroup(itemGroupIndex));
+        }
+
+        public static ItemQualityCounts GetItemCountsRented(this Inventory inventory, ItemQualityGroup itemGroup)
+        {
+            if (!inventory)
+                throw new ArgumentNullException(nameof(inventory));
+
+            if (!itemGroup)
+                return ItemQualityCounts.zero;
+
+            int baseItemCount = inventory.GetItemCountRented(itemGroup.BaseItemIndex);
+            int uncommonItemCount = inventory.GetItemCountRented(itemGroup.UncommonItemIndex);
+            int rareItemCount = inventory.GetItemCountRented(itemGroup.RareItemIndex);
+            int epicItemCount = inventory.GetItemCountRented(itemGroup.EpicItemIndex);
+            int legendaryItemCount = inventory.GetItemCountRented(itemGroup.LegendaryItemIndex);
+
+            return new ItemQualityCounts(baseItemCount, uncommonItemCount, rareItemCount, epicItemCount, legendaryItemCount);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void GiveItemsRented(this Inventory inventory, ItemQualityGroupIndex itemGroupIndex, in ItemQualityCounts counts)
+        {
+            inventory.GiveItemsRented(QualityCatalog.GetItemQualityGroup(itemGroupIndex), counts);
+        }
+
+        public static void GiveItemsRented(this Inventory inventory, ItemQualityGroup itemGroup, in ItemQualityCounts counts)
+        {
+            if (!inventory)
+                throw new ArgumentNullException(nameof(inventory));
+
+            if (!itemGroup)
+                return;
+
+            inventory.GiveItemRented(itemGroup.BaseItemIndex, counts.BaseItemCount);
+            inventory.GiveItemRented(itemGroup.UncommonItemIndex, counts.UncommonCount);
+            inventory.GiveItemRented(itemGroup.RareItemIndex, counts.RareCount);
+            inventory.GiveItemRented(itemGroup.EpicItemIndex, counts.EpicCount);
+            inventory.GiveItemRented(itemGroup.LegendaryItemIndex, counts.LegendaryCount);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -268,48 +323,6 @@ namespace ItemQualities.Utilities.Extensions
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Fixed version of <see cref="SparseArrayStruct{TElement, TImpl}.GetNonDefaultIndices{T}(List{T})"/> that doesn't overpopulate <paramref name="dest"/>.
-        /// </summary>
-        /// <typeparam name="TElement"></typeparam>
-        /// <typeparam name="TImpl"></typeparam>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="sparseArray"></param>
-        /// <param name="dest"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void GetNonZeroIndicesFixed<TElement, TImpl, T>(this in SparseArrayStruct<TElement, TImpl> sparseArray, List<T> dest)
-            where TElement : IEquatable<TElement>
-            where TImpl : ISparseArrayImpl<TElement>
-            where T : struct
-        {
-            Span<SparseIndex> nonDefaultIndices = sparseArray.nonDefaultIndices.AsSpan(0, sparseArray.nonDefaultIndicesCount);
-            
-            ListUtils.EnsureCapacity(dest, dest.Count + nonDefaultIndices.Length);
-            ListUtils.AddRange(dest, MemoryMarshal.Cast<SparseIndex, T>(nonDefaultIndices));
-        }
-
-        /// <summary>
-        /// Fixed version of <see cref="ItemCollection.GetNonZeroIndices(List{ItemIndex})"/> that doesn't overpopulate <paramref name="dest"/>.
-        /// </summary>
-        /// <param name="itemCollection"></param>
-        /// <param name="dest"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void GetNonZeroIndicesFixed(this in ItemCollection itemCollection, List<ItemIndex> dest)
-        {
-            itemCollection.inner.GetNonZeroIndicesFixed(dest);
-        }
-
-        /// <summary>
-        /// Fixed version of <see cref="Inventory.TempItemsStorage.GetNonZeroIndices(List{ItemIndex})"/> that doesn't overpopulate <paramref name="dest"/>.
-        /// </summary>
-        /// <param name="tempItemCollection"></param>
-        /// <param name="dest"></param>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static void GetNonZeroIndicesFixed(this in Inventory.TempItemsStorage tempItemCollection, List<ItemIndex> dest)
-        {
-            tempItemCollection.tempItemStacks.GetNonZeroIndicesFixed(dest);
         }
     }
 }

@@ -53,13 +53,13 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<TeamIndex>(out ParameterDefinition teamIndexParameter))
             {
-                Log.Error("Failed to find TeamIndex parameter");
+                Log.PatchError(il, "Failed to find TeamIndex parameter");
                 return;
             }
 
             if (!il.Method.TryFindParameter<ulong>("experience", out ParameterDefinition experienceParameter))
             {
-                Log.Error("Failed to find experience parameter");
+                Log.PatchError(il, "Failed to find experience parameter");
                 return;
             }
 
@@ -71,7 +71,7 @@ namespace ItemQualities
                                x => x.MatchLdcI4((int)TeamIndex.Player),
                                x => x.MatchBneUn(out skipPrayerBeadsXpLabel)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

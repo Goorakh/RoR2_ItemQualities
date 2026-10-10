@@ -3,24 +3,16 @@ using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
+using RoR2.Items;
 using System;
-using UnityEngine;
 
 namespace ItemQualities.Items
 {
     internal static class Phasing
     {
-        private static EffectIndex _stealthKitProcEffectIndex = EffectIndex.Invalid;
-
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer]
         private static void Init()
         {
-            _stealthKitProcEffectIndex = EffectCatalogUtils.FindEffectIndex("ProcStealthkit");
-            if (_stealthKitProcEffectIndex == EffectIndex.Invalid)
-            {
-                Log.Warning("Failed to find stealthkit proc effect index");
-            }
-
             IL.RoR2.Items.PhasingBodyBehavior.FixedUpdate += PhasingBodyBehavior_FixedUpdate;
 
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
@@ -44,19 +36,11 @@ namespace ItemQualities.Items
                                               (30f * phasing.EpicCount) +
                                               (60f * phasing.LegendaryCount);
 
-                    if (RollUtil.CheckRoll(stealthProcChance, damageReport.victimMaster, false) && !damageReport.victimBody.hasCloakBuff)
+                    if (RollUtil.CheckRoll(stealthProcChance, damageReport.victimMaster, false) &&
+                        !damageReport.victimBody.hasCloakBuff &&
+                        damageReport.victimBody.TryGetComponent(out PhasingBodyBehavior phasingBodyBehavior))
                     {
-                        damageReport.victimBody.AddTimedBuff(RoR2Content.Buffs.Cloak, 5f);
-                        damageReport.victimBody.AddTimedBuff(RoR2Content.Buffs.CloakSpeed, 5f);
-
-                        if (_stealthKitProcEffectIndex != EffectIndex.Invalid)
-                        {
-                            EffectManager.SpawnEffect(_stealthKitProcEffectIndex, new EffectData
-                            {
-                                origin = damageReport.victimBody.corePosition,
-                                rotation = Quaternion.identity
-                            }, true);
-                        }
+                        phasingBodyBehavior.TriggerEffect();
                     }
                 }
             }
@@ -91,7 +75,7 @@ namespace ItemQualities.Items
 
             if (patchCount == 0)
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
             }
             else
             {

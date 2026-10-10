@@ -19,7 +19,7 @@ namespace ItemQualities.Items
             _invokeInventoryOnEquipmentExternalRestockServer = EventUtils.GetInvokeMethodDelegate<Action<Inventory>>(typeof(Inventory), nameof(Inventory.onEquipmentExternalRestockServer));
 
             IL.RoR2.GlobalEventManager.OnCharacterDeath += GlobalEventManager_OnCharacterDeath;
-            GlobalEventManager.onCharacterDeathGlobal += onCharacterDeathGlobal;
+            GlobalEventManager.onDeathProcServer += onCharacterDeathGlobal;
         }
 
         private static void onCharacterDeathGlobal(DamageReport damageReport)
@@ -40,7 +40,7 @@ namespace ItemQualities.Items
                                            (talisman.EpicCount * 3) +
                                            (talisman.LegendaryCount * 4);
 
-                    EquipmentState equipmentState = attackerInventory.GetEquipment(attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
+                    EquipmentState equipmentState = attackerInventory.GetEquipment(attackerInventory.activeEquipmentLocation);
                     equipmentState.charges = HGMath.ByteSafeAdd(equipmentState.charges, (byte)Math.Min(temporaryCharges, byte.MaxValue));
 
                     if (equipmentState.charges > attackerInventory.GetEquipmentSlotMaxCharges())
@@ -48,7 +48,7 @@ namespace ItemQualities.Items
                         equipmentState.chargeFinishTime = Run.FixedTimeStamp.positiveInfinity;
                     }
 
-                    attackerInventory.SetEquipment(equipmentState, attackerInventory.activeEquipmentSlot, attackerInventory.activeEquipmentSet[attackerInventory.activeEquipmentSlot]);
+                    attackerInventory.SetEquipment(equipmentState, attackerInventory.activeEquipmentLocation);
                     _invokeInventoryOnEquipmentExternalRestockServer?.Invoke(attackerInventory);
                 }
             }
@@ -58,7 +58,7 @@ namespace ItemQualities.Items
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -68,7 +68,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.Talisman)),
                                x => x.MatchCallOrCallvirt<Inventory>(nameof(Inventory.DeductActiveEquipmentCooldown))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

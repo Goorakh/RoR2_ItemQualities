@@ -118,7 +118,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<DamageInfo>(out ParameterDefinition damageInfoParameter))
             {
-                Log.Error("Failed to find DamageInfo parameter");
+                Log.PatchError(il, "Failed to find DamageInfo parameter");
                 return;
             }
 
@@ -128,7 +128,7 @@ namespace ItemQualities
                                x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.PermanentCurse)),
                                x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.TakeDamageForce))))
             {
-                Log.Error("Failed to find patch end location");
+                Log.PatchError(il, "Failed to find patch end location");
                 return;
             }
 
@@ -138,7 +138,7 @@ namespace ItemQualities
             if (!c.TryGotoPrev(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.delayedDamageSecondHalf))) ||
                 !c.TryGotoNext(x => x.MatchBrtrue(out startHurtBlockLabel)))
             {
-                Log.Error("Failed to find patch start location");
+                Log.PatchError(il, "Failed to find patch start location");
                 return;
             }
 
@@ -176,7 +176,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<DamageReport>(out ParameterDefinition damageReportParameter))
             {
-                Log.Error("Failed to find DamageReport parameter");
+                Log.PatchError(il, "Failed to find DamageReport parameter");
                 return;
             }
 
@@ -222,7 +222,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error("Failed to find sonorous drop patch location");
+                    Log.PatchError(il, "Failed to find sonorous drop patch location");
                 }
             }
 
@@ -250,7 +250,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find glacial death patch location");
+                    Log.PatchError(il, "Failed to find glacial death patch location");
                 }
             }
 
@@ -278,7 +278,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find malachite death patch location");
+                    Log.PatchError(il, "Failed to find malachite death patch location");
                 }
             }
 
@@ -295,8 +295,7 @@ namespace ItemQualities
                  */
 
                 ILLabel afterSoulWispSpawnLabel = null;
-                if (c.TryGotoNext(MoveType.AfterLabel,
-                                  x => x.MatchCallOrCallvirt<RunArtifactManager>("get_" + nameof(RunArtifactManager.instance)),
+                if (c.TryGotoNext(MoveType.After,
                                   x => x.MatchCallOrCallvirt(typeof(RoR2Content.Artifacts), "get_" + nameof(RoR2Content.Artifacts.wispOnDeath)),
                                   x => x.MatchCallOrCallvirt<RunArtifactManager>(nameof(RunArtifactManager.IsArtifactEnabled)),
                                   x => x.MatchBrfalse(out afterSoulWispSpawnLabel)))
@@ -306,7 +305,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find soul wisp spawn patch location");
+                    Log.PatchError(il, "Failed to find soul wisp spawn patch location");
                 }
             }
 
@@ -334,7 +333,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find mending death patch location");
+                    Log.PatchError(il, "Failed to find mending death patch location");
                 }
             }
 
@@ -362,7 +361,7 @@ namespace ItemQualities
                 }
                 else
                 {
-                    Log.Error_NoCallerPrefix("Failed to find voidtouched death patch location");
+                    Log.PatchError(il, "Failed to find voidtouched death patch location");
                 }
             }
         }

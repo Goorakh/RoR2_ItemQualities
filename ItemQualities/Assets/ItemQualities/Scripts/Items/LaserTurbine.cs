@@ -62,7 +62,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdsfld<RechargeState>(nameof(RechargeState.killChargeDuration)),
                                x => x.MatchConvR4()))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

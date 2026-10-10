@@ -28,7 +28,7 @@ namespace ItemQualities.Items
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.GetBuffCount)),
                                x => x.MatchCallOrCallvirt(splitDebuffInfoListAddMethod)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 

@@ -21,17 +21,19 @@ namespace ItemQualities.Equipments
 
             if (sender.healthComponent.barrier > 0f)
             {
-                int equipmentSlotCount = sender.inventory.GetEquipmentSlotCount();
+                int equipmentSlotCount = sender.inventory.equipmentSlotCount;
+                int equipmentSetCount = sender.inventory.equipmentSetCount;
                 for (uint slot = 0; slot < equipmentSlotCount; slot++)
                 {
-                    int equipmentSetCount = sender.inventory.GetEquipmentSetCount(slot);
                     for (uint set = 0; set < equipmentSetCount; set++)
                     {
-                        EquipmentIndex equipmentIndex = sender.inventory.GetEquipment(slot, set).equipmentIndex;
+                        EquipmentLocation location = new EquipmentLocation { slot = slot, set = set };
+
+                        EquipmentIndex equipmentIndex = sender.inventory.GetEquipment(location).equipmentIndex;
                         EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
                         if (equipmentIndex != EquipmentIndex.None && equipmentGroupIndex == ItemQualitiesContent.EquipmentQualityGroups.GainArmor.GroupIndex)
                         {
-                            QualityTier qualityTier = sender.inventory.GetEquipmentQualityTier(slot, set);
+                            QualityTier qualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
                             switch (qualityTier)
                             {
                                 case QualityTier.None:

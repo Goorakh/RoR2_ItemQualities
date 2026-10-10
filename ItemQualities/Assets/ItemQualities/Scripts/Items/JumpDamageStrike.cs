@@ -23,7 +23,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchStfld<BlastAttack>(nameof(BlastAttack.baseDamage))))
             {
-                Log.Error("Failed to find damage patch location");
+                Log.PatchError(il, "Failed to find damage patch location");
             }
             else
             {
@@ -59,7 +59,7 @@ namespace ItemQualities.Items
             if (!c.TryGotoNext(MoveType.Before,
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.SetBuffCount))))
             {
-                Log.Error("Failed to find charge decrease patch location");
+                Log.PatchError(il, "Failed to find charge decrease patch location");
             }
             else
             {

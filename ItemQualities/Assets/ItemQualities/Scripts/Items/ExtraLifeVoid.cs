@@ -12,10 +12,10 @@ namespace ItemQualities.Items
     {
         private static EffectIndex _reviveEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(QualityCatalog), typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(QualityCatalog), typeof(EffectCatalog))]
         private static void Init()
         {
-            _reviveEffectIndex = EffectCatalogUtils.FindEffectIndex("VoidRezEffect");
+            _reviveEffectIndex = EffectCatalog.FindEffectIndex("VoidRezEffect");
             if (_reviveEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find revive effect index");
@@ -44,7 +44,7 @@ namespace ItemQualities.Items
                                x => x.MatchLdloca(extraLifeItemTransformationVarIndex),
                                x => x.MatchLdsfld(typeof(DLC1Content.Items), nameof(DLC1Content.Items.ExtraLifeVoid))))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
@@ -78,7 +78,7 @@ namespace ItemQualities.Items
                             newItemIndex = qualityExtraLifeVoidConsumedItemIndex,
                             minToTransform = 1,
                             maxToTransform = 1,
-                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.Default
+                            transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.ConsumedItem
                         }.TryTake(master.inventory, out Inventory.ItemTransformation.TakeResult takeResult))
                         {
                             QualityTier extraLifeVoidQualityTier = qualityTier;

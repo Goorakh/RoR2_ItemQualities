@@ -8,10 +8,10 @@ namespace ItemQualities.Orbs
     {
         private static EffectIndex _orbEffectIndex = EffectIndex.Invalid;
 
-        [SystemInitializer(typeof(EffectCatalogUtils))]
+        [SystemInitializer(typeof(EffectCatalog))]
         private static void Init()
         {
-            _orbEffectIndex = EffectCatalogUtils.FindEffectIndex("ChainVineOrbEffect");
+            _orbEffectIndex = EffectCatalog.FindEffectIndex("ChainVineOrbEffect");
             if (_orbEffectIndex == EffectIndex.Invalid)
             {
                 Log.Warning("Failed to find thorn orb effect index");
@@ -83,7 +83,7 @@ namespace ItemQualities.Orbs
                             victimObject = victimBody.gameObject,
                             damageMultiplier = 1f,
                             dotIndex = dotIndex,
-                            duration = BuffDuration
+                            duration = BuffDuration,
                         };
 
                         onArriveDot(inflictDotInfo);

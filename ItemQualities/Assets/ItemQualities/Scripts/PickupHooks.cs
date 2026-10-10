@@ -22,7 +22,7 @@ namespace ItemQualities
         {
             if (!il.Method.TryFindParameter<CharacterBody>(out ParameterDefinition bodyParameter))
             {
-                Log.Error("Failed to find body parameter");
+                Log.PatchError(il, "Failed to find body parameter");
                 return;
             }
 
@@ -41,7 +41,7 @@ namespace ItemQualities
                                x => x.MatchLdfld<PickupDef.GrantContext>(nameof(PickupDef.GrantContext.shouldNotify)),
                                x => x.MatchBrfalse(out _)))
             {
-                Log.Error("Failed to find patch location");
+                Log.PatchError(il, "Failed to find patch location");
                 return;
             }
 
