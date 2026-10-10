@@ -102,7 +102,7 @@ namespace ItemQualities.Items
 
         private static void OnServerCharacterExecuted(DamageReport report, float damage)
         {
-            if (report == null || !report.attackerBody || !report.victimBody)
+            if (report == null || !report.attackerBody || !report.attackerBody.inventory || !report.victimBody)
                 return;
 
             ItemQualityCounts deathMark = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DeathMark);
