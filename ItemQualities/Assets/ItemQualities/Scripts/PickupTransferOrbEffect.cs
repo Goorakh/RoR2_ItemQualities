@@ -5,6 +5,7 @@ using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
 using RoR2.Orbs;
+using RoR2.UI;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
 using UnityEngine;
@@ -108,7 +109,14 @@ namespace ItemQualities
                 spriteRenderer.color = color;
             }
 
-            iconSpriteRenderer.sprite = sprite;
+            if (iconSpriteRenderer.TryGetComponent(out AsyncSprite iconAsyncSprite))
+            {
+                iconAsyncSprite.SetAssetOrDirectReference(pickupDef);
+            }
+            else
+            {
+                iconSpriteRenderer.sprite = sprite;
+            }
         }
     }
 }

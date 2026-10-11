@@ -5,6 +5,12 @@
 
 * Bustling Fungus:
     * Fixed the bubble shield pushing you slightly when spawning.
+    
+<details>
+<summary>Fuctional Coupler:</summary>
+
+* Fixed equipment icons not showing when switching equipment in a drone.
+</details>
 
 ## 0.8.2 Changes:
 
