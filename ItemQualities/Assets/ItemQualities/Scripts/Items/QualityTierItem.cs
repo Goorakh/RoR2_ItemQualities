@@ -78,48 +78,66 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchLdarg(0),
-                               x => x.MatchLdfld<CharacterModel>(nameof(CharacterModel.propertyStorage)),
-                               x => x.MatchLdsfld(typeof(CommonShaderProperties), nameof(CommonShaderProperties._EliteIndex))))
+            /*
+             *  // this.propertyStorage.SetFloat(CommonShaderProperties._EliteIndex, (float)(this.shaderEliteRampIndex + 1));
+             *  IL_0201: ldarg.0
+             *  IL_0202: ldfld     class [UnityEngine.CoreModule]UnityEngine.MaterialPropertyBlock RoR2.CharacterModel::propertyStorage
+             *  IL_0207: ldsfld    int32 RoR2.CommonShaderProperties::_EliteIndex
+             *  IL_020C: ldarg.0
+             *  IL_020D: ldfld     int32 RoR2.CharacterModel::shaderEliteRampIndex
+             *  IL_0212: ldc.i4.1
+             *  IL_0213: add
+             *  IL_0214: conv.r4
+             *  IL_0215: callvirt  instance void [UnityEngine.CoreModule]UnityEngine.MaterialPropertyBlock::SetFloat(int32, float32)
+             */
+
+            int patchCount = 0;
+
+            while (c.TryFindNext(out ILCursor[] foundCursors,
+                                 x => x.MatchLdfld<CharacterModel>(nameof(CharacterModel.shaderEliteRampIndex)),
+                                 x => x.MatchCallOrCallvirt<MaterialPropertyBlock>(nameof(MaterialPropertyBlock.SetFloat))))
             {
-                Log.PatchError(il, "Failed to find patch start location");
-                return;
-            }
+                // IL_0215: callvirt  instance void [UnityEngine.CoreModule]UnityEngine.MaterialPropertyBlock::SetFloat(int32, float32)
+                c.Goto(foundCursors[1].Next, MoveType.After);
 
-            if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchCallOrCallvirt<MaterialPropertyBlock>(nameof(MaterialPropertyBlock.SetFloat))))
-            {
-                Log.PatchError(il, "Failed to find patch end location");
-                return;
-            }
+                c.Emit(OpCodes.Ldarg_0);
+                c.EmitDelegate<Action<CharacterModel>>(handleQualityRamp);
 
-            c.Emit(OpCodes.Ldarg_0);
-            c.EmitDelegate<Action<CharacterModel>>(handleQualityRamp);
-
-            static void handleQualityRamp(CharacterModel characterModel)
-            {
-                QualityTier qualityTier = QualityTier.None;
-                if (characterModel.body && characterModel.body.inventory)
+                static void handleQualityRamp(CharacterModel characterModel)
                 {
-                    qualityTier = characterModel.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier).HighestQuality;
-                }
-
-                MaterialPropertyBlock propertyStorage = characterModel.propertyStorage;
-
-                if (qualityTier != QualityTier.None)
-                {
-                    propertyStorage.SetTexture(ShaderProperties._EliteRamp, QualityCatalog.GetQualityTierDef(qualityTier).colorRampTexture);
-                    propertyStorage.SetFloat(CommonShaderProperties._EliteIndex, 1); // Force enable elite ramp
-                }
-                else
-                {
-                    Texture eliteRamp = propertyStorage.GetTexture(ShaderProperties._EliteRamp);
-                    if (QualityCatalog.IsQualityRampTexture(eliteRamp))
+                    QualityTier qualityTier = QualityTier.None;
+                    if (characterModel.body && characterModel.body.inventory)
                     {
-                        propertyStorage.SetTexture(ShaderProperties._EliteRamp, CommonTextures.DefaultElitesRamp);
+                        qualityTier = characterModel.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier).HighestQuality;
+                    }
+
+                    MaterialPropertyBlock propertyStorage = characterModel.propertyStorage;
+
+                    if (qualityTier != QualityTier.None)
+                    {
+                        propertyStorage.SetTexture(ShaderProperties._EliteRamp, QualityCatalog.GetQualityTierDef(qualityTier).colorRampTexture);
+                        propertyStorage.SetFloat(CommonShaderProperties._EliteIndex, 1); // Force enable elite ramp
+                    }
+                    else
+                    {
+                        Texture eliteRamp = propertyStorage.GetTexture(ShaderProperties._EliteRamp);
+                        if (QualityCatalog.IsQualityRampTexture(eliteRamp))
+                        {
+                            propertyStorage.SetTexture(ShaderProperties._EliteRamp, CommonTextures.DefaultElitesRamp);
+                        }
                     }
                 }
+
+                patchCount++;
+            }
+            
+            if (patchCount == 0)
+            {
+                Log.PatchError(il, "Failed to find patch location");
+            }
+            else
+            {
+                Log.Debug($"Found {patchCount} patch location(s)");
             }
         }
     }

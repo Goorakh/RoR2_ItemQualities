@@ -12,6 +12,8 @@
 * Bustling Fungus:
     * Fixed the bubble shield pushing you slightly when spawning.
 
+* Fixed characters with a quality tier modifier no longer having their colors changed.
+
 ## 0.8.2 Changes:
 
 * Updated for Hallowed Concepts.
