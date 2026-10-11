@@ -15,6 +15,8 @@
 * Tougher Times:
     * Fixed Enforcer's shield triggering block invincibility.
 
+* Fixed Dark Alchemy spell turning a quality item into 2 regular items.
+
 * Fixed characters with a quality tier modifier no longer having their colors changed.
 
 ## 0.8.2 Changes:
