@@ -252,17 +252,19 @@ namespace ItemQualities.Items
                     EquipmentLocation location = new EquipmentLocation { slot = slot, set = set };
                     EquipmentState equipmentState = Body.inventory.GetEquipment(location);
 
+                    EquipmentIndex droneEquipmentIndex = getDroneHeldEquipmentIndex(equipmentState.equipmentIndex);
+
                     ref EquipmentDroneSpawner droneSpawner = ref equipmentDroneSpawners[location];
 
                     bool hasSpawner = droneSpawner != null;
-                    bool shouldHaveSpawner = !equipmentState.isDisabled && equipmentState.equipmentIndex != EquipmentIndex.None && location != activeEquipmentLocation;
+                    bool shouldHaveSpawner = !equipmentState.isDisabled && droneEquipmentIndex != EquipmentIndex.None && location != activeEquipmentLocation;
 
                     if (hasSpawner != shouldHaveSpawner)
                     {
                         if (shouldHaveSpawner)
                         {
                             droneSpawner = new EquipmentDroneSpawner(Body.master, ExtraEquipment.QualityEquipmentDroneSpawnCard, 1f, _rng, 1);
-                            droneSpawner.SetHeldEquipmentServer(getHeldEquipmentIndex(equipmentState.equipmentIndex));
+                            droneSpawner.SetHeldEquipmentServer(droneEquipmentIndex);
                             droneSpawner.onDroneSpawnedServer += onDroneSpawnedServer;
                         }
                         else
@@ -363,7 +365,7 @@ namespace ItemQualities.Items
             }
         }
 
-        private EquipmentIndex getHeldEquipmentIndex(EquipmentIndex equipmentIndex)
+        private EquipmentIndex getDroneHeldEquipmentIndex(EquipmentIndex equipmentIndex)
         {
             QualityTier equipmentQualityTier = QualityCatalog.GetQualityTier(equipmentIndex);
             EquipmentQualityGroupIndex equipmentGroupIndex = QualityCatalog.FindEquipmentQualityGroupIndex(equipmentIndex);
@@ -417,12 +419,12 @@ namespace ItemQualities.Items
                 // Update held equipments after swap
                 if (prevDroneSpawner != null)
                 {
-                    prevDroneSpawner.SetHeldEquipmentServer(getHeldEquipmentIndex(Body.inventory.GetEquipment(previousEquipmentLocation).equipmentIndex));
+                    prevDroneSpawner.SetHeldEquipmentServer(getDroneHeldEquipmentIndex(Body.inventory.GetEquipment(previousEquipmentLocation).equipmentIndex));
                 }
 
                 if (activeDroneSpawner != null)
                 {
-                    activeDroneSpawner.SetHeldEquipmentServer(getHeldEquipmentIndex(Body.inventory.GetEquipment(activeEquipmentLocation).equipmentIndex));
+                    activeDroneSpawner.SetHeldEquipmentServer(getDroneHeldEquipmentIndex(Body.inventory.GetEquipment(activeEquipmentLocation).equipmentIndex));
                 }
             }
 
