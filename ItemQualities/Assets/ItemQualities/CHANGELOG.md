@@ -1,4 +1,4 @@
-## \<Next Version\> Changes:
+## 0.8.3 Changes:
 
 * Reworks (Click to reveal):
     * <details><summary>Rejuvenation Rack</summary> Store up healing, peridodically granting temporary invulnerability.</details>
