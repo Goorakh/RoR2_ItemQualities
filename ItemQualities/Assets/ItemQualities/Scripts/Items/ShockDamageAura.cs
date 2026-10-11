@@ -7,24 +7,122 @@ using RoR2;
 using RoR2.UI;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace ItemQualities.Items
 {
     internal static class ShockDamageAura
     {
-        [SystemInitializer]
+        private static ItemIndex[] _duplicateBlacklist = Array.Empty<ItemIndex>();
+
+        [SystemInitializer(typeof(ItemCatalog), typeof(ItemTierCatalog), typeof(QualityCatalog))]
         private static void Init()
         {
             IL.RoR2.Inventory.UpdateEffectiveItemStacks += UpdateEffectiveItemStacks;
             On.RoR2.Inventory.CalculateEffectiveItemStacks += CalculateEffectiveItemStacks;
             On.RoR2.Inventory.HandleInventoryChanged += HandleInventoryChanged;
-            On.RoR2.UI.ItemIcon.SetItemIndex_ItemIndex_int_float += SetItemIndex;
+            On.RoR2.UI.ItemIcon.SetItemIndex_SetItemIndexArgs += SetItemIndex;
+
+            // Build item duplication blacklist
+            {
+                using var _ = SetPool<ItemIndex>.RentCollection(out HashSet<ItemIndex> duplicateBlacklist);
+
+                void blacklistItemGroup(ItemQualityGroup itemGroup)
+                {
+                    for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+                    {
+                        ItemIndex itemIndex = itemGroup.GetItemIndex(qualityTier);
+                        if (itemIndex != ItemIndex.None)
+                        {
+                            duplicateBlacklist.Add(itemIndex);
+                        }
+                    }
+                }
+
+                void blacklistItemTag(ItemTag itemTag)
+                {
+                    duplicateBlacklist.UnionWith(ItemCatalog.GetItemsWithTag(itemTag));
+                }
+
+                void blacklistItemTier(ItemTier itemTier)
+                {
+                    for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
+                    {
+                        ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+
+                        if (itemDef && itemDef.tier == itemTier)
+                        {
+                            duplicateBlacklist.Add(itemIndex);
+                        }
+                    }
+                }
+
+                void blacklistWithoutTags(params ItemTag[] requiredTags)
+                {
+                    for (ItemIndex itemIndex = 0; (int)itemIndex < ItemCatalog.itemCount; itemIndex++)
+                    {
+                        ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
+
+                        bool hasAnyTag = false;
+                        foreach (ItemTag itemTag in requiredTags)
+                        {
+                            if (itemDef.ContainsTag(itemTag))
+                            {
+                                hasAnyTag = true;
+                                break;
+                            }
+                        }
+
+                        if (!hasAnyTag)
+                        {
+                            duplicateBlacklist.Add(itemIndex);
+                        }
+                    }
+                }
+
+                // Don't duplicate itself
+                blacklistItemGroup(ItemQualitiesContent.ItemQualityGroups.ShockDamageAura);
+
+                // These items only work as "real" items (permanent, temp), adding effective count won't do anything here.
+                // Add any consumable or key-like items here.
+                blacklistItemGroup(ItemQualitiesContent.ItemQualityGroups.TreasureCache);
+                blacklistItemGroup(ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid);
+                blacklistItemGroup(ItemQualitiesContent.ItemQualityGroups.HealingPotion);
+                blacklistItemGroup(ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth);
+                blacklistItemGroup(ItemQualitiesContent.ItemQualityGroups.LowerPricedChests);
+                blacklistItemGroup(ItemQualitiesContent.ItemQualityGroups.ExtraLife);
+                blacklistItemGroup(ItemQualitiesContent.ItemQualityGroups.ExtraLifeVoid);
+
+                // Don't duplicate scrap
+                blacklistItemTag(ItemTag.Scrap);
+
+                // Don't duplicate any objective-related items, these are likely used as a kind of "currency" or "key" and won't work when duplicated
+                blacklistItemTag(ItemTag.ObjectiveRelated);
+
+                // No consumed items
+                blacklistItemTier(ItemTier.NoTier);
+
+                // No pages (always a consumable item)
+                blacklistItemTier(ItemTier.Page);
+
+                // no
+                blacklistItemTier(ItemTier.Hex);
+
+                // If item cannot be temporary or rental, odds are it only works as permanent, so our fake item likely won't work either
+                blacklistWithoutTags(ItemTag.CanBeTemporary, ItemTag.CanBeRental);
+
+                if (duplicateBlacklist.Count > 0)
+                {
+                    _duplicateBlacklist = duplicateBlacklist.ToArray();
+                    Array.Sort(_duplicateBlacklist);
+                }
+            }
         }
 
-        private static void SetItemIndex(On.RoR2.UI.ItemIcon.orig_SetItemIndex_ItemIndex_int_float orig, ItemIcon self, ItemIndex newItemIndex, int newItemCount, float newDurationPercent)
+        private static void SetItemIndex(On.RoR2.UI.ItemIcon.orig_SetItemIndex_SetItemIndexArgs orig, ItemIcon self, ItemIcon.SetItemIndexArgs args)
         {
-            orig(self, newItemIndex, newItemCount, newDurationPercent);
+            orig(self, args);
 
             HUD hud = self.GetComponentInParent<HUD>();
             if (!hud || !hud.targetMaster)
@@ -33,7 +131,7 @@ namespace ItemQualities.Items
             if (!hud.targetMaster.TryGetComponentCached(out CharacterMasterExtraStatsTracker extraStats))
                 return;
 
-            if (extraStats.ConductorItemStacks.GetStackValue(newItemIndex) > 0)
+            if (extraStats.ConductorItemStacks.GetStackValue(args.newItemIndex) > 0)
             {
                 self.spriteAsNumberManager.SetSpriteColor(ColorCatalog.GetColor(ColorCatalog.ColorIndex.BossItem));
             }
@@ -113,32 +211,8 @@ namespace ItemQualities.Items
                 }
 
                 ItemIndex itemIndex = itemAcquisitionOrder[duplicateIndex];
-                ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                ItemQualityGroupIndex itemGroup = QualityCatalog.FindItemQualityGroupIndex(itemIndex);
 
-                if (itemGroup == ItemQualitiesContent.ItemQualityGroups.ShockDamageAura.GroupIndex || // Don't duplicate itself
-
-                    // These items only work as "real" items (permanent, temp), adding effective count won't do anything here.
-                    // Add any consumable or key-like items here.
-                    itemGroup == ItemQualitiesContent.ItemQualityGroups.TreasureCache.GroupIndex ||
-                    itemGroup == ItemQualitiesContent.ItemQualityGroups.TreasureCacheVoid.GroupIndex ||
-                    itemGroup == ItemQualitiesContent.ItemQualityGroups.HealingPotion.GroupIndex ||
-                    itemGroup == ItemQualitiesContent.ItemQualityGroups.TeleportOnLowHealth.GroupIndex ||
-                    itemGroup == ItemQualitiesContent.ItemQualityGroups.LowerPricedChests.GroupIndex ||
-                    itemGroup == ItemQualitiesContent.ItemQualityGroups.ExtraLife.GroupIndex ||
-                    itemGroup == ItemQualitiesContent.ItemQualityGroups.ExtraLifeVoid.GroupIndex ||
-
-                    // Don't duplicate scrap
-                    itemDef.ContainsTag(ItemTag.Scrap) ||
-
-                    // Don't duplicate any objective-related items, these are likely used as a kind of "currency" or "key" and won't work when duplicated
-                    itemDef.ContainsTag(ItemTag.ObjectiveRelated) ||
-
-                    // If item cannot be temporary or rental, odds are it only works as permanent, so our fake item likely won't work either
-                    (itemDef.DoesNotContainTag(ItemTag.CanBeTemporary) && itemDef.DoesNotContainTag(ItemTag.CanBeRental)) ||
-
-                    // No consumed items
-                    itemDef.tier == ItemTier.NoTier)
+                if (Array.BinarySearch(_duplicateBlacklist, itemIndex) >= 0)
                 {
                     itemBuffCount++;
                     continue;
