@@ -15,6 +15,9 @@
 * Tougher Times:
     * Fixed Enforcer's shield triggering block invincibility.
 
+* Warped Echo:
+    * Fixed duplicating Acolyte's Soul Jar on-kill effect.
+
 * Fixed Dark Alchemy spell turning a quality item into 2 regular items.
 
 * Fixed characters with a quality tier modifier no longer having their colors changed.
