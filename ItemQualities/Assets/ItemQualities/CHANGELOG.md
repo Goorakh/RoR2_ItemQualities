@@ -12,6 +12,9 @@
 * Bustling Fungus:
     * Fixed the bubble shield pushing you slightly when spawning.
 
+* Tougher Times:
+    * Fixed Enforcer's shield triggering block invincibility.
+
 * Fixed characters with a quality tier modifier no longer having their colors changed.
 
 ## 0.8.2 Changes:
