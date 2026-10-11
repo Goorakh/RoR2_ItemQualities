@@ -64,5 +64,19 @@ namespace ItemQualities.Utilities
                 }
             }
         }
+
+        public static class List<T>
+        {
+            public static readonly MethodInfo Add;
+
+            static List()
+            {
+                Add = typeof(System.Collections.Generic.List<T>).GetMethod(nameof(System.Collections.Generic.List<T>.Add), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, new Type[] { typeof(T) }, Array.Empty<ParameterModifier>());
+                if (Add == null)
+                {
+                    Log.Error($"Failed to find method List<{typeof(T).FullName}>.Add({typeof(T).FullName})");
+                }
+            }
+        }
     }
 }
