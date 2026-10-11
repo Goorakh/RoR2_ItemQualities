@@ -47,5 +47,19 @@ namespace ItemQualities.Utilities
                 public static readonly MethodInfo Method = GetComponent.Method?.MakeGenericMethod(typeof(T));
             }
         }
+
+        public static class WeightedSelection<T>
+        {
+            public static readonly MethodInfo Evaluate;
+
+            static WeightedSelection()
+            {
+                Evaluate = typeof(global::WeightedSelection<T>).GetMethod(nameof(global::WeightedSelection<T>.Evaluate), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, new Type[] { typeof(float) }, Array.Empty<ParameterModifier>());
+                if (Evaluate == null)
+                {
+                    Log.Error($"Failed to find method WeightedSelection<{typeof(T).FullName}>.Evaluate(float)");
+                }
+            }
+        }
     }
 }
