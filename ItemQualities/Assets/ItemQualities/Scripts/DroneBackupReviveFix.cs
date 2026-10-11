@@ -32,7 +32,7 @@ namespace ItemQualities
             if (!c.TryGotoNext(MoveType.AfterLabel,
                                x => x.MatchLdloc<CharacterMaster>(il, out droneMasterVar),
                                x => x.MatchCallOrCallvirt<Component>("get_" + nameof(Component.gameObject)),
-                               x => x.MatchCallOrCallvirt(CommonReflectionCache.AddComponent.OfType<MasterSuicideOnTimer>.Method)))
+                               x => x.MatchCallOrCallvirt(CommonReflectionCache.GameObject.AddComponent.OfType<MasterSuicideOnTimer>.Method)))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;
