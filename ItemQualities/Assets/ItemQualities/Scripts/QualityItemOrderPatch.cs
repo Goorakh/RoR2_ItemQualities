@@ -1,11 +1,11 @@
 ﻿using HG;
+using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using System;
 using System.Collections.Generic;
-using System.Reflection;
 
 namespace ItemQualities
 {
@@ -96,13 +96,6 @@ namespace ItemQualities
 
         private static void Inventory_SetItemAcquiredServer(ILContext il)
         {
-            MethodInfo itemIndexListAddMethod = typeof(List<ItemIndex>).GetMethod(nameof(List<ItemIndex>.Add));
-            if (itemIndexListAddMethod == null)
-            {
-                Log.PatchError(il, "Failed to find List<ItemIndex> index getter method");
-                return;
-            }
-
             ILCursor c = new ILCursor(il);
 
             int itemIndexParameterIndex = -1;
@@ -110,7 +103,7 @@ namespace ItemQualities
                                x => x.MatchLdarg(0),
                                x => x.MatchLdfld<Inventory>(nameof(Inventory.itemAcquisitionOrder)),
                                x => x.MatchLdarg(out itemIndexParameterIndex),
-                               x => x.MatchCallOrCallvirt(itemIndexListAddMethod)))
+                               x => x.MatchCallOrCallvirt(CommonReflectionCache.List<ItemIndex>.Add)))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;

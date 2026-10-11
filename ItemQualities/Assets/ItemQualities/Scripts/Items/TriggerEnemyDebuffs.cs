@@ -1,11 +1,10 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using RoR2;
 using RoR2.Orbs;
 using System;
-using System.Collections.Generic;
-using System.Reflection;
 using UnityEngine;
 
 namespace ItemQualities.Items
@@ -22,11 +21,9 @@ namespace ItemQualities.Items
         {
             ILCursor c = new ILCursor(il);
 
-            MethodInfo splitDebuffInfoListAddMethod = typeof(List<VineOrb.SplitDebuffInformation>).GetMethod(nameof(List<VineOrb.SplitDebuffInformation>.Add));
-
             if (!c.TryFindNext(out ILCursor[] foundCursors,
                                x => x.MatchCallOrCallvirt<CharacterBody>(nameof(CharacterBody.GetBuffCount)),
-                               x => x.MatchCallOrCallvirt(splitDebuffInfoListAddMethod)))
+                               x => x.MatchCallOrCallvirt(CommonReflectionCache.List<VineOrb.SplitDebuffInformation>.Add)))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;

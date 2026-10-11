@@ -110,7 +110,7 @@ namespace ItemQualities
             }
 
             if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchCallOrCallvirt(CommonReflectionCache.GetComponent.OfType<DelayBlast>.Method))
+                               x => x.MatchCallOrCallvirt(CommonReflectionCache.GameObject.GetComponent.OfType<DelayBlast>.Method))
                 || !c.IsBefore(afterExplodeOnDeathVoidLabel.Target))
             {
                 Log.PatchError(il, "Failed to find ExplodeOnDeathVoid DelayBlast patch location");

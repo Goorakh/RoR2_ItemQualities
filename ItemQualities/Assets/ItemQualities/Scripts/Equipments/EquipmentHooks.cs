@@ -110,8 +110,6 @@ namespace ItemQualities.Equipments
             // include quality
             IL.RoR2.HealthComponent.ProcParry += GenericPatchAllGetEquipmentQuality;
 
-            IL.EntityStates.RoboBallBoss.Weapon.DeployMinions.SummonMinion += GenericPatchAllGetEquipmentQuality;
-
             IL.RoR2.Stats.StatManager.ProcessCharacterUpdateEvents += GenericPatchAllGetEquipmentQuality;
 
             IL.RoR2.CraftableCatalog.IngredientSlotEntry.Validate_Inventory += GenericPatchAllGetEquipmentQuality;

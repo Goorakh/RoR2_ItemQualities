@@ -1,4 +1,5 @@
-﻿using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities;
+using ItemQualities.Utilities.Extensions;
 using Mono.Cecil;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
@@ -554,11 +555,9 @@ namespace ItemQualities
         private static void ShrineChanceBehavior_AddShrineStack(ILContext il)
         {
             ILCursor c = new ILCursor(il);
-
-            MethodInfo pickupIndexSelectionEvaluate = typeof(WeightedSelection<PickupIndex>).GetMethod(nameof(WeightedSelection<PickupIndex>.Evaluate));
-
+            
             if (!c.TryGotoNext(MoveType.After,
-                               x => x.MatchCallOrCallvirt(pickupIndexSelectionEvaluate)))
+                               x => x.MatchCallOrCallvirt(CommonReflectionCache.WeightedSelection<PickupIndex>.Evaluate)))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;

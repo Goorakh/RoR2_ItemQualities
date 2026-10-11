@@ -1,6 +1,30 @@
-## \<Next Version\> Changes:
+## 0.8.3 Changes:
 
-* Updated for HC
+* Reworks (Click to reveal):
+    * <details><summary>Rejuvenation Rack</summary> Store up healing, peridodically granting temporary invulnerability.</details>
+    
+<details>
+<summary>Fuctional Coupler:</summary>
+
+* Fixed equipment icons not showing when switching equipment in a drone.
+</details>
+
+* Bustling Fungus:
+    * Fixed the bubble shield pushing you slightly when spawning.
+
+* Tougher Times:
+    * Fixed Enforcer's shield triggering block invincibility.
+
+* Warped Echo:
+    * Fixed duplicating Acolyte's Soul Jar on-kill effect.
+
+* Fixed Dark Alchemy spell turning a quality item into 2 regular items.
+
+* Fixed characters with a quality tier modifier no longer having their colors changed.
+
+## 0.8.2 Changes:
+
+* Updated for Hallowed Concepts.
 
 * Reworks (Click to reveal):
     * <details><summary>Harvester's Scythe</summary> Charge a scythe attack by healing. Close range primary attacks swings the scythe.</details>

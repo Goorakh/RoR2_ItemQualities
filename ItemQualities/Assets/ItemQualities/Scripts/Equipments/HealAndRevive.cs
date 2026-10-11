@@ -173,7 +173,7 @@ namespace ItemQualities.Equipments
             if (c.TryGotoNext(MoveType.After,
                               x => x.MatchLdloc<CharacterMaster>(il, out revivedMasterVar),
                               x => x.MatchCallOrCallvirt<Component>("get_" + nameof(Component.gameObject)),
-                              x => x.MatchCallOrCallvirt(CommonReflectionCache.AddComponent.OfType<EquipmentSlot.HealAndReviveLock>.Method),
+                              x => x.MatchCallOrCallvirt(CommonReflectionCache.GameObject.AddComponent.OfType<EquipmentSlot.HealAndReviveLock>.Method),
                               x => x.MatchPop()))
             {
                 c.Emit(OpCodes.Ldarg_0);

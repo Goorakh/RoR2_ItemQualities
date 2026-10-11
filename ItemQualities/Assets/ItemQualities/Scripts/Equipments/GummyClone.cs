@@ -74,7 +74,7 @@ namespace ItemQualities.Equipments
             if (!c.TryGotoNext(MoveType.AfterLabel,
                                x => x.MatchLdarg(0),
                                x => x.MatchCallOrCallvirt<Component>("get_" + nameof(Component.gameObject)),
-                               x => x.MatchCallOrCallvirt(CommonReflectionCache.AddComponent.OfType<MasterSuicideOnTimer>.Method)))
+                               x => x.MatchCallOrCallvirt(CommonReflectionCache.GameObject.AddComponent.OfType<MasterSuicideOnTimer>.Method)))
             {
                 Log.PatchError(il, "Failed to find patch location");
                 return;

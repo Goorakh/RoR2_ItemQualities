@@ -6,45 +6,76 @@ namespace ItemQualities.Utilities
 {
     internal static class CommonReflectionCache
     {
-        public static class AddComponent
+        public static class GameObject
         {
-            public static readonly MethodInfo Method;
-
-            static AddComponent()
+            public static class AddComponent
             {
-                Method = typeof(GameObject).GetMethod(nameof(GameObject.AddComponent), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, Array.Empty<Type>(), Array.Empty<ParameterModifier>());
-                if (Method == null || !Method.IsGenericMethodDefinition)
+                public static readonly MethodInfo Method;
+
+                static AddComponent()
                 {
-                    Log.Error("Failed to find method GameObject.AddComponent<T>()");
-                    Method = null;
+                    Method = typeof(UnityEngine.GameObject).GetMethod(nameof(UnityEngine.GameObject.AddComponent), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, Array.Empty<Type>(), Array.Empty<ParameterModifier>());
+                    if (Method == null || !Method.IsGenericMethodDefinition)
+                    {
+                        Log.Error("Failed to find method GameObject.AddComponent<T>()");
+                        Method = null;
+                    }
+                }
+
+                public static class OfType<T>
+                    where T : Component
+                {
+                    public static readonly MethodInfo Method = AddComponent.Method?.MakeGenericMethod(typeof(T));
                 }
             }
 
-            public static class OfType<T>
-                where T : Component
+            public static class GetComponent
             {
-                public static readonly MethodInfo Method = AddComponent.Method?.MakeGenericMethod(typeof(T));
+                public static readonly MethodInfo Method;
+
+                static GetComponent()
+                {
+                    Method = typeof(UnityEngine.GameObject).GetMethod(nameof(UnityEngine.GameObject.GetComponent), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, Array.Empty<Type>(), Array.Empty<ParameterModifier>());
+                    if (Method == null || !Method.IsGenericMethodDefinition)
+                    {
+                        Log.Error("Failed to find method GameObject.GetComponent<T>()");
+                        Method = null;
+                    }
+                }
+
+                public static class OfType<T>
+                    where T : Component
+                {
+                    public static readonly MethodInfo Method = GetComponent.Method?.MakeGenericMethod(typeof(T));
+                }
             }
         }
 
-        public static class GetComponent
+        public static class WeightedSelection<T>
         {
-            public static readonly MethodInfo Method;
+            public static readonly MethodInfo Evaluate;
 
-            static GetComponent()
+            static WeightedSelection()
             {
-                Method = typeof(GameObject).GetMethod(nameof(GameObject.GetComponent), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, Array.Empty<Type>(), Array.Empty<ParameterModifier>());
-                if (Method == null || !Method.IsGenericMethodDefinition)
+                Evaluate = typeof(global::WeightedSelection<T>).GetMethod(nameof(global::WeightedSelection<T>.Evaluate), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, new Type[] { typeof(float) }, Array.Empty<ParameterModifier>());
+                if (Evaluate == null)
                 {
-                    Log.Error("Failed to find method GameObject.GetComponent<T>()");
-                    Method = null;
+                    Log.Error($"Failed to find method WeightedSelection<{typeof(T).FullName}>.Evaluate(float)");
                 }
             }
+        }
 
-            public static class OfType<T>
-                where T : Component
+        public static class List<T>
+        {
+            public static readonly MethodInfo Add;
+
+            static List()
             {
-                public static readonly MethodInfo Method = GetComponent.Method?.MakeGenericMethod(typeof(T));
+                Add = typeof(System.Collections.Generic.List<T>).GetMethod(nameof(System.Collections.Generic.List<T>.Add), BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly, null, new Type[] { typeof(T) }, Array.Empty<ParameterModifier>());
+                if (Add == null)
+                {
+                    Log.Error($"Failed to find method List<{typeof(T).FullName}>.Add({typeof(T).FullName})");
+                }
             }
         }
     }

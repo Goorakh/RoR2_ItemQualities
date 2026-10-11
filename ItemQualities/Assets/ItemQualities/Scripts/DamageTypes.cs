@@ -364,6 +364,51 @@ namespace ItemQualities
                     Log.PatchError(il, "Failed to find voidtouched death patch location");
                 }
             }
+
+            // Acolyte Wights
+            {
+                c.Goto(0);
+
+                /*
+                 *  // int num20 = victimBody.GetBuffCount(DLC4Content.Buffs.Haunted);
+                 *  IL_154C: ldloc.3
+                 *  IL_154D: ldsfld    class RoR2.BuffDef RoR2.DLC4Content/Buffs::Haunted
+                 *  IL_1552: callvirt  instance int32 RoR2.CharacterBody::GetBuffCount(class RoR2.BuffDef)
+                 *  IL_1557: stloc.s   V_59
+                 */
+
+                VariableDefinition hauntedCountVar = null;
+                if (c.TryGotoNext(MoveType.After,
+                                  x => x.MatchLdsfld(typeof(DLC4Content.Buffs), nameof(DLC4Content.Buffs.Haunted)))
+                    && c.TryGotoNext(MoveType.After,
+                                     x => x.MatchStloc<int>(il, out hauntedCountVar)))
+                {
+                    /*
+                     *  // if (num20 > 0)
+                     *  IL_157D: ldloc.s   V_59
+                     *  IL_157F: ldc.i4.0
+                     *  IL_1580: ble       IL_1605
+                     */
+
+                    ILLabel afterSpawnWightsLabel = null;
+                    if (c.TryGotoNext(MoveType.After,
+                                      x => x.MatchLdloc(hauntedCountVar),
+                                      x => x.MatchLdcI4(0),
+                                      x => x.MatchBle(out afterSpawnWightsLabel)))
+                    {
+                        emitCheckIsEchoed();
+                        c.Emit(OpCodes.Brtrue, afterSpawnWightsLabel);
+                    }
+                    else
+                    {
+                        Log.PatchError(il, "Failed to find Acolyte Wight branch patch location");
+                    }
+                }
+                else
+                {
+                    Log.PatchError(il, "Failed to find Acolyte Wight patch location");
+                }
+            }
         }
 
         private static void BombArtifactManager_OnServerCharacterDeath(On.RoR2.Artifacts.BombArtifactManager.orig_OnServerCharacterDeath orig, DamageReport damageReport)

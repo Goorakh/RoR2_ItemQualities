@@ -416,9 +416,16 @@ namespace ItemQualities
 
                     if (qualityString.Contains("{0}"))
                     {
-                        qualityString = string.Format(qualityString, language.GetLocalizedStringByToken(baseToken));
+                        try
+                        {
+                            qualityString = string.Format(qualityString, language.GetLocalizedStringByToken(baseToken));
 
-                        qualityLanguageDictionary[language.name][qualityToken] = qualityString;
+                            qualityLanguageDictionary[language.name][qualityToken] = qualityString;
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error($"Failed to format quality token {qualityToken} for language {language.name}: {e}");
+                        }
                     }
                 }
             }
