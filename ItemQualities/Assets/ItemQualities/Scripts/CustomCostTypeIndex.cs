@@ -301,11 +301,18 @@ namespace ItemQualities
                 bool hasTakenAnyRegeneratingScrap = false;
                 foreach (ItemIndex itemIndex in itemsToTake)
                 {
+                    if (result.HasTakenItem(itemIndex))
+                    {
+                        continue;
+                    }
+
+                    int countToTake = ListUtils.CountByValue(itemsToTake, itemIndex);
+
                     Inventory.ItemTransformation takeItemTransformation = new Inventory.ItemTransformation
                     {
                         originalItemIndex = itemIndex,
                         newItemIndex = ItemIndex.None,
-                        maxToTransform = 1,
+                        maxToTransform = countToTake,
                         forbidTempItems = true,
                         forbidRentItems = true,
                         transformationType = (ItemTransformationTypeIndex)CharacterMasterNotificationQueue.TransformationType.None,
