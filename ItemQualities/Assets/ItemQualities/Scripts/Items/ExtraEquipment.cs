@@ -172,12 +172,6 @@ namespace ItemQualities.Items
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.ExtraEquipment;
 
-        private static bool IsEquipmentDrone(MasterCatalog.MasterIndex masterIndex)
-        {
-            return masterIndex == MasterCatalog.FindMasterIndex("EquipmentDroneMaster") ||
-                   masterIndex == MasterCatalog.FindMasterIndex("QualityEquipmentDroneMaster");
-        }
-
         public int droneBoostEquipmentRechargeCount
         {
             get
