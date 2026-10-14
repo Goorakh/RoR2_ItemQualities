@@ -1,3 +1,11 @@
+## \<Next Version\> Changes:
+
+<details>
+<summary>Queen's Gland:</summary>
+
+* Fixed damage dealt to the Beetle Guard being dealt to you.
+</details>
+
 ## 0.8.3 Changes:
 
 * Reworks (Click to reveal):
