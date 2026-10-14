@@ -1,5 +1,6 @@
 ﻿using RoR2;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace ItemQualities.Utilities.Extensions
@@ -334,6 +335,44 @@ namespace ItemQualities.Utilities.Extensions
             {
                 ItemMask.Return(itemBlacklist);
             }
+        }
+
+        internal static int AddAsPickupsToListFixed(this in Inventory.ItemAndStackValues itemAndStackValues, List<UniquePickup> dest)
+        {
+            int prevCount = dest.Count;
+            int addedCount = itemAndStackValues.AddAsPickupsToList(dest);
+
+            bool containsRental = false;
+            for (int i = 0; i < addedCount; i++)
+            {
+                if (dest[prevCount + i].isRental)
+                {
+                    containsRental = true;
+                    break;
+                }
+            }
+
+            int rentalStacks = 0;
+
+            // In case this is fixed, don't double count rental items
+            if (!containsRental)
+            {
+                // AddAsPickupsToList ignores rental items.....
+
+                PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(itemAndStackValues.itemIndex);
+
+                rentalStacks = itemAndStackValues.stackValues.rentalStacks;
+                for (int i = 0; i < rentalStacks; i++)
+                {
+                    dest.Add(new UniquePickup
+                    {
+                        pickupIndex = pickupIndex,
+                        isRental = true,
+                    });
+                }
+            }
+
+            return addedCount + rentalStacks;
         }
     }
 }
