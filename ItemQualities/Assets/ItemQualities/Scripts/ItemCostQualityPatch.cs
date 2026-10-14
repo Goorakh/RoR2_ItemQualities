@@ -150,7 +150,7 @@ namespace ItemQualities
 
             foreach (Inventory.ItemAndStackValues itemStackValues in payCostResults.ItemStacksTaken)
             {
-                itemStackValues.AddAsPickupsToList(pickupsSpentOnPurchase);
+                itemStackValues.AddAsPickupsToListFixed(pickupsSpentOnPurchase);
             }
 
             foreach (EquipmentIndex equipmentIndex in payCostResults.EquipmentTaken)

@@ -126,7 +126,10 @@ namespace ItemQualities
                             prefab.GetComponent<GeodeController>() ||
                             prefab.GetComponent<ShrineColossusAccessBehavior>() ||
                             prefab.GetComponent<CharacterMaster>() ||
-                            prefab.GetComponent<CharacterBody>())
+                            prefab.GetComponent<CharacterBody>() ||
+                            prefab.GetComponent<ShrineCatastropheBehavior>() ||
+                            prefab.GetComponent<DreadFogController>() ||
+                            prefab.GetComponent<WakeTowerController>())
                         {
                             return false;
                         }
@@ -170,10 +173,16 @@ namespace ItemQualities
                     }
                 }
 
+                overrideCanCopy("DreadFogSafeZone", false);
                 overrideCanCopy("GauntletEntranceOrb", false);
                 overrideCanCopy("GoldshoresBeacon", false);
+                overrideCanCopy("ManifestFogVFX", false);
+                overrideCanCopy("MimicSpawner", false);
+                overrideCanCopy("PeaceFlower", false);
                 overrideCanCopy("ScavBackpack", false);
                 overrideCanCopy("ScavLunarBackpack", false);
+                overrideCanCopy("Signal Flare", false);
+                overrideCanCopy("SummonFogVFX", false);
                 overrideCanCopy("VoidCamp", false); // lol
                 overrideCanCopy("VoidRaidSafeWard", false);
             }

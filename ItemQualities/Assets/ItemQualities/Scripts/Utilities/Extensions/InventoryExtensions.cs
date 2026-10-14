@@ -1,5 +1,6 @@
 ﻿using RoR2;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace ItemQualities.Utilities.Extensions
@@ -280,19 +281,26 @@ namespace ItemQualities.Utilities.Extensions
             if (x <= 0)
                 return true;
 
-            int totalCount = 0;
-            foreach (ItemIndex itemIndex in inventory.itemAcquisitionOrder)
+            ItemMask itemBlacklist = ItemMask.Rent();
+            try
             {
-                ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                if (itemDef && itemDef.canRemove && !itemDef.ContainsTag(ItemTag.ObjectiveRelated) && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
+                foreach (ItemIndex itemIndex in inventory.permanentItemStacks.GetNonZeroIndicesSpan())
                 {
-                    totalCount += inventory.GetItemCountPermanent(itemIndex);
-                    if (totalCount >= x)
-                        return true;
-                }
-            }
+                    bool isValidItem =
+                        QualityCatalog.GetQualityTier(itemIndex) != QualityTier.None;
 
-            return false;
+                    if (!isValidItem || inventory.IsItemDisabled(itemIndex))
+                    {
+                        itemBlacklist.Add(itemIndex);
+                    }
+                }
+
+                return inventory.HasAtLeastXTotalRemovablePermanentItemsOfTier(itemTier, x, itemBlacklist);
+            }
+            finally
+            {
+                ItemMask.Return(itemBlacklist);
+            }
         }
 
         public static bool HasAtLeastXTotalNonQualityItemsOfTierForPurchase(this Inventory inventory, ItemTier itemTier, int x)
@@ -306,23 +314,65 @@ namespace ItemQualities.Utilities.Extensions
             if (x <= 0)
                 return true;
 
-            int totalCount = 0;
-            foreach (ItemIndex itemIndex in inventory.itemAcquisitionOrder)
+            ItemMask itemBlacklist = ItemMask.Rent();
+            try
             {
-                if (QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None ||
-                    QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
+                foreach (ItemIndex itemIndex in inventory.permanentItemStacks.GetNonZeroIndicesSpan())
                 {
-                    ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                    if (itemDef && itemDef.canRemove && !itemDef.ContainsTag(ItemTag.ObjectiveRelated) && itemDef.tier == itemTier)
+                    bool isValidItem =
+                        QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None ||
+                        QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex;
+
+                    if (!isValidItem || inventory.IsItemDisabled(itemIndex))
                     {
-                        totalCount += inventory.GetItemCountPermanent(itemIndex);
-                        if (totalCount >= x)
-                            return true;
+                        itemBlacklist.Add(itemIndex);
                     }
+                }
+
+                return inventory.HasAtLeastXTotalRemovablePermanentItemsOfTier(itemTier, x, itemBlacklist);
+            }
+            finally
+            {
+                ItemMask.Return(itemBlacklist);
+            }
+        }
+
+        internal static int AddAsPickupsToListFixed(this in Inventory.ItemAndStackValues itemAndStackValues, List<UniquePickup> dest)
+        {
+            int prevCount = dest.Count;
+            int addedCount = itemAndStackValues.AddAsPickupsToList(dest);
+
+            bool containsRental = false;
+            for (int i = 0; i < addedCount; i++)
+            {
+                if (dest[prevCount + i].isRental)
+                {
+                    containsRental = true;
+                    break;
                 }
             }
 
-            return false;
+            int rentalStacks = 0;
+
+            // In case this is fixed, don't double count rental items
+            if (!containsRental)
+            {
+                // AddAsPickupsToList ignores rental items.....
+
+                PickupIndex pickupIndex = PickupCatalog.FindPickupIndex(itemAndStackValues.itemIndex);
+
+                rentalStacks = itemAndStackValues.stackValues.rentalStacks;
+                for (int i = 0; i < rentalStacks; i++)
+                {
+                    dest.Add(new UniquePickup
+                    {
+                        pickupIndex = pickupIndex,
+                        isRental = true,
+                    });
+                }
+            }
+
+            return addedCount + rentalStacks;
         }
     }
 }

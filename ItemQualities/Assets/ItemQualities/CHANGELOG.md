@@ -1,3 +1,24 @@
+## 0.8.4 Changes:
+
+<details>
+<summary>Queen's Gland:</summary>
+
+* Fixed damage dealt to the Beetle Guard being dealt to you.
+</details>
+    
+<details>
+<summary>Fuctional Coupler:</summary>
+
+* Fixed an additional drone spawning after the item is removed.
+</details>
+
+* Executive Card:
+    * Fixed several new interactables unintentionally being copyable.
+
+* Fixed ethereal quality keys not giving a quality item when used to open a lockbox
+
+* Fixed quality item disabed by Hex of Loss causing Quality Printers to become free.
+
 ## 0.8.3 Changes:
 
 * Reworks (Click to reveal):

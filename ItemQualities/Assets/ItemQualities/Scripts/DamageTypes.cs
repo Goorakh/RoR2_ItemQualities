@@ -125,14 +125,14 @@ namespace ItemQualities
             ILCursor c = new ILCursor(il);
 
             if (!c.TryFindNext(out ILCursor[] foundCursors,
-                               x => x.MatchLdsfld(typeof(RoR2Content.Buffs), nameof(RoR2Content.Buffs.PermanentCurse)),
+                               x => x.MatchCallOrCallvirt<HealthComponent>("set_" + nameof(HealthComponent.Networkbarrier)),
                                x => x.MatchCallOrCallvirt<HealthComponent>(nameof(HealthComponent.TakeDamageForce))))
             {
                 Log.PatchError(il, "Failed to find patch end location");
                 return;
             }
 
-            c.Goto(foundCursors[0].Next, MoveType.Before); // ldsfld RoR2Content.Buffs.PermanentCurse
+            c.Goto(foundCursors[0].Next, MoveType.Before); // call HealthComponent.set_Networkbarrier
 
             ILLabel startHurtBlockLabel = default;
             if (!c.TryGotoPrev(x => x.MatchLdfld<DamageInfo>(nameof(DamageInfo.delayedDamageSecondHalf))) ||

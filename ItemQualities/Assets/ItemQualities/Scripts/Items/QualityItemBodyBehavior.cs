@@ -293,6 +293,7 @@ namespace ItemQualities.Items
                 }
                 else
                 {
+                    itemBehavior._stacks = itemCounts;
                     Destroy(itemBehavior);
                     itemBehavior = null;
 
