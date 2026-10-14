@@ -280,19 +280,26 @@ namespace ItemQualities.Utilities.Extensions
             if (x <= 0)
                 return true;
 
-            int totalCount = 0;
-            foreach (ItemIndex itemIndex in inventory.itemAcquisitionOrder)
+            ItemMask itemBlacklist = ItemMask.Rent();
+            try
             {
-                ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                if (itemDef && itemDef.canRemove && !itemDef.ContainsTag(ItemTag.ObjectiveRelated) && itemDef.tier == itemTier && QualityCatalog.GetQualityTier(itemIndex) > QualityTier.None)
+                foreach (ItemIndex itemIndex in inventory.permanentItemStacks.GetNonZeroIndicesSpan())
                 {
-                    totalCount += inventory.GetItemCountPermanent(itemIndex);
-                    if (totalCount >= x)
-                        return true;
-                }
-            }
+                    bool isValidItem =
+                        QualityCatalog.GetQualityTier(itemIndex) != QualityTier.None;
 
-            return false;
+                    if (!isValidItem || inventory.IsItemDisabled(itemIndex))
+                    {
+                        itemBlacklist.Add(itemIndex);
+                    }
+                }
+
+                return inventory.HasAtLeastXTotalRemovablePermanentItemsOfTier(itemTier, x, itemBlacklist);
+            }
+            finally
+            {
+                ItemMask.Return(itemBlacklist);
+            }
         }
 
         public static bool HasAtLeastXTotalNonQualityItemsOfTierForPurchase(this Inventory inventory, ItemTier itemTier, int x)
@@ -306,23 +313,27 @@ namespace ItemQualities.Utilities.Extensions
             if (x <= 0)
                 return true;
 
-            int totalCount = 0;
-            foreach (ItemIndex itemIndex in inventory.itemAcquisitionOrder)
+            ItemMask itemBlacklist = ItemMask.Rent();
+            try
             {
-                if (QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None ||
-                    QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex)
+                foreach (ItemIndex itemIndex in inventory.permanentItemStacks.GetNonZeroIndicesSpan())
                 {
-                    ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
-                    if (itemDef && itemDef.canRemove && !itemDef.ContainsTag(ItemTag.ObjectiveRelated) && itemDef.tier == itemTier)
+                    bool isValidItem =
+                        QualityCatalog.GetQualityTier(itemIndex) == QualityTier.None ||
+                        QualityCatalog.FindItemQualityGroupIndex(itemIndex) == ItemQualitiesContent.ItemQualityGroups.RegeneratingScrap.GroupIndex;
+
+                    if (!isValidItem || inventory.IsItemDisabled(itemIndex))
                     {
-                        totalCount += inventory.GetItemCountPermanent(itemIndex);
-                        if (totalCount >= x)
-                            return true;
+                        itemBlacklist.Add(itemIndex);
                     }
                 }
-            }
 
-            return false;
+                return inventory.HasAtLeastXTotalRemovablePermanentItemsOfTier(itemTier, x, itemBlacklist);
+            }
+            finally
+            {
+                ItemMask.Return(itemBlacklist);
+            }
         }
     }
 }

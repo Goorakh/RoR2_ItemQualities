@@ -6,6 +6,8 @@
 * Fixed damage dealt to the Beetle Guard being dealt to you.
 </details>
 
+* Fixed quality item disabed by Hex of Loss causing Quality Printers to become free.
+
 ## 0.8.3 Changes:
 
 * Reworks (Click to reveal):

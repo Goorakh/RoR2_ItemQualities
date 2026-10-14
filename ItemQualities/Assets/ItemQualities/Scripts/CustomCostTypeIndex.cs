@@ -153,7 +153,7 @@ namespace ItemQualities
                         continue;
 
                     int itemCount = context.activatorInventory.GetItemCountPermanent(itemIndex);
-                    if (itemCount <= 0)
+                    if (itemCount <= 0 || context.activatorInventory.IsItemDisabled(itemIndex))
                         continue;
 
                     ItemDef itemDef = ItemCatalog.GetItemDef(itemIndex);
