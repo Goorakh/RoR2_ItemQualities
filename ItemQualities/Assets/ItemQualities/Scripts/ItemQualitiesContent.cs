@@ -960,8 +960,6 @@ namespace ItemQualities
 
             public static GameObject MinorConstructBubbleEffect;
 
-            public static GameObject PickupTransferOrbEffect;
-
             public static GameObject ChemicalBurnEffect;
 
             public static GameObject HealingPotionOrbEffect;

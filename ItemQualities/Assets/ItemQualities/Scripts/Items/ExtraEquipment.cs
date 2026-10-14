@@ -172,6 +172,18 @@ namespace ItemQualities.Items
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.ExtraEquipment;
 
+        private static EffectIndex pickupTransferOrbEffectIndex = EffectIndex.Invalid;
+
+        [SystemInitializer(typeof(EffectCatalog))]
+        private static void Init()
+        {
+            pickupTransferOrbEffectIndex = EffectCatalog.FindEffectIndex("PickupTransferOrbEffect");
+            if (pickupTransferOrbEffectIndex == EffectIndex.Invalid)
+            {
+                Log.Error("Failed to find PickupTransferOrbEffect EffectIndex");
+            }
+        }
+
         public int droneBoostEquipmentRechargeCount
         {
             get
@@ -570,7 +582,7 @@ namespace ItemQualities.Items
 
                     if (newEquipmentIndex != EquipmentIndex.None)
                     {
-                        if (droneMaster.TryGetBody(out CharacterBody droneBody) && ItemQualitiesContent.Prefabs.PickupTransferOrbEffect && ownerBody)
+                        if (pickupTransferOrbEffectIndex != EffectIndex.Invalid && droneMaster.TryGetBody(out CharacterBody droneBody) && ownerBody)
                         {
                             const float TransferOrbEffectDuration = 1f;
 
@@ -590,7 +602,7 @@ namespace ItemQualities.Items
                                 effectData.SetNetworkedObjectReference(droneBody.gameObject);
                             }
 
-                            EffectManager.SpawnEffect(ItemQualitiesContent.Prefabs.PickupTransferOrbEffect, effectData, true);
+                            EffectManager.SpawnEffect(pickupTransferOrbEffectIndex, effectData, true);
                         }
                     }
                 }
