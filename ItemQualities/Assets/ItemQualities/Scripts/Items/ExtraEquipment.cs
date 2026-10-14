@@ -208,6 +208,8 @@ namespace ItemQualities.Items
 
             if (Body && Body.inventory)
             {
+                previousEquipmentLocation = Body.inventory.activeEquipmentLocation;
+
                 Body.inventory.onInventoryChanged += onInventoryChanged;
                 Body.inventory.onActiveEquipmentLocationChanged += onActiveEquipmentLocationChanged;
             }
@@ -227,16 +229,26 @@ namespace ItemQualities.Items
 
             // Will invoke onEquipmentLost event for all spawners
             equipmentDroneSpawners.Resize(0, 0);
+            equipmentDroneSpawners.slotCount = 0;
+
+            equipmentDroneSpawners.onEquipmentLost -= onEquipmentDroneSpawnerLost;
         }
 
         private void onInventoryChanged()
         {
+            // onInventoryChanged listener is removed from a onInventoryChanged call when we remove this item behavior. So it still ends up being called 1 extra time when disabled. We do not want this.
+            if (!enabled)
+            {
+                return;
+            }
+
             ref readonly ItemQualityCounts stacks = ref Stacks;
 
             uint slotCount = Body.inventory.equipmentSlotCount;
             uint setCount = Body.inventory.accessibleEquipmentSetCount;
 
             equipmentDroneSpawners.Resize(slotCount, setCount);
+            equipmentDroneSpawners.slotCount = slotCount;
 
             EquipmentLocation activeEquipmentLocation = Body.inventory.activeEquipmentLocation;
 
@@ -244,6 +256,8 @@ namespace ItemQualities.Items
 
             ItemIndex previousQualityTierItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(previousQualityTier);
             ItemIndex qualityTierItemIndex = ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(qualityTier);
+
+            Log.Debug($"Inventory change, new stacks is {stacks}, HighestQuality: {previousQualityTier} -> {qualityTier}");
 
             for (uint slot = 0; slot < slotCount; slot++)
             {
@@ -257,7 +271,7 @@ namespace ItemQualities.Items
                     ref EquipmentDroneSpawner droneSpawner = ref equipmentDroneSpawners[location];
 
                     bool hasSpawner = droneSpawner != null;
-                    bool shouldHaveSpawner = !equipmentState.isDisabled && droneEquipmentIndex != EquipmentIndex.None && location != activeEquipmentLocation;
+                    bool shouldHaveSpawner = !equipmentState.isDisabled && droneEquipmentIndex != EquipmentIndex.None && location != activeEquipmentLocation && qualityTier != QualityTier.None;
 
                     if (hasSpawner != shouldHaveSpawner)
                     {
@@ -266,11 +280,15 @@ namespace ItemQualities.Items
                             droneSpawner = new EquipmentDroneSpawner(Body.master, ExtraEquipment.QualityEquipmentDroneSpawnCard, 1f, _rng, 1);
                             droneSpawner.SetHeldEquipmentServer(droneEquipmentIndex);
                             droneSpawner.onDroneSpawnedServer += onDroneSpawnedServer;
+
+                            Log.Debug($"Created drone spawner at {location} ({EquipmentCatalog.GetEquipmentDef(droneEquipmentIndex)})");
                         }
                         else
                         {
                             onEquipmentDroneSpawnerLost(droneSpawner, location);
                             droneSpawner = null;
+
+                            Log.Debug($"Removed drone spawner at {location} ({EquipmentCatalog.GetEquipmentDef(droneEquipmentIndex)})");
                         }
 
                         hasSpawner = shouldHaveSpawner;
@@ -352,6 +370,8 @@ namespace ItemQualities.Items
 
         private void onEquipmentDroneSpawnerLost(in EquipmentDroneSpawner droneSpawner, in EquipmentLocation location)
         {
+            Log.Debug($"Drone spawner lost at {location}");
+
             if (droneSpawner != null)
             {
                 droneSpawner.onDroneSpawnedServer -= onDroneSpawnedServer;
@@ -409,23 +429,28 @@ namespace ItemQualities.Items
                 return;
             }
 
-            if (previousEquipmentLocation.isValid)
+            if (previousEquipmentLocation.set < equipmentDroneSpawners.setCount && previousEquipmentLocation.slot < equipmentDroneSpawners.slotCount)
             {
+                EquipmentIndex prevLocationEquipmentIndex = getDroneHeldEquipmentIndex(Body.inventory.GetEquipment(previousEquipmentLocation).equipmentIndex);
+                EquipmentIndex activeLocationEquipmentIndex = getDroneHeldEquipmentIndex(Body.inventory.GetEquipment(activeEquipmentLocation).equipmentIndex);
+
                 ref EquipmentDroneSpawner prevDroneSpawner = ref equipmentDroneSpawners[previousEquipmentLocation];
                 ref EquipmentDroneSpawner activeDroneSpawner = ref equipmentDroneSpawners[activeEquipmentLocation];
-
-                (prevDroneSpawner, activeDroneSpawner) = (activeDroneSpawner, prevDroneSpawner);
 
                 // Update held equipments after swap
                 if (prevDroneSpawner != null)
                 {
-                    prevDroneSpawner.SetHeldEquipmentServer(getDroneHeldEquipmentIndex(Body.inventory.GetEquipment(previousEquipmentLocation).equipmentIndex));
+                    prevDroneSpawner.SetHeldEquipmentServer(activeLocationEquipmentIndex);
                 }
 
                 if (activeDroneSpawner != null)
                 {
-                    activeDroneSpawner.SetHeldEquipmentServer(getDroneHeldEquipmentIndex(Body.inventory.GetEquipment(activeEquipmentLocation).equipmentIndex));
+                    activeDroneSpawner.SetHeldEquipmentServer(prevLocationEquipmentIndex);
                 }
+
+                (prevDroneSpawner, activeDroneSpawner) = (activeDroneSpawner, prevDroneSpawner);
+
+                Log.Debug($"Swapped drone equipments: {previousEquipmentLocation} ({EquipmentCatalog.GetEquipmentDef(prevLocationEquipmentIndex)}) <-> {activeEquipmentLocation} ({EquipmentCatalog.GetEquipmentDef(activeLocationEquipmentIndex)})");
             }
 
             previousEquipmentLocation = activeEquipmentLocation;

@@ -5,6 +5,12 @@
 
 * Fixed damage dealt to the Beetle Guard being dealt to you.
 </details>
+    
+<details>
+<summary>Fuctional Coupler:</summary>
+
+* Fixed an additional drone spawning after the item is removed.
+</details>
 
 * Executive Card:
     * Fixed several new interactables unintentionally being copyable.
