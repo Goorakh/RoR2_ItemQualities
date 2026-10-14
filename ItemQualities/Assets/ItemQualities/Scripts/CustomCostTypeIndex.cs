@@ -57,15 +57,15 @@ namespace ItemQualities
             payCost = payCostQualityItems
         };
 
-        public static CostTypeIndex WhiteItemQuality { get; private set; } = CostTypeIndex.None;
+        public static CostTypeIndex WhiteItemQuality => _whiteItemQualityCostDef.costTypeIndex;
 
-        public static CostTypeIndex GreenItemQuality { get; private set; } = CostTypeIndex.None;
+        public static CostTypeIndex GreenItemQuality => _greenItemQualityCostDef.costTypeIndex;
 
-        public static CostTypeIndex RedItemQuality { get; private set; } = CostTypeIndex.None;
+        public static CostTypeIndex RedItemQuality => _redItemQualityCostDef.costTypeIndex;
 
-        public static CostTypeIndex BossItemQuality { get; private set; } = CostTypeIndex.None;
+        public static CostTypeIndex BossItemQuality => _bossItemQualityCostDef.costTypeIndex;
 
-        [SystemInitializer(typeof(CostTypeCatalog), typeof(EffectCatalog), typeof(NetworkSoundEventCatalog))]
+        [SystemInitializer(typeof(EffectCatalog), typeof(NetworkSoundEventCatalog))]
         private static void Init()
         {
             _regeneratingScrapDisplayExplosionEffectIndex = EffectCatalog.FindEffectIndex("RegeneratingScrapExplosionDisplay");
@@ -84,27 +84,6 @@ namespace ItemQualities
             if (_regeneratingScrapProcSoundEventIndex == NetworkSoundEventIndex.Invalid)
             {
                 Log.Warning("Failed to find regenerating scrap proc sound event index");
-            }
-
-            for (CostTypeIndex costTypeIndex = 0; (int)costTypeIndex < CostTypeCatalog.costTypeCount; costTypeIndex++)
-            {
-                CostTypeDef costTypeDef = CostTypeCatalog.GetCostTypeDef(costTypeIndex);
-                if (costTypeDef == _whiteItemQualityCostDef)
-                {
-                    WhiteItemQuality = costTypeIndex;
-                }
-                else if (costTypeDef == _greenItemQualityCostDef)
-                {
-                    GreenItemQuality = costTypeIndex;
-                }
-                else if (costTypeDef == _redItemQualityCostDef)
-                {
-                    RedItemQuality = costTypeIndex;
-                }
-                else if (costTypeDef == _bossItemQualityCostDef)
-                {
-                    BossItemQuality = costTypeIndex;
-                }
             }
         }
 

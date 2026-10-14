@@ -10,7 +10,7 @@ namespace ItemQualities
 {
     internal static class CustomInteractableHandler
     {
-        [SystemInitializer(typeof(CustomCostTypeIndex))]
+        [SystemInitializer(typeof(CostTypeCatalog))]
         private static void Init()
         {
             On.RoR2.ClassicStageInfo.RebuildCards += ClassicStageInfo_RebuildCards;

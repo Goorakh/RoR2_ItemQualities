@@ -13,7 +13,7 @@ namespace ItemQualities
 
         private static int[] _recyclableInteractableIndices = Array.Empty<int>();
 
-        [SystemInitializer(typeof(EffectCatalog))]
+        [SystemInitializer(typeof(EffectCatalog), typeof(CostTypeCatalog))]
         private static void Init()
         {
             _recycleEffectIndex = EffectCatalog.FindEffectIndex("OmniRecycleEffect");
