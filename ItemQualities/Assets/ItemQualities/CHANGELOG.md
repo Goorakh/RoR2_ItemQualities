@@ -1,3 +1,8 @@
+## \<Next Version\> Changes:
+
+* Delicate Watch:
+    * No longer counts self damage, environment damage (such as Blood Pillars), or damage blocked by Enforcer's shield.
+
 ## 0.8.4 Changes:
 
 <details>
