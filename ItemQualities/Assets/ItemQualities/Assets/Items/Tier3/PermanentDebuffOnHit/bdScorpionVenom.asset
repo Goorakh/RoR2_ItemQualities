@@ -16,6 +16,11 @@ MonoBehaviour:
   iconSprite: {fileID: 21300000, guid: 54ec89a3c857f9c4fb14755ee5578f0a, type: 3}
   buffColor: {r: 1, g: 1, b: 1, a: 1}
   canStack: 1
+  itemAssociation:
+  - {fileID: 11400000, guid: 635bb1de943df0d489733375d9dc6555, type: 2}
+  - {fileID: 11400000, guid: 701cecfd9f32ca64d8bd07e9c9c70083, type: 2}
+  - {fileID: 11400000, guid: 68112c55fe3f59c4e94f4d710802a407, type: 2}
+  - {fileID: 11400000, guid: 47ca1cf7cc4222a458133b6b0a9330c4, type: 2}
   eliteDef: {fileID: 0}
   isDebuff: 1
   isDOT: 1
@@ -24,4 +29,5 @@ MonoBehaviour:
   isHidden: 0
   flags: 0
   stackingDisplayMethod: 0
+  displayOffset: 0
   startSfx: {fileID: 0}
