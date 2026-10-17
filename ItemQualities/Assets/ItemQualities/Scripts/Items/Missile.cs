@@ -12,6 +12,7 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
@@ -61,6 +62,7 @@ namespace ItemQualities.Items
 
             ProjectileController missileBigProjectileController = missileBigPrefab.GetComponent<ProjectileController>();
             missileBigProjectileController.ghostPrefab = missileBigGhost;
+            missileBigProjectileController.ghostPrefabAddress = new AssetReferenceT<GameObject>(string.Empty);
 
             ProjectileSingleTargetImpact projectileSingleTargetImpact = missileBigPrefab.GetComponent<ProjectileSingleTargetImpact>();
             ProjectileImpactExplosion projectileImpactExplosion = missileBigPrefab.AddComponent<ProjectileImpactExplosion>();

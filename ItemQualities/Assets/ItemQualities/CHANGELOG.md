@@ -3,6 +3,8 @@
 * Delicate Watch:
     * No longer counts self damage, environment damage (such as Blood Pillars), or damage blocked by Enforcer's shield.
 
+* Fixed quality Fireworks, Preon, Molotov, and AtG missiles not scaling visually.
+
 ## 0.8.4 Changes:
 
 <details>

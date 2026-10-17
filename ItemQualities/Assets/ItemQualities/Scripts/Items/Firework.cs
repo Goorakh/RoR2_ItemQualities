@@ -11,6 +11,7 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Items
@@ -63,6 +64,7 @@ namespace ItemQualities.Items
 
             ProjectileController missileBigProjectileController = fireworkBigPrefab.GetComponent<ProjectileController>();
             missileBigProjectileController.ghostPrefab = fireworkBigGhost;
+            missileBigProjectileController.ghostPrefabAddress = new AssetReferenceT<GameObject>(string.Empty);
 
             MissileController fireworkBigMissileController = fireworkBigPrefab.GetComponent<MissileController>();
             fireworkBigMissileController.giveupTimer = 20f;
