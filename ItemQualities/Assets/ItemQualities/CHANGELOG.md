@@ -3,6 +3,9 @@
 * Delicate Watch:
     * No longer counts self damage, environment damage (such as Blood Pillars), or damage blocked by Enforcer's shield.
 
+* Warbanner:
+    * Fixed Warbanners spawned by Enforcer's Rally Point not having their quality effect applied.
+
 * Fixed quality Fireworks, Preon, Molotov, and AtG missiles not scaling visually.
 
 ## 0.8.4 Changes:
