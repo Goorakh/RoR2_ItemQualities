@@ -1,5 +1,11 @@
 ## \<Next Version\> Changes:
 
+<details>
+<summary>Queen's Gland:</summary>
+
+* Fixed knockback from False Son (boss) being applied to you when he damages a Beetle Guard.
+</details>
+
 * Delicate Watch:
     * No longer counts self damage, environment damage (such as Blood Pillars), or damage blocked by Enforcer's shield.
 

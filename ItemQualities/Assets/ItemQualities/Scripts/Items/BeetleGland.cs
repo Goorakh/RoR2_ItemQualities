@@ -118,13 +118,18 @@ namespace ItemQualities.Items
 
                     repeatDamageInfo.damageType = new DamageTypeCombo(DamageType.BypassArmor | DamageType.BypassBlock | DamageType.BypassOneShotProtection | DamageType.Silent, DamageTypeExtended.BypassDamageCalculations, DamageSource.NoneSpecified);
                     repeatDamageInfo.damageType.AddModdedDamageType(DamageTypes.ProcOnly);
+                    repeatDamageInfo.physForceFlags = PhysForceFlags.None;
+                    repeatDamageInfo.rejected = false;
+                    repeatDamageInfo.dotIndex = DotController.DotIndex.None;
 
                     repeatDamageInfo.delayedDamageSecondHalf = true;
                     repeatDamageInfo.firstHitOfDelayedDamageSecondHalf = false;
 
                     repeatDamageInfo.position = transform.InverseTransformPoint(repeatDamageInfo.position);
-
+                    
                     repeatDamageInfo.force = Vector3.zero;
+
+                    repeatDamageInfo.inflictedHurtbox = ownerBody.mainHurtBox;
 
                     repeatDamageInfos[i] = repeatDamageInfo;
                 }
