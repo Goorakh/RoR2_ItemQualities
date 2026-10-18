@@ -12,6 +12,9 @@
 * Added quality Empathy Cores to the AI blacklist.
 </details>
 
+* Substandard Duplicator:
+    * Fixed Hexes and Pages being given to drones.
+
 * Delicate Watch:
     * No longer counts self damage, environment damage (such as Blood Pillars), or damage blocked by Enforcer's shield.
 

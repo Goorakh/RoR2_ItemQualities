@@ -78,6 +78,13 @@ namespace ItemQualities.Items
                 return false;
             }
 
+            switch (itemDef.tier)
+            {
+                case ItemTier.Page:
+                case ItemTier.Hex:
+                    return false;
+            }
+
             if (Array.BinarySearch(_allyShareBlacklist, itemIndex) >= 0)
                 return false;
 
