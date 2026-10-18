@@ -39,7 +39,7 @@
 
 * Fixed ethereal quality keys not giving a quality item when used to open a lockbox
 
-* Fixed quality item disabed by Hex of Loss causing Quality Printers to become free.
+* Fixed quality items disabed by Hex of Loss causing Quality Printers to become free.
 
 ## 0.8.3 Changes:
 
