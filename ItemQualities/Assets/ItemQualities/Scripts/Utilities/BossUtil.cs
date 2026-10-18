@@ -7,6 +7,7 @@ namespace ItemQualities.Utilities
     internal static class BossUtil
     {
         private static SceneIndex _solusWebSceneIndex = SceneIndex.Invalid;
+        private static SceneIndex _ultimaSceneIndex = SceneIndex.Invalid;
 
         [SystemInitializer(typeof(SceneCatalog))]
         private static void Init()
@@ -16,29 +17,61 @@ namespace ItemQualities.Utilities
             {
                 Log.Warning("Failed to find solusweb scene index");
             }
+
+            _ultimaSceneIndex = SceneCatalog.FindSceneIndex("ultima");
+            if (_ultimaSceneIndex == SceneIndex.Invalid)
+            {
+                Log.Warning("Failed to find ultima SceneIndex");
+            }
         }
 
         public static bool IsNonFinalPhase(BossGroup bossGroup)
         {
-            // TODO: Find a better way to do this
-            switch (bossGroup.name)
+            SceneDef currentSceneDef = SceneCatalog.currentSceneDef;
+            SceneIndex currentSceneIndex = currentSceneDef ? currentSceneDef.sceneDefIndex : SceneIndex.Invalid;
+            if (currentSceneIndex == SceneIndex.Invalid)
             {
-                // False Son, only phase 3
-                case "FSBF Phase1":
-                case "FSBF Phase2":
-
-                // Mithrix, only phase 4
-                case "BrotherEncounter, Phase 1":
-                case "BrotherEncounter, Phase 2":
-                case "BrotherEncounter, Phase 3":
-
-                // Voidling, only phase 3
-                case "VoidRaidCrabCombatEncounter Phase 1":
-                case "VoidRaidCrabCombatEncounter Phase 2":
-                    return true;
-                default:
-                    return false;
+                return false;
             }
+
+            string bossGroupName = bossGroup.name;
+
+            // TODO: Find a better way to do this
+            if (currentSceneIndex == _ultimaSceneIndex)
+            {
+                switch (bossGroupName)
+                {
+                    // Providence, phase 4 is final
+                    case "Phase1":
+                    case "Phase2":
+                    case "Phase3":
+                        return true;
+                }
+            }
+            else
+            {
+                switch (bossGroupName)
+                {
+                    // False Son, phase 3 is final
+                    case "FSBF Phase1":
+                    case "FSBF Phase2":
+
+                    // Mithrix, phase 4 is final
+                    case "BrotherEncounter, Phase 1":
+                    case "BrotherEncounter, Phase 2":
+                    case "BrotherEncounter, Phase 3":
+
+                    // Voidling, phase 3 is final
+                    case "VoidRaidCrabCombatEncounter Phase 1":
+                    case "VoidRaidCrabCombatEncounter Phase 2":
+
+                    // Reaper, phase 2 is final
+                    case "ReaperFirstPhaseSpawner":
+                        return true;
+                }
+            }
+
+            return false;
         }
 
         public static Vector3 GetBestRewardPosition(BossGroup bossGroup)
