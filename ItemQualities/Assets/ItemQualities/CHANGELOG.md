@@ -6,6 +6,12 @@
 * Fixed knockback from False Son (boss) being applied to you when he damages a Beetle Guard.
 </details>
 
+<details>
+<summary>Empathy Cores:</summary>
+
+* Added quality Empathy Cores to the AI blacklist.
+</details>
+
 * Delicate Watch:
     * No longer counts self damage, environment damage (such as Blood Pillars), or damage blocked by Enforcer's shield.
 
