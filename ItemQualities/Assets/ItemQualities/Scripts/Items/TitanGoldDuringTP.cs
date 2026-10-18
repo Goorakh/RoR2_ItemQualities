@@ -228,7 +228,7 @@ namespace ItemQualities.Items
                                          sceneExitController.destinationScene &&
                                          sceneExitController.destinationScene.sceneDefIndex == SceneCatalog.FindSceneIndex("moon2");
 
-                // Allow spawning on the Primordial Teleporter
+                // Allow spawning on the Primordial Teleporter (but only if its set to the moon)
                 if (!isLunarTeleporter)
                 {
                     return;
@@ -246,6 +246,19 @@ namespace ItemQualities.Items
                 // Spawn is handled manually for solus wing
                 if (currentSceneIndex == _solutationalHauntSceneIndex && bossGroup.name == "Boss Group CombatSquad")
                     return;
+            }
+
+            // Don't spawn for champrush waves, only for the final reaper kill
+            ChampRushWaveController champrushWaveController = bossGroup.GetComponentInParent<ChampRushWaveController>();
+            if (champrushWaveController && champrushWaveController.combatSquads.Contains(bossGroup.combatSquad))
+            {
+                return;
+            }
+
+            // Don't spawn for champrush waves, only for the final reaper kill
+            if (bossGroup.GetComponent<ChamprushQuadrantController>())
+            {
+                return;
             }
 
             // Ignore all boss groups that aren't the final phase
