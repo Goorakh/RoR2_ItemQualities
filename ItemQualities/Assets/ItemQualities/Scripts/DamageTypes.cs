@@ -57,6 +57,22 @@ namespace ItemQualities
             On.RoR2.GlobalDeathRewards.OnCharacterDeathGlobal += GlobalDeathRewards_OnCharacterDeathGlobal;
 
             On.RoR2.Stats.StatManager.OnCharacterDeath += StatManager_OnCharacterDeath;
+
+            On.EntityStates.FalseSonBoss.FissureSlam.OnDamageDealt += FissureSlam_OnDamageDealt;
+            On.EntityStates.FalseSonBoss.SwatAwayPlayersSlam.OnDamageDealt += SwatAwayPlayersSlam_OnDamageDealt;
+            On.EntityStates.Lynx2Monster.FrenziedUpsetPoundSlamState.HandleServerDamageDealt += FrenziedUpsetPoundSlamState_HandleServerDamageDealt;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool isProcOnly(DamageReport damageReport)
+        {
+            return damageReport != null && isProcOnly(damageReport.damageInfo);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static bool isProcOnly(DamageInfo damageInfo)
+        {
+            return damageInfo != null && damageInfo.damageType.HasModdedDamageType(ProcOnly);
         }
 
         private static void onServerDamageDealt(DamageReport damageReport)
@@ -472,6 +488,30 @@ namespace ItemQualities
             if (!isEchoed(damageReport))
             {
                 orig(damageReport);
+            }
+        }
+
+        private static void FissureSlam_OnDamageDealt(On.EntityStates.FalseSonBoss.FissureSlam.orig_OnDamageDealt orig, EntityStates.FalseSonBoss.FissureSlam self, DamageReport damageReport)
+        {
+            if (!isProcOnly(damageReport))
+            {
+                orig(self, damageReport);
+            }
+        }
+
+        private static void SwatAwayPlayersSlam_OnDamageDealt(On.EntityStates.FalseSonBoss.SwatAwayPlayersSlam.orig_OnDamageDealt orig, EntityStates.FalseSonBoss.SwatAwayPlayersSlam self, DamageReport damageReport)
+        {
+            if (!isProcOnly(damageReport))
+            {
+                orig(self, damageReport);
+            }
+        }
+
+        private static void FrenziedUpsetPoundSlamState_HandleServerDamageDealt(On.EntityStates.Lynx2Monster.FrenziedUpsetPoundSlamState.orig_HandleServerDamageDealt orig, EntityStates.Lynx2Monster.FrenziedUpsetPoundSlamState self, DamageReport damageReport)
+        {
+            if (!isProcOnly(damageReport))
+            {
+                orig(self, damageReport);
             }
         }
     }

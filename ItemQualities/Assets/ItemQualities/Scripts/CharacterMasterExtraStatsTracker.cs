@@ -473,9 +473,18 @@ namespace ItemQualities
         private void onIncomingDamageServer(DamageInfo damageInfo)
         {
             if (damageInfo.damage > 0f &&
+                // Ignore repeated damage from Warped Echo
                 !damageInfo.delayedDamageSecondHalf &&
+                // We only want to count the hit that inflicts a DoT, not the DoT ticks themselves
                 (damageInfo.damageType & DamageType.DoT) == 0 &&
-                !damageInfo.IsParried())
+                // Parried -> No hit happened
+                !damageInfo.IsParried() &&
+                // Blocked with shield -> No hit happened
+                !(damageInfo.inflictedHurtbox && damageInfo.inflictedHurtbox.hasAttackHitRejector) &&
+                // Ignore damage from environment
+                damageInfo.attacker &&
+                // Ignore self-damage
+                !(_cachedBody && ReferenceEquals(damageInfo.attacker, _cachedBody.gameObject)))
             {
                 _stageIncomingDamageInstanceCountServer++;
                 OnStageDamageInstancesTakenCountChangedServer?.Invoke(this);

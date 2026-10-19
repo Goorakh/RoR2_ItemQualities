@@ -1,3 +1,28 @@
+## 0.8.5 Changes:
+
+<details>
+<summary>Queen's Gland:</summary>
+
+* Fixed knockback from False Son (boss) being applied to you when he damages a Beetle Guard.
+</details>
+
+<details>
+<summary>Empathy Cores:</summary>
+
+* Added quality Empathy Cores to the AI blacklist.
+</details>
+
+* Substandard Duplicator:
+    * Fixed Hexes and Pages being given to drones.
+
+* Delicate Watch:
+    * No longer counts self damage, environment damage (such as Blood Pillars), or damage blocked by Enforcer's shield.
+
+* Warbanner:
+    * Fixed Warbanners spawned by Enforcer's Rally Point not having their quality effect applied.
+
+* Fixed quality Fireworks, Preon, Molotov, and AtG missiles not scaling visually.
+
 ## 0.8.4 Changes:
 
 <details>
@@ -17,7 +42,7 @@
 
 * Fixed ethereal quality keys not giving a quality item when used to open a lockbox
 
-* Fixed quality item disabed by Hex of Loss causing Quality Printers to become free.
+* Fixed quality items disabed by Hex of Loss causing Quality Printers to become free.
 
 ## 0.8.3 Changes:
 

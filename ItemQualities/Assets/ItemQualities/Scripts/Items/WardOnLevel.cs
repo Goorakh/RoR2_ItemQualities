@@ -9,6 +9,7 @@ using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -79,6 +80,8 @@ namespace ItemQualities.Items
             GlobalEventManager.OnInteractionsPermittedForSpawnGlobal += onInteractionsGlobal;
             IL.RoR2.Items.WardOnLevelManager.OnCharacterLevelUp += WardOnLevelManager_OnCharacterLevelUp;
             IL.RoR2.TeleporterInteraction.ChargingState.OnEnter += ChargingState_OnEnter;
+            IL.RoR2.SupportBeaconController.ActivateTeleporterItemsServer += SupportBeaconController_ActivateTeleporterItemsServer;
+
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
         }
 
@@ -137,8 +140,38 @@ namespace ItemQualities.Items
             }
         }
 
+        private static void SupportBeaconController_ActivateTeleporterItemsServer(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryFindNext(out ILCursor[] foundCursors,
+                               x => x.MatchLdsfld(typeof(RoR2Content.Items), nameof(RoR2Content.Items.WardOnLevel)),
+                               x => x.MatchCallOrCallvirt(typeof(UnityEngine.Object), nameof(UnityEngine.Object.Instantiate))))
+            {
+                Log.PatchError(il, "Failed to find patch location");
+                return;
+            }
+
+            c.Goto(foundCursors[1].Next, MoveType.After); // call UnityEngine.Object.Instantiate
+
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<GameObject, SupportBeaconController>>(addGrowingBuffFromSupportBeacon);
+
+            [MethodImpl(MethodImplOptions.AggressiveInlining)]
+            static void addGrowingBuffFromSupportBeacon(GameObject bannerObj, SupportBeaconController supportBeaconController)
+            {
+                addGrowingBuff(bannerObj, supportBeaconController.ownerBody);
+            }
+        }
+
         private static void addGrowingBuff(GameObject banner, CharacterBody body)
         {
+            if (!banner || !body || !body.inventory)
+            {
+                return;
+            }
+
             ItemQualityCounts wardOnLevel = body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.WardOnLevel);
             if (wardOnLevel.TotalQualityCount > 0 && banner.TryGetComponent(out WardOnLevelGrowingBuff wardOnLevelGrowingBuff))
             {

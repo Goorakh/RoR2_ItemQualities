@@ -14,6 +14,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
@@ -108,6 +109,7 @@ namespace ItemQualities.Equipments
                 // Original prefab is already checked for this component, so no need to check it on the clone
                 ProjectileController qualityProjectileController = qualityProjectilePrefab.GetComponent<ProjectileController>();
                 qualityProjectileController.ghostPrefab = qualityProjectileGhostPrefab;
+                qualityProjectileController.ghostPrefabAddress = new AssetReferenceT<GameObject>(string.Empty);
 
                 ProjectileImpactExplosion qualityProjectileExplosion = qualityProjectilePrefab.GetComponent<ProjectileImpactExplosion>();
                 qualityProjectileExplosion.blastRadius += blastRadiusIncrease;

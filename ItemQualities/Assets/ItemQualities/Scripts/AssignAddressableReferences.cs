@@ -96,7 +96,10 @@ namespace ItemQualities
             {
                 yield return assetLoadHandle.AsProgressCoroutine(progressReceiver);
 
-                applyFieldValue(componentFieldAssignment, targetMember, assetLoadHandle.Result as UnityEngine.Object);
+                if (assetLoadHandle.AssertLoaded($"{componentFieldAssignment.AssetReference.RuntimeKey} for {componentFieldAssignment.FieldName} on component {componentFieldAssignment.TargetObject}"))
+                {
+                    applyFieldValue(componentFieldAssignment, targetMember, assetLoadHandle.Result as UnityEngine.Object);
+                }
             }
             finally
             {

@@ -13,6 +13,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace ItemQualities.Equipments
@@ -113,6 +114,7 @@ namespace ItemQualities.Equipments
                     qualityMolotovClusterGhostPrefab.transform.localScale *= scaleMult;
 
                     qualityMolotovClusterProjectileController.ghostPrefab = qualityMolotovClusterGhostPrefab;
+                    qualityMolotovClusterProjectileController.ghostPrefabAddress = new AssetReferenceT<GameObject>(string.Empty);
                 }
 
                 if (qualityMolotovClusterProjectile.ExpectComponent(out ProjectileSimple qualityMolotovClusterProjectileSimple))
@@ -133,6 +135,7 @@ namespace ItemQualities.Equipments
                         qualityMolotovSingleGhostPrefab.transform.localScale *= scaleMult;
 
                         qualityMolotovSingleProjectileController.ghostPrefab = qualityMolotovSingleGhostPrefab;
+                        qualityMolotovSingleProjectileController.ghostPrefabAddress = new AssetReferenceT<GameObject>(string.Empty);
                     }
 
                     if (qualityMolotovSingleProjectile.ExpectComponent(out ProjectileSimple qualityMolotovSingleProjectileSimple))
