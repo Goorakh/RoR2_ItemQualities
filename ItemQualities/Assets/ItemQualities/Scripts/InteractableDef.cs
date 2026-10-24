@@ -25,7 +25,7 @@ namespace ItemQualities
 
         public string Name { get; }
 
-        public int InteractableIndex => PrefabInfoProviderComponent ? PrefabInfoProviderComponent.CatalogIndex : -1;
+        public InteractableIndex InteractableIndex => PrefabInfoProviderComponent ? PrefabInfoProviderComponent.CatalogIndex : InteractableIndex.Invalid;
 
         public InteractableDef(InteractableSpawnCard spawnCard)
         {

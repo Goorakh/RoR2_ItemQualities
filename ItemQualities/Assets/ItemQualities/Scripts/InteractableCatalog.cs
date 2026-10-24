@@ -12,11 +12,16 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace ItemQualities
 {
+    public enum InteractableIndex
+    {
+        Invalid = -1
+    }
+
     internal static class InteractableCatalog
     {
         private static InteractableDef[] _interactableDefs = Array.Empty<InteractableDef>();
 
-        private static readonly Dictionary<string, int> _interactablePrefabNameToIndex = new Dictionary<string, int>();
+        private static readonly Dictionary<string, InteractableIndex> _interactablePrefabNameToIndex = new Dictionary<string, InteractableIndex>();
 
         public static int InteractableCount => _interactableDefs.Length;
 
@@ -110,13 +115,13 @@ namespace ItemQualities
 
                 _interactablePrefabNameToIndex.EnsureCapacity(_interactableDefs.Length);
 
-                for (int i = 0; i < _interactableDefs.Length; i++)
+                for (InteractableIndex interactableIndex = 0; (int)interactableIndex < _interactableDefs.Length; interactableIndex++)
                 {
-                    InteractableDef interactableDef = _interactableDefs[i];
+                    InteractableDef interactableDef = _interactableDefs[(int)interactableIndex];
                     GameObject interactablePrefab = interactableDef.Prefab;
                     InteractableInfoProvider interactableInfoComponent = interactableDef.PrefabInfoProviderComponent;
 
-                    interactableInfoComponent.CatalogIndex = i;
+                    interactableInfoComponent.CatalogIndex = interactableIndex;
 
                     static bool allowCopy(GameObject prefab)
                     {
@@ -146,7 +151,7 @@ namespace ItemQualities
                     string interactableName = interactableDef.Name;
                     if (!_interactablePrefabNameToIndex.ContainsKey(interactableName))
                     {
-                        _interactablePrefabNameToIndex[interactableName] = i;
+                        _interactablePrefabNameToIndex[interactableName] = interactableIndex;
                     }
                     else
                     {
@@ -214,8 +219,8 @@ namespace ItemQualities
 
         private static void tryLinkToCatalog(GameObject interactableObject)
         {
-            int interactableIndex = FindInteractableIndex(interactableObject);
-            if (interactableIndex == -1)
+            InteractableIndex interactableIndex = FindInteractableIndex(interactableObject);
+            if (interactableIndex == InteractableIndex.Invalid)
             {
                 Log.Debug($"Failed to find interactable index for '{interactableObject.name}'");
                 return;
@@ -228,12 +233,12 @@ namespace ItemQualities
             }
         }
 
-        public static InteractableDef GetInteractableDef(int interactableIndex)
+        public static InteractableDef GetInteractableDef(InteractableIndex interactableIndex)
         {
-            return ArrayUtils.GetSafe(_interactableDefs, interactableIndex);
+            return ArrayUtils.GetSafe(_interactableDefs, (int)interactableIndex);
         }
 
-        public static int FindInteractableIndex(GameObject interactableObject)
+        public static InteractableIndex FindInteractableIndex(GameObject interactableObject)
         {
             if (interactableObject.TryGetComponent(out InteractableInfoProvider catalogedInteractable))
             {
@@ -253,9 +258,9 @@ namespace ItemQualities
             return FindInteractableIndex(interactablePrefabName);
         }
 
-        public static int FindInteractableIndex(string interactablePrefabName)
+        public static InteractableIndex FindInteractableIndex(string interactablePrefabName)
         {
-            return _interactablePrefabNameToIndex.GetValueOrDefault(interactablePrefabName, -1);
+            return _interactablePrefabNameToIndex.GetValueOrDefault(interactablePrefabName, InteractableIndex.Invalid);
         }
 
         [ConCommand(commandName = "quality_list_clonable_interactables")]

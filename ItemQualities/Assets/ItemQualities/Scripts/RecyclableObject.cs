@@ -11,7 +11,7 @@ namespace ItemQualities
     {
         private static EffectIndex _recycleEffectIndex = EffectIndex.Invalid;
 
-        private static int[] _recyclableInteractableIndices = Array.Empty<int>();
+        private static InteractableIndex[] _recyclableInteractableIndices = Array.Empty<InteractableIndex>();
 
         [SystemInitializer(typeof(EffectCatalog), typeof(CostTypeCatalog))]
         private static void Init()
@@ -24,16 +24,16 @@ namespace ItemQualities
 
             InteractableCatalog.Availability.CallWhenAvailable(() =>
             {
-                List<int> recyclableInteractableIndices = new List<int>(InteractableCatalog.InteractableCount);
-                for (int i = 0; i < InteractableCatalog.InteractableCount; i++)
+                List<InteractableIndex> recyclableInteractableIndices = new List<InteractableIndex>(InteractableCatalog.InteractableCount);
+                for (InteractableIndex interactableIndex = 0; (int)interactableIndex < InteractableCatalog.InteractableCount; interactableIndex++)
                 {
-                    InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(i);
+                    InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(interactableIndex);
                     if (interactableDef.Name.Contains("Duplicator", StringComparison.OrdinalIgnoreCase) &&
                         interactableDef.Prefab.TryGetComponent(out ShopTerminalBehavior shopTerminalBehavior) &&
                         interactableDef.Prefab.TryGetComponent(out PurchaseInteraction purchaseInteraction) &&
                         CustomCostTypeIndex.IsQualityItemCostType(purchaseInteraction.costType))
                     {
-                        recyclableInteractableIndices.Add(i);
+                        recyclableInteractableIndices.Add(interactableIndex);
                         Log.Debug($"Including interactable {interactableDef.Name} as recyclable");
                     }
                 }
