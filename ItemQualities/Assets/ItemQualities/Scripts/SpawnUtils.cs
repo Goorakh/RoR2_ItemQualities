@@ -1,5 +1,6 @@
 ﻿using RoR2;
 using System;
+using UnityEngine.Networking;
 
 namespace ItemQualities
 {
@@ -20,32 +21,35 @@ namespace ItemQualities
         {
             orig(self);
 
-            if (PreSceneReadyForSpawnsServer != null)
+            if (NetworkServer.active)
             {
-                foreach (SceneDirectorEventDelegate preSceneReadyForSpawnsServer in PreSceneReadyForSpawnsServer.GetInvocationList())
+                if (PreSceneReadyForSpawnsServer != null)
                 {
-                    try
+                    foreach (SceneDirectorEventDelegate preSceneReadyForSpawnsServer in PreSceneReadyForSpawnsServer.GetInvocationList())
                     {
-                        preSceneReadyForSpawnsServer(self);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error_NoCallerPrefix(e.ToString());
+                        try
+                        {
+                            preSceneReadyForSpawnsServer(self);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error_NoCallerPrefix(e.ToString());
+                        }
                     }
                 }
-            }
 
-            if (OnSceneReadyForSpawnsServer != null)
-            {
-                foreach (SceneDirectorEventDelegate onSceneReadyForSpawnsServer in OnSceneReadyForSpawnsServer.GetInvocationList())
+                if (OnSceneReadyForSpawnsServer != null)
                 {
-                    try
+                    foreach (SceneDirectorEventDelegate onSceneReadyForSpawnsServer in OnSceneReadyForSpawnsServer.GetInvocationList())
                     {
-                        onSceneReadyForSpawnsServer(self);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Error_NoCallerPrefix(e.ToString());
+                        try
+                        {
+                            onSceneReadyForSpawnsServer(self);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error_NoCallerPrefix(e.ToString());
+                        }
                     }
                 }
             }
