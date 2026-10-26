@@ -10,7 +10,7 @@ namespace ItemQualities
         public static event SceneDirectorEventDelegate PreSceneReadyForSpawnsServer;
         public static event SceneDirectorEventDelegate OnSceneReadyForSpawnsServer;
 
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer]
         private static void Init()
         {
             // This needs to be a hook in order to run code *after* onPostPopulateSceneServer due to timing issues with how ProperSave loads minions from save data

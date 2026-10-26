@@ -5,7 +5,7 @@ namespace ItemQualities.Items
 {
     internal static class DroneWeapons
     {
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer]
         private static void Init()
         {
             On.RoR2.DroneWeaponsBehavior.OnMasterSpawned += DroneWeaponsBehavior_OnMasterSpawned;

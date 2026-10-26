@@ -166,7 +166,7 @@ namespace ItemQualities.Items
 
         private static BuffIndex[] allEliteBuffIndices = Array.Empty<BuffIndex>();
 
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer(typeof(EliteCatalog), typeof(BuffCatalog))]
         private static void InitEliteBuffs()
         {
             HashSet<BuffIndex> validEliteBuffIndices = new HashSet<BuffIndex>(EliteCatalog.eliteList.Count);

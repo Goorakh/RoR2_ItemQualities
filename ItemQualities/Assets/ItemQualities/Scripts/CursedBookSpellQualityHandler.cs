@@ -10,7 +10,7 @@ namespace ItemQualities
 {
     internal static class CursedBookSpellQualityHandler
     {
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer]
         private static void Init()
         {
             IL.RoR2.Items.CursedBookBodyBehavior.AttemptUpgrade += CursedBookBodyBehavior_AttemptUpgrade;

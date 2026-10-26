@@ -23,7 +23,7 @@ namespace ItemQualities.SaveData
             private set => _saveContainerBreadBox.Value = value;
         }
 
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer]
         private static void TryInit()
         {
             if (ProperSaveCompat.Enabled)

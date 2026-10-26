@@ -8,7 +8,7 @@ namespace ItemQualities.Items
 {
     internal static class ShinyPearl
     {
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer]
         private static void Init()
         {
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
