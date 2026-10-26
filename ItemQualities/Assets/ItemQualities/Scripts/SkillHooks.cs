@@ -20,9 +20,8 @@ namespace ItemQualities
         [SystemInitializer]
         private static void Init()
         {
-            EntityStatePatcher.AddPatcher(new EntityStatePatcher.PatcherInfo
+            EntityStatePatcher.AddPatcher(new EntityStatePatcher.PatcherInfo("SkillHooks", entityStateStockDeductHookManipulator)
             {
-                Manipulator = entityStateStockDeductHookManipulator,
                 ShouldApplyPredicate = matchEntityStateDeductStocks,
             });
         }

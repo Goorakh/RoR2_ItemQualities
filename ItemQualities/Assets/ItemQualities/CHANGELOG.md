@@ -1,3 +1,7 @@
+## \<Next Version\> Changes:
+
+* Reduced mod loading time by ~2s
+
 ## 0.8.5 Changes:
 
 <details>

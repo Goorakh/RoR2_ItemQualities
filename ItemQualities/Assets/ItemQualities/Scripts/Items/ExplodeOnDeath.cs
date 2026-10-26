@@ -1233,9 +1233,8 @@ namespace ItemQualities.Items
             IL.RoR2.Projectile.LunarStakesLightningController.FireLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
             IL.RoR2.Projectile.LunarStakesLightningController.FireLastLightning += LunarStakesLightningController_FixProjectileInitializeDispatch;
 
-            EntityStatePatcher.AddPatcher(new EntityStatePatcher.PatcherInfo
+            EntityStatePatcher.AddPatcher(new EntityStatePatcher.PatcherInfo("ExplodeOnDeath", getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody))
             {
-                Manipulator = getVisualBlastAttackRadiusManipulator(emitGetEntityStateAttackerBody),
                 ShouldApplyPredicate = matchSetupBlastAttack,
             });
         }

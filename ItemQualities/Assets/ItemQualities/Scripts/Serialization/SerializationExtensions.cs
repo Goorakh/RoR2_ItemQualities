@@ -1,6 +1,7 @@
 ﻿using RoR2;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace ItemQualities.Serialization
@@ -89,6 +90,52 @@ namespace ItemQualities.Serialization
             }
 
             return array;
+        }
+
+        public static void WriteGuid(this BinaryWriter writer, in Guid guid)
+        {
+            Span<byte> bytes = stackalloc byte[16];
+            guid.TryWriteBytes(bytes);
+            writer.Write(bytes);
+        }
+
+        public static Guid ReadGuid(this BinaryReader reader)
+        {
+            Span<byte> bytes = stackalloc byte[16];
+            reader.Read(bytes);
+            return new Guid(bytes);
+        }
+
+        public static void WriteMember<TMember>(this BinaryWriter writer, TMember member)
+            where TMember : MemberInfo
+        {
+            writer.WritePackedUInt32((uint)member.MetadataToken);
+        }
+
+        public static MethodBase ReadMethodBase(this BinaryReader reader, Assembly assembly)
+        {
+            int methodToken = (int)reader.ReadPackedUInt32();
+
+            MethodBase methodBase = assembly.ManifestModule.ResolveMethod(methodToken);
+            if (methodBase == null)
+            {
+                Log.Warning($"Failed to resolve method with token {methodToken} from {assembly.FullName}");
+            }
+
+            return methodBase;
+        }
+
+        public static MethodInfo ReadMethodInfo(this BinaryReader reader, Assembly assembly)
+        {
+            int methodToken = (int)reader.ReadPackedUInt32();
+
+            MethodInfo method = assembly.ManifestModule.ResolveMethod(methodToken) as MethodInfo;
+            if (method == null)
+            {
+                Log.Warning($"Failed to resolve method with token {methodToken} from {assembly.FullName}");
+            }
+
+            return method;
         }
 
         #region Packed Int32
