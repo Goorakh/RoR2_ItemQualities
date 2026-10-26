@@ -425,13 +425,13 @@
       "dependencies": {}
     },
     "riskofthunder-ror2editorkit": {
-      "version": "https://github.com/risk-of-thunder/RoR2EditorKit.git#6.1.0",
+      "version": "https://github.com/risk-of-thunder/RoR2EditorKit.git#6.2.0",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.editorcoroutines": "1.0.0"
       },
-      "hash": "050a3aba9cd8223b8d8b35c2880efc265d884723"
+      "hash": "880d893ac8cb4d465860fce9a9354c7330727a34"
     },
     "riskofthunder-ror2importextensions": {
       "version": "https://github.com/risk-of-thunder/RoR2ImportExtensions.git#1.7.1",
