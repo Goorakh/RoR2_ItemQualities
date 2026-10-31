@@ -109,12 +109,12 @@ namespace ItemQualities.Serialization
         public static void WriteMember<TMember>(this BinaryWriter writer, TMember member)
             where TMember : MemberInfo
         {
-            writer.WritePackedUInt32((uint)member.MetadataToken);
+            writer.Write((int)member.MetadataToken);
         }
 
         public static MethodBase ReadMethodBase(this BinaryReader reader, Assembly assembly)
         {
-            int methodToken = (int)reader.ReadPackedUInt32();
+            int methodToken = reader.ReadInt32();
 
             MethodBase methodBase = assembly.ManifestModule.ResolveMethod(methodToken);
             if (methodBase == null)
@@ -127,7 +127,7 @@ namespace ItemQualities.Serialization
 
         public static MethodInfo ReadMethodInfo(this BinaryReader reader, Assembly assembly)
         {
-            int methodToken = (int)reader.ReadPackedUInt32();
+            int methodToken = reader.ReadInt32();
 
             MethodInfo method = assembly.ManifestModule.ResolveMethod(methodToken) as MethodInfo;
             if (method == null)
