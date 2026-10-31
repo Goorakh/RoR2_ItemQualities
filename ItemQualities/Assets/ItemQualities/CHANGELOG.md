@@ -1,6 +1,13 @@
 ## \<Next Version\> Changes:
 
-* Reduced mod loading time by ~2s
+* Added quality items to AI blacklist:
+    * Bison Steak
+    * Medkit
+    * Oddly Shaped Opal
+    * Personal Shield Generator
+    * Pocket I.C.B.M.
+
+* Minor improvements to mod loading time (~2s faster on average)
 
 ## 0.8.5 Changes:
 
