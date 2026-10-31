@@ -65,12 +65,12 @@ namespace ItemQualities.Utilities
         {
             if (assetReference != null && assetReference.RuntimeKeyIsValid())
             {
-                AsyncOperationHandle<TAsset> bfgProjectileGhostPrefabLoad = LoadAssetAsync(assetReference, unloadType);
-                yield return bfgProjectileGhostPrefabLoad.AsProgressCoroutine(progressReceiver);
+                AsyncOperationHandle<TAsset> loadHandle = LoadAssetAsync(assetReference, unloadType);
+                yield return loadHandle.AsProgressCoroutine(progressReceiver);
 
-                if (bfgProjectileGhostPrefabLoad.AssertLoaded())
+                if (loadHandle.AssertLoaded())
                 {
-                    result.Value = bfgProjectileGhostPrefabLoad.Result;
+                    result.Value = loadHandle.Result;
                 }
             }
             else
