@@ -201,20 +201,21 @@ namespace ItemQualities.Items
                 };
 
                 int soulsToDrain = Mathf.Min(soulDrainMax, attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls));
-                for (int soul = 0; soul < soulsToDrain ; soul++)
+                for (int soul = 0; soul < soulsToDrain; soul++)
                 {
                     attackerBody.RemoveBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
                 }
 
-                float stackDamageCoeff =(deathMark.UncommonCount * 1) +
+                float stackDamageCoeff = (deathMark.UncommonCount * 1) +
                                         (deathMark.RareCount * 2) +
                                         (deathMark.EpicCount * 3) +
                                         (deathMark.LegendaryCount * 4);
 
-                float baseLevelMaxHealth = attackerBody.baseMaxHealth + (attackerBody.levelMaxHealth * (attackerBody.level - 1));
-                float damageCoeff = Mathf.Max((attackerBody.maxHealth - baseLevelMaxHealth) * 0.01f * stackDamageCoeff, 0) + 0.5f;
+                float baseLevelMaxHealth = attackerBody.baseMaxHealth + (attackerBody.levelMaxHealth * Mathf.Max(0, attackerBody.level - 1));
+                float damageCoeff = Mathf.Max((attackerBody.maxBonusHealth - baseLevelMaxHealth) * 0.01f * stackDamageCoeff, 0) + 0.5f;
                 return damage * (damageCoeff + 1);
             }
+
             return damage;
         }
     }

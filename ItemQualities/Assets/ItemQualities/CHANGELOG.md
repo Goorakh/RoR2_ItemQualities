@@ -10,6 +10,9 @@
 * Box of Dynamite:
     * Lt. Droneboy now receives the appropriate quality tier.
 
+* Death Mark:
+    * Fixed curse negating the damage bonus from increased maximum health.
+
 * Minor improvements to mod loading time (~2s faster on average)
 
 ## 0.8.5 Changes:
