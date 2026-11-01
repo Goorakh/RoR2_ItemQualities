@@ -7,6 +7,9 @@
     * Personal Shield Generator
     * Pocket I.C.B.M.
 
+* Box of Dynamite:
+    * Lt. Droneboy now receives the appropriate quality tier.
+
 * Minor improvements to mod loading time (~2s faster on average)
 
 ## 0.8.5 Changes:
