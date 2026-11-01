@@ -145,18 +145,17 @@ namespace ItemQualities.Items
         {
             orig(self, summonReport);
 
+            if (!self.body || !self.body.master || summonReport.leaderMasterInstance != self.body.master)
+            {
+                return;
+            }
+
             if (!summonReport.summonMasterInstance)
             {
                 return;
             }
 
-            Inventory ownerInventory = summonReport.leaderMasterInstance ? summonReport.leaderMasterInstance.inventory : self.body.inventory;
-            if (!ownerInventory)
-            {
-                return;
-            }
-
-            QualityTier qualityTier = ownerInventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite).HighestQuality;
+            QualityTier qualityTier = self.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite).HighestQuality;
             if (qualityTier == QualityTier.None)
             {
                 return;
