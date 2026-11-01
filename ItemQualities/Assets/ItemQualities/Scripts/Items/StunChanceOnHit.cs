@@ -17,6 +17,7 @@ namespace ItemQualities.Items
         private static void Init()
         {
             IL.RoR2.SetStateOnHurt.OnTakeDamageServer += SetStateOnHurt_OnTakeDamageServer;
+            On.RoR2.SetStateOnHurt.SetImmobilize += SetStateOnHurt_SetImmobilize;
             IL.RoR2.GlobalEventManager.ProcessHitEnemy += GlobalEventManager_ProcessHitEnemy;
             GlobalEventManager.onServerDamageDealt += onServerDamageDealt;
 
@@ -174,123 +175,52 @@ namespace ItemQualities.Items
 
             ILCursor c = new ILCursor(il);
 
-            ILLabel label = null;
-
-            // stungrenade
+            static bool canImmobilize(DamageReport damageReport)
             {
-                c.Goto(0);
-
-                if (c.TryGotoNext(
-                        x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetStun))
-                    ) &&
-                    c.TryGotoPrev(MoveType.After,
-                        x => x.MatchBrfalse(out label)
-                    ))
-                {
-                    c.Emit(OpCodes.Ldarg, damageReportParameter);
-                    c.EmitDelegate<Func<DamageReport, bool>>(tryImmobilize);
-                    c.Emit(OpCodes.Brfalse, label);
-                }
-                else
-                {
-                    Log.PatchError(il, "stungrenade IL Hook failed!");
-                }
+                return !damageReport.damageInfo.procChainMask.HasModdedProc(ProcTypes.Immobilize);
             }
 
-            //freezeonhit
-            {
-                c.Goto(0);
+            ILLabel methodStartLabel = c.DefineLabel();
 
-                if (c.TryGotoNext(
-                        x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetFrozen))
-                    ) &&
-                    c.TryGotoPrev(MoveType.After,
-                        x => x.MatchBrfalse(out label)
-                    ))
-                {
-                    c.Emit(OpCodes.Ldarg, damageReportParameter);
-                    c.EmitDelegate<Func<DamageReport, bool>>(tryImmobilize);
-                    c.Emit(OpCodes.Brfalse, label);
-                }
-                else
-                {
-                    Log.PatchError(il, "freezeonhit IL Hook failed!");
-                }
+            // If we have the Immobilize proc, this method shouldn't do anything at all
+            c.Emit(OpCodes.Ldarg, damageReportParameter);
+            c.EmitDelegate<Func<DamageReport, bool>>(canImmobilize);
+            c.Emit(OpCodes.Brtrue, methodStartLabel);
+            c.Emit(OpCodes.Ret);
+            c.MarkLabel(methodStartLabel);
+
+            static bool matchCallSetImmobilizingStateMethod(Instruction x)
+            {
+                return x.MatchCallOrCallvirt<SetStateOnHurt>(nameof(SetStateOnHurt.SetStun)) ||
+                       x.MatchCallOrCallvirt<SetStateOnHurt>(nameof(SetStateOnHurt.SetFrozen)) ||
+                       x.MatchCallOrCallvirt<SetStateOnHurt>(nameof(SetStateOnHurt.SetShock)) ||
+                       x.MatchCallOrCallvirt<SetStateOnHurt>(nameof(SetStateOnHurt.SetPain));
+
+                // SetImmobilize is handled separately, as it already passes in an attacker
             }
 
-            //shockonhit
+            while (c.TryGotoNext(MoveType.After,
+                                 matchCallSetImmobilizingStateMethod))
             {
-                c.Goto(0);
-
-                if (c.TryGotoNext(
-                        x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetShock))
-                    ) &&
-                    c.TryGotoPrev(MoveType.After,
-                        x => x.MatchBrfalse(out label)
-                    ))
-                {
-                    c.Emit(OpCodes.Ldarg, damageReportParameter);
-                    c.EmitDelegate<Func<DamageReport, bool>>(tryImmobilize);
-                    c.Emit(OpCodes.Brfalse, label);
-                }
-                else
-                {
-                    Log.PatchError(il, "shockonhit IL Hook failed!");
-                }
+                c.Emit(OpCodes.Ldarg, damageReportParameter);
+                c.EmitDelegate<Action<DamageReport>>(onImmobilizeProc);
             }
 
-            //stunbullet
+            static void onImmobilizeProc(DamageReport damageReport)
             {
-                c.Goto(0);
-
-                if (c.TryGotoNext(MoveType.Before,
-                        x => x.MatchBrfalse(out label),
-                        x => x.MatchLdarg(0),
-                        x => x.MatchLdcR4(out _),
-                        x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetStun))
-                    ))
-                {
-                    c.Index++;
-                    c.Emit(OpCodes.Ldarg, damageReportParameter);
-                    c.EmitDelegate<Func<DamageReport, bool>>(tryImmobilize);
-                    c.Emit(OpCodes.Brfalse, label);
-                }
-                else
-                {
-                    Log.PatchError(il, "stunbullet IL Hook failed!");
-                }
+                OnImmobilize(damageReport.attackerBody, damageReport.victimBody);
             }
+        }
 
-            //immobilizestate
+        private static void SetStateOnHurt_SetImmobilize(On.RoR2.SetStateOnHurt.orig_SetImmobilize orig, SetStateOnHurt self, GameObject attacker, GameObject inflictor)
+        {
+            orig(self, attacker, inflictor);
+
+            if (attacker &&
+                attacker.TryGetComponent(out CharacterBody attackerBody) &&
+                self.TryGetComponent(out CharacterBody victimBody))
             {
-                c.Goto(0);
-
-                if (c.TryGotoNext(
-                        x => x.MatchCallOrCallvirt(typeof(SetStateOnHurt), nameof(SetStateOnHurt.SetImmobilize))
-                    ) &&
-                    c.TryGotoPrev(MoveType.After,
-                        x => x.MatchBrfalse(out label)
-                    ))
-                {
-                    c.Emit(OpCodes.Ldarg, damageReportParameter);
-                    c.EmitDelegate<Func<DamageReport, bool>>(tryImmobilize);
-                    c.Emit(OpCodes.Brfalse, label);
-                }
-                else
-                {
-                    Log.PatchError(il, "immobilizestate IL Hook failed!");
-                }
-            }
-
-            static bool tryImmobilize(DamageReport damageReport)
-            {
-                if (!damageReport.damageInfo.procChainMask.HasModdedProc(ProcTypes.Immobilize))
-                {
-                    OnImmobilize(damageReport.attackerBody, damageReport.victimBody);
-                    return true;
-                }
-
-                return false;
+                OnImmobilize(attackerBody, victimBody);
             }
         }
 
