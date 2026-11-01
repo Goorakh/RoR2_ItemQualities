@@ -47,30 +47,52 @@ namespace ItemQualities.Items
             }
 
             /*
-             *  // (float)itemCountEffective4 * 0.2f
-             *  IL_0C8A: ldloc.s   V_41
-             *  IL_0C8C: conv.r4
-             *  IL_0C8D: ldc.r4    0.2
-             *  IL_0C92: mul
+             *  // if (itemCountEffective4 > 0)
+             *  IL_0DCF: ldloc.s   V_46
+             *  IL_0DD1: ldc.i4.0
+             *  IL_0DD2: ble.s     IL_0E23
              */
 
-            Instruction nearbyDamageBonusCoefficientInstruction = null;
+            ILLabel afterNearbyDamageBonusLabel = null;
             if (!c.TryGotoNext(MoveType.After,
                                x => x.MatchLdloc(nearbyDamageBonusCountVar),
-                               x => x.MatchConvR4(),
-                               x => x.MatchLdcR4(out _) && x.MatchAny(out nearbyDamageBonusCoefficientInstruction)))
+                               x => x.MatchLdcI4(out _),
+                               x => x.MatchBle(out afterNearbyDamageBonusLabel)))
             {
-                Log.PatchError(il, "Failed to find patch location");
+                Log.PatchError(il, "Failed to find NearbyDamageBonus itemCount check location");
                 return;
             }
 
-            c.Goto(nearbyDamageBonusCoefficientInstruction, MoveType.After);
+            /*
+             *  // num5 *= 1f + (float)itemCountEffective4 * 0.2f;
+             *  IL_0D89: ldloc.s   V_12
+             *  IL_0D8B: ldc.r4    1
+             *  IL_0D90: ldloc.s   V_46
+             *  IL_0D92: conv.r4
+             *  IL_0D93: ldc.r4    0.2
+             *  IL_0D98: mul
+             *  IL_0D99: add
+             *  IL_0D9A: mul
+             *  IL_0D9B: stloc.s   V_12
+             */
+
+            VariableDefinition finalDamageVar = null;
+            if (!c.TryGotoNext(MoveType.After,
+                               x => x.MatchLdloc(nearbyDamageBonusCountVar)) ||
+                !c.TryGotoNext(MoveType.Before,
+                               x => x.MatchMul(),
+                               x => x.MatchStloc<float>(il, out finalDamageVar)) ||
+                c.IsAfter(afterNearbyDamageBonusLabel.Target))
+            {
+                Log.PatchError(il, "Failed to find NearbyDamageBonus damage modification location");
+                return;
+            }
 
             c.Emit(OpCodes.Ldarg, damageInfoParameter);
 
             c.EmitDelegate<Func<float, DamageInfo, float>>(getFocusCrystalDamage);
 
-            static float getFocusCrystalDamage(float damagePerFocusCrystal, DamageInfo damageInfo)
+            static float getFocusCrystalDamage(float damageMultiplier, DamageInfo damageInfo)
             {
                 GameObject attacker = damageInfo?.attacker;
                 CharacterBody attackerBody = attacker ? attacker.GetComponent<CharacterBody>() : null;
@@ -121,18 +143,21 @@ namespace ItemQualities.Items
                                                 (0.35f * nearbyDamageBonus.EpicCount) +
                                                 (0.50f * nearbyDamageBonus.LegendaryCount);
 
-                            damageBonus /= Mathf.Pow(2f, enemiesInRange);
+                            if (enemiesInRange > 1)
+                            {
+                                damageBonus /= Mathf.Pow(2f, enemiesInRange - 1);
+                            }
 
                             if (damageBonus > 0)
                             {
-                                damagePerFocusCrystal += damageBonus;
+                                damageMultiplier += damageBonus;
                                 damageInfo.damageColorIndex = _nearbyBoostedColorIndex;
                             }
                         }
                     }
                 }
 
-                return damagePerFocusCrystal;
+                return damageMultiplier;
             }
         }
     }
