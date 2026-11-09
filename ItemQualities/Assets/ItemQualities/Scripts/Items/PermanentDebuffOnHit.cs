@@ -28,6 +28,11 @@ namespace ItemQualities.Items
 
         private static void onServerDamageDealt(DamageReport damageReport)
         {
+            if (damageReport.damageInfo.procCoefficient <= 0)
+            {
+                return;
+            }
+
             CharacterMaster attackerMaster = damageReport.attackerBody ? damageReport.attackerBody.master : null;
             Inventory attackerInventory = damageReport.attackerBody ? damageReport.attackerBody.inventory : null;
             if (!attackerInventory)
@@ -56,7 +61,7 @@ namespace ItemQualities.Items
                 _ => 0
             };
 
-            if (RollUtil.CheckRoll(venomChance, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
+            if (RollUtil.CheckRoll(venomChance * damageReport.damageInfo.procCoefficient, attackerMaster, damageReport.damageInfo.procChainMask.HasProc(ProcType.SureProc)))
             {
                 DotController.InflictDot(damageReport.victim.gameObject, damageReport.attacker, damageReport.damageInfo.inflictedHurtbox, damageReport.damageInfo.procChainMask, _scorpionVenomDot, 10f * damageReport.damageInfo.procCoefficient, 1f, maxStacksFromAttacker);
             }

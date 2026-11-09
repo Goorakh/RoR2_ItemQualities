@@ -23,6 +23,9 @@
 * The Backup:
     * The Strike Drones now receive the appropriate quality tier.
 
+* Symbiotic Scorpion:
+    * Fixed DoT proc chance ignoring proc coefficient.
+
 * Fixed Lemurian Compulsion Quest resetting buffs:
     * Temporary health from Foreign Fruit or Cautios Slug
     * Predatory Instincts stage attack speed
