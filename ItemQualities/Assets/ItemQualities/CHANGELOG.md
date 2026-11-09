@@ -16,7 +16,7 @@
 * Death Mark:
     * Fixed curse negating the damage bonus from increased maximum health.
 
-* Fixed several items not working correctly after Hallowed Concepts:
+* Fixed items not working correctly after Hallowed Concepts:
     * Focus Crystal
     * Spare Drone Parts
 
