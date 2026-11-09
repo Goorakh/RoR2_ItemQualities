@@ -250,16 +250,16 @@
         "EQUIPMENT_LIFESTEALONHIT_LEGENDARY_DESC": "<style=cIsHealing>Heal</style> for <style=cIsHealing>20%</style> of the <style=cIsDamage>damage</style> you deal. Lasts <sprite name=\"Quality\"> <style=cIsHealing>25</style> seconds. Increase <style=cIsUtility>movement speed</style> by <style=cIsUtility>1%</style> for every <style=cIsHealing>5%</style> of your maximum health <style=cIsHealing>healed</style>, up to a maximum of <sprite name=\"Quality\"> <style=cIsUtility>250%</style> movement speed, lasts <style=cIsUtility>60</style> seconds or until next activation.",
         
         "EQUIPMENT_DRONEBACKUP_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
-        "EQUIPMENT_DRONEBACKUP_UNCOMMON_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>5 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        "EQUIPMENT_DRONEBACKUP_UNCOMMON_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>5 Strike Drones</style> <sprite name=\"QualityUncommon\"> to fight for you. Lasts 25 seconds.",
         
         "EQUIPMENT_DRONEBACKUP_RARE_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
-        "EQUIPMENT_DRONEBACKUP_RARE_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>6 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        "EQUIPMENT_DRONEBACKUP_RARE_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>6 Strike Drones</style> <sprite name=\"QualityRare\"> to fight for you. Lasts 25 seconds.",
         
         "EQUIPMENT_DRONEBACKUP_EPIC_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
-        "EQUIPMENT_DRONEBACKUP_EPIC_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>7 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        "EQUIPMENT_DRONEBACKUP_EPIC_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>7 Strike Drones</style> <sprite name=\"QualityEpic\"> to fight for you. Lasts 25 seconds.",
         
         "EQUIPMENT_DRONEBACKUP_LEGENDARY_PICKUP": "{0}\n<sprite name=\"Quality\"> Increase number of drones spawned.",
-        "EQUIPMENT_DRONEBACKUP_LEGENDARY_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>8 Strike Drones</style> to fight for you. Lasts 25 seconds.",
+        "EQUIPMENT_DRONEBACKUP_LEGENDARY_DESC": "Call <sprite name=\"Quality\"> <style=cIsDamage>8 Strike Drones</style> <sprite name=\"QualityLegendary\"> to fight for you. Lasts 25 seconds.",
         
         "EQUIPMENT_GOLDGAT_UNCOMMON_PICKUP": "{0}\n<sprite name=\"Quality\"> Bullets can ricochet to nearby enemies. Increase max fire rate.",
         "EQUIPMENT_GOLDGAT_UNCOMMON_DESC": "{0}\nEvery <sprite name=\"Quality\"> <style=cIsUtility>10th</style> bullet <style=cIsUtility>ricochets</style> <sprite name=\"Quality\"> <style=cIsUtility>once</style> to nearby enemies. Increases max fire rate by <sprite name=\"Quality\"> <style=cIsUtility>20%</style>.",

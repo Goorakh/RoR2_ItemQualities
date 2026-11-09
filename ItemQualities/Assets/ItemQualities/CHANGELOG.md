@@ -17,6 +17,9 @@
     * Focus Crystal
     * Spare Drone Parts
 
+* The Backup:
+    * The Strike Drones now receive the appropriate quality tier.
+
 * Minor improvements to mod loading time (~2s faster on average)
 
 ## 0.8.5 Changes:
