@@ -13,6 +13,10 @@
 * Death Mark:
     * Fixed curse negating the damage bonus from increased maximum health.
 
+* Fixed several items not working correctly after Hallowed Concepts:
+    * Focus Crystal
+    * Spare Drone Parts
+
 * Minor improvements to mod loading time (~2s faster on average)
 
 ## 0.8.5 Changes:
