@@ -27,8 +27,10 @@ namespace ItemQualities.Buffs
             On.RoR2.CharacterBody.SetBuffCount += On_CharacterBody_SetBuffCount;
 
             On.RoR2.CharacterBody.GetBuffCount_BuffIndex += CharacterBody_GetBuffCount_BuffIndex;
+            On.RoR2.CharacterBody.HasUnmanagedBuff_BuffIndex += CharacterBody_HasUnmanagedBuff_BuffIndex;
             On.RoR2.CharacterBody.ClearTimedBuffs_BuffIndex += CharacterBody_ClearTimedBuffs_BuffIndex;
             On.RoR2.CharacterBody.RemoveBuffInternal += CharacterBody_RemoveBuffInternal;
+            On.RoR2.CharacterBody.RemoveUnmanagedBuff_BuffIndex_int += CharacterBody_RemoveUnmanagedBuff_BuffIndex_int;
             On.RoR2.CharacterBody.ClearAllBuffs += CharacterBody_ClearAllBuffs;
 
             On.RoR2.UI.BuffDisplay.AllocateIcons += BuffDisplay_AllocateIcons;
@@ -119,12 +121,45 @@ namespace ItemQualities.Buffs
                             BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(buffGroupIndex);
                             if (buffGroup.InheritBaseBuffBehavior)
                             {
+                                buffCount += self.GetBuffCounts(buffGroup).TotalQualityCount;
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Warning_NoCallerPrefix(e.ToString());
+                }
+            }
+
+            return buffCount;
+        }
+
+        private static bool CharacterBody_HasUnmanagedBuff_BuffIndex(On.RoR2.CharacterBody.orig_HasUnmanagedBuff_BuffIndex orig, CharacterBody self, BuffIndex buffType)
+        {
+            if (orig(self, buffType))
+            {
+                return true;
+            }
+
+            if (!_disableBuffCountHooksForBodies.Contains(self))
+            {
+                try
+                {
+                    if (QualityCatalog.GetQualityTier(buffType) == QualityTier.None)
+                    {
+                        BuffQualityGroupIndex buffGroupIndex = QualityCatalog.FindBuffQualityGroupIndex(buffType);
+                        if (buffGroupIndex != BuffQualityGroupIndex.Invalid)
+                        {
+                            BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(buffGroupIndex);
+                            if (buffGroup.InheritBaseBuffBehavior)
+                            {
                                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                                 {
-                                    BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(qualityTier);
-                                    if (qualityBuffIndex != BuffIndex.None)
+                                    BuffIndex buffIndex = buffGroup.GetBuffIndex(qualityTier);
+                                    if (buffIndex != BuffIndex.None && self.HasUnmanagedBuffRaw(buffIndex))
                                     {
-                                        buffCount += self.GetBuffCountRaw(qualityBuffIndex);
+                                        return true;
                                     }
                                 }
                             }
@@ -137,7 +172,7 @@ namespace ItemQualities.Buffs
                 }
             }
 
-            return buffCount;
+            return false;
         }
 
         private static void CharacterBody_ClearTimedBuffs_BuffIndex(On.RoR2.CharacterBody.orig_ClearTimedBuffs_BuffIndex orig, CharacterBody self, BuffIndex buffType)
@@ -189,12 +224,50 @@ namespace ItemQualities.Buffs
                             BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(buffGroupIndex);
                             if (buffGroup.InheritBaseBuffBehavior)
                             {
+                                BuffQualityCounts qualityBuffCounts = self.GetBuffCounts(buffGroup);
+
                                 for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                                 {
-                                    BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(qualityTier);
-                                    if (qualityBuffIndex != BuffIndex.None && self.GetBuffCountRaw(qualityBuffIndex) > 0)
+                                    if (qualityBuffCounts[qualityTier] > 0)
                                     {
-                                        buffType = qualityBuffIndex;
+                                        buffType = buffGroup.GetBuffIndex(qualityTier);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Warning_NoCallerPrefix(e.ToString());
+                }
+            }
+
+            orig(self, buffType, count);
+        }
+
+        private static void CharacterBody_RemoveUnmanagedBuff_BuffIndex_int(On.RoR2.CharacterBody.orig_RemoveUnmanagedBuff_BuffIndex_int orig, CharacterBody self, BuffIndex buffType, int count)
+        {
+            if (!_disableBuffCountHooksForBodies.Contains(self))
+            {
+                try
+                {
+                    if (self.GetBuffCountRaw(buffType) == 0 && QualityCatalog.GetQualityTier(buffType) == QualityTier.None)
+                    {
+                        BuffQualityGroupIndex buffGroupIndex = QualityCatalog.FindBuffQualityGroupIndex(buffType);
+                        if (buffGroupIndex != BuffQualityGroupIndex.Invalid)
+                        {
+                            BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(buffGroupIndex);
+                            if (buffGroup.InheritBaseBuffBehavior)
+                            {
+                                BuffQualityCounts qualityBuffCounts = self.GetBuffCounts(buffGroup);
+
+                                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                                {
+                                    if (qualityBuffCounts[qualityTier] > 0)
+                                    {
+                                        buffType = buffGroup.GetBuffIndex(qualityTier);
                                         break;
                                     }
                                 }
@@ -231,12 +304,12 @@ namespace ItemQualities.Buffs
                         BuffQualityGroup buffGroup = QualityCatalog.GetBuffQualityGroup(buffGroupIndex);
                         if (buffGroup.InheritBaseBuffBehavior)
                         {
-                            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+                            using (new DisableBuffCountHooksScope(self))
                             {
-                                BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(qualityTier);
-                                if (qualityBuffIndex != BuffIndex.None && self.GetBuffCountRaw(qualityBuffIndex) > 0)
+                                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                                 {
-                                    using (new DisableBuffCountHooksScope(self))
+                                    BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(qualityTier);
+                                    if (qualityBuffIndex != BuffIndex.None && self.GetBuffCountRaw(qualityBuffIndex) > 0)
                                     {
                                         self.ClearAllBuffs(BuffCatalog.GetBuffDef(qualityBuffIndex));
                                     }

@@ -20,6 +20,14 @@
 * The Backup:
     * The Strike Drones now receive the appropriate quality tier.
 
+* Fixed Lemurian Compulsion Quest resetting buffs:
+    * Temporary health from Foreign Fruit or Cautios Slug
+    * Predatory Instincts stage attack speed
+    * Death Mark souls
+    * Hunter's Harpoon stage move speed
+    * Unstable Transmitter orb charges
+    * Bugs from Milky Chrysalis
+
 * Minor improvements to mod loading time (~2s faster on average)
 
 ## 0.8.5 Changes:

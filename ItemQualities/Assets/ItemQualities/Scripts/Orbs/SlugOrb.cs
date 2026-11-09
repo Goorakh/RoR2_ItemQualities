@@ -44,7 +44,7 @@ namespace ItemQualities.Orbs
             {
                 for (int i = 0; i < SlugBuffCount; i++)
                 {
-                    target.healthComponent.body.AddBuff(ItemQualitiesContent.Buffs.SlugHealth);
+                    target.healthComponent.body.AddUnmanagedBuff(ItemQualitiesContent.Buffs.SlugHealth);
                 }
             }
         }

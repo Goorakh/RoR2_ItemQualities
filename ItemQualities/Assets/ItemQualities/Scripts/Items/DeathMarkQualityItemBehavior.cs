@@ -65,7 +65,7 @@ namespace ItemQualities.Items
 
             if (deathMark.TotalQualityCount > 0)
             {
-                report.leaderBodyInstance.AddBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
+                report.leaderBodyInstance.AddUnmanagedBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
             }
         }
 
@@ -88,7 +88,7 @@ namespace ItemQualities.Items
             int buffsToAdd = Mathf.Min(desiredBuffsToAdd, maxBuffsToAdd);
             for (int i = 0; i < buffsToAdd; i++)
             {
-                report.attackerBody.AddBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
+                report.attackerBody.AddUnmanagedBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
             }
         }
     }
