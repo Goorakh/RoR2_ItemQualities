@@ -5,7 +5,10 @@
     * Medkit
     * Oddly Shaped Opal
     * Personal Shield Generator
+    * N'kuhana's Opinion
     * Pocket I.C.B.M.
+    * Rejuvenation Rack
+    * Sentient Meat Hook
 
 * Box of Dynamite:
     * Lt. Droneboy now receives the appropriate quality tier.
