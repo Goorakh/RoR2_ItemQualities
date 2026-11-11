@@ -1,0 +1,20 @@
+﻿{
+	strings:
+	{
+		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_PICKUP": "{0}\n<style=cIsUtility>열의</style>를 <sprite name=\"Quality\"> <style=cIsUtility>100%</style> 증가시킵니다.",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_DESC": "{0}\n<style=cIsUtility>열의</style>를 <sprite name=\"Quality\"> <style=cIsUtility>100%</style> 증가시킵니다.",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_UNCOMMON_CHAT": "아호이!!",
+		
+		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_PICKUP": "{0}\n<style=cIsUtility>열의</style>를 <sprite name=\"Quality\"> <style=cIsUtility>200%</style> 증가시킵니다.",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_DESC": "{0}\n<style=cIsUtility>열의</style>를 <sprite name=\"Quality\"> <style=cIsUtility>200%</style> 증가시킵니다.",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_RARE_CHAT": "아호이!!!",
+
+		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_PICKUP": "{0}\n<style=cIsUtility>열의</style>를 <sprite name=\"Quality\"> <style=cIsUtility>300%</style> 증가시킵니다.",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_DESC": "{0}\n<style=cIsUtility>열의</style>를 <sprite name=\"Quality\"> <style=cIsUtility>300%</style> 증가시킵니다.",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_EPIC_CHAT": "아호이!!!!",
+		
+		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_PICKUP": "{0}\n<style=cIsUtility>열의</style>를 <sprite name=\"Quality\"> <style=cIsUtility>500%</style> 증가시킵니다.",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_DESC": "{0}\n<style=cIsUtility>열의</style>를 <sprite name=\"Quality\"> <style=cIsUtility>500%</style> 증가시킵니다.",
+		"EQUIPMENT_BOSSHUNTERCONSUMED_LEGENDARY_CHAT": "아호이!!!!!",
+	}
+}
