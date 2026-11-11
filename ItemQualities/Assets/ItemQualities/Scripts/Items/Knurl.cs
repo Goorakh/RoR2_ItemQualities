@@ -3,6 +3,7 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
+using RoR2.ContentManagement;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System.Collections;
 using UnityEngine;
@@ -108,8 +109,7 @@ namespace ItemQualities.Items
                 Vector3 blastPosition = damageInfo.position;
 
                 // This is preloaded by the item behavior, so no asset loading should actually need to be done here
-                GameObject delayBlastPrefab = AddressableUtil.LoadAssetAsync<GameObject>(RoR2_Base_Common.GenericDelayBlast_prefab).WaitForCompletion();
-                GameObject delayBlastObj = GameObject.Instantiate(delayBlastPrefab, blastPosition, Quaternion.identity);
+                GameObject delayBlastObj = AddressableUtil.InstantiateAddressablePrefab(KnurlQualityItemBehavior.GenericDelayBlastPrefabReference, blastPosition, Quaternion.identity);
                 delayBlastObj.transform.localScale = new Vector3(blastRadius, blastRadius, blastRadius);
 
                 DelayBlast delayBlast = delayBlastObj.GetComponent<DelayBlast>();
@@ -137,16 +137,27 @@ namespace ItemQualities.Items
         [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.Knurl;
 
-        private static readonly AssetReferenceGameObject _genericDelayBlastPrefabReference = new AssetReferenceGameObject(RoR2_Base_Common.GenericDelayBlast_prefab);
+        public static readonly AssetReferenceGameObject GenericDelayBlastPrefabReference = new AssetReferenceGameObject(RoR2_Base_Common.GenericDelayBlast_prefab);
+
+        private static int instanceCount;
 
         private void OnEnable()
         {
-            AddressableUtil.LoadAssetAsync(_genericDelayBlastPrefabReference);
+            instanceCount++;
+            if (instanceCount == 1)
+            {
+                AddressableUtil.LoadAssetAsync(GenericDelayBlastPrefabReference, AsyncReferenceHandleUnloadType.Preload);
+            }
         }
 
         private void OnDisable()
         {
-            AddressableUtil.UnloadAsset(_genericDelayBlastPrefabReference);
+            instanceCount--;
+
+            if (instanceCount == 0)
+            {
+                AddressableUtil.UnloadAsset(GenericDelayBlastPrefabReference);
+            }
 
             Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.KnurlReady);
             Body.RemoveAllQualityBuffs(ItemQualitiesContent.BuffQualityGroups.KnurlCooldown);
