@@ -21,20 +21,27 @@ namespace ItemQualities.Items
         private static void onServerCharacterExecuted(DamageReport damageReport, float executedHealth)
         {
             if (!NetworkServer.active || damageReport?.damageInfo == null)
+            {
                 return;
+            }
 
-            if ((damageReport.damageInfo.damageType & DamageType.VoidDeath) == 0 ||
-                damageReport.damageInfo.procChainMask.HasModdedProc(ProcTypes.VoidDeathOrbProcType))
+            bool isVoidDeath = damageReport.victim && (damageReport.victim.killingDamageType & DamageType.VoidDeath) != 0;
+
+            if (!isVoidDeath || damageReport.damageInfo.procChainMask.HasModdedProc(ProcTypes.VoidDeathOrbProcType))
             {
                 return;
             }
 
             if (!damageReport.attackerBody || !damageReport.attackerBody.inventory)
+            {
                 return;
+            }
 
             ItemQualityCounts critGlassesVoid = damageReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.CritGlassesVoid);
             if (critGlassesVoid.TotalQualityCount <= 0)
+            {
                 return;
+            }
 
             float searchRadius = (15f * critGlassesVoid.UncommonCount) +
                                  (25f * critGlassesVoid.RareCount) +
@@ -63,8 +70,8 @@ namespace ItemQualities.Items
                     if (hurtBox &&
                         hurtBox.healthComponent &&
                         hurtBox.healthComponent.alive &&
-                        hurtBox.healthComponent.gameObject != damageReport.attacker &&
-                        hurtBox.healthComponent != damageReport.victim &&
+                        !ReferenceEquals(hurtBox.healthComponent.gameObject, damageReport.attacker) &&
+                        !ReferenceEquals(hurtBox.healthComponent, damageReport.victim) &&
                         hurtBox.healthComponent.body &&
                         !hurtBox.healthComponent.body.isBoss &&
                         (hurtBox.healthComponent.body.bodyFlags & CharacterBody.BodyFlags.ImmuneToVoidDeath) == 0)

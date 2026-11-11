@@ -16,9 +16,10 @@
 * Death Mark:
     * Fixed curse negating the damage bonus from increased maximum health.
 
-* Fixed items not working correctly after Hallowed Concepts:
+* Fixed quality items not working correctly after Hallowed Concepts:
     * Focus Crystal
     * Spare Drone Parts
+    * Lost Seer's Lenses
 
 * The Backup:
     * The Strike Drones now receive the appropriate quality tier.

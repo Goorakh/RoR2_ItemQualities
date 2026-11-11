@@ -70,6 +70,15 @@ namespace ItemQualities.Orbs
                     victim.TakeDamage(damageInfo);
                     GlobalEventManager.instance.OnHitEnemy(damageInfo, victim.gameObject);
                     GlobalEventManager.instance.OnHitAll(damageInfo, victim.gameObject);
+
+                    if (HealthComponent.AssetReferences.critGlassesVoidExecuteEffectPrefab)
+                    {
+                        EffectManager.SpawnEffect(HealthComponent.AssetReferences.critGlassesVoidExecuteEffectPrefab, new EffectData
+                        {
+                            origin = victim.body.corePosition,
+                            scale = (victim.body ? victim.body.radius : 1f)
+                        }, true);
+                    }
                 }
             }
         }
