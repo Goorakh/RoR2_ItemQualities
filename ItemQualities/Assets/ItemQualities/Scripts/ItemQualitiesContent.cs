@@ -25,8 +25,6 @@ namespace ItemQualities
 {
     public sealed class ItemQualitiesContent : IContentPackProvider
     {
-        public static string AddressablesRuntimePath { get; private set; }
-
         private readonly ExtendedContentPack _contentPack = new ExtendedContentPack();
 
         public string identifier => ItemQualitiesPlugin.PluginGUID;
@@ -36,11 +34,6 @@ namespace ItemQualities
 
         internal ItemQualitiesContent()
         {
-        }
-
-        internal static void InitAddressablesRuntimeDirectory(string pluginDirectory)
-        {
-            AddressablesRuntimePath = Path.Combine(pluginDirectory, "aa");
         }
 
         internal void Register()
