@@ -162,7 +162,7 @@ namespace ItemQualities.Items
                 {
                     for (int i = 0; i < fogCount; i++)
                     {
-                        hurtBox.healthComponent.body.AddBuff(fogBuffIndex);
+                        hurtBox.healthComponent.body.AddUnmanagedBuff(fogBuffIndex);
                     }
                 }
             }

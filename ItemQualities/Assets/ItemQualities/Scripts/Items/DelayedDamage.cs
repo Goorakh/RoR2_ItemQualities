@@ -66,7 +66,7 @@ namespace ItemQualities.Items
                 if (report.victimBody.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff).TotalQualityCount < maxStacks &&
                     RollUtil.CheckRoll(chance * report.damageInfo.procCoefficient, report.attackerMaster, sureProc))
                 {
-                    report.victimBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff.GetBuffDef(delayedDamage.HighestQuality));
+                    report.victimBody.AddUnmanagedBuff(ItemQualitiesContent.BuffQualityGroups.DelayedDamageDebuff.GetBuffDef(delayedDamage.HighestQuality));
                 }
             }
         }

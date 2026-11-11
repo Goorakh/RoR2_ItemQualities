@@ -12,7 +12,7 @@ namespace ItemQualities
         // Magic number, negative so it cannot collide with any actual muzzle index
         public const int UseExplicitTracerOriginMuzzleIndex = -0xDEAD;
 
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer]
         private static void Init()
         {
             IL.RoR2.BulletAttack.FireSingle += BulletAttack_FireSingle;

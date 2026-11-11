@@ -28,7 +28,7 @@ namespace ItemQualities.ContentManagement
         public static IEnumerator RunContentInitializers<TProgress>(ExtendedContentPack contentPack, TProgress progressReceiver)
             where TProgress : IProgress<float>
         {
-            List<(IEnumerator coroutine, ReadableProgress<float> progress)> contentInitializersSequence = new();
+            List<(ParallelCoroutineGroup coroutineGroup, ReadableProgress<float> progress)> contentInitializersSequence = new();
 
             List<ParallelCoroutineGroup> contentInitializerGroups = new List<ParallelCoroutineGroup>();
 
@@ -133,7 +133,8 @@ namespace ItemQualities.ContentManagement
 
             for (int i = 0; i < contentInitializersSequence.Count; i++)
             {
-                (IEnumerator coroutine, ReadableProgress<float> progress) = contentInitializersSequence[i];
+                (ParallelCoroutineGroup coroutineGroup, ReadableProgress<float> progress) = contentInitializersSequence[i];
+                ParallelProgressCoroutine coroutine = coroutineGroup.CombinedCoroutine;
 
                 while (coroutine.MoveNext())
                 {
@@ -145,16 +146,16 @@ namespace ItemQualities.ContentManagement
             }
         }
 
-        private sealed class ParallelCoroutineGroup : IEnumerator
+        private sealed class ParallelCoroutineGroup
         {
             private readonly HashSet<Type> _initializedTypes = new HashSet<Type>();
             private readonly ParallelProgressCoroutine _combinedCoroutine;
 
             public readonly ReadableProgress<float> Progress;
 
-            object IEnumerator.Current => ((IEnumerator)_combinedCoroutine).Current;
-
             public IReadOnlyCollection<Type> InitializedTypes => _initializedTypes;
+
+            public ParallelProgressCoroutine CombinedCoroutine => _combinedCoroutine;
 
             public ParallelCoroutineGroup(ReadableProgress<float> progressReceiver)
             {
@@ -176,16 +177,6 @@ namespace ItemQualities.ContentManagement
             public void SetInitialized(ContentInitializerAttribute attribute)
             {
                 _initializedTypes.Add(attribute.target.DeclaringType);
-            }
-
-            bool IEnumerator.MoveNext()
-            {
-                return ((IEnumerator)_combinedCoroutine).MoveNext();
-            }
-
-            void IEnumerator.Reset()
-            {
-                ((IEnumerator)_combinedCoroutine).Reset();
             }
         }
     }

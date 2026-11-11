@@ -43,10 +43,10 @@ namespace ItemQualities.UI
 
             StoredInteractableInfo storedInteractableInfo = masterStats ? masterStats.CardStoredInteractableInfo : StoredInteractableInfo.None;
 
-            int storedInteractableIndex = storedInteractableInfo.InteractableIndex;
+            InteractableIndex storedInteractableIndex = storedInteractableInfo.InteractableIndex;
             int storedInteractableUpgradeValue = storedInteractableInfo.UpgradeValue;
 
-            if (storedInteractableIndex != -1)
+            if (storedInteractableIndex != InteractableIndex.Invalid)
             {
                 InteractableDef interactableDef = InteractableCatalog.GetInteractableDef(storedInteractableIndex);
 
@@ -136,7 +136,7 @@ namespace ItemQualities.UI
                 InteractableIcon.texture = interactableIcon;
             }
 
-            DisplayRoot.SetActive(storedInteractableIndex != -1);
+            DisplayRoot.SetActive(storedInteractableIndex != InteractableIndex.Invalid);
         }
     }
 }

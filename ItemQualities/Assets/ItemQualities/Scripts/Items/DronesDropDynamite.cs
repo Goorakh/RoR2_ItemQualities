@@ -6,6 +6,7 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using R2API;
 using RoR2;
+using RoR2.Items;
 using RoR2.Projectile;
 using RoR2BepInExPack.GameAssetPathsBetter;
 using System;
@@ -132,6 +133,35 @@ namespace ItemQualities.Items
             }
 
             args.ContentPack.networkedObjectPrefabs.Add(droneShootableAttachmentPrefab);
+        }
+
+        [SystemInitializer]
+        private static void Init()
+        {
+            On.RoR2.Items.DronesDropDynamiteBehaviour.OnServerMasterSummonGlobal += DronesDropDynamiteBehaviour_OnServerMasterSummonGlobal;
+        }
+
+        private static void DronesDropDynamiteBehaviour_OnServerMasterSummonGlobal(On.RoR2.Items.DronesDropDynamiteBehaviour.orig_OnServerMasterSummonGlobal orig, DronesDropDynamiteBehaviour self, MasterSummon.MasterSummonReport summonReport)
+        {
+            orig(self, summonReport);
+
+            if (!self.body || !self.body.master || summonReport.leaderMasterInstance != self.body.master)
+            {
+                return;
+            }
+
+            if (!summonReport.summonMasterInstance)
+            {
+                return;
+            }
+
+            QualityTier qualityTier = self.body.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DronesDropDynamite).HighestQuality;
+            if (qualityTier == QualityTier.None)
+            {
+                return;
+            }
+
+            summonReport.summonMasterInstance.inventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(qualityTier));
         }
     }
 }

@@ -69,6 +69,8 @@ namespace ItemQualities.Equipments
                 Log.Error("Failed to find EquipmentSlot.PerformEquipmentAction method");
             }
 
+            IL.RoR2.EquipmentSlot.SummonMaster += EquipmentSlot_SummonMaster;
+
             On.RoR2.CharacterModel.SetEquipmentDisplay += CharacterModel_SetEquipmentDisplay;
             On.RoR2.CharacterModel.HighlightEquipentDisplay += CharacterModel_HighlightEquipentDisplay;
 
@@ -183,6 +185,37 @@ namespace ItemQualities.Equipments
                 {
                     ListPool<EquipmentAction>.ReturnCollection(actions);
                     _equipmentActionsBySlot.Remove(self);
+                }
+            }
+        }
+
+        private static void EquipmentSlot_SummonMaster(ILContext il)
+        {
+            ILCursor c = new ILCursor(il);
+
+            if (!c.TryGotoNext(MoveType.Before,
+                               x => x.MatchCallOrCallvirt<MasterSummon>(nameof(MasterSummon.Perform))))
+            {
+                Log.PatchError(il, "Failed to find patch location");
+                return;
+            }
+
+            c.Emit(OpCodes.Dup);
+            c.Emit(OpCodes.Ldarg_0);
+            c.EmitDelegate<Action<MasterSummon, EquipmentSlot>>(addQualitySummonListener);
+
+            static void addQualitySummonListener(MasterSummon masterSummon, EquipmentSlot equipmentSlot)
+            {
+                QualityTier qualityTier = equipmentSlot.GetCurrentEquipmentActionQualityTier();
+
+                if (qualityTier != QualityTier.None)
+                {
+                    masterSummon.preSpawnSetupCallback += onEquipmentMinionSummoned;
+
+                    void onEquipmentMinionSummoned(CharacterMaster summonedMaster)
+                    {
+                        summonedMaster.inventory.GiveItemPermanent(ItemQualitiesContent.ItemQualityGroups.QualityTier.GetItemIndex(qualityTier));
+                    }
                 }
             }
         }

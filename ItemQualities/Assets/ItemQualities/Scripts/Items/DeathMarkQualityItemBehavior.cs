@@ -2,40 +2,94 @@ using ItemQualities.Utilities;
 using ItemQualities.Utilities.Extensions;
 using RoR2;
 using RoR2BepInExPack.GameAssetPathsBetter;
-using System.Collections.Generic;
+using UnityEngine;
 
 namespace ItemQualities.Items
 {
     public class DeathMarkQualityItemBehavior : QualityItemBodyBehavior
     {
-        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server)]
+        [ItemGroupAssociation(QualityItemBehaviorUsageFlags.Server | QualityItemBehaviorUsageFlags.Client)]
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.DeathMark;
 
-        private static WwiseBankReference _soulExplosionReference;
+        private static AK.Wwise.Bank _railgunnerBank;
 
-        private AkBank _soulExplosionBank;
+        private static int instanceCount;
 
         [SystemInitializer]
         private static void Init()
         {
-            AddressableUtil.LoadAssetAsync<WwiseBankReference>(Wwise._12364C84_F36A_4AB9_8588_1A2AF5386BE0_asset).OnSuccess(railgunnerSoundReference =>
+            AddressableUtil.LoadAssetAsync<WwiseBankReference>(Wwise._12364C84_F36A_4AB9_8588_1A2AF5386BE0_asset).OnSuccess(railgunnerBankReference =>
             {
-                _soulExplosionReference = railgunnerSoundReference;
+                _railgunnerBank = new AK.Wwise.Bank
+                {
+                    WwiseObjectReference = railgunnerBankReference
+                };
             });
         }
 
         private void OnEnable()
         {
-            _soulExplosionBank = gameObject.AddComponent<AkBank>();
-            _soulExplosionBank.data.WwiseObjectReference = _soulExplosionReference;
-            _soulExplosionBank.triggerList = new List<int> { AkTriggerHandler.ON_ENABLE_TRIGGER_ID };
-            _soulExplosionBank.unloadTriggerList = new List<int> { AkTriggerHandler.ON_DISABLE_TRIGGER_ID };
-            _soulExplosionBank.HandleEvent(null);
+            _railgunnerBank?.Load();
+
+            if (++instanceCount == 1)
+            {
+                GlobalEventManager.onServerCharacterExecuted += OnServerCharacterExecuted;
+                MasterSummon.onServerMasterSummonGlobal += OnServerMasterSummonGlobal;
+            }
         }
 
         private void OnDisable()
         {
-            Destroy(_soulExplosionBank);
+            _railgunnerBank?.Unload();
+
+            if (--instanceCount == 0)
+            {
+                GlobalEventManager.onServerCharacterExecuted -= OnServerCharacterExecuted;
+                MasterSummon.onServerMasterSummonGlobal -= OnServerMasterSummonGlobal;
+            }
+        }
+
+        private static void OnServerMasterSummonGlobal(MasterSummon.MasterSummonReport report)
+        {
+            if (!report.leaderBodyInstance || !report.leaderBodyInstance.inventory)
+            {
+                return;
+            }
+
+            if (!report.summonBodyInstance || !report.summonBodyInstance.IsGhost())
+            {
+                return;
+            }
+
+            ItemQualityCounts deathMark = report.leaderBodyInstance.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DeathMark);
+
+            if (deathMark.TotalQualityCount > 0)
+            {
+                report.leaderBodyInstance.AddUnmanagedBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
+            }
+        }
+
+        private static void OnServerCharacterExecuted(DamageReport report, float damage)
+        {
+            if (report == null || !report.attackerBody || !report.attackerBody.inventory || !report.victimBody)
+                return;
+
+            ItemQualityCounts deathMark = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DeathMark);
+            if (deathMark.TotalQualityCount == 0)
+                return;
+
+            const int maxBuffs = 100;
+            int maxBuffsToAdd = maxBuffs - report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls);
+
+            float executeFraction = damage / report.victim.fullCombinedHealth;
+            float executeHealthPercent = executeFraction * 100f;
+            int desiredBuffsToAdd = (int)(executeHealthPercent * 0.5f);
+
+            int buffsToAdd = Mathf.Min(desiredBuffsToAdd, maxBuffsToAdd);
+            for (int i = 0; i < buffsToAdd; i++)
+            {
+                report.attackerBody.AddUnmanagedBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
+            }
         }
     }
 }

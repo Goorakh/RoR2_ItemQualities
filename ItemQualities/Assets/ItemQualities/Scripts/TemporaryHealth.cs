@@ -4,16 +4,84 @@ using MonoMod.Cil;
 using R2API;
 using RoR2;
 using System;
-using UnityEngine;
+using System.Collections.Generic;
 
 namespace ItemQualities
 {
-    internal static class TemporaryHealth
+    public static class TemporaryHealth
     {
+        private static readonly List<TemporaryHealthSourceEntry> _temporaryHealthSources = new List<TemporaryHealthSourceEntry>();
+        private sealed class TemporaryHealthSourceEntry : IComparable<TemporaryHealthSourceEntry>
+        {
+            public readonly ITemporaryHealthSource source;
+            public readonly float priority;
+
+            public TemporaryHealthSourceEntry(ITemporaryHealthSource source, float priority)
+            {
+                this.source = source;
+                this.priority = priority;
+            }
+
+            public int CompareTo(TemporaryHealthSourceEntry other)
+            {
+                // Sort entries by priorities descending (highest priority first)
+                return -priority.CompareTo(other.priority);
+            }
+        }
+
         public static float GetTemporaryHealthBonus(this CharacterBody body)
         {
-            return body.GetBuffCount(ItemQualitiesContent.Buffs.SlugHealth) +
-                   body.GetBuffCount(ItemQualitiesContent.Buffs.FruitTempHealth);
+            float totalHealthBonus = 0f;
+
+            foreach (TemporaryHealthSourceEntry sourceEntry in _temporaryHealthSources)
+            {
+                totalHealthBonus += sourceEntry.source.GetTemporaryHealthBonus(body);
+            }
+
+            return totalHealthBonus;
+        }
+
+        /// <summary>
+        /// Attempts to take an amount of health from all sources. In order of priority.
+        /// </summary>
+        /// <param name="body"></param>
+        /// <param name="temporaryHealthToTake"></param>
+        /// <returns>How much temporary health was actually deducted, may be less than <paramref name="temporaryHealthToTake"/> if the body does not have enough to "afford" it.</returns>
+        public static float TryTakeTemporaryHealth(this CharacterBody body, float temporaryHealthToTake)
+        {
+            float totalTaken = 0f;
+            float remainingToTake = temporaryHealthToTake;
+
+            foreach (TemporaryHealthSourceEntry sourceEntry in _temporaryHealthSources)
+            {
+                float takenFromSource = sourceEntry.source.TryTakeTemporaryHealthBonus(body, remainingToTake);
+                totalTaken += takenFromSource;
+                remainingToTake -= takenFromSource;
+
+                if (remainingToTake <= 0f)
+                {
+                    break;
+                }
+            }
+
+            return totalTaken;
+        }
+        
+        /// <summary>
+        /// Registers a temporary health source for all bodies
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="priority">The priority of this source, higher priorities will be consumed first.</param>
+        public static void RegisterTempoaryHealthSource(ITemporaryHealthSource source, float priority = 0f)
+        {
+            TemporaryHealthSourceEntry sourceEntry = new TemporaryHealthSourceEntry(source, priority);
+            int index = _temporaryHealthSources.BinarySearch(sourceEntry);
+            if (index < 0)
+            {
+                index = ~index;
+            }
+
+            _temporaryHealthSources.Insert(index, sourceEntry);
         }
 
         [SystemInitializer]
@@ -22,6 +90,9 @@ namespace ItemQualities
             RecalculateStatsAPI.GetStatCoefficients += getStatCoefficients;
 
             IL.RoR2.HealthComponent.TakeDamageProcess += HealthComponent_TakeDamageProcess;
+
+            RegisterTempoaryHealthSource(new BuffTemporaryHealthSource(ItemQualitiesContent.Buffs.SlugHealth));
+            RegisterTempoaryHealthSource(new BuffTemporaryHealthSource(ItemQualitiesContent.Buffs.FruitTempHealth));
         }
 
         private static void HealthComponent_TakeDamageProcess(ILContext il)
@@ -59,28 +130,7 @@ namespace ItemQualities
 
                 if (healthDamageDealt > 0f)
                 {
-                    float temporaryHealthDamage = healthDamageDealt;
-
-                    tryDeductTemporaryHealth(ref temporaryHealthDamage, ItemQualitiesContent.Buffs.SlugHealth);
-                    tryDeductTemporaryHealth(ref temporaryHealthDamage, ItemQualitiesContent.Buffs.FruitTempHealth);
-
-                    void tryDeductTemporaryHealth(ref float temporaryHealthDamage, BuffDef tempHealthBuff)
-                    {
-                        if (temporaryHealthDamage <= 0f)
-                            return;
-
-                        int tempHealthCount = healthComponent.body.GetBuffCount(tempHealthBuff);
-                        if (tempHealthCount == 0)
-                            return;
-
-                        int tempHealthTaken = Mathf.FloorToInt(Math.Min(temporaryHealthDamage, tempHealthCount));
-                        temporaryHealthDamage -= tempHealthTaken;
-
-                        if (tempHealthTaken > 0)
-                        {
-                            healthComponent.body.SetBuffCount(tempHealthBuff.buffIndex, Mathf.Max(0, tempHealthCount - tempHealthTaken));
-                        }
-                    }
+                    TryTakeTemporaryHealth(healthComponent.body, healthDamageDealt);
                 }
             }
         }

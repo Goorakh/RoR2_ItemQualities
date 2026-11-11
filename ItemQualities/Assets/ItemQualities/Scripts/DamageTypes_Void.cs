@@ -14,7 +14,7 @@ namespace ItemQualities
 {
     public partial class DamageTypes
     {
-        [InitDuringStartupPhase(GameInitPhase.DuringIntro)]
+        [SystemInitializer]
         private static void Init_Void()
         {
             On.EntityStates.VoidInfestor.Infest.OnEnter += Infest_OnEnter;

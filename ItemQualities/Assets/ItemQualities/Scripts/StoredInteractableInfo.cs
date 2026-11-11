@@ -5,9 +5,9 @@ namespace ItemQualities
 {
     public struct StoredInteractableInfo : IEquatable<StoredInteractableInfo>, IBinarySerializable
     {
-        public static readonly StoredInteractableInfo None = new StoredInteractableInfo { InteractableIndex = -1 };
+        public static readonly StoredInteractableInfo None = new StoredInteractableInfo { InteractableIndex = InteractableIndex.Invalid };
 
-        public int InteractableIndex;
+        public InteractableIndex InteractableIndex;
 
         public int UpgradeValue;
 
@@ -44,8 +44,8 @@ namespace ItemQualities
 
         internal readonly void Serialize(SerializerContext context)
         {
-            context.WritePackedIndex32(InteractableIndex);
-            bool hasInteractableIndex = InteractableIndex != -1;
+            context.WritePackedIndex32((int)InteractableIndex);
+            bool hasInteractableIndex = InteractableIndex != InteractableIndex.Invalid;
             if (hasInteractableIndex)
             {
                 context.WritePackedUInt32((uint)UpgradeValue);
@@ -59,8 +59,8 @@ namespace ItemQualities
 
         internal void Deserialize(DeserializerContext context)
         {
-            InteractableIndex = context.ReadPackedIndex32();
-            bool hasInteractableIndex = InteractableIndex != -1;
+            InteractableIndex = (InteractableIndex)context.ReadPackedIndex32();
+            bool hasInteractableIndex = InteractableIndex != InteractableIndex.Invalid;
             UpgradeValue = hasInteractableIndex ? (int)context.ReadPackedUInt32() : 0;
         }
 

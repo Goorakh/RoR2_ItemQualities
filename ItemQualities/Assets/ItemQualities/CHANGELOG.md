@@ -1,3 +1,45 @@
+## 0.8.6 Changes:
+
+* Added quality items to AI blacklist:
+    * Bison Steak
+    * Medkit
+    * Oddly Shaped Opal
+    * Personal Shield Generator
+    * N'kuhana's Opinion
+    * Pocket I.C.B.M.
+    * Rejuvenation Rack
+    * Sentient Meat Hook
+
+* Box of Dynamite:
+    * Lt. Droneboy now receives the appropriate quality tier.
+
+* Death Mark:
+    * Fixed curse negating the damage bonus from increased maximum health.
+
+* Fixed quality items not working correctly after Hallowed Concepts:
+    * Focus Crystal
+    * Spare Drone Parts
+    * Lost Seer's Lenses
+
+* The Backup:
+    * The Strike Drones now receive the appropriate quality tier.
+
+* Symbiotic Scorpion:
+    * Fixed DoT proc chance ignoring proc coefficient.
+    
+* Will-o'-the-wisp:
+    * Fixed explosion size increase not applying to some items.
+
+* Fixed Lemurian Compulsion Quest resetting buffs:
+    * Temporary health from Foreign Fruit or Cautios Slug
+    * Predatory Instincts stage attack speed
+    * Death Mark souls
+    * Hunter's Harpoon stage move speed
+    * Unstable Transmitter orb charges
+    * Bugs from Milky Chrysalis
+
+* Minor improvements to mod loading time (~2s faster on average)
+
 ## 0.8.5 Changes:
 
 <details>

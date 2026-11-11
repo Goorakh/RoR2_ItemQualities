@@ -62,7 +62,7 @@ namespace ItemQualities.Equipments
                         continue;
 
                     StoredInteractableInfo storedInteractableInfo = masterExtraStats.CardStoredInteractableInfo;
-                    if (storedInteractableInfo.InteractableIndex == -1)
+                    if (storedInteractableInfo.InteractableIndex == InteractableIndex.Invalid)
                         continue;
 
                     masterExtraStats.CardStoredInteractableInfo = StoredInteractableInfo.None;
@@ -324,7 +324,7 @@ namespace ItemQualities.Equipments
                         Inventory inventory = equipmentIcon.targetInventory;
                         if (inventory && inventory.TryGetComponentCached(out CharacterMasterExtraStatsTracker masterExtraStats))
                         {
-                            if (masterExtraStats.CardStoredInteractableInfo.InteractableIndex != -1)
+                            if (masterExtraStats.CardStoredInteractableInfo.InteractableIndex != InteractableIndex.Invalid)
                             {
                                 shouldDisplayCardTooltip = true;
                             }

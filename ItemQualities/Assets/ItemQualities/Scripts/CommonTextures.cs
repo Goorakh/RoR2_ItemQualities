@@ -10,7 +10,7 @@ namespace ItemQualities
     {
         public static Texture2D DefaultElitesRamp { get; private set; }
 
-        [InitDuringStartupPhase(GameInitPhase.DuringIntro)]
+        [SystemInitializer]
         private static void Init()
         {
             AddressableUtil.LoadAssetAsync<Texture2D>(RoR2_Base_Common_GlobalTextures.texRampElites_psd).OnSuccess(rampElites =>

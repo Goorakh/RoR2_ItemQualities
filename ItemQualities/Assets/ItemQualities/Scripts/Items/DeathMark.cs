@@ -79,48 +79,6 @@ namespace ItemQualities.Items
             _soulStrikeCritColor = ColorsAPI.RegisterDamageColor(new Color(0f, 0.8f, 0f));
 
             IL.RoR2.HealthComponent.TakeDamageProcess += IL_HealthComponent_TakeDamageProcess;
-            GlobalEventManager.onServerCharacterExecuted += OnServerCharacterExecuted;
-            MasterSummon.onServerMasterSummonGlobal += OnServerMasterSummonGlobal;
-        }
-
-        private static void OnServerMasterSummonGlobal(MasterSummon.MasterSummonReport report)
-        {
-            if (!report.summonMasterInstance || !report.summonMasterInstance.inventory)
-                return;
-            if (!report.leaderBodyInstance || !report.leaderBodyInstance.inventory)
-                return;
-            if (report.summonMasterInstance.inventory.GetItemCountEffective(RoR2Content.Items.Ghost) == 0)
-                return;
-
-            ItemQualityCounts deathMark = report.leaderBodyInstance.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DeathMark);
-
-            if (deathMark.TotalQualityCount > 0)
-            {
-                report.leaderBodyInstance.AddBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
-            }
-        }
-
-        private static void OnServerCharacterExecuted(DamageReport report, float damage)
-        {
-            if (report == null || !report.attackerBody || !report.attackerBody.inventory || !report.victimBody)
-                return;
-
-            ItemQualityCounts deathMark = report.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.DeathMark);
-            if (deathMark.TotalQualityCount == 0)
-                return;
-
-            const int maxBuffs = 100;
-            int maxBuffsToAdd = maxBuffs - report.attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls);
-
-            float executeFraction = damage / report.victim.fullCombinedHealth;
-            float executeHealthPercent = executeFraction * 100f;
-            int desiredBuffsToAdd = (int)(executeHealthPercent * 0.5f);
-
-            int buffsToAdd = Mathf.Min(desiredBuffsToAdd, maxBuffsToAdd);
-            for (int i = 0; i < buffsToAdd; i++)
-            {
-                report.attackerBody.AddBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
-            }
         }
 
         //hook after last damagecolor overwrite
@@ -201,20 +159,21 @@ namespace ItemQualities.Items
                 };
 
                 int soulsToDrain = Mathf.Min(soulDrainMax, attackerBody.GetBuffCount(ItemQualitiesContent.Buffs.DeathMarkSouls));
-                for (int soul = 0; soul < soulsToDrain ; soul++)
+                for (int soul = 0; soul < soulsToDrain; soul++)
                 {
                     attackerBody.RemoveBuff(ItemQualitiesContent.Buffs.DeathMarkSouls);
                 }
 
-                float stackDamageCoeff =(deathMark.UncommonCount * 1) +
-                                        (deathMark.RareCount * 2) +
-                                        (deathMark.EpicCount * 3) +
-                                        (deathMark.LegendaryCount * 4);
+                float stackDamageCoeff = (deathMark.UncommonCount * 1) +
+                                         (deathMark.RareCount * 2) +
+                                         (deathMark.EpicCount * 3) +
+                                         (deathMark.LegendaryCount * 4);
 
-                float baseLevelMaxHealth = attackerBody.baseMaxHealth + (attackerBody.levelMaxHealth * (attackerBody.level - 1));
-                float damageCoeff = Mathf.Max((attackerBody.maxHealth - baseLevelMaxHealth) * 0.01f * stackDamageCoeff, 0) + 0.5f;
+                float baseLevelMaxHealth = attackerBody.baseMaxHealth + (attackerBody.levelMaxHealth * Mathf.Max(0, attackerBody.level - 1));
+                float damageCoeff = Mathf.Max((attackerBody.maxBonusHealth - baseLevelMaxHealth) * 0.01f * stackDamageCoeff, 0) + 0.5f;
                 return damage * (damageCoeff + 1);
             }
+
             return damage;
         }
     }

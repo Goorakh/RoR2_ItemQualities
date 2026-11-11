@@ -25,8 +25,14 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
   pickupIconSprite: {fileID: 21300000, guid: 22dedf8150cbbc443bcef6478a52aa4b, type: 3}
+  pickupIconSpriteReference:
+    m_AssetGUID: 
+    m_SubObjectName: 
+    m_SubObjectType: 
+  itemPickupSpawnSound: 
+  itemPickupDestroySound: 
   isConsumed: 0
   hidden: 0
   canRemove: 1
-  tags: 09000000
+  tags: 090000001200000004000000
   requiredExpansion: {fileID: 0}

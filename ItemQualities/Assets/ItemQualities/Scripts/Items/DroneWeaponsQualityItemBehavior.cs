@@ -15,14 +15,17 @@ namespace ItemQualities.Items
         private static ItemQualityGroup GetItemGroup() => ItemQualitiesContent.ItemQualityGroups.DroneWeapons;
 
         private static readonly float droneReviveRollInterval = 1f;
-        private static readonly float droneReviveBuffDuration = droneReviveRollInterval + 0.05f;
 
         private QualityTier prevDroneCommanderQualityTier = QualityTier.None;
+
+        private List<CharacterMaster> currentReviveMinionMasters;
 
         private float droneReviveRollTimer;
 
         private void OnEnable()
         {
+            currentReviveMinionMasters = ListPool<CharacterMaster>.RentCollection();
+
             MasterSummon.onServerMasterSummonGlobal += onServerMasterSummonGlobal;
         }
 
@@ -30,6 +33,11 @@ namespace ItemQualities.Items
         {
             MasterSummon.onServerMasterSummonGlobal -= onServerMasterSummonGlobal;
             setDroneCommanderQualityTier(QualityTier.None);
+
+            using var _ = ListPool<CharacterMaster>.RentCollection(out List<CharacterMaster> reviveMinionMasters);
+            setReviveMinionMasters(reviveMinionMasters);
+
+            currentReviveMinionMasters = ListPool<CharacterMaster>.ReturnCollection(currentReviveMinionMasters);
         }
 
         private void FixedUpdate()
@@ -62,6 +70,8 @@ namespace ItemQualities.Items
                         break;
                 }
 
+                using var _ = ListPool<CharacterMaster>.RentCollection(out List<CharacterMaster> reviveMinionMasters);
+
                 MinionOwnership.MinionGroup minionGroup = MinionOwnership.MinionGroup.FindGroup(Body.master.netId);
                 if (minionGroup != null)
                 {
@@ -73,15 +83,43 @@ namespace ItemQualities.Items
                             CharacterBody minionBody = minionMaster.GetBody();
                             if (minionBody && (minionBody.bodyFlags & CharacterBody.BodyFlags.Mechanical) != 0 && minionBody.healthComponent.alive)
                             {
-                                if (Util.CheckRoll(droneReviveChance, Body.master.luck))
+                                if (Util.CheckRoll(droneReviveChance, Body.master.luck, null))
                                 {
-                                    minionBody.AddTimedBuff(DLC2Content.Buffs.ExtraLifeBuff, droneReviveBuffDuration);
+                                    reviveMinionMasters.Add(minionMaster);
                                 }
                             }
                         }
                     }
                 }
+
+                setReviveMinionMasters(reviveMinionMasters);
             }
+        }
+
+        private void setReviveMinionMasters(List<CharacterMaster> reviveMinionMasters)
+        {
+            using var _0 = ListPool<CharacterMaster>.RentCollection(out List<CharacterMaster> newReviveMinionMasters);
+            using var _1 = ListPool<CharacterMaster>.RentCollection(out List<CharacterMaster> prevReviveMinionMasters);
+
+            ListUtils.FindExclusiveEntriesByReference(currentReviveMinionMasters, reviveMinionMasters, prevReviveMinionMasters, newReviveMinionMasters);
+
+            foreach (CharacterMaster minionMaster in newReviveMinionMasters)
+            {
+                if (minionMaster.TryGetBody(out CharacterBody minionBody))
+                {
+                    minionBody.AddUnmanagedBuff(DLC2Content.Buffs.ExtraLifeBuff);
+                }
+            }
+
+            foreach (CharacterMaster minionMaster in prevReviveMinionMasters)
+            {
+                if (minionMaster.TryGetBody(out CharacterBody minionBody))
+                {
+                    minionBody.RemoveUnmanagedBuff(DLC2Content.Buffs.ExtraLifeBuff);
+                }
+            }
+
+            ListUtils.CloneTo(reviveMinionMasters, currentReviveMinionMasters);
         }
 
         private void onServerMasterSummonGlobal(MasterSummon.MasterSummonReport summonReport)
@@ -166,7 +204,7 @@ namespace ItemQualities.Items
 
         private static BuffIndex[] allEliteBuffIndices = Array.Empty<BuffIndex>();
 
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer(typeof(EliteCatalog), typeof(BuffCatalog))]
         private static void InitEliteBuffs()
         {
             HashSet<BuffIndex> validEliteBuffIndices = new HashSet<BuffIndex>(EliteCatalog.eliteList.Count);

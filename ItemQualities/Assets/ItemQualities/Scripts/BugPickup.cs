@@ -47,7 +47,7 @@ namespace ItemQualities
                         BuffIndex buffIndex = BuffGroup.GetBuffIndex(Tier);
                         if (buffIndex != BuffIndex.None)
                         {
-                            body.AddBuff(buffIndex);
+                            body.AddUnmanagedBuff(buffIndex);
                         }
                     }
 

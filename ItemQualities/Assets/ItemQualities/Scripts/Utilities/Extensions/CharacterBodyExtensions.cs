@@ -27,6 +27,14 @@ namespace ItemQualities.Utilities.Extensions
             }
         }
 
+        public static bool HasUnmanagedBuffRaw(this CharacterBody body, BuffIndex buffIndex)
+        {
+            using (new BuffHooks.DisableBuffCountHooksScope(body))
+            {
+                return body.HasUnmanagedBuff(buffIndex);
+            }
+        }
+
         public static void ClearTimedBuffsRaw(this CharacterBody body, BuffIndex buffIndex)
         {
             using (new BuffHooks.DisableBuffCountHooksScope(body))
@@ -72,12 +80,25 @@ namespace ItemQualities.Utilities.Extensions
             if (!buffGroup)
                 return;
 
-            for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
+            using (new BuffHooks.DisableBuffCountHooksScope(body))
             {
-                BuffIndex buffIndex = buffGroup.GetBuffIndex(qualityTier);
-                for (int i = body.GetBuffCountRaw(buffIndex); i > 0; i--)
+                for (QualityTier qualityTier = QualityTier.None; qualityTier < QualityTier.Count; qualityTier++)
                 {
-                    body.RemoveBuff(buffIndex);
+                    BuffIndex buffIndex = buffGroup.GetBuffIndex(qualityTier);
+                    if (buffIndex != BuffIndex.None)
+                    {
+                        for (int i = body.GetBuffCountRaw(buffIndex); i > 0; i--)
+                        {
+                            if (body.HasUnmanagedBuffRaw(buffIndex))
+                            {
+                                body.RemoveUnmanagedBuff(buffIndex);
+                            }
+                            else
+                            {
+                                body.RemoveBuff(buffIndex);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -96,12 +117,25 @@ namespace ItemQualities.Utilities.Extensions
             if (!buffGroup)
                 return;
 
-            for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
+            using (new BuffHooks.DisableBuffCountHooksScope(body))
             {
-                BuffIndex buffIndex = buffGroup.GetBuffIndex(qualityTier);
-                for (int i = body.GetBuffCountRaw(buffIndex); i > 0; i--)
+                for (QualityTier qualityTier = 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
-                    body.RemoveBuff(buffIndex);
+                    BuffIndex buffIndex = buffGroup.GetBuffIndex(qualityTier);
+                    if (buffIndex != BuffIndex.None)
+                    {
+                        for (int i = body.GetBuffCountRaw(buffIndex); i > 0; i--)
+                        {
+                            if (body.HasUnmanagedBuffRaw(buffIndex))
+                            {
+                                body.RemoveUnmanagedBuff(buffIndex);
+                            }
+                            else
+                            {
+                                body.RemoveBuff(buffIndex);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -141,38 +175,54 @@ namespace ItemQualities.Utilities.Extensions
             BuffIndex desiredBuffIndex = buffGroup.GetBuffIndex(buffQualityTier);
             BuffDef desiredBuffDef = BuffCatalog.GetBuffDef(desiredBuffIndex);
 
-            for (QualityTier qualityTier = includeBaseBuff ? QualityTier.None : 0; qualityTier < QualityTier.Count; qualityTier++)
+            using (new BuffHooks.DisableBuffCountHooksScope(body))
             {
-                if (qualityTier != buffQualityTier)
+                for (QualityTier qualityTier = includeBaseBuff ? QualityTier.None : 0; qualityTier < QualityTier.Count; qualityTier++)
                 {
-                    BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(qualityTier);
-                    if (qualityBuffIndex != BuffIndex.None)
+                    if (qualityTier != buffQualityTier)
                     {
-                        for (int i = body.GetBuffCountRaw(qualityBuffIndex); i > 0; i--)
+                        BuffIndex qualityBuffIndex = buffGroup.GetBuffIndex(qualityTier);
+                        if (qualityBuffIndex != BuffIndex.None)
                         {
-                            float? buffDuration = null;
-                            for (int j = 0; j < body.timedBuffs.Count; j++)
+                            for (int buffCount = body.GetBuffCountRaw(qualityBuffIndex); buffCount > 0; buffCount--)
                             {
-                                CharacterBody.TimedBuff timedBuff = body.timedBuffs[j];
-                                if (timedBuff.buffIndex == qualityBuffIndex)
-                                {
-                                    buffDuration = timedBuff.timer;
-                                    body.timedBuffs.RemoveAt(j);
-                                    break;
-                                }
-                            }
+                                float? buffDuration = null;
 
-                            body.RemoveBuff(qualityBuffIndex);
-
-                            if (desiredBuffIndex != BuffIndex.None && desiredBuffDef && (desiredBuffDef.canStack || !body.HasBuffRaw(desiredBuffIndex)))
-                            {
-                                if (buffDuration.HasValue)
+                                bool isUnmanaged = body.HasUnmanagedBuff(qualityBuffIndex);
+                                if (isUnmanaged)
                                 {
-                                    body.AddTimedBuff(desiredBuffDef, buffDuration.Value);
+                                    body.RemoveUnmanagedBuff(qualityBuffIndex);
                                 }
                                 else
                                 {
-                                    body.AddBuff(desiredBuffIndex);
+                                    for (int j = 0; j < body.timedBuffs.Count; j++)
+                                    {
+                                        CharacterBody.TimedBuff timedBuff = body.timedBuffs[j];
+                                        if (timedBuff.buffIndex == qualityBuffIndex)
+                                        {
+                                            buffDuration = timedBuff.timer;
+                                            body.timedBuffs.RemoveAt(j);
+                                            break;
+                                        }
+                                    }
+
+                                    body.RemoveBuff(qualityBuffIndex);
+                                }
+
+                                if (desiredBuffIndex != BuffIndex.None && desiredBuffDef && (desiredBuffDef.canStack || !body.HasBuffRaw(desiredBuffIndex)))
+                                {
+                                    if (buffDuration.HasValue)
+                                    {
+                                        body.AddTimedBuff(desiredBuffDef, buffDuration.Value);
+                                    }
+                                    else if (isUnmanaged)
+                                    {
+                                        body.AddUnmanagedBuff(desiredBuffIndex);
+                                    }
+                                    else
+                                    {
+                                        body.AddBuff(desiredBuffIndex);
+                                    }
                                 }
                             }
                         }

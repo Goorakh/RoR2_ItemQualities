@@ -122,6 +122,8 @@ namespace ItemQualities.Items
             }
         }
 
+        private static readonly DamageTypeCombo fireDamageTypeMask = new DamageTypeCombo(DamageType.IgniteOnHit | DamageType.PercentIgniteOnHit, DamageTypeExtended.FireNoIgnite, DamageSource.NoneSpecified);
+
         private void onCharacterDeathGlobal(DamageReport damageReport)
         {
             if (damageReport == null || damageReport.attackerBody != Body || !_icicleAura)
@@ -132,8 +134,11 @@ namespace ItemQualities.Items
             // Gas also ignites the enemy you killed, so needs to check for greater 1 instead
             if (damageReport.victimBody.GetBuffCount(RoR2Content.Buffs.OnFire) > 1 ||
                 damageReport.victimBody.GetBuffCount(DLC1Content.Buffs.StrongerBurn) > 1 ||
+                (victimDotController && victimDotController.HasDotActive(DotController.DotIndex.Helfire)) ||
+                // Blazing elites are technically burning...
                 damageReport.victimBody.HasBuff(RoR2Content.Buffs.AffixRed) ||
-                (victimDotController && victimDotController.HasDotActive(DotController.DotIndex.Helfire)))
+                // If the enemy isn't burning, but the killing blow was a fire-based attack, also count that
+                (damageReport.damageInfo.damageType & fireDamageTypeMask) != 0)
             {
                 _icicleAura.OnOwnerKillOther();
             }

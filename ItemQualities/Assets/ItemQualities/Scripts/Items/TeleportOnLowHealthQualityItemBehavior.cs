@@ -24,7 +24,7 @@ namespace ItemQualities.Items
 
                     if (Body.GetBuffCounts(ItemQualitiesContent.BuffQualityGroups.TeleportOnLowHealthOrbCharge).TotalQualityCount < _maxCharges)
                     {
-                        Body.AddBuff(ItemQualitiesContent.BuffQualityGroups.TeleportOnLowHealthOrbCharge.GetBuffIndex(Stacks.HighestQuality));
+                        Body.AddUnmanagedBuff(ItemQualitiesContent.BuffQualityGroups.TeleportOnLowHealthOrbCharge.GetBuffIndex(Stacks.HighestQuality));
                     }
                 }
             }

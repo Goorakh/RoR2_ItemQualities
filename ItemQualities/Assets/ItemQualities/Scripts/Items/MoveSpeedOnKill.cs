@@ -51,7 +51,7 @@ namespace ItemQualities.Items
 
                     if (damageReport.attackerBody.GetBuffCount(qualityKillMoveSpeedBuffIndex) < maxStacks)
                     {
-                        damageReport.attackerBody.AddBuff(qualityKillMoveSpeedBuffIndex);
+                        damageReport.attackerBody.AddUnmanagedBuff(qualityKillMoveSpeedBuffIndex);
                     }
                 }
             }

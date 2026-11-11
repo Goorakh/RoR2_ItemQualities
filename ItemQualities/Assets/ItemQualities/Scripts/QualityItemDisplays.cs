@@ -6,7 +6,7 @@ namespace ItemQualities
 {
     internal static class QualityItemDisplays
     {
-        [InitDuringStartupPhase(GameInitPhase.DuringIntro)]
+        [SystemInitializer]
         private static void Init()
         {
             On.RoR2.CharacterModel.UpdateMaterials += CharacterModel_UpdateMaterials;

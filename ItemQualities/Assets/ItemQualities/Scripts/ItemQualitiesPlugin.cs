@@ -4,7 +4,9 @@ using HG.Reflection;
 using ItemQualities.ModCompatibility;
 using R2API.Utils;
 using System.Diagnostics;
-using System.IO;
+using UnityEngine;
+
+using Path = System.IO.Path;
 
 [assembly: NetworkCompatibility(CompatibilityLevel.EveryoneMustHaveMod, VersionStrictness.EveryoneNeedSameModVersion)]
 [assembly: SearchableAttribute.OptIn]
@@ -36,10 +38,12 @@ namespace ItemQualities
         public const string PluginName = "ItemQualities";
         public const string PluginAuthor = "Gorakh";
         public const string PluginGUID = "com." + PluginAuthor + "." + PluginName;
-        public const string PluginVersion = "0.8.5";
+        public const string PluginVersion = "0.8.6";
 
         private static ItemQualitiesPlugin _instance;
         public static ItemQualitiesPlugin Instance => _instance;
+
+        internal static readonly string PersistentDataPath = Path.Combine(Application.persistentDataPath, PluginGUID);
 
         private void Awake()
         {
@@ -63,7 +67,7 @@ namespace ItemQualities
 
             ItemQualitiesContent contentProvider = new ItemQualitiesContent();
             contentProvider.Register();
-
+            
             CustomCostTypeIndex.Register();
 
             LanguageFolderHandler.Register(Path.GetDirectoryName(Info.Location));

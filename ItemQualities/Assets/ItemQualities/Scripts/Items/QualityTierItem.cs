@@ -45,7 +45,7 @@ namespace ItemQualities.Items
             if (!summonerBody || !summonerBody.inventory)
                 return;
 
-            ItemQualityCounts qualityTierCounts = summonReport.masterSummon.summonerBodyObject.GetComponent<CharacterBody>().inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier);
+            ItemQualityCounts qualityTierCounts = summonerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.QualityTier);
             QualityTier summonerQualityTier = qualityTierCounts.HighestQuality;
             if (summonerQualityTier != QualityTier.None)
             {

@@ -1,11 +1,12 @@
-﻿using HG.Coroutines;
-using ItemQualities.Utilities.Extensions;
+﻿using ItemQualities.Utilities.Extensions;
+using RoR2.AddressableAssets;
 using RoR2.ContentManagement;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Runtime.CompilerServices;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -52,6 +53,23 @@ namespace ItemQualities.Utilities
             AssetAsyncReferenceManager<T>.UnloadAsset(assetReference);
         }
 
+        public static GameObject InstantiateAddressablePrefab(AssetReferenceT<GameObject> prefabReference, AsyncReferenceHandleUnloadType unloadType = AsyncReferenceHandleUnloadType.AtWill)
+        {
+            GameObject prefab = LoadAssetAsync(prefabReference, unloadType).WaitForCompletion();
+            GameObject instance = GameObject.Instantiate(prefab);
+            instance.AddComponent<AddressablePrefabInstance>().assetReference = prefabReference;
+            return instance;
+        }
+
+        public static GameObject InstantiateAddressablePrefab(AssetReferenceT<GameObject> prefabReference, Vector3 position, Quaternion rotation, AsyncReferenceHandleUnloadType unloadType = AsyncReferenceHandleUnloadType.AtWill)
+        {
+            GameObject prefab = LoadAssetAsync(prefabReference, unloadType).WaitForCompletion();
+            GameObject instance = GameObject.Instantiate(prefab, position, rotation);
+            instance.AddComponent<AddressablePrefabInstance>().assetReference = prefabReference;
+            return instance;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerator LoadTempAssetOrDirectReferenceAsync<TAsset, TProgress>(AssetReferenceT<TAsset> assetReference, TAsset directReference, TProgress progressReceiver, CoroutineResult<TAsset> result)
             where TAsset : UnityEngine.Object
             where TProgress : IProgress<float>
@@ -65,12 +83,12 @@ namespace ItemQualities.Utilities
         {
             if (assetReference != null && assetReference.RuntimeKeyIsValid())
             {
-                AsyncOperationHandle<TAsset> bfgProjectileGhostPrefabLoad = LoadAssetAsync(assetReference, unloadType);
-                yield return bfgProjectileGhostPrefabLoad.AsProgressCoroutine(progressReceiver);
+                AsyncOperationHandle<TAsset> loadHandle = LoadAssetAsync(assetReference, unloadType);
+                yield return loadHandle.AsProgressCoroutine(progressReceiver);
 
-                if (bfgProjectileGhostPrefabLoad.AssertLoaded())
+                if (loadHandle.AssertLoaded())
                 {
-                    result.Value = bfgProjectileGhostPrefabLoad.Result;
+                    result.Value = loadHandle.Result;
                 }
             }
             else

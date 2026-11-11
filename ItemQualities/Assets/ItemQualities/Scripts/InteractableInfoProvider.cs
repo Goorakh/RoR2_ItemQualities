@@ -6,7 +6,7 @@ namespace ItemQualities
 {
     internal sealed class InteractableInfoProvider : MonoBehaviour
     {
-        public int CatalogIndex = -1;
+        public InteractableIndex CatalogIndex = InteractableIndex.Invalid;
 
         public bool Duplicated;
 
@@ -48,7 +48,7 @@ namespace ItemQualities
 
         private void Start()
         {
-            if (CatalogIndex != -1)
+            if (CatalogIndex != InteractableIndex.Invalid)
             {
                 OnCatalogedInteractableStartGlobal?.Invoke(this);
             }

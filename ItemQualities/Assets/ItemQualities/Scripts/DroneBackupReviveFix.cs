@@ -11,7 +11,7 @@ namespace ItemQualities
 {
     internal static class DroneBackupReviveFix
     {
-        [InitDuringStartupPhase(GameInitPhase.DuringIntro)]
+        [SystemInitializer]
         private static void Init()
         {
             IL.RoR2.EquipmentSlot.FireDroneBackup += EquipmentSlot_FireDroneBackup;

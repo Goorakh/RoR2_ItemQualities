@@ -101,7 +101,7 @@ namespace ItemQualities.Equipments
                         int temporaryHealthAmountToAdd = Mathf.CeilToInt(Mathf.Min(maxTemporaryHealthToAdd, desiredTemporaryHealthToAdd));
                         for (int i = 0; i < temporaryHealthAmountToAdd; i++)
                         {
-                            self.characterBody.AddBuff(ItemQualitiesContent.Buffs.FruitTempHealth);
+                            self.characterBody.AddUnmanagedBuff(ItemQualitiesContent.Buffs.FruitTempHealth);
                         }
                     }
                 }

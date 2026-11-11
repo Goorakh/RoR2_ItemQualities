@@ -11,7 +11,7 @@ namespace ItemQualities
 {
     internal static class InventoryRestackQualityPatch
     {
-        [InitDuringStartupPhase(GameInitPhase.PostProgressBar)]
+        [SystemInitializer]
         private static void Init()
         {
             IL.RoR2.Inventory.ShrineRestackInventory += Inventory_ShrineRestackInventory;

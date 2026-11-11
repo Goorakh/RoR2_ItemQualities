@@ -45,7 +45,7 @@ namespace ItemQualities.Items
                 ItemQualityCounts killEliteFrenzy = deathReport.attackerBody.inventory.GetItemCountsEffective(ItemQualitiesContent.ItemQualityGroups.KillEliteFrenzy);
                 if (killEliteFrenzy.TotalQualityCount > 0 && deathReport.attackerBody.HasBuff(RoR2Content.Buffs.NoCooldowns))
                 {
-                    deathReport.attackerBody.AddBuff(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffIndex(killEliteFrenzy.HighestQuality));
+                    deathReport.attackerBody.AddUnmanagedBuff(ItemQualitiesContent.BuffQualityGroups.KillEliteFrenzyBuff.GetBuffIndex(killEliteFrenzy.HighestQuality));
                 }
             }
         }

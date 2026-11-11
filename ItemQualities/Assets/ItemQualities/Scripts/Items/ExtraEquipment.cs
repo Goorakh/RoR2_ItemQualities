@@ -128,7 +128,7 @@ namespace ItemQualities.Items
             }
         }
 
-        [InitDuringStartupPhase(GameInitPhase.PreSplash)]
+        [SystemInitializer]
         private static void Init()
         {
             IL.RoR2.Inventory.RecalculateEquipmentSetsServer += Inventory_RecalculateEquipmentSetsServer;
