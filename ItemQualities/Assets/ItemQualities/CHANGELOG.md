@@ -1,4 +1,4 @@
-## \<Next Version\> Changes:
+## 0.8.6 Changes:
 
 * Added quality items to AI blacklist:
     * Bison Steak
