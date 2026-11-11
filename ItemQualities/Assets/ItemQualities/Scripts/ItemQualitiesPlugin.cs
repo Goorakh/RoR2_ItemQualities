@@ -65,9 +65,10 @@ namespace ItemQualities
                 RebindablesCompat.RegisterKeybinds();
             }
 
+            ItemQualitiesContent.InitAddressablesRuntimeDirectory(Path.GetDirectoryName(Info.Location));
             ItemQualitiesContent contentProvider = new ItemQualitiesContent();
             contentProvider.Register();
-
+            
             CustomCostTypeIndex.Register();
 
             LanguageFolderHandler.Register(Path.GetDirectoryName(Info.Location));
