@@ -8,15 +8,16 @@ namespace ItemQualities
 {
     public sealed class DelayBlastExtraStats : MonoBehaviour
     {
+        [SystemInitializer]
         private static void Init()
         {
-            foreach (GameObject networkedPrefab in ContentManager.networkedObjectPrefabs)
-            {
-                foreach (DelayBlast delayBlast in networkedPrefab.GetComponentsInChildren<DelayBlast>())
-                {
-                    delayBlast.gameObject.EnsureComponent<DelayBlastExtraStats>();
-                }
-            }
+            On.RoR2.DelayBlast.Awake += DelayBlast_Awake;
+        }
+
+        private static void DelayBlast_Awake(On.RoR2.DelayBlast.orig_Awake orig, DelayBlast self)
+        {
+            orig(self);
+            self.gameObject.EnsureComponent<DelayBlastExtraStats>();
         }
 
         private DelayBlast _delayBlast;

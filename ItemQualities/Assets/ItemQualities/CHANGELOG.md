@@ -25,6 +25,9 @@
 
 * Symbiotic Scorpion:
     * Fixed DoT proc chance ignoring proc coefficient.
+    
+* Will-o'-the-wisp:
+    * Fixed explosion size increase not applying to some items.
 
 * Fixed Lemurian Compulsion Quest resetting buffs:
     * Temporary health from Foreign Fruit or Cautios Slug
